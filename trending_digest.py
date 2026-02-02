@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Daily GitHub Trending Digest - scrapes top 5 trending repos and publishes to GitHub Pages."""
+"""Daily GitHub Trending Digest - scrapes top 10 trending repos and publishes to GitHub Pages."""
 
 import html
 import json
@@ -8,6 +8,7 @@ import os
 import re
 import smtplib
 import subprocess
+import time
 from datetime import datetime
 from email.mime.text import MIMEText
 from pathlib import Path
@@ -229,14 +230,14 @@ def generate_daily_page(repos: list[dict], date: datetime) -> str:
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>GitHub Trending - {date_display}</title>
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="../style.css">
 </head>
 <body>
     <header>
         <h1>GitHub Trending Digest</h1>
         <p class="subtitle">{date_display}</p>
         <nav>
-            <a href="index.html">&larr; Back to Calendar</a>
+            <a href="../">&larr; Back to Calendar</a>
         </nav>
     </header>
     <main>
@@ -308,7 +309,7 @@ def generate_index_page(pages_data: dict) -> str:
 <body>
     <header>
         <h1>GitHub Trending Digest</h1>
-        <p class="subtitle">Daily top 5 trending repositories</p>
+        <p class="subtitle">Daily top 10 trending repositories</p>
     </header>
     <main>
         <div class="calendar-container">
@@ -339,7 +340,7 @@ def generate_month_calendar(year: int, month: int, pages_set: set) -> str:
             else:
                 date_str = f"{year}-{month:02d}-{day:02d}"
                 if date_str in pages_set:
-                    days_html += f'<td class="has-page"><a href="{date_str}.html">{day}</a></td>'
+                    days_html += f'<td class="has-page"><a href="{date_str}/">{day}</a></td>'
                 else:
                     days_html += f'<td class="no-page">{day}</td>'
         weeks_html += f"<tr>{days_html}</tr>\n"
@@ -525,7 +526,9 @@ def save_files(date: datetime, daily_html: str, index_html: str, css: str) -> No
     DOCS_DIR.mkdir(exist_ok=True)
 
     date_str = date.strftime("%Y-%m-%d")
-    daily_file = DOCS_DIR / f"{date_str}.html"
+    daily_dir = DOCS_DIR / date_str
+    daily_dir.mkdir(exist_ok=True)
+    daily_file = daily_dir / "index.html"
 
     with open(daily_file, "w") as f:
         f.write(daily_html)
@@ -576,18 +579,36 @@ def send_email(to_address: str, subject: str, body: str) -> None:
     logging.info("Email sent successfully")
 
 
+def wait_for_page_live(url: str, max_attempts: int = 30, delay: int = 10) -> bool:
+    """Wait for a page to return HTTP 200."""
+    logging.info("Waiting for page to be live: %s", url)
+    for attempt in range(max_attempts):
+        try:
+            response = requests.head(url, timeout=10, allow_redirects=True)
+            if response.status_code == 200:
+                logging.info("Page is live after %d attempts", attempt + 1)
+                return True
+        except requests.RequestException as e:
+            logging.debug("Attempt %d failed: %s", attempt + 1, e)
+        if attempt < max_attempts - 1:
+            logging.info("Page not ready, waiting %ds (attempt %d/%d)", delay, attempt + 1, max_attempts)
+            time.sleep(delay)
+    logging.error("Page did not become live after %d attempts", max_attempts)
+    return False
+
+
 def main() -> None:
     """Main entry point."""
     today = datetime.now()
     date_str = today.strftime("%Y-%m-%d")
 
     # Check if today's page already exists
-    daily_file = DOCS_DIR / f"{date_str}.html"
-    if daily_file.exists():
+    daily_dir = DOCS_DIR / date_str
+    if (daily_dir / "index.html").exists():
         logging.info("Page for %s already exists, skipping", date_str)
         return
 
-    repos = scrape_trending_repos(limit=5)
+    repos = scrape_trending_repos(limit=10)
     if not repos:
         logging.error("No trending repos found")
         return
@@ -613,13 +634,16 @@ def main() -> None:
 
     git_commit_and_push()
 
-    # Email links to today's page
-    page_url = f"{GITHUB_PAGES_URL}{date_str}.html"
-    send_email(
-        to_address="pckltpw@gmail.com",
-        subject="link",
-        body=page_url,
-    )
+    # Wait for page to be live before sending email
+    page_url = f"{GITHUB_PAGES_URL}{date_str}/"
+    if wait_for_page_live(page_url):
+        send_email(
+            to_address="pckltpw@gmail.com",
+            subject="link",
+            body=page_url,
+        )
+    else:
+        logging.error("Skipping email - page not live")
 
     logging.info("Done! View at %s", page_url)
 
