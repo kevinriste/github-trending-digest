@@ -303,7 +303,7 @@ def generate_index_page(pages_data: dict) -> str:
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>GitHub Trending Digest</title>
+    <title>GitHub Trending Digest - {today.strftime("%Y-%m-%d")}</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
