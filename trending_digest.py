@@ -209,7 +209,7 @@ def generate_daily_page(repos: list[dict], date: datetime) -> str:
             summary_html = "<p><em>Summary not available.</em></p>"
 
         repo_cards += f"""
-            <article class="repo">
+            <section class="repo">
                 <h3>{i}. <a href="{repo['url']}" target="_blank">{html.escape(repo['name'])}</a></h3>
                 <p class="description">{html.escape(repo['description'])}</p>
                 <p class="meta">
@@ -221,7 +221,7 @@ def generate_daily_page(repos: list[dict], date: datetime) -> str:
                     <h4>Analysis</h4>
                     {summary_html}
                 </div>
-            </article>
+            </section>
 """
 
     return f"""<!DOCTYPE html>
