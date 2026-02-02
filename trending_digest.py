@@ -234,8 +234,7 @@ def generate_daily_page(repos: list[dict], date: datetime) -> str:
 </head>
 <body>
     <header>
-        <h1>GitHub Trending Digest</h1>
-        <p class="subtitle">{date_display}</p>
+        <h1>GitHub Trending Digest - {date_display}</h1>
         <nav>
             <a href="../">&larr; Back to Calendar</a>
         </nav>
