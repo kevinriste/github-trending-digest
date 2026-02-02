@@ -56,4 +56,4 @@ Example:
 - Git operations happen inside the script; ensure credentials and permissions are set up.
 
 ## Recommendations
-See `RECOMMENDATIONS.md` for Codex-generated suggestions (not Claude).
+See [RECOMMENDATIONS.md](RECOMMENDATIONS.md) for Codex-generated suggestions (not Claude).
