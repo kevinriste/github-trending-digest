@@ -241,9 +241,11 @@ def generate_daily_page(repos: list[dict], date: datetime) -> str:
         </nav>
     </header>
     <main>
-        <div class="repos">
+        <article>
+            <div class="repos">
 {repo_cards}
-        </div>
+            </div>
+        </article>
     </main>
     <footer>
         <p>Generated automatically. Data from <a href="https://github.com/trending">GitHub Trending</a>.</p>
