@@ -17,7 +17,7 @@ logging.basicConfig(level=logging.INFO, format="%(levelname)s %(message)s")
 GITHUB_TRENDING_URL = "https://github.com/trending?since=daily"
 DOCS_DIR = Path(__file__).parent / "docs"
 INDEX_FILE = DOCS_DIR / "index.html"
-GITHUB_PAGES_URL = "https://www.kevinriste.com/github-trending-digest/"
+GITHUB_PAGES_URL = "https://kevinriste.github.io/github-trending-digest/"
 
 gmail_user = os.getenv("GMAIL_PODCAST_ACCOUNT")
 gmail_password = os.getenv("GMAIL_PODCAST_ACCOUNT_APP_PASSWORD")
