@@ -639,7 +639,7 @@ def main() -> None:
     page_url = f"{GITHUB_PAGES_URL}{date_str}/"
     if wait_for_page_live(page_url):
         send_email(
-            to_address="pckltpw@gmail.com",
+            to_address="kevinbobriste@gmail.com",
             subject="link",
             body=page_url,
         )
