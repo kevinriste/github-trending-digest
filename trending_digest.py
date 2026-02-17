@@ -1330,7 +1330,7 @@ def generate_gh_daily_page(repos: list[dict], day: date, hn_dates_set: set[str])
             if repo.get("earliest_seen")
             else "History unavailable"
         )
-        seen_badge = '<span class="seen-badge">Seen before</span>' if repo.get("seen_before") else ""
+        seen_badge = '<span class="seen-badge">Not new today</span>' if repo.get("seen_before") else ""
 
         repo_cards += f"""
             <section class="repo" data-seen-before="{1 if repo.get('seen_before') else 0}">
@@ -1372,9 +1372,10 @@ def generate_gh_daily_page(repos: list[dict], day: date, hn_dates_set: set[str])
     </header>
     <main>
         <div class="repo-controls">
-            <button id="collapse-seen-btn" type="button">Collapse Seen Repos</button>
+            <button id="collapse-seen-btn" type="button">Collapse Repos Not New Today</button>
             <button id="expand-all-btn" type="button">Expand All</button>
         </div>
+        <p class="seen-help">Repos marked "Not new today" appeared on one or more previous daily pages.</p>
         <article>
             <div class="repos">
 {repo_cards}
@@ -1419,7 +1420,7 @@ def generate_hn_daily_page(items: list[dict], day: date, gh_dates_set: set[str])
 
         title_url = item.get("url") or item.get("discussion_url")
         domain = extract_domain(item.get("url") or "") or "news.ycombinator.com"
-        seen_badge = '<span class="seen-badge">Seen before</span>' if item.get("seen_before") else ""
+        seen_badge = '<span class="seen-badge">Not new today</span>' if item.get("seen_before") else ""
 
         story_cards += f"""
             <section class="repo" data-seen-before="{1 if item.get('seen_before') else 0}">
@@ -1463,9 +1464,10 @@ def generate_hn_daily_page(items: list[dict], day: date, gh_dates_set: set[str])
     </header>
     <main>
         <div class="repo-controls">
-            <button id="collapse-seen-btn" type="button">Collapse Seen Repos</button>
+            <button id="collapse-seen-btn" type="button">Collapse Stories Not New Today</button>
             <button id="expand-all-btn" type="button">Expand All</button>
         </div>
+        <p class="seen-help">Stories marked "Not new today" appeared on one or more previous daily pages.</p>
         <article>
             <div class="repos">
 {story_cards}
@@ -1609,6 +1611,11 @@ nav a:hover {
     display: flex;
     gap: 0.75rem;
     margin-bottom: 1rem;
+}
+.seen-help {
+    color: #8b949e;
+    font-size: 0.8rem;
+    margin: -0.35rem 0 1rem;
 }
 .repo-controls button,
 .repo-toggle {
