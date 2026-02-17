@@ -1640,15 +1640,15 @@ nav a:hover {
 .comment-analysis h4 {
     color: #f0f6fc;
     font-size: 0.95rem;
-    margin-bottom: 0.45rem;
+    margin-bottom: 0.75rem;
 }
 .comment-source {
     color: #7d8590;
     font-size: 0.8rem;
-    margin-bottom: 0.55rem;
+    margin-bottom: 0.75rem;
 }
 .comment-analysis ul {
-    margin: 0.35rem 0 0 1.15rem;
+    margin: 0 0 0 1.15rem;
     padding: 0;
 }
 .comment-analysis li {
