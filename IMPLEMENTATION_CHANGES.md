@@ -41,9 +41,10 @@ Also added indexes for key lookup paths and summary retrieval.
 ## GitHub Ingestion & Page Behavior
 
 - GitHub scraping now collects and stores all visible entries for:
-  - daily
-  - weekly
-  - monthly
+  - daily: max 10
+  - weekly: max 25
+  - monthly: max 100
+  - (or fewer when the source page has fewer entries)
 - Daily page rendering now includes:
   - earliest seen date
   - consecutive daily streak

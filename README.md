@@ -20,6 +20,11 @@ Each run:
 
 ## Key Features
 
+- GitHub scrape caps:
+  - `daily`: 10 repos
+  - `weekly`: up to 25 repos
+  - `monthly`: up to 100 repos
+  - (or fewer if fewer are available on GitHub Trending)
 - Postgres-backed history for:
   - earliest appearance date
   - consecutive daily streaks

@@ -27,6 +27,7 @@ logging.basicConfig(level=logging.INFO, format="%(levelname)s %(message)s")
 
 GITHUB_TRENDING_BASE_URL = "https://github.com/trending?since={period}"
 GITHUB_PERIODS = ("daily", "weekly", "monthly")
+GITHUB_FETCH_LIMITS = {"daily": 10, "weekly": 25, "monthly": 100}
 HN_TOPSTORIES_URL = "https://hacker-news.firebaseio.com/v0/topstories.json"
 HN_ITEM_URL_TEMPLATE = "https://hacker-news.firebaseio.com/v0/item/{item_id}.json"
 HN_DISCUSSION_URL_TEMPLATE = "https://news.ycombinator.com/item?id={item_id}"
@@ -297,8 +298,9 @@ def scrape_trending_repos(period: str) -> list[dict]:
 
     soup = BeautifulSoup(response.text, "html.parser")
     repos = []
+    limit = GITHUB_FETCH_LIMITS.get(period, 10)
 
-    for rank, article in enumerate(soup.select("article.Box-row"), start=1):
+    for rank, article in enumerate(soup.select("article.Box-row")[:limit], start=1):
         repo_link = article.select_one("h2 a")
         if not repo_link:
             continue

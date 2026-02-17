@@ -19,7 +19,11 @@ No work is skipped; all items should be implemented end-to-end.
 
 - Read-state tracking: per-browser only (`localStorage`), no cross-device sync.
 - Summary regeneration cadence: every 7 days.
-- Trending volume: capture as many repos/items as available from source pages/APIs.
+- GitHub scrape volume caps:
+  - daily: 10 repos
+  - weekly: up to 25 repos
+  - monthly: up to 100 repos
+  - (or fewer if fewer are available)
 - Collapsed card behavior: keep rank + repo link/name visible in same format as expanded.
 - Stats placement: show `earliest seen` and `consecutive day streak` between header row and AI summary area.
 - Hacker News: separate webpage set and calendar, cross-linked with GitHub pages.
