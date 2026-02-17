@@ -1021,12 +1021,12 @@ def generate_summary_html(summary_text: str) -> str:
     return "\n".join(f"<p>{html.escape(paragraph)}</p>" for paragraph in paragraphs)
 
 
-def generate_bullet_list_html(text: str) -> str:
-    """Render bullet-like text as an HTML list."""
+def generate_bullet_paragraph_html(text: str) -> str:
+    """Render bullet-like text as analysis paragraphs."""
     if not text:
         return "<p><em>Comment analysis not available.</em></p>"
 
-    bullets = []
+    bullets: list[str] = []
     for raw_line in text.splitlines():
         line = normalize_text(raw_line)
         if not line:
@@ -1043,8 +1043,7 @@ def generate_bullet_list_html(text: str) -> str:
     if not bullets:
         return "<p><em>Comment analysis not available.</em></p>"
 
-    list_items = "\n".join(f"<li>{html.escape(bullet)}</li>" for bullet in bullets)
-    return f"<ul>\n{list_items}\n</ul>"
+    return "\n".join(f"<p>{html.escape(bullet)}</p>" for bullet in bullets)
 
 
 def generate_month_calendar(year: int, month: int, pages_set: set[str], link_prefix: str = "") -> str:
@@ -1340,14 +1339,10 @@ def generate_hn_daily_page(items: list[dict], day: date, gh_dates_set: set[str])
         summary_html = generate_summary_html(item.get("summary", ""))
         comment_analysis_html = ""
         if item.get("comment_analysis"):
-            sampled_comments = int(item.get("comment_analysis_sampled_comments") or 0)
-            total_comments = int(item.get("comment_analysis_total_comments") or item.get("comment_count") or 0)
-            comment_source = f"Based on {sampled_comments} sampled comments out of {total_comments} total comments."
             comment_analysis_html = f"""
-                <div class="comment-analysis">
+                <div class="ai-summary">
                     <h4>Comment Analysis</h4>
-                    <p class="comment-source">{html.escape(comment_source)}</p>
-                    {generate_bullet_list_html(item["comment_analysis"])}
+                    {generate_bullet_paragraph_html(item["comment_analysis"])}
                 </div>
 """
         history_line = (
@@ -1630,33 +1625,6 @@ nav a:hover {
     font-size: 0.9rem;
 }
 .ai-summary p:last-child {
-    margin-bottom: 0;
-}
-.comment-analysis {
-    margin-top: 1rem;
-    padding-top: 1rem;
-    border-top: 1px dashed var(--border-color);
-}
-.comment-analysis h4 {
-    color: #f0f6fc;
-    font-size: 0.95rem;
-    margin-bottom: 0.75rem;
-}
-.comment-source {
-    color: #7d8590;
-    font-size: 0.8rem;
-    margin-bottom: 0.75rem;
-}
-.comment-analysis ul {
-    margin: 0 0 0 1.15rem;
-    padding: 0;
-}
-.comment-analysis li {
-    color: var(--text-color);
-    font-size: 0.88rem;
-    margin-bottom: 0.45rem;
-}
-.comment-analysis li:last-child {
     margin-bottom: 0;
 }
 .empty-state {
