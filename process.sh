@@ -29,6 +29,9 @@ cd "$(dirname "$0")"
 echo "GitHub Trending Digest--Install dependencies"
 uv sync
 
+echo "GitHub Trending Digest--Ensure Postgres service is running"
+docker compose up -d postgres
+
 echo "GitHub Trending Digest--Run trending digest script"
 uv run python3 trending_digest.py
 
