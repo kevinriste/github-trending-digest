@@ -1164,7 +1164,8 @@ def generate_gh_daily_script(day_str: str) -> str:
         localStorage.setItem(readKey, JSON.stringify(stored));
     }}
 
-    const collapseSeen = new URLSearchParams(window.location.search).get("collapse_seen") === "1";
+    const collapseParam = new URLSearchParams(window.location.search).get("collapse_seen");
+    const collapseSeen = collapseParam === "0" ? false : true;
 
     function setCollapsed(repoEl, collapsed) {{
         repoEl.classList.toggle("collapsed", collapsed);
@@ -1219,17 +1220,17 @@ def generate_gh_daily_script(day_str: str) -> str:
 """
 
 
-def generate_mark_read_script(storage_key: str, day_str: str) -> str:
-    """Generate JS to mark one day as read."""
+def generate_hn_daily_script(day_str: str) -> str:
+    """Generate JS for HN daily page behavior (mark read + collapse query)."""
     return f"""
 <script>
 (() => {{
-    const storageKey = {json.dumps(storage_key)};
+    const readKey = {json.dumps(READ_DAYS_KEY_HN)};
     const dayStr = {json.dumps(day_str)};
 
     let stored = [];
     try {{
-        stored = JSON.parse(localStorage.getItem(storageKey) || "[]");
+        stored = JSON.parse(localStorage.getItem(readKey) || "[]");
         if (!Array.isArray(stored)) {{
             stored = [];
         }}
@@ -1240,7 +1241,59 @@ def generate_mark_read_script(storage_key: str, day_str: str) -> str:
     if (!stored.includes(dayStr)) {{
         stored.push(dayStr);
         stored.sort();
-        localStorage.setItem(storageKey, JSON.stringify(stored));
+        localStorage.setItem(readKey, JSON.stringify(stored));
+    }}
+
+    const collapseParam = new URLSearchParams(window.location.search).get("collapse_seen");
+    const collapseSeen = collapseParam === "0" ? false : true;
+
+    function setCollapsed(repoEl, collapsed) {{
+        repoEl.classList.toggle("collapsed", collapsed);
+        const button = repoEl.querySelector(".repo-toggle");
+        if (button) {{
+            button.textContent = collapsed ? "Show details" : "Hide details";
+            button.setAttribute("aria-expanded", String(!collapsed));
+        }}
+    }}
+
+    const repos = Array.from(document.querySelectorAll("section.repo[data-seen-before]"));
+
+    repos.forEach((repoEl) => {{
+        const toggle = repoEl.querySelector(".repo-toggle");
+        if (!toggle) {{
+            return;
+        }}
+
+        toggle.addEventListener("click", () => {{
+            setCollapsed(repoEl, !repoEl.classList.contains("collapsed"));
+        }});
+    }});
+
+    const collapseBtn = document.getElementById("collapse-seen-btn");
+    const expandBtn = document.getElementById("expand-all-btn");
+
+    if (collapseBtn) {{
+        collapseBtn.addEventListener("click", () => {{
+            repos.forEach((repoEl) => {{
+                if (repoEl.dataset.seenBefore === "1") {{
+                    setCollapsed(repoEl, true);
+                }}
+            }});
+        }});
+    }}
+
+    if (expandBtn) {{
+        expandBtn.addEventListener("click", () => {{
+            repos.forEach((repoEl) => setCollapsed(repoEl, false));
+        }});
+    }}
+
+    if (collapseSeen) {{
+        repos.forEach((repoEl) => {{
+            if (repoEl.dataset.seenBefore === "1") {{
+                setCollapsed(repoEl, true);
+            }}
+        }});
     }}
 }})();
 </script>
@@ -1354,23 +1407,29 @@ def generate_hn_daily_page(items: list[dict], day: date, gh_dates_set: set[str])
 
         title_url = item.get("url") or item.get("discussion_url")
         domain = extract_domain(item.get("url") or "") or "news.ycombinator.com"
+        seen_badge = '<span class="seen-badge">Seen before</span>' if item.get("seen_before") else ""
 
         story_cards += f"""
-            <section class="repo">
-                <h3>{item['rank']}. <a href="{html.escape(title_url)}" target="_blank" rel="noopener noreferrer">{html.escape(item['title'])}</a></h3>
-                <p class="meta">
-                    <span class="language">{html.escape(domain)}</span> |
-                    <span>{html.escape(item.get('author', 'unknown'))}</span> |
-                    <span>{item.get('score', 0)} points</span> |
-                    <span>{item.get('comment_count', 0)} comments</span> |
-                    <a href="{html.escape(item['discussion_url'])}" target="_blank" rel="noopener noreferrer">discussion</a>
-                </p>
-                <p class="history">{html.escape(history_line)}</p>
-                <div class="ai-summary">
-                    <h4>Analysis</h4>
-                    {summary_html}
+            <section class="repo" data-seen-before="{1 if item.get('seen_before') else 0}">
+                <div class="repo-header-row">
+                    <h3>{item['rank']}. <a href="{html.escape(title_url)}" target="_blank" rel="noopener noreferrer">{html.escape(item['title'])}</a> {seen_badge}</h3>
+                    <button type="button" class="repo-toggle" aria-expanded="true">Hide details</button>
                 </div>
-                {comment_analysis_html}
+                <div class="repo-body">
+                    <p class="meta">
+                        <span class="language">{html.escape(domain)}</span> |
+                        <span>{html.escape(item.get('author', 'unknown'))}</span> |
+                        <span>{item.get('score', 0)} points</span> |
+                        <span>{item.get('comment_count', 0)} comments</span> |
+                        <a href="{html.escape(item['discussion_url'])}" target="_blank" rel="noopener noreferrer">discussion</a>
+                    </p>
+                    <p class="history">{html.escape(history_line)}</p>
+                    <div class="ai-summary">
+                        <h4>Analysis</h4>
+                        {summary_html}
+                    </div>
+                    {comment_analysis_html}
+                </div>
             </section>
 """
 
@@ -1391,6 +1450,10 @@ def generate_hn_daily_page(items: list[dict], day: date, gh_dates_set: set[str])
         </nav>
     </header>
     <main>
+        <div class="repo-controls">
+            <button id="collapse-seen-btn" type="button">Collapse Seen Repos</button>
+            <button id="expand-all-btn" type="button">Expand All</button>
+        </div>
         <article>
             <div class="repos">
 {story_cards}
@@ -1400,7 +1463,7 @@ def generate_hn_daily_page(items: list[dict], day: date, gh_dates_set: set[str])
     <footer>
         <p>Generated automatically. Data from <a href="https://news.ycombinator.com/">Hacker News</a>.</p>
     </footer>
-{generate_mark_read_script(READ_DAYS_KEY_HN, date_str)}
+{generate_hn_daily_script(date_str)}
 </body>
 </html>
 """
@@ -2213,7 +2276,6 @@ def main() -> None:
         changed = git_commit_and_push()
 
         gh_page_url = f"{GITHUB_PAGES_URL}{run_day.isoformat()}/"
-        gh_email_url = f"{gh_page_url}?collapse_seen=1"
         hn_page_url = f"{GITHUB_PAGES_URL}hn/{run_day.isoformat()}/"
 
         if changed:
@@ -2221,7 +2283,7 @@ def main() -> None:
                 send_email(
                     to_address=email_to_address,
                     subject="links",
-                    body=f"GitHub Trending Digest:\n{gh_email_url}\n\nHacker News Digest:\n{hn_page_url}",
+                    body=f"GitHub Trending Digest:\n{gh_page_url}\n\nHacker News Digest:\n{hn_page_url}",
                 )
             else:
                 logging.error("Skipping email because one or more pages did not go live")
