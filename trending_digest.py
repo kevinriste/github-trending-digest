@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 """Daily GitHub Trending + Hacker News digest with Postgres persistence."""
 
+import argparse
 import calendar
 import hashlib
 import html
@@ -57,6 +58,17 @@ gmail_user = os.getenv("GMAIL_PODCAST_ACCOUNT")
 gmail_password = os.getenv("GMAIL_PODCAST_ACCOUNT_APP_PASSWORD")
 email_to_address = os.getenv("DIGEST_EMAIL_TO", "kevinbobriste@gmail.com")
 _openai_client = None
+
+
+def parse_args() -> argparse.Namespace:
+    """Parse command-line flags."""
+    parser = argparse.ArgumentParser(description="Generate GitHub Trending and Hacker News digests.")
+    parser.add_argument(
+        "--regenerate-only",
+        action="store_true",
+        help="Regenerate pages from DB content only (no scrape, push, or email).",
+    )
+    return parser.parse_args()
 
 
 def get_int_env(name: str, default: int) -> int:
@@ -1843,6 +1855,20 @@ def regenerate_gh_daily_pages(conn: psycopg.Connection, gh_dates: list[date], hn
     logging.info("Regenerated %d GitHub daily pages", len(gh_dates))
 
 
+def regenerate_hn_daily_pages(conn: psycopg.Connection, hn_dates: list[date], gh_dates_set: set[str]) -> None:
+    """Regenerate all Hacker News daily pages from stored data."""
+    if not hn_dates:
+        return
+
+    for render_day in sorted(hn_dates):
+        hn_rows = build_hn_view_rows(conn, render_day, allow_summary_generation=False)
+        hn_daily_html = generate_hn_daily_page(hn_rows, render_day, gh_dates_set)
+        hn_daily_file = HN_DOCS_DIR / render_day.isoformat() / "index.html"
+        write_text(hn_daily_file, hn_daily_html)
+
+    logging.info("Regenerated %d Hacker News daily pages", len(hn_dates))
+
+
 def git_commit_and_push() -> bool:
     """Commit and push docs changes if any."""
     repo_dir = Path(__file__).parent
@@ -2225,7 +2251,11 @@ def build_gh_view_rows(
     return rows
 
 
-def build_hn_view_rows(conn: psycopg.Connection, run_day: date) -> list[dict]:
+def build_hn_view_rows(
+    conn: psycopg.Connection,
+    run_day: date,
+    allow_summary_generation: bool = True,
+) -> list[dict]:
     """Load Hacker News rows for rendering and enrich with history + summaries."""
     rows = list_hn_daily_entries(conn, run_day)
     for row in rows:
@@ -2234,8 +2264,22 @@ def build_hn_view_rows(conn: psycopg.Connection, run_day: date) -> list[dict]:
         row["streak_days"] = streak_days
         row["seen_before"] = seen_before
         row["discussion_url"] = HN_DISCUSSION_URL_TEMPLATE.format(item_id=row["item_id"])
-        row["summary"] = get_or_generate_hn_summary(conn, row, run_day)
-        comment_analysis = get_or_generate_hn_comment_analysis(conn, row, run_day)
+        if allow_summary_generation:
+            row["summary"] = get_or_generate_hn_summary(conn, row, run_day)
+            comment_analysis = get_or_generate_hn_comment_analysis(conn, row, run_day)
+        else:
+            latest_summary = get_latest_hn_summary(conn, int(row["item_id"]))
+            row["summary"] = latest_summary["summary_text"] if latest_summary else ""
+            latest_comment_analysis = get_latest_hn_comment_analysis(conn, int(row["item_id"]))
+            comment_analysis = (
+                {
+                    "analysis_text": latest_comment_analysis["analysis_text"],
+                    "sampled_comments": int(latest_comment_analysis["sampled_comments"]),
+                    "total_comments": int(latest_comment_analysis["total_comments"]),
+                }
+                if latest_comment_analysis
+                else None
+            )
         row["comment_analysis"] = comment_analysis["analysis_text"] if comment_analysis else ""
         row["comment_analysis_sampled_comments"] = comment_analysis["sampled_comments"] if comment_analysis else 0
         row["comment_analysis_total_comments"] = comment_analysis["total_comments"] if comment_analysis else 0
@@ -2244,6 +2288,7 @@ def build_hn_view_rows(conn: psycopg.Connection, run_day: date) -> list[dict]:
 
 def main() -> None:
     """Main entry point."""
+    args = parse_args()
     run_day = date.today()
 
     try:
@@ -2261,6 +2306,28 @@ def main() -> None:
             return
 
         backfill_existing_gh_pages(conn)
+
+        if args.regenerate_only:
+            gh_dates = list_gh_daily_dates(conn)
+            hn_dates = list_hn_daily_dates(conn)
+            gh_dates_set = {day.isoformat() for day in gh_dates}
+            hn_dates_set = {day.isoformat() for day in hn_dates}
+
+            regenerate_gh_daily_pages(conn, gh_dates, hn_dates_set)
+            regenerate_hn_daily_pages(conn, hn_dates, gh_dates_set)
+
+            write_text(INDEX_FILE, generate_gh_index_page(gh_dates, hn_dates))
+            write_text(HN_INDEX_FILE, generate_hn_index_page(hn_dates, gh_dates))
+            write_text(STYLE_FILE, generate_css())
+            save_pages_json(PAGES_DATA_FILE, gh_dates)
+            save_pages_json(HN_PAGES_DATA_FILE, hn_dates)
+
+            logging.info(
+                "Regenerate-only mode complete. Rebuilt GitHub days=%d, Hacker News days=%d",
+                len(gh_dates),
+                len(hn_dates),
+            )
+            return
 
         gh_scrape_results: dict[str, list[dict]] = {}
         for period in GITHUB_PERIODS:
@@ -2294,6 +2361,7 @@ def main() -> None:
         hn_dates_set = {day.isoformat() for day in hn_dates}
 
         regenerate_gh_daily_pages(conn, gh_dates, hn_dates_set)
+        regenerate_hn_daily_pages(conn, hn_dates, gh_dates_set)
 
         gh_daily_html = generate_gh_daily_page(gh_rows, run_day, hn_dates_set)
         gh_index_html = generate_gh_index_page(gh_dates, hn_dates)

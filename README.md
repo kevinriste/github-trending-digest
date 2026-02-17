@@ -108,6 +108,9 @@ Optional tuning:
 5. Authenticate git/gh as needed.
 6. Run once: `uv run python3 trending_digest.py`
 
+Regenerate already-tracked pages from database state only (no scraping, push, or email):
+- `uv run python3 trending_digest.py --regenerate-only`
+
 Cron usage:
 
 ```cron
