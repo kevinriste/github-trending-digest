@@ -14,7 +14,7 @@ Each run:
 1. Scrapes GitHub Trending for `daily`, `weekly`, and `monthly`.
 2. Scrapes Hacker News via the official free Firebase API (`topstories`).
 3. Stores all fetched data in PostgreSQL.
-4. Reuses cached summaries and refreshes them every 7 days.
+4. Reuses cached summaries and refreshes them every 60 days.
 5. Generates static HTML pages under `docs/`.
 6. Commits/pushes docs changes and emails links after pages are live.
 
@@ -34,6 +34,7 @@ Each run:
   - previously seen repos start collapsed
   - rank/name/link header remains visible in the same format
 - Separate Hacker News pages under `docs/hn/` with cross-links to GitHub pages.
+- Hacker News daily cards include `Comment Analysis` from sampled discussion context.
 
 ## Project Structure
 
@@ -89,9 +90,14 @@ Override with `DATABASE_URL` if needed.
 
 Optional tuning:
 - `GH_DAILY_RENDER_LIMIT` (`0` = all daily repos fetched)
-- `HN_DAILY_RENDER_LIMIT` (default `20`)
+- `HN_DAILY_RENDER_LIMIT` (default `10`)
 - `HN_MAX_ITEMS` (`0` = all topstories IDs)
 - `HN_FETCH_WORKERS` (default `20`)
+- `HN_COMMENT_SAMPLE_SIZE` (default `16`)
+- `HN_COMMENT_TRAVERSAL_MAX_NODES` (default `300`)
+- `HN_COMMENT_TRAVERSAL_MAX_DEPTH` (default `6`)
+- `HN_COMMENT_MAX_PER_BRANCH` (default `4`)
+- `HN_COMMENT_MIN_TEXT_LEN` (default `40`)
 
 ## Setup
 

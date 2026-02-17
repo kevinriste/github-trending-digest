@@ -12,13 +12,14 @@ Implement the agreed upgrades:
 6. Daily email containing both GitHub and Hacker News links.
 7. Separate Hacker News pages and calendar using official HN API.
 8. Backfill historical data from existing generated pages.
+9. Add persisted Hacker News comment analysis section using sampled comment-tree traversal.
 
 No work is skipped; all items should be implemented end-to-end.
 
 ## Product Decisions (Finalized)
 
 - Read-state tracking: per-browser only (`localStorage`), no cross-device sync.
-- Summary regeneration cadence: every 7 days.
+- Summary regeneration cadence: every 60 days.
 - GitHub scrape volume caps:
   - daily: 10 repos
   - weekly: up to 25 repos
@@ -57,7 +58,8 @@ Derived metrics:
 - `hn_items`: canonical item data from API (id, title, url, by, score, descendants, time).
 - `hn_runs`: each daily fetch run.
 - `hn_entries`: rank + item for each run.
-- `hn_summaries`: cached summaries (same 7-day refresh policy).
+- `hn_summaries`: cached summaries (same 60-day refresh policy).
+- `hn_comment_analyses`: cached 4-bullet analysis from sampled comments (60-day refresh policy).
 
 ### 4) Scraping & Ingestion
 
@@ -69,6 +71,7 @@ Hacker News:
 - Fetch top story IDs via `/v0/topstories.json`.
 - Fetch item details via `/v0/item/{id}.json`.
 - Store full fetched set; render selected top section in page output.
+- Traverse comment trees with branch-diverse sampling (16 comments/story) for `Comment Analysis`.
 
 ### 5) Page Generation
 
@@ -127,7 +130,7 @@ Add parser/ingest routine to process existing GitHub `docs/YYYY-MM-DD/index.html
 
 - Data persists across container restarts via named volume.
 - GitHub daily run stores daily/weekly/monthly records.
-- Summary regeneration happens only when older than 7 days.
+- Summary regeneration happens only when older than 60 days.
 - Daily GH pages show earliest-seen and consecutive-day streak.
 - `?collapse_seen=1` collapses only previously seen entries and preserves header format.
 - Index highlights browser-visited dates.

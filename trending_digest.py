@@ -11,6 +11,7 @@ import re
 import smtplib
 import subprocess
 import time
+from collections import deque
 from concurrent.futures import ThreadPoolExecutor, as_completed
 from datetime import date, datetime, timedelta, timezone
 from email.mime.text import MIMEText
@@ -44,7 +45,8 @@ GITHUB_PAGES_URL = "https://www.kevinriste.com/github-trending-digest/"
 SUMMARY_MODEL = "gpt-5-mini"
 GH_SUMMARY_PROMPT_VERSION = "gh_v2"
 HN_SUMMARY_PROMPT_VERSION = "hn_v1"
-SUMMARY_REFRESH_DAYS = 7
+HN_COMMENT_ANALYSIS_PROMPT_VERSION = "hn_comments_v1"
+SUMMARY_REFRESH_DAYS = 60
 RUN_LOCK_KEY = 348_112_907
 READ_DAYS_KEY_GH = "gtd:read_days:gh:v1"
 READ_DAYS_KEY_HN = "gtd:read_days:hn:v1"
@@ -69,9 +71,14 @@ def get_int_env(name: str, default: int) -> int:
 
 
 GH_DAILY_RENDER_LIMIT = get_int_env("GH_DAILY_RENDER_LIMIT", 0)  # 0 means all fetched
-HN_DAILY_RENDER_LIMIT = get_int_env("HN_DAILY_RENDER_LIMIT", 20)
+HN_DAILY_RENDER_LIMIT = get_int_env("HN_DAILY_RENDER_LIMIT", 10)
 HN_MAX_ITEMS = get_int_env("HN_MAX_ITEMS", 0)  # 0 means all IDs from API
 HN_FETCH_WORKERS = max(1, get_int_env("HN_FETCH_WORKERS", 20))
+HN_COMMENT_SAMPLE_SIZE = get_int_env("HN_COMMENT_SAMPLE_SIZE", 16)
+HN_COMMENT_TRAVERSAL_MAX_NODES = get_int_env("HN_COMMENT_TRAVERSAL_MAX_NODES", 300)
+HN_COMMENT_TRAVERSAL_MAX_DEPTH = get_int_env("HN_COMMENT_TRAVERSAL_MAX_DEPTH", 6)
+HN_COMMENT_MAX_PER_BRANCH = get_int_env("HN_COMMENT_MAX_PER_BRANCH", 4)
+HN_COMMENT_MIN_TEXT_LEN = get_int_env("HN_COMMENT_MIN_TEXT_LEN", 40)
 
 
 def normalize_text(value: str) -> str:
@@ -221,6 +228,19 @@ def init_db(conn: psycopg.Connection) -> None:
         )
         """,
         """
+        CREATE TABLE IF NOT EXISTS hn_comment_analyses (
+            id BIGSERIAL PRIMARY KEY,
+            item_id BIGINT NOT NULL REFERENCES hn_items(id) ON DELETE CASCADE,
+            model TEXT NOT NULL,
+            prompt_version TEXT NOT NULL,
+            sample_size INTEGER NOT NULL,
+            sampled_comments INTEGER NOT NULL,
+            total_comments INTEGER NOT NULL,
+            analysis_text TEXT NOT NULL,
+            generated_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+        )
+        """,
+        """
         CREATE INDEX IF NOT EXISTS idx_gh_entries_repo_id ON gh_entries(repo_id)
         """,
         """
@@ -237,6 +257,10 @@ def init_db(conn: psycopg.Connection) -> None:
         """,
         """
         CREATE INDEX IF NOT EXISTS idx_hn_summaries_item_generated ON hn_summaries(item_id, generated_at DESC)
+        """,
+        """
+        CREATE INDEX IF NOT EXISTS idx_hn_comment_analyses_item_generated
+            ON hn_comment_analyses(item_id, generated_at DESC)
         """,
     ]
 
@@ -716,6 +740,134 @@ def get_or_generate_hn_summary(conn: psycopg.Connection, item: dict, run_day: da
     return ""
 
 
+def get_latest_hn_comment_analysis(conn: psycopg.Connection, item_id: int) -> dict | None:
+    """Fetch latest comment analysis for a Hacker News item."""
+    with conn.cursor(row_factory=dict_row) as cur:
+        cur.execute(
+            """
+            SELECT analysis_text, sampled_comments, total_comments, generated_at
+            FROM hn_comment_analyses
+            WHERE item_id = %s
+              AND model = %s
+              AND prompt_version = %s
+              AND sample_size = %s
+            ORDER BY generated_at DESC
+            LIMIT 1
+            """,
+            (item_id, SUMMARY_MODEL, HN_COMMENT_ANALYSIS_PROMPT_VERSION, HN_COMMENT_SAMPLE_SIZE),
+        )
+        return cur.fetchone()
+
+
+def cache_hn_comment_analysis(
+    conn: psycopg.Connection,
+    item_id: int,
+    analysis_text: str,
+    sampled_comments: int,
+    total_comments: int,
+) -> None:
+    """Insert Hacker News comment analysis row."""
+    with conn.cursor() as cur:
+        cur.execute(
+            """
+            INSERT INTO hn_comment_analyses
+                (item_id, model, prompt_version, sample_size, sampled_comments, total_comments, analysis_text, generated_at)
+            VALUES (%s, %s, %s, %s, %s, %s, %s, NOW())
+            """,
+            (
+                item_id,
+                SUMMARY_MODEL,
+                HN_COMMENT_ANALYSIS_PROMPT_VERSION,
+                HN_COMMENT_SAMPLE_SIZE,
+                sampled_comments,
+                total_comments,
+                analysis_text,
+            ),
+        )
+
+
+def generate_hn_comment_analysis(item: dict, sampled_comments: list[dict], total_comments: int) -> str:
+    """Generate four bullet points from sampled Hacker News comments."""
+    comment_block = "\n\n".join(
+        (
+            f"[{idx}] depth={comment['depth']} top_thread={comment['root_pos']} "
+            f"by={comment['by'] or 'unknown'}: {comment['text']}"
+        )
+        for idx, comment in enumerate(sampled_comments, start=1)
+    )
+
+    prompt = f"""Analyze this Hacker News discussion sample and provide exactly 4 concise bullet points.
+
+Story title: {item.get("title", "")}
+Story URL: {item.get("url") or item.get("discussion_url") or "N/A"}
+Total comments in thread: {total_comments}
+Sample size: {len(sampled_comments)}
+
+Comment sample:
+{comment_block}
+
+Return exactly 4 bullet points:
+- Bullet 1: Core consensus or dominant viewpoint.
+- Bullet 2: Strongest disagreement or competing view.
+- Bullet 3: Practical technical takeaway.
+- Bullet 4: Caveat about sample bias/coverage.
+
+Rules:
+- One sentence per bullet.
+- 18-35 words per bullet.
+- No hype or marketing language.
+- Do not quote usernames.
+"""
+
+    try:
+        client = get_openai_client()
+        response = client.responses.create(model=SUMMARY_MODEL, input=prompt)
+        return response.output_text.strip()
+    except Exception as exc:
+        logging.exception("HN comment analysis generation failed for item %s: %s", item.get("item_id"), exc)
+        return ""
+
+
+def get_or_generate_hn_comment_analysis(conn: psycopg.Connection, item: dict, run_day: date) -> dict | None:
+    """Return cached comment analysis or generate a fresh one for an HN item."""
+    item_id = int(item["item_id"])
+    latest = get_latest_hn_comment_analysis(conn, item_id)
+    if latest and summary_is_fresh(latest["generated_at"], run_day):
+        return {
+            "analysis_text": latest["analysis_text"],
+            "sampled_comments": int(latest["sampled_comments"]),
+            "total_comments": int(latest["total_comments"]),
+        }
+
+    total_comments, nodes = build_hn_comment_nodes(item_id, int(item.get("comment_count") or 0))
+    sampled = select_hn_comment_sample(nodes)
+    if not sampled:
+        return None
+
+    analysis_text = generate_hn_comment_analysis(item, sampled, total_comments)
+    if not analysis_text:
+        if latest:
+            return {
+                "analysis_text": latest["analysis_text"],
+                "sampled_comments": int(latest["sampled_comments"]),
+                "total_comments": int(latest["total_comments"]),
+            }
+        return None
+
+    cache_hn_comment_analysis(
+        conn=conn,
+        item_id=item_id,
+        analysis_text=analysis_text,
+        sampled_comments=len(sampled),
+        total_comments=total_comments,
+    )
+    return {
+        "analysis_text": analysis_text,
+        "sampled_comments": len(sampled),
+        "total_comments": total_comments,
+    }
+
+
 def get_gh_history_stats(conn: psycopg.Connection, repo_id: int, up_to_day: date) -> tuple[date | None, int, bool]:
     """Get earliest appearance, consecutive daily streak, and seen-before flag."""
     with conn.cursor(row_factory=dict_row) as cur:
@@ -867,6 +1019,32 @@ def generate_summary_html(summary_text: str) -> str:
         return "<p><em>Summary not available.</em></p>"
 
     return "\n".join(f"<p>{html.escape(paragraph)}</p>" for paragraph in paragraphs)
+
+
+def generate_bullet_list_html(text: str) -> str:
+    """Render bullet-like text as an HTML list."""
+    if not text:
+        return "<p><em>Comment analysis not available.</em></p>"
+
+    bullets = []
+    for raw_line in text.splitlines():
+        line = normalize_text(raw_line)
+        if not line:
+            continue
+        if line.startswith(("-", "*", "•")):
+            cleaned = normalize_text(line.lstrip("-*•").strip())
+            if cleaned:
+                bullets.append(cleaned)
+
+    if not bullets:
+        fallback = [normalize_text(line) for line in text.splitlines() if normalize_text(line)]
+        bullets = fallback[:4]
+
+    if not bullets:
+        return "<p><em>Comment analysis not available.</em></p>"
+
+    list_items = "\n".join(f"<li>{html.escape(bullet)}</li>" for bullet in bullets)
+    return f"<ul>\n{list_items}\n</ul>"
 
 
 def generate_month_calendar(year: int, month: int, pages_set: set[str], link_prefix: str = "") -> str:
@@ -1160,6 +1338,18 @@ def generate_hn_daily_page(items: list[dict], day: date, gh_dates_set: set[str])
 
     for item in items:
         summary_html = generate_summary_html(item.get("summary", ""))
+        comment_analysis_html = ""
+        if item.get("comment_analysis"):
+            sampled_comments = int(item.get("comment_analysis_sampled_comments") or 0)
+            total_comments = int(item.get("comment_analysis_total_comments") or item.get("comment_count") or 0)
+            comment_source = f"Based on {sampled_comments} sampled comments out of {total_comments} total comments."
+            comment_analysis_html = f"""
+                <div class="comment-analysis">
+                    <h4>Comment Analysis</h4>
+                    <p class="comment-source">{html.escape(comment_source)}</p>
+                    {generate_bullet_list_html(item["comment_analysis"])}
+                </div>
+"""
         history_line = (
             f"First seen: {format_date_display(item['earliest_seen'])} | "
             f"Consecutive daily streak: {item['streak_days']} day{'s' if item['streak_days'] != 1 else ''}"
@@ -1185,6 +1375,7 @@ def generate_hn_daily_page(items: list[dict], day: date, gh_dates_set: set[str])
                     <h4>Analysis</h4>
                     {summary_html}
                 </div>
+                {comment_analysis_html}
             </section>
 """
 
@@ -1441,6 +1632,33 @@ nav a:hover {
 .ai-summary p:last-child {
     margin-bottom: 0;
 }
+.comment-analysis {
+    margin-top: 1rem;
+    padding-top: 1rem;
+    border-top: 1px dashed var(--border-color);
+}
+.comment-analysis h4 {
+    color: #f0f6fc;
+    font-size: 0.95rem;
+    margin-bottom: 0.45rem;
+}
+.comment-source {
+    color: #7d8590;
+    font-size: 0.8rem;
+    margin-bottom: 0.55rem;
+}
+.comment-analysis ul {
+    margin: 0.35rem 0 0 1.15rem;
+    padding: 0;
+}
+.comment-analysis li {
+    color: var(--text-color);
+    font-size: 0.88rem;
+    margin-bottom: 0.45rem;
+}
+.comment-analysis li:last-child {
+    margin-bottom: 0;
+}
 .empty-state {
     color: #8b949e;
     font-style: italic;
@@ -1659,6 +1877,138 @@ def fetch_hn_item(item_id: int) -> dict | None:
     return payload
 
 
+def fetch_hn_item_cached(item_id: int, cache: dict[int, dict | None], session: requests.Session) -> dict | None:
+    """Fetch one Hacker News item with in-memory request cache."""
+    if item_id in cache:
+        return cache[item_id]
+
+    try:
+        response = session.get(HN_ITEM_URL_TEMPLATE.format(item_id=item_id), timeout=20)
+        response.raise_for_status()
+        payload = response.json()
+    except (requests.RequestException, ValueError):
+        payload = None
+
+    if payload is not None and not isinstance(payload, dict):
+        payload = None
+
+    cache[item_id] = payload
+    return payload
+
+
+def clean_hn_comment_text(raw_text: str) -> str:
+    """Normalize Hacker News comment HTML into plain text."""
+    if not raw_text:
+        return ""
+    return normalize_text(BeautifulSoup(raw_text, "html.parser").get_text(" ", strip=True))
+
+
+def build_hn_comment_nodes(item_id: int, total_comments_hint: int) -> tuple[int, list[dict]]:
+    """Traverse HN comment tree with branch-diverse round-robin strategy."""
+    session = requests.Session()
+    item_cache: dict[int, dict | None] = {}
+
+    story = fetch_hn_item_cached(item_id, item_cache, session)
+    if not story:
+        return total_comments_hint, []
+
+    total_comments = int(story.get("descendants") or total_comments_hint or 0)
+    top_kids = [int(kid) for kid in (story.get("kids") or [])]
+    if not top_kids:
+        return total_comments, []
+
+    branch_queues = [deque([(kid, 1, kid, idx + 1)]) for idx, kid in enumerate(top_kids)]
+
+    nodes: list[dict] = []
+    visited: set[int] = set()
+    while len(nodes) < HN_COMMENT_TRAVERSAL_MAX_NODES:
+        progressed = False
+        for queue in branch_queues:
+            if not queue:
+                continue
+            progressed = True
+            comment_id, depth, root_id, root_pos = queue.popleft()
+            if comment_id in visited:
+                continue
+            visited.add(comment_id)
+            if depth > HN_COMMENT_TRAVERSAL_MAX_DEPTH:
+                continue
+
+            comment = fetch_hn_item_cached(comment_id, item_cache, session)
+            if not comment or comment.get("type") != "comment":
+                continue
+            if comment.get("dead") or comment.get("deleted"):
+                continue
+
+            text = clean_hn_comment_text(comment.get("text") or "")
+            kids = [int(kid) for kid in (comment.get("kids") or [])]
+
+            # Continue exploring replies even when this node is too short to keep.
+            for kid in kids:
+                queue.append((kid, depth + 1, root_id, root_pos))
+
+            if len(text) < HN_COMMENT_MIN_TEXT_LEN:
+                continue
+
+            nodes.append(
+                {
+                    "comment_id": comment_id,
+                    "by": normalize_text(comment.get("by") or "unknown"),
+                    "depth": depth,
+                    "root_id": root_id,
+                    "root_pos": root_pos,
+                    "reply_count": len(kids),
+                    "len": len(text),
+                    "text": text,
+                }
+            )
+            if len(nodes) >= HN_COMMENT_TRAVERSAL_MAX_NODES:
+                break
+
+        if not progressed:
+            break
+
+    return total_comments, nodes
+
+
+def select_hn_comment_sample(nodes: list[dict]) -> list[dict]:
+    """Select a branch-diverse high-signal subset of comments."""
+    if not nodes:
+        return []
+
+    ranked = []
+    for node in nodes:
+        depth_bonus = 1.2 if node["depth"] == 1 else (0.7 if node["depth"] == 2 else 0.3)
+        len_bonus = min(node["len"], 900) / 220
+        reply_bonus = min(node["reply_count"], 10) / 4
+        order_bonus = max(0, 14 - node["root_pos"]) / 14
+        signal = depth_bonus + len_bonus + reply_bonus + order_bonus
+        ranked.append((signal, node))
+
+    ranked.sort(key=lambda row: (row[0], row[1]["len"]), reverse=True)
+
+    selected: list[dict] = []
+    branch_counts: dict[int, int] = {}
+    text_seen: set[str] = set()
+    for _, node in ranked:
+        branch_id = int(node["root_id"])
+        if branch_counts.get(branch_id, 0) >= HN_COMMENT_MAX_PER_BRANCH:
+            continue
+
+        dedupe_key = node["text"][:200].lower()
+        if dedupe_key in text_seen:
+            continue
+
+        selected.append(node)
+        branch_counts[branch_id] = branch_counts.get(branch_id, 0) + 1
+        text_seen.add(dedupe_key)
+
+        if len(selected) >= HN_COMMENT_SAMPLE_SIZE:
+            break
+
+    return selected
+
+
 def scrape_hn_topstories() -> list[dict]:
     """Fetch Hacker News top stories using official API."""
     logging.info("Fetching Hacker News top stories")
@@ -1826,6 +2176,10 @@ def build_hn_view_rows(conn: psycopg.Connection, run_day: date) -> list[dict]:
         row["seen_before"] = seen_before
         row["discussion_url"] = HN_DISCUSSION_URL_TEMPLATE.format(item_id=row["item_id"])
         row["summary"] = get_or_generate_hn_summary(conn, row, run_day)
+        comment_analysis = get_or_generate_hn_comment_analysis(conn, row, run_day)
+        row["comment_analysis"] = comment_analysis["analysis_text"] if comment_analysis else ""
+        row["comment_analysis_sampled_comments"] = comment_analysis["sampled_comments"] if comment_analysis else 0
+        row["comment_analysis_total_comments"] = comment_analysis["total_comments"] if comment_analysis else 0
     return rows
 
 

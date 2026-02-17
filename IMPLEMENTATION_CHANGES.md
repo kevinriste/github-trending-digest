@@ -64,9 +64,9 @@ Also added indexes for key lookup paths and summary retrieval.
 
 ## Summary Caching Policy
 
-- Added 7-day summary refresh policy:
-  - reuse existing summary if younger than 7 days
-  - regenerate only after 7 days
+- Added 60-day summary refresh policy:
+  - reuse existing summary if younger than 60 days
+  - regenerate only after 60 days
 - Applies to both GitHub repo summaries and Hacker News story summaries.
 
 ## Hacker News Support
@@ -77,6 +77,10 @@ Also added indexes for key lookup paths and summary retrieval.
   - `docs/hn/YYYY-MM-DD/index.html`
   - `docs/hn/pages.json`
 - Added cross-links between GitHub and HN calendars and daily pages.
+- Added persisted `Comment Analysis` section on HN story cards:
+  - branch-diverse comment-tree traversal
+  - 16 sampled comments per story (no truncation)
+  - 60-day cached refresh in Postgres
 
 ## Email Output
 
