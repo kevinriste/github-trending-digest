@@ -1062,7 +1062,7 @@ def generate_month_calendar(year: int, month: int, pages_set: set[str], link_pre
             date_str = f"{year}-{month:02d}-{day:02d}"
             if date_str in pages_set:
                 days_html += (
-                    f'<td class="has-page" data-date="{date_str}"><a href="{link_prefix}{date_str}/" '
+                    f'<td class="has-page" data-date="{date_str}"><a class="day-link" href="{link_prefix}{date_str}/" '
                     f'data-date="{date_str}">{day}</a></td>'
                 )
             else:
@@ -1498,7 +1498,7 @@ def generate_gh_index_page(gh_dates: list[date], hn_dates: list[date]) -> str:
     <footer>
         <p>
             Generated automatically. Data from <a href="https://github.com/trending">GitHub Trending</a>.
-            Hacker News days tracked: {len(hn_dates)}.
+            GitHub days tracked: {len(gh_dates)}.
         </p>
     </footer>
 {generate_read_days_script(READ_DAYS_KEY_GH)}
@@ -1536,7 +1536,7 @@ def generate_hn_index_page(hn_dates: list[date], gh_dates: list[date]) -> str:
     <footer>
         <p>
             Generated automatically. Data from <a href="https://news.ycombinator.com/">Hacker News</a>.
-            GitHub days tracked: {len(gh_dates)}.
+            Hacker News days tracked: {len(hn_dates)}.
         </p>
     </footer>
 {generate_read_days_script(READ_DAYS_KEY_HN)}
@@ -1747,6 +1747,8 @@ footer a {
 .month-calendar td.has-page {
     background-color: var(--highlight-bg);
     border-radius: 4px;
+    padding: 0;
+    overflow: hidden;
 }
 .month-calendar td.has-page.read-day {
     background-color: var(--read-bg);
@@ -1756,6 +1758,10 @@ footer a {
     text-decoration: none;
     display: block;
     font-weight: 500;
+    padding: 0.5rem;
+    width: 100%;
+    height: 100%;
+    box-sizing: border-box;
 }
 .month-calendar td.has-page:hover {
     background-color: #388bfd;
@@ -1821,6 +1827,20 @@ def save_files(
     logging.info("Saved GitHub index to %s", INDEX_FILE)
     logging.info("Saved Hacker News index to %s", HN_INDEX_FILE)
     logging.info("Saved stylesheet to %s", STYLE_FILE)
+
+
+def regenerate_gh_daily_pages(conn: psycopg.Connection, gh_dates: list[date], hn_dates_set: set[str]) -> None:
+    """Regenerate all GitHub daily pages from stored data."""
+    if not gh_dates:
+        return
+
+    for render_day in sorted(gh_dates):
+        gh_rows = build_gh_view_rows(conn, render_day, allow_summary_generation=False)
+        gh_daily_html = generate_gh_daily_page(gh_rows, render_day, hn_dates_set)
+        gh_daily_file = DOCS_DIR / render_day.isoformat() / "index.html"
+        write_text(gh_daily_file, gh_daily_html)
+
+    logging.info("Regenerated %d GitHub daily pages", len(gh_dates))
 
 
 def git_commit_and_push() -> bool:
@@ -2185,15 +2205,23 @@ def backfill_existing_gh_pages(conn: psycopg.Connection) -> None:
     logging.info("Backfill complete. Imported %d historical daily pages", imported_count)
 
 
-def build_gh_view_rows(conn: psycopg.Connection, run_day: date) -> list[dict]:
-    """Load GitHub rows for rendering and enrich with history + summaries."""
+def build_gh_view_rows(
+    conn: psycopg.Connection,
+    run_day: date,
+    allow_summary_generation: bool = True,
+) -> list[dict]:
+    """Load GitHub rows for rendering and enrich with history and summaries."""
     rows = list_gh_daily_entries(conn, run_day)
     for row in rows:
         earliest_seen, streak_days, seen_before = get_gh_history_stats(conn, int(row["repo_id"]), run_day)
         row["earliest_seen"] = earliest_seen
         row["streak_days"] = streak_days
         row["seen_before"] = seen_before
-        row["summary"] = get_or_generate_gh_summary(conn, row, run_day)
+        if allow_summary_generation:
+            row["summary"] = get_or_generate_gh_summary(conn, row, run_day)
+        else:
+            latest = get_latest_gh_summary(conn, int(row["repo_id"]))
+            row["summary"] = latest["summary_text"] if latest else ""
     return rows
 
 
@@ -2264,6 +2292,8 @@ def main() -> None:
         hn_dates = list_hn_daily_dates(conn)
         gh_dates_set = {day.isoformat() for day in gh_dates}
         hn_dates_set = {day.isoformat() for day in hn_dates}
+
+        regenerate_gh_daily_pages(conn, gh_dates, hn_dates_set)
 
         gh_daily_html = generate_gh_daily_page(gh_rows, run_day, hn_dates_set)
         gh_index_html = generate_gh_index_page(gh_dates, hn_dates)
