@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GitHub Weekly Report - February 13, 2026</title>
+    <link rel="stylesheet" href="../style.css">
+</head>
+<body>
+    <header>
+        <h1>GitHub Weekly Report</h1>
+        <p class="subtitle">February 07, 2026 – February 13, 2026</p>
+        <nav>
+            <a href="../">&larr; GitHub Calendar</a>
+            <a href="../2026-02-13/">Today's Daily</a>
+            <a href="../hn/">Hacker News</a>
+        </nav>
+    </header>
+    <main>
+        <p class="seen-help">Repos that trended on GitHub's weekly/monthly lists this week but never appeared in the daily top 10 or daily slow burners.</p>
+        <div class="repo-controls">
+            <button id="collapse-seen-btn" type="button">Collapse Repos Not New Today</button>
+            <button id="expand-all-btn" type="button">Expand All</button>
+        </div>
+        <article>
+            <div class="repos">
+<p class="empty-state">No additional trending repos found for this week.</p>
+            </div>
+        </article>
+    </main>
+    <footer>
+        <p>Generated automatically. Data from <a href="https://github.com/trending">GitHub Trending</a>.</p>
+    </footer>
+
+<script>
+(() => {
+    const readKey = "gtd:read_days:gh:v1";
+    const dayStr = "2026-02-13";
+
+    let stored = [];
+    try {
+        stored = JSON.parse(localStorage.getItem(readKey) || "[]");
+        if (!Array.isArray(stored)) {
+            stored = [];
+        }
+    } catch (_err) {
+        stored = [];
+    }
+
+    if (!stored.includes(dayStr)) {
+        stored.push(dayStr);
+        stored.sort();
+        localStorage.setItem(readKey, JSON.stringify(stored));
+    }
+
+    const collapseParam = new URLSearchParams(window.location.search).get("collapse_seen");
+    const collapseSeen = collapseParam === "0" ? false : true;
+
+    function setCollapsed(repoEl, collapsed) {
+        repoEl.classList.toggle("collapsed", collapsed);
+        const button = repoEl.querySelector(".repo-toggle");
+        if (button) {
+            button.textContent = collapsed ? "Show details" : "Hide details";
+            button.setAttribute("aria-expanded", String(!collapsed));
+        }
+    }
+
+    const repos = Array.from(document.querySelectorAll("section.repo[data-seen-before]"));
+
+    repos.forEach((repoEl) => {
+        const toggle = repoEl.querySelector(".repo-toggle");
+        if (!toggle) {
+            return;
+        }
+
+        toggle.addEventListener("click", () => {
+            setCollapsed(repoEl, !repoEl.classList.contains("collapsed"));
+        });
+    });
+
+    const collapseBtn = document.getElementById("collapse-seen-btn");
+    const expandBtn = document.getElementById("expand-all-btn");
+
+    if (collapseBtn) {
+        collapseBtn.addEventListener("click", () => {
+            repos.forEach((repoEl) => {
+                if (repoEl.dataset.seenBefore === "1") {
+                    setCollapsed(repoEl, true);
+                }
+            });
+        });
+    }
+
+    if (expandBtn) {
+        expandBtn.addEventListener("click", () => {
+            repos.forEach((repoEl) => setCollapsed(repoEl, false));
+        });
+    }
+
+    if (collapseSeen) {
+        repos.forEach((repoEl) => {
+            if (repoEl.dataset.seenBefore === "1") {
+                setCollapsed(repoEl, true);
+            }
+        });
+    }
+})();
+</script>
+
+</body>
+</html>
