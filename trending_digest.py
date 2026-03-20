@@ -172,10 +172,11 @@ def init_db(conn: psycopg.Connection) -> None:
         CREATE TABLE IF NOT EXISTS gh_runs (
             id BIGSERIAL PRIMARY KEY,
             run_date DATE NOT NULL,
-            period TEXT NOT NULL CHECK (period IN ('daily', 'weekly', 'monthly')),
+            period TEXT NOT NULL CHECK (period IN ('daily', 'weekly', 'monthly', 'slow_burner')),
             source TEXT NOT NULL DEFAULT 'live',
             fetched_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
             repo_count INTEGER NOT NULL DEFAULT 0,
+            response_html TEXT,
             UNIQUE (run_date, period)
         )
         """,
@@ -364,7 +365,8 @@ def scrape_trending_repos(period: str) -> list[dict]:
     response = requests.get(GITHUB_TRENDING_BASE_URL.format(period=period), headers=headers, timeout=30)
     response.raise_for_status()
 
-    soup = BeautifulSoup(response.text, "html.parser")
+    raw_html = response.text
+    soup = BeautifulSoup(raw_html, "html.parser")
     repos = []
     limit = GITHUB_FETCH_LIMITS.get(period, 10)
 
@@ -399,8 +401,11 @@ def scrape_trending_repos(period: str) -> list[dict]:
             }
         )
 
+    if not soup.select_one("footer"):
+        logging.warning("GitHub %s page appears truncated (no footer found)", period)
+
     logging.info("GitHub %s scrape returned %d repositories", period, len(repos))
-    return repos
+    return repos, raw_html
 
 
 def clean_readme_content(readme_text: str) -> str:
@@ -596,18 +601,18 @@ Keep each paragraph concise (3-4 sentences) and avoid hype."""
         return ""
 
 
-def store_gh_period_run(conn: psycopg.Connection, run_day: date, period: str, repos: list[dict], source: str = "live") -> int:
+def store_gh_period_run(conn: psycopg.Connection, run_day: date, period: str, repos: list[dict], source: str = "live", response_html: str | None = None) -> int:
     """Upsert one GitHub period run and replace its entries."""
     with conn.cursor() as cur:
         cur.execute(
             """
-            INSERT INTO gh_runs (run_date, period, source, repo_count)
-            VALUES (%s, %s, %s, %s)
+            INSERT INTO gh_runs (run_date, period, source, repo_count, response_html)
+            VALUES (%s, %s, %s, %s, %s)
             ON CONFLICT (run_date, period)
-            DO UPDATE SET source = EXCLUDED.source, fetched_at = NOW(), repo_count = EXCLUDED.repo_count
+            DO UPDATE SET source = EXCLUDED.source, fetched_at = NOW(), repo_count = EXCLUDED.repo_count, response_html = EXCLUDED.response_html
             RETURNING id
             """,
-            (run_day, period, source, len(repos)),
+            (run_day, period, source, len(repos), response_html),
         )
         run_id = cur.fetchone()[0]
 
@@ -1061,6 +1066,19 @@ def get_gh_history_stats(conn: psycopg.Connection, repo_id: int, up_to_day: date
     earliest = dates[0]
     seen_before = any(day < up_to_day for day in dates)
 
+    if not seen_before:
+        with conn.cursor(row_factory=dict_row) as cur:
+            cur.execute(
+                """
+                SELECT 1 FROM gh_entries ge
+                JOIN gh_runs gr ON ge.run_id = gr.id
+                WHERE ge.repo_id = %s AND gr.period = 'slow_burner'
+                LIMIT 1
+                """,
+                (repo_id,),
+            )
+            seen_before = cur.fetchone() is not None
+
     streak = 0
     day_cursor = up_to_day
     date_set = set(dates)
@@ -1181,11 +1199,11 @@ def list_gh_slow_burners(conn: psycopg.Connection, run_day: date) -> list[dict]:
     with conn.cursor(row_factory=dict_row) as cur:
         cur.execute(
             """
-            WITH today_daily AS (
+            WITH already_surfaced AS (
                 SELECT DISTINCT ge.repo_id
                 FROM gh_entries ge
                 JOIN gh_runs gr ON ge.run_id = gr.id
-                WHERE gr.run_date = %s AND gr.period = 'daily'
+                WHERE gr.period IN ('daily', 'slow_burner')
             ),
             wm_repos AS (
                 SELECT
@@ -1202,76 +1220,15 @@ def list_gh_slow_burners(conn: psycopg.Connection, run_day: date) -> list[dict]:
                 JOIN gh_runs gr ON ge.run_id = gr.id
                 JOIN gh_repos r ON ge.repo_id = r.id
                 WHERE gr.period IN ('weekly', 'monthly')
-                  AND ge.repo_id NOT IN (SELECT repo_id FROM today_daily)
+                  AND ge.repo_id NOT IN (SELECT repo_id FROM already_surfaced)
                 GROUP BY r.id, r.full_name, r.url, r.description, r.language
             )
             SELECT * FROM wm_repos
-            WHERE weekly_days >= 3 OR monthly_days >= 5
             ORDER BY (weekly_days + monthly_days) DESC
-            LIMIT 10
             """,
-            (run_day,),
         )
         return [dict(row) for row in cur.fetchall()]
 
-
-def list_gh_weekly_report_repos(conn: psycopg.Connection, run_day: date) -> list[dict]:
-    """Find repos from weekly/monthly over the past 7 days that never appeared
-    in any daily top 10 or daily slow burners top 10 during that period.
-    """
-    week_start = run_day - timedelta(days=6)
-    with conn.cursor(row_factory=dict_row) as cur:
-        cur.execute(
-            """
-            WITH week_daily AS (
-                SELECT DISTINCT ge.repo_id
-                FROM gh_entries ge
-                JOIN gh_runs gr ON ge.run_id = gr.id
-                WHERE gr.period = 'daily'
-                  AND gr.run_date BETWEEN %s AND %s
-            ),
-            all_time_stats AS (
-                SELECT
-                    ge.repo_id,
-                    COUNT(DISTINCT CASE WHEN gr.period = 'weekly' THEN gr.run_date END) AS weekly_days_all,
-                    COUNT(DISTINCT CASE WHEN gr.period = 'monthly' THEN gr.run_date END) AS monthly_days_all
-                FROM gh_entries ge
-                JOIN gh_runs gr ON ge.run_id = gr.id
-                WHERE gr.period IN ('weekly', 'monthly')
-                GROUP BY ge.repo_id
-            ),
-            top_burners AS (
-                SELECT repo_id FROM all_time_stats
-                WHERE weekly_days_all >= 3 OR monthly_days_all >= 5
-                ORDER BY (weekly_days_all + monthly_days_all) DESC
-                LIMIT 10
-            ),
-            week_wm AS (
-                SELECT
-                    r.id AS repo_id,
-                    r.full_name AS name,
-                    r.url,
-                    COALESCE(r.description, 'No description') AS description,
-                    COALESCE(r.language, 'Unknown') AS language,
-                    COUNT(DISTINCT CASE WHEN gr.period = 'weekly' THEN gr.run_date END) AS weekly_days,
-                    COUNT(DISTINCT CASE WHEN gr.period = 'monthly' THEN gr.run_date END) AS monthly_days,
-                    MAX(ge.stars_text) AS stars,
-                    MAX(ge.period_stars_text) AS period_stars
-                FROM gh_entries ge
-                JOIN gh_runs gr ON ge.run_id = gr.id
-                JOIN gh_repos r ON ge.repo_id = r.id
-                WHERE gr.period IN ('weekly', 'monthly')
-                  AND gr.run_date BETWEEN %s AND %s
-                GROUP BY r.id, r.full_name, r.url, r.description, r.language
-            )
-            SELECT * FROM week_wm wm
-            WHERE wm.repo_id NOT IN (SELECT repo_id FROM week_daily)
-              AND wm.repo_id NOT IN (SELECT repo_id FROM top_burners)
-            ORDER BY (wm.weekly_days + wm.monthly_days) DESC
-            """,
-            (week_start, run_day, week_start, run_day),
-        )
-        return [dict(row) for row in cur.fetchall()]
 
 
 def list_hn_daily_dates(conn: psycopg.Connection) -> list[date]:
@@ -1622,9 +1579,6 @@ def generate_gh_daily_page(repos: list[dict], day: date, hn_dates_set: set[str],
     date_str = day.isoformat()
     date_display = format_date_display(day)
     hn_link = f"../hn/{date_str}/" if date_str in hn_dates_set else "../hn/"
-    most_recent_monday = day - timedelta(days=day.weekday())
-    weekly_link = f"../weekly/{most_recent_monday.isoformat()}/"
-
     repo_cards = ""
     if not repos:
         repo_cards = '<p class="empty-state">No GitHub repositories available for this day.</p>'
@@ -1637,7 +1591,7 @@ def generate_gh_daily_page(repos: list[dict], day: date, hn_dates_set: set[str],
         slow_burner_section = f"""
         <article class="slow-burners-section">
             <h2 class="section-heading">Slow Burners</h2>
-            <p class="seen-help">Repos trending on weekly/monthly lists but not in today's daily top. Sustained momentum without a single-day spike.</p>
+            <p class="seen-help">Repos trending on weekly/monthly lists that have never appeared in the daily top 10.</p>
             <div class="repos">
 {burner_cards}
             </div>
@@ -1657,7 +1611,6 @@ def generate_gh_daily_page(repos: list[dict], day: date, hn_dates_set: set[str],
         <h1>GitHub Trending Digest - {date_display}</h1>
         <nav>
             <a href="../">&larr; GitHub Calendar</a>
-            <a href="{weekly_link}">Weekly Report</a>
             <a href="{hn_link}">Hacker News</a>
         </nav>
     </header>
@@ -1669,59 +1622,6 @@ def generate_gh_daily_page(repos: list[dict], day: date, hn_dates_set: set[str],
             <button id="expand-all-btn" type="button">Expand All</button>
         </div>
         <p class="seen-help">Repos marked "Not new today" appeared on one or more previous daily pages.</p>
-        <article>
-            <div class="repos">
-{repo_cards}
-            </div>
-        </article>
-    </main>
-    <footer>
-        <p>Generated automatically. Data from <a href="https://github.com/trending">GitHub Trending</a>.</p>
-    </footer>
-{generate_gh_daily_script(date_str)}
-</body>
-</html>
-"""
-
-
-def generate_gh_weekly_report_page(repos: list[dict], day: date, hn_dates_set: set[str]) -> str:
-    """Generate the weekly GitHub trending report page."""
-    date_str = day.isoformat()
-    date_display = format_date_display(day)
-    week_start = day - timedelta(days=6)
-    week_range = f"{format_date_display(week_start)} – {date_display}"
-    hn_link = f"../hn/{date_str}/" if date_str in hn_dates_set else "../hn/"
-
-    repo_cards = ""
-    if not repos:
-        repo_cards = '<p class="empty-state">No additional trending repos found for this week.</p>'
-    else:
-        repo_cards = _generate_gh_repo_cards(repos)
-
-    return f"""<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>GitHub Weekly Report - {date_display}</title>
-    <link rel="stylesheet" href="../style.css">
-</head>
-<body>
-    <header>
-        <h1>GitHub Weekly Report</h1>
-        <p class="subtitle">{week_range}</p>
-        <nav>
-            <a href="../">&larr; GitHub Calendar</a>
-            <a href="../{date_str}/">Today's Daily</a>
-            <a href="{hn_link}">Hacker News</a>
-        </nav>
-    </header>
-    <main>
-        <p class="seen-help">Repos that trended on GitHub's weekly/monthly lists this week but never appeared in the daily top 10 or daily slow burners.</p>
-        <div class="repo-controls">
-            <button id="collapse-seen-btn" type="button">Collapse Repos Not New Today</button>
-            <button id="expand-all-btn" type="button">Expand All</button>
-        </div>
         <article>
             <div class="repos">
 {repo_cards}
@@ -2177,7 +2077,6 @@ def save_pages_json(path: Path, pages: list[date]) -> None:
     write_text(path, json.dumps(payload, indent=2) + "\n")
 
 
-GH_WEEKLY_DIR = DOCS_DIR / "weekly"
 
 
 def save_files(
@@ -2189,7 +2088,6 @@ def save_files(
     css: str,
     gh_dates: list[date],
     hn_dates: list[date],
-    gh_weekly_html: str = "",
 ) -> None:
     """Write all generated pages and metadata files."""
     gh_daily_file = DOCS_DIR / run_day.isoformat() / "index.html"
@@ -2200,11 +2098,6 @@ def save_files(
     write_text(hn_daily_file, hn_daily_html)
     write_text(HN_INDEX_FILE, hn_index_html)
     write_text(STYLE_FILE, css)
-
-    if gh_weekly_html:
-        gh_weekly_file = GH_WEEKLY_DIR / run_day.isoformat() / "index.html"
-        write_text(gh_weekly_file, gh_weekly_html)
-        logging.info("Saved GitHub weekly report to %s", gh_weekly_file)
 
     save_pages_json(PAGES_DATA_FILE, gh_dates)
     save_pages_json(HN_PAGES_DATA_FILE, hn_dates)
@@ -2227,12 +2120,6 @@ def regenerate_gh_daily_pages(conn: psycopg.Connection, gh_dates: list[date], hn
         gh_daily_html = generate_gh_daily_page(gh_rows, render_day, hn_dates_set, slow_burners=slow_burners)
         gh_daily_file = DOCS_DIR / render_day.isoformat() / "index.html"
         write_text(gh_daily_file, gh_daily_html)
-
-        if render_day.weekday() == 0:  # Monday
-            weekly_rows = build_gh_weekly_report_rows(conn, render_day, allow_summary_generation=False)
-            gh_weekly_html = generate_gh_weekly_report_page(weekly_rows, render_day, hn_dates_set)
-            gh_weekly_file = GH_WEEKLY_DIR / render_day.isoformat() / "index.html"
-            write_text(gh_weekly_file, gh_weekly_html)
 
     logging.info("Regenerated %d GitHub daily pages", len(gh_dates))
 
@@ -2653,6 +2540,34 @@ def _enrich_gh_rows_with_history_and_summary(
     return rows
 
 
+def record_gh_slow_burners(conn: psycopg.Connection, run_day: date, rows: list[dict]) -> None:
+    """Record surfaced slow burners so they are not shown again."""
+    if not rows:
+        return
+    with conn.cursor() as cur:
+        cur.execute(
+            """
+            INSERT INTO gh_runs (run_date, period, source, repo_count)
+            VALUES (%s, 'slow_burner', 'derived', %s)
+            ON CONFLICT (run_date, period)
+            DO UPDATE SET repo_count = EXCLUDED.repo_count, fetched_at = NOW()
+            RETURNING id
+            """,
+            (run_day, len(rows)),
+        )
+        run_id = cur.fetchone()[0]
+        cur.execute("DELETE FROM gh_entries WHERE run_id = %s", (run_id,))
+        for rank, row in enumerate(rows, start=1):
+            cur.execute(
+                """
+                INSERT INTO gh_entries (run_id, repo_id, rank)
+                VALUES (%s, %s, %s)
+                """,
+                (run_id, int(row["repo_id"]), rank),
+            )
+    conn.commit()
+
+
 def build_gh_slow_burner_rows(
     conn: psycopg.Connection,
     run_day: date,
@@ -2660,17 +2575,9 @@ def build_gh_slow_burner_rows(
 ) -> list[dict]:
     """Load slow burner rows and enrich with history and summaries."""
     rows = list_gh_slow_burners(conn, run_day)
-    return _enrich_gh_rows_with_history_and_summary(conn, rows, run_day, allow_summary_generation)
-
-
-def build_gh_weekly_report_rows(
-    conn: psycopg.Connection,
-    run_day: date,
-    allow_summary_generation: bool = True,
-) -> list[dict]:
-    """Load weekly report rows and enrich with history and summaries."""
-    rows = list_gh_weekly_report_repos(conn, run_day)
-    return _enrich_gh_rows_with_history_and_summary(conn, rows, run_day, allow_summary_generation)
+    enriched = _enrich_gh_rows_with_history_and_summary(conn, rows, run_day, allow_summary_generation)
+    record_gh_slow_burners(conn, run_day, enriched)
+    return enriched
 
 
 def build_hn_view_rows(
@@ -2727,7 +2634,7 @@ def main() -> None:
             total = 0
             for period in GITHUB_PERIODS:
                 try:
-                    repos = scrape_trending_repos(period)
+                    repos, _raw_html = scrape_trending_repos(period)
                 except Exception as exc:
                     logging.exception("GitHub scrape failed for %s: %s", period, exc)
                     repos = []
@@ -2766,12 +2673,12 @@ def main() -> None:
         gh_scrape_results: dict[str, list[dict]] = {}
         for period in GITHUB_PERIODS:
             try:
-                repos = scrape_trending_repos(period)
+                repos, raw_html = scrape_trending_repos(period)
             except Exception as exc:
                 logging.exception("GitHub scrape failed for %s: %s", period, exc)
-                repos = []
+                repos, raw_html = [], None
 
-            store_gh_period_run(conn, run_day, period, repos, source="live")
+            store_gh_period_run(conn, run_day, period, repos, source="live", response_html=raw_html)
             store_gh_snapshot(conn, period, repos)
             gh_scrape_results[period] = repos
 
@@ -2801,17 +2708,12 @@ def main() -> None:
         slow_burners = build_gh_slow_burner_rows(conn, run_day)
         gh_daily_html = generate_gh_daily_page(gh_rows, run_day, hn_dates_set, slow_burners=slow_burners)
 
-        gh_weekly_html = ""
-        if run_day.weekday() == 0:  # Monday
-            weekly_report_rows = build_gh_weekly_report_rows(conn, run_day)
-            gh_weekly_html = generate_gh_weekly_report_page(weekly_report_rows, run_day, hn_dates_set)
-
         gh_index_html = generate_gh_index_page(gh_dates, hn_dates)
         hn_daily_html = generate_hn_daily_page(hn_rows, run_day, gh_dates_set)
         hn_index_html = generate_hn_index_page(hn_dates, gh_dates)
         css = generate_css()
 
-        save_files(run_day, gh_daily_html, gh_index_html, hn_daily_html, hn_index_html, css, gh_dates, hn_dates, gh_weekly_html=gh_weekly_html)
+        save_files(run_day, gh_daily_html, gh_index_html, hn_daily_html, hn_index_html, css, gh_dates, hn_dates)
 
         changed = git_commit_and_push()
 
