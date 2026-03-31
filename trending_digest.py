@@ -1444,6 +1444,50 @@ def generate_gh_daily_script(day_str: str) -> str:
             }}
         }});
     }}
+
+    // Discuss with AI button
+    const toast = document.createElement("div");
+    toast.className = "discuss-toast";
+    document.body.appendChild(toast);
+
+    function showToast(msg) {{
+        toast.textContent = msg;
+        toast.classList.add("show");
+        setTimeout(() => toast.classList.remove("show"), 2500);
+    }}
+
+    function buildGHMarkdown(card) {{
+        const title = card.dataset.shareTitle || "";
+        const url = card.dataset.shareUrl || "";
+        const desc = card.querySelector(".description");
+        const meta = card.querySelector(".meta");
+        const analysis = card.querySelector(".ai-summary");
+        let md = "# " + title + "\\n";
+        md += "Source: " + url;
+        if (meta) md += " | " + meta.textContent.trim();
+        md += "\\n";
+        if (desc) md += "\\n" + desc.textContent.trim() + "\\n";
+        if (analysis) md += "\\n## Analysis\\n" + analysis.textContent.replace("Analysis", "").trim() + "\\n";
+        return md;
+    }}
+
+    document.querySelectorAll(".discuss-btn").forEach((btn) => {{
+        btn.addEventListener("click", () => {{
+            const card = btn.closest("section.repo");
+            if (!card) return;
+            const md = buildGHMarkdown(card);
+            const text = "I'd like to discuss this repo with you. Here's a summary:\\n\\n" + md;
+            const title = "Discuss: " + (card.dataset.shareTitle || "");
+            if (navigator.share) {{
+                navigator.share({{ title: title, text: text }}).catch(() => {{}});
+            }} else {{
+                navigator.clipboard.writeText(text).then(
+                    () => showToast("Copied to clipboard \\u2014 paste into your AI chat"),
+                    () => showToast("Failed to copy")
+                );
+            }}
+        }});
+    }});
 }})();
 </script>
 """
@@ -1524,6 +1568,54 @@ def generate_hn_daily_script(day_str: str) -> str:
             }}
         }});
     }}
+
+    // Discuss with AI button
+    const toast = document.createElement("div");
+    toast.className = "discuss-toast";
+    document.body.appendChild(toast);
+
+    function showToast(msg) {{
+        toast.textContent = msg;
+        toast.classList.add("show");
+        setTimeout(() => toast.classList.remove("show"), 2500);
+    }}
+
+    function buildHNMarkdown(card) {{
+        const title = card.dataset.shareTitle || "";
+        const url = card.dataset.shareUrl || "";
+        const points = card.dataset.sharePoints || "0";
+        const comments = card.dataset.shareComments || "0";
+        const summaries = card.querySelectorAll(".ai-summary");
+        let md = "# " + title + "\\n";
+        md += "Source: " + url + " | " + points + " points | " + comments + " comments\\n";
+        summaries.forEach((s) => {{
+            const heading = s.querySelector("h4");
+            const label = heading ? heading.textContent.trim() : "Analysis";
+            const content = Array.from(s.querySelectorAll("p"))
+                .map((p) => p.textContent.trim())
+                .join("\\n");
+            md += "\\n## " + label + "\\n" + content + "\\n";
+        }});
+        return md;
+    }}
+
+    document.querySelectorAll(".discuss-btn").forEach((btn) => {{
+        btn.addEventListener("click", () => {{
+            const card = btn.closest("section.repo");
+            if (!card) return;
+            const md = buildHNMarkdown(card);
+            const text = "I'd like to discuss this article with you. Here's a summary:\\n\\n" + md;
+            const title = "Discuss: " + (card.dataset.shareTitle || "");
+            if (navigator.share) {{
+                navigator.share({{ title: title, text: text }}).catch(() => {{}});
+            }} else {{
+                navigator.clipboard.writeText(text).then(
+                    () => showToast("Copied to clipboard \\u2014 paste into your AI chat"),
+                    () => showToast("Failed to copy")
+                );
+            }}
+        }});
+    }});
 }})();
 </script>
 """
@@ -1551,10 +1643,15 @@ def _generate_gh_repo_cards(repos: list[dict], extra_css_class: str = "", show_r
         rank_prefix = f"{repo['rank']}. " if show_rank and repo.get("rank") else ""
 
         cards += f"""
-            <section class="{css_classes}" data-seen-before="{1 if repo.get('seen_before') else 0}">
+            <section class="{css_classes}" data-seen-before="{1 if repo.get('seen_before') else 0}"
+                     data-share-title="{html.escape(repo['name'], quote=True)}"
+                     data-share-url="{html.escape(repo['url'], quote=True)}">
                 <div class="repo-header-row">
                     <h3>{rank_prefix}<a href="{repo['url']}" target="_blank" rel="noopener noreferrer">{html.escape(repo['name'])}</a> {seen_badge}</h3>
-                    <button type="button" class="repo-toggle" aria-expanded="true">Hide details</button>
+                    <div class="header-buttons">
+                        <button type="button" class="discuss-btn" aria-label="Discuss with AI" title="Discuss with AI">&#x1F4AC;</button>
+                        <button type="button" class="repo-toggle" aria-expanded="true">Hide details</button>
+                    </div>
                 </div>
                 <div class="repo-body">
                     <p class="description">{html.escape(repo['description'])}</p>
@@ -1669,10 +1766,17 @@ def generate_hn_daily_page(items: list[dict], day: date, gh_dates_set: set[str])
         seen_badge = '<span class="seen-badge">Not new today</span>' if item.get("seen_before") else ""
 
         story_cards += f"""
-            <section class="repo" data-seen-before="{1 if item.get('seen_before') else 0}">
+            <section class="repo" data-seen-before="{1 if item.get('seen_before') else 0}"
+                     data-share-title="{html.escape(item['title'], quote=True)}"
+                     data-share-url="{html.escape(item.get('url') or item.get('discussion_url', ''), quote=True)}"
+                     data-share-points="{item.get('score', 0)}"
+                     data-share-comments="{item.get('comment_count', 0)}">
                 <div class="repo-header-row">
                     <h3>{item['rank']}. <a href="{html.escape(title_url)}" target="_blank" rel="noopener noreferrer">{html.escape(item['title'])}</a> {seen_badge}</h3>
-                    <button type="button" class="repo-toggle" aria-expanded="true">Hide details</button>
+                    <div class="header-buttons">
+                        <button type="button" class="discuss-btn" aria-label="Discuss with AI" title="Discuss with AI">&#x1F4AC;</button>
+                        <button type="button" class="repo-toggle" aria-expanded="true">Hide details</button>
+                    </div>
                 </div>
                 <div class="repo-body">
                     <p class="meta">
@@ -2046,6 +2150,45 @@ footer a {
 }
 .slow-burner {
     border-left: 3px solid #d29922;
+}
+.header-buttons {
+    display: flex;
+    gap: 0.5rem;
+    align-items: flex-start;
+    flex-shrink: 0;
+}
+.discuss-btn {
+    background: none;
+    border: 1px solid var(--border-color);
+    border-radius: 6px;
+    padding: 0.25rem 0.45rem;
+    font-size: 0.85rem;
+    cursor: pointer;
+    line-height: 1;
+    opacity: 0.5;
+    transition: opacity 0.15s;
+}
+.discuss-btn:hover {
+    opacity: 1;
+    background-color: #21262d;
+}
+.discuss-toast {
+    position: fixed;
+    bottom: 2rem;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: #238636;
+    color: #fff;
+    padding: 0.75rem 1.5rem;
+    border-radius: 8px;
+    font-size: 0.9rem;
+    z-index: 1000;
+    opacity: 0;
+    transition: opacity 0.3s;
+    pointer-events: none;
+}
+.discuss-toast.show {
+    opacity: 1;
 }
 @media (max-width: 700px) {
     body {
