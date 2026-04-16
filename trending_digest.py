@@ -271,6 +271,225 @@ def fetch_youtube_transcript(url: str) -> FetchedContent:
     return FetchedContent(text=text)
 
 
+def fetch_github_content(url: str) -> FetchedContent:
+    """Fetch content from GitHub URLs via REST API / GraphQL."""
+    parsed = urlparse(url)
+    host = (parsed.hostname or "").lower()
+    path = parsed.path.rstrip("/")
+    segments = [s for s in path.split("/") if s]
+
+    try:
+        if host == "gist.github.com" and len(segments) >= 2:
+            return _fetch_github_gist(segments[-1])
+
+        if host == "raw.githubusercontent.com":
+            return _fetch_raw_github(url)
+
+        if host != "github.com":
+            return FetchedContent(text="")
+
+        if len(segments) < 2:
+            return FetchedContent(text="")
+
+        owner, repo = segments[0], segments[1]
+
+        if len(segments) >= 4 and segments[2] == "issues" and segments[3].isdigit():
+            return _fetch_github_issue(owner, repo, segments[3])
+
+        if len(segments) >= 4 and segments[2] == "pull" and segments[3].isdigit():
+            return _fetch_github_pr(owner, repo, segments[3])
+
+        if len(segments) >= 4 and segments[2] == "discussions" and segments[3].isdigit():
+            return _fetch_github_discussion(owner, repo, int(segments[3]))
+
+        if len(segments) >= 4 and segments[2] == "commit":
+            return _fetch_github_commit(owner, repo, segments[3])
+
+        if len(segments) >= 5 and segments[2] == "releases" and segments[3] == "tag":
+            return _fetch_github_release(owner, repo, "/".join(segments[4:]))
+
+        if len(segments) == 3 and segments[2] == "releases":
+            return _fetch_github_latest_release(owner, repo)
+
+        if len(segments) >= 5 and segments[2] == "security" and segments[3] == "advisories":
+            return _fetch_github_advisory(owner, repo, segments[4])
+
+        if len(segments) >= 5 and segments[2] == "blob":
+            ref = segments[3]
+            file_path = "/".join(segments[4:])
+            if file_path.lower().endswith(".pdf"):
+                raw_url = f"https://raw.githubusercontent.com/{owner}/{repo}/{ref}/{file_path}"
+                return fetch_pdf_content(raw_url)
+            return _fetch_github_file(owner, repo, file_path, ref)
+
+        if len(segments) >= 5 and segments[2] == "tree":
+            ref = segments[3]
+            dir_path = "/".join(segments[4:])
+            return _fetch_github_directory_readme(owner, repo, dir_path, ref)
+
+        if len(segments) == 2:
+            return _fetch_github_readme(owner, repo)
+
+        return FetchedContent(text="")
+
+    except Exception as exc:
+        logging.warning("GitHub fetch failed for %s: %s", url, exc)
+        return FetchedContent(text="")
+
+
+def _fetch_github_readme(owner: str, repo: str) -> FetchedContent:
+    import base64
+    data = github_api_get(f"/repos/{owner}/{repo}/readme")
+    if not data:
+        return FetchedContent(text="")
+    content = base64.b64decode(data.get("content", "")).decode("utf-8", errors="replace")
+    if len(content) > HN_ARTICLE_CONTENT_MAX_CHARS:
+        content = content[:HN_ARTICLE_CONTENT_MAX_CHARS] + "..."
+    logging.info("Fetched GitHub README for %s/%s (%d chars)", owner, repo, len(content))
+    return FetchedContent(text=content)
+
+
+def _fetch_github_issue(owner: str, repo: str, number: str) -> FetchedContent:
+    data = github_api_get(f"/repos/{owner}/{repo}/issues/{number}")
+    if not data:
+        return FetchedContent(text="")
+    text = f"Issue: {data.get('title', '')}\n\n{data.get('body', '') or ''}"
+    logging.info("Fetched GitHub issue %s/%s#%s (%d chars)", owner, repo, number, len(text))
+    return FetchedContent(text=text[:HN_ARTICLE_CONTENT_MAX_CHARS])
+
+
+def _fetch_github_pr(owner: str, repo: str, number: str) -> FetchedContent:
+    data = github_api_get(f"/repos/{owner}/{repo}/pulls/{number}")
+    if not data:
+        return FetchedContent(text="")
+    text = f"Pull Request: {data.get('title', '')}\n\n{data.get('body', '') or ''}"
+    logging.info("Fetched GitHub PR %s/%s#%s (%d chars)", owner, repo, number, len(text))
+    return FetchedContent(text=text[:HN_ARTICLE_CONTENT_MAX_CHARS])
+
+
+def _fetch_github_discussion(owner: str, repo: str, number: int) -> FetchedContent:
+    query = """
+    query {
+      repository(owner: "%s", name: "%s") {
+        discussion(number: %d) {
+          title
+          body
+        }
+      }
+    }
+    """ % (owner, repo, number)
+    data = github_graphql(query)
+    disc = data.get("data", {}).get("repository", {}).get("discussion")
+    if not disc:
+        return FetchedContent(text="")
+    text = f"Discussion: {disc.get('title', '')}\n\n{disc.get('body', '') or ''}"
+    logging.info("Fetched GitHub discussion %s/%s#%d (%d chars)", owner, repo, number, len(text))
+    return FetchedContent(text=text[:HN_ARTICLE_CONTENT_MAX_CHARS])
+
+
+def _fetch_github_commit(owner: str, repo: str, sha: str) -> FetchedContent:
+    data = github_api_get(f"/repos/{owner}/{repo}/commits/{sha}")
+    if not data:
+        return FetchedContent(text="")
+    commit = data.get("commit", {})
+    message = commit.get("message", "")
+    files = [f.get("filename", "") for f in data.get("files", [])]
+    stats = data.get("stats", {})
+    text = f"Commit: {message}\n\nFiles changed: {', '.join(files[:20])}\nStats: +{stats.get('additions', 0)} -{stats.get('deletions', 0)}"
+    logging.info("Fetched GitHub commit %s/%s@%s (%d chars)", owner, repo, sha[:8], len(text))
+    return FetchedContent(text=text[:HN_ARTICLE_CONTENT_MAX_CHARS])
+
+
+def _fetch_github_release(owner: str, repo: str, tag: str) -> FetchedContent:
+    data = github_api_get(f"/repos/{owner}/{repo}/releases/tags/{tag}")
+    if not data:
+        return FetchedContent(text="")
+    text = f"Release: {data.get('name', '') or tag}\n\n{data.get('body', '') or ''}"
+    logging.info("Fetched GitHub release %s/%s@%s (%d chars)", owner, repo, tag, len(text))
+    return FetchedContent(text=text[:HN_ARTICLE_CONTENT_MAX_CHARS])
+
+
+def _fetch_github_latest_release(owner: str, repo: str) -> FetchedContent:
+    data = github_api_get(f"/repos/{owner}/{repo}/releases/latest")
+    if not data:
+        return FetchedContent(text="")
+    text = f"Release: {data.get('name', '') or data.get('tag_name', '')}\n\n{data.get('body', '') or ''}"
+    logging.info("Fetched GitHub latest release for %s/%s (%d chars)", owner, repo, len(text))
+    return FetchedContent(text=text[:HN_ARTICLE_CONTENT_MAX_CHARS])
+
+
+def _fetch_github_advisory(owner: str, repo: str, advisory_id: str) -> FetchedContent:
+    data = github_api_get(f"/repos/{owner}/{repo}/security-advisories/{advisory_id}")
+    if not data:
+        return FetchedContent(text="")
+    severity = data.get("severity", "unknown")
+    text = f"Security Advisory ({severity}): {data.get('summary', '')}\n\n{data.get('description', '') or ''}"
+    logging.info("Fetched GitHub advisory %s/%s/%s (%d chars)", owner, repo, advisory_id, len(text))
+    return FetchedContent(text=text[:HN_ARTICLE_CONTENT_MAX_CHARS])
+
+
+def _fetch_github_file(owner: str, repo: str, file_path: str, ref: str) -> FetchedContent:
+    import base64
+    data = github_api_get(f"/repos/{owner}/{repo}/contents/{file_path}?ref={ref}")
+    if not data or not isinstance(data, dict):
+        return FetchedContent(text="")
+    content = base64.b64decode(data.get("content", "")).decode("utf-8", errors="replace")
+    if len(content) > HN_ARTICLE_CONTENT_MAX_CHARS:
+        content = content[:HN_ARTICLE_CONTENT_MAX_CHARS] + "..."
+    logging.info("Fetched GitHub file %s/%s/%s (%d chars)", owner, repo, file_path, len(content))
+    return FetchedContent(text=content)
+
+
+def _fetch_github_directory_readme(owner: str, repo: str, dir_path: str, ref: str) -> FetchedContent:
+    import base64
+    data = github_api_get(f"/repos/{owner}/{repo}/readme/{dir_path}?ref={ref}")
+    if data and isinstance(data, dict) and data.get("content"):
+        content = base64.b64decode(data["content"]).decode("utf-8", errors="replace")
+        if len(content) > HN_ARTICLE_CONTENT_MAX_CHARS:
+            content = content[:HN_ARTICLE_CONTENT_MAX_CHARS] + "..."
+        logging.info("Fetched GitHub directory README for %s/%s/%s (%d chars)", owner, repo, dir_path, len(content))
+        return FetchedContent(text=content)
+    listing = github_api_get(f"/repos/{owner}/{repo}/contents/{dir_path}?ref={ref}")
+    if listing and isinstance(listing, list):
+        files = [f"{item['name']} ({item['type']}, {item.get('size', 0)}B)" for item in listing[:50]]
+        text = f"Directory listing for {dir_path}:\n" + "\n".join(files)
+        return FetchedContent(text=text[:HN_ARTICLE_CONTENT_MAX_CHARS])
+    return FetchedContent(text="")
+
+
+def _fetch_raw_github(url: str) -> FetchedContent:
+    """Fetch raw.githubusercontent.com content, routing PDFs to the PDF fetcher."""
+    parsed = urlparse(url)
+    if parsed.path.lower().endswith(".pdf"):
+        return fetch_pdf_content(url)
+    try:
+        resp = retry_fetch(lambda: requests.get(url, timeout=30))
+        text = resp.text
+        if len(text) > HN_ARTICLE_CONTENT_MAX_CHARS:
+            text = text[:HN_ARTICLE_CONTENT_MAX_CHARS] + "..."
+        logging.info("Fetched raw GitHub content for %s (%d chars)", url, len(text))
+        return FetchedContent(text=text)
+    except Exception as exc:
+        logging.warning("Raw GitHub fetch failed for %s: %s", url, exc)
+        return FetchedContent(text="")
+
+
+def _fetch_github_gist(gist_id: str) -> FetchedContent:
+    data = github_api_get(f"/gists/{gist_id}")
+    if not data:
+        return FetchedContent(text="")
+    files = data.get("files", {})
+    parts = []
+    for name, info in files.items():
+        content = info.get("content", "")
+        parts.append(f"--- {name} ---\n{content}")
+    text = "\n\n".join(parts)
+    if len(text) > HN_ARTICLE_CONTENT_MAX_CHARS:
+        text = text[:HN_ARTICLE_CONTENT_MAX_CHARS] + "..."
+    logging.info("Fetched GitHub gist %s (%d chars)", gist_id, len(text))
+    return FetchedContent(text=text)
+
+
 def normalize_text(value: str) -> str:
     """Normalize whitespace in text."""
     if not value:
