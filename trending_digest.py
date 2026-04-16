@@ -983,7 +983,7 @@ def _fetch_html_content(url: str) -> FetchedContent:
     return FetchedContent(text=content)
 
 
-def generate_hn_summary(item: dict) -> str:
+def generate_hn_summary(item: dict, file_path: str = "") -> str:
     """Generate two-paragraph story summary for Hacker News item."""
     raw_text = item.get("text") or ""
     cleaned_text = normalize_text(BeautifulSoup(raw_text, "html.parser").get_text(" ", strip=True)) if raw_text else ""
@@ -1019,7 +1019,19 @@ Keep each paragraph concise (3-4 sentences) and avoid hype."""
 
     try:
         client = get_gemini_client()
-        response = client.models.generate_content(model=SUMMARY_MODEL, contents=prompt)
+        contents: list = []
+
+        # If we have a file (PDF/image), upload it to Gemini for direct analysis
+        if file_path:
+            try:
+                uploaded = client.files.upload(file=file_path)
+                contents.append(uploaded)
+                logging.info("Uploaded file to Gemini for item %s", item.get("item_id"))
+            except Exception as exc:
+                logging.warning("Gemini file upload failed for item %s: %s — using text only", item.get("item_id"), exc)
+
+        contents.append(prompt)
+        response = client.models.generate_content(model=SUMMARY_MODEL, contents=contents)
         return response.text.strip()
     except Exception as exc:
         logging.exception("Hacker News summary generation failed for item %s: %s", item.get("item_id"), exc)
@@ -1293,11 +1305,15 @@ def cache_hn_summary(conn: psycopg.Connection, item_id: int, summary_text: str) 
         )
 
 
-def ensure_article_content(conn: psycopg.Connection, item: dict) -> None:
-    """Fetch and cache article content if not already present."""
+def ensure_article_content(conn: psycopg.Connection, item: dict) -> str:
+    """Fetch and cache article content if not already present.
+
+    Returns a temp file path if the fetcher produced one (e.g. PDFs for Gemini upload),
+    or empty string otherwise. Caller is responsible for deleting the temp file.
+    """
     url = item.get("url") or ""
     if not url or item.get("article_content"):
-        return
+        return ""
 
     item_id = int(item["item_id"])
 
@@ -1307,17 +1323,19 @@ def ensure_article_content(conn: psycopg.Connection, item: dict) -> None:
         row = cur.fetchone()
         if row and row[0]:
             item["article_content"] = row[0]
-            return
+            return ""
 
-    content = fetch_article_content(url)
-    if content:
+    fetched = fetch_article_content(url)
+    if fetched.text:
         with conn.cursor() as cur:
             cur.execute(
                 "UPDATE hn_items SET article_content = %s WHERE id = %s",
-                (content, item_id),
+                (fetched.text, item_id),
             )
-        item["article_content"] = content
-        logging.info("Cached article content for item %s (%d chars)", item_id, len(content))
+        item["article_content"] = fetched.text
+        logging.info("Cached article content for item %s (%d chars)", item_id, len(fetched.text))
+
+    return fetched.file_path
 
 
 def get_or_generate_hn_summary(conn: psycopg.Connection, item: dict, run_day: date) -> str:
@@ -1327,12 +1345,19 @@ def get_or_generate_hn_summary(conn: psycopg.Connection, item: dict, run_day: da
     if latest and summary_is_fresh(latest["generated_at"], run_day):
         return latest["summary_text"]
 
-    ensure_article_content(conn, item)
+    file_path = ensure_article_content(conn, item)
 
-    summary = generate_hn_summary(item)
-    if summary:
-        cache_hn_summary(conn, item_id, summary)
-        return summary
+    try:
+        summary = generate_hn_summary(item, file_path=file_path)
+        if summary:
+            cache_hn_summary(conn, item_id, summary)
+            return summary
+    finally:
+        if file_path:
+            try:
+                os.unlink(file_path)
+            except OSError:
+                pass
 
     if latest:
         return latest["summary_text"]
