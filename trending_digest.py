@@ -116,6 +116,76 @@ class FetchedContent:
     file_path: str = ""
 
 
+def retry_fetch(fn, max_attempts=3, base_delay=1.0):
+    """Retry a callable with exponential backoff. Returns the result or re-raises the last exception."""
+    last_exc = None
+    for attempt in range(max_attempts):
+        try:
+            return fn()
+        except Exception as exc:
+            last_exc = exc
+            if attempt < max_attempts - 1:
+                delay = base_delay * (2 ** attempt)
+                logging.warning("Retry %d/%d after %.1fs: %s", attempt + 1, max_attempts, delay, exc)
+                time.sleep(delay)
+    raise last_exc
+
+
+_github_token: str | None = None
+
+
+def get_github_token() -> str:
+    """Get GitHub API token via gh CLI, cached for the process lifetime."""
+    global _github_token
+    if _github_token is None:
+        result = subprocess.run(
+            ["gh", "auth", "token"],
+            capture_output=True, text=True, timeout=10,
+        )
+        if result.returncode != 0:
+            raise RuntimeError(f"gh auth token failed: {result.stderr.strip()}")
+        _github_token = result.stdout.strip()
+    return _github_token
+
+
+def github_api_get(endpoint: str) -> dict:
+    """GET from GitHub REST API with auth and retry."""
+    token = get_github_token()
+    def _do():
+        resp = requests.get(
+            f"https://api.github.com{endpoint}",
+            headers={"Authorization": f"token {token}", "Accept": "application/vnd.github.v3+json"},
+            timeout=30,
+        )
+        if resp.status_code == 404:
+            return None
+        if resp.status_code in (429, 403):
+            retry_after = resp.headers.get("Retry-After", "60")
+            logging.warning("GitHub rate limited on %s, Retry-After: %s", endpoint, retry_after)
+            raise requests.HTTPError(f"Rate limited: {resp.status_code}", response=resp)
+        resp.raise_for_status()
+        return resp.json()
+    return retry_fetch(_do)
+
+
+def github_graphql(query: str) -> dict:
+    """Execute a GitHub GraphQL query with auth and retry."""
+    token = get_github_token()
+    def _do():
+        resp = requests.post(
+            "https://api.github.com/graphql",
+            headers={"Authorization": f"bearer {token}"},
+            json={"query": query},
+            timeout=30,
+        )
+        resp.raise_for_status()
+        data = resp.json()
+        if "errors" in data:
+            raise RuntimeError(f"GraphQL errors: {data['errors']}")
+        return data
+    return retry_fetch(_do)
+
+
 def normalize_text(value: str) -> str:
     """Normalize whitespace in text."""
     if not value:
