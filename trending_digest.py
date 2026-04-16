@@ -186,6 +186,41 @@ def github_graphql(query: str) -> dict:
     return retry_fetch(_do)
 
 
+def fetch_pdf_content(url: str) -> FetchedContent:
+    """Download a PDF and extract text via markitdown. Returns text + temp file path."""
+    try:
+        resp = retry_fetch(lambda: requests.get(url, timeout=60, stream=True))
+        content_length = int(resp.headers.get("Content-Length", 0))
+        if content_length > PDF_MAX_DOWNLOAD_BYTES:
+            logging.warning("PDF too large (%d bytes), skipping: %s", content_length, url)
+            return FetchedContent(text="")
+
+        pdf_bytes = resp.content
+        if len(pdf_bytes) > PDF_MAX_DOWNLOAD_BYTES:
+            logging.warning("PDF too large (%d bytes), skipping: %s", len(pdf_bytes), url)
+            return FetchedContent(text="")
+
+        tmp = tempfile.NamedTemporaryFile(suffix=".pdf", delete=False)
+        tmp.write(pdf_bytes)
+        tmp.close()
+
+        text = ""
+        try:
+            md = MarkItDown()
+            result = md.convert(tmp.name)
+            text = result.text_content or ""
+            if len(text) > HN_ARTICLE_CONTENT_MAX_CHARS:
+                text = text[:HN_ARTICLE_CONTENT_MAX_CHARS] + "..."
+            logging.info("Extracted %d chars from PDF via markitdown: %s", len(text), url)
+        except Exception as exc:
+            logging.warning("markitdown extraction failed for %s: %s", url, exc)
+
+        return FetchedContent(text=text, file_path=tmp.name)
+    except Exception as exc:
+        logging.warning("PDF fetch failed for %s: %s", url, exc)
+        return FetchedContent(text="")
+
+
 def normalize_text(value: str) -> str:
     """Normalize whitespace in text."""
     if not value:
