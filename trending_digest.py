@@ -128,7 +128,7 @@ def retry_fetch(fn, max_attempts=3, base_delay=1.0):
                 delay = base_delay * (2 ** attempt)
                 logging.warning("Retry %d/%d after %.1fs: %s", attempt + 1, max_attempts, delay, exc)
                 time.sleep(delay)
-    raise last_exc
+    raise last_exc  # type: ignore[misc]
 
 
 _github_token: str | None = None
@@ -148,7 +148,7 @@ def get_github_token() -> str:
     return _github_token
 
 
-def github_api_get(endpoint: str) -> dict:
+def github_api_get(endpoint: str) -> dict | None:
     """GET from GitHub REST API with auth and retry."""
     token = get_github_token()
     def _do():
