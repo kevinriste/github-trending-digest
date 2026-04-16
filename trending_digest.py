@@ -883,25 +883,65 @@ Keep each paragraph concise (3-4 sentences). Use a professional, informative ton
         return ""
 
 
-def fetch_article_content(url: str) -> str:
-    """Fetch article content from URL via local fetcher + trafilatura.
+def classify_url(url: str) -> str:
+    """Classify a URL into a content type for fetcher dispatch."""
+    parsed = urlparse(url)
+    host = (parsed.hostname or "").lower()
+    path = parsed.path.lower()
 
-    Uses the same pattern as podcast-transcribe: request rendered HTML from
-    the local Puppeteer fetcher service, then extract readable text with
-    trafilatura.  Falls back to trafilatura's built-in downloader if the
-    local fetcher is unavailable.
+    if path.endswith(".pdf"):
+        return "pdf"
+    if "arxiv.org" in host:
+        if "/abs/" in parsed.path or "/pdf/" in parsed.path:
+            return "pdf"
+    if host in ("raw.githubusercontent.com",):
+        return "github"
+    if host.removeprefix("www.").removeprefix("m.").removeprefix("music.") in ("youtube.com", "youtu.be"):
+        return "youtube"
+    if host in ("github.com", "gist.github.com"):
+        return "github"
+    return "html"
+
+
+def _rewrite_arxiv_to_pdf(url: str) -> str:
+    """Convert arxiv abstract URL to PDF URL."""
+    return url.replace("/abs/", "/pdf/")
+
+
+def fetch_article_content(url: str) -> FetchedContent:
+    """Fetch article content, dispatching to specialized fetchers by URL type.
+
+    Routes PDFs, YouTube, GitHub, and arxiv URLs to dedicated fetchers.
+    Falls back to the existing Puppeteer + trafilatura pipeline for HTML.
     """
     if not url:
-        return ""
+        return FetchedContent(text="")
 
+    url_type = classify_url(url)
+
+    if url_type == "pdf":
+        if "arxiv.org/abs/" in url:
+            url = _rewrite_arxiv_to_pdf(url)
+        return fetch_pdf_content(url)
+
+    if url_type == "youtube":
+        return fetch_youtube_transcript(url)
+
+    if url_type == "github":
+        return fetch_github_content(url)
+
+    # HTML path — existing Puppeteer + trafilatura pipeline
+    return _fetch_html_content(url)
+
+
+def _fetch_html_content(url: str) -> FetchedContent:
+    """Fetch HTML article content via Puppeteer + trafilatura (original pipeline)."""
     html_content: str | None = None
 
-    # Pick the right fetcher: NYT needs the authenticated service on port 3002
     parsed = urlparse(url)
     is_nytimes = parsed.hostname and parsed.hostname.endswith("nytimes.com")
     fetcher_url = NYTIMES_FETCHER_URL if is_nytimes else LOCAL_FETCHER_URL
 
-    # Stage 1: try local fetcher (Puppeteer service)
     try:
         resp = requests.get(fetcher_url, params={"url": url}, timeout=90)
         resp.raise_for_status()
@@ -911,7 +951,6 @@ def fetch_article_content(url: str) -> str:
     except Exception as exc:
         logging.warning("Local fetcher unavailable for %s: %s — falling back to trafilatura", url, exc)
 
-    # Stage 1b: fallback to trafilatura's built-in downloader
     if not html_content:
         try:
             html_content = trafilatura.fetch_url(url)
@@ -921,9 +960,8 @@ def fetch_article_content(url: str) -> str:
             logging.warning("trafilatura fetch failed for %s: %s", url, exc)
 
     if not html_content:
-        return ""
+        return FetchedContent(text="")
 
-    # Stage 2: extract readable text with trafilatura
     metadata = trafilatura.bare_extraction(html_content, with_metadata=True)
     body_text = trafilatura.extract(html_content, include_comments=False, favor_recall=True) or ""
 
@@ -942,7 +980,7 @@ def fetch_article_content(url: str) -> str:
     if len(content) > HN_ARTICLE_CONTENT_MAX_CHARS:
         content = content[:HN_ARTICLE_CONTENT_MAX_CHARS] + "..."
 
-    return content
+    return FetchedContent(text=content)
 
 
 def generate_hn_summary(item: dict) -> str:
