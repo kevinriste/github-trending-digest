@@ -221,6 +221,56 @@ def fetch_pdf_content(url: str) -> FetchedContent:
         return FetchedContent(text="")
 
 
+def extract_youtube_id(url: str) -> str:
+    """Extract video ID from a YouTube URL. Returns empty string if not a video page."""
+    parsed = urlparse(url)
+    host = (parsed.hostname or "").lower().removeprefix("www.").removeprefix("m.")
+
+    if host == "youtu.be":
+        video_id = parsed.path.lstrip("/").split("/")[0]
+        return video_id if video_id else ""
+
+    if host in ("youtube.com", "music.youtube.com"):
+        path = parsed.path
+        # /watch?v=ID
+        v = parse_qs(parsed.query).get("v")
+        if v:
+            return v[0]
+        # /shorts/ID, /embed/ID, /v/ID, /live/ID
+        for prefix in ("/shorts/", "/embed/", "/v/", "/live/"):
+            if path.startswith(prefix):
+                segment = path[len(prefix):].split("/")[0].split("?")[0]
+                if segment:
+                    return segment
+        return ""
+
+    return ""
+
+
+def fetch_youtube_transcript(url: str) -> FetchedContent:
+    """Fetch transcript for a YouTube video via youtube-transcript-api."""
+    video_id = extract_youtube_id(url)
+    if not video_id:
+        logging.info("Not a YouTube video URL, skipping transcript: %s", url)
+        return FetchedContent(text="")
+
+    api = YouTubeTranscriptApi()
+    try:
+        transcript = api.fetch(video_id, languages=["en"])
+    except Exception:
+        try:
+            transcript = api.fetch(video_id)
+        except Exception as exc:
+            logging.warning("YouTube transcript unavailable for %s: %s", url, exc)
+            return FetchedContent(text="")
+
+    text = " ".join(entry.text for entry in transcript)
+    if len(text) > HN_ARTICLE_CONTENT_MAX_CHARS:
+        text = text[:HN_ARTICLE_CONTENT_MAX_CHARS] + "..."
+    logging.info("Fetched YouTube transcript (%d chars) for %s", len(text), url)
+    return FetchedContent(text=text)
+
+
 def normalize_text(value: str) -> str:
     """Normalize whitespace in text."""
     if not value:
