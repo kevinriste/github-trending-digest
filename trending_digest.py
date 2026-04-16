@@ -11,20 +11,24 @@ import os
 import re
 import smtplib
 import subprocess
+import tempfile
 import time
 from collections import deque
+from dataclasses import dataclass
 from concurrent.futures import ThreadPoolExecutor, as_completed
 from datetime import date, datetime, timedelta, timezone
 from email.mime.text import MIMEText
 from pathlib import Path
-from urllib.parse import urlparse
+from urllib.parse import urlparse, parse_qs
 
 import psycopg
 import requests
 import trafilatura
 from bs4 import BeautifulSoup
 from google import genai
+from markitdown import MarkItDown
 from psycopg.rows import dict_row
+from youtube_transcript_api import YouTubeTranscriptApi
 
 logging.basicConfig(level=logging.INFO, format="%(levelname)s %(message)s")
 
@@ -101,6 +105,15 @@ HN_COMMENT_TRAVERSAL_MAX_DEPTH = get_int_env("HN_COMMENT_TRAVERSAL_MAX_DEPTH", 6
 HN_COMMENT_MAX_PER_BRANCH = get_int_env("HN_COMMENT_MAX_PER_BRANCH", 4)
 HN_COMMENT_MIN_TEXT_LEN = get_int_env("HN_COMMENT_MIN_TEXT_LEN", 40)
 HN_ARTICLE_CONTENT_MAX_CHARS = get_int_env("HN_ARTICLE_CONTENT_MAX_CHARS", 25000)
+
+PDF_MAX_DOWNLOAD_BYTES = 50 * 1024 * 1024  # 50MB
+
+
+@dataclass
+class FetchedContent:
+    """Result from a content fetcher — text for DB caching, optional file for Gemini upload."""
+    text: str
+    file_path: str = ""
 
 
 def normalize_text(value: str) -> str:
