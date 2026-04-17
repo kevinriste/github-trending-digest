@@ -40,14 +40,43 @@
   .story-meta { font-weight: 600; font-size: 1.1rem; margin-bottom: 3rem; opacity: 0.6; letter-spacing: 0.02em; }
   .lede { font-size: clamp(1.4rem, 2.5vw, 2.1rem); line-height: 1.35; max-width: 800px; margin: 0 0 4rem; font-weight: 450; }
   
-  .ctas { display: flex; gap: 2.5rem; align-items: center; }
+  .ctas { display: flex; gap: 2.5rem; align-items: flex-start; }
   .ctas a {
     text-decoration: none; font-weight: 700; font-size: 1.1rem; letter-spacing: 0.1em; text-transform: uppercase;
     padding: 1.2rem 2.4rem; transition: all 0.2s;
   }
-  .btn-read { background: var(--text-dark); color: var(--bg-light); }
-  .btn-dossier { border-bottom: 2px solid currentColor; padding: 0.5rem 0 !important; }
+  .btn-read { background: var(--text-dark); color: var(--bg-light); cursor: pointer; border: none; }
+  .btn-dossier { 
+    border-bottom: 2px solid currentColor; padding: 0.5rem 0 !important; 
+    text-decoration: none; font-weight: 700; font-size: 1.1rem; letter-spacing: 0.1em; 
+    text-transform: uppercase; cursor: pointer; background: transparent; color: inherit;
+    display: inline-block;
+  }
   
+  /* ───── ANALYSIS DRAWER ───── */
+  .analysis-drawer { margin-top: 0; width: 100%; max-width: 800px; }
+  .analysis-drawer summary { list-style: none; outline: none; }
+  .analysis-drawer summary::-webkit-details-marker { display: none; }
+  .analysis-drawer[open] summary { margin-bottom: 2rem; }
+  .analysis-drawer[open] summary::after { content: ""; } /* Could add JS to toggle label but we'll do CSS trick or just keep static */
+  
+  .drawer-content {
+    background: rgba(0,0,0,0.03); padding: 3rem; border-left: 4px solid var(--text-dark);
+    animation: slideDown 0.3s ease-out;
+  }
+  .arc-midnight .drawer-content { background: rgba(255,255,255,0.05); border-color: #fff; }
+  .arc-terminal .drawer-content { background: rgba(32, 194, 14, 0.05); border-color: #20c20e; }
+  
+  .drawer-content h4 { text-transform: uppercase; letter-spacing: 0.2em; font-size: 0.9rem; margin-top: 0; margin-bottom: 1.5rem; opacity: 0.6; }
+  .drawer-content p { font-family: 'Fraunces', serif; font-size: 1.3rem; line-height: 1.5; margin-bottom: 1.5rem; }
+  .drawer-footer { margin-top: 2rem; border-top: 1px solid rgba(0,0,0,0.1); padding-top: 1.5rem; }
+  .drawer-footer a { font-size: 0.9rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; text-decoration: none; color: inherit; opacity: 0.5; }
+  
+  @keyframes slideDown {
+    from { opacity: 0; transform: translateY(-10px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
   /* ───── ARCHETYPE CSS ───── */
   
   /* Stat Hero */
@@ -347,7 +376,18 @@
       <h2 class="frnc">Enforcing Rigorous Logic on Claude Code Workflows</h2>
       <p class="story-meta">github.com &nbsp;·&nbsp; 38,481 stars &nbsp;·&nbsp; 0 stars today</p>
       <p class="lede">We are moving past prompt engineering into the realm of strict behavioral architectural constraints. By injecting principle-based configuration files, this framework compels AI agents to verify assumptions before committing code, effectively eliminating the silent failures that plague modern LLM development.</p>
-      <div class="ctas"><a class="btn-read" href="https://github.com/forrestchang/andrej-karpathy-skills" target="_blank" rel="noopener">Read →</a><a class="btn-dossier" href="#dossier-1">Full analysis ↓</a></div>
+      <div class="ctas"><a class="btn-read" href="https://github.com/forrestchang/andrej-karpathy-skills" target="_blank" rel="noopener">Read →</a>
+      <details class="analysis-drawer">
+        <summary class="btn-dossier">[ Analysis + ]</summary>
+        <div class="drawer-content">
+          <h4>Technical Analysis</h4>
+          <p>The `forrestchang/andrej-karpathy-skills` repository provides a set of rigorous, principle-based instructions designed to refine the behavior of Claude Code by addressing common AI coding pitfalls. By implementing a `CLAUDE.md` file centered on four key pillars—&quot;Think Before Coding,&quot; &quot;Simplicity First,&quot; &quot;Surgical Changes,&quot; and &quot;Goal-Driven Execution&quot;—the project forces the LLM to verify its assumptions, avoid unnecessary code bloat, and maintain strict focus on user intent. Technically, these guidelines are deployed either as a project-specific configuration file or as an installable Claude Code plugin, ensuring the AI maintains a consistent, high-quality development workflow across various tasks.</p>
+<p>This project is highly beneficial for developers who utilize AI coding agents and find themselves frequently correcting hallucinations, over-engineered abstractions, or intrusive, unrequested refactoring. It is trending because it operationalizes Andrej Karpathy’s widely circulated critiques of LLM coding behavior, offering a practical solution to the &quot;silent failure&quot; and &quot;bloated code&quot; problems inherent in current generative models. By adopting these constraints, users can significantly reduce the time spent on manual code reviews and cleanup, shifting the AI’s role from an error-prone &quot;doer&quot; to a disciplined, goal-oriented partner.</p>
+          
+          <p class="drawer-footer"><a href="#dossier-1">View in Dossier ↓</a></p>
+        </div>
+      </details>
+    </div>
     </div>
   </section>
   <section id="story-2" class="spread arc-ui-lab">
@@ -357,7 +397,18 @@
       <h2 class="frnc">Building High-Performance 3D Architectural Editors in Browser</h2>
       <p class="story-meta">github.com &nbsp;·&nbsp; 12,143 stars &nbsp;·&nbsp; 0 stars today</p>
       <p class="lede">Rendering complex spatial scenes requires a sophisticated handoff between state management and WebGPU acceleration. This monorepo provides a clean, modular structure for building digital twins, turning the browser into a professional-grade geometric modeling environment.</p>
-      <div class="ctas"><a class="btn-read" href="https://github.com/pascalorg/editor" target="_blank" rel="noopener">Read →</a><a class="btn-dossier" href="#dossier-2">Full analysis ↓</a></div>
+      <div class="ctas"><a class="btn-read" href="https://github.com/pascalorg/editor" target="_blank" rel="noopener">Read →</a>
+      <details class="analysis-drawer">
+        <summary class="btn-dossier">[ Analysis + ]</summary>
+        <div class="drawer-content">
+          <h4>Technical Analysis</h4>
+          <p>Pascal Editor is a high-performance 3D building modeling application built with React, WebGPU, and React Three Fiber within a Turborepo monorepo. It utilizes a sophisticated architecture that separates core data schemas and state management from rendering and editor-specific tooling, ensuring a clean distinction between scene data and visual representation. The system employs a &quot;dirty node&quot; pattern and a centralized `sceneRegistry` to optimize performance, allowing complex geometry—such as walls, slabs, and zones—to be dynamically updated and rendered efficiently via an integrated `useFrame` system.</p>
+<p>This project is an ideal foundation for developers and engineers building custom architectural visualization tools, digital twins, or specialized 3D construction management software. It is trending because it demonstrates a cutting-edge approach to web-based CAD development, leveraging modern stacks like Bun, Zustand with Zundo for history tracking, and advanced Three.js features like BVH-based CSG operations. By providing a scalable, modular framework for complex spatial data and 3D interactions, it offers a robust boilerplate for those looking to implement professional-grade geometric editing directly in the browser.</p>
+          
+          <p class="drawer-footer"><a href="#dossier-2">View in Dossier ↓</a></p>
+        </div>
+      </details>
+    </div>
     </div>
   </section>
   <section id="story-3" class="spread arc-data-pipeline">
@@ -367,7 +418,18 @@
       <h2 class="frnc">Persistent Long-Term Memory for AI Coding Sessions</h2>
       <p class="story-meta">github.com &nbsp;·&nbsp; 56,770 stars &nbsp;·&nbsp; 0 stars today</p>
       <p class="lede">Context loss remains the primary friction point in generative programming. By merging SQLite relational storage with Chroma vector search, this plugin creates a fluid retrieval stream that allows your coding agent to maintain deep continuity across long-term development lifecycles.</p>
-      <div class="ctas"><a class="btn-read" href="https://github.com/thedotmack/claude-mem" target="_blank" rel="noopener">Read →</a><a class="btn-dossier" href="#dossier-3">Full analysis ↓</a></div>
+      <div class="ctas"><a class="btn-read" href="https://github.com/thedotmack/claude-mem" target="_blank" rel="noopener">Read →</a>
+      <details class="analysis-drawer">
+        <summary class="btn-dossier">[ Analysis + ]</summary>
+        <div class="drawer-content">
+          <h4>Technical Analysis</h4>
+          <p>Claude-Mem is a sophisticated plugin for Claude Code designed to provide persistent, long-term memory for coding sessions by capturing and summarizing tool interactions and project context. It operates through a robust architecture featuring lifecycle hooks, a Bun-managed worker service, and a hybrid search engine that combines SQLite for relational data with Chroma for semantic vector search. By utilizing a &quot;progressive disclosure&quot; retrieval pattern, the system intelligently fetches context in layers to minimize token consumption while maintaining deep project continuity across disconnected sessions.</p>
+<p>This tool is highly beneficial for professional software engineers and heavy users of Claude Code who struggle with context loss during long-term development projects. It is trending because it addresses a critical pain point in AI-assisted coding—the ephemeral nature of LLM sessions—by enabling the agent to &quot;remember&quot; past bugs, architectural decisions, and previous code iterations. The combination of automated background operation, privacy controls, and a dedicated web UI makes it an essential utility for developers looking to scale their AI-driven productivity.</p>
+          
+          <p class="drawer-footer"><a href="#dossier-3">View in Dossier ↓</a></p>
+        </div>
+      </details>
+    </div>
     </div>
   </section>
   <section id="story-4" class="spread arc-library-archive">
@@ -377,7 +439,18 @@
       <h2 class="frnc">A Comprehensive Scholarly Curriculum for LLM Development</h2>
       <p class="story-meta">github.com &nbsp;·&nbsp; 28,868 stars &nbsp;·&nbsp; 0 stars today</p>
       <p class="lede">Mastery of Large Language Models requires navigating the intersection of mathematical reasoning and practical security implementation. This academic repository serves as an essential, peer-vetted resource for bridging the gap between theoretical research and full-stack model deployment.</p>
-      <div class="ctas"><a class="btn-read" href="https://github.com/Lordog/dive-into-llms" target="_blank" rel="noopener">Read →</a><a class="btn-dossier" href="#dossier-4">Full analysis ↓</a></div>
+      <div class="ctas"><a class="btn-read" href="https://github.com/Lordog/dive-into-llms" target="_blank" rel="noopener">Read →</a>
+      <details class="analysis-drawer">
+        <summary class="btn-dossier">[ Analysis + ]</summary>
+        <div class="drawer-content">
+          <h4>Technical Analysis</h4>
+          <p>The &quot;Dive into LLMs&quot; repository is an open-source, educational project developed by the Shanghai Jiao Tong University team that provides comprehensive programming tutorials on Large Language Models (LLMs). The project covers a wide array of technical subjects, including fine-tuning, prompt engineering, knowledge editing, mathematical reasoning, and advanced topics like model security, watermarking, and GUI agents. By offering practical scripts, slides, and tutorials, it enables users to apply cutting-edge AI techniques through hands-on experimentation, now further bolstered by a collaborative series with Huawei Ascend focused on full-stack model development.</p>
+<p>This project is an essential resource for students, academic researchers, and developers who seek a low-barrier, high-quality entry point into the rapidly evolving field of LLM development and security. It is trending because it bridges the gap between theoretical knowledge and practical application, providing a community-driven repository that is both free and regularly updated with industry-relevant trends. The project&#x27;s academic credibility and recent partnership with the Huawei Ascend ecosystem make it a highly reliable and authoritative guide for those looking to master AI skills in both domestic and global frameworks.</p>
+          
+          <p class="drawer-footer"><a href="#dossier-4">View in Dossier ↓</a></p>
+        </div>
+      </details>
+    </div>
     </div>
   </section>
   <section id="story-5" class="spread arc-experimental-workshop">
@@ -387,7 +460,18 @@
       <h2 class="frnc">Simulating Algorithmic Markets with Autonomous Investor Agents</h2>
       <p class="story-meta">github.com &nbsp;·&nbsp; 54,630 stars &nbsp;·&nbsp; 0 stars today</p>
       <p class="lede">What happens when you let autonomous agents debate market sentiment? This project offers a raw, hands-on look at multi-agent workflows applied to finance, providing a sandbox for testing how LLM-synthesized perspectives behave under simulated investment pressure.</p>
-      <div class="ctas"><a class="btn-read" href="https://github.com/virattt/ai-hedge-fund" target="_blank" rel="noopener">Read →</a><a class="btn-dossier" href="#dossier-5">Full analysis ↓</a></div>
+      <div class="ctas"><a class="btn-read" href="https://github.com/virattt/ai-hedge-fund" target="_blank" rel="noopener">Read →</a>
+      <details class="analysis-drawer">
+        <summary class="btn-dossier">[ Analysis + ]</summary>
+        <div class="drawer-content">
+          <h4>Technical Analysis</h4>
+          <p>The AI Hedge Fund project is an educational proof-of-concept platform that simulates an AI-powered investment firm by utilizing a multi-agent system. It integrates specialized &quot;investor agents,&quot; modeled after legendary figures like Warren Buffett and Michael Burry, alongside dedicated functional agents that perform sentiment analysis, valuation, and technical analysis. Technically, the system functions by aggregating financial data and using LLMs to synthesize these diverse perspectives into cohesive trading signals, all managed by a centralized Portfolio Manager and Risk Manager.</p>
+<p>This project is primarily aimed at developers, finance enthusiasts, and students who want to explore the intersection of generative AI and quantitative finance. It is currently trending because it provides a highly accessible, modular framework for experimenting with agentic workflows in a domain as complex as market analysis. By offering both a command-line interface and a web application, the project democratizes complex investment modeling while serving as a valuable learning tool for those interested in autonomous AI decision-making.</p>
+          
+          <p class="drawer-footer"><a href="#dossier-5">View in Dossier ↓</a></p>
+        </div>
+      </details>
+    </div>
     </div>
   </section>
   <section id="story-6" class="spread arc-obituary">
@@ -397,7 +481,18 @@
       <p class="story-meta">github.com &nbsp;·&nbsp; 66,578 stars &nbsp;·&nbsp; 0 stars today</p>
       <p class="lede">We honor the foundational logic that guided humanity to the lunar surface. This repository preserves the original assembly language of the Apollo Guidance Computer, ensuring the meticulous engineering of the 1960s remains readable for future generations of software historians.</p>
       <div class="ornament">†</div>
-      <div class="ctas"><a class="btn-read" href="https://github.com/chrislgarry/Apollo-11" target="_blank" rel="noopener">Read →</a><a class="btn-dossier" href="#dossier-6">Full analysis ↓</a></div>
+      <div class="ctas"><a class="btn-read" href="https://github.com/chrislgarry/Apollo-11" target="_blank" rel="noopener">Read →</a>
+      <details class="analysis-drawer">
+        <summary class="btn-dossier">[ Analysis + ]</summary>
+        <div class="drawer-content">
+          <h4>Technical Analysis</h4>
+          <p>This repository provides a digital archive of the original Apollo Guidance Computer (AGC) source code used during the Apollo 11 mission. It contains the assembly code for both the Command Module, known as &quot;Comanche055,&quot; and the Lunar Module, referred to as &quot;Luminary099.&quot; Technically, these files are transcriptions derived from digitized hardcopy images provided by the MIT Museum, offering a transparent look at the low-level logic that facilitated the first human moon landing.</p>
+<p>This project is a valuable resource for software historians, computer science educators, and space enthusiasts interested in the evolution of aerospace engineering. It remains a popular repository because it offers a rare, primary-source glimpse into the foundational code that defined the Space Age. By hosting this historic software in an accessible, community-driven format, the repository serves as an educational bridge between modern software development practices and the groundbreaking technical achievements of the 1960s.</p>
+          
+          <p class="drawer-footer"><a href="#dossier-6">View in Dossier ↓</a></p>
+        </div>
+      </details>
+    </div>
     </div>
   </section>
   <section id="story-7" class="spread arc-stat-hero">
@@ -407,7 +502,18 @@
       <h2 class="frnc">Standardizing Automated Engineering Lifecycles with Superpowers</h2>
       <p class="story-meta">github.com &nbsp;·&nbsp; 153,344 stars &nbsp;·&nbsp; 0 stars today</p>
       <p class="lede">Moving from ad-hoc prompting to reliable software delivery requires an enforced engineering cadence. This framework integrates Socratic planning and strict test-driven development to ensure that AI agents behave like disciplined professional engineers rather than probabilistic generators.</p>
-      <div class="ctas"><a class="btn-read" href="https://github.com/obra/superpowers" target="_blank" rel="noopener">Read →</a><a class="btn-dossier" href="#dossier-7">Full analysis ↓</a></div>
+      <div class="ctas"><a class="btn-read" href="https://github.com/obra/superpowers" target="_blank" rel="noopener">Read →</a>
+      <details class="analysis-drawer">
+        <summary class="btn-dossier">[ Analysis + ]</summary>
+        <div class="drawer-content">
+          <h4>Technical Analysis</h4>
+          <p>Superpowers is an agentic framework designed to standardize the software development lifecycle by integrating a library of composable, automated &quot;skills&quot; directly into coding agents like Claude Code and Cursor. Instead of jumping straight to code, the system enforces a structured workflow that begins with Socratic brainstorming, proceeds to detailed implementation planning, and culminates in a rigorous subagent-driven development cycle. Technically, it functions as a plugin that triggers mandatory engineering protocols—such as strict test-driven development (TDD), git worktree management, and iterative code reviews—ensuring that agents maintain high-quality standards and consistent progress without requiring manual intervention.</p>
+<p>This project is highly beneficial for developers and software teams looking to minimize the &quot;hallucination&quot; and ad-hoc coding patterns often associated with AI-assisted programming. It is trending because it addresses a critical gap in the current AI developer tool ecosystem: the transition from simple code generation to reliable, autonomous project execution that mirrors professional engineering discipline. By embedding best practices like YAGNI and DRY into the agent&#x27;s core decision-making loop, Superpowers provides a repeatable, scalable methodology for building robust software applications.</p>
+          
+          <p class="drawer-footer"><a href="#dossier-7">View in Dossier ↓</a></p>
+        </div>
+      </details>
+    </div>
     </div>
   </section>
   <section id="story-8" class="spread arc-privacy-shield">
@@ -417,7 +523,18 @@
       <h2 class="frnc">Self-Hosted Voice Synthesis for Private Media Production</h2>
       <p class="story-meta">github.com &nbsp;·&nbsp; 17,816 stars &nbsp;·&nbsp; 0 stars today</p>
       <p class="lede">Cloud-based AI audio shouldn&#x27;t be the only option for content creators who value their privacy. This Tauri-powered studio allows you to perform local, high-performance voice cloning and multi-track editing, keeping your creative data off external servers.</p>
-      <div class="ctas"><a class="btn-read" href="https://github.com/jamiepine/voicebox" target="_blank" rel="noopener">Read →</a><a class="btn-dossier" href="#dossier-8">Full analysis ↓</a></div>
+      <div class="ctas"><a class="btn-read" href="https://github.com/jamiepine/voicebox" target="_blank" rel="noopener">Read →</a>
+      <details class="analysis-drawer">
+        <summary class="btn-dossier">[ Analysis + ]</summary>
+        <div class="drawer-content">
+          <h4>Technical Analysis</h4>
+          <p>Voicebox is an open-source, local-first voice synthesis studio that serves as a private, high-performance alternative to cloud-based services like ElevenLabs. Built using a robust tech stack—featuring a Tauri (Rust) desktop interface, a Python/FastAPI backend, and multi-engine support including Qwen3-TTS and HumeAI’s TADA—the application enables users to clone voices, generate speech in 23 languages, and apply professional audio effects. The software excels in workflow management by offering a multi-track timeline editor, an asynchronous generation queue, and comprehensive REST API access for seamless integration into external development projects.</p>
+<p>This project is highly beneficial for developers, content creators, and accessibility advocates who require enterprise-grade voice synthesis without sacrificing data privacy or incurring recurring subscription costs. It is currently trending because it democratizes access to sophisticated AI audio tools, allowing users to run complex models locally on various hardware, including Apple Silicon, NVIDIA GPUs, and AMD/Intel systems. By combining a user-friendly interface with advanced features like paralinguistic emotion tagging and unlimited-length audio chunking, Voicebox provides a flexible, powerful solution for professional-quality media production.</p>
+          
+          <p class="drawer-footer"><a href="#dossier-8">View in Dossier ↓</a></p>
+        </div>
+      </details>
+    </div>
     </div>
   </section>
   <section id="story-9" class="spread arc-blueprint">
@@ -427,7 +544,18 @@
       <h2 class="frnc">A Curated Index of Public Web APIs</h2>
       <p class="story-meta">github.com &nbsp;·&nbsp; 422,468 stars &nbsp;·&nbsp; 0 stars today</p>
       <p class="lede">Building software today relies on the reliable integration of third-party data services. This manual directory maps out the landscape of available APIs, providing a structured blueprint for rapid prototyping and external data consumption across all major domains.</p>
-      <div class="ctas"><a class="btn-read" href="https://github.com/public-apis/public-apis" target="_blank" rel="noopener">Read →</a><a class="btn-dossier" href="#dossier-9">Full analysis ↓</a></div>
+      <div class="ctas"><a class="btn-read" href="https://github.com/public-apis/public-apis" target="_blank" rel="noopener">Read →</a>
+      <details class="analysis-drawer">
+        <summary class="btn-dossier">[ Analysis + ]</summary>
+        <div class="drawer-content">
+          <h4>Technical Analysis</h4>
+          <p>The `public-apis` repository serves as a comprehensive, community-driven directory of free web APIs categorized across a vast array of domains, ranging from finance and weather to entertainment and software development. Each entry in the index provides technical metadata, including requirements for authentication, HTTPS support, and Cross-Origin Resource Sharing (CORS) compatibility, which allows developers to quickly assess suitability for their projects. The project operates as an open-source collaborative effort, maintained through manual curation by the community and supported by APILayer to ensure the data remains organized and accessible.</p>
+<p>This resource is primarily intended for developers, students, and hobbyists seeking to enrich their applications with real-time data without incurring high costs. It has become a trending staple in the developer community because it drastically reduces the time spent searching for reliable third-party integrations, effectively acting as a central &quot;treasure trove&quot; for rapid prototyping. By offering a structured and constantly updated list of services, the repository empowers creators to experiment with diverse features and build production-ready products with greater efficiency.</p>
+          
+          <p class="drawer-footer"><a href="#dossier-9">View in Dossier ↓</a></p>
+        </div>
+      </details>
+    </div>
     </div>
   </section>
   <section id="story-10" class="spread arc-enterprise-engine">
@@ -437,7 +565,18 @@
       <h2 class="frnc">Deploying Durable, Autonomous Coding Agents on Vercel</h2>
       <p class="story-meta">github.com &nbsp;·&nbsp; 2,183 stars &nbsp;·&nbsp; 0 stars today</p>
       <p class="lede">Reliable agents require an architecture that survives the transient nature of serverless execution. By decoupling the interface from a persistent, sandboxed runner, this template provides a scalable and professional foundation for long-running autonomous development tasks.</p>
-      <div class="ctas"><a class="btn-read" href="https://github.com/vercel-labs/open-agents" target="_blank" rel="noopener">Read →</a><a class="btn-dossier" href="#dossier-10">Full analysis ↓</a></div>
+      <div class="ctas"><a class="btn-read" href="https://github.com/vercel-labs/open-agents" target="_blank" rel="noopener">Read →</a>
+      <details class="analysis-drawer">
+        <summary class="btn-dossier">[ Analysis + ]</summary>
+        <div class="drawer-content">
+          <h4>Technical Analysis</h4>
+          <p>Open Agents is an open-source reference template designed for building and deploying autonomous, cloud-based coding agents on the Vercel platform. The system employs a three-layer architecture that separates the web interface and durable agent workflow from an isolated, snapshot-based sandbox environment. By running the agent outside the sandbox and interacting with it via specific tools like file manipulation and shell commands, the project ensures persistent, reliable execution that can survive request lifecycles and hibernate between tasks.</p>
+<p>This repository is ideal for developers and engineering teams looking to create custom, AI-driven automation tools that can autonomously manage GitHub repositories, execute code, and perform complex development tasks. It is gaining traction because it provides a transparent, modular blueprint for production-grade agentic workflows, moving beyond simple chat interfaces into persistent, long-running agent logic. By offering a robust framework for secure sandboxing and GitHub integration, the project empowers builders to experiment with their own agent architectures without the overhead of starting from scratch.</p>
+          
+          <p class="drawer-footer"><a href="#dossier-10">View in Dossier ↓</a></p>
+        </div>
+      </details>
+    </div>
     </div>
   </section>
   <section id="dossier" class="dossier">
@@ -597,6 +736,19 @@
     localStorage.setItem(key, JSON.stringify(stored));
   }
 })();
+</script>
+<script>
+// Simple script to toggle the [+] and [-] labels on the drawers
+document.querySelectorAll('.analysis-drawer').forEach(drawer => {
+  drawer.addEventListener('toggle', () => {
+    const summary = drawer.querySelector('summary');
+    if (drawer.open) {
+      summary.textContent = '[ Analysis − ]';
+    } else {
+      summary.textContent = '[ Analysis + ]';
+    }
+  });
+});
 </script>
 </body>
 </html>

@@ -40,14 +40,43 @@
   .story-meta { font-weight: 600; font-size: 1.1rem; margin-bottom: 3rem; opacity: 0.6; letter-spacing: 0.02em; }
   .lede { font-size: clamp(1.4rem, 2.5vw, 2.1rem); line-height: 1.35; max-width: 800px; margin: 0 0 4rem; font-weight: 450; }
   
-  .ctas { display: flex; gap: 2.5rem; align-items: center; }
+  .ctas { display: flex; gap: 2.5rem; align-items: flex-start; }
   .ctas a {
     text-decoration: none; font-weight: 700; font-size: 1.1rem; letter-spacing: 0.1em; text-transform: uppercase;
     padding: 1.2rem 2.4rem; transition: all 0.2s;
   }
-  .btn-read { background: var(--text-dark); color: var(--bg-light); }
-  .btn-dossier { border-bottom: 2px solid currentColor; padding: 0.5rem 0 !important; }
+  .btn-read { background: var(--text-dark); color: var(--bg-light); cursor: pointer; border: none; }
+  .btn-dossier { 
+    border-bottom: 2px solid currentColor; padding: 0.5rem 0 !important; 
+    text-decoration: none; font-weight: 700; font-size: 1.1rem; letter-spacing: 0.1em; 
+    text-transform: uppercase; cursor: pointer; background: transparent; color: inherit;
+    display: inline-block;
+  }
   
+  /* ───── ANALYSIS DRAWER ───── */
+  .analysis-drawer { margin-top: 0; width: 100%; max-width: 800px; }
+  .analysis-drawer summary { list-style: none; outline: none; }
+  .analysis-drawer summary::-webkit-details-marker { display: none; }
+  .analysis-drawer[open] summary { margin-bottom: 2rem; }
+  .analysis-drawer[open] summary::after { content: ""; } /* Could add JS to toggle label but we'll do CSS trick or just keep static */
+  
+  .drawer-content {
+    background: rgba(0,0,0,0.03); padding: 3rem; border-left: 4px solid var(--text-dark);
+    animation: slideDown 0.3s ease-out;
+  }
+  .arc-midnight .drawer-content { background: rgba(255,255,255,0.05); border-color: #fff; }
+  .arc-terminal .drawer-content { background: rgba(32, 194, 14, 0.05); border-color: #20c20e; }
+  
+  .drawer-content h4 { text-transform: uppercase; letter-spacing: 0.2em; font-size: 0.9rem; margin-top: 0; margin-bottom: 1.5rem; opacity: 0.6; }
+  .drawer-content p { font-family: 'Fraunces', serif; font-size: 1.3rem; line-height: 1.5; margin-bottom: 1.5rem; }
+  .drawer-footer { margin-top: 2rem; border-top: 1px solid rgba(0,0,0,0.1); padding-top: 1.5rem; }
+  .drawer-footer a { font-size: 0.9rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; text-decoration: none; color: inherit; opacity: 0.5; }
+  
+  @keyframes slideDown {
+    from { opacity: 0; transform: translateY(-10px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
   /* ───── ARCHETYPE CSS ───── */
   
   /* Stat Hero */
@@ -348,7 +377,17 @@
       <h2 class="frnc">Age Verification Tools Function as Global Surveillance Infrastructure</h2>
       <p class="story-meta">tboteproject.com &nbsp;·&nbsp; 20 pts &nbsp;·&nbsp; 0 comments</p>
       <p class="lede">Under the guise of protecting minors, identification SDKs are harvesting granular biometric and behavioral streams. These data pipelines feed directly into intelligence-adjacent financial networks.</p>
-      <div class="ctas"><a class="btn-read" href="https://tboteproject.com/surveillancefindings/" target="_blank" rel="noopener">Read →</a><a class="btn-dossier" href="#dossier-1">Full analysis ↓</a></div>
+      <div class="ctas"><a class="btn-read" href="https://tboteproject.com/surveillancefindings/" target="_blank" rel="noopener">Read →</a>
+      <details class="analysis-drawer">
+        <summary class="btn-dossier">[ Analysis + ]</summary>
+        <div class="drawer-content">
+          <h4>Technical Analysis</h4>
+          <p>The article details a comprehensive investigation into the identity verification company Persona, alleging that its services function as a broad mass surveillance infrastructure rather than simple age verification. By analyzing leaked source code and decompiling the company’s SDK, the author reveals that Persona collects granular biometric and behavioral data—including real-time facial streams and device fingerprints—which are then shared with various intelligence and financial reporting agencies. The report further highlights the business nexus between Persona’s lead investor, Peter Thiel’s Founders Fund, and Palantir, noting how coordinated lobbying efforts have successfully mandated these verification tools across multiple global jurisdictions.</p>
+          
+          <p class="drawer-footer"><a href="#dossier-1">View in Dossier ↓</a></p>
+        </div>
+      </details>
+    </div>
     </div>
   </section>
   <section id="story-2" class="spread arc-mint-pattern" style="--bg-word: 'CODE'">
@@ -360,7 +399,21 @@
       <h2 class="frnc">Demystifying Language Models with a Nine-Million Parameter Fish</h2>
       <p class="story-meta">github.com &nbsp;·&nbsp; 913 pts &nbsp;·&nbsp; 134 comments</p>
       <p class="lede">A minimalist implementation in 130 lines of PyTorch code strips away the industry abstraction. It offers a transparent look at how a model transforms synthetic text into a conversational persona.</p>
-      <div class="ctas"><a class="btn-read" href="https://github.com/arman-bd/guppylm" target="_blank" rel="noopener">Read →</a><a class="btn-dossier" href="#dossier-2">Full analysis ↓</a></div>
+      <div class="ctas"><a class="btn-read" href="https://github.com/arman-bd/guppylm" target="_blank" rel="noopener">Read →</a>
+      <details class="analysis-drawer">
+        <summary class="btn-dossier">[ Analysis + ]</summary>
+        <div class="drawer-content">
+          <h4>Technical Analysis</h4>
+          <p>&quot;GuppyLM&quot; is a project by developer armanified that provides a transparent, &quot;from-scratch&quot; implementation of a 9-million parameter language model. Built using a vanilla transformer architecture and roughly 130 lines of PyTorch code, the model is trained on 60,000 synthetic conversational examples to adopt the persona of a fish. The entire pipeline, from tokenizer creation to final inference, is designed to run in about five minutes on a free Google Colab T4 GPU instance.</p>
+          <h4>Reader Reactions</h4>
+<p>The consensus is that the project serves as a fun, approachable educational exercise, though users are divided on whether it successfully &quot;demystifies&quot; LLM architecture compared to more comprehensive existing visualization tools.</p>
+<p>Critics argue the project is oversold, claiming that executing a few high-level script commands fails to demystify the underlying complexity and that the documentation lacks sufficient context for genuine technical learning.</p>
+<p>Users encountered practical hurdles, including broken dependencies and missing file errors, while noting that the model&#x27;s limited performance stems from its training data rather than true conversational intelligence or reasoning.</p>
+<p>This sample is limited by its focus on individual technical debugging and philosophical tangents, failing to represent the broader reception or common praise that likely exists among the total comment volume.</p>
+          <p class="drawer-footer"><a href="#dossier-2">View in Dossier ↓</a></p>
+        </div>
+      </details>
+    </div>
     </div>
   </section>
   <section id="story-3" class="spread arc-product-plate">
@@ -369,7 +422,21 @@
       <h2 class="frnc">Gemma 4 Now Runs Locally on iPhone Hardware</h2>
       <p class="story-meta">apps.apple.com &nbsp;·&nbsp; 862 pts &nbsp;·&nbsp; 232 comments</p>
       <p class="lede">The latest Google AI Edge Gallery release brings high-performance open-source models to local mobile silicon. By prioritizing offline inference, the app enables private reasoning and agentic tools without server-side dependencies.</p>
-      <div class="ctas"><a class="btn-read" href="https://apps.apple.com/nl/app/google-ai-edge-gallery/id6749645337" target="_blank" rel="noopener">Read →</a><a class="btn-dossier" href="#dossier-3">Full analysis ↓</a></div>
+      <div class="ctas"><a class="btn-read" href="https://apps.apple.com/nl/app/google-ai-edge-gallery/id6749645337" target="_blank" rel="noopener">Read →</a>
+      <details class="analysis-drawer">
+        <summary class="btn-dossier">[ Analysis + ]</summary>
+        <div class="drawer-content">
+          <h4>Technical Analysis</h4>
+          <p>The Google AI Edge Gallery app has been updated to support the Gemma 4 model family, enabling users to run high-performance, open-source large language models entirely on their iPhones. This release emphasizes local processing, offering features such as &quot;Thinking Mode&quot; for transparency in reasoning, agent-based tools like Wikipedia integration, and multimodal capabilities for image and audio analysis. By prioritizing offline execution, the application ensures that all model inferences remain private, avoiding the need for server-side data transmission.</p>
+          <h4>Reader Reactions</h4>
+<p>Users generally express enthusiasm for running Gemma 4 locally on iPhones, praising the potential for improved privacy, offline functionality, and the ability to utilize personal agents without restrictive cloud-based content policing.</p>
+<p>Skeptics argue that local execution remains inferior to cloud-based alternatives, citing concerns regarding battery depletion, significant device storage bloating, and the inherent performance limitations of hardware-constrained mobile devices compared to server-scale clusters.</p>
+<p>Developers highlight the shift toward local tool use for automated tasks, though they emphasize the need for unified operating system frameworks to avoid redundancy and memory overhead when managing multiple model instances.</p>
+<p>This analysis is limited to a small sample of highly technical users, potentially overrepresenting those interested in model &quot;dealignment&quot; and home-lab experimentation rather than the perspectives of average mobile application users.</p>
+          <p class="drawer-footer"><a href="#dossier-3">View in Dossier ↓</a></p>
+        </div>
+      </details>
+    </div>
     </div>
   </section>
   <section id="story-4" class="spread arc-stat-hero">
@@ -379,7 +446,21 @@
       <h2 class="frnc">Bank of France Repatriates Entire Gold Stock</h2>
       <p class="story-meta">mining.com &nbsp;·&nbsp; 620 pts &nbsp;·&nbsp; 361 comments</p>
       <p class="lede">The final 129 tonnes of bullion have returned to Paris, marking the end of a strategic liquidation and centralization effort. This movement effectively closes a decades-long chapter of storage in New York.</p>
-      <div class="ctas"><a class="btn-read" href="https://www.mining.com/france-pulls-last-gold-held-in-us-for-15b-gain/" target="_blank" rel="noopener">Read →</a><a class="btn-dossier" href="#dossier-4">Full analysis ↓</a></div>
+      <div class="ctas"><a class="btn-read" href="https://www.mining.com/france-pulls-last-gold-held-in-us-for-15b-gain/" target="_blank" rel="noopener">Read →</a>
+      <details class="analysis-drawer">
+        <summary class="btn-dossier">[ Analysis + ]</summary>
+        <div class="drawer-content">
+          <h4>Technical Analysis</h4>
+          <p>The Bank of France has completed the repatriation of its final 129 tonnes of gold bullion previously stored at the Federal Reserve Bank of New York. Rather than physically transporting the existing bars, the bank opted to sell the US-held assets and purchase new, international-standard bullion for storage within its underground vault in Paris. This strategic liquidation, executed between mid-2025 and early 2026, capitalized on rising gold prices to generate a $15 billion gain. Consequently, France’s total gold reserves of approximately 2,437 tonnes are now consolidated entirely within its domestic facilities.</p>
+          <h4>Reader Reactions</h4>
+<p>Commenters generally agree that the reported $15 billion gain is a realized accounting adjustment stemming from selling &quot;non-standard&quot; legacy gold bars and replacing them with modern, tradable bullion held domestically.</p>
+<p>Several users strongly dispute the significance of this gain, arguing it is merely a paper profit reflecting the long-term appreciation of gold assets rather than a successful market-timing or arbitrage strategy.</p>
+<p>The technical consensus suggests the Banque de France modernized its reserves to meet current purity standards while centralizing custody, with the windfall gain serving as a byproduct of historical price appreciation.</p>
+<p>Discussion threads exhibit significant confusion and skepticism, often driven by ambiguous journalism and the complexity of central bank accounting practices, which makes verifying the precise nature of the financial event difficult.</p>
+          <p class="drawer-footer"><a href="#dossier-4">View in Dossier ↓</a></p>
+        </div>
+      </details>
+    </div>
     </div>
   </section>
   <section id="story-5" class="spread arc-editorial-pullquote">
@@ -389,7 +470,21 @@
       <h2 class="frnc">Microsoft’s Three-Decade Loss of Graphical Strategy</h2>
       <p class="story-meta">jsnover.com &nbsp;·&nbsp; 830 pts &nbsp;·&nbsp; 579 comments</p>
       <p class="lede">The fragmentation of the Windows development ecosystem is not an accident but a reflection of deep-seated organizational discord. Modern developers are left to navigate a chaotic marketplace of abandoned frameworks.</p>
-      <div class="ctas"><a class="btn-read" href="https://www.jsnover.com/blog/2026/03/13/microsoft-hasnt-had-a-coherent-gui-strategy-since-petzold/" target="_blank" rel="noopener">Read →</a><a class="btn-dossier" href="#dossier-5">Full analysis ↓</a></div>
+      <div class="ctas"><a class="btn-read" href="https://www.jsnover.com/blog/2026/03/13/microsoft-hasnt-had-a-coherent-gui-strategy-since-petzold/" target="_blank" rel="noopener">Read →</a>
+      <details class="analysis-drawer">
+        <summary class="btn-dossier">[ Analysis + ]</summary>
+        <div class="drawer-content">
+          <h4>Technical Analysis</h4>
+          <p>The article argues that Microsoft has lacked a coherent strategy for Windows desktop development for over three decades, contrasting the modern fragmentation with the clarity of the late 1980s when Charles Petzold’s *Programming Windows* provided a definitive guide to the platform. The author traces this decline through a series of organizational power struggles, premature pivots, and internal conflicts—most notably between the Windows and .NET teams—that led to an endless succession of abandoned frameworks like Silverlight, UWP, and WPF. Today, the Windows ecosystem is described as a &quot;boof-a-rama&quot; consisting of over a dozen competing technologies, leaving developers without a clear path for building native applications.</p>
+          <h4>Reader Reactions</h4>
+<p>Developers largely agree that Microsoft lacks a cohesive GUI strategy, fueled by internal political friction, frequent platform abandonment, and a failure to provide clear guidance for creating modern, cross-platform desktop applications.</p>
+<p>Some developers argue that the demand for platform-specific frameworks is obsolete because the modern requirement for cross-platform support necessitates web-based or agnostic technologies regardless of what individual operating systems officially recommend.</p>
+<p>Technical contributors suggest that building for the web has become the pragmatic default, though native frameworks like WPF remain viable for specialized Windows software when performance and integration with legacy systems are prioritized.</p>
+<p>This analysis is limited by the sample size, which likely overrepresents power users and developers disillusioned with Microsoft&#x27;s current direction, potentially excluding the perspectives of enterprise administrators or general consumer-focused software teams.</p>
+          <p class="drawer-footer"><a href="#dossier-5">View in Dossier ↓</a></p>
+        </div>
+      </details>
+    </div>
     </div>
     <div class="quote-side">
       <blockquote class="pullquote">The fragmentation of Windows development is a direct casualty of internal power struggles that have persisted for over thirty years.</blockquote>
@@ -402,7 +497,21 @@
       <h2 class="frnc">Bouncing Radio Signals Off the Moon with Open Hardware</h2>
       <p class="story-meta">moonrf.com &nbsp;·&nbsp; 260 pts &nbsp;·&nbsp; 70 comments</p>
       <p class="lede">Engineers are utilizing a 240-antenna phased array to establish a high-latency link with our lunar neighbor. This C-band experiment pushes the boundaries of what is possible with consumer-grade software-defined radios.</p>
-      <div class="ctas"><a class="btn-read" href="https://moonrf.com/" target="_blank" rel="noopener">Read →</a><a class="btn-dossier" href="#dossier-6">Full analysis ↓</a></div>
+      <div class="ctas"><a class="btn-read" href="https://moonrf.com/" target="_blank" rel="noopener">Read →</a>
+      <details class="analysis-drawer">
+        <summary class="btn-dossier">[ Analysis + ]</summary>
+        <div class="drawer-content">
+          <h4>Technical Analysis</h4>
+          <p>The project, titled QuadRF, introduces an open-source, four-antenna software-defined radio (SDR) tile designed as a scalable building block for large phased arrays. Operating in the 4.9–6.0 GHz C-band, these tiles utilize Lattice ECP5 FPGAs to achieve full-duplex transmission with low latency. By combining multiple units, engineers can construct a massive 240-antenna array capable of bouncing signals off the Moon, reflecting an ambitious application of distributed RF hardware.</p>
+          <h4>Reader Reactions</h4>
+<p>The hardware design is widely praised as an impressive engineering achievement, particularly for its clever use of Raspberry Pi interfaces to facilitate high-speed data transmission within a low-cost production budget.</p>
+<p>Skepticism persists regarding the project&#x27;s marketing claims, specifically the feasibility of &quot;agentic&quot; AI coding features and the accuracy of the technical specifications regarding transmit power and array antenna gain.</p>
+<p>The system utilizes a novel signal architecture by mimicking camera and display hardware interfaces to bypass traditional bottlenecks, enabling complex real-time RF visualization and processing on a consumer-grade platform.</p>
+<p>The discussion is heavily skewed toward hardware enthusiasts and engineers, potentially overlooking broader regulatory concerns, accessibility, or the practical utility of the device for users outside of specialized research communities.</p>
+          <p class="drawer-footer"><a href="#dossier-6">View in Dossier ↓</a></p>
+        </div>
+      </details>
+    </div>
     </div>
   </section>
   <section id="story-7" class="spread arc-midnight">
@@ -413,7 +522,17 @@
       <h2 class="frnc">Global Networks Facilitate Smuggling of Giant African Harvester Ants</h2>
       <p class="story-meta">bbc.com &nbsp;·&nbsp; 109 pts &nbsp;·&nbsp; 28 comments</p>
       <p class="lede">A high-stakes black market has emerged for rare insect queens, transported in test tubes through international hubs. This trade remains shielded from legal oversight, driven by the niche demands of private formicarium collectors.</p>
-      <div class="ctas"><a class="btn-read" href="https://www.bbc.com/news/articles/cg4g44zv37qo" target="_blank" rel="noopener">Read →</a><a class="btn-dossier" href="#dossier-7">Full analysis ↓</a></div>
+      <div class="ctas"><a class="btn-read" href="https://www.bbc.com/news/articles/cg4g44zv37qo" target="_blank" rel="noopener">Read →</a>
+      <details class="analysis-drawer">
+        <summary class="btn-dossier">[ Analysis + ]</summary>
+        <div class="drawer-content">
+          <h4>Technical Analysis</h4>
+          <p>Kenya has become the epicenter of an illicit global trade in giant African harvester ant queens, which are highly sought after by international insect collectors. These ants, which can fetch up to $220 each on the black market, are smuggled in test tubes and syringes to bypass airport security and survive transport. While the trade is driven by the rising popularity of &quot;formicaria&quot; pet enclosures, it operates entirely outside of legal permitting frameworks and threatens both local Kenyan ecosystems and the environments where the ants are introduced.</p>
+          
+          <p class="drawer-footer"><a href="#dossier-7">View in Dossier ↓</a></p>
+        </div>
+      </details>
+    </div>
     </div>
   </section>
   <section id="story-8" class="spread arc-terminal">
@@ -427,7 +546,21 @@
         <p class="lede">Standardize your 2D development environment with a framework that prioritizes simplicity and performance. LÖVE provides a batteries-included approach for developers targeting cross-platform deployment.<span class="cursor"></span></p>
         <div class="ctas">
           <a href="https://github.com/love2d/love" class="btn-read" target="_blank">RUN_PROCESS →</a>
-          <a href="#dossier-8" class="btn-dossier">VIEW_ANALYSIS ↓</a>
+          
+      <details class="analysis-drawer">
+        <summary class="btn-dossier">[ Analysis + ]</summary>
+        <div class="drawer-content">
+          <h4>Technical Analysis</h4>
+          <p>LÖVE is a free, open-source framework designed for developing 2D games using the Lua programming language. It supports cross-platform deployment across major desktop operating systems, including Windows, macOS, and Linux, as well as mobile support for Android and iOS. The project maintains a transparent development process through GitHub, offering detailed documentation, a comprehensive test suite, and community-driven support channels.</p>
+          <h4>Reader Reactions</h4>
+<p>LÖVE is widely praised for its approachable API, developer-friendly workflow, and efficient performance, with users frequently citing the hit game Balatro as a testament to the framework&#x27;s capability and simplicity.</p>
+<p>Some developers argue that modern web-based solutions offer superior performance despite their bloat, while others express frustration regarding the project&#x27;s slow release cycle and the lack of a stable version 12.0 update.</p>
+<p>Users looking for a custom engine often choose LÖVE for its &quot;batteries-included&quot; approach to audio, physics, and networking, which provides significant advantages over manually integrating individual libraries like SDL or LuaJIT.</p>
+<p>The discussion sample heavily emphasizes game development, potentially overlooking users who might utilize LÖVE for non-gaming multimedia projects, and focuses primarily on hobbyists or solo indie developers rather than professional studio workflows.</p>
+          <p class="drawer-footer"><a href="#dossier-8">View in Dossier ↓</a></p>
+        </div>
+      </details>
+    
         </div>
       </div>
     </div>
@@ -439,7 +572,21 @@
       <h2 class="frnc">The 40-Kilobyte Engineering Feat of The Last Ninja</h2>
       <p class="story-meta">twitter.com &nbsp;·&nbsp; 309 pts &nbsp;·&nbsp; 192 comments</p>
       <p class="lede">In 1987, System 3 captured isometric detail and complex soundscapes within an impossibly small memory footprint. This remains a definitive study in resource constraints and precise machine-code optimization.</p>
-      <div class="ctas"><a class="btn-read" href="https://twitter.com/exQUIZitely/status/2040777977521398151" target="_blank" rel="noopener">Read →</a><a class="btn-dossier" href="#dossier-9">Full analysis ↓</a></div>
+      <div class="ctas"><a class="btn-read" href="https://twitter.com/exQUIZitely/status/2040777977521398151" target="_blank" rel="noopener">Read →</a>
+      <details class="analysis-drawer">
+        <summary class="btn-dossier">[ Analysis + ]</summary>
+        <div class="drawer-content">
+          <h4>Technical Analysis</h4>
+          <p>The story highlights the 1987 Commodore 64 game *The Last Ninja*, which achieved impressive technical feats within an incredibly small memory footprint of only 40 kilobytes. Developed by System 3, the title is noted for its detailed isometric graphics and iconic musical score composed by Ben Daglish and Anthony Lees. By comparing this size to a standard digital photograph, the author emphasizes the extreme constraints faced by early game developers.</p>
+          <h4>Reader Reactions</h4>
+<p>Participants largely agree that modern software is significantly more bloated than 1980s titles, though they debate whether this growth is an inevitable byproduct of increased functionality or simply poor developer discipline.</p>
+<p>A primary point of contention is whether modern requirements like security, high-resolution media, and complex UI frameworks justify current memory usage or if engineers have abandoned essential optimization practices for convenience.</p>
+<p>Developers suggest that imposing artificial constraints, such as utilizing underpowered VMs or focusing on zero-allocation libraries, can reveal significant opportunities for performance gains and efficient resource management in production systems.</p>
+<p>The discussion sample primarily reflects a nostalgic enthusiast perspective, potentially oversimplifying the technical evolution from 8-bit systems to modern environments by minimizing the complex demands of contemporary hardware and user expectations.</p>
+          <p class="drawer-footer"><a href="#dossier-9">View in Dossier ↓</a></p>
+        </div>
+      </details>
+    </div>
     </div>
   </section>
   <section id="story-10" class="spread arc-blueprint">
@@ -449,7 +596,21 @@
       <h2 class="frnc">Real-Time Multimodal AI Interactions on Local M3 Hardware</h2>
       <p class="story-meta">github.com &nbsp;·&nbsp; 294 pts &nbsp;·&nbsp; 36 comments</p>
       <p class="lede">This project integrates visual input and voice synthesis into a self-hosted, offline pipeline for consumer Mac hardware. It serves as a blueprint for bypassing latency-heavy cloud assistants with specialized local models.</p>
-      <div class="ctas"><a class="btn-read" href="https://github.com/fikrikarim/parlor" target="_blank" rel="noopener">Read →</a><a class="btn-dossier" href="#dossier-10">Full analysis ↓</a></div>
+      <div class="ctas"><a class="btn-read" href="https://github.com/fikrikarim/parlor" target="_blank" rel="noopener">Read →</a>
+      <details class="analysis-drawer">
+        <summary class="btn-dossier">[ Analysis + ]</summary>
+        <div class="drawer-content">
+          <h4>Technical Analysis</h4>
+          <p>&quot;Parlor&quot; is a new open-source project that enables real-time, multimodal AI interactions directly on consumer hardware like the Apple M3 Pro. By utilizing Google’s Gemma 4 E2B model for vision and speech understanding alongside the Kokoro text-to-speech engine, the software allows users to conduct voice-based conversations while sharing live camera input. The project is designed to run entirely offline, replacing expensive cloud-based server dependencies with a local FastAPI-driven architecture that processes audio and video streams via WebSockets.</p>
+          <h4>Reader Reactions</h4>
+<p>Users view this project as a compelling alternative to current proprietary voice assistants, which are criticized for being overly restrictive and failing to provide the hands-free utility consumers actually need.</p>
+<p>While the demo is praised for its responsiveness, there is disagreement regarding model efficiency, with some developers preferring smaller, lighter alternatives like Qwen 0.8B over the heavier Gemma 4 implementation.</p>
+<p>Real-time performance is heavily reliant on low-latency text-to-speech engines like Kokoro, which suggests that optimized local inference is currently more critical for user experience than model parameter size alone.</p>
+<p>This sample reflects the interests of technically proficient early adopters who prioritize self-hosting and functional autonomy, potentially misrepresenting the broader market&#x27;s focus on user interface convenience and ease of installation.</p>
+          <p class="drawer-footer"><a href="#dossier-10">View in Dossier ↓</a></p>
+        </div>
+      </details>
+    </div>
     </div>
   </section>
   <section id="dossier" class="dossier">
@@ -631,6 +792,19 @@
     localStorage.setItem(key, JSON.stringify(stored));
   }
 })();
+</script>
+<script>
+// Simple script to toggle the [+] and [-] labels on the drawers
+document.querySelectorAll('.analysis-drawer').forEach(drawer => {
+  drawer.addEventListener('toggle', () => {
+    const summary = drawer.querySelector('summary');
+    if (drawer.open) {
+      summary.textContent = '[ Analysis − ]';
+    } else {
+      summary.textContent = '[ Analysis + ]';
+    }
+  });
+});
 </script>
 </body>
 </html>

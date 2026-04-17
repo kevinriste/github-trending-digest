@@ -40,14 +40,43 @@
   .story-meta { font-weight: 600; font-size: 1.1rem; margin-bottom: 3rem; opacity: 0.6; letter-spacing: 0.02em; }
   .lede { font-size: clamp(1.4rem, 2.5vw, 2.1rem); line-height: 1.35; max-width: 800px; margin: 0 0 4rem; font-weight: 450; }
   
-  .ctas { display: flex; gap: 2.5rem; align-items: center; }
+  .ctas { display: flex; gap: 2.5rem; align-items: flex-start; }
   .ctas a {
     text-decoration: none; font-weight: 700; font-size: 1.1rem; letter-spacing: 0.1em; text-transform: uppercase;
     padding: 1.2rem 2.4rem; transition: all 0.2s;
   }
-  .btn-read { background: var(--text-dark); color: var(--bg-light); }
-  .btn-dossier { border-bottom: 2px solid currentColor; padding: 0.5rem 0 !important; }
+  .btn-read { background: var(--text-dark); color: var(--bg-light); cursor: pointer; border: none; }
+  .btn-dossier { 
+    border-bottom: 2px solid currentColor; padding: 0.5rem 0 !important; 
+    text-decoration: none; font-weight: 700; font-size: 1.1rem; letter-spacing: 0.1em; 
+    text-transform: uppercase; cursor: pointer; background: transparent; color: inherit;
+    display: inline-block;
+  }
   
+  /* ───── ANALYSIS DRAWER ───── */
+  .analysis-drawer { margin-top: 0; width: 100%; max-width: 800px; }
+  .analysis-drawer summary { list-style: none; outline: none; }
+  .analysis-drawer summary::-webkit-details-marker { display: none; }
+  .analysis-drawer[open] summary { margin-bottom: 2rem; }
+  .analysis-drawer[open] summary::after { content: ""; } /* Could add JS to toggle label but we'll do CSS trick or just keep static */
+  
+  .drawer-content {
+    background: rgba(0,0,0,0.03); padding: 3rem; border-left: 4px solid var(--text-dark);
+    animation: slideDown 0.3s ease-out;
+  }
+  .arc-midnight .drawer-content { background: rgba(255,255,255,0.05); border-color: #fff; }
+  .arc-terminal .drawer-content { background: rgba(32, 194, 14, 0.05); border-color: #20c20e; }
+  
+  .drawer-content h4 { text-transform: uppercase; letter-spacing: 0.2em; font-size: 0.9rem; margin-top: 0; margin-bottom: 1.5rem; opacity: 0.6; }
+  .drawer-content p { font-family: 'Fraunces', serif; font-size: 1.3rem; line-height: 1.5; margin-bottom: 1.5rem; }
+  .drawer-footer { margin-top: 2rem; border-top: 1px solid rgba(0,0,0,0.1); padding-top: 1.5rem; }
+  .drawer-footer a { font-size: 0.9rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; text-decoration: none; color: inherit; opacity: 0.5; }
+  
+  @keyframes slideDown {
+    from { opacity: 0; transform: translateY(-10px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
   /* ───── ARCHETYPE CSS ───── */
   
   /* Stat Hero */
@@ -347,7 +376,18 @@
       <h2 class="frnc">Enforcing Rigorous Logic in Claude Code Workflows</h2>
       <p class="story-meta">github.com &nbsp;·&nbsp; 8,375 stars &nbsp;·&nbsp; 0 stars today</p>
       <p class="lede">Precision requires constraint. By implementing a standardized CLAUDE.md architecture, this framework forces LLMs to prioritize goal-driven execution over speculative refactoring, ensuring every change is intentional.</p>
-      <div class="ctas"><a class="btn-read" href="https://github.com/forrestchang/andrej-karpathy-skills" target="_blank" rel="noopener">Read →</a><a class="btn-dossier" href="#dossier-1">Full analysis ↓</a></div>
+      <div class="ctas"><a class="btn-read" href="https://github.com/forrestchang/andrej-karpathy-skills" target="_blank" rel="noopener">Read →</a>
+      <details class="analysis-drawer">
+        <summary class="btn-dossier">[ Analysis + ]</summary>
+        <div class="drawer-content">
+          <h4>Technical Analysis</h4>
+          <p>The `forrestchang/andrej-karpathy-skills` repository provides a set of rigorous, principle-based instructions designed to refine the behavior of Claude Code by addressing common AI coding pitfalls. By implementing a `CLAUDE.md` file centered on four key pillars—&quot;Think Before Coding,&quot; &quot;Simplicity First,&quot; &quot;Surgical Changes,&quot; and &quot;Goal-Driven Execution&quot;—the project forces the LLM to verify its assumptions, avoid unnecessary code bloat, and maintain strict focus on user intent. Technically, these guidelines are deployed either as a project-specific configuration file or as an installable Claude Code plugin, ensuring the AI maintains a consistent, high-quality development workflow across various tasks.</p>
+<p>This project is highly beneficial for developers who utilize AI coding agents and find themselves frequently correcting hallucinations, over-engineered abstractions, or intrusive, unrequested refactoring. It is trending because it operationalizes Andrej Karpathy’s widely circulated critiques of LLM coding behavior, offering a practical solution to the &quot;silent failure&quot; and &quot;bloated code&quot; problems inherent in current generative models. By adopting these constraints, users can significantly reduce the time spent on manual code reviews and cleanup, shifting the AI’s role from an error-prone &quot;doer&quot; to a disciplined, goal-oriented partner.</p>
+          
+          <p class="drawer-footer"><a href="#dossier-1">View in Dossier ↓</a></p>
+        </div>
+      </details>
+    </div>
     </div>
   </section>
   <section id="story-2" class="spread arc-data-pipeline">
@@ -357,7 +397,18 @@
       <h2 class="frnc">Automating the Full Lifecycle of SEO-Driven Content</h2>
       <p class="story-meta">github.com &nbsp;·&nbsp; 4,187 stars &nbsp;·&nbsp; 0 stars today</p>
       <p class="lede">This system treats editorial production as a high-throughput data flow, connecting analytics to autonomous agents. It transforms fragmented marketing tasks into a unified, context-aware pipeline of research and drafting.</p>
-      <div class="ctas"><a class="btn-read" href="https://github.com/TheCraigHewitt/seomachine" target="_blank" rel="noopener">Read →</a><a class="btn-dossier" href="#dossier-2">Full analysis ↓</a></div>
+      <div class="ctas"><a class="btn-read" href="https://github.com/TheCraigHewitt/seomachine" target="_blank" rel="noopener">Read →</a>
+      <details class="analysis-drawer">
+        <summary class="btn-dossier">[ Analysis + ]</summary>
+        <div class="drawer-content">
+          <h4>Technical Analysis</h4>
+          <p>SEO Machine is a specialized Claude Code workspace designed to automate the end-to-end lifecycle of long-form, SEO-optimized business content. It leverages a suite of custom commands and autonomous agents to handle complex tasks, including competitive research, keyword mapping, content drafting, and data-driven performance analysis. Technically, the system integrates with external tools like Google Analytics, Google Search Console, and DataForSEO to provide real-time insights, while requiring users to define a &quot;context-driven&quot; framework via structured directories that enforce brand voice, style, and SEO guidelines.</p>
+<p>This project is an ideal solution for content marketers, SEO strategists, and SaaS founders who want to scale their content production without sacrificing quality or ranking potential. It is gaining traction because it bridges the gap between generic AI generation and professional editorial standards, effectively transforming Claude Code into a comprehensive, agentic marketing team. By automating the technical overhead of SEO audits and internal linking, the system allows users to focus on strategy and growth rather than the manual labor of content optimization.</p>
+          
+          <p class="drawer-footer"><a href="#dossier-2">View in Dossier ↓</a></p>
+        </div>
+      </details>
+    </div>
     </div>
   </section>
   <section id="story-3" class="spread arc-privacy-shield">
@@ -367,7 +418,18 @@
       <h2 class="frnc">Deploying High-Performance LLMs Entirely Offline</h2>
       <p class="story-meta">github.com &nbsp;·&nbsp; 19,174 stars &nbsp;·&nbsp; 0 stars today</p>
       <p class="lede">Data sovereignty remains the ultimate defense. By moving model inference to the edge, this gallery removes the reliance on external servers while maintaining the computational power necessary for complex agentic tasks.</p>
-      <div class="ctas"><a class="btn-read" href="https://github.com/google-ai-edge/gallery" target="_blank" rel="noopener">Read →</a><a class="btn-dossier" href="#dossier-3">Full analysis ↓</a></div>
+      <div class="ctas"><a class="btn-read" href="https://github.com/google-ai-edge/gallery" target="_blank" rel="noopener">Read →</a>
+      <details class="analysis-drawer">
+        <summary class="btn-dossier">[ Analysis + ]</summary>
+        <div class="drawer-content">
+          <h4>Technical Analysis</h4>
+          <p>The Google AI Edge Gallery serves as a comprehensive mobile platform for running powerful open-source Large Language Models (LLMs), such as the Gemma 4 family, directly on user devices. The application leverages Google’s AI Edge tools and the LiteRT runtime to execute high-performance machine learning tasks—including multimodal image analysis, real-time audio transcription, and agent-based task automation—entirely offline. By prioritizing local execution, the platform ensures total user privacy while providing advanced features like a &quot;Thinking Mode&quot; for transparency in model reasoning and a &quot;Prompt Lab&quot; for granular parameter control.</p>
+<p>This project is an essential tool for developers, AI enthusiasts, and researchers who want to test and benchmark state-of-the-art models on mobile hardware without relying on cloud infrastructure. It is trending because it democratizes access to high-end generative AI, allowing users to build and deploy proactive AI agents and custom models with minimal latency. As the industry shifts toward decentralized intelligence, this gallery provides a vital sandbox for exploring the capabilities of on-device privacy, modular skill integration, and efficient local model management.</p>
+          
+          <p class="drawer-footer"><a href="#dossier-3">View in Dossier ↓</a></p>
+        </div>
+      </details>
+    </div>
     </div>
   </section>
   <section id="story-4" class="spread arc-ui-lab">
@@ -377,7 +439,18 @@
       <h2 class="frnc">Developing Full-Duplex Conversational Speech Personas</h2>
       <p class="story-meta">github.com &nbsp;·&nbsp; 8,208 stars &nbsp;·&nbsp; 0 stars today</p>
       <p class="lede">Human-computer interaction demands fluid, expressive feedback loops. This architecture bridges the gap between text-based reasoning and natural audio output, allowing for nuanced control over AI voice and tone.</p>
-      <div class="ctas"><a class="btn-read" href="https://github.com/NVIDIA/personaplex" target="_blank" rel="noopener">Read →</a><a class="btn-dossier" href="#dossier-4">Full analysis ↓</a></div>
+      <div class="ctas"><a class="btn-read" href="https://github.com/NVIDIA/personaplex" target="_blank" rel="noopener">Read →</a>
+      <details class="analysis-drawer">
+        <summary class="btn-dossier">[ Analysis + ]</summary>
+        <div class="drawer-content">
+          <h4>Technical Analysis</h4>
+          <p>PersonaPlex is a real-time, full-duplex conversational speech model that enables precise control over an AI’s persona and voice characteristics. By building upon the Moshi architecture and the Helium LLM, it allows users to guide interactions through text-based role prompts while conditioning the output with specific audio-based voice embeddings. The model supports a wide array of predefined voice profiles, ranging from natural, conversational tones to more varied styles, making it suitable for both structured customer service roles and spontaneous, casual dialogue.</p>
+<p>Developers and researchers focusing on human-computer interaction will benefit from this project due to its low-latency performance and robust capabilities in handling complex, turn-taking conversations. The repository is gaining traction because it bridges the gap between static text-to-speech engines and fluid, persona-driven artificial agents. By providing an accessible framework for deploying conversational AI that can adapt to specific, nuanced scenarios—such as technical support or creative roleplay—it serves as a powerful tool for those aiming to create more human-like and context-aware conversational systems.</p>
+          
+          <p class="drawer-footer"><a href="#dossier-4">View in Dossier ↓</a></p>
+        </div>
+      </details>
+    </div>
     </div>
   </section>
   <section id="story-5" class="spread arc-system-core">
@@ -387,7 +460,18 @@
       <h2 class="frnc">Optimizing LLM Inference for Resource-Constrained Hardware</h2>
       <p class="story-meta">github.com &nbsp;·&nbsp; 2,775 stars &nbsp;·&nbsp; 0 stars today</p>
       <p class="lede">Efficiency is the final bottleneck in edge computing. This framework strips away cloud dependencies, utilizing hardware acceleration to deliver production-ready inference on mobile and IoT devices.</p>
-      <div class="ctas"><a class="btn-read" href="https://github.com/google-ai-edge/LiteRT-LM" target="_blank" rel="noopener">Read →</a><a class="btn-dossier" href="#dossier-5">Full analysis ↓</a></div>
+      <div class="ctas"><a class="btn-read" href="https://github.com/google-ai-edge/LiteRT-LM" target="_blank" rel="noopener">Read →</a>
+      <details class="analysis-drawer">
+        <summary class="btn-dossier">[ Analysis + ]</summary>
+        <div class="drawer-content">
+          <h4>Technical Analysis</h4>
+          <p>LiteRT-LM is Google’s production-ready inference framework designed to deploy Large Language Models (LLMs) efficiently on edge devices, including mobile, desktop, and IoT hardware. The framework leverages hardware acceleration through GPU and NPU integration to deliver high-performance execution for models like Gemma, Llama, and Phi-4. Technically, it supports multi-modal inputs, advanced tool-use capabilities for agentic workflows, and cross-platform compatibility through stable APIs in Kotlin, Python, and C++.</p>
+<p>This project is highly beneficial for developers and organizations aiming to bring sophisticated on-device GenAI experiences to resource-constrained environments like wearables, laptops, and mobile applications. It is currently trending because it empowers creators to move beyond cloud-dependent AI, offering the same technology that powers Google’s own Chrome and Pixel products. By providing a streamlined CLI and robust integration support, LiteRT-LM significantly lowers the barrier to entry for building privacy-conscious, low-latency, and offline-capable AI applications.</p>
+          
+          <p class="drawer-footer"><a href="#dossier-5">View in Dossier ↓</a></p>
+        </div>
+      </details>
+    </div>
     </div>
   </section>
   <section id="story-6" class="spread arc-midnight">
@@ -398,7 +482,18 @@
       <h2 class="frnc">Scaling Social Media Production With Automated Bots</h2>
       <p class="story-meta">github.com &nbsp;·&nbsp; 10,253 stars &nbsp;·&nbsp; 0 stars today</p>
       <p class="lede">Content generation requires constant activity, often while the world sleeps. This automation suite manages the scraping and rendering of video assets to keep channels active without manual intervention.</p>
-      <div class="ctas"><a class="btn-read" href="https://github.com/elebumm/RedditVideoMakerBot" target="_blank" rel="noopener">Read →</a><a class="btn-dossier" href="#dossier-6">Full analysis ↓</a></div>
+      <div class="ctas"><a class="btn-read" href="https://github.com/elebumm/RedditVideoMakerBot" target="_blank" rel="noopener">Read →</a>
+      <details class="analysis-drawer">
+        <summary class="btn-dossier">[ Analysis + ]</summary>
+        <div class="drawer-content">
+          <h4>Technical Analysis</h4>
+          <p>The RedditVideoMakerBot is an automation tool designed to generate high-quality video content from Reddit threads for platforms like TikTok, YouTube, and Instagram. By leveraging the Reddit API and Python-based automation, the software automatically scrapes content, creates visual assets, and renders a video file without requiring manual editing. Key features include support for customizable background videos, diverse voice synthesis options, subreddit filtering, and NSFW content moderation to streamline the production process.</p>
+<p>This project is primarily intended for content creators and social media marketers looking to scale their production of &quot;Reddit-reading&quot; style videos with minimal manual effort. It has gained significant traction because it enables users to monetize popular, low-effort content trends while automating the most time-consuming aspects of video assembly. By removing the need for traditional video editing skills, the tool lowers the barrier to entry for creators aiming to build a presence across multiple social media platforms simultaneously.</p>
+          
+          <p class="drawer-footer"><a href="#dossier-6">View in Dossier ↓</a></p>
+        </div>
+      </details>
+    </div>
     </div>
   </section>
   <section id="story-7" class="spread arc-stat-hero">
@@ -408,7 +503,18 @@
       <h2 class="frnc">Standardizing Engineering Protocols for Agentic Development</h2>
       <p class="story-meta">github.com &nbsp;·&nbsp; 140,451 stars &nbsp;·&nbsp; 0 stars today</p>
       <p class="lede">Scaling development requires more than just code generation; it requires repeatable engineering discipline. By embedding TDD and structured planning into the agent loop, this framework ensures consistent, verifiable software output.</p>
-      <div class="ctas"><a class="btn-read" href="https://github.com/obra/superpowers" target="_blank" rel="noopener">Read →</a><a class="btn-dossier" href="#dossier-7">Full analysis ↓</a></div>
+      <div class="ctas"><a class="btn-read" href="https://github.com/obra/superpowers" target="_blank" rel="noopener">Read →</a>
+      <details class="analysis-drawer">
+        <summary class="btn-dossier">[ Analysis + ]</summary>
+        <div class="drawer-content">
+          <h4>Technical Analysis</h4>
+          <p>Superpowers is an agentic framework designed to standardize the software development lifecycle by integrating a library of composable, automated &quot;skills&quot; directly into coding agents like Claude Code and Cursor. Instead of jumping straight to code, the system enforces a structured workflow that begins with Socratic brainstorming, proceeds to detailed implementation planning, and culminates in a rigorous subagent-driven development cycle. Technically, it functions as a plugin that triggers mandatory engineering protocols—such as strict test-driven development (TDD), git worktree management, and iterative code reviews—ensuring that agents maintain high-quality standards and consistent progress without requiring manual intervention.</p>
+<p>This project is highly beneficial for developers and software teams looking to minimize the &quot;hallucination&quot; and ad-hoc coding patterns often associated with AI-assisted programming. It is trending because it addresses a critical gap in the current AI developer tool ecosystem: the transition from simple code generation to reliable, autonomous project execution that mirrors professional engineering discipline. By embedding best practices like YAGNI and DRY into the agent&#x27;s core decision-making loop, Superpowers provides a repeatable, scalable methodology for building robust software applications.</p>
+          
+          <p class="drawer-footer"><a href="#dossier-7">View in Dossier ↓</a></p>
+        </div>
+      </details>
+    </div>
     </div>
   </section>
   <section id="story-8" class="spread arc-enterprise-engine">
@@ -418,7 +524,18 @@
       <h2 class="frnc">Building Scalable Simulation Engines for Robotic Training</h2>
       <p class="story-meta">github.com &nbsp;·&nbsp; 3,886 stars &nbsp;·&nbsp; 0 stars today</p>
       <p class="lede">Reliable physics modeling is the foundation of autonomous systems. Developed by a coalition of industry leaders, this engine provides a standardized, high-performance base for training complex AI agents.</p>
-      <div class="ctas"><a class="btn-read" href="https://github.com/newton-physics/newton" target="_blank" rel="noopener">Read →</a><a class="btn-dossier" href="#dossier-8">Full analysis ↓</a></div>
+      <div class="ctas"><a class="btn-read" href="https://github.com/newton-physics/newton" target="_blank" rel="noopener">Read →</a>
+      <details class="analysis-drawer">
+        <summary class="btn-dossier">[ Analysis + ]</summary>
+        <div class="drawer-content">
+          <h4>Technical Analysis</h4>
+          <p>Newton is a high-performance, GPU-accelerated physics simulation engine designed to serve as a successor to the deprecated warp.sim module within the NVIDIA Warp ecosystem. By integrating MuJoCo Warp as its primary backend, the engine leverages massive parallelization to provide efficient, differentiable, and extensible physics modeling. It also emphasizes interoperability through native support for OpenUSD, allowing for seamless integration into modern 3D graphics and simulation pipelines.</p>
+<p>This project is primarily aimed at roboticists, simulation researchers, and AI developers who require scalable, high-fidelity environments for testing and training autonomous agents. Its collaborative foundation—spearheaded by industry leaders like Disney Research, Google DeepMind, and NVIDIA—has made it a focal point for the research community seeking to standardize open-source simulation tools. As a Linux Foundation project, Newton’s combination of GPU-accelerated performance, ease of use through Python, and extensible architecture positions it as a vital asset for those pushing the boundaries of physical machine learning.</p>
+          
+          <p class="drawer-footer"><a href="#dossier-8">View in Dossier ↓</a></p>
+        </div>
+      </details>
+    </div>
     </div>
   </section>
   <section id="story-9" class="spread arc-terminal-utility">
@@ -428,7 +545,18 @@
       <h2 class="frnc">Mapping Local Codebases Into Interactive Knowledge Graphs</h2>
       <p class="story-meta">github.com &nbsp;·&nbsp; 24,988 stars &nbsp;·&nbsp; 0 stars today</p>
       <p class="lede">Effective AI assistance relies on deep context, not just fuzzy matches. This server provides agents with a precise architectural map of the codebase, allowing for intelligent navigation and refactoring via CLI.</p>
-      <div class="ctas"><a class="btn-read" href="https://github.com/abhigyanpatwari/GitNexus" target="_blank" rel="noopener">Read →</a><a class="btn-dossier" href="#dossier-9">Full analysis ↓</a></div>
+      <div class="ctas"><a class="btn-read" href="https://github.com/abhigyanpatwari/GitNexus" target="_blank" rel="noopener">Read →</a>
+      <details class="analysis-drawer">
+        <summary class="btn-dossier">[ Analysis + ]</summary>
+        <div class="drawer-content">
+          <h4>Technical Analysis</h4>
+          <p>GitNexus is a zero-server code intelligence engine that transforms local codebases into interactive knowledge graphs for enhanced AI developer assistance. By leveraging Tree-sitter for code parsing and a persistent, high-performance database called LadybugDB, it indexes dependencies, call chains, and execution flows directly on the user&#x27;s machine. The tool operates as an MCP (Model Context Protocol) server, providing AI agents—such as Claude Code and Cursor—with deep architectural awareness, impact analysis, and automated refactoring skills without requiring external data transmission.</p>
+<p>This project is primarily designed for professional software engineers and AI-assisted development teams who struggle with the context limitations of standard LLMs. It is currently trending because it solves the &quot;blind edit&quot; problem, allowing agents to understand the broader implications of code changes and dependencies that otherwise result in broken features. By offering both a visual web-based explorer and a robust CLI for seamless editor integration, GitNexus significantly bridges the gap between static code analysis and reliable, agent-driven software development.</p>
+          
+          <p class="drawer-footer"><a href="#dossier-9">View in Dossier ↓</a></p>
+        </div>
+      </details>
+    </div>
     </div>
   </section>
   <section id="story-10" class="spread arc-experimental-workshop">
@@ -438,7 +566,18 @@
       <h2 class="frnc">Simulating Market Dynamics With Multi-Agent Investment Frameworks</h2>
       <p class="story-meta">github.com &nbsp;·&nbsp; 50,430 stars &nbsp;·&nbsp; 0 stars today</p>
       <p class="lede">Finance is a game of shifting perspectives and calculated risk. This prototype explores how multiple, specialized AI agents can synthesize diverse financial data to mirror the decision-making of expert investors.</p>
-      <div class="ctas"><a class="btn-read" href="https://github.com/virattt/ai-hedge-fund" target="_blank" rel="noopener">Read →</a><a class="btn-dossier" href="#dossier-10">Full analysis ↓</a></div>
+      <div class="ctas"><a class="btn-read" href="https://github.com/virattt/ai-hedge-fund" target="_blank" rel="noopener">Read →</a>
+      <details class="analysis-drawer">
+        <summary class="btn-dossier">[ Analysis + ]</summary>
+        <div class="drawer-content">
+          <h4>Technical Analysis</h4>
+          <p>The AI Hedge Fund project is an educational proof-of-concept platform that simulates an AI-powered investment firm by utilizing a multi-agent system. It integrates specialized &quot;investor agents,&quot; modeled after legendary figures like Warren Buffett and Michael Burry, alongside dedicated functional agents that perform sentiment analysis, valuation, and technical analysis. Technically, the system functions by aggregating financial data and using LLMs to synthesize these diverse perspectives into cohesive trading signals, all managed by a centralized Portfolio Manager and Risk Manager.</p>
+<p>This project is primarily aimed at developers, finance enthusiasts, and students who want to explore the intersection of generative AI and quantitative finance. It is currently trending because it provides a highly accessible, modular framework for experimenting with agentic workflows in a domain as complex as market analysis. By offering both a command-line interface and a web application, the project democratizes complex investment modeling while serving as a valuable learning tool for those interested in autonomous AI decision-making.</p>
+          
+          <p class="drawer-footer"><a href="#dossier-10">View in Dossier ↓</a></p>
+        </div>
+      </details>
+    </div>
     </div>
   </section>
   <section id="dossier" class="dossier">
@@ -598,6 +737,19 @@
     localStorage.setItem(key, JSON.stringify(stored));
   }
 })();
+</script>
+<script>
+// Simple script to toggle the [+] and [-] labels on the drawers
+document.querySelectorAll('.analysis-drawer').forEach(drawer => {
+  drawer.addEventListener('toggle', () => {
+    const summary = drawer.querySelector('summary');
+    if (drawer.open) {
+      summary.textContent = '[ Analysis − ]';
+    } else {
+      summary.textContent = '[ Analysis + ]';
+    }
+  });
+});
 </script>
 </body>
 </html>

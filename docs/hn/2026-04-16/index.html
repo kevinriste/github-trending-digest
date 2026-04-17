@@ -40,14 +40,43 @@
   .story-meta { font-weight: 600; font-size: 1.1rem; margin-bottom: 3rem; opacity: 0.6; letter-spacing: 0.02em; }
   .lede { font-size: clamp(1.4rem, 2.5vw, 2.1rem); line-height: 1.35; max-width: 800px; margin: 0 0 4rem; font-weight: 450; }
   
-  .ctas { display: flex; gap: 2.5rem; align-items: center; }
+  .ctas { display: flex; gap: 2.5rem; align-items: flex-start; }
   .ctas a {
     text-decoration: none; font-weight: 700; font-size: 1.1rem; letter-spacing: 0.1em; text-transform: uppercase;
     padding: 1.2rem 2.4rem; transition: all 0.2s;
   }
-  .btn-read { background: var(--text-dark); color: var(--bg-light); }
-  .btn-dossier { border-bottom: 2px solid currentColor; padding: 0.5rem 0 !important; }
+  .btn-read { background: var(--text-dark); color: var(--bg-light); cursor: pointer; border: none; }
+  .btn-dossier { 
+    border-bottom: 2px solid currentColor; padding: 0.5rem 0 !important; 
+    text-decoration: none; font-weight: 700; font-size: 1.1rem; letter-spacing: 0.1em; 
+    text-transform: uppercase; cursor: pointer; background: transparent; color: inherit;
+    display: inline-block;
+  }
   
+  /* ───── ANALYSIS DRAWER ───── */
+  .analysis-drawer { margin-top: 0; width: 100%; max-width: 800px; }
+  .analysis-drawer summary { list-style: none; outline: none; }
+  .analysis-drawer summary::-webkit-details-marker { display: none; }
+  .analysis-drawer[open] summary { margin-bottom: 2rem; }
+  .analysis-drawer[open] summary::after { content: ""; } /* Could add JS to toggle label but we'll do CSS trick or just keep static */
+  
+  .drawer-content {
+    background: rgba(0,0,0,0.03); padding: 3rem; border-left: 4px solid var(--text-dark);
+    animation: slideDown 0.3s ease-out;
+  }
+  .arc-midnight .drawer-content { background: rgba(255,255,255,0.05); border-color: #fff; }
+  .arc-terminal .drawer-content { background: rgba(32, 194, 14, 0.05); border-color: #20c20e; }
+  
+  .drawer-content h4 { text-transform: uppercase; letter-spacing: 0.2em; font-size: 0.9rem; margin-top: 0; margin-bottom: 1.5rem; opacity: 0.6; }
+  .drawer-content p { font-family: 'Fraunces', serif; font-size: 1.3rem; line-height: 1.5; margin-bottom: 1.5rem; }
+  .drawer-footer { margin-top: 2rem; border-top: 1px solid rgba(0,0,0,0.1); padding-top: 1.5rem; }
+  .drawer-footer a { font-size: 0.9rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; text-decoration: none; color: inherit; opacity: 0.5; }
+  
+  @keyframes slideDown {
+    from { opacity: 0; transform: translateY(-10px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
   /* ───── ARCHETYPE CSS ───── */
   
   /* Stat Hero */
@@ -347,7 +376,21 @@
       <h2 class="frnc">Global IPv6 Traffic Hits Critical Adoption Milestone</h2>
       <p class="story-meta">google.com &nbsp;·&nbsp; 313 pts &nbsp;·&nbsp; 192 comments</p>
       <p class="lede">Internet infrastructure has reached a long-awaited point of parity. As dual-stack configurations become the standard, the transition to the newer addressing protocol moves from a niche necessity to a majority-traffic reality.</p>
-      <div class="ctas"><a class="btn-read" href="https://www.google.com/intl/en/ipv6/statistics.html?yzh=28197" target="_blank" rel="noopener">Read →</a><a class="btn-dossier" href="#dossier-1">Full analysis ↓</a></div>
+      <div class="ctas"><a class="btn-read" href="https://www.google.com/intl/en/ipv6/statistics.html?yzh=28197" target="_blank" rel="noopener">Read →</a>
+      <details class="analysis-drawer">
+        <summary class="btn-dossier">[ Analysis + ]</summary>
+        <div class="drawer-content">
+          <h4>Technical Analysis</h4>
+          <p>Google has officially reported that IPv6 traffic adoption has surpassed the 50% milestone among its users globally. This statistic tracks the percentage of internet traffic reaching Google services via the newer IPv6 protocol rather than the legacy IPv4 standard. The data is intended to provide transparency for internet service providers, website operators, and policymakers as the industry continues the long-term transition to a more scalable addressing system.</p>
+          <h4>Reader Reactions</h4>
+<p>Users generally agree that IPv6 adoption has plateaued near 50% because existing IPv4 infrastructure remains functional, ubiquitous, and sufficiently maintained by ISPs, removing the immediate financial pressure to complete a total transition.</p>
+<p>Some participants argue that the primary barrier is the reluctance of domestic ISPs to replace aging hardware, suggesting that only a forced deprecation of IPv4 by major platforms would accelerate widespread adoption.</p>
+<p>Dual-stack configurations often introduce complex connectivity issues, such as broken path MTU discovery or routing failures, which make IPv6-only environments difficult for developers and end-users to manage without significant technical troubleshooting.</p>
+<p>The discussion sample shows an over-representation of technical power users and homelab enthusiasts, whose specific frustrations with IPv6 implementation might not accurately reflect the experiences or needs of average global internet consumers.</p>
+          <p class="drawer-footer"><a href="#dossier-1">View in Dossier ↓</a></p>
+        </div>
+      </details>
+    </div>
     </div>
   </section>
   <section id="story-2" class="spread arc-midnight">
@@ -358,7 +401,21 @@
       <h2 class="frnc">Darkbloom Bridges Idle Hardware for Private AI Inference</h2>
       <p class="story-meta">darkbloom.dev &nbsp;·&nbsp; 264 pts &nbsp;·&nbsp; 145 comments</p>
       <p class="lede">By leveraging underutilized Apple Silicon, this network attempts to bypass the hyperscaler monopoly. Cryptographic hardware verification ensures that inference tasks remain shielded from both the host and the intermediary.</p>
-      <div class="ctas"><a class="btn-read" href="https://darkbloom.dev" target="_blank" rel="noopener">Read →</a><a class="btn-dossier" href="#dossier-2">Full analysis ↓</a></div>
+      <div class="ctas"><a class="btn-read" href="https://darkbloom.dev" target="_blank" rel="noopener">Read →</a>
+      <details class="analysis-drawer">
+        <summary class="btn-dossier">[ Analysis + ]</summary>
+        <div class="drawer-content">
+          <h4>Technical Analysis</h4>
+          <p>Darkbloom is a decentralized inference network that allows users to run AI models on the idle Apple Silicon hardware of other participants. By bypassing traditional cloud providers and GPU hyperscalers, the platform aims to reduce inference costs by up to 70% while providing hardware owners with a way to monetize their underutilized Macs. To address privacy concerns, the service employs end-to-end encryption and utilizes Apple’s secure hardware to ensure that operators cannot inspect or access the data being processed.</p>
+          <h4>Reader Reactions</h4>
+<p>Users are generally skeptical of the platform&#x27;s economic claims, questioning whether the projected earnings are realistic given the current lack of demand and the logistical costs of running constant compute.</p>
+<p>Proponents argue that a decentralized inference network provides a valuable alternative to hyperscalers, potentially serving as a reliable income stream similar to small-scale solar power for individual residential users.</p>
+<p>The project&#x27;s reliance on MDM enrollment and custom binaries to bypass macOS security limitations raises significant privacy concerns and presents a non-trivial supply chain risk for potential early adopters.</p>
+<p>This sample focuses heavily on technical feasibility and skepticism from power users, likely underrepresenting the perspective of casual participants who might be less concerned about underlying security and infrastructure risks.</p>
+          <p class="drawer-footer"><a href="#dossier-2">View in Dossier ↓</a></p>
+        </div>
+      </details>
+    </div>
     </div>
   </section>
   <section id="story-3" class="spread arc-alert-stamp">
@@ -369,7 +426,21 @@
       <h2 class="frnc">FSF Struggles to Reach Google Over Spam Operation</h2>
       <p class="story-meta">daedal.io &nbsp;·&nbsp; 183 pts &nbsp;·&nbsp; 103 comments</p>
       <p class="lede">Automated reporting portals have failed to suppress a surge of malicious mail originating from a single Gmail account. The Free Software Foundation is now turning to the public to find a human contact capable of manual intervention.</p>
-      <div class="ctas"><a class="btn-read" href="https://daedal.io/@thomzane/116410863009847575" target="_blank" rel="noopener">Read →</a><a class="btn-dossier" href="#dossier-3">Full analysis ↓</a></div>
+      <div class="ctas"><a class="btn-read" href="https://daedal.io/@thomzane/116410863009847575" target="_blank" rel="noopener">Read →</a>
+      <details class="analysis-drawer">
+        <summary class="btn-dossier">[ Analysis + ]</summary>
+        <div class="drawer-content">
+          <h4>Technical Analysis</h4>
+          <p>Thom Zane, a member of the Free Software Foundation, is publicly seeking a direct contact at Google to report a significant spam operation originating from a Gmail account. Despite repeatedly using Google’s official abuse reporting forms, Zane has received no response or resolution regarding the more than 10,000 spam emails sent by a single account last week. He is now leveraging the fediverse to find a human employee who can address this technical abuse, as automated systems have proven ineffective.</p>
+          <h4>Reader Reactions</h4>
+<p>Users overwhelmingly agree that Google provides insufficient mechanisms to report spam originating from Gmail, creating a perception that the company is unresponsive to abuse and is actively degrading email infrastructure.</p>
+<p>Some participants argue that Google&#x27;s aggressive spam filtering is a necessary, albeit imperfect, security measure against a massive global threat, comparing their restrictive protocols to established industry standards like PCI DSS.</p>
+<p>Technical contributors suggest that Gmail spam often leverages legitimate Google service features like calendar invitations or shared documents, which bypass traditional blacklists and render standard abuse-reporting tools largely ineffective for users.</p>
+<p>This sample reflects a technical audience of email administrators and self-hosters who are disproportionately impacted by Gmail’s strict delivery policies, likely skewing the discussion toward negative experiences with email platform centralization.</p>
+          <p class="drawer-footer"><a href="#dossier-3">View in Dossier ↓</a></p>
+        </div>
+      </details>
+    </div>
     </div>
   </section>
   <section id="story-4" class="spread arc-academic-drop-cap">
@@ -383,7 +454,17 @@
       <p class="story-meta">reich.hms.harvard.edu &nbsp;·&nbsp; 3 pts &nbsp;·&nbsp; 0 comments</p>
       <div class="cols">
         <div><p>A new longitudinal study of over 15,000 individuals provides a rigorous framework for identifying natural selection signals.</p></div>
-        <div><p>By correcting for historical migration and genetic drift, researchers have isolated specific alleles that defined human evolution over the last ten millennia.</p><div class="ctas"><a class="btn-read" href="https://reich.hms.harvard.edu/sites/reich.hms.harvard.edu/files/inline-files/2026_Akbari_Nature_selection_0.pdf" target="_blank" rel="noopener">Read →</a><a class="btn-dossier" href="#dossier-4">Full analysis ↓</a></div></div>
+        <div><p>By correcting for historical migration and genetic drift, researchers have isolated specific alleles that defined human evolution over the last ten millennia.</p><div class="ctas"><a class="btn-read" href="https://reich.hms.harvard.edu/sites/reich.hms.harvard.edu/files/inline-files/2026_Akbari_Nature_selection_0.pdf" target="_blank" rel="noopener">Read →</a>
+      <details class="analysis-drawer">
+        <summary class="btn-dossier">[ Analysis + ]</summary>
+        <div class="drawer-content">
+          <h4>Technical Analysis</h4>
+          <p>This article, published in *Nature* by researchers from Harvard and the Broad Institute, presents a new method for detecting directional natural selection in human populations using ancient DNA time-series data. By analyzing 15,836 West Eurasian individuals—10,016 of whom provide new genomic data—the authors identify hundreds of alleles affected by strong selection over the past 10,000 years. Their approach, a generalized linear mixed model (GLMM), accounts for population structure and migration patterns that have confounded previous attempts to isolate true selection signals from genetic drift or historical admixture.</p>
+          
+          <p class="drawer-footer"><a href="#dossier-4">View in Dossier ↓</a></p>
+        </div>
+      </details>
+    </div></div>
       </div>
     </div>
   </section>
@@ -394,7 +475,21 @@
       <p class="story-meta">github.com &nbsp;·&nbsp; 11 pts &nbsp;·&nbsp; 1 comments</p>
       <p class="lede">Citing irreconcilable conflicts with licensing, copyright, and maintainability, the SDL project has closed its doors to automated contributions. Human authorship is now a mandatory requirement for all future patches.</p>
       <div class="ornament">†</div>
-      <div class="ctas"><a class="btn-read" href="https://github.com/libsdl-org/SDL/issues/15350" target="_blank" rel="noopener">Read →</a><a class="btn-dossier" href="#dossier-5">Full analysis ↓</a></div>
+      <div class="ctas"><a class="btn-read" href="https://github.com/libsdl-org/SDL/issues/15350" target="_blank" rel="noopener">Read →</a>
+      <details class="analysis-drawer">
+        <summary class="btn-dossier">[ Analysis + ]</summary>
+        <div class="drawer-content">
+          <h4>Technical Analysis</h4>
+          <p>The SDL library has officially implemented a policy banning the submission of AI-generated code, citing concerns over copyright, code quality, and legal ambiguity regarding the Zlib license. The maintainers now require that all pull requests be written by humans, effectively closing any submissions identified as being generated by LLMs. This decision follows a community discussion where contributors expressed fears that unvetted, AI-authored code could compromise the integrity and legal standing of the project.</p>
+          <h4>Reader Reactions</h4>
+<p>Bullet 1: There is no clear consensus, as contributors are divided between supporting the ban on AI-written code and criticizing the specific justifications provided by the SDL maintainers for implementing it.</p>
+<p>Bullet 2: Critics argue that banning AI commits is futile because developers will simply fork the project to leverage automated tools, potentially leading to a competitive divergence between repositories over time.</p>
+<p>Bullet 3: Skeptics note that AI usage does not inherently reduce the significant human effort, technical skill, and long-term dedication required to properly maintain complex open-source projects like the SDL library.</p>
+<p>Bullet 4: With only three comments analyzed from a total of four, this summary captures individual opinions but lacks the broader thematic scope necessary to represent the entire community&#x27;s stance.</p>
+          <p class="drawer-footer"><a href="#dossier-5">View in Dossier ↓</a></p>
+        </div>
+      </details>
+    </div>
     </div>
   </section>
   <section id="story-6" class="spread arc-editorial-pullquote">
@@ -404,7 +499,21 @@
       <h2 class="frnc">Cybersecurity Scales as a Function of Computational Power</h2>
       <p class="story-meta">dbreunig.com &nbsp;·&nbsp; 440 pts &nbsp;·&nbsp; 162 comments</p>
       <p class="lede">Modern exploit discovery has evolved into a high-stakes resource race. Organizations must now reconcile with a paradigm where defensive integrity is measured by the sheer volume of compute invested in security research.</p>
-      <div class="ctas"><a class="btn-read" href="https://www.dbreunig.com/2026/04/14/cybersecurity-is-proof-of-work-now.html" target="_blank" rel="noopener">Read →</a><a class="btn-dossier" href="#dossier-6">Full analysis ↓</a></div>
+      <div class="ctas"><a class="btn-read" href="https://www.dbreunig.com/2026/04/14/cybersecurity-is-proof-of-work-now.html" target="_blank" rel="noopener">Read →</a>
+      <details class="analysis-drawer">
+        <summary class="btn-dossier">[ Analysis + ]</summary>
+        <div class="drawer-content">
+          <h4>Technical Analysis</h4>
+          <p>The article discusses the emergence of AI models like Anthropic’s Mythos, which demonstrate a high proficiency in executing complex, multi-step cyberattacks. Analysis from the AI Security Institute suggests that security is increasingly becoming a matter of &quot;proof of work,&quot; where the ability to discover vulnerabilities scales linearly with the amount of computational power, or tokens, invested. Consequently, the author argues that defending systems now requires organizations to outspend potential attackers in automated exploit discovery to ensure their software remains secure.</p>
+          <h4>Reader Reactions</h4>
+<p>Bullet 1: Commenters generally agree that cybersecurity is evolving, yet many reject the &quot;proof of work&quot; analogy, arguing that vulnerability discovery is not a linear resource contest but rather requires increasing model intelligence.</p>
+<p>Bullet 2: While some users believe high token spending is necessary for automated defense, skeptics argue this framing ignores fundamental security disciplines, formal verification, and the reality that humans remain the weakest link.</p>
+<p>Bullet 3: Developers should focus on reducing the total attack surface area and implementing robust, simple architectural constraints, as these strategies provide more effective protection than merely burning tokens on brute-force scanning.</p>
+<p>Bullet 4: This sample may over-represent experienced engineers who are skeptical of industry marketing, potentially downplaying the adoption of LLM-based security tools among less technical leadership or institutional enterprise security teams.</p>
+          <p class="drawer-footer"><a href="#dossier-6">View in Dossier ↓</a></p>
+        </div>
+      </details>
+    </div>
     </div>
     <div class="quote-side">
       <blockquote class="pullquote">The defense of digital systems has fundamentally transformed into an expensive and relentless game of automated brute-force discovery.</blockquote>
@@ -419,7 +528,21 @@
       <h2 class="frnc">Windows Defender Exploit Grants Administrative Privilege Escalation</h2>
       <p class="story-meta">github.com &nbsp;·&nbsp; 90 pts &nbsp;·&nbsp; 19 comments</p>
       <p class="lede">A flaw in the way Windows manages quarantined files allows local users to overwrite protected system binaries. Attackers leverage the antivirus’s own recovery mechanisms to bypass standard security permissions.</p>
-      <div class="ctas"><a class="btn-read" href="https://github.com/Nightmare-Eclipse/RedSun" target="_blank" rel="noopener">Read →</a><a class="btn-dossier" href="#dossier-7">Full analysis ↓</a></div>
+      <div class="ctas"><a class="btn-read" href="https://github.com/Nightmare-Eclipse/RedSun" target="_blank" rel="noopener">Read →</a>
+      <details class="analysis-drawer">
+        <summary class="btn-dossier">[ Analysis + ]</summary>
+        <div class="drawer-content">
+          <h4>Technical Analysis</h4>
+          <p>The RedSun repository details a vulnerability in Windows 10, Windows 11, and Windows Server that allows for privilege escalation by exploiting Windows Defender’s behavior. When the antivirus identifies a malicious file marked with a cloud tag, it inadvertently attempts to restore the file to its original location rather than deleting it. An attacker can leverage this process to overwrite sensitive system files, effectively gaining administrative access to the host machine.</p>
+          <h4>Reader Reactions</h4>
+<p>Bullet 1: Commenters widely agree that giving antivirus software system-level privileges creates significant, unnecessary attack surfaces, with many suggesting that OS-level scanning should be separated from sandboxed behavior analysis to improve security.</p>
+<p>Bullet 2: Users strongly disagree on the comparative security of Windows versus Linux, with some arguing that privilege escalation is inevitable in all operating systems while others contest the relevance of such comparisons.</p>
+<p>Bullet 3: The discussion highlights that security vulnerabilities often arise from the deep, privileged integration of third-party services, which could be mitigated by more robust, vendor-provided APIs that minimize the need for high-level permissions.</p>
+<p>Bullet 4: The sample is heavily skewed toward theoretical security architecture debates and personal anecdotes about historical Microsoft software, offering very little substantive analysis regarding the specific technical mechanisms of the RedSun exploit itself.</p>
+          <p class="drawer-footer"><a href="#dossier-7">View in Dossier ↓</a></p>
+        </div>
+      </details>
+    </div>
     </div>
     <div class="tape bottom">CAUTION CAUTION CAUTION CAUTION CAUTION CAUTION CAUTION CAUTION</div>
   </section>
@@ -431,7 +554,21 @@
       <h2 class="frnc">The Potential for Paper-Based Digital Computing</h2>
       <p class="story-meta">jsomers.net &nbsp;·&nbsp; 153 pts &nbsp;·&nbsp; 38 comments</p>
       <p class="lede">We often mistake the screen for the computer itself, ignoring the cognitive utility of physical artifacts. By using modern AI to bridge the gap, we may finally reclaim the focus of analog workflows without sacrificing digital connectivity.</p>
-      <div class="ctas"><a class="btn-read" href="https://jsomers.net/blog/the-paper-computer" target="_blank" rel="noopener">Read →</a><a class="btn-dossier" href="#dossier-8">Full analysis ↓</a></div>
+      <div class="ctas"><a class="btn-read" href="https://jsomers.net/blog/the-paper-computer" target="_blank" rel="noopener">Read →</a>
+      <details class="analysis-drawer">
+        <summary class="btn-dossier">[ Analysis + ]</summary>
+        <div class="drawer-content">
+          <h4>Technical Analysis</h4>
+          <p>James Somers explores the potential for a &quot;paper computer&quot; paradigm, where advanced AI acts as a bridge between physical, low-tech workflows and modern digital convenience. He envisions a future where tools like handwriting-to-text transcription and spatial organization allow users to complete tasks—such as responding to emails or planning projects—using physical objects like notebooks and index cards instead of staring at screens. The core premise is that software could serve as a backend to physical interfaces, effectively automating the synchronization, persistence, and connectivity of analog work without the typical distractions of a standard operating system.</p>
+          <h4>Reader Reactions</h4>
+<p>Commenters generally agree that current screen-based computing is overly distracting and that physical interfaces offer a compelling, human-centric alternative that could improve focus, creativity, and the parenting of children.</p>
+<p>Skeptics argue that relying on analog paper interfaces is an inefficient, regressive solution compared to simply configuring digital tools properly or utilizing specialized devices like e-ink tablets for distraction-free work.</p>
+<p>Multimodal AI could act as the essential bridge between physical media and digital systems by enabling real-time scanning, transcription, and projection to integrate paper workflows back into modern computing environments.</p>
+<p>The sample predominantly features tech-savvy individuals already interested in experimental interfaces, which may overrepresent enthusiasm for niche hardware projects while undercounting users who prefer purely software-based, pragmatic efficiency solutions.</p>
+          <p class="drawer-footer"><a href="#dossier-8">View in Dossier ↓</a></p>
+        </div>
+      </details>
+    </div>
     </div>
   </section>
   <section id="story-9" class="spread arc-mint-pattern" style="--bg-word: 'OPTIMIZATION'">
@@ -443,7 +580,21 @@
       <h2 class="frnc">The XOR Swap Trick Faces Modern Compiler Reality</h2>
       <p class="story-meta">heather.cafe &nbsp;·&nbsp; 67 pts &nbsp;·&nbsp; 45 comments</p>
       <p class="lede">The classic bit-manipulation trick for swapping variables is often touted as a performance optimization. In the context of modern compilers, however, such manual interventions are rarely necessary and often counter-productive.</p>
-      <div class="ctas"><a class="btn-read" href="https://heather.cafe/posts/too_much_xor_swap_trick/" target="_blank" rel="noopener">Read →</a><a class="btn-dossier" href="#dossier-9">Full analysis ↓</a></div>
+      <div class="ctas"><a class="btn-read" href="https://heather.cafe/posts/too_much_xor_swap_trick/" target="_blank" rel="noopener">Read →</a>
+      <details class="analysis-drawer">
+        <summary class="btn-dossier">[ Analysis + ]</summary>
+        <div class="drawer-content">
+          <h4>Technical Analysis</h4>
+          <p>The story examines the technical mechanics and practical utility of the &quot;XOR swap trick,&quot; a well-known programming technique used to swap two variables without an explicit temporary variable. Through detailed code analysis and compiler inspection, the author demonstrates that modern compilers usually optimize traditional temporary-variable swaps into machine code that is as fast or faster than XOR-based alternatives. The article concludes that while the trick is a clever curiosity, it is largely obsolete in modern software development because dedicated machine instructions or compiler optimizations handle data swapping more efficiently.</p>
+          <h4>Reader Reactions</h4>
+<p>The consensus is that the XOR swap trick is largely obsolete in modern software development because contemporary compilers and CPUs handle register swapping and zeroing operations much more efficiently than manual code.</p>
+<p>Some commenters argue that the technique remains relevant in specialized domains like quantum computing algorithms, hardware-level memory optimization, or older assembly-based environments where low-level control of instructions provides measurable performance benefits.</p>
+<p>A key technical takeaway is that developers should prioritize readable, high-level code, allowing modern optimizing compilers to apply hardware-specific techniques like register renaming or vectorization rather than attempting manual bit-level optimizations.</p>
+<p>This sample reflects a strong bias toward systems-level perspectives, potentially overlooking how these patterns persist in educational contexts, competitive programming, or legacy codebases that lack the support of modern compiler toolchains.</p>
+          <p class="drawer-footer"><a href="#dossier-9">View in Dossier ↓</a></p>
+        </div>
+      </details>
+    </div>
     </div>
   </section>
   <section id="story-10" class="spread arc-pastel-playful">
@@ -454,7 +605,21 @@
       <h2 class="frnc">Alphabetical Clock Reimagines the Measurement of Time</h2>
       <p class="story-meta">boat.horse &nbsp;·&nbsp; 26 pts &nbsp;·&nbsp; 4 comments</p>
       <p class="lede">Time is an abstract construct, but this whimsical project makes it a linguistic puzzle. By sorting every minute of the day alphabetically, the clock offers a delightful and completely impractical way to track your schedule.</p>
-      <div class="ctas"><a class="btn-read" href="https://boat.horse/clock/index.html" target="_blank" rel="noopener">Read →</a><a class="btn-dossier" href="#dossier-10">Full analysis ↓</a></div>
+      <div class="ctas"><a class="btn-read" href="https://boat.horse/clock/index.html" target="_blank" rel="noopener">Read →</a>
+      <details class="analysis-drawer">
+        <summary class="btn-dossier">[ Analysis + ]</summary>
+        <div class="drawer-content">
+          <h4>Technical Analysis</h4>
+          <p>The Accursèd Alphabetical Clock is a digital timepiece that displays the current time based on the alphabetical order of its English spelling. It offers two distinct modes: a &quot;Three-Hand&quot; mode that sorts hours, minutes, and seconds independently, and a &quot;Combined&quot; mode that maps every possible time of day to a pre-sorted list of 43,200 entries. The project is a whimsical software implementation inspired by a prior discussion on Mastodon regarding linguistic time representations.</p>
+          <h4>Reader Reactions</h4>
+<p>Bullet 1: The discussion centers on the absurdity of the alphabetical clock design, with users jokingly proposing over-engineered or impractical alternatives to make the time-telling mechanism more functional for daily use.</p>
+<p>Bullet 2: While some commenters embrace the whimsical complexity of the clock, others point out that the proposed fixes are essentially just descriptions of building a sundial, revealing the project&#x27;s inherent limitations.</p>
+<p>Bullet 3: The thread highlights that implementing such a concept as an analog device would require highly complex, non-standard mechanical gears, demonstrating the physical challenges of translating digital logic into tangible clockwork.</p>
+<p>Bullet 4: The sample size is extremely small and dominated by humorous or sarcastic commentary, which likely fails to represent the broader technical feedback or objective interest from the wider Hacker News community.</p>
+          <p class="drawer-footer"><a href="#dossier-10">View in Dossier ↓</a></p>
+        </div>
+      </details>
+    </div>
     </div>
   </section>
   <section id="dossier" class="dossier">
@@ -640,6 +805,19 @@
     localStorage.setItem(key, JSON.stringify(stored));
   }
 })();
+</script>
+<script>
+// Simple script to toggle the [+] and [-] labels on the drawers
+document.querySelectorAll('.analysis-drawer').forEach(drawer => {
+  drawer.addEventListener('toggle', () => {
+    const summary = drawer.querySelector('summary');
+    if (drawer.open) {
+      summary.textContent = '[ Analysis − ]';
+    } else {
+      summary.textContent = '[ Analysis + ]';
+    }
+  });
+});
 </script>
 </body>
 </html>

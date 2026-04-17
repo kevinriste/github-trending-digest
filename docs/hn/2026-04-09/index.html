@@ -40,14 +40,43 @@
   .story-meta { font-weight: 600; font-size: 1.1rem; margin-bottom: 3rem; opacity: 0.6; letter-spacing: 0.02em; }
   .lede { font-size: clamp(1.4rem, 2.5vw, 2.1rem); line-height: 1.35; max-width: 800px; margin: 0 0 4rem; font-weight: 450; }
   
-  .ctas { display: flex; gap: 2.5rem; align-items: center; }
+  .ctas { display: flex; gap: 2.5rem; align-items: flex-start; }
   .ctas a {
     text-decoration: none; font-weight: 700; font-size: 1.1rem; letter-spacing: 0.1em; text-transform: uppercase;
     padding: 1.2rem 2.4rem; transition: all 0.2s;
   }
-  .btn-read { background: var(--text-dark); color: var(--bg-light); }
-  .btn-dossier { border-bottom: 2px solid currentColor; padding: 0.5rem 0 !important; }
+  .btn-read { background: var(--text-dark); color: var(--bg-light); cursor: pointer; border: none; }
+  .btn-dossier { 
+    border-bottom: 2px solid currentColor; padding: 0.5rem 0 !important; 
+    text-decoration: none; font-weight: 700; font-size: 1.1rem; letter-spacing: 0.1em; 
+    text-transform: uppercase; cursor: pointer; background: transparent; color: inherit;
+    display: inline-block;
+  }
   
+  /* ───── ANALYSIS DRAWER ───── */
+  .analysis-drawer { margin-top: 0; width: 100%; max-width: 800px; }
+  .analysis-drawer summary { list-style: none; outline: none; }
+  .analysis-drawer summary::-webkit-details-marker { display: none; }
+  .analysis-drawer[open] summary { margin-bottom: 2rem; }
+  .analysis-drawer[open] summary::after { content: ""; } /* Could add JS to toggle label but we'll do CSS trick or just keep static */
+  
+  .drawer-content {
+    background: rgba(0,0,0,0.03); padding: 3rem; border-left: 4px solid var(--text-dark);
+    animation: slideDown 0.3s ease-out;
+  }
+  .arc-midnight .drawer-content { background: rgba(255,255,255,0.05); border-color: #fff; }
+  .arc-terminal .drawer-content { background: rgba(32, 194, 14, 0.05); border-color: #20c20e; }
+  
+  .drawer-content h4 { text-transform: uppercase; letter-spacing: 0.2em; font-size: 0.9rem; margin-top: 0; margin-bottom: 1.5rem; opacity: 0.6; }
+  .drawer-content p { font-family: 'Fraunces', serif; font-size: 1.3rem; line-height: 1.5; margin-bottom: 1.5rem; }
+  .drawer-footer { margin-top: 2rem; border-top: 1px solid rgba(0,0,0,0.1); padding-top: 1.5rem; }
+  .drawer-footer a { font-size: 0.9rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; text-decoration: none; color: inherit; opacity: 0.5; }
+  
+  @keyframes slideDown {
+    from { opacity: 0; transform: translateY(-10px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
   /* ───── ARCHETYPE CSS ───── */
   
   /* Stat Hero */
@@ -348,7 +377,21 @@
       <h2 class="frnc">Little Snitch Arrives on Linux with eBPF Visibility</h2>
       <p class="story-meta">obdev.at &nbsp;·&nbsp; 1372 pts &nbsp;·&nbsp; 456 comments</p>
       <p class="lede">The venerable macOS network monitor finally bridges the gap to Linux kernels. By leveraging eBPF hooks, the utility grants users unprecedented oversight of their outbound traffic.</p>
-      <div class="ctas"><a class="btn-read" href="https://obdev.at/products/littlesnitch-linux/index.html" target="_blank" rel="noopener">Read →</a><a class="btn-dossier" href="#dossier-1">Full analysis ↓</a></div>
+      <div class="ctas"><a class="btn-read" href="https://obdev.at/products/littlesnitch-linux/index.html" target="_blank" rel="noopener">Read →</a>
+      <details class="analysis-drawer">
+        <summary class="btn-dossier">[ Analysis + ]</summary>
+        <div class="drawer-content">
+          <h4>Technical Analysis</h4>
+          <p>Little Snitch for Linux is a new utility that provides visibility and control over outgoing network connections on Linux systems, similar to its long-standing macOS counterpart. By utilizing eBPF kernel hooks, the software monitors traffic, displays data volumes, and allows users to block connections via a local web interface. While the eBPF and UI components are open-source, the core daemon remains proprietary, and the tool is explicitly marketed as a privacy aid rather than a high-security firewall due to the inherent constraints of the eBPF subsystem.</p>
+          <h4>Reader Reactions</h4>
+<p>Users welcome the arrival of Little Snitch on Linux but maintain a healthy skepticism regarding its closed-source nature and the necessary trust required for root-level tools monitoring network traffic.</p>
+<p>While some praise the tool&#x27;s utility, critics argue that existing open-source alternatives like OpenSnitch are more transparent and that the developer&#x27;s claims regarding eBPF limitations may be overstated or technically inaccurate.</p>
+<p>The Linux version faces inherent constraints compared to its macOS counterpart because eBPF complexity limits and encrypted DNS traffic prevent it from achieving the same level of process-to-connection mapping accuracy.</p>
+<p>This sample likely overrepresents power users and technical enthusiasts, potentially skewing the discussion toward security implementation details rather than the broader usability concerns of average Linux desktop adopters.</p>
+          <p class="drawer-footer"><a href="#dossier-1">View in Dossier ↓</a></p>
+        </div>
+      </details>
+    </div>
     </div>
   </section>
   <section id="story-2" class="spread arc-stat-hero">
@@ -358,7 +401,21 @@
       <h2 class="frnc">Thunderbird Needs Contributions from More Than Three Percent of Users</h2>
       <p class="story-meta">updates.thunderbird.net &nbsp;·&nbsp; 577 pts &nbsp;·&nbsp; 392 comments</p>
       <p class="lede">An independent email client relies on the generosity of a small minority of its user base to fund development. Sustaining ad-free infrastructure requires shifting the burden of support back to the community.</p>
-      <div class="ctas"><a class="btn-read" href="https://updates.thunderbird.net/en-US/thunderbird/140.0/apr26-1e/donate/" target="_blank" rel="noopener">Read →</a><a class="btn-dossier" href="#dossier-2">Full analysis ↓</a></div>
+      <div class="ctas"><a class="btn-read" href="https://updates.thunderbird.net/en-US/thunderbird/140.0/apr26-1e/donate/" target="_blank" rel="noopener">Read →</a>
+      <details class="analysis-drawer">
+        <summary class="btn-dossier">[ Analysis + ]</summary>
+        <div class="drawer-content">
+          <h4>Technical Analysis</h4>
+          <p>The Thunderbird team is soliciting financial contributions from its user base to sustain the development and maintenance of its open-source email client. Because the project operates without corporate funding, advertisements, or data monetization, it relies entirely on donations from less than 3% of its active users. These funds are essential for covering infrastructure costs, bug fixes, feature development, and engineering salaries.</p>
+          <h4>Reader Reactions</h4>
+<p>Users are deeply conflicted, balancing genuine appreciation for Thunderbird’s cross-platform utility against strong resentment toward Mozilla’s opaque financial management, high executive salaries, and the aggressive donation solicitation tactics used on their website.</p>
+<p>While some users advocate for supporting Thunderbird as a crucial independent project, detractors argue it is a bloated, poorly maintained application that does not deserve financial contributions given Mozilla’s massive annual revenues.</p>
+<p>The discussion highlights significant dissatisfaction with enterprise alternatives like Microsoft Outlook, noting its complex setup, dark patterns for cloud syncing, and inconsistent performance across different versions, which drives interest in better open-source tools.</p>
+<p>This sample reflects a tech-savvy, highly skeptical audience that prioritizes transparency and software minimalism, potentially overrepresenting those who are frustrated with organizational structures rather than the average casual user of the software.</p>
+          <p class="drawer-footer"><a href="#dossier-2">View in Dossier ↓</a></p>
+        </div>
+      </details>
+    </div>
     </div>
   </section>
   <section id="story-3" class="spread arc-blueprint">
@@ -368,7 +425,21 @@
       <h2 class="frnc">Porting Mac OS X Cheetah to Nintendo Wii Hardware</h2>
       <p class="story-meta">bryankeller.github.io &nbsp;·&nbsp; 1922 pts &nbsp;·&nbsp; 328 comments</p>
       <p class="lede">A sophisticated exercise in cross-platform engineering, this project adapts the XNU kernel for non-Apple silicon. By reverse-engineering the Wii&#x27;s memory layout, the author bridges a vintage OS with a classic console.</p>
-      <div class="ctas"><a class="btn-read" href="https://bryankeller.github.io/2026/04/08/porting-mac-os-x-nintendo-wii.html" target="_blank" rel="noopener">Read →</a><a class="btn-dossier" href="#dossier-3">Full analysis ↓</a></div>
+      <div class="ctas"><a class="btn-read" href="https://bryankeller.github.io/2026/04/08/porting-mac-os-x-nintendo-wii.html" target="_blank" rel="noopener">Read →</a>
+      <details class="analysis-drawer">
+        <summary class="btn-dossier">[ Analysis + ]</summary>
+        <div class="drawer-content">
+          <h4>Technical Analysis</h4>
+          <p>The author describes a project to port Mac OS X 10.0 Cheetah to the Nintendo Wii by leveraging the console&#x27;s PowerPC-based hardware. Because the Wii utilizes a processor architecture similar to early 2000s-era Macs, the project involved creating a custom bootloader, patching the XNU kernel to account for the Wii’s unique memory layout, and writing new drivers using the IOKit framework. The work required bypassing traditional boot processes and implementing custom communication protocols to allow the OS to recognize the Wii’s hardware components, such as its SD card slot and internal system-on-a-chip.</p>
+          <h4>Reader Reactions</h4>
+<p>Participants hold a near-unanimous consensus that this project is an impressive technical achievement, praising the author for the high quality of their documentation and the difficulty of the underlying engineering work.</p>
+<p>While the community celebrates the port, some contributors express skepticism toward the modern utility of Hackintoshing, arguing that the architecture is now a legacy museum piece prone to instability and frustration.</p>
+<p>Technically, the project highlights how modular, well-abstracted software architectures like IOKit allow developers to manipulate hardware interfaces, even when ported to platforms significantly different from their original design targets like the Wii.</p>
+<p>This sample focuses heavily on high-level praise and technical anecdotes, potentially underrepresenting readers who might have concerns regarding the legal or practical long-term viability of running proprietary software on unauthorized hardware.</p>
+          <p class="drawer-footer"><a href="#dossier-3">View in Dossier ↓</a></p>
+        </div>
+      </details>
+    </div>
     </div>
   </section>
   <section id="story-4" class="spread arc-caution-tape">
@@ -380,7 +451,21 @@
       <h2 class="frnc">Astral Hardens Open Source Release Pipelines</h2>
       <p class="story-meta">astral.sh &nbsp;·&nbsp; 365 pts &nbsp;·&nbsp; 109 comments</p>
       <p class="lede">Modern software delivery is fraught with risks that demand rigorous verification. Astral defines a new standard for supply chain safety using OIDC authentication and mandatory multi-person release approvals.</p>
-      <div class="ctas"><a class="btn-read" href="https://astral.sh/blog/open-source-security-at-astral" target="_blank" rel="noopener">Read →</a><a class="btn-dossier" href="#dossier-4">Full analysis ↓</a></div>
+      <div class="ctas"><a class="btn-read" href="https://astral.sh/blog/open-source-security-at-astral" target="_blank" rel="noopener">Read →</a>
+      <details class="analysis-drawer">
+        <summary class="btn-dossier">[ Analysis + ]</summary>
+        <div class="drawer-content">
+          <h4>Technical Analysis</h4>
+          <p>Astral, the company behind tools like Ruff and uv, has published a detailed overview of the security practices they employ to protect their open-source software supply chain. The article outlines their strategy for securing GitHub Actions CI/CD workflows, managing organizational permissions, and hardening release processes against account takeovers. By detailing their use of hash-pinning, two-person release approvals, and OIDC-based authentication, the team aims to provide a blueprint for other maintainers to mitigate common supply chain risks.</p>
+          <h4>Reader Reactions</h4>
+<p>Commenters generally validate the importance of supply chain security but express frustration that modern build systems force developers to constantly reinvent established solutions for reproducibility and software authentication.</p>
+<p>Participants strongly disagree on whether current cloud-based CI/CD platforms like GitHub can ever be considered truly secure, even when implementing the rigorous, manual security steps outlined by the authors.</p>
+<p>Users frequently suggest that adopting declarative, reproducible build systems like Nix could mitigate many supply chain risks, though they acknowledge that poor documentation and steep learning curves hinder widespread industry adoption.</p>
+<p>The sample reflects a niche subset of security-conscious developers, potentially overrepresenting those who prioritize absolute build verification over the practical ease-of-use requirements preferred by the broader Python developer community.</p>
+          <p class="drawer-footer"><a href="#dossier-4">View in Dossier ↓</a></p>
+        </div>
+      </details>
+    </div>
     </div>
     <div class="tape bottom">CAUTION CAUTION CAUTION CAUTION CAUTION CAUTION CAUTION CAUTION</div>
   </section>
@@ -391,7 +476,21 @@
       <h2 class="frnc">Crafting the Digital Futurescape of The Fifth Element</h2>
       <p class="story-meta">theasc.com &nbsp;·&nbsp; 135 pts &nbsp;·&nbsp; 111 comments</p>
       <p class="lede">The boundary between physical miniatures and digital matte paintings blurred in this 1997 cinematic landmark. Pioneering high-speed camera techniques allowed the production team to build a world that remains visually distinct today.</p>
-      <div class="ctas"><a class="btn-read" href="https://theasc.com/articles/fantastic-voyage-creating-the-futurescape-for-the-fifth-element" target="_blank" rel="noopener">Read →</a><a class="btn-dossier" href="#dossier-5">Full analysis ↓</a></div>
+      <div class="ctas"><a class="btn-read" href="https://theasc.com/articles/fantastic-voyage-creating-the-futurescape-for-the-fifth-element" target="_blank" rel="noopener">Read →</a>
+      <details class="analysis-drawer">
+        <summary class="btn-dossier">[ Analysis + ]</summary>
+        <div class="drawer-content">
+          <h4>Technical Analysis</h4>
+          <p>This article details the visual effects production of Luc Besson’s 1997 film *The Fifth Element*, focusing on the collaboration between the director and the studio Digital Domain. To realize Besson’s complex, comic-book-inspired vision, the team utilized a hybrid approach that blended large-scale physical miniatures, pioneering digital matte paintings, and early computer-generated imagery. The production was notable for its technical experimentation, including the use of high-speed Arriflex 435 cameras and the integration of pre-visualization software to synchronize complex camera moves between the digital and physical environments.</p>
+          <h4>Reader Reactions</h4>
+<p>Users express significant appreciation for the artistry and masterful craft behind the film&#x27;s production design, often highlighting the immense care put into creating the unique visual world of the movie.</p>
+<p>Opinions diverge sharply on the film&#x27;s overall quality, with some viewers praising its cinematic atmosphere while others criticize the pacing and character dynamics compared to genre benchmarks like Blade Runner.</p>
+<p>Technical discussions highlight the behind-the-scenes engineering of physical props, while a secondary, largely unrelated thread notes the recent emergence of open-source software projects associated with the film&#x27;s lead actress.</p>
+<p>The small sample size fails to represent the broader Hacker News consensus, as half the comments focus on tangentially related external software projects rather than the article’s core cinematic subject.</p>
+          <p class="drawer-footer"><a href="#dossier-5">View in Dossier ↓</a></p>
+        </div>
+      </details>
+    </div>
     </div>
   </section>
   <section id="story-6" class="spread arc-editorial-pullquote">
@@ -401,7 +500,21 @@
       <h2 class="frnc">Reallocating Development Spend for Better Agent Flexibility</h2>
       <p class="story-meta">braw.dev &nbsp;·&nbsp; 349 pts &nbsp;·&nbsp; 233 comments</p>
       <p class="lede">Moving away from fixed monthly subscriptions to usage-based models offers developers greater control over their AI tooling. This shift forces a broader evaluation of how we purchase and integrate LLM power into our workflows.</p>
-      <div class="ctas"><a class="btn-read" href="https://braw.dev/blog/2026-04-06-reallocating-100-month-claude-spend/" target="_blank" rel="noopener">Read →</a><a class="btn-dossier" href="#dossier-6">Full analysis ↓</a></div>
+      <div class="ctas"><a class="btn-read" href="https://braw.dev/blog/2026-04-06-reallocating-100-month-claude-spend/" target="_blank" rel="noopener">Read →</a>
+      <details class="analysis-drawer">
+        <summary class="btn-dossier">[ Analysis + ]</summary>
+        <div class="drawer-content">
+          <h4>Technical Analysis</h4>
+          <p>The author describes a strategy for replacing a restrictive $100/month subscription to Claude Code with a more flexible setup using the Zed editor and OpenRouter. By configuring an &quot;agent harness&quot;—a system that manages LLM interactions and file operations—the author can bypass Anthropic&#x27;s hard usage limits while gaining access to a wider variety of models. This approach leverages OpenRouter to pay for actual token usage, ensuring that unused credits roll over to subsequent months rather than expiring at the end of a billing cycle.</p>
+          <h4>Reader Reactions</h4>
+<p>Users value OpenRouter for its model flexibility and cost-tracking transparency, though some express concerns regarding financial stability, payment processing reliability with banking institutions, and the potential expiration of unused service credits.</p>
+<p>Critics argue that high monthly spending on coding agents is excessive, suggesting instead that users should leverage bundled enterprise plans or more cost-effective model alternatives to maintain high-performance development workflows.</p>
+<p>Professional developers prioritize IDE integration quality and context management over raw pricing, noting that while Zed offers speed, it currently lacks certain specialized features found in more mature VSCode-based coding environments.</p>
+<p>This sample likely overrepresents power users and early adopters willing to pay significant monthly premiums for AI tooling, potentially masking the broader developer preference for free or lower-cost native IDE features.</p>
+          <p class="drawer-footer"><a href="#dossier-6">View in Dossier ↓</a></p>
+        </div>
+      </details>
+    </div>
     </div>
     <div class="quote-side">
       <blockquote class="pullquote">Efficiency in the agent era means treating models as commodities rather than static subscriptions</blockquote>
@@ -416,7 +529,21 @@
       <h2 class="frnc">Adopting Modern C# Patterns in Unity 2026</h2>
       <p class="story-meta">darkounity.com &nbsp;·&nbsp; 78 pts &nbsp;·&nbsp; 100 comments</p>
       <p class="lede">Game developers often cling to legacy syntax even as the engine matures. Embracing tuples, properties, and LINQ can transform brittle, legacy-burdened codebases into maintainable, performant systems.</p>
-      <div class="ctas"><a class="btn-read" href="https://darkounity.com/blog/c-in-unity-2026-features-most-developers-still-dont-use" target="_blank" rel="noopener">Read →</a><a class="btn-dossier" href="#dossier-7">Full analysis ↓</a></div>
+      <div class="ctas"><a class="btn-read" href="https://darkounity.com/blog/c-in-unity-2026-features-most-developers-still-dont-use" target="_blank" rel="noopener">Read →</a>
+      <details class="analysis-drawer">
+        <summary class="btn-dossier">[ Analysis + ]</summary>
+        <div class="drawer-content">
+          <h4>Technical Analysis</h4>
+          <p>The article explores why many Unity developers continue to rely on outdated C# coding patterns despite significant advancements in the engine&#x27;s runtime and the .NET ecosystem. The author attributes this trend to the historical limitations of the Mono runtime, the persistent influence of legacy tutorials, and the lack of standardized formal training within the self-taught game development community. By examining features like properties, tuples, and LINQ, the author demonstrates how modern C# syntax can improve code maintainability and safety while providing performance benchmarks to help developers weigh the trade-offs of these techniques.</p>
+          <h4>Reader Reactions</h4>
+<p>Game developers often prioritize project completion and functional gameplay over architectural purity, viewing &quot;messy&quot; code as a pragmatic, time-saving tool rather than a failure of engineering in solo or small-scale environments.</p>
+<p>Experienced software engineers argue that this casual approach creates brittle &quot;Jenga towers&quot; that are impossible to refactor, eventually leading to abandoned projects or unmaintainable codebases when requirements inevitably grow in scope.</p>
+<p>Developers looking to optimize performance while maintaining readable code should consider specialized libraries like ZLinq, which provide an efficient alternative to standard LINQ queries for UI code and initialization tasks.</p>
+<p>The discussion represents a narrow viewpoint focused heavily on individual game developer experiences, potentially underrepresenting the rigorous engineering standards applied in large-scale, professional, multi-developer game production environments within the Unity ecosystem.</p>
+          <p class="drawer-footer"><a href="#dossier-7">View in Dossier ↓</a></p>
+        </div>
+      </details>
+    </div>
     </div>
   </section>
   <section id="story-8" class="spread arc-pastel-playful">
@@ -427,7 +554,21 @@
       <h2 class="frnc">Haunted Paper Toys Bring Gothic Aesthetics to Print</h2>
       <p class="story-meta">ravensblight.com &nbsp;·&nbsp; 244 pts &nbsp;·&nbsp; 32 comments</p>
       <p class="lede">With little more than card stock and steady hands, these printable designs offer a dark, DIY charm. They serve as a whimsical, tactile addition to any tabletop collection.</p>
-      <div class="ctas"><a class="btn-read" href="http://ravensblight.com/papertoys.html" target="_blank" rel="noopener">Read →</a><a class="btn-dossier" href="#dossier-8">Full analysis ↓</a></div>
+      <div class="ctas"><a class="btn-read" href="http://ravensblight.com/papertoys.html" target="_blank" rel="noopener">Read →</a>
+      <details class="analysis-drawer">
+        <summary class="btn-dossier">[ Analysis + ]</summary>
+        <div class="drawer-content">
+          <h4>Technical Analysis</h4>
+          <p>&quot;Haunted Paper Toys&quot; is a website featuring an extensive collection of printable, DIY papercraft models with a gothic, horror-themed aesthetic. Users can download templates for objects ranging from miniature haunted houses and elaborate hearses to poseable skeletons and various monster figurines. The project emphasizes accessibility, requiring only common household supplies like card stock, scissors, and glue to assemble these intricate curiosities.</p>
+          <h4>Reader Reactions</h4>
+<p>Bullet 1: Users appreciate the resource primarily as a creative and accessible tool for tabletop role-playing games, finding the papercraft templates highly suitable for creating personalized miniatures and scenery for gaming sessions.</p>
+<p>Bullet 2: There is no significant disagreement or controversy present in this limited sample, as all participants focus constructively on sharing similar interests, relevant resources, or practical questions about assembly techniques.</p>
+<p>Bullet 3: For successful results when constructing these models, it is essential to use heavy card stock rather than standard printer paper to ensure the structural integrity and durability of the finished figures.</p>
+<p>Bullet 4: Because the sample size is extremely small at only seven comments, it may not represent the full spectrum of user reactions or potential criticisms regarding the quality of these specific designs.</p>
+          <p class="drawer-footer"><a href="#dossier-8">View in Dossier ↓</a></p>
+        </div>
+      </details>
+    </div>
     </div>
   </section>
   <section id="story-9" class="spread arc-alert-stamp">
@@ -438,7 +579,21 @@
       <h2 class="frnc">Structural Flaws Lead to Message Misattribution in Claude</h2>
       <p class="story-meta">dwyer.co.za &nbsp;·&nbsp; 465 pts &nbsp;·&nbsp; 359 comments</p>
       <p class="lede">The system frequently confuses internal thoughts with user instructions, creating a dangerous illusion of operator intent. Without strict external guardrails, such token-level failures pose a significant risk to reliable output.</p>
-      <div class="ctas"><a class="btn-read" href="https://dwyer.co.za/static/claude-mixes-up-who-said-what-and-thats-not-ok.html" target="_blank" rel="noopener">Read →</a><a class="btn-dossier" href="#dossier-9">Full analysis ↓</a></div>
+      <div class="ctas"><a class="btn-read" href="https://dwyer.co.za/static/claude-mixes-up-who-said-what-and-thats-not-ok.html" target="_blank" rel="noopener">Read →</a>
+      <details class="analysis-drawer">
+        <summary class="btn-dossier">[ Analysis + ]</summary>
+        <div class="drawer-content">
+          <h4>Technical Analysis</h4>
+          <p>The article highlights a critical flaw in Claude where the system occasionally misattributes internal messages or self-generated instructions to the user. The author argues that this is not a typical AI hallucination or a permission boundary issue, but rather a structural defect in the application&#x27;s harness that improperly labels message sources. By mistakenly believing that an internal thought originated from the human operator, the model becomes erroneously confident that it is acting on direct instructions.</p>
+          <h4>Reader Reactions</h4>
+<p>The primary consensus is that the model&#x27;s confusion regarding speaker identity is a fundamental limitation of token-based architectures, where &quot;user&quot; and &quot;assistant&quot; roles are merely malleable patterns in the training data.</p>
+<p>Some participants argue that these issues represent manageable engineering flaws in the &quot;harness&quot; or integration layers rather than inherent, unsolvable failures of the underlying large language models themselves.</p>
+<p>A recurring technical takeaway is that developers must treat all LLM outputs as inherently untrusted and implement strict, external guardrails to prevent the model from injecting its own instructions as user input.</p>
+<p>This analysis is limited to a small subset of 16 comments, potentially over-representing cynical views on AI reliability while neglecting broader discussions regarding the practical utility and deployment of these models.</p>
+          <p class="drawer-footer"><a href="#dossier-9">View in Dossier ↓</a></p>
+        </div>
+      </details>
+    </div>
     </div>
   </section>
   <section id="story-10" class="spread arc-archive">
@@ -448,7 +603,21 @@
       <h2 class="frnc">Internet Archive Releases Dr. Dobb’s Library Volume Six</h2>
       <p class="story-meta">archive.org &nbsp;·&nbsp; 54 pts &nbsp;·&nbsp; 14 comments</p>
       <p class="lede">Decades of deep technical expertise are now preserved in this expansive digital collection. From seminal compiler research to early C frameworks, the disc serves as a vital bridge to our computing heritage.</p>
-      <div class="ctas"><a class="btn-read" href="https://archive.org/details/DDJDVD6" target="_blank" rel="noopener">Read →</a><a class="btn-dossier" href="#dossier-10">Full analysis ↓</a></div>
+      <div class="ctas"><a class="btn-read" href="https://archive.org/details/DDJDVD6" target="_blank" rel="noopener">Read →</a>
+      <details class="analysis-drawer">
+        <summary class="btn-dossier">[ Analysis + ]</summary>
+        <div class="drawer-content">
+          <h4>Technical Analysis</h4>
+          <p>The Internet Archive has made the Dr. Dobb’s Developer Library DVD 6 available for public download, preserving a massive repository of technical literature. This collection spans decades of publications, including *Dr. Dobb&#x27;s Journal* (1988–2008), *C/C++ Users Journal*, *SysAdmin*, and *The Perl Journal*. The disc includes thousands of articles, source code, and related files, all formatted for access via standard web browsers.</p>
+          <h4>Reader Reactions</h4>
+<p>Users widely value the historical importance of *Dr. Dobb&#x27;s Journal* as an archival resource for early programming languages, compiler design, and technical articles that have largely disappeared from the modern web.</p>
+<p>While participants agree on the necessity of supporting the Internet Archive, there is notable speculation regarding the entities responsible for the persistent DDoS attacks hindering the accessibility of these preserved assets.</p>
+<p>The library serves as an essential repository for niche historical implementations, such as early C subsets, Object Pascal frameworks, and obscure languages that remain difficult to locate through contemporary search engines.</p>
+<p>The discussion is heavily skewed toward nostalgia and preservation efforts, providing little insight into how these specific legacy technical articles are currently applied in modern professional or academic development workflows.</p>
+          <p class="drawer-footer"><a href="#dossier-10">View in Dossier ↓</a></p>
+        </div>
+      </details>
+    </div>
     </div>
   </section>
   <section id="dossier" class="dossier">
@@ -638,6 +807,19 @@
     localStorage.setItem(key, JSON.stringify(stored));
   }
 })();
+</script>
+<script>
+// Simple script to toggle the [+] and [-] labels on the drawers
+document.querySelectorAll('.analysis-drawer').forEach(drawer => {
+  drawer.addEventListener('toggle', () => {
+    const summary = drawer.querySelector('summary');
+    if (drawer.open) {
+      summary.textContent = '[ Analysis − ]';
+    } else {
+      summary.textContent = '[ Analysis + ]';
+    }
+  });
+});
 </script>
 </body>
 </html>

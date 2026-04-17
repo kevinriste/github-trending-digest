@@ -40,14 +40,43 @@
   .story-meta { font-weight: 600; font-size: 1.1rem; margin-bottom: 3rem; opacity: 0.6; letter-spacing: 0.02em; }
   .lede { font-size: clamp(1.4rem, 2.5vw, 2.1rem); line-height: 1.35; max-width: 800px; margin: 0 0 4rem; font-weight: 450; }
   
-  .ctas { display: flex; gap: 2.5rem; align-items: center; }
+  .ctas { display: flex; gap: 2.5rem; align-items: flex-start; }
   .ctas a {
     text-decoration: none; font-weight: 700; font-size: 1.1rem; letter-spacing: 0.1em; text-transform: uppercase;
     padding: 1.2rem 2.4rem; transition: all 0.2s;
   }
-  .btn-read { background: var(--text-dark); color: var(--bg-light); }
-  .btn-dossier { border-bottom: 2px solid currentColor; padding: 0.5rem 0 !important; }
+  .btn-read { background: var(--text-dark); color: var(--bg-light); cursor: pointer; border: none; }
+  .btn-dossier { 
+    border-bottom: 2px solid currentColor; padding: 0.5rem 0 !important; 
+    text-decoration: none; font-weight: 700; font-size: 1.1rem; letter-spacing: 0.1em; 
+    text-transform: uppercase; cursor: pointer; background: transparent; color: inherit;
+    display: inline-block;
+  }
   
+  /* ───── ANALYSIS DRAWER ───── */
+  .analysis-drawer { margin-top: 0; width: 100%; max-width: 800px; }
+  .analysis-drawer summary { list-style: none; outline: none; }
+  .analysis-drawer summary::-webkit-details-marker { display: none; }
+  .analysis-drawer[open] summary { margin-bottom: 2rem; }
+  .analysis-drawer[open] summary::after { content: ""; } /* Could add JS to toggle label but we'll do CSS trick or just keep static */
+  
+  .drawer-content {
+    background: rgba(0,0,0,0.03); padding: 3rem; border-left: 4px solid var(--text-dark);
+    animation: slideDown 0.3s ease-out;
+  }
+  .arc-midnight .drawer-content { background: rgba(255,255,255,0.05); border-color: #fff; }
+  .arc-terminal .drawer-content { background: rgba(32, 194, 14, 0.05); border-color: #20c20e; }
+  
+  .drawer-content h4 { text-transform: uppercase; letter-spacing: 0.2em; font-size: 0.9rem; margin-top: 0; margin-bottom: 1.5rem; opacity: 0.6; }
+  .drawer-content p { font-family: 'Fraunces', serif; font-size: 1.3rem; line-height: 1.5; margin-bottom: 1.5rem; }
+  .drawer-footer { margin-top: 2rem; border-top: 1px solid rgba(0,0,0,0.1); padding-top: 1.5rem; }
+  .drawer-footer a { font-size: 0.9rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; text-decoration: none; color: inherit; opacity: 0.5; }
+  
+  @keyframes slideDown {
+    from { opacity: 0; transform: translateY(-10px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
   /* ───── ARCHETYPE CSS ───── */
   
   /* Stat Hero */
@@ -347,7 +376,21 @@
       <h2 class="frnc">Quantifying Our Descent Into A Real-Life Idiocracy</h2>
       <p class="story-meta">idiocracy.wtf &nbsp;·&nbsp; 610 pts &nbsp;·&nbsp; 528 comments</p>
       <p class="lede">As the lines between satirical fiction and modern political discourse blur, analysts are reaching for data to map the decline. By measuring institutional failure against cinematic tropes, we confront the uncomfortable reality of our own cultural trajectory.</p>
-      <div class="ctas"><a class="btn-read" href="https://idiocracy.wtf/" target="_blank" rel="noopener">Read →</a><a class="btn-dossier" href="#dossier-1">Full analysis ↓</a></div>
+      <div class="ctas"><a class="btn-read" href="https://idiocracy.wtf/" target="_blank" rel="noopener">Read →</a>
+      <details class="analysis-drawer">
+        <summary class="btn-dossier">[ Analysis + ]</summary>
+        <div class="drawer-content">
+          <h4>Technical Analysis</h4>
+          <p>&quot;Are We Idiocracy Yet?&quot; is a satirical website that quantifies how closely contemporary society resembles the 2006 film *Idiocracy*. It utilizes an &quot;Idiocracy Proximity Index&quot; to compare real-world developments in politics, corporate influence, education, and entertainment against the movie&#x27;s dystopian predictions. By mapping current events—such as declining IQ scores, celebrity-branded education, and algorithmic outrage—to specific scenes from the film, the project provides a data-driven look at cultural and institutional degradation.</p>
+          <h4>Reader Reactions</h4>
+<p>Users are divided on whether the film is a prophetic satire, with many arguing that modern reality is actually more cynical and malicious than the film’s portrayal of a well-intentioned populace.</p>
+<p>Critics of the film&#x27;s comparison argue that the movie relies on flawed eugenic premises and that its characters possess a sincerity and willingness to learn that is currently absent in society.</p>
+<p>The website&#x27;s design is heavily criticized for its poor typography and inconsistent font choices, with users jokingly suggesting that the site&#x27;s illegibility serves as a meta-commentary on the movie&#x27;s themes.</p>
+<p>This sample primarily captures the perspective of tech-savvy commenters on a niche forum, which may skew the discourse toward intellectual critique rather than representing broader societal or cultural attitudes regarding the film.</p>
+          <p class="drawer-footer"><a href="#dossier-1">View in Dossier ↓</a></p>
+        </div>
+      </details>
+    </div>
     </div>
   </section>
   <section id="story-2" class="spread arc-mint-pattern" style="--bg-word: 'HARDWARE'">
@@ -359,7 +402,21 @@
       <h2 class="frnc">Tracing The Silicon Arc Of Modern Graphics Cards</h2>
       <p class="story-meta">sheets.works &nbsp;·&nbsp; 330 pts &nbsp;·&nbsp; 207 comments</p>
       <p class="lede">The evolution of the GPU is more than a list of specs; it is a thirty-year chronicle of processing power. From early 3D accelerators to the current era of ray tracing, we map the hardware that defined the gaming industry.</p>
-      <div class="ctas"><a class="btn-read" href="https://sheets.works/data-viz/every-gpu" target="_blank" rel="noopener">Read →</a><a class="btn-dossier" href="#dossier-2">Full analysis ↓</a></div>
+      <div class="ctas"><a class="btn-read" href="https://sheets.works/data-viz/every-gpu" target="_blank" rel="noopener">Read →</a>
+      <details class="analysis-drawer">
+        <summary class="btn-dossier">[ Analysis + ]</summary>
+        <div class="drawer-content">
+          <h4>Technical Analysis</h4>
+          <p>&quot;Every GPU That Mattered&quot; is an interactive data visualization that chronicles the evolution of 49 significant consumer graphics cards released over the past 30 years. The project tracks technical milestones—such as the transition from 3dfx’s early 3D accelerators to modern unified shader architectures and AI-driven ray tracing—while highlighting the industry&#x27;s shift toward four-figure price points. By mapping metrics like transistor count, launch price, and TDP against iconic PC titles, the author provides a longitudinal view of hardware advancement and the shifting competitive landscape between NVIDIA, AMD, and Intel.</p>
+          <h4>Reader Reactions</h4>
+<p>Users primarily engage with the story through deep personal nostalgia, frequently reminiscing about iconic hardware like the 8800 GT or Voodoo series that defined their formative years in PC gaming.</p>
+<p>Critics debate the specific criteria for what constitutes a &quot;significant&quot; GPU, arguing that the selection ignores foundational architectural innovations in favor of incremental speed improvements or potentially biased marketing narratives.</p>
+<p>Technical discussions highlight that consumer gaming GPUs served as the essential R&amp;D testbed for features like ray tracing and unified shaders, which later became standard for modern high-performance datacenter workloads.</p>
+<p>The provided sample indicates the website design received negative feedback for poor usability, while commentators also noted the list omits historical industry context regarding professional hardware and modern console development.</p>
+          <p class="drawer-footer"><a href="#dossier-2">View in Dossier ↓</a></p>
+        </div>
+      </details>
+    </div>
     </div>
   </section>
   <section id="story-3" class="spread arc-academic-drop-cap">
@@ -373,7 +430,17 @@
       <p class="story-meta">juxt.pro &nbsp;·&nbsp; 437 pts &nbsp;·&nbsp; 201 comments</p>
       <div class="cols">
         <div><p>Using modern formal verification methods, researchers have uncovered a latent logic error within the Apollo Guidance Computer.</p></div>
-        <div><p>Fifty-seven years later, this behavioral analysis reveals how a minor gyro-locking oversight could have once jeopardized the lunar mission.</p><div class="ctas"><a class="btn-read" href="https://www.juxt.pro/blog/a-bug-on-the-dark-side-of-the-moon/" target="_blank" rel="noopener">Read →</a><a class="btn-dossier" href="#dossier-3">Full analysis ↓</a></div></div>
+        <div><p>Fifty-seven years later, this behavioral analysis reveals how a minor gyro-locking oversight could have once jeopardized the lunar mission.</p><div class="ctas"><a class="btn-read" href="https://www.juxt.pro/blog/a-bug-on-the-dark-side-of-the-moon/" target="_blank" rel="noopener">Read →</a>
+      <details class="analysis-drawer">
+        <summary class="btn-dossier">[ Analysis + ]</summary>
+        <div class="drawer-content">
+          <h4>Technical Analysis</h4>
+          <p>Researchers have identified an undocumented bug in the Apollo Guidance Computer’s assembly code that remained undiscovered for fifty-seven years. By using a behavioral specification language called Allium to model resource lifecycles within the Inertial Measurement Unit subsystem, the team found that an emergency &quot;caging&quot; maneuver failed to release a gyro control lock. This oversight would have caused subsequent guidance realignment attempts to hang silently, potentially compromising a spacecraft&#x27;s navigation during critical mission phases.</p>
+          
+          <p class="drawer-footer"><a href="#dossier-3">View in Dossier ↓</a></p>
+        </div>
+      </details>
+    </div></div>
       </div>
     </div>
   </section>
@@ -385,7 +452,21 @@
       <h2 class="frnc">Finding Economic Reality In Traditional Japanese Rice Farming</h2>
       <p class="story-meta">xd009642.github.io &nbsp;·&nbsp; 181 pts &nbsp;·&nbsp; 75 comments</p>
       <p class="lede">Moving away from the digital grind, one discovers that agricultural life is defined by the relentless cycle of the seasons rather than the optimization of code. This reflection examines the quiet struggles of small-scale farmers against a backdrop of aging demographics and global economic pressure.</p>
-      <div class="ctas"><a class="btn-read" href="https://xd009642.github.io/2026/04/01/My-Experience-as-a-Rice-Farmer.html" target="_blank" rel="noopener">Read →</a><a class="btn-dossier" href="#dossier-4">Full analysis ↓</a></div>
+      <div class="ctas"><a class="btn-read" href="https://xd009642.github.io/2026/04/01/My-Experience-as-a-Rice-Farmer.html" target="_blank" rel="noopener">Read →</a>
+      <details class="analysis-drawer">
+        <summary class="btn-dossier">[ Analysis + ]</summary>
+        <div class="drawer-content">
+          <h4>Technical Analysis</h4>
+          <p>The author recounts their experience helping their wife’s family with traditional rice farming in rural Japan, documenting the labor-intensive cycle from clearing fields and managing irrigation to planting and fencing against wildlife. Beyond the mechanical aspects of agriculture, the piece provides context on the Japanese rice economy, highlighting systemic challenges like an aging workforce, small farm sizes, and government policies that prioritize small-scale independence over industrial consolidation. It details the economic pressures, such as price volatility and the struggle to maintain profitability compared to larger, automated operations in other countries.</p>
+          <h4>Reader Reactions</h4>
+<p>Commenters frequently express nostalgia for rural life and manual labor, viewing these as a healthier, more serene alternative to the high-stress, indoor-focused environment of modern white-collar software engineering roles.</p>
+<p>Some participants argue that romanticizing rural life ignores the harsh realities of agricultural uncertainty, the economic necessities of manual labor, and the personal satisfaction found in predictable, high-impact digital work.</p>
+<p>Discussion highlights the potential for technology like AI and robotics to bridge the gap between rural and urban living, theoretically enabling a more viable, connected, and balanced lifestyle for remote workers.</p>
+<p>The sample reflects a heavy bias toward tech-industry professionals, meaning the perspectives on farming and labor are filtered through a lens of digital burnout rather than firsthand economic experience in agriculture.</p>
+          <p class="drawer-footer"><a href="#dossier-4">View in Dossier ↓</a></p>
+        </div>
+      </details>
+    </div>
     </div>
   </section>
   <section id="story-5" class="spread arc-archive">
@@ -395,7 +476,17 @@
       <h2 class="frnc">When A Simple Email Address Became A Security Liability</h2>
       <p class="story-meta">johnsto.co.uk &nbsp;·&nbsp; 179 pts &nbsp;·&nbsp; 35 comments</p>
       <p class="lede">In the early aughts, a prominent email address embedded in fan-made game files became a magnet for self-replicating malware. This account details the deluge of digital pests that eventually forced a total disconnection from the grid.</p>
-      <div class="ctas"><a class="btn-read" href="https://www.johnsto.co.uk/blog/blackholing-my-email/" target="_blank" rel="noopener">Read →</a><a class="btn-dossier" href="#dossier-5">Full analysis ↓</a></div>
+      <div class="ctas"><a class="btn-read" href="https://www.johnsto.co.uk/blog/blackholing-my-email/" target="_blank" rel="noopener">Read →</a>
+      <details class="analysis-drawer">
+        <summary class="btn-dossier">[ Analysis + ]</summary>
+        <div class="drawer-content">
+          <h4>Technical Analysis</h4>
+          <p>In the early 2000s, the author, Dave, owned a prestigious two-letter email address, &quot;dv@btinternet.com,&quot; which he famously included in the text files of his popular *Counter-Strike* maps. This visibility backfired when early email worms began scraping hard drives for addresses, leading to a flood of thousands of infected messages daily that overwhelmed his small 15MB mailbox. The resulting influx of spam and spoofed virus alerts eventually triggered warnings from his ISP, forcing him to have the account blackholed to prevent his family&#x27;s broadband service from being terminated.</p>
+          
+          <p class="drawer-footer"><a href="#dossier-5">View in Dossier ↓</a></p>
+        </div>
+      </details>
+    </div>
     </div>
   </section>
   <section id="story-6" class="spread arc-blueprint">
@@ -405,7 +496,21 @@
       <h2 class="frnc">Building A Standardized Repository For MIDI Synthesizer Data</h2>
       <p class="story-meta">midi.guide &nbsp;·&nbsp; 125 pts &nbsp;·&nbsp; 19 comments</p>
       <p class="lede">What began as a backend utility for a performance app grew into a vital community reference for over three hundred musical instruments. This build log tracks the seven-year effort to document synthesizer protocols and foster cross-device interoperability.</p>
-      <div class="ctas"><a class="btn-read" href="https://midi.guide/blog/three-hunded-synths-one-app/" target="_blank" rel="noopener">Read →</a><a class="btn-dossier" href="#dossier-6">Full analysis ↓</a></div>
+      <div class="ctas"><a class="btn-read" href="https://midi.guide/blog/three-hunded-synths-one-app/" target="_blank" rel="noopener">Read →</a>
+      <details class="analysis-drawer">
+        <summary class="btn-dossier">[ Analysis + ]</summary>
+        <div class="drawer-content">
+          <h4>Technical Analysis</h4>
+          <p>The story details the seven-year evolution of &quot;MIDI Guide,&quot; an open-source, community-driven project that documents MIDI CC and NRPN implementations for synthesizers. Initially conceived as a backend dataset for a performance controller app called Condukt, the project pivoted to a standalone, publicly accessible repository when the founders realized their app faced significant distribution and hardware adoption hurdles. Today, the dataset serves as a standardized, machine-parsable reference for over 300 instruments, supported by a growing community of 52 contributors and integrated into several professional hardware devices.</p>
+          <h4>Reader Reactions</h4>
+<p>Bullet 1: Commenters express strong appreciation for the project’s comprehensive documentation of MIDI-compatible synthesizers and the utility of offering downloads in various hardware-specific formats like the Hapax.</p>
+<p>Bullet 2: There is no significant disagreement present in the sample, as both participants offer positive feedback regarding the project&#x27;s technical scope and its overall convenience for hardware users.</p>
+<p>Bullet 3: The enduring success of the MIDI standard allows decades-old instruments, such as the 1985 Casio CZ-5000, to remain fully interoperable with modern digital equipment without requiring any drivers.</p>
+<p>Bullet 4: With only two comments, the sample is too small to represent a broader community consensus and highlights only the perspectives of users interested in hardware synthesizer compatibility.</p>
+          <p class="drawer-footer"><a href="#dossier-6">View in Dossier ↓</a></p>
+        </div>
+      </details>
+    </div>
     </div>
   </section>
   <section id="story-7" class="spread arc-terminal">
@@ -419,7 +524,21 @@
         <p class="lede">Ghost Pepper moves transcription tasks from cloud-based APIs to the local machine. By leveraging WhisperKit, this utility provides a privacy-focused, low-latency alternative for dictation that remains entirely under the user&#x27;s control.<span class="cursor"></span></p>
         <div class="ctas">
           <a href="https://github.com/matthartman/ghost-pepper" class="btn-read" target="_blank">RUN_PROCESS →</a>
-          <a href="#dossier-7" class="btn-dossier">VIEW_ANALYSIS ↓</a>
+          
+      <details class="analysis-drawer">
+        <summary class="btn-dossier">[ Analysis + ]</summary>
+        <div class="drawer-content">
+          <h4>Technical Analysis</h4>
+          <p>Ghost Pepper is an open-source macOS utility that provides hold-to-talk speech-to-text functionality while ensuring all processing occurs locally on the user&#x27;s machine. Built by Matt Hartman, the application utilizes WhisperKit and local large language models to transcribe audio and refine output without sending any data to external servers. It is designed to be accessible, allowing users to trigger recording by holding the Control key and automatically pasting the transcribed text upon release.</p>
+          <h4>Reader Reactions</h4>
+<p>The discussion reflects a crowded ecosystem where developers are frequently rebuilding similar macOS speech-to-text tools, leading to user fatigue and questions regarding why these apps surpass native OS dictation features.</p>
+<p>While some users find voice dictation essential for brainstorming and interacting with AI coding agents, others argue that traditional keyboard typing remains significantly more efficient and easier to edit for development.</p>
+<p>Modern open-source models like Whisper often outperform legacy on-device transcription tech, yet current macOS utility implementations often lack seamless streaming and in-place correction capabilities compared to older dedicated software.</p>
+<p>The sample is heavily skewed toward technical power users and software developers, potentially misrepresenting the needs of general consumers who might prioritize simple, integrated, and reliable out-of-the-box dictation experiences.</p>
+          <p class="drawer-footer"><a href="#dossier-7">View in Dossier ↓</a></p>
+        </div>
+      </details>
+    
         </div>
       </div>
     </div>
@@ -433,7 +552,21 @@
       <h2 class="frnc">The Ongoing Arms Race Of Console Security</h2>
       <p class="story-meta">sergioprado.blog &nbsp;·&nbsp; 96 pts &nbsp;·&nbsp; 26 comments</p>
       <p class="lede">From the Atari 2600 to the current generation of hardware, manufacturers have struggled to maintain their chains of trust. Cryptographic lockdowns and sandboxed hypervisors provide layers of protection, yet persistent vulnerabilities continue to bypass these defenses.</p>
-      <div class="ctas"><a class="btn-read" href="https://sergioprado.blog/breaking-the-console-a-brief-history-of-video-game-security/" target="_blank" rel="noopener">Read →</a><a class="btn-dossier" href="#dossier-8">Full analysis ↓</a></div>
+      <div class="ctas"><a class="btn-read" href="https://sergioprado.blog/breaking-the-console-a-brief-history-of-video-game-security/" target="_blank" rel="noopener">Read →</a>
+      <details class="analysis-drawer">
+        <summary class="btn-dossier">[ Analysis + ]</summary>
+        <div class="drawer-content">
+          <h4>Technical Analysis</h4>
+          <p>The article provides a comprehensive overview of the evolution of video game console security, tracing the shift from the unprotected hardware of the Atari 2600 to the sophisticated, cryptographically locked systems of modern platforms like the PlayStation 5 and Xbox Series. It details how manufacturers transitioned from simple hardware-based lockout chips and proprietary disc formats to complex chains of trust, secure boot sequences, and sandboxed hypervisors. The author illustrates this history through notable vulnerabilities, such as the Nintendo Switch’s unpatchable BootROM flaw and the PlayStation 3’s catastrophic cryptographic implementation failure, highlighting the constant arms race between engineers and researchers.</p>
+          <h4>Reader Reactions</h4>
+<p>The author identifies the article as an overview of video game security history, highlighting specific cases like Nintendo&#x27;s lockout system and the Wii&#x27;s horse-naming exploit to illustrate past platform vulnerabilities.</p>
+<p>There is no competing viewpoint present in this discussion sample because the single provided comment was submitted by the author of the original blog post to promote their own content.</p>
+<p>Historical security failures in consoles often stemmed from unexpected input vectors or reverse-engineering, such as the Nintendo Wii’s vulnerability involving the custom naming of characters within game save files.</p>
+<p>This analysis is limited by an extremely small sample size consisting of only one self-promotional comment, providing no insight into the broader community reaction or critical reception of the post.</p>
+          <p class="drawer-footer"><a href="#dossier-8">View in Dossier ↓</a></p>
+        </div>
+      </details>
+    </div>
     </div>
     <div class="tape bottom">CAUTION CAUTION CAUTION CAUTION CAUTION CAUTION CAUTION CAUTION</div>
   </section>
@@ -444,7 +577,21 @@
       <h2 class="frnc">Leadership Frictions At The Center Of The AI Boom</h2>
       <p class="story-meta">newyorker.com &nbsp;·&nbsp; 2181 pts &nbsp;·&nbsp; 909 comments</p>
       <p class="lede">The power struggle at OpenAI has raised fundamental questions about the balance between rapid commercial growth and existential safety. As the organization pivots, observers are forced to consider whether a company’s charter can survive its own leadership.</p>
-      <div class="ctas"><a class="btn-read" href="https://www.newyorker.com/magazine/2026/04/13/sam-altman-may-control-our-future-can-he-be-trusted" target="_blank" rel="noopener">Read →</a><a class="btn-dossier" href="#dossier-9">Full analysis ↓</a></div>
+      <div class="ctas"><a class="btn-read" href="https://www.newyorker.com/magazine/2026/04/13/sam-altman-may-control-our-future-can-he-be-trusted" target="_blank" rel="noopener">Read →</a>
+      <details class="analysis-drawer">
+        <summary class="btn-dossier">[ Analysis + ]</summary>
+        <div class="drawer-content">
+          <h4>Technical Analysis</h4>
+          <p>This *New Yorker* piece explores the internal dynamics and leadership controversies at OpenAI, centered on a 2023 board attempt to oust CEO Sam Altman. The story outlines allegations that Altman consistently misrepresented facts to the board and compromised safety protocols, creating a power struggle between those prioritizing existential safety and those driving aggressive commercial growth. The article also provides a retrospective on Altman’s career, documenting similar patterns of conflict and leadership friction during his previous tenures at Loopt and Y Combinator.</p>
+          <h4>Reader Reactions</h4>
+<p>The prevailing sentiment among commenters is deep distrust of OpenAI&#x27;s leadership, frequently labeling executives as sociopathic or driven by insatiable greed rather than the company’s original altruistic, safety-focused non-profit charter.</p>
+<p>Some participants argue that focusing on executive personality traits is intellectually lazy, asserting that structural market pressures and commercial incentives inevitably force all AI companies to prioritize revenue over ethical governance.</p>
+<p>Commenters emphasize a competitive shift in the software industry, noting that many developers currently prefer Anthropic’s Claude over ChatGPT due to perceived product quality and OpenAI&#x27;s internal leadership instability.</p>
+<p>This sample reflects a selection bias toward users critical of Silicon Valley power dynamics, likely overrepresenting those who prioritize corporate ethics and investigative journalism over pragmatic industry-growth perspectives.</p>
+          <p class="drawer-footer"><a href="#dossier-9">View in Dossier ↓</a></p>
+        </div>
+      </details>
+    </div>
     </div>
     <div class="quote-side">
       <blockquote class="pullquote">The focus on executive personality traits often ignores the structural market pressures that force all AI companies to prioritize revenue over safety</blockquote>
@@ -457,7 +604,21 @@
       <h2 class="frnc">Identifying London Underground Lines Through Sound</h2>
       <p class="story-meta">tubesoundquiz.com &nbsp;·&nbsp; 184 pts &nbsp;·&nbsp; 60 comments</p>
       <p class="lede">Every subway tunnel possesses a unique mechanical signature determined by its specific rolling stock and track infrastructure. This project invites listeners to tune into the distinct sonic vibrations that define the subterranean commute.</p>
-      <div class="ctas"><a class="btn-read" href="https://tubesoundquiz.com/" target="_blank" rel="noopener">Read →</a><a class="btn-dossier" href="#dossier-10">Full analysis ↓</a></div>
+      <div class="ctas"><a class="btn-read" href="https://tubesoundquiz.com/" target="_blank" rel="noopener">Read →</a>
+      <details class="analysis-drawer">
+        <summary class="btn-dossier">[ Analysis + ]</summary>
+        <div class="drawer-content">
+          <h4>Technical Analysis</h4>
+          <p>The &quot;Tube Sound Quiz&quot; is a web-based interactive experience that challenges users to identify specific London Underground lines solely by their ambient acoustic profiles. Each line features a unique sound signature derived from variations in track infrastructure, tunnel resonance, and the specific rolling stock used on that route. This project highlights the distinct mechanical personalities inherent in large-scale public transit networks that are often overlooked by daily commuters.</p>
+          <h4>Reader Reactions</h4>
+<p>Bullet 1: The singular commenter expresses genuine appreciation for the project while suggesting that incorporating additional audio cues would enhance the immersive experience of identifying different London Underground lines.</p>
+<p>Bullet 2: There is no articulated disagreement in this thread, as the only participant focuses entirely on providing constructive feedback regarding potential feature expansions rather than challenging the existing implementation.</p>
+<p>Bullet 3: Developers could improve user engagement by expanding the audio dataset to include functional transit sounds, such as specific door chimes or mechanical operation noises, rather than focusing solely on track acoustics.</p>
+<p>Bullet 4: Because the dataset consists of only one comment, this analysis cannot be considered representative of the broader Hacker News community sentiment or the project&#x27;s overall reception among platform users.</p>
+          <p class="drawer-footer"><a href="#dossier-10">View in Dossier ↓</a></p>
+        </div>
+      </details>
+    </div>
     </div>
   </section>
   <section id="dossier" class="dossier">
@@ -639,6 +800,19 @@
     localStorage.setItem(key, JSON.stringify(stored));
   }
 })();
+</script>
+<script>
+// Simple script to toggle the [+] and [-] labels on the drawers
+document.querySelectorAll('.analysis-drawer').forEach(drawer => {
+  drawer.addEventListener('toggle', () => {
+    const summary = drawer.querySelector('summary');
+    if (drawer.open) {
+      summary.textContent = '[ Analysis − ]';
+    } else {
+      summary.textContent = '[ Analysis + ]';
+    }
+  });
+});
 </script>
 </body>
 </html>

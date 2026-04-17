@@ -40,14 +40,43 @@
   .story-meta { font-weight: 600; font-size: 1.1rem; margin-bottom: 3rem; opacity: 0.6; letter-spacing: 0.02em; }
   .lede { font-size: clamp(1.4rem, 2.5vw, 2.1rem); line-height: 1.35; max-width: 800px; margin: 0 0 4rem; font-weight: 450; }
   
-  .ctas { display: flex; gap: 2.5rem; align-items: center; }
+  .ctas { display: flex; gap: 2.5rem; align-items: flex-start; }
   .ctas a {
     text-decoration: none; font-weight: 700; font-size: 1.1rem; letter-spacing: 0.1em; text-transform: uppercase;
     padding: 1.2rem 2.4rem; transition: all 0.2s;
   }
-  .btn-read { background: var(--text-dark); color: var(--bg-light); }
-  .btn-dossier { border-bottom: 2px solid currentColor; padding: 0.5rem 0 !important; }
+  .btn-read { background: var(--text-dark); color: var(--bg-light); cursor: pointer; border: none; }
+  .btn-dossier { 
+    border-bottom: 2px solid currentColor; padding: 0.5rem 0 !important; 
+    text-decoration: none; font-weight: 700; font-size: 1.1rem; letter-spacing: 0.1em; 
+    text-transform: uppercase; cursor: pointer; background: transparent; color: inherit;
+    display: inline-block;
+  }
   
+  /* ───── ANALYSIS DRAWER ───── */
+  .analysis-drawer { margin-top: 0; width: 100%; max-width: 800px; }
+  .analysis-drawer summary { list-style: none; outline: none; }
+  .analysis-drawer summary::-webkit-details-marker { display: none; }
+  .analysis-drawer[open] summary { margin-bottom: 2rem; }
+  .analysis-drawer[open] summary::after { content: ""; } /* Could add JS to toggle label but we'll do CSS trick or just keep static */
+  
+  .drawer-content {
+    background: rgba(0,0,0,0.03); padding: 3rem; border-left: 4px solid var(--text-dark);
+    animation: slideDown 0.3s ease-out;
+  }
+  .arc-midnight .drawer-content { background: rgba(255,255,255,0.05); border-color: #fff; }
+  .arc-terminal .drawer-content { background: rgba(32, 194, 14, 0.05); border-color: #20c20e; }
+  
+  .drawer-content h4 { text-transform: uppercase; letter-spacing: 0.2em; font-size: 0.9rem; margin-top: 0; margin-bottom: 1.5rem; opacity: 0.6; }
+  .drawer-content p { font-family: 'Fraunces', serif; font-size: 1.3rem; line-height: 1.5; margin-bottom: 1.5rem; }
+  .drawer-footer { margin-top: 2rem; border-top: 1px solid rgba(0,0,0,0.1); padding-top: 1.5rem; }
+  .drawer-footer a { font-size: 0.9rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; text-decoration: none; color: inherit; opacity: 0.5; }
+  
+  @keyframes slideDown {
+    from { opacity: 0; transform: translateY(-10px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
   /* ───── ARCHETYPE CSS ───── */
   
   /* Stat Hero */
@@ -348,7 +377,21 @@
       <h2 class="frnc">Microsoft’s New Windows Fix Ignores Persistent User Hostility</h2>
       <p class="story-meta">sambent.com &nbsp;·&nbsp; 1046 pts &nbsp;·&nbsp; 757 comments</p>
       <p class="lede">Microsoft claims it is cleaning up Windows 11 by removing recent bloatware. Beneath the marketing, however, the systemic issues of forced telemetry and account locks remain untouched.</p>
-      <div class="ctas"><a class="btn-read" href="https://www.sambent.com/microsofts-plan-to-fix-windows-11-is-gaslighting/" target="_blank" rel="noopener">Read →</a><a class="btn-dossier" href="#dossier-1">Full analysis ↓</a></div>
+      <div class="ctas"><a class="btn-read" href="https://www.sambent.com/microsofts-plan-to-fix-windows-11-is-gaslighting/" target="_blank" rel="noopener">Read →</a>
+      <details class="analysis-drawer">
+        <summary class="btn-dossier">[ Analysis + ]</summary>
+        <div class="drawer-content">
+          <h4>Technical Analysis</h4>
+          <p>This story critiques Microsoft’s recent seven-point plan to &quot;fix&quot; Windows 11, arguing that the company is effectively seeking credit for removing intrusive features—such as excessive Copilot integrations and Start menu advertisements—that it spent years forcibly implementing. The author maintains that this redemption narrative ignores more systemic issues, including the removal of local account options, aggressive OneDrive file synchronization, and non-disableable telemetry. By characterizing these changes as an abusive &quot;flowers after the beating&quot; dynamic, the piece highlights how Microsoft prioritizes its own revenue models and data harvesting over the user experience of a paid operating system.</p>
+          <h4>Reader Reactions</h4>
+<p>Users generally agree that Microsoft’s &quot;fix&quot; is insincere and reflects a broader pattern of pushing user-hostile, anti-consumer features while prioritizing monetization through aggressive AI integration and recurring subscription price hikes.</p>
+<p>Some participants argue that characterizing software design choices as &quot;abuse&quot; is hyperbolic and disrespectful, suggesting that professional workflows still necessitate Windows despite legitimate frustrations regarding the current user experience and interface.</p>
+<p>Technical critiques focus on the persistent trend of &quot;iOS-ifying&quot; desktop interfaces, excessive background resource consumption, and the problematic removal of hardware compatibility that forces users into unnecessary upgrades despite capable existing hardware.</p>
+<p>The sample reflects a tech-savvy demographic that heavily favors Linux or MacOS as superior alternatives, potentially downplaying the significant barriers to entry and software dependencies that keep general consumers locked into Windows.</p>
+          <p class="drawer-footer"><a href="#dossier-1">View in Dossier ↓</a></p>
+        </div>
+      </details>
+    </div>
     </div>
   </section>
   <section id="story-2" class="spread arc-archive">
@@ -358,7 +401,21 @@
       <h2 class="frnc">Opera Remembers the Internet of 1996</h2>
       <p class="story-meta">web-rewind.com &nbsp;·&nbsp; 197 pts &nbsp;·&nbsp; 132 comments</p>
       <p class="lede">As the browser marks thirty years of development, it invites users to traverse the early web’s fragmented landscape. This interactive project serves as a digital map for an era before the Chromium monoculture.</p>
-      <div class="ctas"><a class="btn-read" href="https://www.web-rewind.com" target="_blank" rel="noopener">Read →</a><a class="btn-dossier" href="#dossier-2">Full analysis ↓</a></div>
+      <div class="ctas"><a class="btn-read" href="https://www.web-rewind.com" target="_blank" rel="noopener">Read →</a>
+      <details class="analysis-drawer">
+        <summary class="btn-dossier">[ Analysis + ]</summary>
+        <div class="drawer-content">
+          <h4>Technical Analysis</h4>
+          <p>To celebrate its 30th anniversary, Opera has launched &quot;Web Rewind,&quot; an interactive digital experience that documents the evolution of the internet from 1995 to the present. The platform serves as a curated archive, allowing users to navigate through various historical web artefacts and milestones across three decades of browser development. This initiative highlights the company&#x27;s long-standing history in the browser market and its role in shaping early internet navigation.</p>
+          <h4>Reader Reactions</h4>
+<p>Longtime users express significant nostalgia for the pre-Chromium era of Opera, viewing the transition to the Blink engine as a loss of unique performance, superior features, and genuine technical innovation.</p>
+<p>While some users appreciate the aesthetic of the anniversary website, others strongly criticize it as empty marketing fluff that lacks substance and fails to provide a meaningful interactive experience for visitors.</p>
+<p>Technical discussions highlight that Opera’s legacy remains visible through the continued operation of Opera Mini proxy servers, which are still active and interacting with modern web infrastructure despite the browser&#x27;s changes.</p>
+<p>The provided sample focuses heavily on historical sentiment and technical criticism of the modern brand, potentially overlooking perspectives from newer users who might favor Opera GX for its specific gaming features.</p>
+          <p class="drawer-footer"><a href="#dossier-2">View in Dossier ↓</a></p>
+        </div>
+      </details>
+    </div>
     </div>
   </section>
   <section id="story-3" class="spread arc-blueprint">
@@ -368,7 +425,21 @@
       <h2 class="frnc">Bypassing Proprietary Intercoms with ESP32 Relays</h2>
       <p class="story-meta">jackhogan.me &nbsp;·&nbsp; 278 pts &nbsp;·&nbsp; 113 comments</p>
       <p class="lede">When building management abandoned the intercom system, a hardware-level override became the only logical path. By tapping into the solenoid control, we restored gate access using modern smart home protocols.</p>
-      <div class="ctas"><a class="btn-read" href="https://www.jackhogan.me/blog/box-of-secrets/" target="_blank" rel="noopener">Read →</a><a class="btn-dossier" href="#dossier-3">Full analysis ↓</a></div>
+      <div class="ctas"><a class="btn-read" href="https://www.jackhogan.me/blog/box-of-secrets/" target="_blank" rel="noopener">Read →</a>
+      <details class="analysis-drawer">
+        <summary class="btn-dossier">[ Analysis + ]</summary>
+        <div class="drawer-content">
+          <h4>Technical Analysis</h4>
+          <p>The author describes a project to regain remote access to an apartment complex gate after the building’s intercom system became non-functional due to lapsed service. Instead of attempting to reverse-engineer the proprietary cellular communication protocols of the main intercom controller, the author and a friend opted for a hardware-level bypass. By identifying the solenoid control wire within a common junction box, they installed an ESP32 relay board that allows the gate to be triggered directly via Apple Home using the Matter smart home standard.</p>
+          <h4>Reader Reactions</h4>
+<p>Enthusiasts enjoy the challenge of hacking proprietary apartment intercom systems to add modern smart-home functionality, viewing these projects as creative solutions to the frustration of rigid, locked-down legacy hardware.</p>
+<p>Critics argue that these modifications are often antisocial, prone to reliability issues, or legally precarious, suggesting that simple analog solutions or existing communication methods are more practical and respectful of neighbors.</p>
+<p>Technical contributors suggest that instead of building complex custom circuits, users can often leverage existing off-the-shelf smart openers or bridge devices that integrate reliably with a wide variety of intercom systems.</p>
+<p>The sample reveals a heavy bias toward technically skilled DIYers who are comfortable with microcontrollers, potentially underrepresenting the perspectives of property managers or tenants concerned with security and building liability.</p>
+          <p class="drawer-footer"><a href="#dossier-3">View in Dossier ↓</a></p>
+        </div>
+      </details>
+    </div>
     </div>
   </section>
   <section id="story-4" class="spread arc-terminal">
@@ -382,7 +453,21 @@
         <p class="lede">Stop tailing logs through complex server configurations. Lnav bundles SQLite-powered querying into a single, terminal-native application designed for immediate data extraction.<span class="cursor"></span></p>
         <div class="ctas">
           <a href="https://lnav.org/" class="btn-read" target="_blank">RUN_PROCESS →</a>
-          <a href="#dossier-4" class="btn-dossier">VIEW_ANALYSIS ↓</a>
+          
+      <details class="analysis-drawer">
+        <summary class="btn-dossier">[ Analysis + ]</summary>
+        <div class="drawer-content">
+          <h4>Technical Analysis</h4>
+          <p>The Logfile Navigator (lnav) is a terminal-based utility designed to streamline the process of viewing, filtering, and analyzing log files. The tool automatically detects file formats and handles compressed archives, allowing users to merge and query multiple logs without requiring complex server setups or pre-configuration. It functions as a standalone application that leverages an embedded SQLite interface to provide advanced data manipulation and search capabilities.</p>
+          <h4>Reader Reactions</h4>
+<p>Users widely recognize lnav as a long-standing, effective terminal-based tool for log analysis, often preferring its speed and efficiency over more resource-heavy graphical interfaces or complex alternatives like Grafana.</p>
+<p>Some users express strong preferences for alternative GUI-based log viewers like klogg, while others debate the ideal balance between memory consumption and the feature-rich performance lnav provides for large log files.</p>
+<p>The discussion highlights that while lnav manages memory efficiently for large datasets, some users find its JSON-based configuration requirements and storage location preferences to be a point of minor friction.</p>
+<p>This sample primarily features experienced terminal users who value speed, meaning the discussion may overlook the needs of developers who prefer integrated, enterprise-level logging stacks or those who dislike CLI-only workflows.</p>
+          <p class="drawer-footer"><a href="#dossier-4">View in Dossier ↓</a></p>
+        </div>
+      </details>
+    
         </div>
       </div>
     </div>
@@ -395,7 +480,21 @@
       <h2 class="frnc">ProofShot Gives AI Coding Agents Sight</h2>
       <p class="story-meta">github.com &nbsp;·&nbsp; 161 pts &nbsp;·&nbsp; 105 comments</p>
       <p class="lede">Debugging a layout shouldn&#x27;t require manual browser inspection for every iteration. ProofShot captures the agent&#x27;s work in real-time, delivering a visual audit trail directly to the developer.</p>
-      <div class="ctas"><a class="btn-read" href="https://github.com/AmElmo/proofshot" target="_blank" rel="noopener">Read →</a><a class="btn-dossier" href="#dossier-5">Full analysis ↓</a></div>
+      <div class="ctas"><a class="btn-read" href="https://github.com/AmElmo/proofshot" target="_blank" rel="noopener">Read →</a>
+      <details class="analysis-drawer">
+        <summary class="btn-dossier">[ Analysis + ]</summary>
+        <div class="drawer-content">
+          <h4>Technical Analysis</h4>
+          <p>ProofShot is an open-source CLI tool designed to provide AI coding agents with the ability to visually verify the interfaces they build. By wrapping a development server and using headless Chromium, the tool records browser sessions, captures console errors, and tracks agent actions through a series of shell commands. The process culminates in a standalone HTML bundle that provides developers with synchronized video, screenshots, and logs to review the agent&#x27;s output without manual browser testing.</p>
+          <h4>Reader Reactions</h4>
+<p>Users widely agree that visual verification is essential for AI coding agents because standard DOM-based testing often fails to detect layout bugs, rendering issues, or UI regressions in non-standard environments.</p>
+<p>Several commenters question the necessity of a dedicated tool, arguing that existing solutions like Playwright or Chrome DevTools already provide similar capabilities for AI agents to inspect and debug browser interfaces.</p>
+<p>Beyond simple pixel comparisons, developers see significant potential in using vision models to perform semantic analysis on screenshots, enabling agents to understand and fix UI problems without human intervention.</p>
+<p>The discussion is heavily skewed toward web development perspectives, potentially overlooking the unique challenges or different technical requirements for integrating visual testing agents into mobile or specialized native application ecosystems.</p>
+          <p class="drawer-footer"><a href="#dossier-5">View in Dossier ↓</a></p>
+        </div>
+      </details>
+    </div>
     </div>
   </section>
   <section id="story-6" class="spread arc-mint-pattern" style="--bg-word: 'ALGORITHMS'">
@@ -407,7 +506,21 @@
       <h2 class="frnc">Why Ripgrep Outperforms Traditional Search Tools</h2>
       <p class="story-meta">burntsushi.net &nbsp;·&nbsp; 375 pts &nbsp;·&nbsp; 159 comments</p>
       <p class="lede">Performance isn&#x27;t accidental; it is the result of architectural precision. By leveraging SIMD optimizations and efficient finite automata, ripgrep redefined the speed of codebase exploration.</p>
-      <div class="ctas"><a class="btn-read" href="https://burntsushi.net/ripgrep/" target="_blank" rel="noopener">Read →</a><a class="btn-dossier" href="#dossier-6">Full analysis ↓</a></div>
+      <div class="ctas"><a class="btn-read" href="https://burntsushi.net/ripgrep/" target="_blank" rel="noopener">Read →</a>
+      <details class="analysis-drawer">
+        <summary class="btn-dossier">[ Analysis + ]</summary>
+        <div class="drawer-content">
+          <h4>Technical Analysis</h4>
+          <p>This article introduces &quot;ripgrep,&quot; a command-line search tool written in Rust designed to outperform existing utilities like grep, The Silver Searcher, and git grep. The author details the architectural choices behind the tool, such as its use of a finite automata-based regular expression engine and advanced SIMD-accelerated literal optimizations. By comparing these implementation details against other popular search tools, the post provides a technical analysis of how factors like directory traversal, file filtering, and memory management impact overall search performance.</p>
+          <h4>Reader Reactions</h4>
+<p>The community widely regards ripgrep as a benchmark for performance in code search tools, frequently cited as a foundational utility that inspires further optimization techniques in other open-source search projects.</p>
+<p>Some users express frustration with ripgrep’s default behavior of automatically ignoring files listed in gitignore, occasionally leading to confusion and the false belief that the tool has failed to locate data.</p>
+<p>Developers looking to improve search performance can adopt advanced techniques like the least common byte heuristic or SIMD-accelerated character scanning, which significantly reduce runtime by optimizing the inner loops of search algorithms.</p>
+<p>This sample may overrepresent users interested in niche portability or minor command-line naming conventions, as several comments focus on specific platform ports or subjective stylistic complaints rather than general tool performance.</p>
+          <p class="drawer-footer"><a href="#dossier-6">View in Dossier ↓</a></p>
+        </div>
+      </details>
+    </div>
     </div>
   </section>
   <section id="story-7" class="spread arc-academic-drop-cap">
@@ -421,7 +534,21 @@
       <p class="story-meta">ykumar.me &nbsp;·&nbsp; 427 pts &nbsp;·&nbsp; 95 comments</p>
       <div class="cols">
         <div><p>ECLIP experiments represent the next frontier in autonomous research.</p></div>
-        <div><p>By deploying a Claude-powered agent in a closed-loop training environment, researchers successfully refined hyperparameter configurations through iterative cycles.</p><div class="ctas"><a class="btn-read" href="https://ykumar.me/blog/eclip-autoresearch/" target="_blank" rel="noopener">Read →</a><a class="btn-dossier" href="#dossier-7">Full analysis ↓</a></div></div>
+        <div><p>By deploying a Claude-powered agent in a closed-loop training environment, researchers successfully refined hyperparameter configurations through iterative cycles.</p><div class="ctas"><a class="btn-read" href="https://ykumar.me/blog/eclip-autoresearch/" target="_blank" rel="noopener">Read →</a>
+      <details class="analysis-drawer">
+        <summary class="btn-dossier">[ Analysis + ]</summary>
+        <div class="drawer-content">
+          <h4>Technical Analysis</h4>
+          <p>The author details an experiment applying an &quot;autoresearch&quot; loop—inspired by Andrej Karpathy—to modernize and improve legacy research code for an eCLIP model. By providing a Claude-powered agent with a constrained environment, the author enabled it to autonomously iterate through 42 experiments by modifying training scripts and evaluating performance on a new Ukiyo-eVG dataset. The process operated on a hypothesize-edit-train-evaluate cycle, successfully reducing the mean rank of retrieved embeddings by 54% through systematic hyperparameter tuning and bug identification.</p>
+          <h4>Reader Reactions</h4>
+<p>Commenters generally agree that while AI agents can effectively iterate on code and hyperparameters, their practical utility is limited by high costs, unpredictable outputs, and a tendency to produce &quot;vibe-coded&quot; solutions.</p>
+<p>A significant point of contention exists regarding whether these agents represent a meaningful advancement in research or are merely an expensive, inefficient wrapper around conventional optimization techniques like grid or random search.</p>
+<p>A recurring technical takeaway is that successful automation relies on iterative loops where LLMs modify code, execute training, and analyze evaluation results, though these systems often fail to replace manual expert intuition.</p>
+<p>The sample reflects a bias toward skeptical engineering perspectives, focusing heavily on production stability and cost-efficiency while potentially underrepresenting the rapid, experimental prototyping benefits reported by some early adopters.</p>
+          <p class="drawer-footer"><a href="#dossier-7">View in Dossier ↓</a></p>
+        </div>
+      </details>
+    </div></div>
       </div>
     </div>
   </section>
@@ -432,7 +559,21 @@
       <h2 class="frnc">Qite.js Returns to SSR Basics Without NPM</h2>
       <p class="story-meta">qitejs.qount25.dev &nbsp;·&nbsp; 24 pts &nbsp;·&nbsp; 11 comments</p>
       <p class="lede">Modern web development has become tethered to complex build chains and massive dependency trees. Qite.js offers a path forward by focusing on native modules and server-side rendering over abstractions.</p>
-      <div class="ctas"><a class="btn-read" href="https://qitejs.qount25.dev" target="_blank" rel="noopener">Read →</a><a class="btn-dossier" href="#dossier-8">Full analysis ↓</a></div>
+      <div class="ctas"><a class="btn-read" href="https://qitejs.qount25.dev" target="_blank" rel="noopener">Read →</a>
+      <details class="analysis-drawer">
+        <summary class="btn-dossier">[ Analysis + ]</summary>
+        <div class="drawer-content">
+          <h4>Technical Analysis</h4>
+          <p>Qite.js is a lightweight, SSR-first frontend framework designed to provide an alternative to modern, complex development stacks like React. It eliminates the need for build steps, npm, virtual DOMs, or transpilation by allowing developers to work directly with native HTML and JavaScript modules. The framework operates by attaching behavior to existing DOM elements, treating them as the single source of truth rather than relying on compiled abstractions.</p>
+          <h4>Reader Reactions</h4>
+<p>Bullet 1: Commenters generally acknowledge the appeal of a simpler, no-build web development approach, but they debate whether &quot;hating React&quot; is a professional or effective way to frame a project&#x27;s value proposition.</p>
+<p>Bullet 2: Some users argue that the framework&#x27;s premise is flawed because modern build tools like esbuild make compilation trivial and necessary for essential performance optimizations such as tree-shaking and asset minification.</p>
+<p>Bullet 3: The discussion highlights that developers seeking lightweight, server-side rendered solutions should consider combining native Web Components with existing signal libraries as a more standard alternative to creating custom frameworks.</p>
+<p>Bullet 4: The sample is heavily skewed toward philosophical debates about marketing and framework architecture, providing limited insight into the actual performance or functional viability of the library in complex production environments.</p>
+          <p class="drawer-footer"><a href="#dossier-8">View in Dossier ↓</a></p>
+        </div>
+      </details>
+    </div>
     </div>
     <div class="quote-side">
       <blockquote class="pullquote">The most efficient way to build for the web is to stop building altogether</blockquote>
@@ -446,7 +587,21 @@
       <h2 class="frnc">BIO Co-Processor Solves FPGA Timing Latency</h2>
       <p class="story-meta">crowdsupply.com &nbsp;·&nbsp; 87 pts &nbsp;·&nbsp; 25 comments</p>
       <p class="lede">Bao I/O minimizes the overhead of standard FPGA peripherals by employing a lean RISC-V core. This design replaces rigid instruction sets with deterministic, blocking semantics for high-performance timing.</p>
-      <div class="ctas"><a class="btn-read" href="https://www.crowdsupply.com/baochip/dabao/updates/bio-the-bao-i-o-co-processor" target="_blank" rel="noopener">Read →</a><a class="btn-dossier" href="#dossier-9">Full analysis ↓</a></div>
+      <div class="ctas"><a class="btn-read" href="https://www.crowdsupply.com/baochip/dabao/updates/bio-the-bao-i-o-co-processor" target="_blank" rel="noopener">Read →</a>
+      <details class="analysis-drawer">
+        <summary class="btn-dossier">[ Analysis + ]</summary>
+        <div class="drawer-content">
+          <h4>Technical Analysis</h4>
+          <p>Andrew &quot;bunnie&quot; Huang introduces the Bao I/O (BIO) co-processor, a hardware block designed for the Baochip-1x system to offload I/O tasks from the main CPU. By analyzing the Raspberry Pi’s popular PIO block, Huang determined that the PIO’s highly specialized, CISC-like architecture resulted in significant FPGA resource consumption and timing closure difficulties. To address these inefficiencies, he developed the BIO, which utilizes four compact RISC-V (PicoRV32) cores equipped with custom registers to achieve deterministic I/O performance through blocking semantics rather than custom, complex instructions.</p>
+          <h4>Reader Reactions</h4>
+<p>The discussion highlights interest in the co-processor&#x27;s potential to improve RISC-V efficiency through implicit data handling, alongside a fascination with the blunt, reality-focused nature of the project’s documented supply chain risks.</p>
+<p>Critics express skepticism regarding the real-time performance guarantees, arguing that the system relies on cycle-sensitive timing constraints that could become fragile or unpredictable when handled by evolving compilers or complex software.</p>
+<p>Technically, users compare the co-processor&#x27;s hardware footprint and clock efficiency against existing PIO implementations, noting that while it achieves higher clock speeds, it may be significantly less efficient per clock cycle.</p>
+<p>The sample reflects a narrow technical discourse primarily focused on architectural performance trade-offs, largely ignoring broader project context in favor of debating specific hardware design philosophies and implementation details within the community.</p>
+          <p class="drawer-footer"><a href="#dossier-9">View in Dossier ↓</a></p>
+        </div>
+      </details>
+    </div>
     </div>
   </section>
   <section id="story-10" class="spread arc-stat-hero">
@@ -456,7 +611,21 @@
       <h2 class="frnc">Running Massive Language Models on Mobile Hardware</h2>
       <p class="story-meta">twitter.com &nbsp;·&nbsp; 710 pts &nbsp;·&nbsp; 327 comments</p>
       <p class="lede">A smartphone running a 400 billion parameter model pushes current hardware to its theoretical edge. While token speeds remain limited, the feat proves the viability of local, private AI inference.</p>
-      <div class="ctas"><a class="btn-read" href="https://twitter.com/anemll/status/2035901335984611412" target="_blank" rel="noopener">Read →</a><a class="btn-dossier" href="#dossier-10">Full analysis ↓</a></div>
+      <div class="ctas"><a class="btn-read" href="https://twitter.com/anemll/status/2035901335984611412" target="_blank" rel="noopener">Read →</a>
+      <details class="analysis-drawer">
+        <summary class="btn-dossier">[ Analysis + ]</summary>
+        <div class="drawer-content">
+          <h4>Technical Analysis</h4>
+          <p>The shared story highlights a demonstration of an iPhone 17 Pro successfully running a 400-billion parameter large language model locally on the device. While the execution achieves a modest speed of 0.6 tokens per second, it marks a significant milestone in mobile hardware capabilities. This feat was made possible through specialized optimizations and collaboration between researchers and developers in the machine learning community.</p>
+          <h4>Reader Reactions</h4>
+<p>The consensus is that running a 400B parameter model on a smartphone is a clever engineering proof-of-concept rather than a practical, usable, or efficient method for real-world AI inference tasks.</p>
+<p>Some participants argue that local AI execution is a vital hedge against corporate control, protecting user privacy and ensuring open standards despite current limitations regarding power consumption and device hardware constraints.</p>
+<p>Technically, the demo relies on aggressive quantization and streaming weights from storage because the device lacks the necessary RAM, resulting in extremely low token throughput and significant thermal management challenges.</p>
+<p>This sample highlights a technical audience’s skepticism toward viral demos, favoring pragmatic discussions about memory bandwidth, power draw, and architecture over the novelty of making large models function on mobile hardware.</p>
+          <p class="drawer-footer"><a href="#dossier-10">View in Dossier ↓</a></p>
+        </div>
+      </details>
+    </div>
     </div>
   </section>
   <section id="dossier" class="dossier">
@@ -646,6 +815,19 @@
     localStorage.setItem(key, JSON.stringify(stored));
   }
 })();
+</script>
+<script>
+// Simple script to toggle the [+] and [-] labels on the drawers
+document.querySelectorAll('.analysis-drawer').forEach(drawer => {
+  drawer.addEventListener('toggle', () => {
+    const summary = drawer.querySelector('summary');
+    if (drawer.open) {
+      summary.textContent = '[ Analysis − ]';
+    } else {
+      summary.textContent = '[ Analysis + ]';
+    }
+  });
+});
 </script>
 </body>
 </html>

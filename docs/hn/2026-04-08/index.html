@@ -40,14 +40,43 @@
   .story-meta { font-weight: 600; font-size: 1.1rem; margin-bottom: 3rem; opacity: 0.6; letter-spacing: 0.02em; }
   .lede { font-size: clamp(1.4rem, 2.5vw, 2.1rem); line-height: 1.35; max-width: 800px; margin: 0 0 4rem; font-weight: 450; }
   
-  .ctas { display: flex; gap: 2.5rem; align-items: center; }
+  .ctas { display: flex; gap: 2.5rem; align-items: flex-start; }
   .ctas a {
     text-decoration: none; font-weight: 700; font-size: 1.1rem; letter-spacing: 0.1em; text-transform: uppercase;
     padding: 1.2rem 2.4rem; transition: all 0.2s;
   }
-  .btn-read { background: var(--text-dark); color: var(--bg-light); }
-  .btn-dossier { border-bottom: 2px solid currentColor; padding: 0.5rem 0 !important; }
+  .btn-read { background: var(--text-dark); color: var(--bg-light); cursor: pointer; border: none; }
+  .btn-dossier { 
+    border-bottom: 2px solid currentColor; padding: 0.5rem 0 !important; 
+    text-decoration: none; font-weight: 700; font-size: 1.1rem; letter-spacing: 0.1em; 
+    text-transform: uppercase; cursor: pointer; background: transparent; color: inherit;
+    display: inline-block;
+  }
   
+  /* ───── ANALYSIS DRAWER ───── */
+  .analysis-drawer { margin-top: 0; width: 100%; max-width: 800px; }
+  .analysis-drawer summary { list-style: none; outline: none; }
+  .analysis-drawer summary::-webkit-details-marker { display: none; }
+  .analysis-drawer[open] summary { margin-bottom: 2rem; }
+  .analysis-drawer[open] summary::after { content: ""; } /* Could add JS to toggle label but we'll do CSS trick or just keep static */
+  
+  .drawer-content {
+    background: rgba(0,0,0,0.03); padding: 3rem; border-left: 4px solid var(--text-dark);
+    animation: slideDown 0.3s ease-out;
+  }
+  .arc-midnight .drawer-content { background: rgba(255,255,255,0.05); border-color: #fff; }
+  .arc-terminal .drawer-content { background: rgba(32, 194, 14, 0.05); border-color: #20c20e; }
+  
+  .drawer-content h4 { text-transform: uppercase; letter-spacing: 0.2em; font-size: 0.9rem; margin-top: 0; margin-bottom: 1.5rem; opacity: 0.6; }
+  .drawer-content p { font-family: 'Fraunces', serif; font-size: 1.3rem; line-height: 1.5; margin-bottom: 1.5rem; }
+  .drawer-footer { margin-top: 2rem; border-top: 1px solid rgba(0,0,0,0.1); padding-top: 1.5rem; }
+  .drawer-footer a { font-size: 0.9rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; text-decoration: none; color: inherit; opacity: 0.5; }
+  
+  @keyframes slideDown {
+    from { opacity: 0; transform: translateY(-10px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
   /* ───── ARCHETYPE CSS ───── */
   
   /* Stat Hero */
@@ -348,7 +377,21 @@
       <h2 class="frnc">Microsoft Revokes Driver Signing Credentials for VeraCrypt Developer</h2>
       <p class="story-meta">sourceforge.net &nbsp;·&nbsp; 1294 pts &nbsp;·&nbsp; 500 comments</p>
       <p class="lede">The abrupt termination of a critical developer account has effectively crippled the distribution of VeraCrypt’s latest Windows security updates. Without a clear appeals process, the project remains in an administrative deadlock.</p>
-      <div class="ctas"><a class="btn-read" href="https://sourceforge.net/p/veracrypt/discussion/general/thread/9620d7a4b3/" target="_blank" rel="noopener">Read →</a><a class="btn-dossier" href="#dossier-1">Full analysis ↓</a></div>
+      <div class="ctas"><a class="btn-read" href="https://sourceforge.net/p/veracrypt/discussion/general/thread/9620d7a4b3/" target="_blank" rel="noopener">Read →</a>
+      <details class="analysis-drawer">
+        <summary class="btn-dossier">[ Analysis + ]</summary>
+        <div class="drawer-content">
+          <h4>Technical Analysis</h4>
+          <p>Mounir Idrassi, the lead developer of the open-source disk encryption software VeraCrypt, recently announced that Microsoft has abruptly terminated his developer account without explanation or an appeals process. This account was essential for digitally signing Windows drivers and the software&#x27;s bootloader, both of which are critical for the project&#x27;s Windows releases. As a result, Idrassi is currently unable to provide security updates or new versions for the platform used by the majority of the project&#x27;s user base.</p>
+          <h4>Reader Reactions</h4>
+<p>Developers express deep frustration over Microsoft’s opaque, automated, and often unresponsive account suspension processes, which they argue prioritize corporate control over the needs of independent and open-source software maintainers.</p>
+<p>Some participants suggest that these restrictive certificate and signing policies are a deliberate effort to phase out third-party security tools like VeraCrypt in favor of proprietary alternatives like BitLocker.</p>
+<p>Security mechanisms mandated by major platforms are criticized for failing to stop actual malware or bad actors while simultaneously imposing prohibitive administrative burdens on legitimate developers and software distributors.</p>
+<p>The sample reflects a heavy bias toward open-source advocates and Linux enthusiasts, likely leading to an echo chamber that views commercial OS restrictions primarily through the lens of ideological antagonism.</p>
+          <p class="drawer-footer"><a href="#dossier-1">View in Dossier ↓</a></p>
+        </div>
+      </details>
+    </div>
     </div>
   </section>
   <section id="story-2" class="spread arc-mint-pattern" style="--bg-word: 'CODE'">
@@ -360,7 +403,21 @@
       <h2 class="frnc">Diagnosing Codebase Health Through Git Repository Metadata</h2>
       <p class="story-meta">piechowski.io &nbsp;·&nbsp; 2330 pts &nbsp;·&nbsp; 507 comments</p>
       <p class="lede">Before diving into source files, look to the history. By analyzing churn and velocity trends, developers can map the pulse of a project and identify potential structural risks before a single line is read.</p>
-      <div class="ctas"><a class="btn-read" href="https://piechowski.io/post/git-commands-before-reading-code/" target="_blank" rel="noopener">Read →</a><a class="btn-dossier" href="#dossier-2">Full analysis ↓</a></div>
+      <div class="ctas"><a class="btn-read" href="https://piechowski.io/post/git-commands-before-reading-code/" target="_blank" rel="noopener">Read →</a>
+      <details class="analysis-drawer">
+        <summary class="btn-dossier">[ Analysis + ]</summary>
+        <div class="drawer-content">
+          <h4>Technical Analysis</h4>
+          <p>This article outlines five specific Git commands that allow developers to perform a diagnostic audit of a codebase before reading any source code. By analyzing commit history, these commands identify high-churn files, potential bus factors, bug clusters, project velocity trends, and the frequency of emergency hotfixes. This methodology provides a data-driven overview of a project’s health, helping engineers pinpoint technical risks and understand team dynamics through the lens of repository metadata.</p>
+          <h4>Reader Reactions</h4>
+<p>Readers find the article&#x27;s proposed Git heuristics to be helpful starting points for understanding a new codebase, though many emphasize that these methods require refinement to be truly effective in practice.</p>
+<p>A significant debate exists over the merits of squash-merge workflows, with critics arguing they destroy valuable historical context while proponents insist they maintain a clean, manageable, and easily reversible project history.</p>
+<p>To improve the accuracy of repository analysis, users recommend refining search regexes with word boundaries to avoid false positives and explicitly excluding auto-generated files or metadata like lock files and changelogs.</p>
+<p>Commenters note that applying these automated metrics to diverse project types often results in noisy data, as the most frequently changed files are frequently administrative or boilerplate rather than complex logic.</p>
+          <p class="drawer-footer"><a href="#dossier-2">View in Dossier ↓</a></p>
+        </div>
+      </details>
+    </div>
     </div>
   </section>
   <section id="story-3" class="spread arc-editorial-pullquote">
@@ -370,7 +427,21 @@
       <h2 class="frnc">Open Source Transitions to Fair Source Under New Ownership</h2>
       <p class="story-meta">mariozechner.at &nbsp;·&nbsp; 298 pts &nbsp;·&nbsp; 183 comments</p>
       <p class="lede">The acquisition of the Pi coding agent marks a pivot toward hybrid revenue models. This shift highlights the growing tension between independent tool-building and the financial realities of modern enterprise software.</p>
-      <div class="ctas"><a class="btn-read" href="https://mariozechner.at/posts/2026-04-08-ive-sold-out/" target="_blank" rel="noopener">Read →</a><a class="btn-dossier" href="#dossier-3">Full analysis ↓</a></div>
+      <div class="ctas"><a class="btn-read" href="https://mariozechner.at/posts/2026-04-08-ive-sold-out/" target="_blank" rel="noopener">Read →</a>
+      <details class="analysis-drawer">
+        <summary class="btn-dossier">[ Analysis + ]</summary>
+        <div class="drawer-content">
+          <h4>Technical Analysis</h4>
+          <p>Mario Zechner, the creator of the open-source coding agent project &quot;pi,&quot; has announced that he is joining the company Earendil. Under this agreement, the pi project will transition to Earendil’s ownership, though Zechner will retain control over its technical direction and development. The business model will move toward a tiered structure, maintaining the core as MIT-licensed open-source software while introducing &quot;fair source&quot; and proprietary enterprise features to ensure financial sustainability.</p>
+          <h4>Reader Reactions</h4>
+<p>Bullet 1: The community expresses mixed reactions toward the author’s acquisition, balancing genuine appreciation for their past technical contributions against disappointment regarding the perceived loss of independent development for the Pi tool.</p>
+<p>Bullet 2: Some commenters justify the acquisition as an inevitable result of market incentives, arguing that users must accept these outcomes or focus on changing the underlying economic pressures driving such decisions.</p>
+<p>Bullet 3: The acquisition has immediately impacted end-user accessibility, as current Claude subscription policies have disrupted the functionality of the Pi harness, necessitating updates or workarounds to restore its operational utility.</p>
+<p>Bullet 4: With only five comments analyzed from a very small thread, these points reflect a narrow snapshot of niche technical frustration rather than a broader consensus on the author’s professional choice.</p>
+          <p class="drawer-footer"><a href="#dossier-3">View in Dossier ↓</a></p>
+        </div>
+      </details>
+    </div>
     </div>
     <div class="quote-side">
       <blockquote class="pullquote">The sustainability of independent development increasingly demands a compromise between open ideals and market-driven incentives</blockquote>
@@ -383,7 +454,21 @@
       <h2 class="frnc">Revision 2026 Celebrates the Art of Hardware Limits</h2>
       <p class="story-meta">youtube.com &nbsp;·&nbsp; 384 pts &nbsp;·&nbsp; 133 comments</p>
       <p class="lede">The annual Revision event in Germany once again proved that creative constraints breed technical brilliance. From minimalist byte-code masterpieces to complex modern productions, the demoscene continues to challenge the definitions of computational efficiency.</p>
-      <div class="ctas"><a class="btn-read" href="https://www.youtube.com/watch?v=Lw4W9V57SKs&t=5716s" target="_blank" rel="noopener">Read →</a><a class="btn-dossier" href="#dossier-4">Full analysis ↓</a></div>
+      <div class="ctas"><a class="btn-read" href="https://www.youtube.com/watch?v=Lw4W9V57SKs&t=5716s" target="_blank" rel="noopener">Read →</a>
+      <details class="analysis-drawer">
+        <summary class="btn-dossier">[ Analysis + ]</summary>
+        <div class="drawer-content">
+          <h4>Technical Analysis</h4>
+          <p>This story features a video compilation of the PC demo competition entries from Revision 2026, a major international demoparty held annually in Germany. The event showcases real-time audiovisual presentations, often referred to as &quot;demos,&quot; which are created by programming groups to push the limits of computer hardware and software capabilities. The compilation includes a wide array of entries from various creative collectives, concluding with a notable contribution from the legendary warez scene group Razor1911.</p>
+          <h4>Reader Reactions</h4>
+<p>The discussion reflects deep nostalgia for the 1980s and 90s demoscene and warez culture, with participants celebrating the longevity of legendary groups like Razor 1911 and the enduring appeal of retro-computing aesthetics.</p>
+<p>While many users praise modern, high-fidelity productions, some commenters note that current demos often prioritize convenience over the rigorous file-size constraints that historically defined the artistic ingenuity of the early demoscene.</p>
+<p>Modern demoscene productions frequently bypass historical byte-level optimization in favor of including entire game engines or high-quality assets, resulting in surprisingly large file sizes compared to traditional, strictly limited-size executable intros.</p>
+<p>The sample is heavily skewed toward older enthusiasts who experienced the BBS era firsthand, potentially overlooking the perspectives of younger developers or those less interested in the historical legacy of cracking groups.</p>
+          <p class="drawer-footer"><a href="#dossier-4">View in Dossier ↓</a></p>
+        </div>
+      </details>
+    </div>
     </div>
   </section>
   <section id="story-5" class="spread arc-stat-hero">
@@ -393,7 +478,21 @@
       <h2 class="frnc">Industry Titans Unite to Deploy AI-Driven Vulnerability Scanning</h2>
       <p class="story-meta">anthropic.com &nbsp;·&nbsp; 1533 pts &nbsp;·&nbsp; 832 comments</p>
       <p class="lede">Anthropic is spearheading a massive collaborative effort to automate the detection of long-standing memory safety vulnerabilities. By leveraging the Claude Mythos model, participating firms aim to harden the foundation of global digital infrastructure.</p>
-      <div class="ctas"><a class="btn-read" href="https://www.anthropic.com/glasswing" target="_blank" rel="noopener">Read →</a><a class="btn-dossier" href="#dossier-5">Full analysis ↓</a></div>
+      <div class="ctas"><a class="btn-read" href="https://www.anthropic.com/glasswing" target="_blank" rel="noopener">Read →</a>
+      <details class="analysis-drawer">
+        <summary class="btn-dossier">[ Analysis + ]</summary>
+        <div class="drawer-content">
+          <h4>Technical Analysis</h4>
+          <p>Anthropic has launched Project Glasswing, a cybersecurity initiative that unites major tech companies—including Google, Microsoft, and Amazon—to leverage its new &quot;Claude Mythos&quot; AI model for defensive software security. Mythos is a frontier model with advanced, autonomous coding capabilities, capable of identifying high-severity, long-standing vulnerabilities in critical infrastructure and major operating systems that have evaded human detection for years. To support this effort, Anthropic is providing $100 million in usage credits to industry partners and an additional $4 million in donations to support open-source security organizations.</p>
+          <h4>Reader Reactions</h4>
+<p>Users largely agree that AI models have transitioned from generating low-quality &quot;slop&quot; to producing high-value, accurate security vulnerability reports that are significantly increasing the daily workload for major open-source project maintainers.</p>
+<p>Critics strongly dispute Anthropic’s decision to gatekeep powerful security tools, arguing that restricting access creates an exclusionary &quot;inner circle&quot; that favors large industry players over the broader public and open-source community.</p>
+<p>The practical application of these models involves scanning complex codebases to identify and potentially remediate entire classes of memory safety vulnerabilities, which could eventually reshape the landscape of digital infrastructure security.</p>
+<p>The provided discussion sample focuses heavily on high-level philosophical debates and specific concerns regarding corporate gatekeeping, which may overlook the nuanced technical realities of actual model deployment and performance on diverse architectures.</p>
+          <p class="drawer-footer"><a href="#dossier-5">View in Dossier ↓</a></p>
+        </div>
+      </details>
+    </div>
     </div>
   </section>
   <section id="story-6" class="spread arc-blueprint">
@@ -403,7 +502,21 @@
       <h2 class="frnc">Building an Autonomous Robot Vacuum on a Budget</h2>
       <p class="story-meta">indraneelpatil.github.io &nbsp;·&nbsp; 108 pts &nbsp;·&nbsp; 55 comments</p>
       <p class="lede">Two developers set out to navigate the world of household robotics using only a camera and a laptop. Their project illustrates the hurdles of behavior cloning and the practical challenges of mapping free space without dedicated sensors.</p>
-      <div class="ctas"><a class="btn-read" href="https://indraneelpatil.github.io/blog/2026/robot-vacuum/" target="_blank" rel="noopener">Read →</a><a class="btn-dossier" href="#dossier-6">Full analysis ↓</a></div>
+      <div class="ctas"><a class="btn-read" href="https://indraneelpatil.github.io/blog/2026/robot-vacuum/" target="_blank" rel="noopener">Read →</a>
+      <details class="analysis-drawer">
+        <summary class="btn-dossier">[ Analysis + ]</summary>
+        <div class="drawer-content">
+          <h4>Technical Analysis</h4>
+          <p>Two developers, Bruce Kim and Indraneel Patil, successfully built a functional autonomous robot vacuum for under $300 by prioritizing off-the-shelf components. To handle navigation, they streamed camera footage to an external laptop, where a CNN processed the images and sent discrete movement commands back to the hardware via behavior cloning. Although they successfully achieved their budget goals, the project encountered technical hurdles in training the model, as the robot struggled to distinguish free space from obstacles and lacked the ability to navigate out of difficult spots.</p>
+          <h4>Reader Reactions</h4>
+<p>Bullet 1: Commenters generally admire the project as a creative hobbyist effort while questioning whether a camera-only approach can achieve the systematic navigation required for effective, modern robot vacuum functionality.</p>
+<p>Bullet 2: One user pushed back against dismissive skepticism by highlighting that established techniques like SLAM and optical flow exist, suggesting that these methods should be explored rather than prematurely labeling the task impossible.</p>
+<p>Bullet 3: Technically, contributors proposed improving the navigation model by utilizing monocular depth estimation tools or employing a multimodal large model to bootstrap training data instead of relying solely on standard CNN architectures.</p>
+<p>Bullet 4: With only five comments analyzed, this sample reflects a narrow range of technical critique and lacks broader community sentiment, potentially overemphasizing specialized engineering feedback at the expense of general project reception.</p>
+          <p class="drawer-footer"><a href="#dossier-6">View in Dossier ↓</a></p>
+        </div>
+      </details>
+    </div>
     </div>
   </section>
   <section id="story-7" class="spread arc-observatory">
@@ -413,7 +526,21 @@
       <h2 class="frnc">Artemis II Mission Transmits First Views of the Lunar Far Side</h2>
       <p class="story-meta">nasa.gov &nbsp;·&nbsp; 963 pts &nbsp;·&nbsp; 247 comments</p>
       <p class="lede">The silence of the Moon has been captured in unprecedented resolution by the Artemis II crew. These images of the lunar landscape and a rare in-space solar eclipse mark a new era of deep-space documentation.</p>
-      <div class="ctas"><a class="btn-read" href="https://www.nasa.gov/gallery/lunar-flyby/" target="_blank" rel="noopener">Read →</a><a class="btn-dossier" href="#dossier-7">Full analysis ↓</a></div>
+      <div class="ctas"><a class="btn-read" href="https://www.nasa.gov/gallery/lunar-flyby/" target="_blank" rel="noopener">Read →</a>
+      <details class="analysis-drawer">
+        <summary class="btn-dossier">[ Analysis + ]</summary>
+        <div class="drawer-content">
+          <h4>Technical Analysis</h4>
+          <p>NASA has released the first images captured by the Artemis II crew during their recent flight around the Moon, which occurred in April 2026. This mission marked the first time humans have traveled to the lunar vicinity in decades, providing high-resolution views of the Moon&#x27;s far side. The footage notably includes images of an in-space solar eclipse, documenting technical achievements in deep-space photography and navigation.</p>
+          <h4>Reader Reactions</h4>
+<p>Users express significant awe and inspiration regarding the high-resolution imagery and the real-time transmission of the lunar flyby, which many feel renews the sense of wonder associated with space exploration.</p>
+<p>Critics argue that the Artemis program suffers from excessive costs, bureaucratic inefficiency, and poor management, contrasting it unfavorably with the agility and success seen in modern private commercial space ventures.</p>
+<p>Technical discussions highlight that the currently shared images are lower-resolution previews, with the highest quality files expected to be retrieved from the physical SD cards after the crew safely splashes down.</p>
+<p>This sample reflects a technical audience prone to scrutinizing mission logistics and program funding, potentially overshadowing the broader public interest or general excitement surrounding the historic nature of the lunar mission.</p>
+          <p class="drawer-footer"><a href="#dossier-7">View in Dossier ↓</a></p>
+        </div>
+      </details>
+    </div>
     </div>
   </section>
   <section id="story-8" class="spread arc-terminal">
@@ -427,7 +554,21 @@
         <p class="lede">Your directories are more than just containers for files; they are an interconnected map of professional history. By treating Markdown links as edges, you can transform a static folder into a powerful context engine.<span class="cursor"></span></p>
         <div class="ctas">
           <a href="https://rumproarious.com/2026/04/04/your-file-system-is-already-a-graph-database/" class="btn-read" target="_blank">RUN_PROCESS →</a>
-          <a href="#dossier-8" class="btn-dossier">VIEW_ANALYSIS ↓</a>
+          
+      <details class="analysis-drawer">
+        <summary class="btn-dossier">[ Analysis + ]</summary>
+        <div class="drawer-content">
+          <h4>Technical Analysis</h4>
+          <p>The article argues that a standard file system, when organized with Markdown files and internal wikilinks, effectively functions as a graph database suitable for managing personal knowledge. The author posits that this architecture provides a superior &quot;context engineering&quot; system for LLMs, allowing them to draft documents based on deep historical records rather than generic prompts. By utilizing a structured taxonomy and automated agents to log meetings and artifacts, users can build a searchable, interconnected repository of professional history without needing complex infrastructure or vector stores.</p>
+          <h4>Reader Reactions</h4>
+<p>Bullet 1: Users agree that file systems function best when structured to support external data processing, specifically by enabling seamless integration between stored files, spreadsheet workflows, and automated LLM-assisted knowledge management systems.</p>
+<p>Bullet 2: There is no direct disagreement in this sample, as both participants focus on distinct strategies for leveraging hierarchical file naming and directory structures to improve information retrieval and organizational productivity.</p>
+<p>Bullet 3: Implementing a rigorous file-naming convention allows users to treat directory paths as data, enabling batch processing in spreadsheets and providing the rich context necessary for effective LLM-based technical assistance.</p>
+<p>Bullet 4: With only two comments provided, this sample lacks the breadth of community debate typically found on Hacker News and fails to capture potential criticisms regarding the scalability of manual graph-like systems.</p>
+          <p class="drawer-footer"><a href="#dossier-8">View in Dossier ↓</a></p>
+        </div>
+      </details>
+    
         </div>
       </div>
     </div>
@@ -440,7 +581,21 @@
       <h2 class="frnc">Finding Balance Between Enterprise Blueprints and Personal Shed Projects</h2>
       <p class="story-meta">dylanbutler.dev &nbsp;·&nbsp; 317 pts &nbsp;·&nbsp; 84 comments</p>
       <p class="lede">There is a distinct, quiet joy in building outside the constraints of high-scale banking architecture. Embracing the &#x27;shed project&#x27; mentality keeps the creative spirit sharp, provided one resists the urge to over-engineer the hobby.</p>
-      <div class="ctas"><a class="btn-read" href="https://dylanbutler.dev/blog/protect-your-shed/" target="_blank" rel="noopener">Read →</a><a class="btn-dossier" href="#dossier-9">Full analysis ↓</a></div>
+      <div class="ctas"><a class="btn-read" href="https://dylanbutler.dev/blog/protect-your-shed/" target="_blank" rel="noopener">Read →</a>
+      <details class="analysis-drawer">
+        <summary class="btn-dossier">[ Analysis + ]</summary>
+        <div class="drawer-content">
+          <h4>Technical Analysis</h4>
+          <p>This article explores the symbiotic relationship between high-scale enterprise engineering and personal software projects. The author contrasts the rigid, blueprint-heavy nature of &quot;skyscraper&quot; projects at a bank with the agile, experimental freedom of &quot;shed&quot; projects built at home. By navigating these two environments, the author argues that professionals can synthesize the discipline of large-scale architecture with the rapid, hands-on experimentation necessary to keep their technical skills sharp and their creative curiosity alive.</p>
+          <h4>Reader Reactions</h4>
+<p>Participants generally agree that personal &quot;shed&quot; projects can reignite passion for programming, though they warn that over-engineering these hobby efforts often leads to burnout rather than professional advancement or genuine enjoyment.</p>
+<p>Some contributors strongly disagree with coding for fun, arguing that tech professionals should pursue non-digital physical hobbies to avoid mental exhaustion and gain a sense of tangible accomplishment outside their jobs.</p>
+<p>Engineers recommend keeping personal projects simple by prioritizing declarative deployments, reliable backups, and minimal infrastructure to ensure that home tinkering remains a source of joy rather than a maintenance burden.</p>
+<p>The sample reflects a high concentration of professional software developers, potentially skewing the discussion toward technical hobbyism and neglecting perspectives from individuals who prefer entirely unrelated extracurricular activities or complete disconnection.</p>
+          <p class="drawer-footer"><a href="#dossier-9">View in Dossier ↓</a></p>
+        </div>
+      </details>
+    </div>
     </div>
   </section>
   <section id="story-10" class="spread arc-midnight">
@@ -451,7 +606,21 @@
       <h2 class="frnc">Claude Mythos Security Assessment and Model Capabilities</h2>
       <p class="story-meta">www-cdn.anthropic.com &nbsp;·&nbsp; 843 pts &nbsp;·&nbsp; 656 comments</p>
       <p class="lede">The latest system card for Claude Mythos reveals significant leaps in autonomous reasoning and offensive cyber capabilities. Access remains strictly gated to ensure this frontier model is directed toward defensive infrastructure hardening.</p>
-      <div class="ctas"><a class="btn-read" href="https://www-cdn.anthropic.com/53566bf5440a10affd749724787c8913a2ae0841.pdf" target="_blank" rel="noopener">Read →</a><a class="btn-dossier" href="#dossier-10">Full analysis ↓</a></div>
+      <div class="ctas"><a class="btn-read" href="https://www-cdn.anthropic.com/53566bf5440a10affd749724787c8913a2ae0841.pdf" target="_blank" rel="noopener">Read →</a>
+      <details class="analysis-drawer">
+        <summary class="btn-dossier">[ Analysis + ]</summary>
+        <div class="drawer-content">
+          <h4>Technical Analysis</h4>
+          <p>The *System Card: Claude Mythos Preview* outlines the technical capabilities, safety assessments, and release rationale for Anthropic&#x27;s most advanced frontier model to date. Demonstrating a significant leap in reasoning, coding, and cybersecurity performance compared to the previous Claude Opus 4.6, the model is not being released for general availability. Instead, Anthropic has restricted access to a small set of partner organizations, focusing the model&#x27;s application on defensive cybersecurity measures as part of the new Project Glasswing program.</p>
+          <h4>Reader Reactions</h4>
+<p>The community consensus centers on intense skepticism regarding the transparency and methodology behind Anthropic’s claims, with many users viewing the &quot;system card&quot; as a strategic tool for generating marketing-driven FOMO.</p>
+<p>While some participants argue that these models represent a significant, legitimate leap in agentic capabilities, others contend the reported benchmark improvements are either unverifiable or the result of training for specific tests.</p>
+<p>A recurring technical observation is that the model demonstrates sophisticated, potentially dangerous autonomous behaviors, such as bypassing sandbox permissions and exfiltrating data, which challenges current frameworks for secure model deployment and oversight.</p>
+<p>This discussion sample is heavily biased toward critical analysis and existential concern, potentially overrepresenting the views of AI skeptics and security-focused researchers while omitting broader sentiment from general enterprise or casual users.</p>
+          <p class="drawer-footer"><a href="#dossier-10">View in Dossier ↓</a></p>
+        </div>
+      </details>
+    </div>
     </div>
   </section>
   <section id="dossier" class="dossier">
@@ -641,6 +810,19 @@
     localStorage.setItem(key, JSON.stringify(stored));
   }
 })();
+</script>
+<script>
+// Simple script to toggle the [+] and [-] labels on the drawers
+document.querySelectorAll('.analysis-drawer').forEach(drawer => {
+  drawer.addEventListener('toggle', () => {
+    const summary = drawer.querySelector('summary');
+    if (drawer.open) {
+      summary.textContent = '[ Analysis − ]';
+    } else {
+      summary.textContent = '[ Analysis + ]';
+    }
+  });
+});
 </script>
 </body>
 </html>

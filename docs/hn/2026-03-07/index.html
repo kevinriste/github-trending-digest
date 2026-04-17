@@ -40,14 +40,43 @@
   .story-meta { font-weight: 600; font-size: 1.1rem; margin-bottom: 3rem; opacity: 0.6; letter-spacing: 0.02em; }
   .lede { font-size: clamp(1.4rem, 2.5vw, 2.1rem); line-height: 1.35; max-width: 800px; margin: 0 0 4rem; font-weight: 450; }
   
-  .ctas { display: flex; gap: 2.5rem; align-items: center; }
+  .ctas { display: flex; gap: 2.5rem; align-items: flex-start; }
   .ctas a {
     text-decoration: none; font-weight: 700; font-size: 1.1rem; letter-spacing: 0.1em; text-transform: uppercase;
     padding: 1.2rem 2.4rem; transition: all 0.2s;
   }
-  .btn-read { background: var(--text-dark); color: var(--bg-light); }
-  .btn-dossier { border-bottom: 2px solid currentColor; padding: 0.5rem 0 !important; }
+  .btn-read { background: var(--text-dark); color: var(--bg-light); cursor: pointer; border: none; }
+  .btn-dossier { 
+    border-bottom: 2px solid currentColor; padding: 0.5rem 0 !important; 
+    text-decoration: none; font-weight: 700; font-size: 1.1rem; letter-spacing: 0.1em; 
+    text-transform: uppercase; cursor: pointer; background: transparent; color: inherit;
+    display: inline-block;
+  }
   
+  /* ───── ANALYSIS DRAWER ───── */
+  .analysis-drawer { margin-top: 0; width: 100%; max-width: 800px; }
+  .analysis-drawer summary { list-style: none; outline: none; }
+  .analysis-drawer summary::-webkit-details-marker { display: none; }
+  .analysis-drawer[open] summary { margin-bottom: 2rem; }
+  .analysis-drawer[open] summary::after { content: ""; } /* Could add JS to toggle label but we'll do CSS trick or just keep static */
+  
+  .drawer-content {
+    background: rgba(0,0,0,0.03); padding: 3rem; border-left: 4px solid var(--text-dark);
+    animation: slideDown 0.3s ease-out;
+  }
+  .arc-midnight .drawer-content { background: rgba(255,255,255,0.05); border-color: #fff; }
+  .arc-terminal .drawer-content { background: rgba(32, 194, 14, 0.05); border-color: #20c20e; }
+  
+  .drawer-content h4 { text-transform: uppercase; letter-spacing: 0.2em; font-size: 0.9rem; margin-top: 0; margin-bottom: 1.5rem; opacity: 0.6; }
+  .drawer-content p { font-family: 'Fraunces', serif; font-size: 1.3rem; line-height: 1.5; margin-bottom: 1.5rem; }
+  .drawer-footer { margin-top: 2rem; border-top: 1px solid rgba(0,0,0,0.1); padding-top: 1.5rem; }
+  .drawer-footer a { font-size: 0.9rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; text-decoration: none; color: inherit; opacity: 0.5; }
+  
+  @keyframes slideDown {
+    from { opacity: 0; transform: translateY(-10px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
   /* ───── ARCHETYPE CSS ───── */
   
   /* Stat Hero */
@@ -347,7 +376,21 @@
       <h2 class="frnc">Building a ten-foot interface for KDE Plasma</h2>
       <p class="story-meta">plasma-bigscreen.org &nbsp;·&nbsp; 671 pts &nbsp;·&nbsp; 225 comments</p>
       <p class="lede">Plasma Bigscreen brings the desktop environment to the living room experience. This project adapts standard interface elements into a remote-friendly, large-scale navigation system.</p>
-      <div class="ctas"><a class="btn-read" href="https://plasma-bigscreen.org" target="_blank" rel="noopener">Read →</a><a class="btn-dossier" href="#dossier-1">Full analysis ↓</a></div>
+      <div class="ctas"><a class="btn-read" href="https://plasma-bigscreen.org" target="_blank" rel="noopener">Read →</a>
+      <details class="analysis-drawer">
+        <summary class="btn-dossier">[ Analysis + ]</summary>
+        <div class="drawer-content">
+          <h4>Technical Analysis</h4>
+          <p>Plasma Bigscreen is an open-source user interface designed for televisions, home theater PCs, and set-top boxes, built on the existing KDE Plasma desktop environment. It provides a &quot;10-foot interface&quot; that supports navigation through various inputs, including HDMI-CEC remotes, game controllers, and mobile devices via KDE Connect. By leveraging the broader Linux ecosystem, the project allows users to run standard applications like Steam, Kodi, and Jellyfin while maintaining a customizable, settings-heavy experience manageable directly from the couch.</p>
+          <h4>Reader Reactions</h4>
+<p>Users are deeply divided over the KDE desktop experience, with many critics citing over-engineering and poor UX, while proponents value the high level of customizability and its current gaming performance.</p>
+<p>Detractors argue that Plasma Bigscreen is an ill-advised niche project that distracts developers from solving fundamental desktop bugs, whereas supporters see it as a privacy-focused alternative to proprietary smart TV platforms.</p>
+<p>The project offers a unique, open-source approach to couch-based computing, though it currently lacks the polish of established alternatives like Kodi or specialized media-streaming hardware for typical end-users.</p>
+<p>This sample reflects a small, highly opinionated subset of Linux enthusiasts, meaning the discussion focuses more on philosophical debates about desktop environments than on the actual product&#x27;s current usability.</p>
+          <p class="drawer-footer"><a href="#dossier-1">View in Dossier ↓</a></p>
+        </div>
+      </details>
+    </div>
     </div>
   </section>
   <section id="story-2" class="spread arc-terminal">
@@ -361,7 +404,21 @@
         <p class="lede">The Go language maintainers are moving to integrate native UUID support directly into the standard library. Developers can finally shed third-party dependencies for unique identifier generation.<span class="cursor"></span></p>
         <div class="ctas">
           <a href="https://github.com/golang/go/issues/62026" class="btn-read" target="_blank">RUN_PROCESS →</a>
-          <a href="#dossier-2" class="btn-dossier">VIEW_ANALYSIS ↓</a>
+          
+      <details class="analysis-drawer">
+        <summary class="btn-dossier">[ Analysis + ]</summary>
+        <div class="drawer-content">
+          <h4>Technical Analysis</h4>
+          <p>The Hacker News story discusses a proposal to add a native UUID package to the Go standard library, specifically supporting versions 4 and 7. Currently, Go developers must rely on popular third-party packages, such as `google/uuid`, to handle these identifiers in server and database applications. The proposal advocates for including this functionality to standardize the ecosystem and reduce dependencies, though it has faced scrutiny regarding the desired API surface and the potential to limit the flexibility offered by external libraries.</p>
+          <h4>Reader Reactions</h4>
+<p>Commenters widely agree that UUID support is essential for modern server-side development and argue that including it in the Go standard library would improve interoperability and reduce reliance on third-party dependencies.</p>
+<p>Opponents of the proposal suggest that keeping the standard library small is a core Go philosophy, noting that existing community-maintained third-party packages are already sufficient for handling diverse UUID requirements.</p>
+<p>The discussion highlights that using unmaintained or outdated UUID libraries creates significant risks, specifically regarding non-compliance with evolving IETF RFC standards and the potential for unresolved security vulnerabilities within dependencies.</p>
+<p>This sample likely reflects a subset of vocal community members and may overemphasize controversy, as the thread primarily focuses on debate dynamics rather than the actual technical implementation status of the proposal.</p>
+          <p class="drawer-footer"><a href="#dossier-2">View in Dossier ↓</a></p>
+        </div>
+      </details>
+    
         </div>
       </div>
     </div>
@@ -374,7 +431,21 @@
       <h2 class="frnc">Proving humanity through browser-based CSS</h2>
       <p class="story-meta">will-keleher.com &nbsp;·&nbsp; 383 pts &nbsp;·&nbsp; 114 comments</p>
       <p class="lede">In an era of automated interactions, this experiment uses stylesheet rendering to distinguish human intent from script-based noise. It is a whimsical look at the intersection of aesthetic design and verification.</p>
-      <div class="ctas"><a class="btn-read" href="https://will-keleher.com/posts/this-css-makes-me-human/" target="_blank" rel="noopener">Read →</a><a class="btn-dossier" href="#dossier-3">Full analysis ↓</a></div>
+      <div class="ctas"><a class="btn-read" href="https://will-keleher.com/posts/this-css-makes-me-human/" target="_blank" rel="noopener">Read →</a>
+      <details class="analysis-drawer">
+        <summary class="btn-dossier">[ Analysis + ]</summary>
+        <div class="drawer-content">
+          <h4>Technical Analysis</h4>
+          <p>The article &quot;this css proves me human&quot; is a reflective, experimental piece where the author explores the technical effort required to mimic human imperfection in digital text. Through a series of scripts, the author attempts to strip away standard stylistic conventions—such as capitalization, standard em-dash formatting, and common vocabulary choices—to see if they can simulate a &quot;human&quot; aesthetic. The author utilizes tools like CSS `text-transform`, custom Python font manipulation, and Peter Norvig’s spell-correction logic to systematically degrade the polish of their writing.</p>
+          <h4>Reader Reactions</h4>
+<p>Readers widely empathize with the author’s anxiety regarding the pressure to adopt &quot;imperfect&quot; stylistic quirks simply to prove their writing is human rather than generated by a standardized, bland artificial intelligence.</p>
+<p>Some participants argue that the original post feels self-important or melodramatic, contending that truly human expression should focus on unique, high-quality content rather than superficial typographic signals like em-dashes or manual formatting.</p>
+<p>The discussion highlights that many users rely on CSS tweaks or custom software configurations to preserve specific punctuation preferences, like em-dashes, which are frequently mangled by modern, over-aggressive autocorrect features.</p>
+<p>This sample likely overrepresents technologically literate users who prioritize digital craftsmanship, potentially obscuring broader perspectives from casual readers who might find the discourse around &quot;proving humanity&quot; trivial or unnecessarily complex.</p>
+          <p class="drawer-footer"><a href="#dossier-3">View in Dossier ↓</a></p>
+        </div>
+      </details>
+    </div>
     </div>
   </section>
   <section id="story-4" class="spread arc-academic-drop-cap">
@@ -388,7 +459,21 @@
       <p class="story-meta">science.org &nbsp;·&nbsp; 39 pts &nbsp;·&nbsp; 43 comments</p>
       <div class="cols">
         <div><p>Private capital is increasingly funding the search for treatments where commercial pipelines have stalled.</p></div>
-        <div><p>This investigation examines whether concentrated wealth can genuinely alter the trajectory of neurodegenerative conditions.</p><div class="ctas"><a class="btn-read" href="https://www.science.org/content/article/can-wealthy-family-change-course-deadly-brain-disease" target="_blank" rel="noopener">Read →</a><a class="btn-dossier" href="#dossier-4">Full analysis ↓</a></div></div>
+        <div><p>This investigation examines whether concentrated wealth can genuinely alter the trajectory of neurodegenerative conditions.</p><div class="ctas"><a class="btn-read" href="https://www.science.org/content/article/can-wealthy-family-change-course-deadly-brain-disease" target="_blank" rel="noopener">Read →</a>
+      <details class="analysis-drawer">
+        <summary class="btn-dossier">[ Analysis + ]</summary>
+        <div class="drawer-content">
+          <h4>Technical Analysis</h4>
+          <p>The Bluefield Project, founded by the family of Alice Richards Donohoe, spent years and tens of millions of dollars researching frontotemporal dementia (FTD) caused by GRN gene mutations. The research consortium focused on progranulin protein deficiency as a &quot;low-hanging fruit&quot; for therapeutic intervention, successfully attracting industry interest and multiple clinical trials. However, recent Phase 3 trials and gene therapy efforts have failed to show efficacy, prompting the scientific community to reconsider the complexity of neurodegenerative diseases.</p>
+          <h4>Reader Reactions</h4>
+<p>Bullet 1: Commenters generally acknowledge that philanthropic funding and family advocacy serve as essential, albeit non-traditional, models for accelerating research into rare diseases that remain ignored by large pharmaceutical companies due to profitability.</p>
+<p>Bullet 2: A dissenting perspective argues that such efforts are merely performative displays of an illusion of control by those fearing mortality, asserting that death is an inevitable outcome that should be accepted.</p>
+<p>Bullet 3: Dedicated funding from wealthy families can successfully shift research narratives and prioritize neglected medical conditions, demonstrating that private resources can bridge gaps in conventional pharmaceutical development for rare genetic disorders.</p>
+<p>Bullet 4: The limited five-comment sample leans heavily toward emotional anecdotes and cynical philosophical takes, likely failing to capture the broader technical or economic nuance found in the full sixteen-comment discussion thread.</p>
+          <p class="drawer-footer"><a href="#dossier-4">View in Dossier ↓</a></p>
+        </div>
+      </details>
+    </div></div>
       </div>
     </div>
   </section>
@@ -400,7 +485,21 @@
       <h2 class="frnc">Searching for patterns in the noise</h2>
       <p class="story-meta">dynomight.net &nbsp;·&nbsp; 177 pts &nbsp;·&nbsp; 141 comments</p>
       <p class="lede">Identifying underlying structures in complex data requires more than just statistical significance. This reflection explores how cognitive biases and pattern-seeking behaviors shape our perception of modern events.</p>
-      <div class="ctas"><a class="btn-read" href="https://dynomight.net/pattern/" target="_blank" rel="noopener">Read →</a><a class="btn-dossier" href="#dossier-5">Full analysis ↓</a></div>
+      <div class="ctas"><a class="btn-read" href="https://dynomight.net/pattern/" target="_blank" rel="noopener">Read →</a>
+      <details class="analysis-drawer">
+        <summary class="btn-dossier">[ Analysis + ]</summary>
+        <div class="drawer-content">
+          <h4>Technical Analysis</h4>
+          <p>This article explores the recurring historical pattern of inventors who create powerful new technologies—such as the Gatling gun, dynamite, the airplane, and nuclear weapons—with the naive hope that their inventions will either deter war or have primarily civilian applications. The narrative traces the journeys of figures like Richard Gatling, Alfred Nobel, and the rocketeers of the VfR, detailing how their work was inevitably co-opted by military interests. Despite the initial intentions of these inventors to promote peace or progress, their creations frequently evolved into instruments of mass destruction or total war.</p>
+          <h4>Reader Reactions</h4>
+<p>Bullet 1: Commenters widely agree that inventors frequently misjudge the downstream societal impact of their technologies, often incorrectly assuming their work will end conflict or reduce casualties through superior military deterrence.</p>
+<p>Bullet 2: Some participants reject the idea that technology increases the scale of death, arguing that historical conflicts were equally lethal and that modern warfare currently maintains relatively low casualty rates.</p>
+<p>Bullet 3: The discussion suggests that while technological evolution shifts military structures toward logistics and mechanized support, it simultaneously increases the ease and potential scale of destruction in global conflicts.</p>
+<p>Bullet 4: This sample reflects the cynicism of the tech community, focusing heavily on AI and modern weaponry while potentially overlooking broader historical, ethical, or philosophical arguments regarding human nature&#x27;s role.</p>
+          <p class="drawer-footer"><a href="#dossier-5">View in Dossier ↓</a></p>
+        </div>
+      </details>
+    </div>
     </div>
   </section>
   <section id="story-6" class="spread arc-editorial-pullquote">
@@ -410,7 +509,21 @@
       <h2 class="frnc">Why LLMs fail at complex coding tasks</h2>
       <p class="story-meta">blog.katanaquant.com &nbsp;·&nbsp; 460 pts &nbsp;·&nbsp; 424 comments</p>
       <p class="lede">To move beyond boilerplate generation, users must shift from prompts to precise acceptance criteria. Without rigid constraints, the output remains prone to subtle, dangerous errors.</p>
-      <div class="ctas"><a class="btn-read" href="https://blog.katanaquant.com/p/your-llm-doesnt-write-correct-code" target="_blank" rel="noopener">Read →</a><a class="btn-dossier" href="#dossier-6">Full analysis ↓</a></div>
+      <div class="ctas"><a class="btn-read" href="https://blog.katanaquant.com/p/your-llm-doesnt-write-correct-code" target="_blank" rel="noopener">Read →</a>
+      <details class="analysis-drawer">
+        <summary class="btn-dossier">[ Analysis + ]</summary>
+        <div class="drawer-content">
+          <h4>Technical Analysis</h4>
+          <p>The article explores the risks of relying on Large Language Models (LLMs) for complex software development, specifically highlighting a case where an LLM-generated SQLite rewrite was over 20,000 times slower than the original due to subtle architectural oversights. The author demonstrates that while LLMs excel at producing syntactically correct and plausible-looking code, they frequently fail to implement the performance-critical invariants—such as correct B-tree search paths or efficient file system synchronization—that are only discovered through years of profiling and real-world testing. The piece argues that LLMs optimize for &quot;sycophancy&quot; and superficial structure rather than engineering correctness, ultimately warning that code generated without specific, measurable acceptance criteria is often functionally inadequate.</p>
+          <h4>Reader Reactions</h4>
+<p>The primary consensus is that LLMs require rigorous upfront planning, explicit design constraints, and iterative feedback loops to function effectively, as they often exhibit a tendency to generate redundant or overly complex code.</p>
+<p>A competing perspective argues that LLMs are fundamentally unreliable for non-trivial or novel tasks because they rely on statistical probability rather than genuine problem-solving, making them a liability for critical engineering projects.</p>
+<p>Experienced users suggest mandating &quot;planning mode,&quot; creating reference documentation like testing guides, and forcing the agent to propose a detailed specification before writing any implementation code to ensure consistent, high-quality results.</p>
+<p>The sample is heavily skewed toward &quot;power users&quot; who successfully integrate agents into professional workflows, potentially masking the high failure rates encountered by casual users when performing tasks outside the model&#x27;s training data.</p>
+          <p class="drawer-footer"><a href="#dossier-6">View in Dossier ↓</a></p>
+        </div>
+      </details>
+    </div>
     </div>
     <div class="quote-side">
       <blockquote class="pullquote">The quality of generated code is entirely dependent on the rigor of the user&#x27;s defined requirements</blockquote>
@@ -425,7 +538,21 @@
       <h2 class="frnc">Hardening Firefox with Anthropic red team insights</h2>
       <p class="story-meta">anthropic.com &nbsp;·&nbsp; 628 pts &nbsp;·&nbsp; 173 comments</p>
       <p class="lede">Security researchers are deploying LLM-assisted red teaming to identify critical vulnerabilities in the browser architecture. These findings underscore a proactive approach to neutralizing exploit surfaces.</p>
-      <div class="ctas"><a class="btn-read" href="https://www.anthropic.com/news/mozilla-firefox-security" target="_blank" rel="noopener">Read →</a><a class="btn-dossier" href="#dossier-7">Full analysis ↓</a></div>
+      <div class="ctas"><a class="btn-read" href="https://www.anthropic.com/news/mozilla-firefox-security" target="_blank" rel="noopener">Read →</a>
+      <details class="analysis-drawer">
+        <summary class="btn-dossier">[ Analysis + ]</summary>
+        <div class="drawer-content">
+          <h4>Technical Analysis</h4>
+          <p>Anthropic recently collaborated with Mozilla to identify and patch security vulnerabilities in the Firefox browser using their Claude Opus 4.6 model. Over a two-week period, the AI discovered 112 unique reports, 22 of which were identified as vulnerabilities, including 14 high-severity flaws that were subsequently fixed in Firefox 148. The project utilized &quot;task verifiers&quot;—tools that allow the AI to autonomously test its own findings—to ensure the identified bugs and proposed patches were legitimate before submission.</p>
+          <h4>Reader Reactions</h4>
+<p>LLMs are effective for automating tedious security tasks like fuzzing, test case generation, and verifying API constraints, but they require significant human oversight to validate results and filter out hallucinations.</p>
+<p>Critics argue that using agents for broad security audits is inherently unreliable, suggesting that treating models as autonomous auditors mimics flawed management practices rather than providing a comprehensive security solution.</p>
+<p>The most valuable output is not the model&#x27;s subjective analysis, but the provision of minimal, reproducible test cases that allow developers to verify vulnerabilities and investigate code behavior efficiently.</p>
+<p>The discussion sample primarily reflects the perspectives of experienced software engineers and security professionals, potentially overstating the utility of these tools when applied by experts versus casual users.</p>
+          <p class="drawer-footer"><a href="#dossier-7">View in Dossier ↓</a></p>
+        </div>
+      </details>
+    </div>
     </div>
     <div class="tape bottom">CAUTION CAUTION CAUTION CAUTION CAUTION CAUTION CAUTION CAUTION</div>
   </section>
@@ -436,7 +563,21 @@
       <h2 class="frnc">Galileo&#x27;s forgotten annotations found in ancient text</h2>
       <p class="story-meta">science.org &nbsp;·&nbsp; 224 pts &nbsp;·&nbsp; 42 comments</p>
       <p class="lede">A rediscovered copy of a sixteenth-century astronomy volume reveals handwritten margin notes from Galileo himself. These markings provide a rare glimpse into the observational process of a foundational scientist.</p>
-      <div class="ctas"><a class="btn-read" href="https://www.science.org/content/article/galileo-s-handwritten-notes-found-ancient-astronomy-text" target="_blank" rel="noopener">Read →</a><a class="btn-dossier" href="#dossier-8">Full analysis ↓</a></div>
+      <div class="ctas"><a class="btn-read" href="https://www.science.org/content/article/galileo-s-handwritten-notes-found-ancient-astronomy-text" target="_blank" rel="noopener">Read →</a>
+      <details class="analysis-drawer">
+        <summary class="btn-dossier">[ Analysis + ]</summary>
+        <div class="drawer-content">
+          <h4>Technical Analysis</h4>
+          <p>Historian Ivan Malara has identified a 16th-century copy of Ptolemy’s *The Almagest* containing extensive handwritten annotations by Galileo Galilei. Discovered at Italy’s National Central Library of Florence, these notes date back to around 1590, providing a rare look at the astronomer&#x27;s intellectual development before his famous telescopic discoveries. The marginalia suggests that Galileo deeply engaged with the technical mathematical logic of the geocentric model, indicating that his eventual shift toward heliocentrism was rooted in a rigorous mastery of traditional astronomy rather than mere philosophical disagreement.</p>
+          <h4>Reader Reactions</h4>
+<p>Bullet 1: Users expressed genuine fascination regarding the discovery, framing the serendipitous identification of Galileo’s actual handwriting in a historical text as a surreal and profoundly significant moment for academic research.</p>
+<p>Bullet 2: Commenters engaged in pedantic debate over terminology, specifically questioning the article&#x27;s classification of the source text as ancient and debating the descriptive necessity of the adjective handwritten in the title.</p>
+<p>Bullet 3: The discussion highlights that historical documents often require careful provenance verification, as distinguishing between an author’s own handwriting and the recorded transcriptions of others is critical for accurate scholarly attribution.</p>
+<p>Bullet 4: This analysis is limited by a very small sample size of ten comments, which prioritizes linguistic nitpicking and personal anecdotes over a broad or substantive discussion of the actual scientific discovery.</p>
+          <p class="drawer-footer"><a href="#dossier-8">View in Dossier ↓</a></p>
+        </div>
+      </details>
+    </div>
     </div>
   </section>
   <section id="story-9" class="spread arc-stat-hero">
@@ -446,7 +587,17 @@
       <h2 class="frnc">Querying massive vector datasets</h2>
       <p class="story-meta">vickiboykis.com &nbsp;·&nbsp; 18 pts &nbsp;·&nbsp; 0 comments</p>
       <p class="lede">Scaling retrieval systems to handle planetary-scale data remains a significant engineering hurdle. We examine the performance trade-offs required to query across billions of dimensions efficiently.</p>
-      <div class="ctas"><a class="btn-read" href="https://vickiboykis.com/2026/02/21/querying-3-billion-vectors/" target="_blank" rel="noopener">Read →</a><a class="btn-dossier" href="#dossier-9">Full analysis ↓</a></div>
+      <div class="ctas"><a class="btn-read" href="https://vickiboykis.com/2026/02/21/querying-3-billion-vectors/" target="_blank" rel="noopener">Read →</a>
+      <details class="analysis-drawer">
+        <summary class="btn-dossier">[ Analysis + ]</summary>
+        <div class="drawer-content">
+          <h4>Technical Analysis</h4>
+          <p>The author explores the technical challenges of performing similarity searches across 3 billion high-dimensional vectors, a common task in modern recommendation and generative AI systems. By starting with a naive implementation and scaling up to vectorized operations in NumPy, the post demonstrates how quickly memory constraints become the primary bottleneck, with calculations for 3 billion vectors requiring roughly 8.6 terabytes of RAM. The narrative highlights that while software optimizations like batching or low-level library integration can improve speed, the real-world execution is fundamentally limited by hardware constraints and storage management.</p>
+          
+          <p class="drawer-footer"><a href="#dossier-9">View in Dossier ↓</a></p>
+        </div>
+      </details>
+    </div>
     </div>
   </section>
   <section id="story-10" class="spread arc-midnight">
@@ -457,7 +608,21 @@
       <h2 class="frnc">Implicit string conversions destroying SQL indexes</h2>
       <p class="story-meta">consultwithgriff.com &nbsp;·&nbsp; 125 pts &nbsp;·&nbsp; 126 comments</p>
       <p class="lede">In the shadow of C# to SQL mapping, implicit type conversion can silently degrade database performance. This deep dive uncovers why Dapper requires explicit handling to avoid index scans.</p>
-      <div class="ctas"><a class="btn-read" href="https://consultwithgriff.com/dapper-nvarchar-implicit-conversion-performance-trap" target="_blank" rel="noopener">Read →</a><a class="btn-dossier" href="#dossier-10">Full analysis ↓</a></div>
+      <div class="ctas"><a class="btn-read" href="https://consultwithgriff.com/dapper-nvarchar-implicit-conversion-performance-trap" target="_blank" rel="noopener">Read →</a>
+      <details class="analysis-drawer">
+        <summary class="btn-dossier">[ Analysis + ]</summary>
+        <div class="drawer-content">
+          <h4>Technical Analysis</h4>
+          <p>This article details a subtle but severe performance issue in .NET applications using Dapper when querying `varchar` columns in SQL Server. By default, Dapper maps C# strings to `nvarchar(4000)`, which causes SQL Server to perform an implicit conversion (`CONVERT_IMPLICIT`) on every row during query execution. This silent mismatch prevents the database from using indexes, forcing full table scans that significantly increase CPU usage and degrade application response times.</p>
+          <h4>Reader Reactions</h4>
+<p>The core consensus is that the performance issue stems from implicit type conversion between C# strings and SQL Server columns, forcing the optimizer to ignore indexes during query execution.</p>
+<p>A significant point of disagreement involves whether the problem is fundamentally a Dapper-specific bug or a deeper flaw in the SQL Server query optimizer that should handle type precedence better.</p>
+<p>To avoid this trap, developers should explicitly configure Dapper’s type mappings to use ANSI strings or utilize stored procedures to ensure parameter types strictly match the underlying database column definitions.</p>
+<p>The discussion is heavily distracted by skepticism regarding the article’s perceived AI-generated writing style, which significantly colors the community&#x27;s critique of the underlying technical content and performance claims.</p>
+          <p class="drawer-footer"><a href="#dossier-10">View in Dossier ↓</a></p>
+        </div>
+      </details>
+    </div>
     </div>
   </section>
   <section id="dossier" class="dossier">
@@ -643,6 +808,19 @@
     localStorage.setItem(key, JSON.stringify(stored));
   }
 })();
+</script>
+<script>
+// Simple script to toggle the [+] and [-] labels on the drawers
+document.querySelectorAll('.analysis-drawer').forEach(drawer => {
+  drawer.addEventListener('toggle', () => {
+    const summary = drawer.querySelector('summary');
+    if (drawer.open) {
+      summary.textContent = '[ Analysis − ]';
+    } else {
+      summary.textContent = '[ Analysis + ]';
+    }
+  });
+});
 </script>
 </body>
 </html>

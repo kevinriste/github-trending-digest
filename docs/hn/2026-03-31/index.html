@@ -40,14 +40,43 @@
   .story-meta { font-weight: 600; font-size: 1.1rem; margin-bottom: 3rem; opacity: 0.6; letter-spacing: 0.02em; }
   .lede { font-size: clamp(1.4rem, 2.5vw, 2.1rem); line-height: 1.35; max-width: 800px; margin: 0 0 4rem; font-weight: 450; }
   
-  .ctas { display: flex; gap: 2.5rem; align-items: center; }
+  .ctas { display: flex; gap: 2.5rem; align-items: flex-start; }
   .ctas a {
     text-decoration: none; font-weight: 700; font-size: 1.1rem; letter-spacing: 0.1em; text-transform: uppercase;
     padding: 1.2rem 2.4rem; transition: all 0.2s;
   }
-  .btn-read { background: var(--text-dark); color: var(--bg-light); }
-  .btn-dossier { border-bottom: 2px solid currentColor; padding: 0.5rem 0 !important; }
+  .btn-read { background: var(--text-dark); color: var(--bg-light); cursor: pointer; border: none; }
+  .btn-dossier { 
+    border-bottom: 2px solid currentColor; padding: 0.5rem 0 !important; 
+    text-decoration: none; font-weight: 700; font-size: 1.1rem; letter-spacing: 0.1em; 
+    text-transform: uppercase; cursor: pointer; background: transparent; color: inherit;
+    display: inline-block;
+  }
   
+  /* ───── ANALYSIS DRAWER ───── */
+  .analysis-drawer { margin-top: 0; width: 100%; max-width: 800px; }
+  .analysis-drawer summary { list-style: none; outline: none; }
+  .analysis-drawer summary::-webkit-details-marker { display: none; }
+  .analysis-drawer[open] summary { margin-bottom: 2rem; }
+  .analysis-drawer[open] summary::after { content: ""; } /* Could add JS to toggle label but we'll do CSS trick or just keep static */
+  
+  .drawer-content {
+    background: rgba(0,0,0,0.03); padding: 3rem; border-left: 4px solid var(--text-dark);
+    animation: slideDown 0.3s ease-out;
+  }
+  .arc-midnight .drawer-content { background: rgba(255,255,255,0.05); border-color: #fff; }
+  .arc-terminal .drawer-content { background: rgba(32, 194, 14, 0.05); border-color: #20c20e; }
+  
+  .drawer-content h4 { text-transform: uppercase; letter-spacing: 0.2em; font-size: 0.9rem; margin-top: 0; margin-bottom: 1.5rem; opacity: 0.6; }
+  .drawer-content p { font-family: 'Fraunces', serif; font-size: 1.3rem; line-height: 1.5; margin-bottom: 1.5rem; }
+  .drawer-footer { margin-top: 2rem; border-top: 1px solid rgba(0,0,0,0.1); padding-top: 1.5rem; }
+  .drawer-footer a { font-size: 0.9rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; text-decoration: none; color: inherit; opacity: 0.5; }
+  
+  @keyframes slideDown {
+    from { opacity: 0; transform: translateY(-10px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
   /* ───── ARCHETYPE CSS ───── */
   
   /* Stat Hero */
@@ -349,7 +378,21 @@
       <h2 class="frnc">Axios Library Compromised by Remote Access Trojan</h2>
       <p class="story-meta">stepsecurity.io &nbsp;·&nbsp; 1928 pts &nbsp;·&nbsp; 800 comments</p>
       <p class="lede">A series of malicious updates to the popular Axios library has introduced backdoors into developer environments. By targeting maintainer accounts, attackers successfully injected code designed to exfiltrate data and evade forensic analysis.</p>
-      <div class="ctas"><a class="btn-read" href="https://www.stepsecurity.io/blog/axios-compromised-on-npm-malicious-versions-drop-remote-access-trojan" target="_blank" rel="noopener">Read →</a><a class="btn-dossier" href="#dossier-1">Full analysis ↓</a></div>
+      <div class="ctas"><a class="btn-read" href="https://www.stepsecurity.io/blog/axios-compromised-on-npm-malicious-versions-drop-remote-access-trojan" target="_blank" rel="noopener">Read →</a>
+      <details class="analysis-drawer">
+        <summary class="btn-dossier">[ Analysis + ]</summary>
+        <div class="drawer-content">
+          <h4>Technical Analysis</h4>
+          <p>On March 30, 2026, researchers at StepSecurity identified that the popular JavaScript library Axios was compromised on the npm registry. Attackers hijacked a maintainer&#x27;s account to publish malicious versions—axios@1.14.1 and axios@0.30.4—which included a hidden dependency named &quot;plain-crypto-js.&quot; Upon installation, this dependency executed a cross-platform remote access trojan (RAT) dropper that targeted Windows, macOS, and Linux systems before deleting its own malicious code to evade forensic detection.</p>
+          <h4>Reader Reactions</h4>
+<p>The consensus emphasizes that current package management ecosystems are highly vulnerable to supply chain attacks, requiring users to implement restrictive security measures like disabling lifecycle scripts and sandboxing build environments.</p>
+<p>A significant disagreement exists regarding whether to rely on centralized package registries for strict vetting or to abandon dependency managers entirely in favor of manual vendoring and self-contained C libraries.</p>
+<p>Security-conscious developers recommend standardizing the use of sandboxing tools like bwrap, running package managers with `ignore-scripts` enabled, and enforcing minimum release age policies to mitigate risks from malicious transitive dependencies.</p>
+<p>The sample coverage is heavily skewed toward technical experts and security enthusiasts, potentially over-representing advanced mitigation strategies that may be impractical or too complex for the average software developer to implement.</p>
+          <p class="drawer-footer"><a href="#dossier-1">View in Dossier ↓</a></p>
+        </div>
+      </details>
+    </div>
     </div>
     <div class="tape bottom">CAUTION CAUTION CAUTION CAUTION CAUTION CAUTION CAUTION CAUTION</div>
   </section>
@@ -359,7 +402,21 @@
       <h2 class="frnc">Ollama Adopts MLX for Enhanced Apple Silicon Performance</h2>
       <p class="story-meta">ollama.com &nbsp;·&nbsp; 642 pts &nbsp;·&nbsp; 355 comments</p>
       <p class="lede">Ollama now leverages Apple&#x27;s MLX framework to optimize local model inference. This architectural shift utilizes unified memory to boost performance and support advanced quantization formats.</p>
-      <div class="ctas"><a class="btn-read" href="https://ollama.com/blog/mlx" target="_blank" rel="noopener">Read →</a><a class="btn-dossier" href="#dossier-2">Full analysis ↓</a></div>
+      <div class="ctas"><a class="btn-read" href="https://ollama.com/blog/mlx" target="_blank" rel="noopener">Read →</a>
+      <details class="analysis-drawer">
+        <summary class="btn-dossier">[ Analysis + ]</summary>
+        <div class="drawer-content">
+          <h4>Technical Analysis</h4>
+          <p>Ollama has announced a preview release that transitions its local inference engine on Apple Silicon to use Apple’s MLX framework, leveraging the unified memory architecture for significant performance gains. This update integrates support for NVIDIA’s NVFP4 quantization format, aiming to improve model accuracy while reducing memory overhead. Additionally, the release introduces refined cache management strategies designed to speed up agentic workflows and coding assistants like Claude Code.</p>
+          <h4>Reader Reactions</h4>
+<p>Users generally agree that local LLMs offer significant privacy and autonomy advantages, although they acknowledge that current local hardware cannot yet match the performance or efficiency of large-scale cloud-based models.</p>
+<p>Skeptics argue that running local models is a practical regression, citing higher total costs of ownership, hardware constraints, excessive energy consumption, and the inferior quality of local inference compared to cloud APIs.</p>
+<p>Transitioning Ollama to MLX on Apple Silicon is viewed as a technical improvement for memory management, yet many power users still prefer raw llama.cpp or alternative tools for better performance optimization.</p>
+<p>The sample reflects a bias toward Apple hardware enthusiasts and power users, potentially overrepresenting technical interest in on-device inference while under-addressing the needs of general consumers who prioritize cloud convenience.</p>
+          <p class="drawer-footer"><a href="#dossier-2">View in Dossier ↓</a></p>
+        </div>
+      </details>
+    </div>
     </div>
   </section>
   <section id="story-3" class="spread arc-alert-stamp">
@@ -370,7 +427,21 @@
       <h2 class="frnc">Questions Mount Over Artemis II Heat Shield Safety</h2>
       <p class="story-meta">idlewords.com &nbsp;·&nbsp; 900 pts &nbsp;·&nbsp; 632 comments</p>
       <p class="lede">Despite clear structural degradation observed during the previous flight, NASA moves forward with a crewed lunar mission. Critics argue that political pressure is eclipsing the engineering realities of the Orion heat shield.</p>
-      <div class="ctas"><a class="btn-read" href="https://idlewords.com/2026/03/artemis_ii_is_not_safe_to_fly.htm" target="_blank" rel="noopener">Read →</a><a class="btn-dossier" href="#dossier-3">Full analysis ↓</a></div>
+      <div class="ctas"><a class="btn-read" href="https://idlewords.com/2026/03/artemis_ii_is_not_safe_to_fly.htm" target="_blank" rel="noopener">Read →</a>
+      <details class="analysis-drawer">
+        <summary class="btn-dossier">[ Analysis + ]</summary>
+        <div class="drawer-content">
+          <h4>Technical Analysis</h4>
+          <p>The Artemis II mission is currently facing significant scrutiny due to serious, unresolved defects discovered in the Orion spacecraft’s heat shield during the uncrewed Artemis I test flight. Despite concerns from experts like former NASA engineer Charles Camarda regarding spalling, structural degradation, and the potential for catastrophic bolt failure, the agency is proceeding with a crewed lunar flyby. NASA argues that modifications to the re-entry trajectory will mitigate these risks, even as the organization simultaneously prepares to replace the entire heat shield design for future missions.</p>
+          <h4>Reader Reactions</h4>
+<p>The discussion centers on whether the Artemis II heat shield&#x27;s unexpected erosion patterns signify a catastrophic safety risk reminiscent of past Shuttle disasters or represent acceptable, analyzed operational anomalies for space flight.</p>
+<p>Critics argue that NASA’s push for a manned mission is motivated by political pressure and public relations rather than engineering necessity, suggesting that unmanned testing should be prioritized to mitigate human risk.</p>
+<p>A technical core of the debate is the transition from the labor-intensive honeycomb application of Avcoat used in Apollo to the modular block design currently utilized on the significantly heavier Orion spacecraft.</p>
+<p>This sample reflects a selection of HN users with strong opinions on space policy and NASA funding, likely skewing toward skepticism regarding institutional management and the necessity of human spaceflight initiatives.</p>
+          <p class="drawer-footer"><a href="#dossier-3">View in Dossier ↓</a></p>
+        </div>
+      </details>
+    </div>
     </div>
   </section>
   <section id="story-4" class="spread arc-stat-hero">
@@ -380,7 +451,21 @@
       <h2 class="frnc">Thousands of Ransomware Claims Recorded in One Year</h2>
       <p class="story-meta">ciphercue.com &nbsp;·&nbsp; 61 pts &nbsp;·&nbsp; 14 comments</p>
       <p class="lede">Data spanning twelve months reveals a persistent, fragmented threat landscape across global industrial sectors. Analysis confirms that a small subset of threat actors drives a significant volume of modern digital extortion.</p>
-      <div class="ctas"><a class="btn-read" href="https://ciphercue.com/blog/7655-ransomware-claims-march-2025-to-march-2026" target="_blank" rel="noopener">Read →</a><a class="btn-dossier" href="#dossier-4">Full analysis ↓</a></div>
+      <div class="ctas"><a class="btn-read" href="https://ciphercue.com/blog/7655-ransomware-claims-march-2025-to-march-2026" target="_blank" rel="noopener">Read →</a>
+      <details class="analysis-drawer">
+        <summary class="btn-dossier">[ Analysis + ]</summary>
+        <div class="drawer-content">
+          <h4>Technical Analysis</h4>
+          <p>Between March 2025 and March 2026, ransomware groups published 7,655 victim claims to public leak sites, averaging approximately 20 postings per day. Data analyzed by CipherCue reveals a highly fragmented landscape with 129 active groups, where the top five organizations account for only 40% of the total volume. The report highlights that manufacturing and technology are the most frequently targeted sectors, while the United States remains the primary geographic focus, representing 40% of all reported claims.</p>
+          <h4>Reader Reactions</h4>
+<p>Bullet 1: The discussion centers on whether ransomware activity is truly concentrated among a few dominant groups or follows a more gradual distribution curve across the broader landscape of active threat actors.</p>
+<p>Bullet 2: A commenter challenges the author’s characterization of market fragmentation, arguing that the statistical drop-off after the top five groups is actually consistent rather than precipitous as the report suggests.</p>
+<p>Bullet 3: Analysts should verify statistical interpretations of ransomware frequency data manually, as the commenter suspects the source report may rely on automated or LLM-generated summaries that misrepresent underlying trend patterns.</p>
+<p>Bullet 4: With only a single comment available for analysis, this thread provides negligible community sentiment and fails to offer a representative critique of the source data’s broader methodology or findings.</p>
+          <p class="drawer-footer"><a href="#dossier-4">View in Dossier ↓</a></p>
+        </div>
+      </details>
+    </div>
     </div>
   </section>
   <section id="story-5" class="spread arc-terminal">
@@ -394,7 +479,21 @@
         <p class="lede">A configuration oversight in the npm registry has exposed internal source code for Claude Code. The leak provides an unintended look at the project&#x27;s state management and conditional logic.<span class="cursor"></span></p>
         <div class="ctas">
           <a href="https://twitter.com/Fried_rice/status/2038894956459290963" class="btn-read" target="_blank">RUN_PROCESS →</a>
-          <a href="#dossier-5" class="btn-dossier">VIEW_ANALYSIS ↓</a>
+          
+      <details class="analysis-drawer">
+        <summary class="btn-dossier">[ Analysis + ]</summary>
+        <div class="drawer-content">
+          <h4>Technical Analysis</h4>
+          <p>Anthropic’s Claude Code tool has experienced a security oversight where its source code was inadvertently exposed through a source map file included in its NPM registry package. This technical slip allowed users to access internal code that was intended to remain private rather than being bundled as a minified production artifact. The incident highlights a common configuration error in modern web development, where developers fail to exclude sensitive development assets from public distribution.</p>
+          <h4>Reader Reactions</h4>
+<p>The dominant sentiment is that the leaked source code exposes sensitive information, including internal product roadmaps and unreleased features, though many users question the actual significance of the leak.</p>
+<p>Some commenters argue that leaking the source code is trivial or irrelevant because the underlying value lies in proprietary models and API access rather than the client-side implementation details.</p>
+<p>Developers criticizing the leaked codebase highlight poor architectural patterns, specifically citing untyped environment state management and deeply nested conditional logic that hinders maintainability and overall code quality.</p>
+<p>This sample may overrepresent users interested in code architecture and adversarial exploration, potentially ignoring broader developer perspectives regarding the legal implications or the utility of the leaked tools.</p>
+          <p class="drawer-footer"><a href="#dossier-5">View in Dossier ↓</a></p>
+        </div>
+      </details>
+    
         </div>
       </div>
     </div>
@@ -408,7 +507,21 @@
       <h2 class="frnc">Reducing AI Verbosity with Universal Claude Configuration</h2>
       <p class="story-meta">github.com &nbsp;·&nbsp; 469 pts &nbsp;·&nbsp; 162 comments</p>
       <p class="lede">The Universal Claude.md project offers a template to curb sycophantic model outputs and excessive filler. By enforcing token constraints, users aim to streamline coding agent interactions.</p>
-      <div class="ctas"><a class="btn-read" href="https://github.com/drona23/claude-token-efficient" target="_blank" rel="noopener">Read →</a><a class="btn-dossier" href="#dossier-6">Full analysis ↓</a></div>
+      <div class="ctas"><a class="btn-read" href="https://github.com/drona23/claude-token-efficient" target="_blank" rel="noopener">Read →</a>
+      <details class="analysis-drawer">
+        <summary class="btn-dossier">[ Analysis + ]</summary>
+        <div class="drawer-content">
+          <h4>Technical Analysis</h4>
+          <p>The &quot;Universal CLAUDE.md&quot; project is a drop-in configuration file designed to minimize output verbosity and token consumption when using Claude Code. By placing this file in a project root, users can enforce strict output constraints that suppress standard AI behaviors like sycophantic greetings, unnecessary disclaimers, and restatements of the prompt. Benchmarks provided by the author suggest a roughly 63% reduction in output tokens for common coding tasks, effectively streamlining interactions without requiring changes to existing codebase logic.</p>
+          <h4>Reader Reactions</h4>
+<p>Commenters broadly agree that aggressive prompt engineering to force concise outputs may degrade model reasoning, increase hallucination risks, and negatively impact the performance of complex, agentic coding workflows in large repositories.</p>
+<p>Some users argue that excessive verbosity and sycophantic filler in AI responses increase cognitive load, waste time, and reduce credibility, justifying the need for stricter control over model output styles.</p>
+<p>Technical analysis of token usage reveals that input context and processing overhead account for the vast majority of costs, suggesting that output-focused optimization strategies provide only marginal financial efficiency gains.</p>
+<p>The discussion sample primarily reflects the perspectives of power users and developers, potentially overlooking the needs of casual users who may prioritize accessible, polite, and explanatory AI interactions over raw efficiency.</p>
+          <p class="drawer-footer"><a href="#dossier-6">View in Dossier ↓</a></p>
+        </div>
+      </details>
+    </div>
     </div>
   </section>
   <section id="story-7" class="spread arc-midnight">
@@ -419,7 +532,21 @@
       <h2 class="frnc">Government Mobile Apps Raise Concerns Over Data Collection</h2>
       <p class="story-meta">sambent.com &nbsp;·&nbsp; 680 pts &nbsp;·&nbsp; 278 comments</p>
       <p class="lede">A review of federal applications reveals extensive tracking capabilities embedded within government-issued software. These tools frequently capture sensitive biometric and location data under the guise of functionality.</p>
-      <div class="ctas"><a class="btn-read" href="https://www.sambent.com/the-white-house-app-has-huawei-spyware-and-an-ice-tip-line/" target="_blank" rel="noopener">Read →</a><a class="btn-dossier" href="#dossier-7">Full analysis ↓</a></div>
+      <div class="ctas"><a class="btn-read" href="https://www.sambent.com/the-white-house-app-has-huawei-spyware-and-an-ice-tip-line/" target="_blank" rel="noopener">Read →</a>
+      <details class="analysis-drawer">
+        <summary class="btn-dossier">[ Analysis + ]</summary>
+        <div class="drawer-content">
+          <h4>Technical Analysis</h4>
+          <p>The article investigates a category of mobile software dubbed &quot;Fedware,&quot; which consists of federal government applications that collect extensive user data through aggressive permissions and embedded third-party trackers. These applications, including official tools for the White House, the FBI, and the IRS, often request access to biometrics, precise GPS location, and device identity for functions that could otherwise be served by standard web browsers. The investigation highlights how these apps function as nodes in a broader surveillance apparatus, feeding data into systems used by agencies like ICE, the DHS, and the FBI for tracking and enforcement purposes.</p>
+          <h4>Reader Reactions</h4>
+<p>Participants reach a strong consensus that official government apps are unnecessarily intrusive, often bundling commercial trackers and telemetry that contradict the government’s own public stances on data privacy and foreign software.</p>
+<p>Some commenters push back by arguing that native mobile apps are chosen for their superior responsiveness and user experience, which often surpass the current limitations of web-based applications on mobile devices.</p>
+<p>Technical analysis suggests that government agencies prioritize native app development to access device-level sensors and background triggers that are deliberately restricted in web browsers to protect user privacy and data security.</p>
+<p>The discussion is heavily skewed toward privacy-conscious power users, with some participants expressing significant skepticism regarding the article’s presentation style and the potential for AI-generated or low-quality source material.</p>
+          <p class="drawer-footer"><a href="#dossier-7">View in Dossier ↓</a></p>
+        </div>
+      </details>
+    </div>
     </div>
   </section>
   <section id="story-8" class="spread arc-academic-drop-cap">
@@ -433,7 +560,21 @@
       <p class="story-meta">github.com &nbsp;·&nbsp; 322 pts &nbsp;·&nbsp; 109 comments</p>
       <div class="cols">
         <div><p>Google Research has released a decoder-only foundation model optimized for temporal forecasting tasks.</p></div>
-        <div><p>By reducing parameter count and expanding context windows, the system aims to improve accuracy in data analysis.</p><div class="ctas"><a class="btn-read" href="https://github.com/google-research/timesfm" target="_blank" rel="noopener">Read →</a><a class="btn-dossier" href="#dossier-8">Full analysis ↓</a></div></div>
+        <div><p>By reducing parameter count and expanding context windows, the system aims to improve accuracy in data analysis.</p><div class="ctas"><a class="btn-read" href="https://github.com/google-research/timesfm" target="_blank" rel="noopener">Read →</a>
+      <details class="analysis-drawer">
+        <summary class="btn-dossier">[ Analysis + ]</summary>
+        <div class="drawer-content">
+          <h4>Technical Analysis</h4>
+          <p>Google Research has released TimesFM 2.5, a decoder-only foundation model specifically architected for time-series forecasting. This latest iteration features a significant reduction in parameter count to 200 million while expanding the context length to 16,000 tokens, a major improvement over the previous 2,048-token limit. The release includes support for continuous quantile forecasting and reintroduces covariate support through an XReg feature, providing a more robust toolset for complex data analysis.</p>
+          <h4>Reader Reactions</h4>
+<p>Users are skeptical of the model&#x27;s utility, noting that it often performs at the same level as simpler, traditional statistical methods like ARIMA while being significantly more resource-intensive and computationally slow.</p>
+<p>While some participants argue that synthetic training data successfully captures abstract patterns, others contend that true predictive power is limited by the infinite entropy and inherent unpredictability of real-world events.</p>
+<p>The model functions by decomposing time-series data into trends and seasonal patterns, though it lacks the ability to integrate external contextual variables or causal factors required for high-accuracy financial forecasting.</p>
+<p>The provided sample displays a notable bias toward academic and industry practitioners who prioritize performance efficiency, with several participants dismissing the model as a redundant tool for practical, real-world data science.</p>
+          <p class="drawer-footer"><a href="#dossier-8">View in Dossier ↓</a></p>
+        </div>
+      </details>
+    </div></div>
       </div>
     </div>
   </section>
@@ -444,7 +585,21 @@
       <h2 class="frnc">The Cognitive Importance of Writing Your Own Work</h2>
       <p class="story-meta">alexhwoods.com &nbsp;·&nbsp; 739 pts &nbsp;·&nbsp; 241 comments</p>
       <p class="lede">The tendency to delegate documentation to large language models threatens to erode personal intellectual authority. Authors argue that the act of writing remains a vital requirement for clear, independent thought.</p>
-      <div class="ctas"><a class="btn-read" href="https://alexhwoods.com/dont-let-ai-write-for-you/" target="_blank" rel="noopener">Read →</a><a class="btn-dossier" href="#dossier-9">Full analysis ↓</a></div>
+      <div class="ctas"><a class="btn-read" href="https://alexhwoods.com/dont-let-ai-write-for-you/" target="_blank" rel="noopener">Read →</a>
+      <details class="analysis-drawer">
+        <summary class="btn-dossier">[ Analysis + ]</summary>
+        <div class="drawer-content">
+          <h4>Technical Analysis</h4>
+          <p>The article argues against the growing trend of using Large Language Models to draft professional documents, technical specifications, and essays. The author asserts that writing is a vital cognitive process for structuring complex thoughts, understanding problems, and building personal credibility. While the piece acknowledges that AI can assist with research, brainstorming, or transcription, it warns that outsourcing the act of writing ultimately leads to intellectual stagnation and a loss of personal authority.</p>
+          <h4>Reader Reactions</h4>
+<p>The dominant consensus is that writing acts as an essential cognitive process for structuring thoughts, and outsourcing this work to AI risks stunting one&#x27;s ability to think clearly and independently.</p>
+<p>Some participants argue that AI models serve as valuable productivity tools for drafting, brainstorming, or iterative feedback, provided the user maintains strict control over the core arguments and overall tone.</p>
+<p>A practical takeaway is to differentiate between high-value creative or intellectual work that requires manual effort and mundane, repetitive documentation tasks that can be efficiently handled by automated AI agents.</p>
+<p>The sample reflects a bias toward technically literate professionals who prioritize analytical writing, potentially overlooking broader user perspectives regarding the accessibility or efficiency benefits of AI-assisted content generation in non-creative fields.</p>
+          <p class="drawer-footer"><a href="#dossier-9">View in Dossier ↓</a></p>
+        </div>
+      </details>
+    </div>
     </div>
     <div class="quote-side">
       <blockquote class="pullquote">Outsourcing the act of writing ultimately leads to intellectual stagnation and a loss of personal authority</blockquote>
@@ -457,7 +612,21 @@
       <h2 class="frnc">Documentary Chronicles the Origins of Clojure Language</h2>
       <p class="story-meta">youtube.com &nbsp;·&nbsp; 217 pts &nbsp;·&nbsp; 19 comments</p>
       <p class="lede">A forthcoming film traces the evolution of Clojure, highlighting the functional paradigms championed by Rich Hickey. The documentary explores the language&#x27;s impact on the JVM ecosystem since its 2007 debut.</p>
-      <div class="ctas"><a class="btn-read" href="https://www.youtube.com/watch?v=JJEyffSdBsk" target="_blank" rel="noopener">Read →</a><a class="btn-dossier" href="#dossier-10">Full analysis ↓</a></div>
+      <div class="ctas"><a class="btn-read" href="https://www.youtube.com/watch?v=JJEyffSdBsk" target="_blank" rel="noopener">Read →</a>
+      <details class="analysis-drawer">
+        <summary class="btn-dossier">[ Analysis + ]</summary>
+        <div class="drawer-content">
+          <h4>Technical Analysis</h4>
+          <p>The shared link introduces the official trailer for *Clojure: The Documentary*, a film slated for release on April 16th. The project aims to chronicle the history and development of Clojure, a dynamic, functional programming language hosted on the Java Virtual Machine. By documenting the language&#x27;s evolution, the film highlights the architectural decisions and philosophies championed by its creator, Rich Hickey, since its inception in 2007.</p>
+          <h4>Reader Reactions</h4>
+<p>Users generally praise Clojure for its stability, design maturity, and the profound intellectual impact it has on developers, even if they no longer use the language for their current professional work.</p>
+<p>Opposing voices criticize the ecosystem for its lack of job opportunities and potential developer friction, with some former practitioners expressing strong dislike for the language&#x27;s development culture and technical design choices.</p>
+<p>The language is technically valued for reducing ceremony through immutable data structures and a consistent, data-driven approach, though it requires significant personal effort and tenacity to master and contribute effectively.</p>
+<p>The discussion represents a niche, highly engaged community of enthusiasts and former users, which likely overlooks the perspective of mainstream developers who require broader package support and standard industry job availability.</p>
+          <p class="drawer-footer"><a href="#dossier-10">View in Dossier ↓</a></p>
+        </div>
+      </details>
+    </div>
     </div>
   </section>
   <section id="dossier" class="dossier">
@@ -647,6 +816,19 @@
     localStorage.setItem(key, JSON.stringify(stored));
   }
 })();
+</script>
+<script>
+// Simple script to toggle the [+] and [-] labels on the drawers
+document.querySelectorAll('.analysis-drawer').forEach(drawer => {
+  drawer.addEventListener('toggle', () => {
+    const summary = drawer.querySelector('summary');
+    if (drawer.open) {
+      summary.textContent = '[ Analysis − ]';
+    } else {
+      summary.textContent = '[ Analysis + ]';
+    }
+  });
+});
 </script>
 </body>
 </html>

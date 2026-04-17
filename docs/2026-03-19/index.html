@@ -40,14 +40,43 @@
   .story-meta { font-weight: 600; font-size: 1.1rem; margin-bottom: 3rem; opacity: 0.6; letter-spacing: 0.02em; }
   .lede { font-size: clamp(1.4rem, 2.5vw, 2.1rem); line-height: 1.35; max-width: 800px; margin: 0 0 4rem; font-weight: 450; }
   
-  .ctas { display: flex; gap: 2.5rem; align-items: center; }
+  .ctas { display: flex; gap: 2.5rem; align-items: flex-start; }
   .ctas a {
     text-decoration: none; font-weight: 700; font-size: 1.1rem; letter-spacing: 0.1em; text-transform: uppercase;
     padding: 1.2rem 2.4rem; transition: all 0.2s;
   }
-  .btn-read { background: var(--text-dark); color: var(--bg-light); }
-  .btn-dossier { border-bottom: 2px solid currentColor; padding: 0.5rem 0 !important; }
+  .btn-read { background: var(--text-dark); color: var(--bg-light); cursor: pointer; border: none; }
+  .btn-dossier { 
+    border-bottom: 2px solid currentColor; padding: 0.5rem 0 !important; 
+    text-decoration: none; font-weight: 700; font-size: 1.1rem; letter-spacing: 0.1em; 
+    text-transform: uppercase; cursor: pointer; background: transparent; color: inherit;
+    display: inline-block;
+  }
   
+  /* ───── ANALYSIS DRAWER ───── */
+  .analysis-drawer { margin-top: 0; width: 100%; max-width: 800px; }
+  .analysis-drawer summary { list-style: none; outline: none; }
+  .analysis-drawer summary::-webkit-details-marker { display: none; }
+  .analysis-drawer[open] summary { margin-bottom: 2rem; }
+  .analysis-drawer[open] summary::after { content: ""; } /* Could add JS to toggle label but we'll do CSS trick or just keep static */
+  
+  .drawer-content {
+    background: rgba(0,0,0,0.03); padding: 3rem; border-left: 4px solid var(--text-dark);
+    animation: slideDown 0.3s ease-out;
+  }
+  .arc-midnight .drawer-content { background: rgba(255,255,255,0.05); border-color: #fff; }
+  .arc-terminal .drawer-content { background: rgba(32, 194, 14, 0.05); border-color: #20c20e; }
+  
+  .drawer-content h4 { text-transform: uppercase; letter-spacing: 0.2em; font-size: 0.9rem; margin-top: 0; margin-bottom: 1.5rem; opacity: 0.6; }
+  .drawer-content p { font-family: 'Fraunces', serif; font-size: 1.3rem; line-height: 1.5; margin-bottom: 1.5rem; }
+  .drawer-footer { margin-top: 2rem; border-top: 1px solid rgba(0,0,0,0.1); padding-top: 1.5rem; }
+  .drawer-footer a { font-size: 0.9rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; text-decoration: none; color: inherit; opacity: 0.5; }
+  
+  @keyframes slideDown {
+    from { opacity: 0; transform: translateY(-10px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
   /* ───── ARCHETYPE CSS ───── */
   
   /* Stat Hero */
@@ -347,7 +376,18 @@
       <h2 class="frnc">Monitor Claude Code Activity in Real-Time</h2>
       <p class="story-meta">github.com &nbsp;·&nbsp; 7,561 stars &nbsp;·&nbsp; 0 stars today</p>
       <p class="lede">Transform your terminal into a command center for your AI assistant. This plugin parses your session streams to visualize token usage and subagent progress without breaking your workflow.</p>
-      <div class="ctas"><a class="btn-read" href="https://github.com/jarrodwatts/claude-hud" target="_blank" rel="noopener">Read →</a><a class="btn-dossier" href="#dossier-1">Full analysis ↓</a></div>
+      <div class="ctas"><a class="btn-read" href="https://github.com/jarrodwatts/claude-hud" target="_blank" rel="noopener">Read →</a>
+      <details class="analysis-drawer">
+        <summary class="btn-dossier">[ Analysis + ]</summary>
+        <div class="drawer-content">
+          <h4>Technical Analysis</h4>
+          <p>Claude HUD is a terminal-based plugin for Claude Code that provides real-time visibility into the status of an active development session. By utilizing Claude Code’s native statusline API, it displays essential metrics such as context window usage, active tool execution, subagent progress, and task completion directly beneath the user&#x27;s input. Technically, the tool functions by parsing transcript JSONL data and processing stdin/stdout updates every 300 milliseconds, allowing it to integrate seamlessly into any terminal environment without requiring extra windows or multiplexers.</p>
+<p>This project is highly beneficial for power users and professional developers who rely on Claude Code for complex, multi-step engineering tasks and need to monitor resource consumption closely. It is gaining traction because it transforms the &quot;black box&quot; nature of LLM-based coding agents into a transparent process, allowing developers to track token limits and agent activity in real-time. By providing highly customizable presets and detailed configuration options, Claude HUD helps users maintain better oversight of their project health and prevents unexpected interruptions caused by exceeding context or usage limits.</p>
+          
+          <p class="drawer-footer"><a href="#dossier-1">View in Dossier ↓</a></p>
+        </div>
+      </details>
+    </div>
     </div>
   </section>
   <section id="story-2" class="spread arc-agent-foundry">
@@ -357,7 +397,18 @@
       <h2 class="frnc">Standardize AI Coding Workflows with Superpowers</h2>
       <p class="story-meta">github.com &nbsp;·&nbsp; 96,943 stars &nbsp;·&nbsp; 0 stars today</p>
       <p class="lede">Engineering discipline meets autonomous execution. By enforcing structured brainstorming and iterative TDD protocols, this framework bridges the gap between simple chat-based generation and reliable, professional software development.</p>
-      <div class="ctas"><a class="btn-read" href="https://github.com/obra/superpowers" target="_blank" rel="noopener">Read →</a><a class="btn-dossier" href="#dossier-2">Full analysis ↓</a></div>
+      <div class="ctas"><a class="btn-read" href="https://github.com/obra/superpowers" target="_blank" rel="noopener">Read →</a>
+      <details class="analysis-drawer">
+        <summary class="btn-dossier">[ Analysis + ]</summary>
+        <div class="drawer-content">
+          <h4>Technical Analysis</h4>
+          <p>Superpowers is an agentic framework designed to standardize the software development lifecycle by integrating a library of composable, automated &quot;skills&quot; directly into coding agents like Claude Code and Cursor. Instead of jumping straight to code, the system enforces a structured workflow that begins with Socratic brainstorming, proceeds to detailed implementation planning, and culminates in a rigorous subagent-driven development cycle. Technically, it functions as a plugin that triggers mandatory engineering protocols—such as strict test-driven development (TDD), git worktree management, and iterative code reviews—ensuring that agents maintain high-quality standards and consistent progress without requiring manual intervention.</p>
+<p>This project is highly beneficial for developers and software teams looking to minimize the &quot;hallucination&quot; and ad-hoc coding patterns often associated with AI-assisted programming. It is trending because it addresses a critical gap in the current AI developer tool ecosystem: the transition from simple code generation to reliable, autonomous project execution that mirrors professional engineering discipline. By embedding best practices like YAGNI and DRY into the agent&#x27;s core decision-making loop, Superpowers provides a repeatable, scalable methodology for building robust software applications.</p>
+          
+          <p class="drawer-footer"><a href="#dossier-2">View in Dossier ↓</a></p>
+        </div>
+      </details>
+    </div>
     </div>
   </section>
   <section id="story-3" class="spread arc-model-bench">
@@ -367,7 +418,18 @@
       <h2 class="frnc">Accelerate Local AI Training with Unsloth</h2>
       <p class="story-meta">github.com &nbsp;·&nbsp; 56,096 stars &nbsp;·&nbsp; 0 stars today</p>
       <p class="lede">Optimized Triton kernels drive this platform’s capability to slash VRAM consumption during model fine-tuning. Achieve professional-grade performance on consumer hardware through efficient data handling and minimized overhead.</p>
-      <div class="ctas"><a class="btn-read" href="https://github.com/unslothai/unsloth" target="_blank" rel="noopener">Read →</a><a class="btn-dossier" href="#dossier-3">Full analysis ↓</a></div>
+      <div class="ctas"><a class="btn-read" href="https://github.com/unslothai/unsloth" target="_blank" rel="noopener">Read →</a>
+      <details class="analysis-drawer">
+        <summary class="btn-dossier">[ Analysis + ]</summary>
+        <div class="drawer-content">
+          <h4>Technical Analysis</h4>
+          <p>Unsloth is a powerful, unified platform designed to streamline the local training and inference of open-source AI models, including text, vision, and embedding architectures. It offers two primary modes of operation: &quot;Unsloth Studio,&quot; a user-friendly web interface, and &quot;Unsloth Core,&quot; a code-based library for more technical workflows. Technically, the project leverages optimized Triton kernels and efficient data-handling techniques to significantly reduce VRAM usage—often by up to 80%—while accelerating training speeds, enabling high-performance fine-tuning and reinforcement learning on consumer hardware.</p>
+<p>This project is an essential tool for AI developers, researchers, and data scientists who require cost-effective, high-speed model customization without sacrificing accuracy. It is currently trending because it democratizes access to sophisticated AI training by allowing users to run complex processes on accessible hardware like local NVIDIA GPUs and Apple Silicon. By simplifying the pipeline for training, monitoring, and deploying models, Unsloth provides a high-efficiency, open-source solution that drastically lowers the barrier to entry for building and experimenting with cutting-edge language and vision models.</p>
+          
+          <p class="drawer-footer"><a href="#dossier-3">View in Dossier ↓</a></p>
+        </div>
+      </details>
+    </div>
     </div>
   </section>
   <section id="story-4" class="spread arc-data-pipeline">
@@ -377,7 +439,18 @@
       <h2 class="frnc">Newton Scales Differentiable Physics Simulations</h2>
       <p class="story-meta">github.com &nbsp;·&nbsp; 3,001 stars &nbsp;·&nbsp; 0 stars today</p>
       <p class="lede">Flowing data through massive parallelization, this engine supports high-fidelity robotics and agent training. It provides a standardized, extensible architecture designed for seamless integration into modern machine learning pipelines.</p>
-      <div class="ctas"><a class="btn-read" href="https://github.com/newton-physics/newton" target="_blank" rel="noopener">Read →</a><a class="btn-dossier" href="#dossier-4">Full analysis ↓</a></div>
+      <div class="ctas"><a class="btn-read" href="https://github.com/newton-physics/newton" target="_blank" rel="noopener">Read →</a>
+      <details class="analysis-drawer">
+        <summary class="btn-dossier">[ Analysis + ]</summary>
+        <div class="drawer-content">
+          <h4>Technical Analysis</h4>
+          <p>Newton is a high-performance, GPU-accelerated physics simulation engine designed to serve as a successor to the deprecated warp.sim module within the NVIDIA Warp ecosystem. By integrating MuJoCo Warp as its primary backend, the engine leverages massive parallelization to provide efficient, differentiable, and extensible physics modeling. It also emphasizes interoperability through native support for OpenUSD, allowing for seamless integration into modern 3D graphics and simulation pipelines.</p>
+<p>This project is primarily aimed at roboticists, simulation researchers, and AI developers who require scalable, high-fidelity environments for testing and training autonomous agents. Its collaborative foundation—spearheaded by industry leaders like Disney Research, Google DeepMind, and NVIDIA—has made it a focal point for the research community seeking to standardize open-source simulation tools. As a Linux Foundation project, Newton’s combination of GPU-accelerated performance, ease of use through Python, and extensible architecture positions it as a vital asset for those pushing the boundaries of physical machine learning.</p>
+          
+          <p class="drawer-footer"><a href="#dossier-4">View in Dossier ↓</a></p>
+        </div>
+      </details>
+    </div>
     </div>
   </section>
   <section id="story-5" class="spread arc-system-core">
@@ -387,7 +460,18 @@
       <h2 class="frnc">Reverse Engineering the PlayStation 4 Architecture</h2>
       <p class="story-meta">github.com &nbsp;·&nbsp; 29,999 stars &nbsp;·&nbsp; 0 stars today</p>
       <p class="lede">A focused, C++ implementation of system-level emulation. By precisely reconstructing internal hardware libraries, the project successfully bridges the gap between console firmware and modern desktop silicon.</p>
-      <div class="ctas"><a class="btn-read" href="https://github.com/shadps4-emu/shadPS4" target="_blank" rel="noopener">Read →</a><a class="btn-dossier" href="#dossier-5">Full analysis ↓</a></div>
+      <div class="ctas"><a class="btn-read" href="https://github.com/shadps4-emu/shadPS4" target="_blank" rel="noopener">Read →</a>
+      <details class="analysis-drawer">
+        <summary class="btn-dossier">[ Analysis + ]</summary>
+        <div class="drawer-content">
+          <h4>Technical Analysis</h4>
+          <p>shadPS4 is an open-source, C++ based emulator designed to run PlayStation 4 software on Windows, Linux, and macOS platforms. The project focuses on the core emulation architecture, leveraging advanced reverse engineering of PS4 system libraries and a high-performance shader compiler modeled after the yuzu emulator&#x27;s Hades. While the repository provides the essential emulator core, users are encouraged to utilize the QtLauncher for a standard graphical interface and to supply legally dumped firmware modules to ensure proper game execution.</p>
+<p>This project is primarily intended for developers and enthusiasts interested in the preservation and research of the PlayStation 4 ecosystem. It is currently gaining significant momentum because it has achieved functional milestones, successfully running high-profile titles like *Bloodborne* and *Red Dead Redemption* despite being in an early development stage. By maintaining a transparent, community-driven approach with regular updates, the team has attracted a wide audience looking to experiment with console emulation on modern desktop hardware.</p>
+          
+          <p class="drawer-footer"><a href="#dossier-5">View in Dossier ↓</a></p>
+        </div>
+      </details>
+    </div>
     </div>
   </section>
   <section id="story-6" class="spread arc-enterprise-engine">
@@ -397,7 +481,18 @@
       <h2 class="frnc">Orchestrate Autonomous Agents in Secure Sandboxes</h2>
       <p class="story-meta">github.com &nbsp;·&nbsp; 6,559 stars &nbsp;·&nbsp; 0 stars today</p>
       <p class="lede">Engineering teams require more than just code generation; they need safe, production-ready infrastructure. Open SWE provides the modular blueprint to deploy isolated, cloud-based agents capable of managing real-world software development tasks.</p>
-      <div class="ctas"><a class="btn-read" href="https://github.com/langchain-ai/open-swe" target="_blank" rel="noopener">Read →</a><a class="btn-dossier" href="#dossier-6">Full analysis ↓</a></div>
+      <div class="ctas"><a class="btn-read" href="https://github.com/langchain-ai/open-swe" target="_blank" rel="noopener">Read →</a>
+      <details class="analysis-drawer">
+        <summary class="btn-dossier">[ Analysis + ]</summary>
+        <div class="drawer-content">
+          <h4>Technical Analysis</h4>
+          <p>Open SWE is an open-source framework designed to help engineering organizations build autonomous coding agents that operate directly within existing developer workflows. Built on LangGraph and the Deep Agents framework, it uses isolated cloud sandboxes—powered by providers like Modal or Daytona—to execute tasks safely with full shell access. The system features a curated set of tools and sophisticated orchestration, including support for subagents and middleware that manage everything from Slack/Linear/GitHub invocation to automatic pull request creation.</p>
+<p>This project is primarily intended for engineering teams that want to replicate the high-velocity, autonomous agent patterns currently used by elite organizations like Stripe and Coinbase. It is trending because it provides a standardized, customizable architecture that solves the &quot;last mile&quot; problem of AI coding: moving from simple chat interfaces to reliable, context-aware automation that respects internal conventions via `AGENTS.md` configuration. By offering a modular, production-ready blueprint, Open SWE allows teams to implement safe, enterprise-grade developer agents without building complex infrastructure from scratch.</p>
+          
+          <p class="drawer-footer"><a href="#dossier-6">View in Dossier ↓</a></p>
+        </div>
+      </details>
+    </div>
     </div>
   </section>
   <section id="dossier" class="dossier">
@@ -505,6 +600,19 @@
     localStorage.setItem(key, JSON.stringify(stored));
   }
 })();
+</script>
+<script>
+// Simple script to toggle the [+] and [-] labels on the drawers
+document.querySelectorAll('.analysis-drawer').forEach(drawer => {
+  drawer.addEventListener('toggle', () => {
+    const summary = drawer.querySelector('summary');
+    if (drawer.open) {
+      summary.textContent = '[ Analysis − ]';
+    } else {
+      summary.textContent = '[ Analysis + ]';
+    }
+  });
+});
 </script>
 </body>
 </html>

@@ -40,14 +40,43 @@
   .story-meta { font-weight: 600; font-size: 1.1rem; margin-bottom: 3rem; opacity: 0.6; letter-spacing: 0.02em; }
   .lede { font-size: clamp(1.4rem, 2.5vw, 2.1rem); line-height: 1.35; max-width: 800px; margin: 0 0 4rem; font-weight: 450; }
   
-  .ctas { display: flex; gap: 2.5rem; align-items: center; }
+  .ctas { display: flex; gap: 2.5rem; align-items: flex-start; }
   .ctas a {
     text-decoration: none; font-weight: 700; font-size: 1.1rem; letter-spacing: 0.1em; text-transform: uppercase;
     padding: 1.2rem 2.4rem; transition: all 0.2s;
   }
-  .btn-read { background: var(--text-dark); color: var(--bg-light); }
-  .btn-dossier { border-bottom: 2px solid currentColor; padding: 0.5rem 0 !important; }
+  .btn-read { background: var(--text-dark); color: var(--bg-light); cursor: pointer; border: none; }
+  .btn-dossier { 
+    border-bottom: 2px solid currentColor; padding: 0.5rem 0 !important; 
+    text-decoration: none; font-weight: 700; font-size: 1.1rem; letter-spacing: 0.1em; 
+    text-transform: uppercase; cursor: pointer; background: transparent; color: inherit;
+    display: inline-block;
+  }
   
+  /* ───── ANALYSIS DRAWER ───── */
+  .analysis-drawer { margin-top: 0; width: 100%; max-width: 800px; }
+  .analysis-drawer summary { list-style: none; outline: none; }
+  .analysis-drawer summary::-webkit-details-marker { display: none; }
+  .analysis-drawer[open] summary { margin-bottom: 2rem; }
+  .analysis-drawer[open] summary::after { content: ""; } /* Could add JS to toggle label but we'll do CSS trick or just keep static */
+  
+  .drawer-content {
+    background: rgba(0,0,0,0.03); padding: 3rem; border-left: 4px solid var(--text-dark);
+    animation: slideDown 0.3s ease-out;
+  }
+  .arc-midnight .drawer-content { background: rgba(255,255,255,0.05); border-color: #fff; }
+  .arc-terminal .drawer-content { background: rgba(32, 194, 14, 0.05); border-color: #20c20e; }
+  
+  .drawer-content h4 { text-transform: uppercase; letter-spacing: 0.2em; font-size: 0.9rem; margin-top: 0; margin-bottom: 1.5rem; opacity: 0.6; }
+  .drawer-content p { font-family: 'Fraunces', serif; font-size: 1.3rem; line-height: 1.5; margin-bottom: 1.5rem; }
+  .drawer-footer { margin-top: 2rem; border-top: 1px solid rgba(0,0,0,0.1); padding-top: 1.5rem; }
+  .drawer-footer a { font-size: 0.9rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; text-decoration: none; color: inherit; opacity: 0.5; }
+  
+  @keyframes slideDown {
+    from { opacity: 0; transform: translateY(-10px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
   /* ───── ARCHETYPE CSS ───── */
   
   /* Stat Hero */
@@ -348,7 +377,21 @@
       <h2 class="frnc">The Silent Crisis of Proving You Are Real</h2>
       <p class="story-meta">bbc.com &nbsp;·&nbsp; 176 pts &nbsp;·&nbsp; 199 comments</p>
       <p class="lede">As deepfake technology renders sensory perception unreliable, our reliance on the visual truth is collapsing. We are drifting into an era where authentication requires private, pre-shared codes rather than the fallible judgment of the human eye.</p>
-      <div class="ctas"><a class="btn-read" href="https://www.bbc.com/future/article/20260324-i-tried-to-prove-im-not-an-ai-deepfake" target="_blank" rel="noopener">Read →</a><a class="btn-dossier" href="#dossier-1">Full analysis ↓</a></div>
+      <div class="ctas"><a class="btn-read" href="https://www.bbc.com/future/article/20260324-i-tried-to-prove-im-not-an-ai-deepfake" target="_blank" rel="noopener">Read →</a>
+      <details class="analysis-drawer">
+        <summary class="btn-dossier">[ Analysis + ]</summary>
+        <div class="drawer-content">
+          <h4>Technical Analysis</h4>
+          <p>The article explores the growing difficulty of verifying human identity in an era of hyper-realistic AI deepfakes, using the author’s personal experiment and the public scrutiny surrounding Israeli Prime Minister Benjamin Netanyahu as case studies. Digital forensics experts acknowledge that for remote interactions, there is no definitive technical proof to confirm a person is real, creating a &quot;liar&#x27;s dividend&quot; where both real and fake content face widespread skepticism. To combat this uncertainty, experts increasingly recommend the use of pre-established &quot;codewords&quot; between trusted parties as a rudimentary but effective form of authentication.</p>
+          <h4>Reader Reactions</h4>
+<p>The discussion emphasizes that human sensory perception is no longer reliable for detecting AI content, shifting the focus toward a urgent need for robust, standardized digital authentication protocols for personal communications.</p>
+<p>While some suggest relying on private, pre-shared passphrases between family members for verification, others argue that systemic, manufacturer-backed cryptographic signing of digital media is the only viable path to long-term trust.</p>
+<p>Technical solutions proposed include implementing universal digital signatures for authenticated hardware, such as tamper-proof cameras or mobile devices, to verify the origin and integrity of captured video recordings against synthetic media.</p>
+<p>The sample size of five comments is too small to represent the broader Hacker News community accurately, as it overemphasizes technical infrastructure solutions while neglecting the social or psychological dimensions discussed.</p>
+          <p class="drawer-footer"><a href="#dossier-1">View in Dossier ↓</a></p>
+        </div>
+      </details>
+    </div>
     </div>
   </section>
   <section id="story-2" class="spread arc-alert-stamp">
@@ -359,7 +402,21 @@
       <h2 class="frnc">A Three Hundred Million Dollar Cost of Doing Business</h2>
       <p class="story-meta">bbc.com &nbsp;·&nbsp; 48 pts &nbsp;·&nbsp; 14 comments</p>
       <p class="lede">A New Mexico jury has leveled a massive fine against Meta, penalizing the company for knowingly exposing minors to harmful content. Despite the staggering figure, the public remains unconvinced that corporate behavior will change when transparency is treated as a line item.</p>
-      <div class="ctas"><a class="btn-read" href="https://www.bbc.com/news/articles/cql75dn07n2o" target="_blank" rel="noopener">Read →</a><a class="btn-dossier" href="#dossier-2">Full analysis ↓</a></div>
+      <div class="ctas"><a class="btn-read" href="https://www.bbc.com/news/articles/cql75dn07n2o" target="_blank" rel="noopener">Read →</a>
+      <details class="analysis-drawer">
+        <summary class="btn-dossier">[ Analysis + ]</summary>
+        <div class="drawer-content">
+          <h4>Technical Analysis</h4>
+          <p>A New Mexico jury has ordered Meta to pay $375 million in civil penalties for violating the state’s Unfair Practices Act by misleading the public regarding the safety of its platforms for minors. During the seven-week trial, prosecutors utilized internal documents and whistleblower testimony to argue that Meta’s recommendation algorithms knowingly exposed children to sexual predators and explicit content. While Meta defended its ongoing efforts to implement safety features like &quot;Teen Accounts,&quot; the jury determined that the company ignored internal warnings about these harms while publicly downplaying the risks to young users.</p>
+          <h4>Reader Reactions</h4>
+<p>The primary consensus is that the $375 million fine is an insufficient penalty for Meta, viewed by users as a trivial &quot;cost of doing business&quot; that fails to deter corporate misconduct.</p>
+<p>While users broadly criticize Meta&#x27;s safety practices, some warn that current &quot;child safety&quot; legislative initiatives are being weaponized as a pretext for dangerous state-mandated digital identity and mass-surveillance requirements.</p>
+<p>Participants speculate that Meta’s lobbying for age verification and identity scanning is less about protecting children and more about enhancing ad-delivery metrics and verifying human versus bot traffic for advertisers.</p>
+<p>The sample represents a highly skeptical, privacy-focused demographic that likely over-indexes on anti-corporate sentiment, potentially ignoring legal nuances or the actual complexities involved in enforcing global child safety regulations.</p>
+          <p class="drawer-footer"><a href="#dossier-2">View in Dossier ↓</a></p>
+        </div>
+      </details>
+    </div>
     </div>
   </section>
   <section id="story-3" class="spread arc-stat-hero">
@@ -369,7 +426,21 @@
       <h2 class="frnc">Extreme Compression for Resource-Heavy AI Models</h2>
       <p class="story-meta">research.google &nbsp;·&nbsp; 569 pts &nbsp;·&nbsp; 165 comments</p>
       <p class="lede">Google researchers have unveiled TurboQuant, a suite of quantization algorithms designed to slim down high-dimensional vectors. By employing polar coordinates, the system slashes memory usage without sacrificing the accuracy required for high-performance inference.</p>
-      <div class="ctas"><a class="btn-read" href="https://research.google/blog/turboquant-redefining-ai-efficiency-with-extreme-compression/" target="_blank" rel="noopener">Read →</a><a class="btn-dossier" href="#dossier-3">Full analysis ↓</a></div>
+      <div class="ctas"><a class="btn-read" href="https://research.google/blog/turboquant-redefining-ai-efficiency-with-extreme-compression/" target="_blank" rel="noopener">Read →</a>
+      <details class="analysis-drawer">
+        <summary class="btn-dossier">[ Analysis + ]</summary>
+        <div class="drawer-content">
+          <h4>Technical Analysis</h4>
+          <p>Google Research has introduced TurboQuant, a suite of quantization algorithms designed to compress high-dimensional vectors used in large language models and vector search engines. The technology utilizes two core methods, PolarQuant and Quantized Johnson-Lindenstrauss (QJL), to reduce the size of the key-value cache and improve search efficiency without sacrificing model accuracy. By converting vectors into polar coordinates and employing a zero-overhead error-correction technique, the researchers claim to achieve at least a 6x reduction in memory footprint. These innovations are intended to address the significant hardware bottlenecks caused by storing large amounts of high-precision data in modern AI systems.</p>
+          <h4>Reader Reactions</h4>
+<p>Commenters hold conflicting views, with some praising the potential for memory-efficient inference while many others criticize the promotional tone and lack of substantive technical clarity in the research blog post.</p>
+<p>Critics express significant skepticism regarding the project&#x27;s performance claims, suggesting that the &quot;revolutionary&quot; speedups might be overstated or incompatible with real-world GPU architectures, prompting calls for independent experimental reproduction.</p>
+<p>The technical core involves compressing key-value cache tensors into polar coordinates to reduce memory bandwidth bottlenecks, potentially allowing larger models to run on devices with limited hardware capacity during inference.</p>
+<p>The sample is heavily biased toward critical analysis of writing style and technical legitimacy, as participants prioritize identifying potential inaccuracies and missing academic citations over validating the paper’s primary results.</p>
+          <p class="drawer-footer"><a href="#dossier-3">View in Dossier ↓</a></p>
+        </div>
+      </details>
+    </div>
     </div>
   </section>
   <section id="story-4" class="spread arc-archive">
@@ -379,7 +450,21 @@
       <h2 class="frnc">VitruvianOS Reclaims the BeOS Design Philosophy</h2>
       <p class="story-meta">v-os.dev &nbsp;·&nbsp; 366 pts &nbsp;·&nbsp; 227 comments</p>
       <p class="lede">Decades after the quiet death of the BeOS, a new Linux distribution seeks to recover its forgotten elegance. By implementing a custom messaging subsystem, it bridges the gap between modern kernel stability and the intuitive, minimalist workflow of the nineties.</p>
-      <div class="ctas"><a class="btn-read" href="https://v-os.dev" target="_blank" rel="noopener">Read →</a><a class="btn-dossier" href="#dossier-4">Full analysis ↓</a></div>
+      <div class="ctas"><a class="btn-read" href="https://v-os.dev" target="_blank" rel="noopener">Read →</a>
+      <details class="analysis-drawer">
+        <summary class="btn-dossier">[ Analysis + ]</summary>
+        <div class="drawer-content">
+          <h4>Technical Analysis</h4>
+          <p>VitruvianOS (V\OS) is a new desktop Linux distribution designed to replicate the workflow, simplicity, and elegance of the classic BeOS. Built on the Linux kernel, the project features a custom subsystem called Nexus that enables the execution of Haiku applications by implementing BeOS-style messaging and node monitoring. The operating system emphasizes a &quot;KISS&quot; design philosophy, providing a pre-configured, privacy-focused experience without data tracking or unnecessary user intervention.</p>
+          <h4>Reader Reactions</h4>
+<p>Commenters share a nostalgic appreciation for the BeOS user interface, citing its unique design, speed, and intuitive workflow as significant improvements over the desktop operating systems available during the late 1990s.</p>
+<p>Skeptics argue that recreating vintage desktop experiences is largely futile, asserting that Linux has already won by providing superior hardware support, broad software compatibility, and a more practical development ecosystem.</p>
+<p>Technically, VitruvianOS proposes a kernel-level approach to compatibility that enables running Haiku applications on Linux, though some observers question if a user-space implementation would be more efficient or maintainable.</p>
+<p>The sample reflects a niche interest group of long-term enthusiasts who prioritize OS aesthetics and historical nostalgia, potentially overlooking broader market trends or the difficulties of maintaining a modern desktop environment.</p>
+          <p class="drawer-footer"><a href="#dossier-4">View in Dossier ↓</a></p>
+        </div>
+      </details>
+    </div>
     </div>
   </section>
   <section id="story-5" class="spread arc-obituary">
@@ -389,7 +474,21 @@
       <p class="story-meta">twitter.com &nbsp;·&nbsp; 1140 pts &nbsp;·&nbsp; 850 comments</p>
       <p class="lede">The Sora API has officially ceased operations, closing a chapter on its brief and controversial tenure. Despite its technical prowess, the platform failed to solve the fundamental economic challenge of sustainable generative video at scale.</p>
       <div class="ornament">†</div>
-      <div class="ctas"><a class="btn-read" href="https://twitter.com/soraofficialapp/status/2036532795984715896" target="_blank" rel="noopener">Read →</a><a class="btn-dossier" href="#dossier-5">Full analysis ↓</a></div>
+      <div class="ctas"><a class="btn-read" href="https://twitter.com/soraofficialapp/status/2036532795984715896" target="_blank" rel="noopener">Read →</a>
+      <details class="analysis-drawer">
+        <summary class="btn-dossier">[ Analysis + ]</summary>
+        <div class="drawer-content">
+          <h4>Technical Analysis</h4>
+          <p>The Sora app and API are officially shutting down, marking an abrupt end to the platform&#x27;s public operations. While the announcement acknowledged the community&#x27;s contributions, it offered little explanation for the closure beyond a promise to provide timelines for app access and data preservation. This move follows a period of speculation regarding the service’s viability and its broader role within the competitive landscape of AI-driven media tools.</p>
+          <h4>Reader Reactions</h4>
+<p>The prevailing consensus is that Sora’s failure resulted from its unsustainable freemium model, the rapid evaporation of novelty, and a lack of clear value proposition for users beyond initial brief experimentation.</p>
+<p>Conversely, some users argue that Sora represented a monumental technical achievement and that its closure is premature, suggesting the model still holds significant potential for creative application and future development.</p>
+<p>From a technical standpoint, participants noted that the high compute costs required for video generation make a consumer-facing, ad-driven feed model economically unviable compared to enterprise or niche professional use.</p>
+<p>This sample reflects a cynical perspective characteristic of the platform, potentially overemphasizing moral critiques of corporate leadership and ethical concerns regarding AI while underrepresenting casual users who enjoyed the product.</p>
+          <p class="drawer-footer"><a href="#dossier-5">View in Dossier ↓</a></p>
+        </div>
+      </details>
+    </div>
     </div>
   </section>
   <section id="story-6" class="spread arc-mint-pattern" style="--bg-word: 'CODE'">
@@ -401,7 +500,21 @@
       <h2 class="frnc">Mastering State Through C++ Coroutines</h2>
       <p class="story-meta">mropert.github.io &nbsp;·&nbsp; 178 pts &nbsp;·&nbsp; 158 comments</p>
       <p class="lede">Game development demands complex state machines that often lead to convoluted, unreadable code. By adopting patterns inspired by Unity, developers are finding that modern C++ coroutines offer a cleaner path toward asynchronous logic.</p>
-      <div class="ctas"><a class="btn-read" href="https://mropert.github.io/2026/03/20/unity_cpp_coroutines/" target="_blank" rel="noopener">Read →</a><a class="btn-dossier" href="#dossier-6">Full analysis ↓</a></div>
+      <div class="ctas"><a class="btn-read" href="https://mropert.github.io/2026/03/20/unity_cpp_coroutines/" target="_blank" rel="noopener">Read →</a>
+      <details class="analysis-drawer">
+        <summary class="btn-dossier">[ Analysis + ]</summary>
+        <div class="drawer-content">
+          <h4>Technical Analysis</h4>
+          <p>This article explores the utility of C++ coroutines by comparing them to the widely used coroutine pattern in the Unity game engine. The author argues that while many C++ examples focus on trivial tasks like computing Fibonacci numbers, coroutines are most valuable for managing complex state machines in game development. By implementing a lightweight Unity-style executor in C++, the author demonstrates how `std::generator` can turn convoluted manual state management into readable, linear code.</p>
+          <h4>Reader Reactions</h4>
+<p>Bullet 1: The discussion centers on the inherent friction of managing temporal logic in game development and how C++ coroutines attempt to solve the complex coordination of state across multiple frames.</p>
+<p>Bullet 2: While some argue that C++ coroutines require a difficult-to-implement multithreaded event loop and widespread library support, others emphasize that existing language features like C# iterators provide similar albeit hacky solutions.</p>
+<p>Bullet 3: Developers can utilize standalone versions of the ASIO library for asynchronous operations without needing the full Boost dependency, offering a more portable approach to implementing coroutine-based event systems in projects.</p>
+<p>Bullet 4: With only six comments provided, the sample lacks broad industry representation, focusing heavily on specific library preferences and minor historical grievances rather than a comprehensive evaluation of modern coroutine implementations.</p>
+          <p class="drawer-footer"><a href="#dossier-6">View in Dossier ↓</a></p>
+        </div>
+      </details>
+    </div>
     </div>
   </section>
   <section id="story-7" class="spread arc-observatory">
@@ -411,7 +524,21 @@
       <h2 class="frnc">Tracking Global Aviation Through Real-Time Data</h2>
       <p class="story-meta">flighty.com &nbsp;·&nbsp; 567 pts &nbsp;·&nbsp; 185 comments</p>
       <p class="lede">A new dashboard illuminates the systemic frictions of global air travel by visualizing airport performance as it unfolds. It serves as a window into the complex, often chaotic, network that connects the modern world.</p>
-      <div class="ctas"><a class="btn-read" href="https://flighty.com/airports" target="_blank" rel="noopener">Read →</a><a class="btn-dossier" href="#dossier-7">Full analysis ↓</a></div>
+      <div class="ctas"><a class="btn-read" href="https://flighty.com/airports" target="_blank" rel="noopener">Read →</a>
+      <details class="analysis-drawer">
+        <summary class="btn-dossier">[ Analysis + ]</summary>
+        <div class="drawer-content">
+          <h4>Technical Analysis</h4>
+          <p>The &quot;Flighty Airports&quot; page is a real-time data dashboard that visualizes global airport performance, specifically focusing on live departure and arrival delays. Developed by the team behind the Flighty app, this tool tracks ongoing air travel disruptions and provides a centralized view of airport operational status across various regions. It functions as a specialized information hub for travelers and industry observers to monitor systemic issues within the aviation network in real time.</p>
+          <h4>Reader Reactions</h4>
+<p>Users generally praise Flighty for its superior UI and high-quality design compared to competitors, acknowledging that the website functions primarily as an effective marketing funnel for their premium iOS application.</p>
+<p>Critics argue the app prioritizes superficial aesthetics over functional utility, noting that it often fails to surface essential data like precise boarding times or location details for delayed aircraft.</p>
+<p>High-quality flight tracking relies on expensive commercial data feeds like the FlightAware Firehose, which creates a significant barrier to entry for hobbyists and necessitates high subscription costs for commercial sustainability.</p>
+<p>This sample represents a small, tech-savvy demographic that may disproportionately value interface design, potentially overlooking the needs of the casual traveler or the specific operational requirements of professional aviation personnel.</p>
+          <p class="drawer-footer"><a href="#dossier-7">View in Dossier ↓</a></p>
+        </div>
+      </details>
+    </div>
     </div>
   </section>
   <section id="story-8" class="spread arc-blueprint">
@@ -421,7 +548,21 @@
       <h2 class="frnc">A Modular Rewrite for the Web Video Player</h2>
       <p class="story-meta">videojs.org &nbsp;·&nbsp; 644 pts &nbsp;·&nbsp; 138 comments</p>
       <p class="lede">After sixteen years, Video.js has returned to its roots with a top-to-bottom architectural overhaul. The project sheds its monolithic past, embracing a component-based design that cuts bundle size drastically for a leaner web.</p>
-      <div class="ctas"><a class="btn-read" href="https://videojs.org/blog/videojs-v10-beta-hello-world-again" target="_blank" rel="noopener">Read →</a><a class="btn-dossier" href="#dossier-8">Full analysis ↓</a></div>
+      <div class="ctas"><a class="btn-read" href="https://videojs.org/blog/videojs-v10-beta-hello-world-again" target="_blank" rel="noopener">Read →</a>
+      <details class="analysis-drawer">
+        <summary class="btn-dossier">[ Analysis + ]</summary>
+        <div class="drawer-content">
+          <h4>Technical Analysis</h4>
+          <p>Video.js creator Heff has announced a ground-up rewrite of the popular open-source web media player, launching the version 10 beta with a collaborative team from other prominent video projects like Plyr and Vidstack. The new architecture prioritizes a significantly smaller footprint, achieving up to an 88% reduction in default bundle size by utilizing a modular, component-based design that avoids monolithic dependencies. This release moves away from legacy patterns, offering first-class support for modern development frameworks like React and TypeScript while introducing a new functional streaming engine called SPF.</p>
+          <h4>Reader Reactions</h4>
+<p>Community members generally praise the project for achieving a significant 88% reduction in size, viewing the return of an established tool after years of stagnation as a major win for developers.</p>
+<p>Some users question why the library is not distributed primarily as a standard web component, despite maintainers explaining that complex framework integrations often necessitate a hybrid approach for better performance.</p>
+<p>Technical discussions highlight that the new architecture centers on a headless core using Zustand-inspired state management, which simplifies integration across modern frontend frameworks like React, Svelte, and eventually React Native.</p>
+<p>The sample is heavily skewed toward experienced web developers and project contributors, potentially overlooking the needs of casual users who struggle to find clear documentation or immediate feature parity with competitors.</p>
+          <p class="drawer-footer"><a href="#dossier-8">View in Dossier ↓</a></p>
+        </div>
+      </details>
+    </div>
     </div>
   </section>
   <section id="story-9" class="spread arc-editorial-pullquote">
@@ -431,7 +572,21 @@
       <h2 class="frnc">High-Voltage DC Power Centers Emerge</h2>
       <p class="story-meta">spectrum.ieee.org &nbsp;·&nbsp; 335 pts &nbsp;·&nbsp; 416 comments</p>
       <p class="lede">The voracious appetite of modern AI is forcing a fundamental shift in how data centers are powered. Transitioning from AC to 800V DC reduces conversion losses and material demands, yet engineers must now confront the immense difficulty of arc suppression.</p>
-      <div class="ctas"><a class="btn-read" href="https://spectrum.ieee.org/data-center-dc" target="_blank" rel="noopener">Read →</a><a class="btn-dossier" href="#dossier-9">Full analysis ↓</a></div>
+      <div class="ctas"><a class="btn-read" href="https://spectrum.ieee.org/data-center-dc" target="_blank" rel="noopener">Read →</a>
+      <details class="analysis-drawer">
+        <summary class="btn-dossier">[ Analysis + ]</summary>
+        <div class="drawer-content">
+          <h4>Technical Analysis</h4>
+          <p>Data centers are increasingly shifting from traditional AC power distribution to high-voltage DC architectures to meet the immense energy demands of modern AI infrastructure. Currently, data centers rely on multiple inefficient AC-to-DC conversion stages that generate significant heat and require massive amounts of copper cabling as power loads climb toward 1 MW per rack. By transitioning to 800 VDC systems, hyperscale facilities can streamline power delivery, improve efficiency by reducing conversion losses, and significantly decrease both their physical equipment footprint and material requirements.</p>
+          <h4>Reader Reactions</h4>
+<p>The consensus is that AC originally won the &quot;War of Currents&quot; due to the practical ease of voltage transformation, while modern semiconductors now make high-voltage DC distribution feasible for specialized data centers.</p>
+<p>Critics argue that &quot;Edison&#x27;s Revenge&quot; is an inaccurate framing, asserting that Nikola Tesla would have embraced modern DC power electronics if the necessary high-power transistors had been available in his time.</p>
+<p>A significant technical challenge involves the difficulty of safely hot-swapping DC rack equipment, as DC lacks the natural zero-crossing point of AC, making arc suppression and electrical isolation substantially more complex.</p>
+<p>The sample exhibits a strong bias toward hardware engineers and technical enthusiasts, who prioritize implementation realities and physics over the popularized, historical narratives often found in mainstream technology journalism.</p>
+          <p class="drawer-footer"><a href="#dossier-9">View in Dossier ↓</a></p>
+        </div>
+      </details>
+    </div>
     </div>
     <div class="quote-side">
       <blockquote class="pullquote">The transition to high-voltage direct current is not a return to the past, but an engineering necessity for the future of hyperscale compute.</blockquote>
@@ -446,7 +601,21 @@
       <h2 class="frnc">Sensitive Credentials Harvested in PyPI Supply Chain Attack</h2>
       <p class="story-meta">github.com &nbsp;·&nbsp; 935 pts &nbsp;·&nbsp; 498 comments</p>
       <p class="lede">The Litellm package has been compromised by malicious code designed to exfiltrate environment variables and SSH keys from developer environments. This incident serves as a stark reminder of the inherent vulnerabilities within deep, third-party dependency chains.</p>
-      <div class="ctas"><a class="btn-read" href="https://github.com/BerriAI/litellm/issues/24512" target="_blank" rel="noopener">Read →</a><a class="btn-dossier" href="#dossier-10">Full analysis ↓</a></div>
+      <div class="ctas"><a class="btn-read" href="https://github.com/BerriAI/litellm/issues/24512" target="_blank" rel="noopener">Read →</a>
+      <details class="analysis-drawer">
+        <summary class="btn-dossier">[ Analysis + ]</summary>
+        <div class="drawer-content">
+          <h4>Technical Analysis</h4>
+          <p>The Python package `litellm` experienced a severe supply chain attack involving the compromise of versions 1.82.7 and 1.82.8 on PyPI. Malicious code injected into these versions, including an automatically executed `.pth` file, systematically harvested sensitive information such as environment variables, SSH keys, cloud credentials, and browser data. This stolen data was then encrypted and exfiltrated to an attacker-controlled domain disguised as a legitimate service.</p>
+          <h4>Reader Reactions</h4>
+<p>The community reached a consensus that software supply chain attacks are increasingly inevitable, necessitating a fundamental shift toward rigorous dependency vetting, minimal external code, and improved isolation within development environments.</p>
+<p>Some contributors argue that adding complex security layers to CI/CD pipelines is impractical and ironic, suggesting instead that we should favor language-native libraries over excessive third-party dependencies to reduce risk.</p>
+<p>Developers should consider using deterministic build chains, hard-pinning specific dependency versions, and implementing local canary-based monitoring tools to detect unauthorized file system access by compromised packages during the development lifecycle.</p>
+<p>This sample primarily reflects security-conscious developer perspectives and may overemphasize the threat of individual package exploits while potentially overlooking broader systemic issues related to corporate infrastructure and large-scale software distribution.</p>
+          <p class="drawer-footer"><a href="#dossier-10">View in Dossier ↓</a></p>
+        </div>
+      </details>
+    </div>
     </div>
     <div class="tape bottom">CAUTION CAUTION CAUTION CAUTION CAUTION CAUTION CAUTION CAUTION</div>
   </section>
@@ -637,6 +806,19 @@
     localStorage.setItem(key, JSON.stringify(stored));
   }
 })();
+</script>
+<script>
+// Simple script to toggle the [+] and [-] labels on the drawers
+document.querySelectorAll('.analysis-drawer').forEach(drawer => {
+  drawer.addEventListener('toggle', () => {
+    const summary = drawer.querySelector('summary');
+    if (drawer.open) {
+      summary.textContent = '[ Analysis − ]';
+    } else {
+      summary.textContent = '[ Analysis + ]';
+    }
+  });
+});
 </script>
 </body>
 </html>

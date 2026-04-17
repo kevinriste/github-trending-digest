@@ -40,14 +40,43 @@
   .story-meta { font-weight: 600; font-size: 1.1rem; margin-bottom: 3rem; opacity: 0.6; letter-spacing: 0.02em; }
   .lede { font-size: clamp(1.4rem, 2.5vw, 2.1rem); line-height: 1.35; max-width: 800px; margin: 0 0 4rem; font-weight: 450; }
   
-  .ctas { display: flex; gap: 2.5rem; align-items: center; }
+  .ctas { display: flex; gap: 2.5rem; align-items: flex-start; }
   .ctas a {
     text-decoration: none; font-weight: 700; font-size: 1.1rem; letter-spacing: 0.1em; text-transform: uppercase;
     padding: 1.2rem 2.4rem; transition: all 0.2s;
   }
-  .btn-read { background: var(--text-dark); color: var(--bg-light); }
-  .btn-dossier { border-bottom: 2px solid currentColor; padding: 0.5rem 0 !important; }
+  .btn-read { background: var(--text-dark); color: var(--bg-light); cursor: pointer; border: none; }
+  .btn-dossier { 
+    border-bottom: 2px solid currentColor; padding: 0.5rem 0 !important; 
+    text-decoration: none; font-weight: 700; font-size: 1.1rem; letter-spacing: 0.1em; 
+    text-transform: uppercase; cursor: pointer; background: transparent; color: inherit;
+    display: inline-block;
+  }
   
+  /* ───── ANALYSIS DRAWER ───── */
+  .analysis-drawer { margin-top: 0; width: 100%; max-width: 800px; }
+  .analysis-drawer summary { list-style: none; outline: none; }
+  .analysis-drawer summary::-webkit-details-marker { display: none; }
+  .analysis-drawer[open] summary { margin-bottom: 2rem; }
+  .analysis-drawer[open] summary::after { content: ""; } /* Could add JS to toggle label but we'll do CSS trick or just keep static */
+  
+  .drawer-content {
+    background: rgba(0,0,0,0.03); padding: 3rem; border-left: 4px solid var(--text-dark);
+    animation: slideDown 0.3s ease-out;
+  }
+  .arc-midnight .drawer-content { background: rgba(255,255,255,0.05); border-color: #fff; }
+  .arc-terminal .drawer-content { background: rgba(32, 194, 14, 0.05); border-color: #20c20e; }
+  
+  .drawer-content h4 { text-transform: uppercase; letter-spacing: 0.2em; font-size: 0.9rem; margin-top: 0; margin-bottom: 1.5rem; opacity: 0.6; }
+  .drawer-content p { font-family: 'Fraunces', serif; font-size: 1.3rem; line-height: 1.5; margin-bottom: 1.5rem; }
+  .drawer-footer { margin-top: 2rem; border-top: 1px solid rgba(0,0,0,0.1); padding-top: 1.5rem; }
+  .drawer-footer a { font-size: 0.9rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; text-decoration: none; color: inherit; opacity: 0.5; }
+  
+  @keyframes slideDown {
+    from { opacity: 0; transform: translateY(-10px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
   /* ───── ARCHETYPE CSS ───── */
   
   /* Stat Hero */
@@ -347,7 +376,17 @@
       <h2 class="frnc">Tambo AI streamlines complex decision-making workflows</h2>
       <p class="story-meta">github.com &nbsp;·&nbsp; 9,776 stars stars &nbsp;·&nbsp; 0 stars today</p>
       <p class="lede">We are architecting the next generation of autonomous task orchestration. This framework provides the technical blueprint for mapping intent to execution in high-velocity environments.</p>
-      <div class="ctas"><a class="btn-read" href="https://github.com/tambo-ai/tambo" target="_blank" rel="noopener">Read →</a><a class="btn-dossier" href="#dossier-1">Full analysis ↓</a></div>
+      <div class="ctas"><a class="btn-read" href="https://github.com/tambo-ai/tambo" target="_blank" rel="noopener">Read →</a>
+      <details class="analysis-drawer">
+        <summary class="btn-dossier">[ Analysis + ]</summary>
+        <div class="drawer-content">
+          <h4>Technical Analysis</h4>
+          <p class="muted"><em>Analysis not available.</em></p>
+          
+          <p class="drawer-footer"><a href="#dossier-1">View in Dossier ↓</a></p>
+        </div>
+      </details>
+    </div>
     </div>
   </section>
   <section id="story-2" class="spread arc-model-bench">
@@ -357,7 +396,17 @@
       <h2 class="frnc">AIOS Core sets new standards for local inference</h2>
       <p class="story-meta">github.com &nbsp;·&nbsp; 638 stars stars &nbsp;·&nbsp; 0 stars today</p>
       <p class="lede">High-performance compute requires precise weight handling and optimized execution paths. This engine minimizes overhead while maximizing the reliability of local model deployments.</p>
-      <div class="ctas"><a class="btn-read" href="https://github.com/SynkraAI/aios-core" target="_blank" rel="noopener">Read →</a><a class="btn-dossier" href="#dossier-2">Full analysis ↓</a></div>
+      <div class="ctas"><a class="btn-read" href="https://github.com/SynkraAI/aios-core" target="_blank" rel="noopener">Read →</a>
+      <details class="analysis-drawer">
+        <summary class="btn-dossier">[ Analysis + ]</summary>
+        <div class="drawer-content">
+          <h4>Technical Analysis</h4>
+          <p class="muted"><em>Analysis not available.</em></p>
+          
+          <p class="drawer-footer"><a href="#dossier-2">View in Dossier ↓</a></p>
+        </div>
+      </details>
+    </div>
     </div>
   </section>
   <section id="story-3" class="spread arc-privacy-shield">
@@ -367,7 +416,18 @@
       <h2 class="frnc">Rowboat keeps your professional memory strictly local</h2>
       <p class="story-meta">github.com &nbsp;·&nbsp; 6,234 stars stars &nbsp;·&nbsp; 0 stars today</p>
       <p class="lede">Fragmentation is the enemy of focus. By localizing your knowledge graph, you regain control over your metadata and ensure your project history remains shielded from cloud-based intrusion.</p>
-      <div class="ctas"><a class="btn-read" href="https://github.com/rowboatlabs/rowboat" target="_blank" rel="noopener">Read →</a><a class="btn-dossier" href="#dossier-3">Full analysis ↓</a></div>
+      <div class="ctas"><a class="btn-read" href="https://github.com/rowboatlabs/rowboat" target="_blank" rel="noopener">Read →</a>
+      <details class="analysis-drawer">
+        <summary class="btn-dossier">[ Analysis + ]</summary>
+        <div class="drawer-content">
+          <h4>Technical Analysis</h4>
+          <p>Rowboat is an open-source, local-first AI coworker designed to automate knowledge management by transforming your professional communications and meeting notes into an Obsidian-compatible knowledge graph. It integrates with platforms like Gmail, Google Calendar, and various project management tools to build a persistent, searchable repository of your work history, decisions, and project context. Technically, it functions by maintaining this information in a transparent, editable Markdown format on your local machine, allowing users to leverage either local models via Ollama or hosted LLMs to synthesize information and execute tasks.</p>
+<p>This project is ideal for professionals, project managers, and knowledge workers who struggle with fragmented information across multiple communication channels and desire a private, self-hosted alternative to centralized AI assistants. It is trending because it addresses growing concerns regarding data privacy and vendor lock-in by ensuring that all &quot;memory&quot; remains under the user&#x27;s direct control rather than hidden within a proprietary cloud model. By providing a compounding, inspectable knowledge base that supports custom tool extensions via the Model Context Protocol, Rowboat offers a highly customizable and privacy-centric workflow that evolves alongside the user.</p>
+          
+          <p class="drawer-footer"><a href="#dossier-3">View in Dossier ↓</a></p>
+        </div>
+      </details>
+    </div>
     </div>
   </section>
   <section id="story-4" class="spread arc-stat-hero">
@@ -377,7 +437,17 @@
       <h2 class="frnc">MinIO solidifies dominance in object storage scale</h2>
       <p class="story-meta">github.com &nbsp;·&nbsp; 60,291 stars stars &nbsp;·&nbsp; 0 stars today</p>
       <p class="lede">Consistency at this scale is a rare achievement in the storage ecosystem. The project continues to define the standard for high-throughput, cloud-native data availability.</p>
-      <div class="ctas"><a class="btn-read" href="https://github.com/minio/minio" target="_blank" rel="noopener">Read →</a><a class="btn-dossier" href="#dossier-4">Full analysis ↓</a></div>
+      <div class="ctas"><a class="btn-read" href="https://github.com/minio/minio" target="_blank" rel="noopener">Read →</a>
+      <details class="analysis-drawer">
+        <summary class="btn-dossier">[ Analysis + ]</summary>
+        <div class="drawer-content">
+          <h4>Technical Analysis</h4>
+          <p class="muted"><em>Analysis not available.</em></p>
+          
+          <p class="drawer-footer"><a href="#dossier-4">View in Dossier ↓</a></p>
+        </div>
+      </details>
+    </div>
     </div>
   </section>
   <section id="story-5" class="spread arc-ui-lab">
@@ -387,7 +457,17 @@
       <h2 class="frnc">Chrome DevTools MCP bridges web and agent context</h2>
       <p class="story-meta">github.com &nbsp;·&nbsp; 25,153 stars stars &nbsp;·&nbsp; 0 stars today</p>
       <p class="lede">Visual debugging demands real-time data flow and responsive component interaction. This toolkit offers a fluid bridge between web inspection and modern model context protocols.</p>
-      <div class="ctas"><a class="btn-read" href="https://github.com/ChromeDevTools/chrome-devtools-mcp" target="_blank" rel="noopener">Read →</a><a class="btn-dossier" href="#dossier-5">Full analysis ↓</a></div>
+      <div class="ctas"><a class="btn-read" href="https://github.com/ChromeDevTools/chrome-devtools-mcp" target="_blank" rel="noopener">Read →</a>
+      <details class="analysis-drawer">
+        <summary class="btn-dossier">[ Analysis + ]</summary>
+        <div class="drawer-content">
+          <h4>Technical Analysis</h4>
+          <p class="muted"><em>Analysis not available.</em></p>
+          
+          <p class="drawer-footer"><a href="#dossier-5">View in Dossier ↓</a></p>
+        </div>
+      </details>
+    </div>
     </div>
   </section>
   <section id="story-6" class="spread arc-data-pipeline">
@@ -397,7 +477,17 @@
       <h2 class="frnc">Zvec accelerates high-dimensional vector search operations</h2>
       <p class="story-meta">github.com &nbsp;·&nbsp; 1,416 stars stars &nbsp;·&nbsp; 0 stars today</p>
       <p class="lede">Modern search relies on the seamless movement of massive datasets through latent space. We examine the architecture enabling these high-throughput, indigo-tinted data streams.</p>
-      <div class="ctas"><a class="btn-read" href="https://github.com/alibaba/zvec" target="_blank" rel="noopener">Read →</a><a class="btn-dossier" href="#dossier-6">Full analysis ↓</a></div>
+      <div class="ctas"><a class="btn-read" href="https://github.com/alibaba/zvec" target="_blank" rel="noopener">Read →</a>
+      <details class="analysis-drawer">
+        <summary class="btn-dossier">[ Analysis + ]</summary>
+        <div class="drawer-content">
+          <h4>Technical Analysis</h4>
+          <p class="muted"><em>Analysis not available.</em></p>
+          
+          <p class="drawer-footer"><a href="#dossier-6">View in Dossier ↓</a></p>
+        </div>
+      </details>
+    </div>
     </div>
   </section>
   <section id="story-7" class="spread arc-experimental-workshop">
@@ -407,7 +497,17 @@
       <h2 class="frnc">Wifi-Densepose maps human movement via wireless signals</h2>
       <p class="story-meta">github.com &nbsp;·&nbsp; 6,230 stars stars &nbsp;·&nbsp; 0 stars today</p>
       <p class="lede">Sensing human posture through walls is an engineering feat that borders on the impossible. This prototype maps the signal interference to reveal the raw physics behind spatial awareness.</p>
-      <div class="ctas"><a class="btn-read" href="https://github.com/ruvnet/wifi-densepose" target="_blank" rel="noopener">Read →</a><a class="btn-dossier" href="#dossier-7">Full analysis ↓</a></div>
+      <div class="ctas"><a class="btn-read" href="https://github.com/ruvnet/wifi-densepose" target="_blank" rel="noopener">Read →</a>
+      <details class="analysis-drawer">
+        <summary class="btn-dossier">[ Analysis + ]</summary>
+        <div class="drawer-content">
+          <h4>Technical Analysis</h4>
+          <p class="muted"><em>Analysis not available.</em></p>
+          
+          <p class="drawer-footer"><a href="#dossier-7">View in Dossier ↓</a></p>
+        </div>
+      </details>
+    </div>
     </div>
   </section>
   <section id="story-8" class="spread arc-enterprise-engine">
@@ -417,7 +517,17 @@
       <h2 class="frnc">Unstract empowers document processing for large organizations</h2>
       <p class="story-meta">github.com &nbsp;·&nbsp; 6,353 stars stars &nbsp;·&nbsp; 0 stars today</p>
       <p class="lede">Scalable infrastructure requires robust tools that automate repetitive document extraction. We look at the enterprise backbone built to handle high-volume data transformation with modular reliability.</p>
-      <div class="ctas"><a class="btn-read" href="https://github.com/Zipstack/unstract" target="_blank" rel="noopener">Read →</a><a class="btn-dossier" href="#dossier-8">Full analysis ↓</a></div>
+      <div class="ctas"><a class="btn-read" href="https://github.com/Zipstack/unstract" target="_blank" rel="noopener">Read →</a>
+      <details class="analysis-drawer">
+        <summary class="btn-dossier">[ Analysis + ]</summary>
+        <div class="drawer-content">
+          <h4>Technical Analysis</h4>
+          <p class="muted"><em>Analysis not available.</em></p>
+          
+          <p class="drawer-footer"><a href="#dossier-8">View in Dossier ↓</a></p>
+        </div>
+      </details>
+    </div>
     </div>
   </section>
   <section id="story-9" class="spread arc-terminal-utility">
@@ -427,7 +537,17 @@
       <h2 class="frnc">Letta-Code optimizes CLI interactions for power users</h2>
       <p class="story-meta">github.com &nbsp;·&nbsp; 1,264 stars stars &nbsp;·&nbsp; 0 stars today</p>
       <p class="lede">The command line remains the most rugged interface for professional development. This utility streamlines your workflow, turning complex operations into immediate, scannable terminal feedback.</p>
-      <div class="ctas"><a class="btn-read" href="https://github.com/letta-ai/letta-code" target="_blank" rel="noopener">Read →</a><a class="btn-dossier" href="#dossier-9">Full analysis ↓</a></div>
+      <div class="ctas"><a class="btn-read" href="https://github.com/letta-ai/letta-code" target="_blank" rel="noopener">Read →</a>
+      <details class="analysis-drawer">
+        <summary class="btn-dossier">[ Analysis + ]</summary>
+        <div class="drawer-content">
+          <h4>Technical Analysis</h4>
+          <p class="muted"><em>Analysis not available.</em></p>
+          
+          <p class="drawer-footer"><a href="#dossier-9">View in Dossier ↓</a></p>
+        </div>
+      </details>
+    </div>
     </div>
   </section>
   <section id="story-10" class="spread arc-system-core">
@@ -437,7 +557,17 @@
       <h2 class="frnc">Ruby evolves to meet modern performance demands</h2>
       <p class="story-meta">github.com &nbsp;·&nbsp; 23,387 stars stars &nbsp;·&nbsp; 0 stars today</p>
       <p class="lede">At the heart of the stack, the interpreter must be unyielding in its pursuit of efficiency. We examine the latest optimizations tightening the performance of this enduring language core.</p>
-      <div class="ctas"><a class="btn-read" href="https://github.com/ruby/ruby" target="_blank" rel="noopener">Read →</a><a class="btn-dossier" href="#dossier-10">Full analysis ↓</a></div>
+      <div class="ctas"><a class="btn-read" href="https://github.com/ruby/ruby" target="_blank" rel="noopener">Read →</a>
+      <details class="analysis-drawer">
+        <summary class="btn-dossier">[ Analysis + ]</summary>
+        <div class="drawer-content">
+          <h4>Technical Analysis</h4>
+          <p class="muted"><em>Analysis not available.</em></p>
+          
+          <p class="drawer-footer"><a href="#dossier-10">View in Dossier ↓</a></p>
+        </div>
+      </details>
+    </div>
     </div>
   </section>
   <section id="dossier" class="dossier">
@@ -588,6 +718,19 @@
     localStorage.setItem(key, JSON.stringify(stored));
   }
 })();
+</script>
+<script>
+// Simple script to toggle the [+] and [-] labels on the drawers
+document.querySelectorAll('.analysis-drawer').forEach(drawer => {
+  drawer.addEventListener('toggle', () => {
+    const summary = drawer.querySelector('summary');
+    if (drawer.open) {
+      summary.textContent = '[ Analysis − ]';
+    } else {
+      summary.textContent = '[ Analysis + ]';
+    }
+  });
+});
 </script>
 </body>
 </html>

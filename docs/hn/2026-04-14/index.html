@@ -40,14 +40,43 @@
   .story-meta { font-weight: 600; font-size: 1.1rem; margin-bottom: 3rem; opacity: 0.6; letter-spacing: 0.02em; }
   .lede { font-size: clamp(1.4rem, 2.5vw, 2.1rem); line-height: 1.35; max-width: 800px; margin: 0 0 4rem; font-weight: 450; }
   
-  .ctas { display: flex; gap: 2.5rem; align-items: center; }
+  .ctas { display: flex; gap: 2.5rem; align-items: flex-start; }
   .ctas a {
     text-decoration: none; font-weight: 700; font-size: 1.1rem; letter-spacing: 0.1em; text-transform: uppercase;
     padding: 1.2rem 2.4rem; transition: all 0.2s;
   }
-  .btn-read { background: var(--text-dark); color: var(--bg-light); }
-  .btn-dossier { border-bottom: 2px solid currentColor; padding: 0.5rem 0 !important; }
+  .btn-read { background: var(--text-dark); color: var(--bg-light); cursor: pointer; border: none; }
+  .btn-dossier { 
+    border-bottom: 2px solid currentColor; padding: 0.5rem 0 !important; 
+    text-decoration: none; font-weight: 700; font-size: 1.1rem; letter-spacing: 0.1em; 
+    text-transform: uppercase; cursor: pointer; background: transparent; color: inherit;
+    display: inline-block;
+  }
   
+  /* ───── ANALYSIS DRAWER ───── */
+  .analysis-drawer { margin-top: 0; width: 100%; max-width: 800px; }
+  .analysis-drawer summary { list-style: none; outline: none; }
+  .analysis-drawer summary::-webkit-details-marker { display: none; }
+  .analysis-drawer[open] summary { margin-bottom: 2rem; }
+  .analysis-drawer[open] summary::after { content: ""; } /* Could add JS to toggle label but we'll do CSS trick or just keep static */
+  
+  .drawer-content {
+    background: rgba(0,0,0,0.03); padding: 3rem; border-left: 4px solid var(--text-dark);
+    animation: slideDown 0.3s ease-out;
+  }
+  .arc-midnight .drawer-content { background: rgba(255,255,255,0.05); border-color: #fff; }
+  .arc-terminal .drawer-content { background: rgba(32, 194, 14, 0.05); border-color: #20c20e; }
+  
+  .drawer-content h4 { text-transform: uppercase; letter-spacing: 0.2em; font-size: 0.9rem; margin-top: 0; margin-bottom: 1.5rem; opacity: 0.6; }
+  .drawer-content p { font-family: 'Fraunces', serif; font-size: 1.3rem; line-height: 1.5; margin-bottom: 1.5rem; }
+  .drawer-footer { margin-top: 2rem; border-top: 1px solid rgba(0,0,0,0.1); padding-top: 1.5rem; }
+  .drawer-footer a { font-size: 0.9rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; text-decoration: none; color: inherit; opacity: 0.5; }
+  
+  @keyframes slideDown {
+    from { opacity: 0; transform: translateY(-10px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
   /* ───── ARCHETYPE CSS ───── */
   
   /* Stat Hero */
@@ -346,7 +375,21 @@
       <h2 class="frnc">DaVinci Resolve brings professional color grading to still photography</h2>
       <p class="story-meta">blackmagicdesign.com &nbsp;·&nbsp; 1128 pts &nbsp;·&nbsp; 293 comments</p>
       <p class="lede">Blackmagic Design integrates its flagship node-based color science and AI-powered VFX tools into the photographic pipeline. Photographers can now manage native RAW files and tethered shooting within a singular, high-performance production environment.</p>
-      <div class="ctas"><a class="btn-read" href="https://www.blackmagicdesign.com/products/davinciresolve/photo" target="_blank" rel="noopener">Read →</a><a class="btn-dossier" href="#dossier-1">Full analysis ↓</a></div>
+      <div class="ctas"><a class="btn-read" href="https://www.blackmagicdesign.com/products/davinciresolve/photo" target="_blank" rel="noopener">Read →</a>
+      <details class="analysis-drawer">
+        <summary class="btn-dossier">[ Analysis + ]</summary>
+        <div class="drawer-content">
+          <h4>Technical Analysis</h4>
+          <p>Blackmagic Design has introduced a new &quot;Photo&quot; page for DaVinci Resolve, extending its professional-grade color grading and AI-powered VFX tools to still photography. This update allows photographers to utilize familiar RAW editing workflows while accessing the node-based color correction, GPU-accelerated processing, and collaborative cloud features typically reserved for high-end film production. By incorporating native RAW support and tethered shooting capabilities, the software aims to consolidate the entire image-editing pipeline from initial import to final export within a single application.</p>
+          <h4>Reader Reactions</h4>
+<p>Users are excited about DaVinci Resolve’s potential as a photo editor, specifically praising its advanced color science, non-destructive workflow, and the possibility of avoiding subscription-based software models like Adobe Lightroom.</p>
+<p>Skeptics argue that professional photography requires specialized library management, precise lens correction databases, and nuanced HDR export capabilities that a video-centric tool like Resolve currently lacks compared to established competitors.</p>
+<p>Enthusiasts on Linux can successfully run the software by utilizing containerized environments like distrobox or custom ffmpeg conversion scripts to manage codec compatibility issues that often plague native installations on Ubuntu.</p>
+<p>This sample reflects a technical and power-user demographic that prioritizes platform freedom and workflow customization, potentially overlooking the needs of casual photographers who rely on intuitive, plug-and-play image processing software.</p>
+          <p class="drawer-footer"><a href="#dossier-1">View in Dossier ↓</a></p>
+        </div>
+      </details>
+    </div>
     </div>
   </section>
   <section id="story-2" class="spread arc-alert-stamp">
@@ -357,7 +400,21 @@
       <h2 class="frnc">Backblaze silently excludes cloud storage folders from automatic backups</h2>
       <p class="story-meta">rareese.com &nbsp;·&nbsp; 1110 pts &nbsp;·&nbsp; 680 comments</p>
       <p class="lede">Users report that Backblaze has quietly updated its software to ignore OneDrive, Dropbox, and hidden directories without explicit notification. This policy change forces a re-evaluation of what constitutes a genuine, off-site data backup.</p>
-      <div class="ctas"><a class="btn-read" href="https://rareese.com/posts/backblaze/" target="_blank" rel="noopener">Read →</a><a class="btn-dossier" href="#dossier-2">Full analysis ↓</a></div>
+      <div class="ctas"><a class="btn-read" href="https://rareese.com/posts/backblaze/" target="_blank" rel="noopener">Read →</a>
+      <details class="analysis-drawer">
+        <summary class="btn-dossier">[ Analysis + ]</summary>
+        <div class="drawer-content">
+          <h4>Technical Analysis</h4>
+          <p>The blog post details the author&#x27;s frustration upon discovering that Backblaze has silently updated its software to exclude common cloud storage folders, such as OneDrive and Dropbox, from its automatic backup routines. The author argues that these folders are not true backups but sync services, meaning data within them is vulnerable to deletion or account lockout if not independently preserved. Backblaze claims these exclusions, which also include hidden directories like .git folders, are intended to improve performance and prevent redundant uploads, but the company failed to proactively notify users of this significant policy change.</p>
+          <h4>Reader Reactions</h4>
+<p>Users largely agree that a backup service should prioritize comprehensive data preservation, arguing that silent exclusions of specific file types like .git or cloud-synced directories fundamentally violate the core purpose of backups.</p>
+<p>Some contributors argue that expecting a &quot;set-and-forget&quot; consumer product to perfectly manage complex exclusion rules is unrealistic, suggesting that serious data protection ultimately requires users to maintain their own backup scripts.</p>
+<p>For those seeking greater transparency and control, the prevailing technical recommendation is to combine command-line tools like Restic or Rclone with storage backends like B2, ensuring the user manages their own encryption.</p>
+<p>This sample reflects a technical audience prone to self-hosting solutions, which likely results in an over-representation of advanced users who view proprietary, GUI-based backup services with skepticism compared to average consumer subscribers.</p>
+          <p class="drawer-footer"><a href="#dossier-2">View in Dossier ↓</a></p>
+        </div>
+      </details>
+    </div>
     </div>
   </section>
   <section id="story-3" class="spread arc-midnight">
@@ -368,7 +425,21 @@
       <h2 class="frnc">Google targets back button hijacking with new search spam policies</h2>
       <p class="story-meta">developers.google.com &nbsp;·&nbsp; 901 pts &nbsp;·&nbsp; 509 comments</p>
       <p class="lede">Deceptive sites that manipulate browser history to trap users will face automated demotions starting this June. The update seeks to restore predictable navigation across the web by classifying history-hijacking as a malicious dark pattern.</p>
-      <div class="ctas"><a class="btn-read" href="https://developers.google.com/search/blog/2026/04/back-button-hijacking" target="_blank" rel="noopener">Read →</a><a class="btn-dossier" href="#dossier-3">Full analysis ↓</a></div>
+      <div class="ctas"><a class="btn-read" href="https://developers.google.com/search/blog/2026/04/back-button-hijacking" target="_blank" rel="noopener">Read →</a>
+      <details class="analysis-drawer">
+        <summary class="btn-dossier">[ Analysis + ]</summary>
+        <div class="drawer-content">
+          <h4>Technical Analysis</h4>
+          <p>Google is updating its official spam policies to explicitly categorize &quot;back button hijacking&quot; as a malicious practice. This deceptive technique involves websites manipulating the browser’s history to prevent users from navigating back to their previous page, often forcing them toward unsolicited ads or unwanted content. Starting June 15, 2026, sites found using these methods will face manual spam actions or automated demotions in Google Search results.</p>
+          <h4>Reader Reactions</h4>
+<p>Users strongly support Google’s policy against back button hijacking, viewing the practice as a hostile dark pattern that intentionally breaks standard navigation and degrades the overall web browsing experience.</p>
+<p>Some participants argue that developers require robust, native browser APIs to handle complex Single Page Application state management, suggesting that limiting technical tools may inadvertently harm legitimate, feature-rich web applications.</p>
+<p>Technically, the discussion highlights that while heuristics can detect malicious history manipulation, they often fail to distinguish between legitimate state management and adversarial behavior, necessitating strict policy-based enforcement by browsers.</p>
+<p>This sample focuses primarily on experienced technical users and web developers, potentially overlooking the perspectives of casual users who may struggle more with the usability consequences of these dark patterns.</p>
+          <p class="drawer-footer"><a href="#dossier-3">View in Dossier ↓</a></p>
+        </div>
+      </details>
+    </div>
     </div>
   </section>
   <section id="story-4" class="spread arc-caution-tape">
@@ -380,7 +451,21 @@
       <h2 class="frnc">Thirty WordPress plugins compromised via coordinated investor backdoor scheme</h2>
       <p class="story-meta">anchor.host &nbsp;·&nbsp; 1182 pts &nbsp;·&nbsp; 336 comments</p>
       <p class="lede">A malicious actor purchased established plugins solely to inject dormant code controlled by Ethereum smart contracts. The breach underscores the systemic fragility of relying on unverified third-party dependencies in modern web development.</p>
-      <div class="ctas"><a class="btn-read" href="https://anchor.host/someone-bought-30-wordpress-plugins-and-planted-a-backdoor-in-all-of-them/" target="_blank" rel="noopener">Read →</a><a class="btn-dossier" href="#dossier-4">Full analysis ↓</a></div>
+      <div class="ctas"><a class="btn-read" href="https://anchor.host/someone-bought-30-wordpress-plugins-and-planted-a-backdoor-in-all-of-them/" target="_blank" rel="noopener">Read →</a>
+      <details class="analysis-drawer">
+        <summary class="btn-dossier">[ Analysis + ]</summary>
+        <div class="drawer-content">
+          <h4>Technical Analysis</h4>
+          <p>An investor purchased a portfolio of 30 legitimate WordPress plugins from a reputable developer via Flippa, only to immediately insert a sophisticated backdoor into the codebase. The malicious code remained dormant for eight months before activation, utilizing Ethereum smart contracts to manage command-and-control communications and injecting spam links directly into `wp-config.php`. The WordPress.org Plugins Team eventually discovered the breach and permanently closed all affected plugins, prompting security researchers to manually clean and patch the compromised software for their clients.</p>
+          <h4>Reader Reactions</h4>
+<p>The dominant consensus is that the modern software supply chain is inherently fragile because developers rely on excessive, unverified dependencies, creating a systemic vulnerability when plugin ownership is secretly transferred to malicious actors.</p>
+<p>A significant point of disagreement is whether industry-wide security failures should be addressed through mandatory government-enforced building codes or if such regulation is impractical, ineffective, and fundamentally stifles innovation within the developer ecosystem.</p>
+<p>Many experienced engineers now advocate for drastically reducing third-party dependencies by favoring standard libraries, writing bespoke code with AI assistance, or manually auditing source code rather than relying on automated package management.</p>
+<p>This discussion sample disproportionately represents voices advocating for defensive programming and strict dependency minimization, potentially overlooking the pragmatic trade-offs that drive businesses to prioritize rapid feature development over absolute supply-chain security.</p>
+          <p class="drawer-footer"><a href="#dossier-4">View in Dossier ↓</a></p>
+        </div>
+      </details>
+    </div>
     </div>
     <div class="tape bottom">CAUTION CAUTION CAUTION CAUTION CAUTION CAUTION CAUTION CAUTION</div>
   </section>
@@ -391,7 +476,21 @@
       <h2 class="frnc">Introspective diffusion models aim to accelerate token generation</h2>
       <p class="story-meta">introspective-diffusion.github.io &nbsp;·&nbsp; 276 pts &nbsp;·&nbsp; 54 comments</p>
       <p class="lede">New research introduces Introspective Strided Decoding to bypass the traditional sequential bottlenecks of autoregressive language models. By verifying tokens mid-pass, this method attempts to reconcile parallel processing with high-performance output standards.</p>
-      <div class="ctas"><a class="btn-read" href="https://introspective-diffusion.github.io/" target="_blank" rel="noopener">Read →</a><a class="btn-dossier" href="#dossier-5">Full analysis ↓</a></div>
+      <div class="ctas"><a class="btn-read" href="https://introspective-diffusion.github.io/" target="_blank" rel="noopener">Read →</a>
+      <details class="analysis-drawer">
+        <summary class="btn-dossier">[ Analysis + ]</summary>
+        <div class="drawer-content">
+          <h4>Technical Analysis</h4>
+          <p>Introspective Diffusion Language Models (I-DLM) propose a new approach to overcoming the sequential bottleneck of autoregressive (AR) decoding by enabling parallel token generation. While traditional diffusion language models often suffer from lower quality compared to their autoregressive counterparts, I-DLM introduces a technique called Introspective Strided Decoding (ISD) to verify previously generated tokens within each forward pass. This method allows models to maintain consistency with AR standards while significantly increasing throughput and maintaining high performance across various reasoning and coding benchmarks.</p>
+          <h4>Reader Reactions</h4>
+<p>Commenters generally view Introspective Diffusion Language Models as a technically innovative approach to improving text generation speed, with some users excited about the potential for performance gains over standard autoregressive models.</p>
+<p>Skepticism persists regarding the practical utility of these models, as users report significant issues with output quality, incoherent text degradation, and hallucinations when testing the provided live demonstrations and examples.</p>
+<p>The research demonstrates a novel method of using LoRA adapters to bridge diffusion outputs with base model distributions, though users note that achieving competitive accuracy remains a significant engineering hurdle.</p>
+<p>This discussion sample is heavily skewed toward technical enthusiasts and practitioners, potentially overlooking broader industry sentiment regarding the long-term viability of diffusion-based approaches compared to established autoregressive transformer architectures.</p>
+          <p class="drawer-footer"><a href="#dossier-5">View in Dossier ↓</a></p>
+        </div>
+      </details>
+    </div>
     </div>
   </section>
   <section id="story-6" class="spread arc-terminal">
@@ -405,7 +504,21 @@
         <p class="lede">The new gh stack CLI tool enables atomic management of sequential changes, allowing for cascading rebases and combined merges. This addition aims to reduce the friction inherent in large-scale branch protection and dependency workflows.<span class="cursor"></span></p>
         <div class="ctas">
           <a href="https://github.github.com/gh-stack/" class="btn-read" target="_blank">RUN_PROCESS →</a>
-          <a href="#dossier-6" class="btn-dossier">VIEW_ANALYSIS ↓</a>
+          
+      <details class="analysis-drawer">
+        <summary class="btn-dossier">[ Analysis + ]</summary>
+        <div class="drawer-content">
+          <h4>Technical Analysis</h4>
+          <p>GitHub has officially introduced native support for &quot;Stacked PRs,&quot; a workflow that allows developers to break large, complex changes into a series of smaller, sequential pull requests. Supported by the new `gh stack` CLI tool, this feature enables users to manage dependencies between PRs, perform cascading rebases, and merge entire stacks in a single action. The system integrates directly into the GitHub UI, providing a stack map for easier navigation and ensuring that CI and branch protection rules function correctly across the entire chain.</p>
+          <h4>Reader Reactions</h4>
+<p>The consensus is that stacked PRs address real friction in large-scale development, yet many developers feel this is a &quot;second-layer&quot; workaround for inherent design limitations within GitHub&#x27;s pull request model.</p>
+<p>A significant group of developers strongly disagrees with the abstraction, arguing that standard git features like `--update-refs` or alternative systems like Gerrit already solve these problems without requiring complex UI layers.</p>
+<p>The most valuable technical feature of this tool is its ability to trigger a single CI run for an entire stack, rather than testing each individual PR merge separately in the repository.</p>
+<p>The sample is biased toward highly experienced users who prioritize advanced CLI workflows and command-line mastery, which may not accurately reflect the needs or technical comfort level of typical GitHub users.</p>
+          <p class="drawer-footer"><a href="#dossier-6">View in Dossier ↓</a></p>
+        </div>
+      </details>
+    
         </div>
       </div>
     </div>
@@ -417,7 +530,21 @@
       <h2 class="frnc">OpenDuck enables distributed execution for DuckDB instances</h2>
       <p class="story-meta">github.com &nbsp;·&nbsp; 184 pts &nbsp;·&nbsp; 35 comments</p>
       <p class="lede">By reimplementing differential storage and remote execution protocols, this project allows DuckDB to function across decentralized backends. It provides a self-hosted alternative to proprietary cloud-based analytical engines.</p>
-      <div class="ctas"><a class="btn-read" href="https://github.com/citguru/openduck" target="_blank" rel="noopener">Read →</a><a class="btn-dossier" href="#dossier-7">Full analysis ↓</a></div>
+      <div class="ctas"><a class="btn-read" href="https://github.com/citguru/openduck" target="_blank" rel="noopener">Read →</a>
+      <details class="analysis-drawer">
+        <summary class="btn-dossier">[ Analysis + ]</summary>
+        <div class="drawer-content">
+          <h4>Technical Analysis</h4>
+          <p>OpenDuck is an open-source project that reimplements the architectural concepts popularized by the commercial service MotherDuck, such as differential storage and dual execution, for use with DuckDB. It allows users to attach remote databases that appear local, enabling queries to be split transparently between a user&#x27;s machine and remote workers. By utilizing a simple gRPC and Arrow IPC protocol, the system allows for flexible, self-hosted backends rather than being locked into a proprietary cloud platform.</p>
+          <h4>Reader Reactions</h4>
+<p>Users appreciate DuckDB for its analytical performance and portability, but frequently express frustration regarding its strict file-locking behavior, which prevents the concurrent read-write access common in systems like SQLite.</p>
+<p>Some developers argue that building distributed layers on top of DuckDB introduces unnecessary operational complexity, suggesting that maintaining a single, consistent database engine is often superior to federated architecture.</p>
+<p>Technical discussions highlight that solutions like DuckLake or custom Raft-based replication are emerging to address concurrency limitations, though these approaches often require additional metadata infrastructure like PostgreSQL or object storage.</p>
+<p>The thread contains a mix of genuine technical inquiry and cynical skepticism, reflecting a broader community tension regarding the proliferation of experimental projects that may lack production-ready reliability or clear use-cases.</p>
+          <p class="drawer-footer"><a href="#dossier-7">View in Dossier ↓</a></p>
+        </div>
+      </details>
+    </div>
     </div>
   </section>
   <section id="story-8" class="spread arc-archive">
@@ -427,7 +554,21 @@
       <h2 class="frnc">The legal war between Apple and its Franklin clones</h2>
       <p class="story-meta">buttondown.com &nbsp;·&nbsp; 125 pts &nbsp;·&nbsp; 83 comments</p>
       <p class="lede">In the early 1980s, the Franklin ACE series brought Apple II compatibility to the market through bold hardware and firmware replication. A landmark appellate ruling eventually halted the clones, forever altering the landscape of software copyright law.</p>
-      <div class="ctas"><a class="btn-read" href="https://buttondown.com/suchbadtechads/archive/franklin-ace-1000/" target="_blank" rel="noopener">Read →</a><a class="btn-dossier" href="#dossier-8">Full analysis ↓</a></div>
+      <div class="ctas"><a class="btn-read" href="https://buttondown.com/suchbadtechads/archive/franklin-ace-1000/" target="_blank" rel="noopener">Read →</a>
+      <details class="analysis-drawer">
+        <summary class="btn-dossier">[ Analysis + ]</summary>
+        <div class="drawer-content">
+          <h4>Technical Analysis</h4>
+          <p>The Franklin Computer Corporation gained notoriety in the early 1980s for producing the ACE series, a line of clones that were nearly identical to the Apple II. By copying the circuit-board layout and outright stealing Apple’s BIOS code, Franklin managed to offer cheaper, highly compatible systems that even supported Apple’s peripheral cards. This aggressive imitation triggered a significant legal battle over intellectual property that eventually resulted in an appellate court ruling in favor of Apple, effectively ending Franklin&#x27;s cloning business.</p>
+          <h4>Reader Reactions</h4>
+<p>Bullet 1: There is no clear consensus among the commenters, as one participant focuses on the historical legal and business impact while the other expresses appreciation for the company&#x27;s hardware clones.</p>
+<p>Bullet 2: The discussion highlights a sharp contrast between viewing the company as a problematic infringer of intellectual property and perceiving the brand as an innovative provider of accessible, high-quality computer clones.</p>
+<p>Bullet 3: The legacy of these early clones provides a historical case study on the evolution of software copyright and the complex legal battles that defined the early personal computing hardware industry.</p>
+<p>Bullet 4: With only two comments available for analysis, the sample size is insufficient to represent the broader community perspective or determine the prevailing sentiment regarding Franklin’s controversial role in computing.</p>
+          <p class="drawer-footer"><a href="#dossier-8">View in Dossier ↓</a></p>
+        </div>
+      </details>
+    </div>
     </div>
   </section>
   <section id="story-9" class="spread arc-stat-hero">
@@ -437,7 +578,21 @@
       <h2 class="frnc">Ransomware activity growth is outpacing security investment</h2>
       <p class="story-meta">ciphercue.com &nbsp;·&nbsp; 85 pts &nbsp;·&nbsp; 88 comments</p>
       <p class="lede">New industry data reveals that while security spending rises at a steady clip, the frequency of ransomware leak-site claims has accelerated significantly. The widening gap between defensive budgets and threat volume marks a concerning shift in corporate risk management.</p>
-      <div class="ctas"><a class="btn-read" href="https://ciphercue.com/blog/ransomware-claims-grew-faster-than-security-spend-2025" target="_blank" rel="noopener">Read →</a><a class="btn-dossier" href="#dossier-9">Full analysis ↓</a></div>
+      <div class="ctas"><a class="btn-read" href="https://ciphercue.com/blog/ransomware-claims-grew-faster-than-security-spend-2025" target="_blank" rel="noopener">Read →</a>
+      <details class="analysis-drawer">
+        <summary class="btn-dossier">[ Analysis + ]</summary>
+        <div class="drawer-content">
+          <h4>Technical Analysis</h4>
+          <p>A recent analysis by CipherCue reports that ransomware leak-site claims rose by 30.7% in 2025, reaching 7,760 total claims. When compared to Gartner’s forecast, which shows worldwide information security spending increasing by only 10.1% during the same period, the data suggests that observable ransomware activity is outpacing security investment by a factor of three. While the report acknowledges that public leak-site claims are not equivalent to confirmed breaches or total security effectiveness, the divergence in these growth rates highlights a widening gap in the cybersecurity landscape.</p>
+          <h4>Reader Reactions</h4>
+<p>Bullet 1: Commenters widely question the effectiveness of the current cybersecurity industry, suggesting that the observed growth in ransomware incidents highlights a failure in prevailing defense strategies and security spending models.</p>
+<p>Bullet 2: While some argue for banning ransom payments to deter attackers, others contend that basic, fundamental security hygiene is the most effective way to eliminate ransomware as a viable threat entirely.</p>
+<p>Bullet 3: The increase in reported ransomware claims may reflect a rise in public disclosure and transparency regarding breaches rather than an actual three-fold increase in the frequency of successful attacks.</p>
+<p>Bullet 4: This analysis is based on a very small sample of five comments, which likely fails to represent the diverse technical perspectives found throughout the full discussion thread on Hacker News.</p>
+          <p class="drawer-footer"><a href="#dossier-9">View in Dossier ↓</a></p>
+        </div>
+      </details>
+    </div>
     </div>
   </section>
   <section id="story-10" class="spread arc-editorial-pullquote">
@@ -447,7 +602,21 @@
       <h2 class="frnc">Hidden vulnerabilities persist in verified codebases</h2>
       <p class="story-meta">kirancodes.me &nbsp;·&nbsp; 393 pts &nbsp;·&nbsp; 177 comments</p>
       <p class="lede">Formal proofs are often limited by the scope of their underlying specifications and the trustworthiness of the runtime. When fuzzing a verified zlib implementation, researchers discovered that high-level correctness does not preclude failures in the trusted computing base.</p>
-      <div class="ctas"><a class="btn-read" href="https://kirancodes.me/posts/log-who-watches-the-watchers.html" target="_blank" rel="noopener">Read →</a><a class="btn-dossier" href="#dossier-10">Full analysis ↓</a></div>
+      <div class="ctas"><a class="btn-read" href="https://kirancodes.me/posts/log-who-watches-the-watchers.html" target="_blank" rel="noopener">Read →</a>
+      <details class="analysis-drawer">
+        <summary class="btn-dossier">[ Analysis + ]</summary>
+        <div class="drawer-content">
+          <h4>Technical Analysis</h4>
+          <p>The author of the post tested the formal verification capabilities of the Lean programming language by applying aggressive fuzzing techniques to `lean-zip`, a verified implementation of the zlib library. While the verified core of the library proved remarkably robust, the author uncovered two significant vulnerabilities: a denial-of-service error in an unverified portion of the parser and a critical heap buffer overflow within the Lean 4 runtime itself. This experiment highlights the distinction between the correctness of high-level code and the underlying assumptions made about the trusted computing base.</p>
+          <h4>Reader Reactions</h4>
+<p>The dominant consensus is that formal verification provides value by shrinking the surface area for errors, even though it cannot eliminate all bugs or guarantee that a specification captures human intent.</p>
+<p>A significant point of contention is whether finding bugs in an unverified runtime or missing specifications qualifies as a failure of formal verification or simply reveals a misunderstanding of its scope.</p>
+<p>Practitioners suggest that the most effective approach is treating formal verification as a mechanism to isolate and eliminate complex logical bugs, while remaining vigilant about environmental, hardware, and specification-level failures.</p>
+<p>The provided sample disproportionately favors high-level philosophical debates regarding the nature of &quot;proofs&quot; and &quot;bugs,&quot; potentially overshadowing more nuanced technical discussions about Lean&#x27;s specific architecture or the actual code implementation.</p>
+          <p class="drawer-footer"><a href="#dossier-10">View in Dossier ↓</a></p>
+        </div>
+      </details>
+    </div>
     </div>
     <div class="quote-side">
       <blockquote class="pullquote">Formal verification isolates logical errors but cannot substitute for a holistic view of system integrity</blockquote>
@@ -640,6 +809,19 @@
     localStorage.setItem(key, JSON.stringify(stored));
   }
 })();
+</script>
+<script>
+// Simple script to toggle the [+] and [-] labels on the drawers
+document.querySelectorAll('.analysis-drawer').forEach(drawer => {
+  drawer.addEventListener('toggle', () => {
+    const summary = drawer.querySelector('summary');
+    if (drawer.open) {
+      summary.textContent = '[ Analysis − ]';
+    } else {
+      summary.textContent = '[ Analysis + ]';
+    }
+  });
+});
 </script>
 </body>
 </html>

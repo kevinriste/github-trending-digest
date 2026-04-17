@@ -40,14 +40,43 @@
   .story-meta { font-weight: 600; font-size: 1.1rem; margin-bottom: 3rem; opacity: 0.6; letter-spacing: 0.02em; }
   .lede { font-size: clamp(1.4rem, 2.5vw, 2.1rem); line-height: 1.35; max-width: 800px; margin: 0 0 4rem; font-weight: 450; }
   
-  .ctas { display: flex; gap: 2.5rem; align-items: center; }
+  .ctas { display: flex; gap: 2.5rem; align-items: flex-start; }
   .ctas a {
     text-decoration: none; font-weight: 700; font-size: 1.1rem; letter-spacing: 0.1em; text-transform: uppercase;
     padding: 1.2rem 2.4rem; transition: all 0.2s;
   }
-  .btn-read { background: var(--text-dark); color: var(--bg-light); }
-  .btn-dossier { border-bottom: 2px solid currentColor; padding: 0.5rem 0 !important; }
+  .btn-read { background: var(--text-dark); color: var(--bg-light); cursor: pointer; border: none; }
+  .btn-dossier { 
+    border-bottom: 2px solid currentColor; padding: 0.5rem 0 !important; 
+    text-decoration: none; font-weight: 700; font-size: 1.1rem; letter-spacing: 0.1em; 
+    text-transform: uppercase; cursor: pointer; background: transparent; color: inherit;
+    display: inline-block;
+  }
   
+  /* ───── ANALYSIS DRAWER ───── */
+  .analysis-drawer { margin-top: 0; width: 100%; max-width: 800px; }
+  .analysis-drawer summary { list-style: none; outline: none; }
+  .analysis-drawer summary::-webkit-details-marker { display: none; }
+  .analysis-drawer[open] summary { margin-bottom: 2rem; }
+  .analysis-drawer[open] summary::after { content: ""; } /* Could add JS to toggle label but we'll do CSS trick or just keep static */
+  
+  .drawer-content {
+    background: rgba(0,0,0,0.03); padding: 3rem; border-left: 4px solid var(--text-dark);
+    animation: slideDown 0.3s ease-out;
+  }
+  .arc-midnight .drawer-content { background: rgba(255,255,255,0.05); border-color: #fff; }
+  .arc-terminal .drawer-content { background: rgba(32, 194, 14, 0.05); border-color: #20c20e; }
+  
+  .drawer-content h4 { text-transform: uppercase; letter-spacing: 0.2em; font-size: 0.9rem; margin-top: 0; margin-bottom: 1.5rem; opacity: 0.6; }
+  .drawer-content p { font-family: 'Fraunces', serif; font-size: 1.3rem; line-height: 1.5; margin-bottom: 1.5rem; }
+  .drawer-footer { margin-top: 2rem; border-top: 1px solid rgba(0,0,0,0.1); padding-top: 1.5rem; }
+  .drawer-footer a { font-size: 0.9rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; text-decoration: none; color: inherit; opacity: 0.5; }
+  
+  @keyframes slideDown {
+    from { opacity: 0; transform: translateY(-10px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
   /* ───── ARCHETYPE CSS ───── */
   
   /* Stat Hero */
@@ -351,7 +380,21 @@
       <p class="story-meta">science.org &nbsp;·&nbsp; 808 pts &nbsp;·&nbsp; 276 comments</p>
       <div class="cols">
         <div><p>The seminal repository for physics and mathematics preprints is transitioning into an independent non-profit organization.</p></div>
-        <div><p>This structural evolution aims to fortify the platform against mounting financial pressures and the proliferation of low-quality submissions.</p><div class="ctas"><a class="btn-read" href="https://www.science.org/content/article/arxiv-pioneering-preprint-server-declares-independence-cornell" target="_blank" rel="noopener">Read →</a><a class="btn-dossier" href="#dossier-1">Full analysis ↓</a></div></div>
+        <div><p>This structural evolution aims to fortify the platform against mounting financial pressures and the proliferation of low-quality submissions.</p><div class="ctas"><a class="btn-read" href="https://www.science.org/content/article/arxiv-pioneering-preprint-server-declares-independence-cornell" target="_blank" rel="noopener">Read →</a>
+      <details class="analysis-drawer">
+        <summary class="btn-dossier">[ Analysis + ]</summary>
+        <div class="drawer-content">
+          <h4>Technical Analysis</h4>
+          <p>ArXiv, the seminal preprint server for scientific research, is transitioning from a project managed by Cornell University to an independent nonprofit corporation effective July 1. This move aims to address the site&#x27;s growing financial strain and operational challenges, including the need to manage a surging volume of submissions and combat an influx of low-quality, AI-generated content. By operating as an independent entity, the organization hopes to diversify its funding streams and secure the long-term infrastructure required to support its role as a global platform for scholarly communication.</p>
+          <h4>Reader Reactions</h4>
+<p>Users generally view arXiv as a critical scientific institution, yet many commenters express skepticism and confusion regarding the necessity of the transition toward becoming an independent, non-profit corporate entity.</p>
+<p>Some participants fear that independence creates a slippery slope toward future for-profit conversion, while others argue that the organization should prioritize decentralized ownership by universities to prevent potential monopolistic control.</p>
+<p>Participants highlighted that the official arXiv statement, rather than the secondary science news report, provides the most accurate context for the transition and the motivations behind the recent CEO job posting.</p>
+<p>The sample size of ten comments is insufficient to capture the broader community sentiment, as it reflects a narrow collection of speculative concerns rather than a comprehensive consensus on the news.</p>
+          <p class="drawer-footer"><a href="#dossier-1">View in Dossier ↓</a></p>
+        </div>
+      </details>
+    </div></div>
       </div>
     </div>
   </section>
@@ -366,7 +409,21 @@
         <p class="lede">New channel integrations allow for external messaging inputs within your active coding environment. System administrators must now provision access controls to reconcile these persistent connections with enterprise security mandates.<span class="cursor"></span></p>
         <div class="ctas">
           <a href="https://code.claude.com/docs/en/channels" class="btn-read" target="_blank">RUN_PROCESS →</a>
-          <a href="#dossier-2" class="btn-dossier">VIEW_ANALYSIS ↓</a>
+          
+      <details class="analysis-drawer">
+        <summary class="btn-dossier">[ Analysis + ]</summary>
+        <div class="drawer-content">
+          <h4>Technical Analysis</h4>
+          <p>Anthropic has introduced &quot;Channels&quot; as a research preview feature for Claude Code, allowing users to push external events into a running terminal session. The feature supports integrations with platforms like Telegram and Discord via Bun-based plugins, enabling users to interact with their coding environment from messaging apps. For Team and Enterprise accounts, administrators must explicitly enable this functionality through managed settings to maintain organizational control and security.</p>
+          <h4>Reader Reactions</h4>
+<p>Users generally view the new channels feature as a welcome improvement for integrating external systems into agent sessions, though many express frustration that fundamental notification and background daemon capabilities remain missing.</p>
+<p>Some participants argue that enterprise security teams face significant challenges, as AI-driven automation tools can easily bypass traditional endpoint lockdowns and create unmonitored security risks that exceed existing oversight capacities.</p>
+<p>Developers are actively leveraging the new channel interface to create headless HTTP wrappers, enabling them to transition from fragile terminal-scraping methods toward more robust, direct programmatic interaction with their agent sessions.</p>
+<p>This sample primarily reflects the perspectives of power users and developers, potentially overlooking broader enterprise concerns regarding data privacy, policy enforcement, and the complexities of managing AI agents at scale.</p>
+          <p class="drawer-footer"><a href="#dossier-2">View in Dossier ↓</a></p>
+        </div>
+      </details>
+    
         </div>
       </div>
     </div>
@@ -380,7 +437,21 @@
       <h2 class="frnc">Google Mandates Twenty-Four Hour Sideloading Wait</h2>
       <p class="story-meta">arstechnica.com &nbsp;·&nbsp; 1192 pts &nbsp;·&nbsp; 1256 comments</p>
       <p class="lede">A new policy restricts the installation of unverified software through an enforced one-day cooling-off period. These guardrails seek to curb social engineering, though they add significant friction for power users.</p>
-      <div class="ctas"><a class="btn-read" href="https://arstechnica.com/gadgets/2026/03/google-details-new-24-hour-process-to-sideload-unverified-android-apps/" target="_blank" rel="noopener">Read →</a><a class="btn-dossier" href="#dossier-3">Full analysis ↓</a></div>
+      <div class="ctas"><a class="btn-read" href="https://arstechnica.com/gadgets/2026/03/google-details-new-24-hour-process-to-sideload-unverified-android-apps/" target="_blank" rel="noopener">Read →</a>
+      <details class="analysis-drawer">
+        <summary class="btn-dossier">[ Analysis + ]</summary>
+        <div class="drawer-content">
+          <h4>Technical Analysis</h4>
+          <p>Google is introducing a new, more restrictive approach to sideloading applications on Android devices starting in September 2026. Under this policy, most users will be limited to installing apps from verified developers who have provided identity documentation, submitted signing keys, and paid a registration fee. To bypass these restrictions, power users must navigate a complex, multi-step process buried within developer settings that culminates in a mandatory 24-hour waiting period before unverified software can be installed.</p>
+          <h4>Reader Reactions</h4>
+<p>Users largely criticize the 24-hour waiting period as an unnecessary, anti-competitive measure designed to force app installations through the Google Play Store rather than effectively protecting vulnerable individuals from social engineering scams.</p>
+<p>Some participants argue that these protective guardrails are essential, drawing parallels to modern food safety standards and asserting that users should not be required to master complex technical nuances to remain secure.</p>
+<p>While the new process requires enabling developer mode, users can bypass the 24-hour waiting period for specific installations by utilizing Android Debug Bridge (ADB) commands to deploy their own third-party software.</p>
+<p>The provided sample disproportionately represents power users and privacy advocates who prioritize unrestricted device autonomy, potentially overlooking the perspectives of non-technical demographics who might benefit more directly from these security enhancements.</p>
+          <p class="drawer-footer"><a href="#dossier-3">View in Dossier ↓</a></p>
+        </div>
+      </details>
+    </div>
     </div>
     <div class="tape bottom">CAUTION CAUTION CAUTION CAUTION CAUTION CAUTION CAUTION CAUTION</div>
   </section>
@@ -392,7 +463,21 @@
       <h2 class="frnc">Researcher Exposes Persistent Azure Login Log Bypasses</h2>
       <p class="story-meta">trustedsec.com &nbsp;·&nbsp; 295 pts &nbsp;·&nbsp; 101 comments</p>
       <p class="lede">Two new vulnerabilities in Entra ID permit attackers to obscure their tracks entirely. Despite the critical nature of these flaws, Microsoft maintains that the audit evasion represents only a moderate security risk.</p>
-      <div class="ctas"><a class="btn-read" href="https://trustedsec.com/blog/full-disclosure-a-third-and-fourth-azure-sign-in-log-bypass-found" target="_blank" rel="noopener">Read →</a><a class="btn-dossier" href="#dossier-4">Full analysis ↓</a></div>
+      <div class="ctas"><a class="btn-read" href="https://trustedsec.com/blog/full-disclosure-a-third-and-fourth-azure-sign-in-log-bypass-found" target="_blank" rel="noopener">Read →</a>
+      <details class="analysis-drawer">
+        <summary class="btn-dossier">[ Analysis + ]</summary>
+        <div class="drawer-content">
+          <h4>Technical Analysis</h4>
+          <p>Security researcher nyxgeek details the discovery of two additional vulnerabilities in Azure Entra ID that allowed attackers to bypass sign-in logging. By manipulating authentication request parameters—specifically through scope repetition and excessively long user-agent strings—attackers could trigger database column overflows, resulting in successful logins that left no record in system audit logs. While these bypasses enabled the retrieval of valid bearer tokens, Microsoft&#x27;s Security Response Center (MSRC) eventually classified them as moderate issues, denying the researcher bounty rewards or public recognition.</p>
+          <h4>Reader Reactions</h4>
+<p>Commenters express a widespread lack of confidence in Azure’s security infrastructure, often citing systemic reliability issues, poor audit logging accuracy, and deep frustration with Microsoft&#x27;s persistent enterprise security vulnerabilities.</p>
+<p>While many users criticize the platform, a minority perspective suggests that focusing solely on logging bypasses is relatively minor compared to the broader, more critical vulnerabilities found within EntraID recently.</p>
+<p>Users should treat cloud audit logs with healthy skepticism, as UI-level actions can occasionally trigger unintended API calls that misrepresent reality, making forensic reliance on these logs technically unreliable and dangerous.</p>
+<p>This sample reflects a selection bias toward security-conscious developers and engineers, potentially overemphasizing technical failures while overlooking the administrative convenience and organizational inertia that keep Microsoft dominant in corporate environments.</p>
+          <p class="drawer-footer"><a href="#dossier-4">View in Dossier ↓</a></p>
+        </div>
+      </details>
+    </div>
     </div>
   </section>
   <section id="story-5" class="spread arc-archive">
@@ -402,7 +487,21 @@
       <h2 class="frnc">Revisiting Drugwars for the TI-82 and TI-83</h2>
       <p class="story-meta">gist.github.com &nbsp;·&nbsp; 275 pts &nbsp;·&nbsp; 76 comments</p>
       <p class="lede">A look back at the source code that defined high school programming in the early 2000s. These TI-BASIC files offer a glimpse into the memory management constraints and creative hacks of the graphing calculator generation.</p>
-      <div class="ctas"><a class="btn-read" href="https://gist.github.com/mattmanning/1002653/b7a1e88479a10eaae3bd5298b8b2c86e16fb4404" target="_blank" rel="noopener">Read →</a><a class="btn-dossier" href="#dossier-5">Full analysis ↓</a></div>
+      <div class="ctas"><a class="btn-read" href="https://gist.github.com/mattmanning/1002653/b7a1e88479a10eaae3bd5298b8b2c86e16fb4404" target="_blank" rel="noopener">Read →</a>
+      <details class="analysis-drawer">
+        <summary class="btn-dossier">[ Analysis + ]</summary>
+        <div class="drawer-content">
+          <h4>Technical Analysis</h4>
+          <p>This Hacker News story features the source code for a TI-82/83 calculator port of *Drugwars*, a classic text-based simulation game where players manage drug inventory to pay off debts. The provided code demonstrates the constraints and quirks of TI-BASIC, including its limited variable naming conventions and manual memory management. Discussion among users focuses on porting the game to newer models like the TI-84 Plus, troubleshooting emulation issues, and identifying logic bugs—such as a critical variable overlap that unintentionally allows players to exploit game mechanics like banking and inventory limits.</p>
+          <h4>Reader Reactions</h4>
+<p>Programming on TI graphing calculators served as a formative, nostalgic introduction to software development for many users, providing an accessible platform for creating games, clones, and learning low-level assembly language.</p>
+<p>While many contributors fondly remember the community-driven aspect of sharing software via cables or forums, others experienced significant frustration due to limited hardware, lack of connectivity, or the laborious manual entry.</p>
+<p>Users frequently employed creative optimizations, such as using simplified geometric shapes for faster rendering or pushing memory constraints to the absolute limit, to bypass the severe limitations of TI-BASIC hardware.</p>
+<p>The sample size reflects a highly specific demographic of technical enthusiasts from the 1990s and 2000s, potentially overshadowing the experiences of students who used these calculators strictly for their intended academic functions.</p>
+          <p class="drawer-footer"><a href="#dossier-5">View in Dossier ↓</a></p>
+        </div>
+      </details>
+    </div>
     </div>
   </section>
   <section id="story-6" class="spread arc-observatory">
@@ -412,7 +511,21 @@
       <h2 class="frnc">Mythbusting Modern Gear Through Twin Biometric Testing</h2>
       <p class="story-meta">carryology.com &nbsp;·&nbsp; 344 pts &nbsp;·&nbsp; 179 comments</p>
       <p class="lede">Two adventurers use their identical genetics to calibrate the performance gap between synthetic modern textiles and traditional wool. The data suggests that while heritage materials hold their own, engineered fibers offer a broader margin for survival.</p>
-      <div class="ctas"><a class="btn-read" href="https://www.carryology.com/insights/how-the-turner-twins-are-mythbusting-modern-gear/" target="_blank" rel="noopener">Read →</a><a class="btn-dossier" href="#dossier-6">Full analysis ↓</a></div>
+      <div class="ctas"><a class="btn-read" href="https://www.carryology.com/insights/how-the-turner-twins-are-mythbusting-modern-gear/" target="_blank" rel="noopener">Read →</a>
+      <details class="analysis-drawer">
+        <summary class="btn-dossier">[ Analysis + ]</summary>
+        <div class="drawer-content">
+          <h4>Technical Analysis</h4>
+          <p>The Turner Twins are identical professional adventurers who conduct rigorous scientific comparisons between modern technical apparel and historical gear from the early 20th century. By wearing historically accurate reconstructions made of natural materials like wool, silk, and leather, they test the efficiency of heritage clothing against state-of-the-art synthetic gear. Their methodology employs biometric sensors, ingestible temperature pills, and metabolic tracking to gather objective data, effectively treating their identical genetics as a controlled laboratory environment to challenge modern marketing claims.</p>
+          <h4>Reader Reactions</h4>
+<p>Commenters generally agree that while historical apparel was surprisingly capable, modern gear offers superior utility, safety margins, and convenience, effectively outsourcing complex thermal management expertise to the product’s design and engineering.</p>
+<p>Some participants argue that the article misrepresents its own data, noting that a 1.8°C thermal difference is biologically significant and that modern gear provides clear performance advantages over traditional layered systems.</p>
+<p>The technical consensus emphasizes that modern synthetic materials excel because they are more water-vapor permeable and offer a broader operating temperature range, allowing for reduced cognitive load and safer static performance.</p>
+<p>Discussions are frequently skeptical of the article’s &quot;mythbusting&quot; narrative, suggesting the authors may have prioritized a contrarian conclusion over an objective assessment of the measurable differences in performance and physiological impact.</p>
+          <p class="drawer-footer"><a href="#dossier-6">View in Dossier ↓</a></p>
+        </div>
+      </details>
+    </div>
     </div>
   </section>
   <section id="story-7" class="spread arc-mint-pattern" style="--bg-word: 'SERVER'">
@@ -424,7 +537,21 @@
       <h2 class="frnc">Cockpit Simplifies Linux Administration Through Browser Dashboards</h2>
       <p class="story-meta">github.com &nbsp;·&nbsp; 331 pts &nbsp;·&nbsp; 181 comments</p>
       <p class="lede">For those managing small-scale infrastructure, this web-based interface provides a visual bridge to system resources. The project enables real-time monitoring of containers and networking without abandoning the underlying command line.</p>
-      <div class="ctas"><a class="btn-read" href="https://github.com/cockpit-project/cockpit" target="_blank" rel="noopener">Read →</a><a class="btn-dossier" href="#dossier-7">Full analysis ↓</a></div>
+      <div class="ctas"><a class="btn-read" href="https://github.com/cockpit-project/cockpit" target="_blank" rel="noopener">Read →</a>
+      <details class="analysis-drawer">
+        <summary class="btn-dossier">[ Analysis + ]</summary>
+        <div class="drawer-content">
+          <h4>Technical Analysis</h4>
+          <p>Cockpit is an open-source, web-based graphical interface designed to simplify Linux server administration. It provides a lightweight dashboard that allows users to manage containers, storage, networking, and system logs directly from a browser session. By operating as a direct interface to the underlying Linux OS, it ensures that changes made in the web UI are reflected in the terminal and vice versa.</p>
+          <h4>Reader Reactions</h4>
+<p>Users generally view Cockpit as a helpful, user-friendly abstraction layer for basic server monitoring and routine administrative tasks, especially for those transitioning from Windows or managing small, ad hoc Linux setups.</p>
+<p>Experienced system administrators frequently argue that graphical interfaces are ultimately restrictive, preferring command-line tools or terminal-based utilities for better visibility, deeper control, and more efficient management of complex infrastructure environments.</p>
+<p>Cockpit’s utility is highly dependent on available plugins, with some users finding it insufficient for container orchestration, which leads many to favor specialized alternatives like Portainer, Webmin, or raw command-line tools.</p>
+<p>The sample primarily reflects perspectives from hobbyists and homelab enthusiasts, potentially underrepresenting enterprise-grade use cases where automated configuration management tools like Ansible or Terraform have replaced manual GUI-based server administration.</p>
+          <p class="drawer-footer"><a href="#dossier-7">View in Dossier ↓</a></p>
+        </div>
+      </details>
+    </div>
     </div>
   </section>
   <section id="story-8" class="spread arc-notebook">
@@ -435,7 +562,21 @@
       <h2 class="frnc">Mastering Dithering for the Obra Dinn Aesthetic</h2>
       <p class="story-meta">forums.tigsource.com &nbsp;·&nbsp; 293 pts &nbsp;·&nbsp; 40 comments</p>
       <p class="lede">Achieving a consistent one-bit visual style in a three-dimensional space requires unconventional rendering pipelines. This technical breakdown explores how spherical mapping and dithering were harnessed to evoke the appearance of period illustrations.</p>
-      <div class="ctas"><a class="btn-read" href="https://forums.tigsource.com/index.php?topic=40832.msg1363742#msg1363742" target="_blank" rel="noopener">Read →</a><a class="btn-dossier" href="#dossier-8">Full analysis ↓</a></div>
+      <div class="ctas"><a class="btn-read" href="https://forums.tigsource.com/index.php?topic=40832.msg1363742#msg1363742" target="_blank" rel="noopener">Read →</a>
+      <details class="analysis-drawer">
+        <summary class="btn-dossier">[ Analysis + ]</summary>
+        <div class="drawer-content">
+          <h4>Technical Analysis</h4>
+          <p>The linked forum post discusses the technical implementation behind the unique 1-bit aesthetic of Lucas Pope’s game *Return of the Obra Dinn*. It focuses on the use of spherical mapping and dithering techniques to render three-dimensional geometry within the constraints of a monochromatic, low-resolution visual style. By detailing these specific graphics programming challenges, the author provides a behind-the-scenes look at how the developer achieved a retro, hand-drawn appearance using modern rendering pipelines.</p>
+          <h4>Reader Reactions</h4>
+<p>Users widely admire the technical sophistication and artistic dedication behind the game&#x27;s unique dithering, frequently acknowledging the developer&#x27;s effort even when they personally struggled to engage with the resulting aesthetic style.</p>
+<p>A significant number of players report that the visual style actively hindered their enjoyment, with several users noting the high-contrast aesthetic caused eye strain or made crucial gameplay details difficult to parse.</p>
+<p>Technical contributors emphasize that achieving stable dithering across dynamic 3D surfaces remains an evolving research area, with ongoing efforts to refine screen-space techniques and improve stability under rotation and scaling.</p>
+<p>This sample reflects a technical audience interested in computer graphics and game development, potentially skewing the discussion toward mechanical implementation details rather than the average consumer&#x27;s broader experience of the game.</p>
+          <p class="drawer-footer"><a href="#dossier-8">View in Dossier ↓</a></p>
+        </div>
+      </details>
+    </div>
     </div>
   </section>
   <section id="story-9" class="spread arc-product-plate">
@@ -444,7 +585,21 @@
       <h2 class="frnc">Kitten TTS Models Reach Under 25MB Footprint</h2>
       <p class="story-meta">github.com &nbsp;·&nbsp; 558 pts &nbsp;·&nbsp; 183 comments</p>
       <p class="lede">The latest text-to-speech models are optimized for CPU-only inference without the need for GPU hardware. These compact binaries bring voice synthesis to local environments with minimal storage impact.</p>
-      <div class="ctas"><a class="btn-read" href="https://github.com/KittenML/KittenTTS" target="_blank" rel="noopener">Read →</a><a class="btn-dossier" href="#dossier-9">Full analysis ↓</a></div>
+      <div class="ctas"><a class="btn-read" href="https://github.com/KittenML/KittenTTS" target="_blank" rel="noopener">Read →</a>
+      <details class="analysis-drawer">
+        <summary class="btn-dossier">[ Analysis + ]</summary>
+        <div class="drawer-content">
+          <h4>Technical Analysis</h4>
+          <p>Kitten TTS has released version 0.8, introducing three new open-source text-to-speech models ranging from 15M to 80M parameters. Designed specifically for on-device applications, these models are optimized for CPU inference using ONNX, eliminating the need for a GPU and requiring as little as 25MB of disk space for the quantized variant. The project provides eight distinct voices and includes features such as adjustable speech speed and automatic text preprocessing, with commercial support and licensing available for enterprise users.</p>
+          <h4>Reader Reactions</h4>
+<p>Users generally find the Kitten TTS model impressive for its compact size and performance, though they frequently express significant frustration regarding the difficult Python dependency management and bloated installation process.</p>
+<p>While some users are impressed by the model&#x27;s quality, others argue that existing small-scale models often fail to master prosody, struggle with technical domain-specific terminology, and mispronounce complex numbers or symbols.</p>
+<p>Developers attempting to use the library should consider utilizing CPU-only versions of PyTorch or alternative frameworks like Rust&#x27;s &quot;ort&quot; to significantly reduce disk space usage and avoid unnecessary heavy-weight dependencies.</p>
+<p>The sample primarily represents the perspective of technically proficient users struggling with environment configuration, potentially overlooking the experience of general users who might find the setup process more straightforward or manageable.</p>
+          <p class="drawer-footer"><a href="#dossier-9">View in Dossier ↓</a></p>
+        </div>
+      </details>
+    </div>
     </div>
   </section>
   <section id="story-10" class="spread arc-stat-hero">
@@ -454,7 +609,21 @@
       <h2 class="frnc">4Chan Rejects Half-Million Pound Fine for Safety Breach</h2>
       <p class="story-meta">bbc.com &nbsp;·&nbsp; 465 pts &nbsp;·&nbsp; 869 comments</p>
       <p class="lede">The platform dismisses British regulatory demands, citing American First Amendment protections over domestic UK oversight. The stand-off marks a deepening divide between sovereign internet policies and global infrastructure.</p>
-      <div class="ctas"><a class="btn-read" href="https://www.bbc.com/news/articles/c624330lg1ko" target="_blank" rel="noopener">Read →</a><a class="btn-dossier" href="#dossier-10">Full analysis ↓</a></div>
+      <div class="ctas"><a class="btn-read" href="https://www.bbc.com/news/articles/c624330lg1ko" target="_blank" rel="noopener">Read →</a>
+      <details class="analysis-drawer">
+        <summary class="btn-dossier">[ Analysis + ]</summary>
+        <div class="drawer-content">
+          <h4>Technical Analysis</h4>
+          <p>The UK media regulator Ofcom has fined the US-based messaging platform 4Chan £520,000 for failing to implement mandatory age verification and risk assessment protocols required by the Online Safety Act. In response to the penalty, 4Chan’s legal counsel dismissed the demand, citing First Amendment protections in the United States and noting that the company does not operate within the UK. This incident highlights a broader tension between international regulators attempting to enforce domestic safety standards on foreign tech companies and platforms that operate under disparate legal jurisdictions.</p>
+          <h4>Reader Reactions</h4>
+<p>Commenters overwhelmingly argue that the UK&#x27;s attempts to enforce domestic online safety regulations on foreign-based companies like 4Chan are legally overreaching, impractical, and violate the principle of national jurisdictional sovereignty.</p>
+<p>Some participants maintain that stringent government intervention is essential to protect children and minors, arguing that voluntary parental controls are insufficient against the negative mental health impacts of uncurated internet exposure.</p>
+<p>Regulators are increasingly pressuring platforms through mandatory age verification and geoblocking requirements, which users note often lead to the unintended proliferation of VPN usage, proxies, and further digital surveillance infrastructure.</p>
+<p>The sample reflects a strong libertarian bias prevalent in the tech community, likely underrepresenting mainstream perspectives that favor increased government regulation of large digital platforms for public safety and social accountability.</p>
+          <p class="drawer-footer"><a href="#dossier-10">View in Dossier ↓</a></p>
+        </div>
+      </details>
+    </div>
     </div>
   </section>
   <section id="dossier" class="dossier">
@@ -644,6 +813,19 @@
     localStorage.setItem(key, JSON.stringify(stored));
   }
 })();
+</script>
+<script>
+// Simple script to toggle the [+] and [-] labels on the drawers
+document.querySelectorAll('.analysis-drawer').forEach(drawer => {
+  drawer.addEventListener('toggle', () => {
+    const summary = drawer.querySelector('summary');
+    if (drawer.open) {
+      summary.textContent = '[ Analysis − ]';
+    } else {
+      summary.textContent = '[ Analysis + ]';
+    }
+  });
+});
 </script>
 </body>
 </html>

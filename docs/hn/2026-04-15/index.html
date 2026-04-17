@@ -40,14 +40,43 @@
   .story-meta { font-weight: 600; font-size: 1.1rem; margin-bottom: 3rem; opacity: 0.6; letter-spacing: 0.02em; }
   .lede { font-size: clamp(1.4rem, 2.5vw, 2.1rem); line-height: 1.35; max-width: 800px; margin: 0 0 4rem; font-weight: 450; }
   
-  .ctas { display: flex; gap: 2.5rem; align-items: center; }
+  .ctas { display: flex; gap: 2.5rem; align-items: flex-start; }
   .ctas a {
     text-decoration: none; font-weight: 700; font-size: 1.1rem; letter-spacing: 0.1em; text-transform: uppercase;
     padding: 1.2rem 2.4rem; transition: all 0.2s;
   }
-  .btn-read { background: var(--text-dark); color: var(--bg-light); }
-  .btn-dossier { border-bottom: 2px solid currentColor; padding: 0.5rem 0 !important; }
+  .btn-read { background: var(--text-dark); color: var(--bg-light); cursor: pointer; border: none; }
+  .btn-dossier { 
+    border-bottom: 2px solid currentColor; padding: 0.5rem 0 !important; 
+    text-decoration: none; font-weight: 700; font-size: 1.1rem; letter-spacing: 0.1em; 
+    text-transform: uppercase; cursor: pointer; background: transparent; color: inherit;
+    display: inline-block;
+  }
   
+  /* ───── ANALYSIS DRAWER ───── */
+  .analysis-drawer { margin-top: 0; width: 100%; max-width: 800px; }
+  .analysis-drawer summary { list-style: none; outline: none; }
+  .analysis-drawer summary::-webkit-details-marker { display: none; }
+  .analysis-drawer[open] summary { margin-bottom: 2rem; }
+  .analysis-drawer[open] summary::after { content: ""; } /* Could add JS to toggle label but we'll do CSS trick or just keep static */
+  
+  .drawer-content {
+    background: rgba(0,0,0,0.03); padding: 3rem; border-left: 4px solid var(--text-dark);
+    animation: slideDown 0.3s ease-out;
+  }
+  .arc-midnight .drawer-content { background: rgba(255,255,255,0.05); border-color: #fff; }
+  .arc-terminal .drawer-content { background: rgba(32, 194, 14, 0.05); border-color: #20c20e; }
+  
+  .drawer-content h4 { text-transform: uppercase; letter-spacing: 0.2em; font-size: 0.9rem; margin-top: 0; margin-bottom: 1.5rem; opacity: 0.6; }
+  .drawer-content p { font-family: 'Fraunces', serif; font-size: 1.3rem; line-height: 1.5; margin-bottom: 1.5rem; }
+  .drawer-footer { margin-top: 2rem; border-top: 1px solid rgba(0,0,0,0.1); padding-top: 1.5rem; }
+  .drawer-footer a { font-size: 0.9rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; text-decoration: none; color: inherit; opacity: 0.5; }
+  
+  @keyframes slideDown {
+    from { opacity: 0; transform: translateY(-10px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
   /* ───── ARCHETYPE CSS ───── */
   
   /* Stat Hero */
@@ -349,7 +378,21 @@
       <h2 class="frnc">Mastering Compilers Through Two Essential Papers</h2>
       <p class="story-meta">prog21.dadgum.com &nbsp;·&nbsp; 490 pts &nbsp;·&nbsp; 149 comments</p>
       <p class="lede">Forget the dense, thousand-page textbooks that turn language implementation into a gatekept mystery. By revisiting classic practical guides, developers can bypass the fluff and grasp the elegant mechanics of modular transformation.</p>
-      <div class="ctas"><a class="btn-read" href="https://prog21.dadgum.com/30.html" target="_blank" rel="noopener">Read →</a><a class="btn-dossier" href="#dossier-1">Full analysis ↓</a></div>
+      <div class="ctas"><a class="btn-read" href="https://prog21.dadgum.com/30.html" target="_blank" rel="noopener">Read →</a>
+      <details class="analysis-drawer">
+        <summary class="btn-dossier">[ Analysis + ]</summary>
+        <div class="drawer-content">
+          <h4>Technical Analysis</h4>
+          <p>The article argues that standard textbooks on compiler construction are often overly academic and dense, perpetuating the myth that compilers are excessively difficult to build. Author James Hague suggests that beginners should instead focus on two practical resources: Jack Crenshaw’s &quot;Let&#x27;s Build a Compiler!&quot; for a hands-on introduction to single-pass compilation, and the &quot;Nanopass Framework&quot; paper for understanding compilers as a series of simple, modular transformations. By focusing on these accessible methods, developers can learn the core mechanics of compilation without getting overwhelmed by formal grammars or complex state machines.</p>
+          <h4>Reader Reactions</h4>
+<p>While writing a compiler is widely viewed as a challenging yet rewarding rite of passage for computer science students, the difficulty level remains a point of significant debate among experienced practitioners.</p>
+<p>Some participants argue that compiler theory is becoming obsolete in the era of artificial intelligence, suggesting that modern automation renders traditional manual implementation techniques largely unnecessary for future software development tasks.</p>
+<p>Readers frequently recommend specific resources like Niklaus Wirth’s &quot;Compilers,&quot; the &quot;Dragon Book,&quot; or &quot;Crafting Interpreters&quot; as accessible alternatives for those seeking to understand the practical mechanics of language processing and implementation.</p>
+<p>The discussion sample reflects a niche technical audience, which may skew toward academic theory and historical texts rather than the more modern, tooling-heavy approaches currently favored by mainstream industry software engineers.</p>
+          <p class="drawer-footer"><a href="#dossier-1">View in Dossier ↓</a></p>
+        </div>
+      </details>
+    </div>
     </div>
   </section>
   <section id="story-2" class="spread arc-notebook">
@@ -360,7 +403,21 @@
       <h2 class="frnc">Why Sleep Is Your Most Important Cognitive Tool</h2>
       <p class="story-meta">super-memory.com &nbsp;·&nbsp; 394 pts &nbsp;·&nbsp; 201 comments</p>
       <p class="lede">We often treat rest as an inconvenient obstacle to our ambitions rather than the biological foundation of memory. Revisiting the physiological necessity of sleep reveals why biphasic rhythms and natural recovery cycles matter more than any stimulant.</p>
-      <div class="ctas"><a class="btn-read" href="https://super-memory.com/articles/sleep.htm" target="_blank" rel="noopener">Read →</a><a class="btn-dossier" href="#dossier-2">Full analysis ↓</a></div>
+      <div class="ctas"><a class="btn-read" href="https://super-memory.com/articles/sleep.htm" target="_blank" rel="noopener">Read →</a>
+      <details class="analysis-drawer">
+        <summary class="btn-dossier">[ Analysis + ]</summary>
+        <div class="drawer-content">
+          <h4>Technical Analysis</h4>
+          <p>&quot;Good Sleep, Good Learning&quot; is a comprehensive synthesis of sleep physiology, focusing on the critical role that rest plays in memory consolidation, cognitive performance, and neural optimization. The author draws on historical research and personal experience with tools like SuperMemo to argue that sleep is a vital biological function rather than a passive state of inactivity. It provides practical, albeit unconventional, advice on sleep hygiene, such as advocating for free-running or biphasic sleep schedules and cautioning against the use of alarm clocks and stimulants to regulate alertness.</p>
+          <h4>Reader Reactions</h4>
+<p>Bullet 1: Users broadly agree that sleep is essential for cognitive function and health, with many commenters sharing personal anecdotes about how lifestyle choices or health conditions disrupt their ability to get rest.</p>
+<p>Bullet 2: Participants strongly disagreed on the role of alcohol consumption, with some users debating its impact on learning while others criticized the author for prioritizing drinking over maintaining healthy sleep habits.</p>
+<p>Bullet 3: The discussion highlights the difficulty of applying academic sleep theories to real-world challenges, such as caring for infants, managing chronic health issues, or adapting to involuntary biphasic sleep cycles.</p>
+<p>Bullet 4: This sample reflects a subjective, anecdote-heavy perspective on sleep that ignores the scientific scope of the article, focusing instead on personal grievances and unrelated debates about alcohol and modern life.</p>
+          <p class="drawer-footer"><a href="#dossier-2">View in Dossier ↓</a></p>
+        </div>
+      </details>
+    </div>
     </div>
   </section>
   <section id="story-3" class="spread arc-blueprint">
@@ -370,7 +427,21 @@
       <h2 class="frnc">Solving a Two-Decade UI Crash in Enlightenment</h2>
       <p class="story-meta">iczelia.net &nbsp;·&nbsp; 258 pts &nbsp;·&nbsp; 160 comments</p>
       <p class="lede">The classic E16 window manager harbored a deterministic infinite loop for twenty years until a modern audit caught its flawed string truncation logic. This fix serves as a reminder that even the most nostalgic codebases are only a few lines away from stability.</p>
-      <div class="ctas"><a class="btn-read" href="https://iczelia.net/posts/e16-20-year-old-bug/" target="_blank" rel="noopener">Read →</a><a class="btn-dossier" href="#dossier-3">Full analysis ↓</a></div>
+      <div class="ctas"><a class="btn-read" href="https://iczelia.net/posts/e16-20-year-old-bug/" target="_blank" rel="noopener">Read →</a>
+      <details class="analysis-drawer">
+        <summary class="btn-dossier">[ Analysis + ]</summary>
+        <div class="drawer-content">
+          <h4>Technical Analysis</h4>
+          <p>The author describes the process of identifying and resolving a persistent, deterministic crash in the 1997-era window manager Enlightenment E16. The bug, which caused the desktop to freeze when rendering specific long window titles, stemmed from an unconstrained Newton’s method iteration used to calculate string truncation for UI elements. By implementing iteration caps and input validation to handle edge cases, the author effectively eliminated the oscillation that caused the infinite loop.</p>
+          <h4>Reader Reactions</h4>
+<p>Users fondly remember Enlightenment as a nostalgic, visually experimental window manager that played a significant role in early Linux history, with many developers citing it as their initial entry point.</p>
+<p>Critics argue that Enlightenment prioritized aesthetic &quot;ricing&quot; and flashy graphical effects over functional usability, leading them to abandon the environment for more stable options like KDE, GNOME, or WindowMaker.</p>
+<p>The thread highlights the longevity of open-source software, noting that persistent bugs in decades-old projects can be effectively resolved by new generations of developers who inherit these legacy codebases.</p>
+<p>The sample primarily reflects the perspectives of long-term power users from the late nineties, potentially overlooking the views of modern users who engage with the software under different technical paradigms.</p>
+          <p class="drawer-footer"><a href="#dossier-3">View in Dossier ↓</a></p>
+        </div>
+      </details>
+    </div>
     </div>
   </section>
   <section id="story-4" class="spread arc-terminal">
@@ -384,7 +455,21 @@
         <p class="lede">Initialize automated workflows directly from your CLI to handle repetitive backlog triage and code reviews. These persistent sessions bridge the gap between triggered GitHub events and on-demand execution, provided you accept the risks of deep platform integration.<span class="cursor"></span></p>
         <div class="ctas">
           <a href="https://code.claude.com/docs/en/routines" class="btn-read" target="_blank">RUN_PROCESS →</a>
-          <a href="#dossier-4" class="btn-dossier">VIEW_ANALYSIS ↓</a>
+          
+      <details class="analysis-drawer">
+        <summary class="btn-dossier">[ Analysis + ]</summary>
+        <div class="drawer-content">
+          <h4>Technical Analysis</h4>
+          <p>Claude Code Routines, currently in research preview, allow users to automate repetitive development tasks by triggering autonomous Claude sessions. These routines can be initiated on a recurring schedule, through specific GitHub repository events, or via an on-demand API endpoint. By configuring specific repositories, environment variables, and MCP connectors, developers can create persistent workflows that handle responsibilities like backlog grooming, alert triage, and automated code reviews.</p>
+          <h4>Reader Reactions</h4>
+<p>Users express deep skepticism toward Anthropic’s push into proprietary platform features, citing fears of vendor lock-in, inconsistent performance, and a lack of trust in the company&#x27;s long-term product stability.</p>
+<p>Some developers argue that the perceived threat of vendor lock-in is overstated, suggesting that the industry will inevitably converge toward proprietary, integrated ecosystems regardless of current user preferences or concerns.</p>
+<p>Technical users report significant frustration with &quot;context rot,&quot; unpredictable CLI behavior, and poor agentic reasoning, noting that local alternatives often provide more reliable performance and better control over development workflows.</p>
+<p>The sample predominantly reflects a cohort of highly technical power users, which likely skews the discussion toward negative sentiment regarding ease-of-use features and prioritizes granular control over platform convenience.</p>
+          <p class="drawer-footer"><a href="#dossier-4">View in Dossier ↓</a></p>
+        </div>
+      </details>
+    
         </div>
       </div>
     </div>
@@ -396,7 +481,21 @@
       <h2 class="frnc">Designing AI-Assisted Workflows with Intentional Clarity</h2>
       <p class="story-meta">maiobarbero.dev &nbsp;·&nbsp; 86 pts &nbsp;·&nbsp; 113 comments</p>
       <p class="lede">Speed is often the enemy of understanding when integrating generative models into a development lifecycle. By enforcing an architectural phase before execution, engineers can ensure that AI acts as a testing partner rather than a shortcut.</p>
-      <div class="ctas"><a class="btn-read" href="https://www.maiobarbero.dev/articles/ai-assisted-workflow/" target="_blank" rel="noopener">Read →</a><a class="btn-dossier" href="#dossier-5">Full analysis ↓</a></div>
+      <div class="ctas"><a class="btn-read" href="https://www.maiobarbero.dev/articles/ai-assisted-workflow/" target="_blank" rel="noopener">Read →</a>
+      <details class="analysis-drawer">
+        <summary class="btn-dossier">[ Analysis + ]</summary>
+        <div class="drawer-content">
+          <h4>Technical Analysis</h4>
+          <p>This article details a structured, AI-assisted development workflow designed to maintain engineering clarity and maintainability while leveraging AI for implementation. The author argues that speed often comes at the cost of understanding, so they advocate for a process where architectural thinking and detailed planning occur before a single line of code is written. By treating every feature as a thinking problem first, the author utilizes a multi-step system—ranging from free-form planning and PRD creation to task-based execution and final audits—to force AI to stress-test ideas rather than simply generate unverified code.</p>
+          <h4>Reader Reactions</h4>
+<p>There is a broad consensus that effective AI-assisted coding requires a structured workflow, typically starting with iterative discussions to clarify intent, followed by precise specification, implementation, testing, and manual review.</p>
+<p>Some users argue that current AI workflows are over-engineered &quot;productivity theater,&quot; asserting that complex frameworks are unnecessary when a simple loop of sending data, reviewing, and fixing remains just as effective.</p>
+<p>A highly practical technique involves using LLMs to perform &quot;mutation testing&quot; by intentionally introducing plausible-looking bugs into a codebase, which forces the developer to verify that their automated tests are truly robust.</p>
+<p>The sample reflects a bias toward technically proficient developers who enjoy building custom orchestration tools, potentially overlooking the frustration of average users struggling with AI reliability and the significant overhead of prompting.</p>
+          <p class="drawer-footer"><a href="#dossier-5">View in Dossier ↓</a></p>
+        </div>
+      </details>
+    </div>
     </div>
     <div class="quote-side">
       <blockquote class="pullquote">We must treat every feature as a thinking problem before a single line of code is written.</blockquote>
@@ -409,7 +508,21 @@
       <h2 class="frnc">The Solar-Powered Life of the Leaf Sheep</h2>
       <p class="story-meta">en.wikipedia.org &nbsp;·&nbsp; 148 pts &nbsp;·&nbsp; 55 comments</p>
       <p class="lede">In the shallow waters of the Pacific, the *Costasiella kuroshimae* blurs the line between flora and fauna. By capturing and utilizing chloroplasts from algae, this remarkable slug achieves the rare biological feat of animal photosynthesis.</p>
-      <div class="ctas"><a class="btn-read" href="https://en.wikipedia.org/wiki/Costasiella_kuroshimae" target="_blank" rel="noopener">Read →</a><a class="btn-dossier" href="#dossier-6">Full analysis ↓</a></div>
+      <div class="ctas"><a class="btn-read" href="https://en.wikipedia.org/wiki/Costasiella_kuroshimae" target="_blank" rel="noopener">Read →</a>
+      <details class="analysis-drawer">
+        <summary class="btn-dossier">[ Analysis + ]</summary>
+        <div class="drawer-content">
+          <h4>Technical Analysis</h4>
+          <p>*Costasiella kuroshimae*, commonly known as the &quot;leaf sheep&quot; or &quot;sea sheep,&quot; is a species of sea slug found in the tropical waters of Japan, the Philippines, and Indonesia. These small mollusks are notable for their ability to perform kleptoplasty, a biological process where they consume algae and retain the chloroplasts within their own cells. By sequestering these chloroplasts, the slugs can perform photosynthesis, effectively turning themselves into solar-powered animals that can survive for extended periods without traditional food sources.</p>
+          <h4>Reader Reactions</h4>
+<p>Bullet 1: The discussion centers on whether the term &quot;life in the universe&quot; should inherently include life on Earth, or if it is linguistically reserved for extraterrestrial organisms found elsewhere in space.</p>
+<p>Bullet 2: One participant argues that Earth-based life is technically part of the universe, while another maintains that the phrase functions as a distinct category describing entities located outside our home planet.</p>
+<p>Bullet 3: The thread explores the biological fascination with *Costasiella kuroshimae*, focusing on the organism&#x27;s unique ability to utilize kleptoplasty, a process where it retains functional chloroplasts from ingested algae to perform photosynthesis.</p>
+<p>Bullet 4: With only three comments analyzed, this sample represents a very small portion of the conversation and may not capture the broader technical or scientific discourse found in the full discussion.</p>
+          <p class="drawer-footer"><a href="#dossier-6">View in Dossier ↓</a></p>
+        </div>
+      </details>
+    </div>
     </div>
   </section>
   <section id="story-7" class="spread arc-alert-stamp">
@@ -420,7 +533,21 @@
       <h2 class="frnc">New Identity Verification Protocols on Claude</h2>
       <p class="story-meta">support.claude.com &nbsp;·&nbsp; 120 pts &nbsp;·&nbsp; 89 comments</p>
       <p class="lede">Anthropic is now requiring government-issued identification for select users to stem the tide of platform abuse. While designed to satisfy compliance, the move highlights the ongoing friction between safety requirements and the desire for digital anonymity.</p>
-      <div class="ctas"><a class="btn-read" href="https://support.claude.com/en/articles/14328960-identity-verification-on-claude" target="_blank" rel="noopener">Read →</a><a class="btn-dossier" href="#dossier-7">Full analysis ↓</a></div>
+      <div class="ctas"><a class="btn-read" href="https://support.claude.com/en/articles/14328960-identity-verification-on-claude" target="_blank" rel="noopener">Read →</a>
+      <details class="analysis-drawer">
+        <summary class="btn-dossier">[ Analysis + ]</summary>
+        <div class="drawer-content">
+          <h4>Technical Analysis</h4>
+          <p>Anthropic has implemented an identity verification process for Claude users to prevent platform abuse, enforce usage policies, and ensure regulatory compliance. Users may be prompted to verify their identity using a government-issued photo ID and a live selfie, a process managed by the third-party provider Persona. The company emphasizes that this verification data is not used to train its AI models and that information is stored by Persona rather than Anthropic’s internal systems.</p>
+          <h4>Reader Reactions</h4>
+<p>Users express deep skepticism and frustration regarding the erosion of digital anonymity, viewing mandatory identity verification as a restrictive move toward state-monitored computing and a significant breach of user privacy.</p>
+<p>Some participants argue that identity verification is a necessary security measure to prevent state-sponsored actors and prohibited entities from leveraging powerful AI models through various technical and geographical workarounds.</p>
+<p>Privacy-conscious users highlight significant risks associated with the third-party verification service Persona, specifically concerning data sharing with numerous sub-processors and the lack of clarity regarding when verification is actually triggered.</p>
+<p>The sample primarily captures negative sentiment from privacy advocates and power users, potentially underrepresenting perspectives from commercial customers who might prioritize institutional compliance and safety protocols over absolute individual anonymity.</p>
+          <p class="drawer-footer"><a href="#dossier-7">View in Dossier ↓</a></p>
+        </div>
+      </details>
+    </div>
     </div>
   </section>
   <section id="story-8" class="spread arc-product-plate">
@@ -429,7 +556,21 @@
       <h2 class="frnc">Google Gemma 4 Now Running Natively on iPhone</h2>
       <p class="story-meta">gizmoweek.com &nbsp;·&nbsp; 283 pts &nbsp;·&nbsp; 173 comments</p>
       <p class="lede">Local inference is moving to the mobile handset, bypassing the need for cloud-based APIs during real-time processing. This release brings offline language model capabilities to Apple hardware, optimized specifically for thermal and memory constraints.</p>
-      <div class="ctas"><a class="btn-read" href="https://www.gizmoweek.com/gemma-4-runs-iphone/" target="_blank" rel="noopener">Read →</a><a class="btn-dossier" href="#dossier-8">Full analysis ↓</a></div>
+      <div class="ctas"><a class="btn-read" href="https://www.gizmoweek.com/gemma-4-runs-iphone/" target="_blank" rel="noopener">Read →</a>
+      <details class="analysis-drawer">
+        <summary class="btn-dossier">[ Analysis + ]</summary>
+        <div class="drawer-content">
+          <h4>Technical Analysis</h4>
+          <p>Google has released the Gemma 4 model family with support for native, offline inference on iPhones via the Google AI Edge Gallery. The release includes various model sizes, ranging from high-parameter variants comparable to Qwen 3.5 to efficiency-focused E2B and E4B versions optimized for mobile thermal and memory constraints. By utilizing the iPhone’s GPU for local processing, the platform enables real-time AI tasks like image recognition and voice interaction without relying on cloud-based API calls.</p>
+          <h4>Reader Reactions</h4>
+<p>Users acknowledge the impressive technical achievement of running large language models like Gemma 4 locally on smartphones, though opinions vary on the practical utility and coherence of the generated output.</p>
+<p>A significant point of contention exists regarding Apple’s restrictive App Store policies, which developers claim prevent the distribution of applications containing local large language models on iOS devices.</p>
+<p>Technical contributors highlight that while mobile performance is improving, benchmarks between iPhone and Android remain difficult to standardize due to underlying differences in hardware architecture, OS environments, and software frameworks.</p>
+<p>The sample reflects a tech-centric audience preoccupied with hardware-level implementation and platform freedom, potentially overlooking broader concerns about the quality or ethical implications of AI-generated content in public discourse.</p>
+          <p class="drawer-footer"><a href="#dossier-8">View in Dossier ↓</a></p>
+        </div>
+      </details>
+    </div>
     </div>
   </section>
   <section id="story-9" class="spread arc-stat-hero">
@@ -439,7 +580,21 @@
       <h2 class="frnc">Interacting with WhatsApp Through a Terminal Interface</h2>
       <p class="story-meta">github.com &nbsp;·&nbsp; 235 pts &nbsp;·&nbsp; 151 comments</p>
       <p class="lede">Wacli provides a programmatic bridge to your messages, enabling offline search and automation for those who prefer the command line. While functional, it remains a third-party implementation that dances on the edge of service terms.</p>
-      <div class="ctas"><a class="btn-read" href="https://github.com/steipete/wacli" target="_blank" rel="noopener">Read →</a><a class="btn-dossier" href="#dossier-9">Full analysis ↓</a></div>
+      <div class="ctas"><a class="btn-read" href="https://github.com/steipete/wacli" target="_blank" rel="noopener">Read →</a>
+      <details class="analysis-drawer">
+        <summary class="btn-dossier">[ Analysis + ]</summary>
+        <div class="drawer-content">
+          <h4>Technical Analysis</h4>
+          <p>Wacli is a command-line interface tool that enables users to interact with WhatsApp directly from their terminal. Built on top of the open-source `whatsmeow` library, the project utilizes the WhatsApp Web protocol to facilitate local message syncing, offline search, media downloads, and message sending. Because it acts as a third-party client, the software relies on the user&#x27;s primary mobile device remaining online to perform best-effort history synchronization and account authentication.</p>
+          <h4>Reader Reactions</h4>
+<p>While users appreciate the utility of a WhatsApp command-line interface for local searching and automation, there is a strong, widespread consensus that using unofficial third-party clients carries a high risk of permanent account bans.</p>
+<p>Some developers argue that Matrix serves as a superior, more open-source-friendly alternative to WhatsApp and Slack, providing frictionless API access for bot integration without the threat of arbitrary platform-level platform restrictions.</p>
+<p>To mitigate technical risks, users recommend utilizing &quot;whatsmeow&quot; for more stable integrations, keeping automated usage within human-like interaction patterns, and employing dedicated secondary accounts to protect primary data from potential suspension.</p>
+<p>The sample predominantly features technically proficient power users who prioritize programmatic access and self-hosting, which likely skews the discussion toward niche infrastructure concerns rather than the typical needs of mainstream WhatsApp users.</p>
+          <p class="drawer-footer"><a href="#dossier-9">View in Dossier ↓</a></p>
+        </div>
+      </details>
+    </div>
     </div>
   </section>
   <section id="story-10" class="spread arc-archive">
@@ -449,7 +604,21 @@
       <h2 class="frnc">Lessons from the Iron Curtain’s Apple II Clones</h2>
       <p class="story-meta">llama.gs &nbsp;·&nbsp; 180 pts &nbsp;·&nbsp; 75 comments</p>
       <p class="lede">The Pravetz computer and the ISCAS-85 benchmark circuits remind us that real technical mastery is often found in the reverse-engineering of existing hardware. In an era of black-box AI, dissecting the past offers a blueprint for understanding the present.</p>
-      <div class="ctas"><a class="btn-read" href="https://llama.gs/blog/index.php/2026/04/10/friday-archaeology-a-communist-apple-ii-and-fourteen-years-of-not-knowing-what-youre-testing/" target="_blank" rel="noopener">Read →</a><a class="btn-dossier" href="#dossier-10">Full analysis ↓</a></div>
+      <div class="ctas"><a class="btn-read" href="https://llama.gs/blog/index.php/2026/04/10/friday-archaeology-a-communist-apple-ii-and-fourteen-years-of-not-knowing-what-youre-testing/" target="_blank" rel="noopener">Read →</a>
+      <details class="analysis-drawer">
+        <summary class="btn-dossier">[ Analysis + ]</summary>
+        <div class="drawer-content">
+          <h4>Technical Analysis</h4>
+          <p>The article explores the history and practice of reverse engineering as a meaningful alternative to the modern &quot;build-first&quot; approach prevalent in the AI industry. It details the history of the Bulgarian &quot;Pravetz&quot; computer, which was a state-sponsored clone of the Apple II developed behind the Iron Curtain, and the academic mystery of the ISCAS-85 benchmark circuits, which researchers used for fourteen years before their true functions were finally reverse-engineered. The author frames these historical anecdotes as evidence that deep technical understanding is gained by dissecting existing systems rather than simply throwing compute at opaque problems.</p>
+          <h4>Reader Reactions</h4>
+<p>Participants generally agree that the article provides a compelling historical look at Eastern Bloc reverse-engineering efforts, though they debate whether the author successfully connects these historical anecdotes to modern AI trends.</p>
+<p>A significant disagreement persists regarding whether state-driven technological cloning was an inevitable consequence of communist ideology or a pragmatic, survival-oriented response to restricted access to Western markets and global innovation ecosystems.</p>
+<p>The technical discussion highlights that reverse-engineering vintage hardware required immense labor-intensive manual analysis, contrasting sharply with the current reliance on automated, opaque AI benchmarks that often lack clear functional definitions.</p>
+<p>This sample may suffer from a Western-centric bias, as it focuses heavily on theoretical political critiques of communism while offering limited primary accounts from the engineers who actually built the hardware.</p>
+          <p class="drawer-footer"><a href="#dossier-10">View in Dossier ↓</a></p>
+        </div>
+      </details>
+    </div>
     </div>
   </section>
   <section id="dossier" class="dossier">
@@ -639,6 +808,19 @@
     localStorage.setItem(key, JSON.stringify(stored));
   }
 })();
+</script>
+<script>
+// Simple script to toggle the [+] and [-] labels on the drawers
+document.querySelectorAll('.analysis-drawer').forEach(drawer => {
+  drawer.addEventListener('toggle', () => {
+    const summary = drawer.querySelector('summary');
+    if (drawer.open) {
+      summary.textContent = '[ Analysis − ]';
+    } else {
+      summary.textContent = '[ Analysis + ]';
+    }
+  });
+});
 </script>
 </body>
 </html>

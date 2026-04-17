@@ -40,14 +40,43 @@
   .story-meta { font-weight: 600; font-size: 1.1rem; margin-bottom: 3rem; opacity: 0.6; letter-spacing: 0.02em; }
   .lede { font-size: clamp(1.4rem, 2.5vw, 2.1rem); line-height: 1.35; max-width: 800px; margin: 0 0 4rem; font-weight: 450; }
   
-  .ctas { display: flex; gap: 2.5rem; align-items: center; }
+  .ctas { display: flex; gap: 2.5rem; align-items: flex-start; }
   .ctas a {
     text-decoration: none; font-weight: 700; font-size: 1.1rem; letter-spacing: 0.1em; text-transform: uppercase;
     padding: 1.2rem 2.4rem; transition: all 0.2s;
   }
-  .btn-read { background: var(--text-dark); color: var(--bg-light); }
-  .btn-dossier { border-bottom: 2px solid currentColor; padding: 0.5rem 0 !important; }
+  .btn-read { background: var(--text-dark); color: var(--bg-light); cursor: pointer; border: none; }
+  .btn-dossier { 
+    border-bottom: 2px solid currentColor; padding: 0.5rem 0 !important; 
+    text-decoration: none; font-weight: 700; font-size: 1.1rem; letter-spacing: 0.1em; 
+    text-transform: uppercase; cursor: pointer; background: transparent; color: inherit;
+    display: inline-block;
+  }
   
+  /* ───── ANALYSIS DRAWER ───── */
+  .analysis-drawer { margin-top: 0; width: 100%; max-width: 800px; }
+  .analysis-drawer summary { list-style: none; outline: none; }
+  .analysis-drawer summary::-webkit-details-marker { display: none; }
+  .analysis-drawer[open] summary { margin-bottom: 2rem; }
+  .analysis-drawer[open] summary::after { content: ""; } /* Could add JS to toggle label but we'll do CSS trick or just keep static */
+  
+  .drawer-content {
+    background: rgba(0,0,0,0.03); padding: 3rem; border-left: 4px solid var(--text-dark);
+    animation: slideDown 0.3s ease-out;
+  }
+  .arc-midnight .drawer-content { background: rgba(255,255,255,0.05); border-color: #fff; }
+  .arc-terminal .drawer-content { background: rgba(32, 194, 14, 0.05); border-color: #20c20e; }
+  
+  .drawer-content h4 { text-transform: uppercase; letter-spacing: 0.2em; font-size: 0.9rem; margin-top: 0; margin-bottom: 1.5rem; opacity: 0.6; }
+  .drawer-content p { font-family: 'Fraunces', serif; font-size: 1.3rem; line-height: 1.5; margin-bottom: 1.5rem; }
+  .drawer-footer { margin-top: 2rem; border-top: 1px solid rgba(0,0,0,0.1); padding-top: 1.5rem; }
+  .drawer-footer a { font-size: 0.9rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; text-decoration: none; color: inherit; opacity: 0.5; }
+  
+  @keyframes slideDown {
+    from { opacity: 0; transform: translateY(-10px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
   /* ───── ARCHETYPE CSS ───── */
   
   /* Stat Hero */
@@ -351,7 +380,21 @@
         <p class="lede">A comprehensive visual mapping of Anthropic&#x27;s agentic toolset is now public. The analysis explores multi-agent orchestration and command-line mechanics following the accidental exposure of source maps.<span class="cursor"></span></p>
         <div class="ctas">
           <a href="https://ccunpacked.dev/" class="btn-read" target="_blank">RUN_PROCESS →</a>
-          <a href="#dossier-1" class="btn-dossier">VIEW_ANALYSIS ↓</a>
+          
+      <details class="analysis-drawer">
+        <summary class="btn-dossier">[ Analysis + ]</summary>
+        <div class="drawer-content">
+          <h4>Technical Analysis</h4>
+          <p>&quot;Claude Code Unpacked&quot; is an interactive visual guide that deconstructs the architecture, toolset, and command structure of Anthropic’s Claude Code agent. The project provides a detailed mapping of the agent’s internal processes, including its multi-agent orchestration, the 50+ available tools, and its various command-line capabilities. This documentation was created following a significant security incident where the complete source code for the tool was inadvertently exposed via a map file in the public NPM registry.</p>
+          <h4>Reader Reactions</h4>
+<p>Users express significant skepticism toward &quot;vibe-coded&quot; websites, noting that while LLM-generated UIs appear polished, they often lack depth, convey little substance, and risk presenting unreliable information as authoritative content.</p>
+<p>Some participants argue that traditional concerns about technical debt and code quality are irrelevant because future, more capable AI models will handle ongoing maintenance rather than relying on unaided human engineers.</p>
+<p>Development efficiency can be improved by creating custom component libraries or harnesses, allowing users to move beyond generic model defaults and better understand the underlying logic of their generated projects.</p>
+<p>This sample highlights a polarized divide between developers prioritizing rapid, AI-driven output for visibility and those critiquing the resulting &quot;slop&quot; for its lack of structural integrity and genuine utility.</p>
+          <p class="drawer-footer"><a href="#dossier-1">View in Dossier ↓</a></p>
+        </div>
+      </details>
+    
         </div>
       </div>
     </div>
@@ -364,7 +407,21 @@
       <h2 class="frnc">Superconducting Karts Hit the Collider Tunnel</h2>
       <p class="story-meta">home.cern &nbsp;·&nbsp; 394 pts &nbsp;·&nbsp; 85 comments</p>
       <p class="lede">In a whimsical shift for particle physics infrastructure, engineers have swapped standard bicycles for levitating superconducting transport. The project blends advanced Meissner-effect research with a touch of seasonal humor.</p>
-      <div class="ctas"><a class="btn-read" href="https://home.cern/news/news/engineering/cern-levels-new-superconducting-karts" target="_blank" rel="noopener">Read →</a><a class="btn-dossier" href="#dossier-2">Full analysis ↓</a></div>
+      <div class="ctas"><a class="btn-read" href="https://home.cern/news/news/engineering/cern-levels-new-superconducting-karts" target="_blank" rel="noopener">Read →</a>
+      <details class="analysis-drawer">
+        <summary class="btn-dossier">[ Analysis + ]</summary>
+        <div class="drawer-content">
+          <h4>Technical Analysis</h4>
+          <p>CERN engineers have developed superconducting karts to transport personnel through the 27-kilometer Large Hadron Collider tunnel during the upcoming Long Shutdown 3 maintenance period. These vehicles utilize 64 superconducting engines that leverage the Meissner effect to achieve levitation and increased travel speeds, replacing the bicycles previously used by staff. Beyond internal maintenance utility, CERN is collaborating with the startup Quantum Mushroom to investigate potential aerospace and anti-gravity applications for this technology.</p>
+          <h4>Reader Reactions</h4>
+<p>Users broadly recognize the story as an April Fools&#x27; Day joke due to the absurd project lead name and the comedic premise of using superconducting engines for recreational go-karts.</p>
+<p>Some commenters express frustration over the perceived waste of public taxpayer funds on non-essential projects, contrasting with others who enjoy the lighthearted nature of the organization&#x27;s annual seasonal humor.</p>
+<p>Technical discussions briefly touch upon the utility of high-temperature superconductors and the historical trend of building increasingly large particle colliders based on specific theoretical requirements for higher energy physics experiments.</p>
+<p>The sample size is too limited to gauge the overall sentiment of the entire 32-comment thread, potentially omitting nuanced technical debates or deeper institutional critiques found in the remaining missing half.</p>
+          <p class="drawer-footer"><a href="#dossier-2">View in Dossier ↓</a></p>
+        </div>
+      </details>
+    </div>
     </div>
   </section>
   <section id="story-3" class="spread arc-blueprint">
@@ -374,7 +431,21 @@
       <h2 class="frnc">Automating Grocery Runs via Reverse-Engineered Haskell</h2>
       <p class="story-meta">github.com &nbsp;·&nbsp; 199 pts &nbsp;·&nbsp; 83 comments</p>
       <p class="lede">This developer-built CLI interface bridges the gap between manual grocery shopping and automated logistics. By tapping into the REWE API, the tool transforms standard retail interaction into machine-readable JSON workflows.</p>
-      <div class="ctas"><a class="btn-read" href="https://github.com/yannick-cw/korb" target="_blank" rel="noopener">Read →</a><a class="btn-dossier" href="#dossier-3">Full analysis ↓</a></div>
+      <div class="ctas"><a class="btn-read" href="https://github.com/yannick-cw/korb" target="_blank" rel="noopener">Read →</a>
+      <details class="analysis-drawer">
+        <summary class="btn-dossier">[ Analysis + ]</summary>
+        <div class="drawer-content">
+          <h4>Technical Analysis</h4>
+          <p>The project &quot;korb&quot; is a command-line interface written in Haskell that allows users to interact with the REWE supermarket delivery API for grocery orders. The developer reverse-engineered the supermarket&#x27;s mobile API, utilizing mTLS for authentication and `mitmproxy2swagger` to generate an OpenAPI specification. Designed primarily for automation, the tool outputs JSON, enabling AI agents to manage shopping lists, identify frequently ordered items, and execute checkout workflows for store pickups.</p>
+          <h4>Reader Reactions</h4>
+<p>Users generally view the project as an impressive and useful utility that streamlines tedious grocery shopping workflows, especially when compared to the poor user experiences of existing official retail websites.</p>
+<p>Some participants express concern that publishing simplified API access tools risks further security lockdowns by retailers, while others warn that automation could easily lead to accidental, bulk-purchasing disasters.</p>
+<p>The discussion highlights a strong interest in integrating meal-planning logic, recipe-based shopping lists, and price comparisons across different regions to maximize efficiency and minimize costs for the end user.</p>
+<p>The sample primarily represents the interest of technically proficient Haskell enthusiasts and automation-focused developers, potentially overlooking the perspective of general consumers or the legal risks associated with reverse-engineering proprietary platforms.</p>
+          <p class="drawer-footer"><a href="#dossier-3">View in Dossier ↓</a></p>
+        </div>
+      </details>
+    </div>
     </div>
   </section>
   <section id="story-4" class="spread arc-alert-stamp">
@@ -385,7 +456,21 @@
       <h2 class="frnc">Parsing the Claude Code Leak for Regulated Markets</h2>
       <p class="story-meta">systima.ai &nbsp;·&nbsp; 9 pts &nbsp;·&nbsp; 1 comments</p>
       <p class="lede">The unintentional publication of internal AI source maps raises urgent questions about release engineering. While the incident may fall outside the scope of the EU AI Act, it exposes systemic gaps in vendor quality assurance.</p>
-      <div class="ctas"><a class="btn-read" href="https://systima.ai/blog/claude-code-leak-compliance-implications" target="_blank" rel="noopener">Read →</a><a class="btn-dossier" href="#dossier-4">Full analysis ↓</a></div>
+      <div class="ctas"><a class="btn-read" href="https://systima.ai/blog/claude-code-leak-compliance-implications" target="_blank" rel="noopener">Read →</a>
+      <details class="analysis-drawer">
+        <summary class="btn-dossier">[ Analysis + ]</summary>
+        <div class="drawer-content">
+          <h4>Technical Analysis</h4>
+          <p>The recent leak of Anthropic’s Claude Code source code, caused by a packaging error that included internal source maps in a public npm registry release, revealed significant details about the tool&#x27;s architecture and development practices. The codebase uncovered &quot;Undercover Mode,&quot; an internal feature that masks AI attribution, as well as a lack of automated test suites and a history of systemic operational issues. While the leak does not violate specific EU AI Act regulations regarding the tool&#x27;s users, it highlights significant gaps in the provider’s release engineering and quality assurance processes.</p>
+          <h4>Reader Reactions</h4>
+<p>The primary takeaway is that the Claude Code source leak does not inherently classify the tool as a high-risk system under the EU AI Act’s specific regulatory framework for software developers.</p>
+<p>While the post asserts regulatory responsibility lies with the end user, critics might argue that using tools with compromised or insecure internal engineering practices inherently undermines the security of deployed systems.</p>
+<p>Engineering teams should focus on documenting their own development processes and deployed AI systems, as the EU AI Act prioritizes the compliance of final applications rather than the underlying vendor tools.</p>
+<p>This analysis reflects the viewpoint of a single stakeholder, offering a narrow perspective that may not fully represent the broader industry consensus or upcoming legal interpretations regarding AI tool supply chains.</p>
+          <p class="drawer-footer"><a href="#dossier-4">View in Dossier ↓</a></p>
+        </div>
+      </details>
+    </div>
     </div>
   </section>
   <section id="story-5" class="spread arc-academic-drop-cap">
@@ -399,7 +484,21 @@
       <p class="story-meta">louis.co.nz &nbsp;·&nbsp; 161 pts &nbsp;·&nbsp; 48 comments</p>
       <div class="cols">
         <div><p>The process of translating flat text into abstract syntax trees is simplified through the application of binding powers.</p></div>
-        <div><p>By focusing on the spine of the expression tree, developers can manage precedence without the overhead of heavy formal grammar.</p><div class="ctas"><a class="btn-read" href="https://louis.co.nz/2026/03/26/pratt-parsing.html" target="_blank" rel="noopener">Read →</a><a class="btn-dossier" href="#dossier-5">Full analysis ↓</a></div></div>
+        <div><p>By focusing on the spine of the expression tree, developers can manage precedence without the overhead of heavy formal grammar.</p><div class="ctas"><a class="btn-read" href="https://louis.co.nz/2026/03/26/pratt-parsing.html" target="_blank" rel="noopener">Read →</a>
+      <details class="analysis-drawer">
+        <summary class="btn-dossier">[ Analysis + ]</summary>
+        <div class="drawer-content">
+          <h4>Technical Analysis</h4>
+          <p>The article provides an intuitive breakdown of Pratt parsing, a technique used in compiler design to translate flat text into abstract syntax trees by handling operator precedence and associativity. The author explains that expression trees lean either left or right based on whether precedence is increasing or decreasing, and that parsing effectively involves &quot;walking back&quot; the tree&#x27;s spine to insert new operators at the correct structural level. By defining left and right binding powers, the author demonstrates how a concise recursive algorithm can elegantly manage both left-associative and right-associative operations.</p>
+          <h4>Reader Reactions</h4>
+<p>The contributor expresses strong enthusiasm for Pratt parsing, favoring its intuitive simplicity over the complexities traditionally associated with academic compiler construction and formal grammar theory for personal language projects.</p>
+<p>While there is no explicit rebuttal in this single comment, the user implicitly challenges the necessity of mastering heavy academic texts like the Dragon Book for practical, small-scale development.</p>
+<p>Pratt parsing, when combined with recursive descent and minimal lookahead, provides an accessible and sufficiently powerful framework for building toy languages without requiring deep immersion into complex formal grammar theory.</p>
+<p>This analysis relies on a single comment from a non-expert enthusiast, which likely reflects a practical developer&#x27;s perspective rather than the rigorous requirements of large-scale, industrial-grade compiler engineering projects.</p>
+          <p class="drawer-footer"><a href="#dossier-5">View in Dossier ↓</a></p>
+        </div>
+      </details>
+    </div></div>
       </div>
     </div>
   </section>
@@ -412,7 +511,21 @@
       <h2 class="frnc">Remote Kernel Execution Vulnerability in FreeBSD</h2>
       <p class="story-meta">github.com &nbsp;·&nbsp; 270 pts &nbsp;·&nbsp; 105 comments</p>
       <p class="lede">A buffer overflow in the RPCSEC_GSS authentication component allows unauthorized code execution via crafted RPC packets. Successful exploitation bypasses authentication on NFS servers lacking standard memory protections.</p>
-      <div class="ctas"><a class="btn-read" href="https://github.com/califio/publications/blob/main/MADBugs/CVE-2026-4747/write-up.md" target="_blank" rel="noopener">Read →</a><a class="btn-dossier" href="#dossier-6">Full analysis ↓</a></div>
+      <div class="ctas"><a class="btn-read" href="https://github.com/califio/publications/blob/main/MADBugs/CVE-2026-4747/write-up.md" target="_blank" rel="noopener">Read →</a>
+      <details class="analysis-drawer">
+        <summary class="btn-dossier">[ Analysis + ]</summary>
+        <div class="drawer-content">
+          <h4>Technical Analysis</h4>
+          <p>The reported vulnerability, CVE-2026-4747, involves a stack-based buffer overflow in the FreeBSD kernel’s RPCSEC_GSS authentication component, specifically within `svc_rpc_gss_validate`. An attacker can trigger this overflow by sending a maliciously crafted RPC packet to an NFS server that has the `kgssapi.ko` module loaded, potentially leading to remote kernel code execution. Successful exploitation requires the attacker to possess a valid Kerberos ticket for the NFS service principal, allowing them to bypass authentication checks and control the kernel&#x27;s stack memory.</p>
+          <h4>Reader Reactions</h4>
+<p>Users generally agree that while AI excels at writing functional exploits from existing descriptions, the transition from finding bugs to automating full exploit chains represents a significant, evolving technological milestone.</p>
+<p>Some participants debate the extent of AI&#x27;s agency, arguing that human oversight remains essential for complex tasks like crafting ROP chains and managing memory layouts, despite rapid advancements in LLM capabilities.</p>
+<p>Technical observers highlight that FreeBSD’s lack of modern kernel-level protections, such as KASLR and stack canaries, made this specific vulnerability easier to weaponize through automated assistance compared to hardened Linux environments.</p>
+<p>The sample provides only a preliminary view of the discussion, potentially overlooking deeper technical debates regarding prompt engineering, iteration loops, and the broader implications for automated cybersecurity research and development.</p>
+          <p class="drawer-footer"><a href="#dossier-6">View in Dossier ↓</a></p>
+        </div>
+      </details>
+    </div>
     </div>
     <div class="tape bottom">CAUTION CAUTION CAUTION CAUTION CAUTION CAUTION CAUTION CAUTION</div>
   </section>
@@ -423,7 +536,21 @@
       <h2 class="frnc">Modernizing MiniDV Media with Raspberry Pi Hardware</h2>
       <p class="story-meta">jeffgeerling.com &nbsp;·&nbsp; 124 pts &nbsp;·&nbsp; 28 comments</p>
       <p class="lede">Legacy digital tapes gain a second life through custom FireWire-to-Pi integration. This hardware bridge bypasses the obsolescence of professional recording decks, preserving high-quality video for the digital age.</p>
-      <div class="ctas"><a class="btn-read" href="https://www.jeffgeerling.com/blog/2026/minidv-with-raspberry-pi-firewire-hat/" target="_blank" rel="noopener">Read →</a><a class="btn-dossier" href="#dossier-7">Full analysis ↓</a></div>
+      <div class="ctas"><a class="btn-read" href="https://www.jeffgeerling.com/blog/2026/minidv-with-raspberry-pi-firewire-hat/" target="_blank" rel="noopener">Read →</a>
+      <details class="analysis-drawer">
+        <summary class="btn-dossier">[ Analysis + ]</summary>
+        <div class="drawer-content">
+          <h4>Technical Analysis</h4>
+          <p>Jeff Geerling demonstrates how to modernize legacy MiniDV camcorders by using a Raspberry Pi 5 equipped with a custom &quot;FireHat&quot; and a battery pack. This portable setup functions as a digital &quot;Memory Recording Unit,&quot; allowing users to bypass traditional tape media by recording high-quality video directly to the Pi&#x27;s storage. The project relies on recompiled Linux kernel support for FireWire and aims to provide a reliable, cost-effective alternative to expensive, aging professional recording hardware or discontinued macOS FireWire support.</p>
+          <h4>Reader Reactions</h4>
+<p>The community widely views digitizing aging MiniDV tapes as a high-priority, rewarding project, emphasizing the need for accessible, standardized hardware solutions as FireWire connectivity becomes increasingly difficult to maintain on modern systems.</p>
+<p>While many users prefer direct FireWire digital transfers to preserve quality, some suggest advanced open-source analog decoding projects as a superior alternative for older formats, potentially bypassing the need for legacy digital interfaces.</p>
+<p>Effective preservation pipelines often involve using specialized tools like dvrescue or dvgrab to manage stream splitting and metadata, followed by converting raw data into modern, highly watchable formats using ffmpeg or Handbrake.</p>
+<p>The sample focuses heavily on technical hobbyists with existing hardware expertise, meaning it may overlook the challenges faced by average consumers who lack the equipment or desire to build complex custom digitization pipelines.</p>
+          <p class="drawer-footer"><a href="#dossier-7">View in Dossier ↓</a></p>
+        </div>
+      </details>
+    </div>
     </div>
   </section>
   <section id="story-8" class="spread arc-notebook">
@@ -434,7 +561,21 @@
       <h2 class="frnc">A Simple Sticker System for Inventory Management</h2>
       <p class="story-meta">scottlawsonbc.com &nbsp;·&nbsp; 581 pts &nbsp;·&nbsp; 168 comments</p>
       <p class="lede">Physical organization is rarely about software, but rather the friction of daily habit. This analog approach tracks electronic component usage through color-coded labels, separating active tools from cold storage.</p>
-      <div class="ctas"><a class="btn-read" href="https://scottlawsonbc.com/post/dot-system" target="_blank" rel="noopener">Read →</a><a class="btn-dossier" href="#dossier-8">Full analysis ↓</a></div>
+      <div class="ctas"><a class="btn-read" href="https://scottlawsonbc.com/post/dot-system" target="_blank" rel="noopener">Read →</a>
+      <details class="analysis-drawer">
+        <summary class="btn-dossier">[ Analysis + ]</summary>
+        <div class="drawer-content">
+          <h4>Technical Analysis</h4>
+          <p>Scott Lawson describes a simple, analog inventory management system designed to organize an expanding collection of electronic components. By using clear containers and placing a single colored sticker on a box each day it is used, Lawson tracks usage patterns over several years without the need for complex software or databases. This method categorizes components into &quot;hot,&quot; &quot;warm,&quot; and &quot;cold&quot; storage tiers, allowing him to identify and discard unused parts while keeping essential tools within reach.</p>
+          <h4>Reader Reactions</h4>
+<p>Readers generally appreciate the low-tech nature of the dot system, noting that its minimal activation energy and visual utility make it a sustainable, effective method for decluttering and tracking physical inventory.</p>
+<p>Skeptics argue the system is over-engineered, suggesting that the friction of applying stickers and the potential for categorization errors make digital tracking or project-based usage history more efficient and flexible alternatives.</p>
+<p>Practical organization relies on clear, standardized containers to maximize visibility, with some users successfully augmenting manual processes through custom software, barcode scanning, or AI-assisted cataloging for more granular searchability.</p>
+<p>The discussion sample primarily represents hobbyists and enthusiasts, potentially skewing the feedback toward DIY solutions rather than professional storage standards or the needs of individuals who struggle with non-visual organization methods.</p>
+          <p class="drawer-footer"><a href="#dossier-8">View in Dossier ↓</a></p>
+        </div>
+      </details>
+    </div>
     </div>
   </section>
   <section id="story-9" class="spread arc-stat-hero">
@@ -444,7 +585,21 @@
       <h2 class="frnc">TinyLoRA Refines Reasoning With Minimal Parameter Training</h2>
       <p class="story-meta">arxiv.org &nbsp;·&nbsp; 232 pts &nbsp;·&nbsp; 45 comments</p>
       <p class="lede">The study demonstrates that reasoning capabilities can be fine-tuned using reinforcement learning rather than massive supervised datasets. By isolating a minuscule subset of weights, researchers achieved significant performance gains on standard benchmarks.</p>
-      <div class="ctas"><a class="btn-read" href="https://arxiv.org/abs/2602.04118" target="_blank" rel="noopener">Read →</a><a class="btn-dossier" href="#dossier-9">Full analysis ↓</a></div>
+      <div class="ctas"><a class="btn-read" href="https://arxiv.org/abs/2602.04118" target="_blank" rel="noopener">Read →</a>
+      <details class="analysis-drawer">
+        <summary class="btn-dossier">[ Analysis + ]</summary>
+        <div class="drawer-content">
+          <h4>Technical Analysis</h4>
+          <p>The research paper &quot;Learning to Reason in 13 Parameters&quot; introduces TinyLoRA, a method for training language models using an extremely small number of parameters. By refining the standard low-rank adaptation (LoRA) approach, the authors successfully fine-tuned the Qwen2.5 8B model on the GSM8K benchmark while training only 13 parameters. The study demonstrates that this method achieves 91% accuracy on reasoning tasks and maintains significant performance across various complex benchmarks, provided the training is conducted via reinforcement learning rather than standard supervised fine-tuning.</p>
+          <h4>Reader Reactions</h4>
+<p>Skeptics and proponents alike largely agree that the paper suggests reasoning capabilities are already latent within large language models, with fine-tuning acting more as a steering mechanism than new capability acquisition.</p>
+<p>Critics argue the &quot;13 parameters&quot; claim is misleading, contending that the results likely stem from overtraining on the saturated GSM8K benchmark rather than a genuine breakthrough in efficient model reasoning architecture.</p>
+<p>The technical focus shifts toward the viability of ultra-cheap, continuous adaptation where the primary constraint for improving model performance moves from raw compute power to the quality of the reward signal.</p>
+<p>The discussion is heavily influenced by the specific choice of the Qwen model family, raising concerns that the observed reasoning gains are artifacts of the base model&#x27;s unique training data distribution.</p>
+          <p class="drawer-footer"><a href="#dossier-9">View in Dossier ↓</a></p>
+        </div>
+      </details>
+    </div>
     </div>
   </section>
   <section id="story-10" class="spread arc-editorial-pullquote">
@@ -454,7 +609,21 @@
       <h2 class="frnc">The Rise of 1-Bit Large Language Models</h2>
       <p class="story-meta">prismml.com &nbsp;·&nbsp; 425 pts &nbsp;·&nbsp; 151 comments</p>
       <p class="lede">Efficiency at the edge is the new frontier for LLM deployment. By engineering models with 1-bit weights, hardware-constrained devices can now perform advanced inference tasks without relying on massive server-side compute.</p>
-      <div class="ctas"><a class="btn-read" href="https://prismml.com/" target="_blank" rel="noopener">Read →</a><a class="btn-dossier" href="#dossier-10">Full analysis ↓</a></div>
+      <div class="ctas"><a class="btn-read" href="https://prismml.com/" target="_blank" rel="noopener">Read →</a>
+      <details class="analysis-drawer">
+        <summary class="btn-dossier">[ Analysis + ]</summary>
+        <div class="drawer-content">
+          <h4>Technical Analysis</h4>
+          <p>PrismML has introduced &quot;1-bit Bonsai,&quot; a series of large language models engineered to run efficiently on edge devices like smartphones and robotics hardware. By utilizing 1-bit weights, the company claims its models achieve a significantly smaller memory footprint, faster inference speeds, and lower energy consumption compared to traditional full-precision models. The lineup includes 8B, 4B, and 1.7B parameter versions, designed to maximize intelligence density without requiring large-scale datacenter resources.</p>
+          <h4>Reader Reactions</h4>
+<p>Users are impressed by the potential of 1-bit LLMs to deliver high performance at a small footprint, noting specifically that these models provide notably fast inference speeds for their size.</p>
+<p>Critics remain skeptical of the project&#x27;s benchmarking methodology, arguing that the models should be compared against existing quantized alternatives rather than full-precision models to prove their claimed technical superiority.</p>
+<p>Achieving optimal performance requires using the project&#x27;s specific fork of llama.cpp, as users reported significant issues with speed, gibberish output, and hardware compatibility when failing to configure the build correctly.</p>
+<p>The discussion sample focuses heavily on enthusiasts testing the models on diverse hardware, which may overrepresent the experiences of technical power users while potentially masking broader limitations in general model reliability.</p>
+          <p class="drawer-footer"><a href="#dossier-10">View in Dossier ↓</a></p>
+        </div>
+      </details>
+    </div>
     </div>
     <div class="quote-side">
       <blockquote class="pullquote">Intelligence density is the next critical metric for edge-computing viability</blockquote>
@@ -647,6 +816,19 @@
     localStorage.setItem(key, JSON.stringify(stored));
   }
 })();
+</script>
+<script>
+// Simple script to toggle the [+] and [-] labels on the drawers
+document.querySelectorAll('.analysis-drawer').forEach(drawer => {
+  drawer.addEventListener('toggle', () => {
+    const summary = drawer.querySelector('summary');
+    if (drawer.open) {
+      summary.textContent = '[ Analysis − ]';
+    } else {
+      summary.textContent = '[ Analysis + ]';
+    }
+  });
+});
 </script>
 </body>
 </html>

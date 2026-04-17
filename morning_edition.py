@@ -263,12 +263,48 @@ def _meta_line(config: EditionConfig, item: dict) -> str:
     comments_label = "comments" if config.id == "hn" else "stars today"
     return f"{_h(domain)} &nbsp;·&nbsp; {score} {score_label} &nbsp;·&nbsp; {comments} {comments_label}"
 
-def _links(item: dict, n: int) -> str:
-    """Primary outbound + secondary in-page Dossier anchor."""
+def _render_analysis_drawer(config: EditionConfig, i: int, item: dict) -> str:
+    """Renders a collapsible drawer containing the technical analysis."""
+    raw_analysis = (item.get("summary") or "").strip()
+    if config.summary_paragraphs == 1:
+        analysis = raw_analysis.split("\n\n")[0].strip()
+    else:
+        analysis = raw_analysis
+        
+    bullets = parse_bullets(item.get("comment_analysis") or "")
+    analysis_parts = [p.strip() for p in analysis.split("\n\n") if p.strip()]
+    analysis_html = "\n".join(f'<p>{_h(p)}</p>' for p in analysis_parts)
+    
+    if not analysis_html:
+        analysis_html = '<p class="muted"><em>Analysis not available.</em></p>'
+        
+    if bullets:
+        reactions_label = "Reader Reactions" if config.id == "hn" else "Insights"
+        bullets_html = (
+            f'<h4>{reactions_label}</h4>\n'
+            + "\n".join(f"<p>{_h(b)}</p>" for b in bullets)
+        )
+    else:
+        bullets_html = ""
+
+    return f"""
+      <details class="analysis-drawer">
+        <summary class="btn-dossier">[ Analysis + ]</summary>
+        <div class="drawer-content">
+          <h4>Technical Analysis</h4>
+          {analysis_html}
+          {bullets_html}
+          <p class="drawer-footer"><a href="#dossier-{i}">View in Dossier ↓</a></p>
+        </div>
+      </details>
+    """
+
+def _links(config: EditionConfig, item: dict, n: int) -> str:
+    """Primary outbound + collapsible drawer."""
     return (
         f'<div class="ctas">'
         f'<a class="btn-read" href="{_read_href(item)}" target="_blank" rel="noopener">Read →</a>'
-        f'<a class="btn-dossier" href="#dossier-{n}">Full analysis ↓</a>'
+        f'{_render_analysis_drawer(config, n, item)}'
         f'</div>'
     )
 
@@ -388,7 +424,7 @@ def _arc_stat_hero(config: EditionConfig, i: int, a: dict, item: dict) -> str:
       <h2 class="frnc">{_h(a['headline'])}</h2>
       <p class="story-meta">{_meta_line(config, item)}</p>
       <p class="lede">{_h(a['lede'])}</p>
-      {_links(item, i)}
+      {_links(config, item, i)}
     </div>
   </section>"""
 
@@ -401,7 +437,7 @@ def _arc_midnight(config: EditionConfig, i: int, a: dict, item: dict) -> str:
       <h2 class="frnc">{_h(a['headline'])}</h2>
       <p class="story-meta">{_meta_line(config, item)}</p>
       <p class="lede">{_h(a['lede'])}</p>
-      {_links(item, i)}
+      {_links(config, item, i)}
     </div>
   </section>"""
 
@@ -414,7 +450,7 @@ def _arc_alert_stamp(config: EditionConfig, i: int, a: dict, item: dict) -> str:
       <h2 class="frnc">{_h(a['headline'])}</h2>
       <p class="story-meta">{_meta_line(config, item)}</p>
       <p class="lede">{_h(a['lede'])}</p>
-      {_links(item, i)}
+      {_links(config, item, i)}
     </div>
   </section>"""
 
@@ -436,12 +472,13 @@ def _arc_academic_drop_cap(config: EditionConfig, i: int, a: dict, item: dict) -
       <p class="story-meta">{_meta_line(config, item)}</p>
       <div class="cols">
         <div><p>{_h(left)}</p></div>
-        <div>{right_html}{_links(item, i)}</div>
+        <div>{right_html}{_links(config, item, i)}</div>
       </div>
     </div>
   </section>"""
 
 def _arc_terminal(config: EditionConfig, i: int, a: dict, item: dict) -> str:
+    # Special version of analysis drawer for terminal (different styling)
     return f"""  <section id="story-{i}" class="spread arc-terminal">
     <div class="window">
       <div class="prompt-row">user@morning-edition:~$ cat story_{ORDINAL_LABELS[i-1]}.md</div>
@@ -453,7 +490,7 @@ def _arc_terminal(config: EditionConfig, i: int, a: dict, item: dict) -> str:
         <p class="lede">{_h(a['lede'])}<span class="cursor"></span></p>
         <div class="ctas">
           <a href="{_read_href(item)}" class="btn-read" target="_blank">RUN_PROCESS →</a>
-          <a href="#dossier-{i}" class="btn-dossier">VIEW_ANALYSIS ↓</a>
+          {_render_analysis_drawer(config, i, item)}
         </div>
       </div>
     </div>
@@ -468,7 +505,7 @@ def _arc_editorial_pullquote(config: EditionConfig, i: int, a: dict, item: dict)
       <h2 class="frnc">{_h(a['headline'])}</h2>
       <p class="story-meta">{_meta_line(config, item)}</p>
       <p class="lede">{_h(a['lede'])}</p>
-      {_links(item, i)}
+      {_links(config, item, i)}
     </div>
     <div class="quote-side">
       <blockquote class="pullquote">{_h(pq)}</blockquote>
@@ -485,7 +522,7 @@ def _arc_caution_tape(config: EditionConfig, i: int, a: dict, item: dict) -> str
       <h2 class="frnc">{_h(a['headline'])}</h2>
       <p class="story-meta">{_meta_line(config, item)}</p>
       <p class="lede">{_h(a['lede'])}</p>
-      {_links(item, i)}
+      {_links(config, item, i)}
     </div>
     <div class="tape bottom">CAUTION CAUTION CAUTION CAUTION CAUTION CAUTION CAUTION CAUTION</div>
   </section>"""
@@ -499,7 +536,7 @@ def _arc_notebook(config: EditionConfig, i: int, a: dict, item: dict) -> str:
       <h2 class="frnc">{_h(a['headline'])}</h2>
       <p class="story-meta">{_meta_line(config, item)}</p>
       <p class="lede">{_h(a['lede'])}</p>
-      {_links(item, i)}
+      {_links(config, item, i)}
     </div>
   </section>"""
 
@@ -514,7 +551,7 @@ def _arc_mint_pattern(config: EditionConfig, i: int, a: dict, item: dict) -> str
       <h2 class="frnc">{_h(a['headline'])}</h2>
       <p class="story-meta">{_meta_line(config, item)}</p>
       <p class="lede">{_h(a['lede'])}</p>
-      {_links(item, i)}
+      {_links(config, item, i)}
     </div>
   </section>"""
 
@@ -527,7 +564,7 @@ def _arc_pastel_playful(config: EditionConfig, i: int, a: dict, item: dict) -> s
       <h2 class="frnc">{_h(a['headline'])}</h2>
       <p class="story-meta">{_meta_line(config, item)}</p>
       <p class="lede">{_h(a['lede'])}</p>
-      {_links(item, i)}
+      {_links(config, item, i)}
     </div>
   </section>"""
 
@@ -538,7 +575,7 @@ def _arc_product_plate(config: EditionConfig, i: int, a: dict, item: dict) -> st
       <h2 class="frnc">{_h(a['headline'])}</h2>
       <p class="story-meta">{_meta_line(config, item)}</p>
       <p class="lede">{_h(a['lede'])}</p>
-      {_links(item, i)}
+      {_links(config, item, i)}
     </div>
   </section>"""
 
@@ -550,7 +587,7 @@ def _arc_archive(config: EditionConfig, i: int, a: dict, item: dict) -> str:
       <h2 class="frnc">{_h(a['headline'])}</h2>
       <p class="story-meta">{_meta_line(config, item)}</p>
       <p class="lede">{_h(a['lede'])}</p>
-      {_links(item, i)}
+      {_links(config, item, i)}
     </div>
   </section>"""
 
@@ -562,7 +599,7 @@ def _arc_obituary(config: EditionConfig, i: int, a: dict, item: dict) -> str:
       <p class="story-meta">{_meta_line(config, item)}</p>
       <p class="lede">{_h(a['lede'])}</p>
       <div class="ornament">†</div>
-      {_links(item, i)}
+      {_links(config, item, i)}
     </div>
   </section>"""
 
@@ -574,7 +611,7 @@ def _arc_blueprint(config: EditionConfig, i: int, a: dict, item: dict) -> str:
       <h2 class="frnc">{_h(a['headline'])}</h2>
       <p class="story-meta">{_meta_line(config, item)}</p>
       <p class="lede">{_h(a['lede'])}</p>
-      {_links(item, i)}
+      {_links(config, item, i)}
     </div>
   </section>"""
 
@@ -586,7 +623,7 @@ def _arc_observatory(config: EditionConfig, i: int, a: dict, item: dict) -> str:
       <h2 class="frnc">{_h(a['headline'])}</h2>
       <p class="story-meta">{_meta_line(config, item)}</p>
       <p class="lede">{_h(a['lede'])}</p>
-      {_links(item, i)}
+      {_links(config, item, i)}
     </div>
   </section>"""
 
@@ -599,7 +636,7 @@ def _arc_agent_foundry(config: EditionConfig, i: int, a: dict, item: dict) -> st
       <h2 class="frnc">{_h(a['headline'])}</h2>
       <p class="story-meta">{_meta_line(config, item)}</p>
       <p class="lede">{_h(a['lede'])}</p>
-      {_links(item, i)}
+      {_links(config, item, i)}
     </div>
   </section>"""
 
@@ -611,7 +648,7 @@ def _arc_system_core(config: EditionConfig, i: int, a: dict, item: dict) -> str:
       <h2 class="frnc">{_h(a['headline'])}</h2>
       <p class="story-meta">{_meta_line(config, item)}</p>
       <p class="lede">{_h(a['lede'])}</p>
-      {_links(item, i)}
+      {_links(config, item, i)}
     </div>
   </section>"""
 
@@ -623,7 +660,7 @@ def _arc_ui_lab(config: EditionConfig, i: int, a: dict, item: dict) -> str:
       <h2 class="frnc">{_h(a['headline'])}</h2>
       <p class="story-meta">{_meta_line(config, item)}</p>
       <p class="lede">{_h(a['lede'])}</p>
-      {_links(item, i)}
+      {_links(config, item, i)}
     </div>
   </section>"""
 
@@ -635,7 +672,7 @@ def _arc_data_pipeline(config: EditionConfig, i: int, a: dict, item: dict) -> st
       <h2 class="frnc">{_h(a['headline'])}</h2>
       <p class="story-meta">{_meta_line(config, item)}</p>
       <p class="lede">{_h(a['lede'])}</p>
-      {_links(item, i)}
+      {_links(config, item, i)}
     </div>
   </section>"""
 
@@ -647,7 +684,7 @@ def _arc_model_bench(config: EditionConfig, i: int, a: dict, item: dict) -> str:
       <h2 class="frnc">{_h(a['headline'])}</h2>
       <p class="story-meta">{_meta_line(config, item)}</p>
       <p class="lede">{_h(a['lede'])}</p>
-      {_links(item, i)}
+      {_links(config, item, i)}
     </div>
   </section>"""
 
@@ -659,7 +696,7 @@ def _arc_privacy_shield(config: EditionConfig, i: int, a: dict, item: dict) -> s
       <h2 class="frnc">{_h(a['headline'])}</h2>
       <p class="story-meta">{_meta_line(config, item)}</p>
       <p class="lede">{_h(a['lede'])}</p>
-      {_links(item, i)}
+      {_links(config, item, i)}
     </div>
   </section>"""
 
@@ -671,7 +708,7 @@ def _arc_enterprise_engine(config: EditionConfig, i: int, a: dict, item: dict) -
       <h2 class="frnc">{_h(a['headline'])}</h2>
       <p class="story-meta">{_meta_line(config, item)}</p>
       <p class="lede">{_h(a['lede'])}</p>
-      {_links(item, i)}
+      {_links(config, item, i)}
     </div>
   </section>"""
 
@@ -683,7 +720,7 @@ def _arc_terminal_utility(config: EditionConfig, i: int, a: dict, item: dict) ->
       <h2 class="frnc">{_h(a['headline'])}</h2>
       <p class="story-meta">{_meta_line(config, item)}</p>
       <p class="lede">{_h(a['lede'])}</p>
-      {_links(item, i)}
+      {_links(config, item, i)}
     </div>
   </section>"""
 
@@ -695,7 +732,7 @@ def _arc_experimental_workshop(config: EditionConfig, i: int, a: dict, item: dic
       <h2 class="frnc">{_h(a['headline'])}</h2>
       <p class="story-meta">{_meta_line(config, item)}</p>
       <p class="lede">{_h(a['lede'])}</p>
-      {_links(item, i)}
+      {_links(config, item, i)}
     </div>
   </section>"""
 
@@ -707,7 +744,7 @@ def _arc_library_archive(config: EditionConfig, i: int, a: dict, item: dict) -> 
       <h2 class="frnc">{_h(a['headline'])}</h2>
       <p class="story-meta">{_meta_line(config, item)}</p>
       <p class="lede">{_h(a['lede'])}</p>
-      {_links(item, i)}
+      {_links(config, item, i)}
     </div>
   </section>"""
 
@@ -776,14 +813,43 @@ CSS_TEMPLATE = """
   .story-meta { font-weight: 600; font-size: 1.1rem; margin-bottom: 3rem; opacity: 0.6; letter-spacing: 0.02em; }
   .lede { font-size: clamp(1.4rem, 2.5vw, 2.1rem); line-height: 1.35; max-width: 800px; margin: 0 0 4rem; font-weight: 450; }
   
-  .ctas { display: flex; gap: 2.5rem; align-items: center; }
+  .ctas { display: flex; gap: 2.5rem; align-items: flex-start; }
   .ctas a {
     text-decoration: none; font-weight: 700; font-size: 1.1rem; letter-spacing: 0.1em; text-transform: uppercase;
     padding: 1.2rem 2.4rem; transition: all 0.2s;
   }
-  .btn-read { background: var(--text-dark); color: var(--bg-light); }
-  .btn-dossier { border-bottom: 2px solid currentColor; padding: 0.5rem 0 !important; }
+  .btn-read { background: var(--text-dark); color: var(--bg-light); cursor: pointer; border: none; }
+  .btn-dossier { 
+    border-bottom: 2px solid currentColor; padding: 0.5rem 0 !important; 
+    text-decoration: none; font-weight: 700; font-size: 1.1rem; letter-spacing: 0.1em; 
+    text-transform: uppercase; cursor: pointer; background: transparent; color: inherit;
+    display: inline-block;
+  }
   
+  /* ───── ANALYSIS DRAWER ───── */
+  .analysis-drawer { margin-top: 0; width: 100%; max-width: 800px; }
+  .analysis-drawer summary { list-style: none; outline: none; }
+  .analysis-drawer summary::-webkit-details-marker { display: none; }
+  .analysis-drawer[open] summary { margin-bottom: 2rem; }
+  .analysis-drawer[open] summary::after { content: ""; } /* Could add JS to toggle label but we'll do CSS trick or just keep static */
+  
+  .drawer-content {
+    background: rgba(0,0,0,0.03); padding: 3rem; border-left: 4px solid var(--text-dark);
+    animation: slideDown 0.3s ease-out;
+  }
+  .arc-midnight .drawer-content { background: rgba(255,255,255,0.05); border-color: #fff; }
+  .arc-terminal .drawer-content { background: rgba(32, 194, 14, 0.05); border-color: #20c20e; }
+  
+  .drawer-content h4 { text-transform: uppercase; letter-spacing: 0.2em; font-size: 0.9rem; margin-top: 0; margin-bottom: 1.5rem; opacity: 0.6; }
+  .drawer-content p { font-family: 'Fraunces', serif; font-size: 1.3rem; line-height: 1.5; margin-bottom: 1.5rem; }
+  .drawer-footer { margin-top: 2rem; border-top: 1px solid rgba(0,0,0,0.1); padding-top: 1.5rem; }
+  .drawer-footer a { font-size: 0.9rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; text-decoration: none; color: inherit; opacity: 0.5; }
+  
+  @keyframes slideDown {
+    from { opacity: 0; transform: translateY(-10px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
   /* ───── ARCHETYPE CSS ───── */
   
   /* Stat Hero */
@@ -1090,6 +1156,19 @@ def generate_morning_edition_html(config: EditionConfig, day: date, items: list[
 {_render_dossier(config, items, assignments)}
 {_render_colophon(day)}
 {_render_readtracker(config, day)}
+<script>
+// Simple script to toggle the [+] and [-] labels on the drawers
+document.querySelectorAll('.analysis-drawer').forEach(drawer => {{
+  drawer.addEventListener('toggle', () => {{
+    const summary = drawer.querySelector('summary');
+    if (drawer.open) {{
+      summary.textContent = '[ Analysis − ]';
+    }} else {{
+      summary.textContent = '[ Analysis + ]';
+    }}
+  }});
+}});
+</script>
 </body>
 </html>"""
 

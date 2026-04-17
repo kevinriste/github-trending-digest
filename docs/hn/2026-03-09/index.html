@@ -40,14 +40,43 @@
   .story-meta { font-weight: 600; font-size: 1.1rem; margin-bottom: 3rem; opacity: 0.6; letter-spacing: 0.02em; }
   .lede { font-size: clamp(1.4rem, 2.5vw, 2.1rem); line-height: 1.35; max-width: 800px; margin: 0 0 4rem; font-weight: 450; }
   
-  .ctas { display: flex; gap: 2.5rem; align-items: center; }
+  .ctas { display: flex; gap: 2.5rem; align-items: flex-start; }
   .ctas a {
     text-decoration: none; font-weight: 700; font-size: 1.1rem; letter-spacing: 0.1em; text-transform: uppercase;
     padding: 1.2rem 2.4rem; transition: all 0.2s;
   }
-  .btn-read { background: var(--text-dark); color: var(--bg-light); }
-  .btn-dossier { border-bottom: 2px solid currentColor; padding: 0.5rem 0 !important; }
+  .btn-read { background: var(--text-dark); color: var(--bg-light); cursor: pointer; border: none; }
+  .btn-dossier { 
+    border-bottom: 2px solid currentColor; padding: 0.5rem 0 !important; 
+    text-decoration: none; font-weight: 700; font-size: 1.1rem; letter-spacing: 0.1em; 
+    text-transform: uppercase; cursor: pointer; background: transparent; color: inherit;
+    display: inline-block;
+  }
   
+  /* ───── ANALYSIS DRAWER ───── */
+  .analysis-drawer { margin-top: 0; width: 100%; max-width: 800px; }
+  .analysis-drawer summary { list-style: none; outline: none; }
+  .analysis-drawer summary::-webkit-details-marker { display: none; }
+  .analysis-drawer[open] summary { margin-bottom: 2rem; }
+  .analysis-drawer[open] summary::after { content: ""; } /* Could add JS to toggle label but we'll do CSS trick or just keep static */
+  
+  .drawer-content {
+    background: rgba(0,0,0,0.03); padding: 3rem; border-left: 4px solid var(--text-dark);
+    animation: slideDown 0.3s ease-out;
+  }
+  .arc-midnight .drawer-content { background: rgba(255,255,255,0.05); border-color: #fff; }
+  .arc-terminal .drawer-content { background: rgba(32, 194, 14, 0.05); border-color: #20c20e; }
+  
+  .drawer-content h4 { text-transform: uppercase; letter-spacing: 0.2em; font-size: 0.9rem; margin-top: 0; margin-bottom: 1.5rem; opacity: 0.6; }
+  .drawer-content p { font-family: 'Fraunces', serif; font-size: 1.3rem; line-height: 1.5; margin-bottom: 1.5rem; }
+  .drawer-footer { margin-top: 2rem; border-top: 1px solid rgba(0,0,0,0.1); padding-top: 1.5rem; }
+  .drawer-footer a { font-size: 0.9rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; text-decoration: none; color: inherit; opacity: 0.5; }
+  
+  @keyframes slideDown {
+    from { opacity: 0; transform: translateY(-10px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
   /* ───── ARCHETYPE CSS ───── */
   
   /* Stat Hero */
@@ -348,7 +377,21 @@
       <h2 class="frnc">Sandboxing local AI agents on macOS</h2>
       <p class="story-meta">agent-safehouse.dev &nbsp;·&nbsp; 817 pts &nbsp;·&nbsp; 181 comments</p>
       <p class="lede">As local AI agents gain deeper access to personal files, the boundary between assistant and intruder thins. Agent Safehouse leverages macOS kernel sandboxing to enforce strict permission boundaries.</p>
-      <div class="ctas"><a class="btn-read" href="https://agent-safehouse.dev/" target="_blank" rel="noopener">Read →</a><a class="btn-dossier" href="#dossier-1">Full analysis ↓</a></div>
+      <div class="ctas"><a class="btn-read" href="https://agent-safehouse.dev/" target="_blank" rel="noopener">Read →</a>
+      <details class="analysis-drawer">
+        <summary class="btn-dossier">[ Analysis + ]</summary>
+        <div class="drawer-content">
+          <h4>Technical Analysis</h4>
+          <p>Agent Safehouse is a macOS-native utility designed to sandbox local AI agents, preventing them from accessing unauthorized files or system credentials. By utilizing the built-in `sandbox-exec` kernel features, the tool enforces a deny-first access model that restricts an agent&#x27;s scope to the current working directory and specific toolchains. Users can implement this security layer via a single shell script, which allows them to restrict an agent&#x27;s permissions while still permitting necessary operations within project folders.</p>
+          <h4>Reader Reactions</h4>
+<p>Commenters generally agree that sandboxing is a critical, under-solved problem for AI agents, though they debate whether native tools like sandbox-exec are sufficient compared to more robust, full-system virtualization methods.</p>
+<p>Critics argue that simple sandboxing is insufficient for modern agents, suggesting that we need dynamic security models that adjust permissions based on the agent&#x27;s trust level or the sensitivity of the task.</p>
+<p>Users appreciate the project for its clean implementation of a policy-builder, though many developers prioritize tools that offer copy-on-write semantics or easier auditability when granting agents access to sensitive file systems.</p>
+<p>The sample reflects a bias toward technically proficient macOS users who are comfortable with command-line security, potentially overlooking the needs or risk tolerances of less technical users in broader corporate environments.</p>
+          <p class="drawer-footer"><a href="#dossier-1">View in Dossier ↓</a></p>
+        </div>
+      </details>
+    </div>
     </div>
   </section>
   <section id="story-2" class="spread arc-observatory">
@@ -358,7 +401,21 @@
       <h2 class="frnc">Seeing the analog pits of a LaserDisc</h2>
       <p class="story-meta">youtube.com &nbsp;·&nbsp; 633 pts &nbsp;·&nbsp; 88 comments</p>
       <p class="lede">Through the lens of a high-powered microscope, the physical structure of a LaserDisc reveals its secret: an vast, analog landscape of data. It is a striking reminder of how we once etched light and sound into solid matter.</p>
-      <div class="ctas"><a class="btn-read" href="https://www.youtube.com/watch?v=qZuR-772cks" target="_blank" rel="noopener">Read →</a><a class="btn-dossier" href="#dossier-2">Full analysis ↓</a></div>
+      <div class="ctas"><a class="btn-read" href="https://www.youtube.com/watch?v=qZuR-772cks" target="_blank" rel="noopener">Read →</a>
+      <details class="analysis-drawer">
+        <summary class="btn-dossier">[ Analysis + ]</summary>
+        <div class="drawer-content">
+          <h4>Technical Analysis</h4>
+          <p>This video from the YouTube channel Tech Tangents explores the physical data storage of LaserDiscs by using a digital microscope to visualize the analog pits on the disc&#x27;s surface. By zooming in at high magnification, the creator demonstrates how the information representing video and audio is encoded into the physical structure of the medium. The experiment serves as a practical demonstration of how optical storage technologies translate microscopic physical patterns into readable analog signals.</p>
+          <h4>Reader Reactions</h4>
+<p>The primary consensus is that the legibility of visual data on LaserDiscs stems from their raw analog encoding, which aligns spatial data with physical disc rotation, particularly during constant scrolling sequences.</p>
+<p>A significant disagreement exists regarding whether LaserDiscs are purely analog, with some arguing that all digital storage is fundamentally analog at a physical level regardless of how the data is interpreted.</p>
+<p>Users noted that identifying visual patterns in raw data, such as raster images or text, is a useful technique for reverse engineering by manually adjusting the byte-width of the raw output.</p>
+<p>The sample discussion exhibits a bias toward enthusiasts of the YouTube channel and retro technology, with limited focus on the broader implications of signal processing or alternative high-density storage media.</p>
+          <p class="drawer-footer"><a href="#dossier-2">View in Dossier ↓</a></p>
+        </div>
+      </details>
+    </div>
     </div>
   </section>
   <section id="story-3" class="spread arc-blueprint">
@@ -368,7 +425,21 @@
       <h2 class="frnc">An ultra-compact devboard for tight spaces</h2>
       <p class="story-meta">github.com &nbsp;·&nbsp; 260 pts &nbsp;·&nbsp; 69 comments</p>
       <p class="lede">Measuring less than a centimeter square, this tiny Attiny1616 board proves that powerful hardware need not be bulky. It is an exercise in minimalist design for the most constrained PCB environments.</p>
-      <div class="ctas"><a class="btn-read" href="https://github.com/Dieu-de-l-elec/AngstromIO-devboard" target="_blank" rel="noopener">Read →</a><a class="btn-dossier" href="#dossier-3">Full analysis ↓</a></div>
+      <div class="ctas"><a class="btn-read" href="https://github.com/Dieu-de-l-elec/AngstromIO-devboard" target="_blank" rel="noopener">Read →</a>
+      <details class="analysis-drawer">
+        <summary class="btn-dossier">[ Analysis + ]</summary>
+        <div class="drawer-content">
+          <h4>Technical Analysis</h4>
+          <p>The AngstromIO project introduces an ultra-compact development board based on the Attiny1616 microcontroller, measuring just 8.9mm by 9mm. The project includes three distinct PCB designs: the miniature devboard itself, a dual CH340 programming and debugging module, and an experimentation board featuring the CH32V003 microcontroller with a charlieplexed LED matrix. Designed in EasyEDA Pro, these boards aim to provide a solution for highly space-constrained electronics projects while simplifying the debugging workflow.</p>
+          <h4>Reader Reactions</h4>
+<p>Users generally admire the board&#x27;s ultra-compact form factor and high-quality documentation, with some expressing enthusiasm for potential open-source hardware applications similar to the Yubikey Nano or small DIY projects.</p>
+<p>Discussion highlights a clear divide between users prioritizing extreme miniaturization for specialized embedded applications and those questioning its utility compared to more powerful, feature-rich alternatives like the ESP32-C3 series.</p>
+<p>Enthusiasts emphasize the deterministic nature of simpler 8-bit AVR microcontrollers, noting that their predictable cycle timing and clear documentation make them superior for low-level assembly coding and precise timing-dependent tasks.</p>
+<p>The sample is limited by semantic debates regarding USB connector terminology and off-topic discussions about security hardware, which distract from a deeper technical analysis of the board&#x27;s specific design trade-offs.</p>
+          <p class="drawer-footer"><a href="#dossier-3">View in Dossier ↓</a></p>
+        </div>
+      </details>
+    </div>
     </div>
   </section>
   <section id="story-4" class="spread arc-editorial-pullquote">
@@ -378,7 +449,21 @@
       <h2 class="frnc">Reviving literate programming in the age of agents</h2>
       <p class="story-meta">silly.business &nbsp;·&nbsp; 292 pts &nbsp;·&nbsp; 251 comments</p>
       <p class="lede">The historical friction of literate programming has long discouraged its adoption, as keeping prose and logic in sync was often a manual chore. AI automation finally offers a path to bridge this gap, ensuring documentation and code never drift apart again.</p>
-      <div class="ctas"><a class="btn-read" href="https://silly.business/blog/we-should-revisit-literate-programming-in-the-agent-era/" target="_blank" rel="noopener">Read →</a><a class="btn-dossier" href="#dossier-4">Full analysis ↓</a></div>
+      <div class="ctas"><a class="btn-read" href="https://silly.business/blog/we-should-revisit-literate-programming-in-the-agent-era/" target="_blank" rel="noopener">Read →</a>
+      <details class="analysis-drawer">
+        <summary class="btn-dossier">[ Analysis + ]</summary>
+        <div class="drawer-content">
+          <h4>Technical Analysis</h4>
+          <p>The article explores a modern revival of literate programming—the practice of interweaving code with narrative prose—by leveraging AI coding agents to handle the associated maintenance burden. Historically, the technique has been hampered by the need to synchronize prose and code manually, often leading to outdated documentation or cumbersome &quot;tangling&quot; workflows. The author argues that LLMs, which excel at translation and summarization, can now automate these processes by treating interactive documents like Emacs Org-mode files as a single source of truth.</p>
+          <h4>Reader Reactions</h4>
+<p>The consensus suggests that while traditional &quot;literate programming&quot; has struggled with maintenance, the rise of AI agents provides a new incentive to prioritize clear documentation, intent-based comments, and well-structured codebases.</p>
+<p>Skeptics argue that natural language remains inherently ambiguous and that forcing linear narrative structures onto complex, non-linear code graphs is an impractical approach that inevitably leads to stale, misleading, or incorrect documentation.</p>
+<p>Developers can bridge the gap by integrating documentation directly into the source as machine-readable metadata, using deterministic tools for guardrails, or prioritizing exhaustive examples and tests that stay synchronized with implementation.</p>
+<p>This sample reflects a technical audience deeply invested in software architecture and tooling, likely overrepresenting proponents of rigorous, structured documentation systems while potentially downplaying the views of pragmatists who prioritize speed.</p>
+          <p class="drawer-footer"><a href="#dossier-4">View in Dossier ↓</a></p>
+        </div>
+      </details>
+    </div>
     </div>
     <div class="quote-side">
       <blockquote class="pullquote">The agent era transforms the labor of documentation into a collaborative partnership with the machine</blockquote>
@@ -391,7 +476,21 @@
       <h2 class="frnc">RSS emerges from the shadow of walled gardens</h2>
       <p class="story-meta">smartlab.at &nbsp;·&nbsp; 241 pts &nbsp;·&nbsp; 170 comments</p>
       <p class="lede">As algorithmic fatigue settles in, the open web’s oldest syndication standard is finding renewed purpose. Users are reclaiming their feeds, trading centralized curation for the quiet agency of the reader.</p>
-      <div class="ctas"><a class="btn-read" href="https://www.smartlab.at/rss-revival-life-after-social-media/" target="_blank" rel="noopener">Read →</a><a class="btn-dossier" href="#dossier-5">Full analysis ↓</a></div>
+      <div class="ctas"><a class="btn-read" href="https://www.smartlab.at/rss-revival-life-after-social-media/" target="_blank" rel="noopener">Read →</a>
+      <details class="analysis-drawer">
+        <summary class="btn-dossier">[ Analysis + ]</summary>
+        <div class="drawer-content">
+          <h4>Technical Analysis</h4>
+          <p>The article argues that the decline of centralized social media platforms has paved the way for a resurgence of Really Simple Syndication (RSS). It suggests that as users grow weary of algorithmic curation and data privacy concerns, the open web’s decentralized standards offer a more sustainable way to consume content. By utilizing RSS readers, individuals can regain control over their digital feeds without relying on the restrictive policies of modern tech giants.</p>
+          <h4>Reader Reactions</h4>
+<p>Bullet 1: There is no consensus on a widespread RSS renaissance, as participants remain deeply divided between those who view it as an essential, structured protocol and those who see it as obsolete.</p>
+<p>Bullet 2: Critics argue that RSS is inherently outdated because it relies on site owners to implement protocols, suggesting instead that LLMs should scrape unstructured data to create custom feeds for users.</p>
+<p>Bullet 3: Users frequently highlight the ongoing struggle to find reliable RSS readers that offer robust cross-device synchronization, open-source accessibility, and the ability to consistently bypass paywalls for full article content.</p>
+<p>Bullet 4: The discussion sample is heavily skewed toward long-term power users and developers, failing to represent the broader general public who prioritize convenience and algorithmic discovery over manual feed management systems.</p>
+          <p class="drawer-footer"><a href="#dossier-5">View in Dossier ↓</a></p>
+        </div>
+      </details>
+    </div>
     </div>
   </section>
   <section id="story-6" class="spread arc-academic-drop-cap">
@@ -405,7 +504,21 @@
       <p class="story-meta">bret.dk &nbsp;·&nbsp; 139 pts &nbsp;·&nbsp; 37 comments</p>
       <div class="cols">
         <div><p>The market for single-board computers has fractured under the pressure of fluctuating silicon costs and supply chain volatility.</p></div>
-        <div><p>By analyzing fifteen distinct platforms, we can categorize the shifting landscape of high-performance embedded computing.</p><div class="ctas"><a class="btn-read" href="https://bret.dk/every-single-board-computer-i-tested-in-2025/" target="_blank" rel="noopener">Read →</a><a class="btn-dossier" href="#dossier-6">Full analysis ↓</a></div></div>
+        <div><p>By analyzing fifteen distinct platforms, we can categorize the shifting landscape of high-performance embedded computing.</p><div class="ctas"><a class="btn-read" href="https://bret.dk/every-single-board-computer-i-tested-in-2025/" target="_blank" rel="noopener">Read →</a>
+      <details class="analysis-drawer">
+        <summary class="btn-dossier">[ Analysis + ]</summary>
+        <div class="drawer-content">
+          <h4>Technical Analysis</h4>
+          <p>This article reviews 15 single-board computers (SBCs) released in 2025, covering a broad price range from $42 to $590 and featuring diverse silicon from manufacturers like Rockchip, Qualcomm, and the newcomer CIX. The author provides performance benchmarks for these boards, highlighting how supply-side &quot;RAMageddon&quot; and rising memory costs have pressured retail pricing across the sector. By categorizing the devices into budget, mid-range, and high-end tiers, the report maps the current landscape of specialized and general-purpose embedded hardware.</p>
+          <h4>Reader Reactions</h4>
+<p>Raspberry Pi is the widely recommended standard for users prioritizing long-term software stability, reliable kernel updates, and ease of use over the inconsistent, often abandoned support provided by alternative SBC vendors.</p>
+<p>Some enthusiasts argue that specific hardware requirements, such as 10G WAN routing or specialized mainline Linux support, necessitate looking beyond the Raspberry Pi ecosystem to boards that cater to power users.</p>
+<p>Users emphasize that evaluating an SBC should go beyond raw performance benchmarks to include critical factors like mainline Linux support, long-term security patching, and the availability of standard distribution images.</p>
+<p>The author clarifies that the article was intended as a personal recap of 2025 testing rather than an exhaustive review, directing readers to external comparison sites for deeper technical specifications and filtering.</p>
+          <p class="drawer-footer"><a href="#dossier-6">View in Dossier ↓</a></p>
+        </div>
+      </details>
+    </div></div>
       </div>
     </div>
   </section>
@@ -417,7 +530,21 @@
       <h2 class="frnc">March 2026: What are you building?</h2>
       <p class="story-meta">news.ycombinator.com &nbsp;·&nbsp; 287 pts &nbsp;·&nbsp; 1111 comments</p>
       <p class="lede">From home automation experiments to clever CLI utilities, the monthly progress report offers a vibrant snapshot of the hacker collective. It is a reminder that the best projects often begin as a personal curiosity.</p>
-      <div class="ctas"><a class="btn-read" href="https://news.ycombinator.com/item?id=47303111" target="_blank" rel="noopener">Read →</a><a class="btn-dossier" href="#dossier-7">Full analysis ↓</a></div>
+      <div class="ctas"><a class="btn-read" href="https://news.ycombinator.com/item?id=47303111" target="_blank" rel="noopener">Read →</a>
+      <details class="analysis-drawer">
+        <summary class="btn-dossier">[ Analysis + ]</summary>
+        <div class="drawer-content">
+          <h4>Technical Analysis</h4>
+          <p>The &quot;Ask HN: What Are You Working On?&quot; thread is a recurring monthly prompt where the Hacker News community shares their current side projects, startup ventures, and personal technical experiments. Participants post brief descriptions of their ongoing efforts, ranging from hobbyist software tools and open-source contributions to complex business-focused prototypes. This recurring feature serves as a central hub for developers, founders, and engineers to document their progress and solicit peer feedback on their work-in-progress.</p>
+          <h4>Reader Reactions</h4>
+<p>Participants prioritize building custom tools that solve specific personal pain points, frequently leveraging LLMs and existing open-source libraries to prototype functional solutions rapidly rather than seeking commercial enterprise-scale applications.</p>
+<p>While some developers argue for the necessity of building from scratch to maintain full control, others advocate for utilizing high-level abstractions or existing ecosystems to accelerate the development process.</p>
+<p>Integrating LLMs into local workflows, such as Emacs or custom CLI tools, provides a powerful mechanism for automating complex data processing tasks like binary compression, language translation, and automated transcription.</p>
+<p>This sample is heavily skewed toward solo technical enthusiasts and hobbyist developers, potentially underrepresenting the collaborative, professional, or enterprise-level software projects that exist within the broader Hacker News ecosystem.</p>
+          <p class="drawer-footer"><a href="#dossier-7">View in Dossier ↓</a></p>
+        </div>
+      </details>
+    </div>
     </div>
   </section>
   <section id="story-8" class="spread arc-mint-pattern" style="--bg-word: 'WEB'">
@@ -429,7 +556,21 @@
       <h2 class="frnc">A custom lightbox implementation for modern browsers</h2>
       <p class="story-meta">fb.edoo.gg &nbsp;·&nbsp; 521 pts &nbsp;·&nbsp; 88 comments</p>
       <p class="lede">FrameBook provides a masterclass in clean, lightweight UI engineering, focusing on the mechanics of image presentation without the bloat. It explores the interplay of transitions and gestures that define a modern lightbox.</p>
-      <div class="ctas"><a class="btn-read" href="https://fb.edoo.gg" target="_blank" rel="noopener">Read →</a><a class="btn-dossier" href="#dossier-8">Full analysis ↓</a></div>
+      <div class="ctas"><a class="btn-read" href="https://fb.edoo.gg" target="_blank" rel="noopener">Read →</a>
+      <details class="analysis-drawer">
+        <summary class="btn-dossier">[ Analysis + ]</summary>
+        <div class="drawer-content">
+          <h4>Technical Analysis</h4>
+          <p>The submitted link, &quot;FrameBook,&quot; directs users to a website that functions as a functional image gallery or lightbox viewer. The provided source code reveals the underlying JavaScript implementation, which manages modal overlays, image transitions, and navigation gestures for both desktop and mobile interfaces. It appears to be a lightweight, custom-built utility for handling image presentation within a web page rather than a social media platform or business service.</p>
+          <h4>Reader Reactions</h4>
+<p>The community overwhelmingly praises the project as an impressive and inspiring example of hardware hacking, particularly noting how the Framework ecosystem enables creators to revitalize legacy laptop chassis with modern internals.</p>
+<p>While the overall project is celebrated, some users offer technical criticism regarding the creator&#x27;s novice soldering techniques, specifically the excessive exposed wiring and potential for thermal damage to delicate components.</p>
+<p>Modders should prioritize proper wire preparation, such as pre-tinning tips to ensure clean connections and using heatshrink tubing to prevent exposed wiring, which improves both the safety and longevity of custom modifications.</p>
+<p>The discussion sample primarily attracts individuals with pre-existing interests in electronics hobbyism and hardware modding, which likely leads to an overrepresentation of support for complex DIY projects versus practical consumer concerns.</p>
+          <p class="drawer-footer"><a href="#dossier-8">View in Dossier ↓</a></p>
+        </div>
+      </details>
+    </div>
     </div>
   </section>
   <section id="story-9" class="spread arc-caution-tape">
@@ -441,7 +582,21 @@
       <h2 class="frnc">Writing to read-only memory via procfs</h2>
       <p class="story-meta">offlinemark.com &nbsp;·&nbsp; 128 pts &nbsp;·&nbsp; 29 comments</p>
       <p class="lede">Linux kernel interfaces often contain obscure paths that permit direct memory manipulation, bypassing standard hardware protections. This mechanism illustrates how the kernel prioritizes its own administrative access over traditional page permissions.</p>
-      <div class="ctas"><a class="btn-read" href="https://offlinemark.com/an-obscure-quirk-of-proc/" target="_blank" rel="noopener">Read →</a><a class="btn-dossier" href="#dossier-9">Full analysis ↓</a></div>
+      <div class="ctas"><a class="btn-read" href="https://offlinemark.com/an-obscure-quirk-of-proc/" target="_blank" rel="noopener">Read →</a>
+      <details class="analysis-drawer">
+        <summary class="btn-dossier">[ Analysis + ]</summary>
+        <div class="drawer-content">
+          <h4>Technical Analysis</h4>
+          <p>The article explains the &quot;punch-through&quot; semantics of the Linux `/proc/self/mem` interface, which allows a process to write to memory pages marked as read-only or executable. The author demonstrates this by patching a live `libc` function and modifying read-only memory mappings, showing that these actions bypass standard hardware-level protection bits like CR0.WP. Technically, this is achieved because the kernel uses `get_user_pages_remote` with the `FOLL_FORCE` flag to locate physical memory frames and map them into its own address space, where it can perform writes regardless of the original virtual memory permissions.</p>
+          <h4>Reader Reactions</h4>
+<p>Writing to `/proc/self/mem` allows userspace processes to modify memory by leveraging the kernel’s own privileged ability to bypass standard MMU protections through software-emulated page faults and linear memory mapping.</p>
+<p>While some participants argue that the kernel maintains total control over page tables, others contend that modern hardware security features like IOMMU, SGX, and SEV effectively restrict even kernel-level access.</p>
+<p>The primary technical takeaway is that the kernel handles these requests by treating them as direct memory operations rather than standard user-level writes, which effectively sidesteps strict hardware-enforced memory permission checks.</p>
+<p>The sample provides deep technical analysis of kernel internals but lacks a broader discussion on the specific security implications or potential exploitation paths for everyday system administrators and software developers.</p>
+          <p class="drawer-footer"><a href="#dossier-9">View in Dossier ↓</a></p>
+        </div>
+      </details>
+    </div>
     </div>
     <div class="tape bottom">CAUTION CAUTION CAUTION CAUTION CAUTION CAUTION CAUTION CAUTION</div>
   </section>
@@ -456,7 +611,21 @@
         <p class="lede">Self-hosting demands a balance between feature density and maintenance overhead. By utilizing TrueNAS and containerized orchestration, local infrastructure becomes a manageable, resilient asset.<span class="cursor"></span></p>
         <div class="ctas">
           <a href="https://bryananthonio.com/blog/my-homelab-setup/" class="btn-read" target="_blank">RUN_PROCESS →</a>
-          <a href="#dossier-10" class="btn-dossier">VIEW_ANALYSIS ↓</a>
+          
+      <details class="analysis-drawer">
+        <summary class="btn-dossier">[ Analysis + ]</summary>
+        <div class="drawer-content">
+          <h4>Technical Analysis</h4>
+          <p>Bryan Anthonio describes his transition from manual external drive backups to a consolidated homelab setup using a repurposed gaming PC. By installing TrueNAS on his hardware, he established a robust storage solution featuring RAID 1 mirroring and automated hourly snapshots to ensure data integrity. The project also incorporates various self-hosted applications, including Immich for photo management, Backrest for cloud backups, and Ollama for running local AI models, all accessible remotely via Tailscale.</p>
+          <h4>Reader Reactions</h4>
+<p>Homelab enthusiasts generally agree that self-hosting infrastructure provides valuable learning opportunities and autonomy, often building upon simple foundations like Linux, standard storage protocols, and virtualization to manage services more efficiently over time.</p>
+<p>A notable point of contention exists regarding software complexity, with some users advocating for purpose-built management stacks while others prioritize minimalist systems, arguing that additional abstraction layers unnecessarily increase the likelihood of component failure.</p>
+<p>Users can simplify service management by combining a reverse proxy with local DNS rewriting or split-horizon DNS, which allows for convenient, human-readable domain access to various internal applications regardless of the network location.</p>
+<p>This sample focuses heavily on technical enthusiasts and self-hosting experts, potentially masking the difficulties beginners face when establishing secure, reliable, and privacy-compliant infrastructure without prior system administration or networking experience.</p>
+          <p class="drawer-footer"><a href="#dossier-10">View in Dossier ↓</a></p>
+        </div>
+      </details>
+    
         </div>
       </div>
     </div>
@@ -648,6 +817,19 @@
     localStorage.setItem(key, JSON.stringify(stored));
   }
 })();
+</script>
+<script>
+// Simple script to toggle the [+] and [-] labels on the drawers
+document.querySelectorAll('.analysis-drawer').forEach(drawer => {
+  drawer.addEventListener('toggle', () => {
+    const summary = drawer.querySelector('summary');
+    if (drawer.open) {
+      summary.textContent = '[ Analysis − ]';
+    } else {
+      summary.textContent = '[ Analysis + ]';
+    }
+  });
+});
 </script>
 </body>
 </html>

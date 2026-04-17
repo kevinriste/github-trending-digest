@@ -40,14 +40,43 @@
   .story-meta { font-weight: 600; font-size: 1.1rem; margin-bottom: 3rem; opacity: 0.6; letter-spacing: 0.02em; }
   .lede { font-size: clamp(1.4rem, 2.5vw, 2.1rem); line-height: 1.35; max-width: 800px; margin: 0 0 4rem; font-weight: 450; }
   
-  .ctas { display: flex; gap: 2.5rem; align-items: center; }
+  .ctas { display: flex; gap: 2.5rem; align-items: flex-start; }
   .ctas a {
     text-decoration: none; font-weight: 700; font-size: 1.1rem; letter-spacing: 0.1em; text-transform: uppercase;
     padding: 1.2rem 2.4rem; transition: all 0.2s;
   }
-  .btn-read { background: var(--text-dark); color: var(--bg-light); }
-  .btn-dossier { border-bottom: 2px solid currentColor; padding: 0.5rem 0 !important; }
+  .btn-read { background: var(--text-dark); color: var(--bg-light); cursor: pointer; border: none; }
+  .btn-dossier { 
+    border-bottom: 2px solid currentColor; padding: 0.5rem 0 !important; 
+    text-decoration: none; font-weight: 700; font-size: 1.1rem; letter-spacing: 0.1em; 
+    text-transform: uppercase; cursor: pointer; background: transparent; color: inherit;
+    display: inline-block;
+  }
   
+  /* ───── ANALYSIS DRAWER ───── */
+  .analysis-drawer { margin-top: 0; width: 100%; max-width: 800px; }
+  .analysis-drawer summary { list-style: none; outline: none; }
+  .analysis-drawer summary::-webkit-details-marker { display: none; }
+  .analysis-drawer[open] summary { margin-bottom: 2rem; }
+  .analysis-drawer[open] summary::after { content: ""; } /* Could add JS to toggle label but we'll do CSS trick or just keep static */
+  
+  .drawer-content {
+    background: rgba(0,0,0,0.03); padding: 3rem; border-left: 4px solid var(--text-dark);
+    animation: slideDown 0.3s ease-out;
+  }
+  .arc-midnight .drawer-content { background: rgba(255,255,255,0.05); border-color: #fff; }
+  .arc-terminal .drawer-content { background: rgba(32, 194, 14, 0.05); border-color: #20c20e; }
+  
+  .drawer-content h4 { text-transform: uppercase; letter-spacing: 0.2em; font-size: 0.9rem; margin-top: 0; margin-bottom: 1.5rem; opacity: 0.6; }
+  .drawer-content p { font-family: 'Fraunces', serif; font-size: 1.3rem; line-height: 1.5; margin-bottom: 1.5rem; }
+  .drawer-footer { margin-top: 2rem; border-top: 1px solid rgba(0,0,0,0.1); padding-top: 1.5rem; }
+  .drawer-footer a { font-size: 0.9rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; text-decoration: none; color: inherit; opacity: 0.5; }
+  
+  @keyframes slideDown {
+    from { opacity: 0; transform: translateY(-10px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
   /* ───── ARCHETYPE CSS ───── */
   
   /* Stat Hero */
@@ -347,7 +376,17 @@
       <h2 class="frnc">Motorola GrapheneOS devices enable bootloader control</h2>
       <p class="story-meta">grapheneos.social &nbsp;·&nbsp; 1291 pts &nbsp;·&nbsp; 561 comments</p>
       <p class="lede">Maintaining device sovereignty has long been a challenge for those seeking secure, de-Googled mobile experiences. New support for Motorola devices allows users to unlock and relock their bootloaders, facilitating easier installation of GrapheneOS. This development restores a critical layer of user autonomy to the hardware ecosystem.</p>
-      <div class="ctas"><a class="btn-read" href="https://grapheneos.social/@GrapheneOS/116160393783585567" target="_blank" rel="noopener">Read →</a><a class="btn-dossier" href="#dossier-1">Full analysis ↓</a></div>
+      <div class="ctas"><a class="btn-read" href="https://grapheneos.social/@GrapheneOS/116160393783585567" target="_blank" rel="noopener">Read →</a>
+      <details class="analysis-drawer">
+        <summary class="btn-dossier">[ Analysis + ]</summary>
+        <div class="drawer-content">
+          <h4>Technical Analysis</h4>
+          <p class="muted"><em>Analysis not available.</em></p>
+          
+          <p class="drawer-footer"><a href="#dossier-1">View in Dossier ↓</a></p>
+        </div>
+      </details>
+    </div>
     </div>
   </section>
   <section id="story-2" class="spread arc-editorial-pullquote">
@@ -357,7 +396,17 @@
       <h2 class="frnc">Why corporate ladders ignore the power of simple systems</h2>
       <p class="story-meta">terriblesoftware.org &nbsp;·&nbsp; 100 pts &nbsp;·&nbsp; 38 comments</p>
       <p class="lede">Complex solutions often receive outsized praise, while the quiet, reliable work of simplification remains largely invisible. By ignoring the long-term maintenance costs of feature bloat, engineering culture incentivizes building over resolving. This cycle favors the architect of the labyrinth over the architect of the exit.</p>
-      <div class="ctas"><a class="btn-read" href="https://terriblesoftware.org/2026/03/03/nobody-gets-promoted-for-simplicity/" target="_blank" rel="noopener">Read →</a><a class="btn-dossier" href="#dossier-2">Full analysis ↓</a></div>
+      <div class="ctas"><a class="btn-read" href="https://terriblesoftware.org/2026/03/03/nobody-gets-promoted-for-simplicity/" target="_blank" rel="noopener">Read →</a>
+      <details class="analysis-drawer">
+        <summary class="btn-dossier">[ Analysis + ]</summary>
+        <div class="drawer-content">
+          <h4>Technical Analysis</h4>
+          <p class="muted"><em>Analysis not available.</em></p>
+          
+          <p class="drawer-footer"><a href="#dossier-2">View in Dossier ↓</a></p>
+        </div>
+      </details>
+    </div>
     </div>
     <div class="quote-side">
       <blockquote class="pullquote">Simplicity is a silent process that yields no rewards from those obsessed with status.</blockquote>
@@ -371,7 +420,17 @@
       <h2 class="frnc">TikTok rejects end-to-end encryption in safety pivot</h2>
       <p class="story-meta">bbc.com &nbsp;·&nbsp; 425 pts &nbsp;·&nbsp; 432 comments</p>
       <p class="lede">TikTok has officially declined to implement end-to-end encryption for user messages, citing safety concerns as the primary justification. The platform argues that restricted visibility prevents the moderation necessary to protect younger users. Critics remain skeptical of the trade-off between surveillance and platform moderation.</p>
-      <div class="ctas"><a class="btn-read" href="https://www.bbc.com/news/articles/cly2m5e5ke4o" target="_blank" rel="noopener">Read →</a><a class="btn-dossier" href="#dossier-3">Full analysis ↓</a></div>
+      <div class="ctas"><a class="btn-read" href="https://www.bbc.com/news/articles/cly2m5e5ke4o" target="_blank" rel="noopener">Read →</a>
+      <details class="analysis-drawer">
+        <summary class="btn-dossier">[ Analysis + ]</summary>
+        <div class="drawer-content">
+          <h4>Technical Analysis</h4>
+          <p class="muted"><em>Analysis not available.</em></p>
+          
+          <p class="drawer-footer"><a href="#dossier-3">View in Dossier ↓</a></p>
+        </div>
+      </details>
+    </div>
     </div>
   </section>
   <section id="story-4" class="spread arc-mint-pattern" style="--bg-word: 'RESOURCE'">
@@ -383,7 +442,17 @@
       <h2 class="frnc">Curated pathways for mastering graphics programming</h2>
       <p class="story-meta">develop--gpvm-website.netlify.app &nbsp;·&nbsp; 193 pts &nbsp;·&nbsp; 23 comments</p>
       <p class="lede">Navigating the complexities of modern shaders and rendering pipelines requires a firm grasp of both mathematics and hardware architecture. This collection of resources provides a structured entry point for developers seeking to master low-level visual engineering. It is an essential reading list for those transitioning from high-level abstractions to the metal.</p>
-      <div class="ctas"><a class="btn-read" href="https://develop--gpvm-website.netlify.app/resources/" target="_blank" rel="noopener">Read →</a><a class="btn-dossier" href="#dossier-4">Full analysis ↓</a></div>
+      <div class="ctas"><a class="btn-read" href="https://develop--gpvm-website.netlify.app/resources/" target="_blank" rel="noopener">Read →</a>
+      <details class="analysis-drawer">
+        <summary class="btn-dossier">[ Analysis + ]</summary>
+        <div class="drawer-content">
+          <h4>Technical Analysis</h4>
+          <p class="muted"><em>Analysis not available.</em></p>
+          
+          <p class="drawer-footer"><a href="#dossier-4">View in Dossier ↓</a></p>
+        </div>
+      </details>
+    </div>
     </div>
   </section>
   <section id="story-5" class="spread arc-terminal">
@@ -397,7 +466,17 @@
         <p class="lede">Traditional diff tools fail on semantic entities, causing redundant merge conflicts. Weave uses Tree-sitter to parse source code into functional blocks, allowing Git to merge class and function changes intelligently. Install via CLI to replace line-based guesswork with structural awareness.<span class="cursor"></span></p>
         <div class="ctas">
           <a href="https://github.com/Ataraxy-Labs/weave" class="btn-read" target="_blank">RUN_PROCESS →</a>
-          <a href="#dossier-5" class="btn-dossier">VIEW_ANALYSIS ↓</a>
+          
+      <details class="analysis-drawer">
+        <summary class="btn-dossier">[ Analysis + ]</summary>
+        <div class="drawer-content">
+          <h4>Technical Analysis</h4>
+          <p>Weave is an entity-level semantic merge driver for Git designed to reduce false merge conflicts caused by traditional line-based diffing. By utilizing tree-sitter to parse code into semantic entities like functions and classes, the tool can intelligently merge independent changes that would otherwise trigger a conflict in standard Git. It supports a wide range of programming languages and provides clear context when true semantic collisions occur, offering a more robust alternative for managing complex codebases.</p>
+          
+          <p class="drawer-footer"><a href="#dossier-5">View in Dossier ↓</a></p>
+        </div>
+      </details>
+    
         </div>
       </div>
     </div>
@@ -409,7 +488,17 @@
       <h2 class="frnc">Speculative Speculative Decoding accelerates inference throughput</h2>
       <p class="story-meta">arxiv.org &nbsp;·&nbsp; 61 pts &nbsp;·&nbsp; 9 comments</p>
       <p class="lede">New research introduces an asynchronous framework that parallelizes the drafting and verification of large language model tokens. By hiding the overhead typical of sequential speculative models, the Saguaro algorithm optimizes computational flow. The results demonstrate significant gains in generation speed over standard autoregressive baselines.</p>
-      <div class="ctas"><a class="btn-read" href="https://arxiv.org/abs/2603.03251" target="_blank" rel="noopener">Read →</a><a class="btn-dossier" href="#dossier-6">Full analysis ↓</a></div>
+      <div class="ctas"><a class="btn-read" href="https://arxiv.org/abs/2603.03251" target="_blank" rel="noopener">Read →</a>
+      <details class="analysis-drawer">
+        <summary class="btn-dossier">[ Analysis + ]</summary>
+        <div class="drawer-content">
+          <h4>Technical Analysis</h4>
+          <p>The research paper introduces &quot;Speculative Speculative Decoding&quot; (SSD), an asynchronous framework designed to accelerate language model inference by parallelizing the drafting and verification steps that are typically sequential in standard speculative decoding. While traditional speculative decoding uses a fast draft model to predict tokens before a slower target model verifies them, SSD further optimizes this by having the draft model pre-emptively prepare for multiple possible verification outcomes in parallel while the current verification is still in progress. By implementing this through an optimized algorithm named Saguaro, the authors demonstrate that they can hide drafting overhead, resulting in performance improvements of 30% over current speculative decoding baselines and up to 5x faster generation than standard autoregressive decoding.</p>
+          
+          <p class="drawer-footer"><a href="#dossier-6">View in Dossier ↓</a></p>
+        </div>
+      </details>
+    </div>
     </div>
   </section>
   <section id="story-7" class="spread arc-product-plate">
@@ -418,7 +507,17 @@
       <h2 class="frnc">Apple unveils M5 Pro and M5 Max chipsets</h2>
       <p class="story-meta">apple.com &nbsp;·&nbsp; 857 pts &nbsp;·&nbsp; 973 comments</p>
       <p class="lede">The latest MacBook Pro lineup integrates the M5 Pro and M5 Max chips, expanding Apple’s internal silicon capabilities. These releases prioritize high-performance computing tasks and extended memory bandwidth. Specifications confirm enhanced efficiency for heavy professional workflows.</p>
-      <div class="ctas"><a class="btn-read" href="https://www.apple.com/newsroom/2026/03/apple-introduces-macbook-pro-with-all-new-m5-pro-and-m5-max/" target="_blank" rel="noopener">Read →</a><a class="btn-dossier" href="#dossier-7">Full analysis ↓</a></div>
+      <div class="ctas"><a class="btn-read" href="https://www.apple.com/newsroom/2026/03/apple-introduces-macbook-pro-with-all-new-m5-pro-and-m5-max/" target="_blank" rel="noopener">Read →</a>
+      <details class="analysis-drawer">
+        <summary class="btn-dossier">[ Analysis + ]</summary>
+        <div class="drawer-content">
+          <h4>Technical Analysis</h4>
+          <p class="muted"><em>Analysis not available.</em></p>
+          
+          <p class="drawer-footer"><a href="#dossier-7">View in Dossier ↓</a></p>
+        </div>
+      </details>
+    </div>
     </div>
   </section>
   <section id="story-8" class="spread arc-caution-tape">
@@ -430,7 +529,17 @@
       <h2 class="frnc">California legislation poses risks to open source standards</h2>
       <p class="story-meta">runxiyu.org &nbsp;·&nbsp; 117 pts &nbsp;·&nbsp; 112 comments</p>
       <p class="lede">California&#x27;s Digital Age Assurance Act threatens to impose restrictive requirements on software distribution. Open source projects face potential compliance burdens that conflict with the fundamental nature of decentralized, community-driven code. The industry must prepare for the impact of this state-level regulation on FOSS practices.</p>
-      <div class="ctas"><a class="btn-read" href="https://runxiyu.org/comp/ab1043/" target="_blank" rel="noopener">Read →</a><a class="btn-dossier" href="#dossier-8">Full analysis ↓</a></div>
+      <div class="ctas"><a class="btn-read" href="https://runxiyu.org/comp/ab1043/" target="_blank" rel="noopener">Read →</a>
+      <details class="analysis-drawer">
+        <summary class="btn-dossier">[ Analysis + ]</summary>
+        <div class="drawer-content">
+          <h4>Technical Analysis</h4>
+          <p class="muted"><em>Analysis not available.</em></p>
+          
+          <p class="drawer-footer"><a href="#dossier-8">View in Dossier ↓</a></p>
+        </div>
+      </details>
+    </div>
     </div>
     <div class="tape bottom">CAUTION CAUTION CAUTION CAUTION CAUTION CAUTION CAUTION CAUTION</div>
   </section>
@@ -441,7 +550,17 @@
       <p class="story-meta">thephp.foundation &nbsp;·&nbsp; 56 pts &nbsp;·&nbsp; 21 comments</p>
       <p class="lede">The PHP Foundation marks a new chapter with the appointment of Elizabeth Barron as Executive Director. Her arrival signals a shift in stewardship for the language as it navigates future maintenance and ecosystem growth. We acknowledge the transition in governance for this pillar of web infrastructure.</p>
       <div class="ornament">†</div>
-      <div class="ctas"><a class="btn-read" href="https://thephp.foundation/blog/2026/02/27/welcoming-elizabeth-barron-new-executive-director/" target="_blank" rel="noopener">Read →</a><a class="btn-dossier" href="#dossier-9">Full analysis ↓</a></div>
+      <div class="ctas"><a class="btn-read" href="https://thephp.foundation/blog/2026/02/27/welcoming-elizabeth-barron-new-executive-director/" target="_blank" rel="noopener">Read →</a>
+      <details class="analysis-drawer">
+        <summary class="btn-dossier">[ Analysis + ]</summary>
+        <div class="drawer-content">
+          <h4>Technical Analysis</h4>
+          <p class="muted"><em>Analysis not available.</em></p>
+          
+          <p class="drawer-footer"><a href="#dossier-9">View in Dossier ↓</a></p>
+        </div>
+      </details>
+    </div>
     </div>
   </section>
   <section id="story-10" class="spread arc-academic-drop-cap">
@@ -455,7 +574,17 @@
       <p class="story-meta">www-cs-faculty.stanford.edu &nbsp;·&nbsp; 821 pts &nbsp;·&nbsp; 355 comments</p>
       <div class="cols">
         <div><p>I In a rare collaborative study, computer scientist Donald Knuth details his experience prompting an AI to solve a complex problem involving Hamiltonian cycles.</p></div>
-        <div><p>The model successfully navigated the construction of odd values of m, surprising researchers with its algorithmic precision. This case study underscores the evolving dialogue between human intuition and machine-generated logic in higher mathematics.</p><div class="ctas"><a class="btn-read" href="https://www-cs-faculty.stanford.edu/~knuth/papers/claude-cycles.pdf" target="_blank" rel="noopener">Read →</a><a class="btn-dossier" href="#dossier-10">Full analysis ↓</a></div></div>
+        <div><p>The model successfully navigated the construction of odd values of m, surprising researchers with its algorithmic precision. This case study underscores the evolving dialogue between human intuition and machine-generated logic in higher mathematics.</p><div class="ctas"><a class="btn-read" href="https://www-cs-faculty.stanford.edu/~knuth/papers/claude-cycles.pdf" target="_blank" rel="noopener">Read →</a>
+      <details class="analysis-drawer">
+        <summary class="btn-dossier">[ Analysis + ]</summary>
+        <div class="drawer-content">
+          <h4>Technical Analysis</h4>
+          <p>Donald Knuth describes a recent collaborative experience involving &quot;Claude Opus 4.6,&quot; an AI model that successfully solved a challenging combinatorial problem regarding the decomposition of a directed graph into Hamiltonian cycles. Knuth, a pioneer of computer science, had been working on this problem for a future volume of *The Art of Computer Programming* and was surprised when the AI provided both a working Python implementation and a valid construction for odd values of $m$. The story details the iterative process of prompting the AI, the technical challenges faced during the exploration, and the eventual verification of the solution by human mathematicians and the Lean proof-checking community.</p>
+          
+          <p class="drawer-footer"><a href="#dossier-10">View in Dossier ↓</a></p>
+        </div>
+      </details>
+    </div></div>
       </div>
     </div>
   </section>
@@ -606,6 +735,19 @@
     localStorage.setItem(key, JSON.stringify(stored));
   }
 })();
+</script>
+<script>
+// Simple script to toggle the [+] and [-] labels on the drawers
+document.querySelectorAll('.analysis-drawer').forEach(drawer => {
+  drawer.addEventListener('toggle', () => {
+    const summary = drawer.querySelector('summary');
+    if (drawer.open) {
+      summary.textContent = '[ Analysis − ]';
+    } else {
+      summary.textContent = '[ Analysis + ]';
+    }
+  });
+});
 </script>
 </body>
 </html>

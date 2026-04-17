@@ -40,14 +40,43 @@
   .story-meta { font-weight: 600; font-size: 1.1rem; margin-bottom: 3rem; opacity: 0.6; letter-spacing: 0.02em; }
   .lede { font-size: clamp(1.4rem, 2.5vw, 2.1rem); line-height: 1.35; max-width: 800px; margin: 0 0 4rem; font-weight: 450; }
   
-  .ctas { display: flex; gap: 2.5rem; align-items: center; }
+  .ctas { display: flex; gap: 2.5rem; align-items: flex-start; }
   .ctas a {
     text-decoration: none; font-weight: 700; font-size: 1.1rem; letter-spacing: 0.1em; text-transform: uppercase;
     padding: 1.2rem 2.4rem; transition: all 0.2s;
   }
-  .btn-read { background: var(--text-dark); color: var(--bg-light); }
-  .btn-dossier { border-bottom: 2px solid currentColor; padding: 0.5rem 0 !important; }
+  .btn-read { background: var(--text-dark); color: var(--bg-light); cursor: pointer; border: none; }
+  .btn-dossier { 
+    border-bottom: 2px solid currentColor; padding: 0.5rem 0 !important; 
+    text-decoration: none; font-weight: 700; font-size: 1.1rem; letter-spacing: 0.1em; 
+    text-transform: uppercase; cursor: pointer; background: transparent; color: inherit;
+    display: inline-block;
+  }
   
+  /* ───── ANALYSIS DRAWER ───── */
+  .analysis-drawer { margin-top: 0; width: 100%; max-width: 800px; }
+  .analysis-drawer summary { list-style: none; outline: none; }
+  .analysis-drawer summary::-webkit-details-marker { display: none; }
+  .analysis-drawer[open] summary { margin-bottom: 2rem; }
+  .analysis-drawer[open] summary::after { content: ""; } /* Could add JS to toggle label but we'll do CSS trick or just keep static */
+  
+  .drawer-content {
+    background: rgba(0,0,0,0.03); padding: 3rem; border-left: 4px solid var(--text-dark);
+    animation: slideDown 0.3s ease-out;
+  }
+  .arc-midnight .drawer-content { background: rgba(255,255,255,0.05); border-color: #fff; }
+  .arc-terminal .drawer-content { background: rgba(32, 194, 14, 0.05); border-color: #20c20e; }
+  
+  .drawer-content h4 { text-transform: uppercase; letter-spacing: 0.2em; font-size: 0.9rem; margin-top: 0; margin-bottom: 1.5rem; opacity: 0.6; }
+  .drawer-content p { font-family: 'Fraunces', serif; font-size: 1.3rem; line-height: 1.5; margin-bottom: 1.5rem; }
+  .drawer-footer { margin-top: 2rem; border-top: 1px solid rgba(0,0,0,0.1); padding-top: 1.5rem; }
+  .drawer-footer a { font-size: 0.9rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; text-decoration: none; color: inherit; opacity: 0.5; }
+  
+  @keyframes slideDown {
+    from { opacity: 0; transform: translateY(-10px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
   /* ───── ARCHETYPE CSS ───── */
   
   /* Stat Hero */
@@ -347,7 +376,17 @@
       <h2 class="frnc">Virtual Reality for the 286 Processor</h2>
       <p class="story-meta">deadlime.hu &nbsp;·&nbsp; 145 pts &nbsp;·&nbsp; 29 comments</p>
       <p class="lede">A deep dive into the limitations of 1980s silicon reveals how modern ingenuity can conjure immersive dreamscapes on legacy hardware. This experiment proves that even the most constrained clock cycles can support surprising visual depth.</p>
-      <div class="ctas"><a class="btn-read" href="https://deadlime.hu/en/2026/02/22/computer-generated-dream-world/" target="_blank" rel="noopener">Read →</a><a class="btn-dossier" href="#dossier-1">Full analysis ↓</a></div>
+      <div class="ctas"><a class="btn-read" href="https://deadlime.hu/en/2026/02/22/computer-generated-dream-world/" target="_blank" rel="noopener">Read →</a>
+      <details class="analysis-drawer">
+        <summary class="btn-dossier">[ Analysis + ]</summary>
+        <div class="drawer-content">
+          <h4>Technical Analysis</h4>
+          <p class="muted"><em>Analysis not available.</em></p>
+          
+          <p class="drawer-footer"><a href="#dossier-1">View in Dossier ↓</a></p>
+        </div>
+      </details>
+    </div>
     </div>
   </section>
   <section id="story-2" class="spread arc-editorial-pullquote">
@@ -357,7 +396,17 @@
       <h2 class="frnc">Linking AI Conversations to Repository Commits</h2>
       <p class="story-meta">github.com &nbsp;·&nbsp; 496 pts &nbsp;·&nbsp; 390 comments</p>
       <p class="lede">As machine-generated code becomes the industry standard, the lack of context in our version history poses a significant transparency risk. Bridging the gap between intent and implementation requires treating the AI session as a first-class citizen in the git ecosystem.</p>
-      <div class="ctas"><a class="btn-read" href="https://github.com/mandel-macaque/memento" target="_blank" rel="noopener">Read →</a><a class="btn-dossier" href="#dossier-2">Full analysis ↓</a></div>
+      <div class="ctas"><a class="btn-read" href="https://github.com/mandel-macaque/memento" target="_blank" rel="noopener">Read →</a>
+      <details class="analysis-drawer">
+        <summary class="btn-dossier">[ Analysis + ]</summary>
+        <div class="drawer-content">
+          <h4>Technical Analysis</h4>
+          <p>`git-memento` is a Git extension designed to bridge the transparency gap in AI-assisted software development by linking code changes to the specific AI conversation sessions that generated them. It utilizes standard `git notes` to attach Markdown-formatted transcripts to commits, ensuring that the rationale, alternative considerations, and constraints provided to an AI model are preserved within the repository. The tool supports integration with various AI providers and includes comprehensive workflows for syncing these notes across teams, auditing coverage, and incorporating transparency checks into CI/CD pipelines.</p>
+          
+          <p class="drawer-footer"><a href="#dossier-2">View in Dossier ↓</a></p>
+        </div>
+      </details>
+    </div>
     </div>
     <div class="quote-side">
       <blockquote class="pullquote">The rationale behind a model&#x27;s output is as vital to the codebase as the generated logic itself</blockquote>
@@ -369,7 +418,17 @@
       <h2 class="frnc">WebMCP Framework Enters Early Preview</h2>
       <p class="story-meta">developer.chrome.com &nbsp;·&nbsp; 359 pts &nbsp;·&nbsp; 215 comments</p>
       <p class="lede">Chrome developers introduce a bridge for the Model Context Protocol, aimed at standardizing how browsers interact with local and remote AI models. This release provides a unified interface for developers building agentic workflows directly in the web environment.</p>
-      <div class="ctas"><a class="btn-read" href="https://developer.chrome.com/blog/webmcp-epp" target="_blank" rel="noopener">Read →</a><a class="btn-dossier" href="#dossier-3">Full analysis ↓</a></div>
+      <div class="ctas"><a class="btn-read" href="https://developer.chrome.com/blog/webmcp-epp" target="_blank" rel="noopener">Read →</a>
+      <details class="analysis-drawer">
+        <summary class="btn-dossier">[ Analysis + ]</summary>
+        <div class="drawer-content">
+          <h4>Technical Analysis</h4>
+          <p class="muted"><em>Analysis not available.</em></p>
+          
+          <p class="drawer-footer"><a href="#dossier-3">View in Dossier ↓</a></p>
+        </div>
+      </details>
+    </div>
     </div>
   </section>
   <section id="story-4" class="spread arc-alert-stamp">
@@ -380,7 +439,17 @@
       <h2 class="frnc">Public Records Ruling Forces Flock Network Closure</h2>
       <p class="story-meta">wltx.com &nbsp;·&nbsp; 485 pts &nbsp;·&nbsp; 155 comments</p>
       <p class="lede">Everett officials have shuttered their private surveillance camera network following a judge&#x27;s determination that the captured footage constitutes a public record. The decision marks a significant boundary in the ongoing debate over private-public infrastructure partnerships.</p>
-      <div class="ctas"><a class="btn-read" href="https://www.wltx.com/article/news/nation-world/281-53d8693e-77a4-42ad-86e4-3426a30d25ae" target="_blank" rel="noopener">Read →</a><a class="btn-dossier" href="#dossier-4">Full analysis ↓</a></div>
+      <div class="ctas"><a class="btn-read" href="https://www.wltx.com/article/news/nation-world/281-53d8693e-77a4-42ad-86e4-3426a30d25ae" target="_blank" rel="noopener">Read →</a>
+      <details class="analysis-drawer">
+        <summary class="btn-dossier">[ Analysis + ]</summary>
+        <div class="drawer-content">
+          <h4>Technical Analysis</h4>
+          <p class="muted"><em>Analysis not available.</em></p>
+          
+          <p class="drawer-footer"><a href="#dossier-4">View in Dossier ↓</a></p>
+        </div>
+      </details>
+    </div>
     </div>
   </section>
   <section id="story-5" class="spread arc-stat-hero">
@@ -390,7 +459,17 @@
       <h2 class="frnc">Compiling Classical Models Into Native C99 Code</h2>
       <p class="story-meta">github.com &nbsp;·&nbsp; 204 pts &nbsp;·&nbsp; 33 comments</p>
       <p class="lede">Timber strips away the Python runtime overhead to deliver high-performance inference for classical machine learning tasks. By bypassing typical dependency chains, the engine achieves a massive leap in processing speed.</p>
-      <div class="ctas"><a class="btn-read" href="https://github.com/kossisoroyce/timber" target="_blank" rel="noopener">Read →</a><a class="btn-dossier" href="#dossier-5">Full analysis ↓</a></div>
+      <div class="ctas"><a class="btn-read" href="https://github.com/kossisoroyce/timber" target="_blank" rel="noopener">Read →</a>
+      <details class="analysis-drawer">
+        <summary class="btn-dossier">[ Analysis + ]</summary>
+        <div class="drawer-content">
+          <h4>Technical Analysis</h4>
+          <p>Timber is a compiler-based tool that transforms trained classical machine learning models, such as XGBoost, LightGBM, and scikit-learn, into self-contained, native C99 code. By bypassing the traditional Python runtime and its associated overhead, the project produces optimized inference artifacts that are significantly faster and require no external dependencies. The tool includes an Ollama-compatible HTTP server, allowing developers to deploy these compiled models as lightweight, high-performance services in resource-constrained or production-critical environments.</p>
+          
+          <p class="drawer-footer"><a href="#dossier-5">View in Dossier ↓</a></p>
+        </div>
+      </details>
+    </div>
     </div>
   </section>
   <section id="story-6" class="spread arc-terminal">
@@ -404,7 +483,17 @@
         <p class="lede">Query your local system architecture to match models with available VRAM and CPU threads. This utility streamlines deployment by automating the complex process of hardware resource verification.<span class="cursor"></span></p>
         <div class="ctas">
           <a href="https://github.com/AlexsJones/llmfit" class="btn-read" target="_blank">RUN_PROCESS →</a>
-          <a href="#dossier-6" class="btn-dossier">VIEW_ANALYSIS ↓</a>
+          
+      <details class="analysis-drawer">
+        <summary class="btn-dossier">[ Analysis + ]</summary>
+        <div class="drawer-content">
+          <h4>Technical Analysis</h4>
+          <p>`llmfit` is a terminal-based utility designed to help users identify which large language models (LLMs) can run effectively on their specific hardware. By detecting local system resources—such as CPU, RAM, and GPU VRAM—the tool evaluates models based on quality, inference speed, and memory fit. It supports a wide range of backends, including Ollama and llama.cpp, and provides features like dynamic quantization selection, MoE architecture support, and a hardware simulation mode for planning upgrades.</p>
+          
+          <p class="drawer-footer"><a href="#dossier-6">View in Dossier ↓</a></p>
+        </div>
+      </details>
+    
         </div>
       </div>
     </div>
@@ -416,7 +505,17 @@
       <h2 class="frnc">A Zero-Browser Typesetting Engine for Bit-Perfect PDFs</h2>
       <p class="story-meta">github.com &nbsp;·&nbsp; 77 pts &nbsp;·&nbsp; 55 comments</p>
       <p class="lede">By ignoring the DOM in favor of a coordinate-based simulation, this engine renders documents with absolute precision. The architecture relies on pure TypeScript to ensure high-performance output across isolated server-side environments.</p>
-      <div class="ctas"><a class="btn-read" href="https://github.com/cosmiciron/vmprint" target="_blank" rel="noopener">Read →</a><a class="btn-dossier" href="#dossier-7">Full analysis ↓</a></div>
+      <div class="ctas"><a class="btn-read" href="https://github.com/cosmiciron/vmprint" target="_blank" rel="noopener">Read →</a>
+      <details class="analysis-drawer">
+        <summary class="btn-dossier">[ Analysis + ]</summary>
+        <div class="drawer-content">
+          <h4>Technical Analysis</h4>
+          <p>VMPrint is a deterministic, zero-browser layout engine written in pure TypeScript, designed to transform structured data into bit-perfect document layouts. Developed by a systems architect, the engine ignores the DOM entirely and uses a simulation-based model to calculate the absolute spatial coordinates of glyphs and boxes. By operating as a library rather than a browser-based rendering tool, it enables high-performance, single-pass document generation for environments like Cloudflare Workers, Node.js, and browser-based applications.</p>
+          
+          <p class="drawer-footer"><a href="#dossier-7">View in Dossier ↓</a></p>
+        </div>
+      </details>
+    </div>
     </div>
   </section>
   <section id="story-8" class="spread arc-mint-pattern" style="--bg-word: 'ALGORITHMS'">
@@ -428,7 +527,17 @@
       <h2 class="frnc">Frankensqlite Brings Concurrency to Rust</h2>
       <p class="story-meta">frankensqlite.com &nbsp;·&nbsp; 53 pts &nbsp;·&nbsp; 56 comments</p>
       <p class="lede">This re-implementation explores the limits of SQLite by introducing a novel approach to handle multiple concurrent writers. It dissects the classic ACID model to rebuild data persistence for the modern multicore era.</p>
-      <div class="ctas"><a class="btn-read" href="https://frankensqlite.com/" target="_blank" rel="noopener">Read →</a><a class="btn-dossier" href="#dossier-8">Full analysis ↓</a></div>
+      <div class="ctas"><a class="btn-read" href="https://frankensqlite.com/" target="_blank" rel="noopener">Read →</a>
+      <details class="analysis-drawer">
+        <summary class="btn-dossier">[ Analysis + ]</summary>
+        <div class="drawer-content">
+          <h4>Technical Analysis</h4>
+          <p class="muted"><em>Analysis not available.</em></p>
+          
+          <p class="drawer-footer"><a href="#dossier-8">View in Dossier ↓</a></p>
+        </div>
+      </details>
+    </div>
     </div>
   </section>
   <section id="story-9" class="spread arc-midnight">
@@ -439,7 +548,17 @@
       <h2 class="frnc">Ghostty Terminal Emulator</h2>
       <p class="story-meta">ghostty.org &nbsp;·&nbsp; 857 pts &nbsp;·&nbsp; 358 comments</p>
       <p class="lede">A performance-focused terminal emulator designed for high-speed input and seamless integration. The interface balances technical depth with a refined approach to modern console management.</p>
-      <div class="ctas"><a class="btn-read" href="https://ghostty.org/docs" target="_blank" rel="noopener">Read →</a><a class="btn-dossier" href="#dossier-9">Full analysis ↓</a></div>
+      <div class="ctas"><a class="btn-read" href="https://ghostty.org/docs" target="_blank" rel="noopener">Read →</a>
+      <details class="analysis-drawer">
+        <summary class="btn-dossier">[ Analysis + ]</summary>
+        <div class="drawer-content">
+          <h4>Technical Analysis</h4>
+          <p class="muted"><em>Analysis not available.</em></p>
+          
+          <p class="drawer-footer"><a href="#dossier-9">View in Dossier ↓</a></p>
+        </div>
+      </details>
+    </div>
     </div>
   </section>
   <section id="story-10" class="spread arc-academic-drop-cap">
@@ -453,7 +572,17 @@
       <p class="story-meta">tovejansson.com &nbsp;·&nbsp; 223 pts &nbsp;·&nbsp; 122 comments</p>
       <div class="cols">
         <div><p>G Studies of Jansson’s visual interpretation of Middle-earth provide a unique perspective on the intersection of Nordic folklore and canonical fantasy.</p></div>
-        <div><p>These illustrations, once met with critical skepticism, are now viewed as a masterclass in atmospheric rendering.</p><div class="ctas"><a class="btn-read" href="https://tovejansson.com/hobbit-tolkien/" target="_blank" rel="noopener">Read →</a><a class="btn-dossier" href="#dossier-10">Full analysis ↓</a></div></div>
+        <div><p>These illustrations, once met with critical skepticism, are now viewed as a masterclass in atmospheric rendering.</p><div class="ctas"><a class="btn-read" href="https://tovejansson.com/hobbit-tolkien/" target="_blank" rel="noopener">Read →</a>
+      <details class="analysis-drawer">
+        <summary class="btn-dossier">[ Analysis + ]</summary>
+        <div class="drawer-content">
+          <h4>Technical Analysis</h4>
+          <p class="muted"><em>Analysis not available.</em></p>
+          
+          <p class="drawer-footer"><a href="#dossier-10">View in Dossier ↓</a></p>
+        </div>
+      </details>
+    </div></div>
       </div>
     </div>
   </section>
@@ -604,6 +733,19 @@
     localStorage.setItem(key, JSON.stringify(stored));
   }
 })();
+</script>
+<script>
+// Simple script to toggle the [+] and [-] labels on the drawers
+document.querySelectorAll('.analysis-drawer').forEach(drawer => {
+  drawer.addEventListener('toggle', () => {
+    const summary = drawer.querySelector('summary');
+    if (drawer.open) {
+      summary.textContent = '[ Analysis − ]';
+    } else {
+      summary.textContent = '[ Analysis + ]';
+    }
+  });
+});
 </script>
 </body>
 </html>

@@ -40,14 +40,43 @@
   .story-meta { font-weight: 600; font-size: 1.1rem; margin-bottom: 3rem; opacity: 0.6; letter-spacing: 0.02em; }
   .lede { font-size: clamp(1.4rem, 2.5vw, 2.1rem); line-height: 1.35; max-width: 800px; margin: 0 0 4rem; font-weight: 450; }
   
-  .ctas { display: flex; gap: 2.5rem; align-items: center; }
+  .ctas { display: flex; gap: 2.5rem; align-items: flex-start; }
   .ctas a {
     text-decoration: none; font-weight: 700; font-size: 1.1rem; letter-spacing: 0.1em; text-transform: uppercase;
     padding: 1.2rem 2.4rem; transition: all 0.2s;
   }
-  .btn-read { background: var(--text-dark); color: var(--bg-light); }
-  .btn-dossier { border-bottom: 2px solid currentColor; padding: 0.5rem 0 !important; }
+  .btn-read { background: var(--text-dark); color: var(--bg-light); cursor: pointer; border: none; }
+  .btn-dossier { 
+    border-bottom: 2px solid currentColor; padding: 0.5rem 0 !important; 
+    text-decoration: none; font-weight: 700; font-size: 1.1rem; letter-spacing: 0.1em; 
+    text-transform: uppercase; cursor: pointer; background: transparent; color: inherit;
+    display: inline-block;
+  }
   
+  /* ───── ANALYSIS DRAWER ───── */
+  .analysis-drawer { margin-top: 0; width: 100%; max-width: 800px; }
+  .analysis-drawer summary { list-style: none; outline: none; }
+  .analysis-drawer summary::-webkit-details-marker { display: none; }
+  .analysis-drawer[open] summary { margin-bottom: 2rem; }
+  .analysis-drawer[open] summary::after { content: ""; } /* Could add JS to toggle label but we'll do CSS trick or just keep static */
+  
+  .drawer-content {
+    background: rgba(0,0,0,0.03); padding: 3rem; border-left: 4px solid var(--text-dark);
+    animation: slideDown 0.3s ease-out;
+  }
+  .arc-midnight .drawer-content { background: rgba(255,255,255,0.05); border-color: #fff; }
+  .arc-terminal .drawer-content { background: rgba(32, 194, 14, 0.05); border-color: #20c20e; }
+  
+  .drawer-content h4 { text-transform: uppercase; letter-spacing: 0.2em; font-size: 0.9rem; margin-top: 0; margin-bottom: 1.5rem; opacity: 0.6; }
+  .drawer-content p { font-family: 'Fraunces', serif; font-size: 1.3rem; line-height: 1.5; margin-bottom: 1.5rem; }
+  .drawer-footer { margin-top: 2rem; border-top: 1px solid rgba(0,0,0,0.1); padding-top: 1.5rem; }
+  .drawer-footer a { font-size: 0.9rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; text-decoration: none; color: inherit; opacity: 0.5; }
+  
+  @keyframes slideDown {
+    from { opacity: 0; transform: translateY(-10px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
   /* ───── ARCHETYPE CSS ───── */
   
   /* Stat Hero */
@@ -347,7 +376,18 @@
       <h2 class="frnc">Claude-Mem bridges the gap between ephemeral sessions and long-term project context.</h2>
       <p class="story-meta">github.com &nbsp;·&nbsp; 22,858 stars stars &nbsp;·&nbsp; 0 stars today</p>
       <p class="lede">This framework implements a hybrid SQLite and Chroma storage layer to manage persistent state. It reconstructs developer intent through tiered retrieval patterns that maintain project continuity across disconnected work cycles.</p>
-      <div class="ctas"><a class="btn-read" href="https://github.com/thedotmack/claude-mem" target="_blank" rel="noopener">Read →</a><a class="btn-dossier" href="#dossier-1">Full analysis ↓</a></div>
+      <div class="ctas"><a class="btn-read" href="https://github.com/thedotmack/claude-mem" target="_blank" rel="noopener">Read →</a>
+      <details class="analysis-drawer">
+        <summary class="btn-dossier">[ Analysis + ]</summary>
+        <div class="drawer-content">
+          <h4>Technical Analysis</h4>
+          <p>Claude-Mem is a sophisticated plugin for Claude Code designed to provide persistent, long-term memory for coding sessions by capturing and summarizing tool interactions and project context. It operates through a robust architecture featuring lifecycle hooks, a Bun-managed worker service, and a hybrid search engine that combines SQLite for relational data with Chroma for semantic vector search. By utilizing a &quot;progressive disclosure&quot; retrieval pattern, the system intelligently fetches context in layers to minimize token consumption while maintaining deep project continuity across disconnected sessions.</p>
+<p>This tool is highly beneficial for professional software engineers and heavy users of Claude Code who struggle with context loss during long-term development projects. It is trending because it addresses a critical pain point in AI-assisted coding—the ephemeral nature of LLM sessions—by enabling the agent to &quot;remember&quot; past bugs, architectural decisions, and previous code iterations. The combination of automated background operation, privacy controls, and a dedicated web UI makes it an essential utility for developers looking to scale their AI-driven productivity.</p>
+          
+          <p class="drawer-footer"><a href="#dossier-1">View in Dossier ↓</a></p>
+        </div>
+      </details>
+    </div>
     </div>
   </section>
   <section id="story-2" class="spread arc-experimental-workshop">
@@ -357,7 +397,18 @@
       <h2 class="frnc">Standardizing agentic workflows with the open-source Codex skill catalog.</h2>
       <p class="story-meta">github.com &nbsp;·&nbsp; 3,841 stars stars &nbsp;·&nbsp; 0 stars today</p>
       <p class="lede">We are sketching out the modular future of automation by packaging task-oriented logic for rapid deployment. Simply swap these standardized scripts into your existing stack to extend your agent’s functional range.</p>
-      <div class="ctas"><a class="btn-read" href="https://github.com/openai/skills" target="_blank" rel="noopener">Read →</a><a class="btn-dossier" href="#dossier-2">Full analysis ↓</a></div>
+      <div class="ctas"><a class="btn-read" href="https://github.com/openai/skills" target="_blank" rel="noopener">Read →</a>
+      <details class="analysis-drawer">
+        <summary class="btn-dossier">[ Analysis + ]</summary>
+        <div class="drawer-content">
+          <h4>Technical Analysis</h4>
+          <p>The `openai/skills` repository serves as a centralized catalog for &quot;Agent Skills,&quot; which are standardized sets of instructions, scripts, and resources designed to enhance the capabilities of AI agents within the Codex ecosystem. By packaging specific task-oriented functionalities, these skills allow developers to create repeatable workflows that can be seamlessly integrated across different environments. Technically, the system utilizes a command-line interface, `$skill-installer`, to fetch and implement curated or experimental skills directly from the repository, requiring only a simple restart of Codex to activate the new logic.</p>
+<p>This project primarily benefits software engineers and AI developers who seek to streamline complex automation tasks and improve the modularity of their AI-driven applications. It is trending because it addresses the growing demand for an open standard in agentic workflows, enabling teams to share and adopt standardized toolsets for diverse technical requirements. By fostering a collaborative ecosystem where custom functionalities can be easily distributed and reused, this repository significantly lowers the barrier to deploying specialized AI agents in professional development environments.</p>
+          
+          <p class="drawer-footer"><a href="#dossier-2">View in Dossier ↓</a></p>
+        </div>
+      </details>
+    </div>
     </div>
   </section>
   <section id="story-3" class="spread arc-blueprint">
@@ -367,7 +418,17 @@
       <h2 class="frnc">Mastering hook integration within the Claude Code environment.</h2>
       <p class="story-meta">github.com &nbsp;·&nbsp; 2,439 stars stars &nbsp;·&nbsp; 0 stars today</p>
       <p class="lede">Follow this structural breakdown to effectively weave custom hooks into your LLM-driven development workflow. We map the lifecycle events necessary to customize agent behavior and stabilize your build process.</p>
-      <div class="ctas"><a class="btn-read" href="https://github.com/disler/claude-code-hooks-mastery" target="_blank" rel="noopener">Read →</a><a class="btn-dossier" href="#dossier-3">Full analysis ↓</a></div>
+      <div class="ctas"><a class="btn-read" href="https://github.com/disler/claude-code-hooks-mastery" target="_blank" rel="noopener">Read →</a>
+      <details class="analysis-drawer">
+        <summary class="btn-dossier">[ Analysis + ]</summary>
+        <div class="drawer-content">
+          <h4>Technical Analysis</h4>
+          <p class="muted"><em>Analysis not available.</em></p>
+          
+          <p class="drawer-footer"><a href="#dossier-3">View in Dossier ↓</a></p>
+        </div>
+      </details>
+    </div>
     </div>
   </section>
   <section id="story-4" class="spread arc-stat-hero">
@@ -377,7 +438,17 @@
       <h2 class="frnc">ChatDev achieves rapid scale through automated multi-agent software development.</h2>
       <p class="story-meta">github.com &nbsp;·&nbsp; 30,035 stars stars &nbsp;·&nbsp; 0 stars today</p>
       <p class="lede">The project demonstrates the power of collaborative virtual agents in shortening the development lifecycle. Its recent growth reflects a broader industry shift toward autonomous, specialized software engineering teams.</p>
-      <div class="ctas"><a class="btn-read" href="https://github.com/OpenBMB/ChatDev" target="_blank" rel="noopener">Read →</a><a class="btn-dossier" href="#dossier-4">Full analysis ↓</a></div>
+      <div class="ctas"><a class="btn-read" href="https://github.com/OpenBMB/ChatDev" target="_blank" rel="noopener">Read →</a>
+      <details class="analysis-drawer">
+        <summary class="btn-dossier">[ Analysis + ]</summary>
+        <div class="drawer-content">
+          <h4>Technical Analysis</h4>
+          <p class="muted"><em>Analysis not available.</em></p>
+          
+          <p class="drawer-footer"><a href="#dossier-4">View in Dossier ↓</a></p>
+        </div>
+      </details>
+    </div>
     </div>
   </section>
   <section id="story-5" class="spread arc-library-archive">
@@ -387,7 +458,17 @@
       <h2 class="frnc">The Anki ecosystem remains the foundational standard for spaced-repetition learning.</h2>
       <p class="story-meta">github.com &nbsp;·&nbsp; 26,205 stars stars &nbsp;·&nbsp; 0 stars today</p>
       <p class="lede">A comprehensive repository that has sustained millions of learners through algorithmic optimization and cross-platform accessibility. We examine the codebase as a primary case study in effective long-term knowledge retention systems.</p>
-      <div class="ctas"><a class="btn-read" href="https://github.com/ankitects/anki" target="_blank" rel="noopener">Read →</a><a class="btn-dossier" href="#dossier-5">Full analysis ↓</a></div>
+      <div class="ctas"><a class="btn-read" href="https://github.com/ankitects/anki" target="_blank" rel="noopener">Read →</a>
+      <details class="analysis-drawer">
+        <summary class="btn-dossier">[ Analysis + ]</summary>
+        <div class="drawer-content">
+          <h4>Technical Analysis</h4>
+          <p class="muted"><em>Analysis not available.</em></p>
+          
+          <p class="drawer-footer"><a href="#dossier-5">View in Dossier ↓</a></p>
+        </div>
+      </details>
+    </div>
     </div>
   </section>
   <section id="story-6" class="spread arc-enterprise-engine">
@@ -397,7 +478,17 @@
       <h2 class="frnc">Extending telemetry capabilities with the OpenTelemetry collector contribution library.</h2>
       <p class="story-meta">github.com &nbsp;·&nbsp; 4,364 stars stars &nbsp;·&nbsp; 0 stars today</p>
       <p class="lede">Standardize your infrastructure monitoring with this robust suite of community-driven connectors and processors. It provides the reliable, scalable backbone required to handle massive volumes of distributed trace data.</p>
-      <div class="ctas"><a class="btn-read" href="https://github.com/open-telemetry/opentelemetry-collector-contrib" target="_blank" rel="noopener">Read →</a><a class="btn-dossier" href="#dossier-6">Full analysis ↓</a></div>
+      <div class="ctas"><a class="btn-read" href="https://github.com/open-telemetry/opentelemetry-collector-contrib" target="_blank" rel="noopener">Read →</a>
+      <details class="analysis-drawer">
+        <summary class="btn-dossier">[ Analysis + ]</summary>
+        <div class="drawer-content">
+          <h4>Technical Analysis</h4>
+          <p class="muted"><em>Analysis not available.</em></p>
+          
+          <p class="drawer-footer"><a href="#dossier-6">View in Dossier ↓</a></p>
+        </div>
+      </details>
+    </div>
     </div>
   </section>
   <section id="story-7" class="spread arc-data-pipeline">
@@ -407,7 +498,17 @@
       <h2 class="frnc">WrenAI streamlines data interaction using natural language to SQL translation.</h2>
       <p class="story-meta">github.com &nbsp;·&nbsp; 14,014 stars stars &nbsp;·&nbsp; 0 stars today</p>
       <p class="lede">By automating the mapping of user requests to complex database schemas, this system keeps information flowing into the hands of stakeholders. It turns high-throughput data environments into conversational, accessible knowledge hubs.</p>
-      <div class="ctas"><a class="btn-read" href="https://github.com/Canner/WrenAI" target="_blank" rel="noopener">Read →</a><a class="btn-dossier" href="#dossier-7">Full analysis ↓</a></div>
+      <div class="ctas"><a class="btn-read" href="https://github.com/Canner/WrenAI" target="_blank" rel="noopener">Read →</a>
+      <details class="analysis-drawer">
+        <summary class="btn-dossier">[ Analysis + ]</summary>
+        <div class="drawer-content">
+          <h4>Technical Analysis</h4>
+          <p class="muted"><em>Analysis not available.</em></p>
+          
+          <p class="drawer-footer"><a href="#dossier-7">View in Dossier ↓</a></p>
+        </div>
+      </details>
+    </div>
     </div>
   </section>
   <section id="story-8" class="spread arc-caution-tape">
@@ -419,7 +520,17 @@
       <h2 class="frnc">Maestro provides advanced tools for security research and software vulnerability assessment.</h2>
       <p class="story-meta">github.com &nbsp;·&nbsp; 1,704 stars stars &nbsp;·&nbsp; 0 stars today</p>
       <p class="lede">This repository is for the meticulous auditor, focusing on the identification and exploration of system-level exploits. Tread carefully when deploying these diagnostic utilities in production-sensitive environments.</p>
-      <div class="ctas"><a class="btn-read" href="https://github.com/pedramamini/Maestro" target="_blank" rel="noopener">Read →</a><a class="btn-dossier" href="#dossier-8">Full analysis ↓</a></div>
+      <div class="ctas"><a class="btn-read" href="https://github.com/pedramamini/Maestro" target="_blank" rel="noopener">Read →</a>
+      <details class="analysis-drawer">
+        <summary class="btn-dossier">[ Analysis + ]</summary>
+        <div class="drawer-content">
+          <h4>Technical Analysis</h4>
+          <p class="muted"><em>Analysis not available.</em></p>
+          
+          <p class="drawer-footer"><a href="#dossier-8">View in Dossier ↓</a></p>
+        </div>
+      </details>
+    </div>
     </div>
     <div class="tape bottom">CAUTION CAUTION CAUTION CAUTION CAUTION CAUTION CAUTION CAUTION</div>
   </section>
@@ -430,7 +541,17 @@
       <h2 class="frnc">Manage Node.js versions efficiently with the industry-standard NVM utility.</h2>
       <p class="story-meta">github.com &nbsp;·&nbsp; 91,271 stars stars &nbsp;·&nbsp; 0 stars today</p>
       <p class="lede">Drop into the shell and gain total control over your runtime environments with this essential tool. It remains the rugged, battle-tested standard for every developer navigating the complexity of shifting dependencies.</p>
-      <div class="ctas"><a class="btn-read" href="https://github.com/nvm-sh/nvm" target="_blank" rel="noopener">Read →</a><a class="btn-dossier" href="#dossier-9">Full analysis ↓</a></div>
+      <div class="ctas"><a class="btn-read" href="https://github.com/nvm-sh/nvm" target="_blank" rel="noopener">Read →</a>
+      <details class="analysis-drawer">
+        <summary class="btn-dossier">[ Analysis + ]</summary>
+        <div class="drawer-content">
+          <h4>Technical Analysis</h4>
+          <p class="muted"><em>Analysis not available.</em></p>
+          
+          <p class="drawer-footer"><a href="#dossier-9">View in Dossier ↓</a></p>
+        </div>
+      </details>
+    </div>
     </div>
   </section>
   <section id="story-10" class="spread arc-system-core">
@@ -440,7 +561,17 @@
       <h2 class="frnc">Qlib delivers a high-performance framework for AI-driven quantitative financial modeling.</h2>
       <p class="story-meta">github.com &nbsp;·&nbsp; 36,601 stars stars &nbsp;·&nbsp; 0 stars today</p>
       <p class="lede">Raw computational speed meets market analysis in this low-latency infrastructure built for algorithmic research. It provides the unyielding performance required to process vast financial datasets with precision and accuracy.</p>
-      <div class="ctas"><a class="btn-read" href="https://github.com/microsoft/qlib" target="_blank" rel="noopener">Read →</a><a class="btn-dossier" href="#dossier-10">Full analysis ↓</a></div>
+      <div class="ctas"><a class="btn-read" href="https://github.com/microsoft/qlib" target="_blank" rel="noopener">Read →</a>
+      <details class="analysis-drawer">
+        <summary class="btn-dossier">[ Analysis + ]</summary>
+        <div class="drawer-content">
+          <h4>Technical Analysis</h4>
+          <p class="muted"><em>Analysis not available.</em></p>
+          
+          <p class="drawer-footer"><a href="#dossier-10">View in Dossier ↓</a></p>
+        </div>
+      </details>
+    </div>
     </div>
   </section>
   <section id="dossier" class="dossier">
@@ -592,6 +723,19 @@
     localStorage.setItem(key, JSON.stringify(stored));
   }
 })();
+</script>
+<script>
+// Simple script to toggle the [+] and [-] labels on the drawers
+document.querySelectorAll('.analysis-drawer').forEach(drawer => {
+  drawer.addEventListener('toggle', () => {
+    const summary = drawer.querySelector('summary');
+    if (drawer.open) {
+      summary.textContent = '[ Analysis − ]';
+    } else {
+      summary.textContent = '[ Analysis + ]';
+    }
+  });
+});
 </script>
 </body>
 </html>

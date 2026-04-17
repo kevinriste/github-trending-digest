@@ -40,14 +40,43 @@
   .story-meta { font-weight: 600; font-size: 1.1rem; margin-bottom: 3rem; opacity: 0.6; letter-spacing: 0.02em; }
   .lede { font-size: clamp(1.4rem, 2.5vw, 2.1rem); line-height: 1.35; max-width: 800px; margin: 0 0 4rem; font-weight: 450; }
   
-  .ctas { display: flex; gap: 2.5rem; align-items: center; }
+  .ctas { display: flex; gap: 2.5rem; align-items: flex-start; }
   .ctas a {
     text-decoration: none; font-weight: 700; font-size: 1.1rem; letter-spacing: 0.1em; text-transform: uppercase;
     padding: 1.2rem 2.4rem; transition: all 0.2s;
   }
-  .btn-read { background: var(--text-dark); color: var(--bg-light); }
-  .btn-dossier { border-bottom: 2px solid currentColor; padding: 0.5rem 0 !important; }
+  .btn-read { background: var(--text-dark); color: var(--bg-light); cursor: pointer; border: none; }
+  .btn-dossier { 
+    border-bottom: 2px solid currentColor; padding: 0.5rem 0 !important; 
+    text-decoration: none; font-weight: 700; font-size: 1.1rem; letter-spacing: 0.1em; 
+    text-transform: uppercase; cursor: pointer; background: transparent; color: inherit;
+    display: inline-block;
+  }
   
+  /* ───── ANALYSIS DRAWER ───── */
+  .analysis-drawer { margin-top: 0; width: 100%; max-width: 800px; }
+  .analysis-drawer summary { list-style: none; outline: none; }
+  .analysis-drawer summary::-webkit-details-marker { display: none; }
+  .analysis-drawer[open] summary { margin-bottom: 2rem; }
+  .analysis-drawer[open] summary::after { content: ""; } /* Could add JS to toggle label but we'll do CSS trick or just keep static */
+  
+  .drawer-content {
+    background: rgba(0,0,0,0.03); padding: 3rem; border-left: 4px solid var(--text-dark);
+    animation: slideDown 0.3s ease-out;
+  }
+  .arc-midnight .drawer-content { background: rgba(255,255,255,0.05); border-color: #fff; }
+  .arc-terminal .drawer-content { background: rgba(32, 194, 14, 0.05); border-color: #20c20e; }
+  
+  .drawer-content h4 { text-transform: uppercase; letter-spacing: 0.2em; font-size: 0.9rem; margin-top: 0; margin-bottom: 1.5rem; opacity: 0.6; }
+  .drawer-content p { font-family: 'Fraunces', serif; font-size: 1.3rem; line-height: 1.5; margin-bottom: 1.5rem; }
+  .drawer-footer { margin-top: 2rem; border-top: 1px solid rgba(0,0,0,0.1); padding-top: 1.5rem; }
+  .drawer-footer a { font-size: 0.9rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; text-decoration: none; color: inherit; opacity: 0.5; }
+  
+  @keyframes slideDown {
+    from { opacity: 0; transform: translateY(-10px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
   /* ───── ARCHETYPE CSS ───── */
   
   /* Stat Hero */
@@ -347,7 +376,18 @@
       <h2 class="frnc">Enforcing Claude’s Workflow via Rigorous Configuration</h2>
       <p class="story-meta">github.com &nbsp;·&nbsp; 46,522 stars &nbsp;·&nbsp; 0 stars today</p>
       <p class="lede">To mitigate hallucination and drift, this structural framework implements a mandatory CLAUDE.md directive for your coding agents. By defining four cardinal pillars of execution, the system forces a disciplined, goal-driven interaction model.</p>
-      <div class="ctas"><a class="btn-read" href="https://github.com/forrestchang/andrej-karpathy-skills" target="_blank" rel="noopener">Read →</a><a class="btn-dossier" href="#dossier-1">Full analysis ↓</a></div>
+      <div class="ctas"><a class="btn-read" href="https://github.com/forrestchang/andrej-karpathy-skills" target="_blank" rel="noopener">Read →</a>
+      <details class="analysis-drawer">
+        <summary class="btn-dossier">[ Analysis + ]</summary>
+        <div class="drawer-content">
+          <h4>Technical Analysis</h4>
+          <p>The `forrestchang/andrej-karpathy-skills` repository provides a set of rigorous, principle-based instructions designed to refine the behavior of Claude Code by addressing common AI coding pitfalls. By implementing a `CLAUDE.md` file centered on four key pillars—&quot;Think Before Coding,&quot; &quot;Simplicity First,&quot; &quot;Surgical Changes,&quot; and &quot;Goal-Driven Execution&quot;—the project forces the LLM to verify its assumptions, avoid unnecessary code bloat, and maintain strict focus on user intent. Technically, these guidelines are deployed either as a project-specific configuration file or as an installable Claude Code plugin, ensuring the AI maintains a consistent, high-quality development workflow across various tasks.</p>
+<p>This project is highly beneficial for developers who utilize AI coding agents and find themselves frequently correcting hallucinations, over-engineered abstractions, or intrusive, unrequested refactoring. It is trending because it operationalizes Andrej Karpathy’s widely circulated critiques of LLM coding behavior, offering a practical solution to the &quot;silent failure&quot; and &quot;bloated code&quot; problems inherent in current generative models. By adopting these constraints, users can significantly reduce the time spent on manual code reviews and cleanup, shifting the AI’s role from an error-prone &quot;doer&quot; to a disciplined, goal-oriented partner.</p>
+          
+          <p class="drawer-footer"><a href="#dossier-1">View in Dossier ↓</a></p>
+        </div>
+      </details>
+    </div>
     </div>
   </section>
   <section id="story-2" class="spread arc-blueprint">
@@ -357,7 +397,18 @@
       <h2 class="frnc">Building Persistent Memory Layers for Claude Code</h2>
       <p class="story-meta">github.com &nbsp;·&nbsp; 58,607 stars &nbsp;·&nbsp; 0 stars today</p>
       <p class="lede">The ephemeral nature of LLM sessions often leads to repetitive errors and context loss. This project constructs a secondary memory layer using a Bun-managed worker, allowing your agent to recall architecture, bugs, and history with precision.</p>
-      <div class="ctas"><a class="btn-read" href="https://github.com/thedotmack/claude-mem" target="_blank" rel="noopener">Read →</a><a class="btn-dossier" href="#dossier-2">Full analysis ↓</a></div>
+      <div class="ctas"><a class="btn-read" href="https://github.com/thedotmack/claude-mem" target="_blank" rel="noopener">Read →</a>
+      <details class="analysis-drawer">
+        <summary class="btn-dossier">[ Analysis + ]</summary>
+        <div class="drawer-content">
+          <h4>Technical Analysis</h4>
+          <p>Claude-Mem is a sophisticated plugin for Claude Code designed to provide persistent, long-term memory for coding sessions by capturing and summarizing tool interactions and project context. It operates through a robust architecture featuring lifecycle hooks, a Bun-managed worker service, and a hybrid search engine that combines SQLite for relational data with Chroma for semantic vector search. By utilizing a &quot;progressive disclosure&quot; retrieval pattern, the system intelligently fetches context in layers to minimize token consumption while maintaining deep project continuity across disconnected sessions.</p>
+<p>This tool is highly beneficial for professional software engineers and heavy users of Claude Code who struggle with context loss during long-term development projects. It is trending because it addresses a critical pain point in AI-assisted coding—the ephemeral nature of LLM sessions—by enabling the agent to &quot;remember&quot; past bugs, architectural decisions, and previous code iterations. The combination of automated background operation, privacy controls, and a dedicated web UI makes it an essential utility for developers looking to scale their AI-driven productivity.</p>
+          
+          <p class="drawer-footer"><a href="#dossier-2">View in Dossier ↓</a></p>
+        </div>
+      </details>
+    </div>
     </div>
   </section>
   <section id="story-3" class="spread arc-experimental-workshop">
@@ -367,7 +418,18 @@
       <h2 class="frnc">Developing Self-Evolving Local Agent Loops</h2>
       <p class="story-meta">github.com &nbsp;·&nbsp; 2,368 stars &nbsp;·&nbsp; 0 stars today</p>
       <p class="lede">A lean 3,000-line framework that turns your local machine into an adaptive sandbox. It learns from successful task execution, building a personal skill tree that grows more efficient with every iterative command.</p>
-      <div class="ctas"><a class="btn-read" href="https://github.com/lsdefine/GenericAgent" target="_blank" rel="noopener">Read →</a><a class="btn-dossier" href="#dossier-3">Full analysis ↓</a></div>
+      <div class="ctas"><a class="btn-read" href="https://github.com/lsdefine/GenericAgent" target="_blank" rel="noopener">Read →</a>
+      <details class="analysis-drawer">
+        <summary class="btn-dossier">[ Analysis + ]</summary>
+        <div class="drawer-content">
+          <h4>Technical Analysis</h4>
+          <p>GenericAgent is a minimalist autonomous agent framework that empowers LLMs to achieve system-level control over a local computer through a compact 3,000-line codebase. By utilizing a core loop of only 100 lines and nine atomic tools, it enables agents to interact with web browsers, file systems, and hardware inputs without pre-loading static capabilities. Its standout feature is an &quot;evolutionary&quot; memory system that crystallizes successful task-execution paths into reusable skills, building a personalized, growing skill tree that minimizes token consumption while increasing long-term task efficiency.</p>
+<p>This project is highly beneficial for power users and developers who seek a cost-effective, high-autonomy alternative to resource-heavy, cloud-reliant agent frameworks. It is currently trending because it addresses the industry&#x27;s struggle with high costs and &quot;stateless&quot; AI by offering a solution that grows smarter and more specialized the longer it is used. By delivering local, persistent, and self-improving automation, GenericAgent appeals to those looking for a practical, low-overhead way to delegate complex, multi-step digital workflows to an intelligent assistant.</p>
+          
+          <p class="drawer-footer"><a href="#dossier-3">View in Dossier ↓</a></p>
+        </div>
+      </details>
+    </div>
     </div>
   </section>
   <section id="story-4" class="spread arc-ui-lab">
@@ -377,7 +439,18 @@
       <h2 class="frnc">Orchestrating High-Fidelity Voice Synthesis Locally</h2>
       <p class="story-meta">github.com &nbsp;·&nbsp; 18,667 stars &nbsp;·&nbsp; 0 stars today</p>
       <p class="lede">Voicebox brings professional-grade audio production to your desktop without the privacy trade-offs of cloud-locked services. Featuring a modern, multi-track interface built on Rust and Tauri, this tool manages complex generation queues with ease.</p>
-      <div class="ctas"><a class="btn-read" href="https://github.com/jamiepine/voicebox" target="_blank" rel="noopener">Read →</a><a class="btn-dossier" href="#dossier-4">Full analysis ↓</a></div>
+      <div class="ctas"><a class="btn-read" href="https://github.com/jamiepine/voicebox" target="_blank" rel="noopener">Read →</a>
+      <details class="analysis-drawer">
+        <summary class="btn-dossier">[ Analysis + ]</summary>
+        <div class="drawer-content">
+          <h4>Technical Analysis</h4>
+          <p>Voicebox is an open-source, local-first voice synthesis studio that serves as a private, high-performance alternative to cloud-based services like ElevenLabs. Built using a robust tech stack—featuring a Tauri (Rust) desktop interface, a Python/FastAPI backend, and multi-engine support including Qwen3-TTS and HumeAI’s TADA—the application enables users to clone voices, generate speech in 23 languages, and apply professional audio effects. The software excels in workflow management by offering a multi-track timeline editor, an asynchronous generation queue, and comprehensive REST API access for seamless integration into external development projects.</p>
+<p>This project is highly beneficial for developers, content creators, and accessibility advocates who require enterprise-grade voice synthesis without sacrificing data privacy or incurring recurring subscription costs. It is currently trending because it democratizes access to sophisticated AI audio tools, allowing users to run complex models locally on various hardware, including Apple Silicon, NVIDIA GPUs, and AMD/Intel systems. By combining a user-friendly interface with advanced features like paralinguistic emotion tagging and unlimited-length audio chunking, Voicebox provides a flexible, powerful solution for professional-quality media production.</p>
+          
+          <p class="drawer-footer"><a href="#dossier-4">View in Dossier ↓</a></p>
+        </div>
+      </details>
+    </div>
     </div>
   </section>
   <section id="story-5" class="spread arc-enterprise-engine">
@@ -387,7 +460,18 @@
       <h2 class="frnc">Standardizing Agentic Workflows on Vercel</h2>
       <p class="story-meta">github.com &nbsp;·&nbsp; 2,928 stars &nbsp;·&nbsp; 0 stars today</p>
       <p class="lede">Reliable automation requires robust sandboxing and persistent state management. This reference architecture separates the interface from the execution environment, ensuring your agents remain stable across long-running development tasks.</p>
-      <div class="ctas"><a class="btn-read" href="https://github.com/vercel-labs/open-agents" target="_blank" rel="noopener">Read →</a><a class="btn-dossier" href="#dossier-5">Full analysis ↓</a></div>
+      <div class="ctas"><a class="btn-read" href="https://github.com/vercel-labs/open-agents" target="_blank" rel="noopener">Read →</a>
+      <details class="analysis-drawer">
+        <summary class="btn-dossier">[ Analysis + ]</summary>
+        <div class="drawer-content">
+          <h4>Technical Analysis</h4>
+          <p>Open Agents is an open-source reference template designed for building and deploying autonomous, cloud-based coding agents on the Vercel platform. The system employs a three-layer architecture that separates the web interface and durable agent workflow from an isolated, snapshot-based sandbox environment. By running the agent outside the sandbox and interacting with it via specific tools like file manipulation and shell commands, the project ensures persistent, reliable execution that can survive request lifecycles and hibernate between tasks.</p>
+<p>This repository is ideal for developers and engineering teams looking to create custom, AI-driven automation tools that can autonomously manage GitHub repositories, execute code, and perform complex development tasks. It is gaining traction because it provides a transparent, modular blueprint for production-grade agentic workflows, moving beyond simple chat interfaces into persistent, long-running agent logic. By offering a robust framework for secure sandboxing and GitHub integration, the project empowers builders to experiment with their own agent architectures without the overhead of starting from scratch.</p>
+          
+          <p class="drawer-footer"><a href="#dossier-5">View in Dossier ↓</a></p>
+        </div>
+      </details>
+    </div>
     </div>
   </section>
   <section id="story-6" class="spread arc-system-core">
@@ -397,7 +481,18 @@
       <h2 class="frnc">Google’s High-Performance File Classification Engine</h2>
       <p class="story-meta">github.com &nbsp;·&nbsp; 14,150 stars &nbsp;·&nbsp; 0 stars today</p>
       <p class="lede">Precision in data processing requires absolute reliability at the lowest possible latency. Magika identifies hundreds of binary and text formats in five milliseconds, providing an essential safety barrier for any security-conscious infrastructure.</p>
-      <div class="ctas"><a class="btn-read" href="https://github.com/google/magika" target="_blank" rel="noopener">Read →</a><a class="btn-dossier" href="#dossier-6">Full analysis ↓</a></div>
+      <div class="ctas"><a class="btn-read" href="https://github.com/google/magika" target="_blank" rel="noopener">Read →</a>
+      <details class="analysis-drawer">
+        <summary class="btn-dossier">[ Analysis + ]</summary>
+        <div class="drawer-content">
+          <h4>Technical Analysis</h4>
+          <p>Magika is an AI-powered tool developed by Google designed to perform fast and highly accurate file type identification across hundreds of binary and textual formats. By leveraging a custom, lightweight deep learning model trained on approximately 100 million samples, it achieves roughly 99% precision and recall while maintaining an inference time of only five milliseconds per file. The system utilizes a specialized per-content-type thresholding mechanism to ensure reliable predictions, providing a versatile interface through a Rust-based command-line tool, a Python API, and bindings for JavaScript and Go.</p>
+<p>This project is particularly beneficial for security professionals, developers, and platform administrators who require robust, automated file validation to prevent malicious content from bypassing safety protocols. It is trending because it significantly outperforms traditional heuristic-based approaches, offering an efficient solution for high-scale environments like Google’s own Gmail and Drive infrastructure. As organizations increasingly prioritize automated threat detection, Magika’s ability to provide near-instant, high-confidence classification makes it an essential utility for modern data safety and content policy enforcement.</p>
+          
+          <p class="drawer-footer"><a href="#dossier-6">View in Dossier ↓</a></p>
+        </div>
+      </details>
+    </div>
     </div>
   </section>
   <section id="story-7" class="spread arc-terminal-utility">
@@ -407,7 +502,18 @@
       <h2 class="frnc">Managing WhatsApp Message Archives From the Terminal</h2>
       <p class="story-meta">github.com &nbsp;·&nbsp; 1,493 stars &nbsp;·&nbsp; 0 stars today</p>
       <p class="lede">For those who operate exclusively in the shell, syncing communication history shouldn&#x27;t require a browser. This utility provides a rugged, keyboard-centric interface for querying and exporting your message archives locally.</p>
-      <div class="ctas"><a class="btn-read" href="https://github.com/steipete/wacli" target="_blank" rel="noopener">Read →</a><a class="btn-dossier" href="#dossier-7">Full analysis ↓</a></div>
+      <div class="ctas"><a class="btn-read" href="https://github.com/steipete/wacli" target="_blank" rel="noopener">Read →</a>
+      <details class="analysis-drawer">
+        <summary class="btn-dossier">[ Analysis + ]</summary>
+        <div class="drawer-content">
+          <h4>Technical Analysis</h4>
+          <p>`wacli` is a command-line interface for WhatsApp built upon the `whatsmeow` library, designed to provide efficient local synchronization and management of message history. Key features include fast offline searching, support for sending text and media files, and tools for contact and group management. Technically, the project interfaces with the WhatsApp Web protocol to perform a best-effort local sync and allows users to trigger on-demand history backfilling, outputting data in either human-readable or machine-parsable JSON formats.</p>
+<p>Developers and power users who prefer keyboard-centric workflows will benefit most from this tool, as it enables them to interact with WhatsApp directly from the terminal. It is particularly valuable for those who require a local, searchable archive of their communications or need to automate message handling via scripts. The project is gaining attention because it offers a lightweight, high-performance alternative to the official desktop application, bridging the gap between platform-native messaging and terminal-based productivity.</p>
+          
+          <p class="drawer-footer"><a href="#dossier-7">View in Dossier ↓</a></p>
+        </div>
+      </details>
+    </div>
     </div>
   </section>
   <section id="story-8" class="spread arc-data-pipeline">
@@ -417,7 +523,18 @@
       <h2 class="frnc">Grounding Agent Memory in Graph Databases</h2>
       <p class="story-meta">github.com &nbsp;·&nbsp; 15,568 stars &nbsp;·&nbsp; 0 stars today</p>
       <p class="lede">Modern AI agents struggle with contextual grounding when relying on vector search alone. Cognee resolves this by mapping multimodal data into a dynamic graph structure, ensuring your models maintain consistent, traceable long-term knowledge.</p>
-      <div class="ctas"><a class="btn-read" href="https://github.com/topoteretes/cognee" target="_blank" rel="noopener">Read →</a><a class="btn-dossier" href="#dossier-8">Full analysis ↓</a></div>
+      <div class="ctas"><a class="btn-read" href="https://github.com/topoteretes/cognee" target="_blank" rel="noopener">Read →</a>
+      <details class="analysis-drawer">
+        <summary class="btn-dossier">[ Analysis + ]</summary>
+        <div class="drawer-content">
+          <h4>Technical Analysis</h4>
+          <p>Cognee is an open-source knowledge engine designed to provide AI agents with persistent, dynamic, and structured memory. By integrating vector search with graph databases, the framework allows developers to ingest multimodal data and ground it within a relational knowledge structure that evolves over time. Its technical architecture prioritizes reliable agentic workflows by offering tenant isolation, traceability, and observability through OpenTelemetry integration.</p>
+<p>Developers building autonomous AI agents will benefit significantly from Cognee, as it eliminates the complexity of managing context and long-term memory for intelligent systems. The project is currently trending because it addresses the critical &quot;memory&quot; gap in LLM applications, allowing agents to learn from user feedback and share knowledge across platforms. By offering a unified infrastructure that simplifies sophisticated RAG (Retrieval-Augmented Generation) pipelines into just a few lines of code, Cognee enables faster development of reliable and context-aware AI solutions.</p>
+          
+          <p class="drawer-footer"><a href="#dossier-8">View in Dossier ↓</a></p>
+        </div>
+      </details>
+    </div>
     </div>
   </section>
   <section id="story-9" class="spread arc-model-bench">
@@ -427,7 +544,18 @@
       <h2 class="frnc">Accelerating LLM Inference Through Block Diffusion</h2>
       <p class="story-meta">github.com &nbsp;·&nbsp; 1,427 stars &nbsp;·&nbsp; 0 stars today</p>
       <p class="lede">Drafting multi-token sequences in parallel is the key to breaking current speed bottlenecks. DFlash offers a plug-and-play solution for speculative decoding, drastically reducing latency across the most popular inference frameworks.</p>
-      <div class="ctas"><a class="btn-read" href="https://github.com/z-lab/dflash" target="_blank" rel="noopener">Read →</a><a class="btn-dossier" href="#dossier-9">Full analysis ↓</a></div>
+      <div class="ctas"><a class="btn-read" href="https://github.com/z-lab/dflash" target="_blank" rel="noopener">Read →</a>
+      <details class="analysis-drawer">
+        <summary class="btn-dossier">[ Analysis + ]</summary>
+        <div class="drawer-content">
+          <h4>Technical Analysis</h4>
+          <p>DFlash is a lightweight block diffusion model designed to accelerate Large Language Model (LLM) inference through high-quality parallel drafting for speculative decoding. By utilizing block diffusion techniques, the system enables efficient token generation, allowing draft models to propose multi-token sequences that are then validated by a target model. This technical approach is integrated into popular inference frameworks such as vLLM, SGLang, Transformers, and MLX, providing a versatile solution for reducing latency in autoregressive text generation.</p>
+<p>Developers and organizations looking to optimize inference throughput for large-scale production deployments would benefit significantly from integrating DFlash. The project is trending because it bridges the performance gap between model size and generation speed, allowing users to serve high-performance models like Qwen3.5 and Llama-3.1 with drastically improved latency. With broad backend support and pre-trained draft models readily available for various architectures, it provides a highly practical, plug-and-play solution for the AI engineering community.</p>
+          
+          <p class="drawer-footer"><a href="#dossier-9">View in Dossier ↓</a></p>
+        </div>
+      </details>
+    </div>
     </div>
   </section>
   <section id="story-10" class="spread arc-library-archive">
@@ -437,7 +565,18 @@
       <h2 class="frnc">Mastering LLM Development Through Academic Tutorials</h2>
       <p class="story-meta">github.com &nbsp;·&nbsp; 30,275 stars &nbsp;·&nbsp; 0 stars today</p>
       <p class="lede">A curated, comprehensive guide for those transitioning from theoretical curiosity to practical model engineering. From fine-tuning to advanced safety watermarking, this repository serves as the definitive syllabus for modern language model development.</p>
-      <div class="ctas"><a class="btn-read" href="https://github.com/Lordog/dive-into-llms" target="_blank" rel="noopener">Read →</a><a class="btn-dossier" href="#dossier-10">Full analysis ↓</a></div>
+      <div class="ctas"><a class="btn-read" href="https://github.com/Lordog/dive-into-llms" target="_blank" rel="noopener">Read →</a>
+      <details class="analysis-drawer">
+        <summary class="btn-dossier">[ Analysis + ]</summary>
+        <div class="drawer-content">
+          <h4>Technical Analysis</h4>
+          <p>The &quot;Dive into LLMs&quot; repository is an open-source, educational project developed by the Shanghai Jiao Tong University team that provides comprehensive programming tutorials on Large Language Models (LLMs). The project covers a wide array of technical subjects, including fine-tuning, prompt engineering, knowledge editing, mathematical reasoning, and advanced topics like model security, watermarking, and GUI agents. By offering practical scripts, slides, and tutorials, it enables users to apply cutting-edge AI techniques through hands-on experimentation, now further bolstered by a collaborative series with Huawei Ascend focused on full-stack model development.</p>
+<p>This project is an essential resource for students, academic researchers, and developers who seek a low-barrier, high-quality entry point into the rapidly evolving field of LLM development and security. It is trending because it bridges the gap between theoretical knowledge and practical application, providing a community-driven repository that is both free and regularly updated with industry-relevant trends. The project&#x27;s academic credibility and recent partnership with the Huawei Ascend ecosystem make it a highly reliable and authoritative guide for those looking to master AI skills in both domestic and global frameworks.</p>
+          
+          <p class="drawer-footer"><a href="#dossier-10">View in Dossier ↓</a></p>
+        </div>
+      </details>
+    </div>
     </div>
   </section>
   <section id="dossier" class="dossier">
@@ -597,6 +736,19 @@
     localStorage.setItem(key, JSON.stringify(stored));
   }
 })();
+</script>
+<script>
+// Simple script to toggle the [+] and [-] labels on the drawers
+document.querySelectorAll('.analysis-drawer').forEach(drawer => {
+  drawer.addEventListener('toggle', () => {
+    const summary = drawer.querySelector('summary');
+    if (drawer.open) {
+      summary.textContent = '[ Analysis − ]';
+    } else {
+      summary.textContent = '[ Analysis + ]';
+    }
+  });
+});
 </script>
 </body>
 </html>

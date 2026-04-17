@@ -40,14 +40,43 @@
   .story-meta { font-weight: 600; font-size: 1.1rem; margin-bottom: 3rem; opacity: 0.6; letter-spacing: 0.02em; }
   .lede { font-size: clamp(1.4rem, 2.5vw, 2.1rem); line-height: 1.35; max-width: 800px; margin: 0 0 4rem; font-weight: 450; }
   
-  .ctas { display: flex; gap: 2.5rem; align-items: center; }
+  .ctas { display: flex; gap: 2.5rem; align-items: flex-start; }
   .ctas a {
     text-decoration: none; font-weight: 700; font-size: 1.1rem; letter-spacing: 0.1em; text-transform: uppercase;
     padding: 1.2rem 2.4rem; transition: all 0.2s;
   }
-  .btn-read { background: var(--text-dark); color: var(--bg-light); }
-  .btn-dossier { border-bottom: 2px solid currentColor; padding: 0.5rem 0 !important; }
+  .btn-read { background: var(--text-dark); color: var(--bg-light); cursor: pointer; border: none; }
+  .btn-dossier { 
+    border-bottom: 2px solid currentColor; padding: 0.5rem 0 !important; 
+    text-decoration: none; font-weight: 700; font-size: 1.1rem; letter-spacing: 0.1em; 
+    text-transform: uppercase; cursor: pointer; background: transparent; color: inherit;
+    display: inline-block;
+  }
   
+  /* ───── ANALYSIS DRAWER ───── */
+  .analysis-drawer { margin-top: 0; width: 100%; max-width: 800px; }
+  .analysis-drawer summary { list-style: none; outline: none; }
+  .analysis-drawer summary::-webkit-details-marker { display: none; }
+  .analysis-drawer[open] summary { margin-bottom: 2rem; }
+  .analysis-drawer[open] summary::after { content: ""; } /* Could add JS to toggle label but we'll do CSS trick or just keep static */
+  
+  .drawer-content {
+    background: rgba(0,0,0,0.03); padding: 3rem; border-left: 4px solid var(--text-dark);
+    animation: slideDown 0.3s ease-out;
+  }
+  .arc-midnight .drawer-content { background: rgba(255,255,255,0.05); border-color: #fff; }
+  .arc-terminal .drawer-content { background: rgba(32, 194, 14, 0.05); border-color: #20c20e; }
+  
+  .drawer-content h4 { text-transform: uppercase; letter-spacing: 0.2em; font-size: 0.9rem; margin-top: 0; margin-bottom: 1.5rem; opacity: 0.6; }
+  .drawer-content p { font-family: 'Fraunces', serif; font-size: 1.3rem; line-height: 1.5; margin-bottom: 1.5rem; }
+  .drawer-footer { margin-top: 2rem; border-top: 1px solid rgba(0,0,0,0.1); padding-top: 1.5rem; }
+  .drawer-footer a { font-size: 0.9rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; text-decoration: none; color: inherit; opacity: 0.5; }
+  
+  @keyframes slideDown {
+    from { opacity: 0; transform: translateY(-10px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
   /* ───── ARCHETYPE CSS ───── */
   
   /* Stat Hero */
@@ -347,7 +376,21 @@
       <h2 class="frnc">The SEC Considers Abolishing Mandatory Quarterly Financial Reporting</h2>
       <p class="story-meta">reuters.com &nbsp;·&nbsp; 754 pts &nbsp;·&nbsp; 460 comments</p>
       <p class="lede">The traditional three-month reporting cycle has long served as the heartbeat of public markets, but critics argue it fuels short-term financial engineering at the expense of long-term health. A shift toward semi-annual disclosures could fundamentally restructure how corporations communicate their fiscal performance to shareholders.</p>
-      <div class="ctas"><a class="btn-read" href="https://www.reuters.com/business/finance/us-sec-preparing-eliminate-quarterly-reporting-requirement-wsj-says-2026-03-16/" target="_blank" rel="noopener">Read →</a><a class="btn-dossier" href="#dossier-1">Full analysis ↓</a></div>
+      <div class="ctas"><a class="btn-read" href="https://www.reuters.com/business/finance/us-sec-preparing-eliminate-quarterly-reporting-requirement-wsj-says-2026-03-16/" target="_blank" rel="noopener">Read →</a>
+      <details class="analysis-drawer">
+        <summary class="btn-dossier">[ Analysis + ]</summary>
+        <div class="drawer-content">
+          <h4>Technical Analysis</h4>
+          <p>Could not fetch article content. Based on the provided title, the U.S. Securities and Exchange Commission is reportedly preparing to eliminate the long-standing mandate that public companies file quarterly financial reports. This potential shift would represent a significant deregulation of capital markets, moving away from the traditional three-month reporting cadence. The proposal suggests a move toward a different disclosure structure that could fundamentally change how corporations communicate their fiscal health to investors.</p>
+          <h4>Reader Reactions</h4>
+<p>Supporters argue that reducing reporting frequency from quarterly to semi-annually could alleviate the &quot;quarterly capitalism&quot; trap, potentially allowing executives to focus on long-term strategy rather than short-term, artificial financial engineering.</p>
+<p>Critics contend that less frequent reporting would increase market volatility and opacity, suggesting that moving toward higher-frequency, automated, or near real-time financial updates would be a more effective path for modern transparency.</p>
+<p>Complex logistics and accounting rules, such as shipping terms (FOB) and accrual methods, demonstrate that financial reporting is an interpretive process rather than a simple data dump, consuming significant corporate resources.</p>
+<p>The sample primarily reflects a tech-centric, professional viewpoint that emphasizes automation, market dynamics, and regulatory philosophy, likely underrepresenting the perspectives of individual retail investors or smaller entities reliant on standard financial disclosures.</p>
+          <p class="drawer-footer"><a href="#dossier-1">View in Dossier ↓</a></p>
+        </div>
+      </details>
+    </div>
     </div>
     <div class="quote-side">
       <blockquote class="pullquote">Moving away from quarterly capitalism may finally allow leadership to focus on long-term strategy rather than artificial fiscal milestones.</blockquote>
@@ -361,7 +404,21 @@
       <h2 class="frnc">Kagi Translate Adds Support for LinkedIn Speak</h2>
       <p class="story-meta">translate.kagi.com &nbsp;·&nbsp; 1457 pts &nbsp;·&nbsp; 344 comments</p>
       <p class="lede">Professional networking has evolved into a specific dialect of buzzwords, hustle-culture tropes, and self-aggrandizing platitudes. This new translation mode allows you to instantly convert any mundane statement into the insufferable vernacular of the modern corporate feed.</p>
-      <div class="ctas"><a class="btn-read" href="https://translate.kagi.com/?from=en&to=LinkedIn+speak" target="_blank" rel="noopener">Read →</a><a class="btn-dossier" href="#dossier-2">Full analysis ↓</a></div>
+      <div class="ctas"><a class="btn-read" href="https://translate.kagi.com/?from=en&to=LinkedIn+speak" target="_blank" rel="noopener">Read →</a>
+      <details class="analysis-drawer">
+        <summary class="btn-dossier">[ Analysis + ]</summary>
+        <div class="drawer-content">
+          <h4>Technical Analysis</h4>
+          <p>Kagi has expanded the language options for its translation tool to include &quot;LinkedIn Speak,&quot; a stylistic mode that converts standard text into the jargon-heavy, overly enthusiastic tone often found on the professional networking platform. This update allows users to input regular content and have it automatically rewritten with characteristic LinkedIn tropes, such as &quot;hustle culture&quot; buzzwords and self-aggrandizing professional platitudes. By integrating this into its translation suite, the company demonstrates a playful application of its language processing technology rather than focusing solely on linguistic translation.</p>
+          <h4>Reader Reactions</h4>
+<p>Users universally mock the &quot;epic slop&quot; style of corporate LinkedIn vernacular, using the tool to transform mundane or negative personal experiences into insufferable, buzzword-laden professional announcements to demonstrate the absurdity.</p>
+<p>While some participants debate the sociological origins and signaling necessity of LinkedIn’s culture, there is no significant disagreement regarding the satirical nature of the tool or the platform&#x27;s draining corporate environment.</p>
+<p>The translator functions as a versatile LLM wrapper, allowing users to input custom languages via URL parameters to access hidden, unlisted, or humorous prompt-engineered personas beyond the standard interface options provided.</p>
+<p>The sample is heavily skewed toward cynical software professionals who view LinkedIn culture with disdain, potentially masking a broader range of user motivations or perspectives regarding the actual utility of the tool.</p>
+          <p class="drawer-footer"><a href="#dossier-2">View in Dossier ↓</a></p>
+        </div>
+      </details>
+    </div>
     </div>
   </section>
   <section id="story-3" class="spread arc-blueprint">
@@ -371,7 +428,21 @@
       <h2 class="frnc">Rebuilding Monkey Island for Commodore 64 Hardware</h2>
       <p class="story-meta">pixeldust.se &nbsp;·&nbsp; 185 pts &nbsp;·&nbsp; 73 comments</p>
       <p class="lede">Porting a point-and-click classic to 8-bit architecture requires total manual recreation of assets. Developers are currently navigating severe memory and graphical constraints to bring the iconic adventure game to legacy hardware from the ground up.</p>
-      <div class="ctas"><a class="btn-read" href="https://pixeldust.se/monkey-island-project" target="_blank" rel="noopener">Read →</a><a class="btn-dossier" href="#dossier-3">Full analysis ↓</a></div>
+      <div class="ctas"><a class="btn-read" href="https://pixeldust.se/monkey-island-project" target="_blank" rel="noopener">Read →</a>
+      <details class="analysis-drawer">
+        <summary class="btn-dossier">[ Analysis + ]</summary>
+        <div class="drawer-content">
+          <h4>Technical Analysis</h4>
+          <p>The Monkey Island Project is a dedicated effort to port the classic point-and-click adventure game *The Secret of Monkey Island* to the Commodore 64 platform. Led by developer Andreas Larsson and artist aresant, the team is rebuilding the game from the ground up, which includes manually recreating all backgrounds, character designs, and animations to fit the constraints of the 8-bit hardware. While the project remains in active development with no fixed release date, the creators are sharing ongoing progress through their official website.</p>
+          <h4>Reader Reactions</h4>
+<p>Bullet 1: Commenters express admiration for the project&#x27;s ambition and visual quality while discussing the feasibility of adapting iconic game elements like the background art and music to the Commodore 64 platform.</p>
+<p>Bullet 2: A debate exists regarding whether the original EGA graphical style is superior to the later VGA redrawn remake, with users citing personal aesthetic preferences and specific technical merits for each version.</p>
+<p>Bullet 3: The project can likely bypass traditional memory constraints by utilizing modern flash cartridge technology, which supports large ROM images similar to previous successful ports of complex games to this hardware.</p>
+<p>Bullet 4: This limited sample size focuses primarily on technical curiosity and graphical nostalgia, potentially overlooking broader community discussions regarding the licensing, legal status, or long-term development sustainability of this fan project.</p>
+          <p class="drawer-footer"><a href="#dossier-3">View in Dossier ↓</a></p>
+        </div>
+      </details>
+    </div>
     </div>
   </section>
   <section id="story-4" class="spread arc-alert-stamp">
@@ -382,7 +453,21 @@
       <h2 class="frnc">How Layers of Review Cripple Engineering Velocity</h2>
       <p class="story-meta">apenwarr.ca &nbsp;·&nbsp; 568 pts &nbsp;·&nbsp; 315 comments</p>
       <p class="lede">Every bureaucratic gatekeeper added to a software process multiplies latency by an order of magnitude. Relying on external inspection rather than high-trust internal quality culture is creating a persistent bottleneck that even the most advanced AI tools cannot resolve.</p>
-      <div class="ctas"><a class="btn-read" href="https://apenwarr.ca/log/20260316" target="_blank" rel="noopener">Read →</a><a class="btn-dossier" href="#dossier-4">Full analysis ↓</a></div>
+      <div class="ctas"><a class="btn-read" href="https://apenwarr.ca/log/20260316" target="_blank" rel="noopener">Read →</a>
+      <details class="analysis-drawer">
+        <summary class="btn-dossier">[ Analysis + ]</summary>
+        <div class="drawer-content">
+          <h4>Technical Analysis</h4>
+          <p>This article argues that every layer of review in an engineering organization adds significant wall-clock latency, often slowing processes by a factor of ten, regardless of the effort actually expended. The author contends that while AI coding tools can accelerate the initial creation of software, they fail to resolve the fundamental bottleneck: the bureaucratic wait times inherent in traditional review and design approval processes. Ultimately, the piece posits that sustainable speed can only be achieved by replacing reliance on external inspection layers with a culture of internal quality, trust, and modular system design.</p>
+          <h4>Reader Reactions</h4>
+<p>The prevailing consensus is that code review often acts as a bottleneck caused by poor planning, communication overhead, and bureaucratic hierarchies, suggesting that front-loading design reduces the need for heavy review.</p>
+<p>A significant point of disagreement is whether AI-driven code generation actually increases developer throughput, as skeptics argue that it merely floods already congested review queues, leading to massive, unmanageable delivery delays.</p>
+<p>Technical solutions to streamline development include replacing manual reviews with automated linters, sandbox execution to limit blast radii of faulty code, and prioritizing high-risk changes while rubber-stamping lower-risk, trivial updates.</p>
+<p>This discussion sample reflects perspectives primarily from individual contributors and senior engineers in tech-centric environments, which may not accurately represent the unique regulatory or safety constraints found in non-tech industries.</p>
+          <p class="drawer-footer"><a href="#dossier-4">View in Dossier ↓</a></p>
+        </div>
+      </details>
+    </div>
     </div>
   </section>
   <section id="story-5" class="spread arc-academic-drop-cap">
@@ -396,7 +481,21 @@
       <p class="story-meta">mistral.ai &nbsp;·&nbsp; 780 pts &nbsp;·&nbsp; 189 comments</p>
       <div class="cols">
         <div><p>Formal proof engineering typically demands significant manual intervention, but this new open-source agent aims to automate verification within the Lean 4 ecosystem.</p></div>
-        <div><p>By pairing a 6B-parameter model with deterministic kernel checks, the framework offers a path toward verifiable software beyond simple probabilistic generation.</p><div class="ctas"><a class="btn-read" href="https://mistral.ai/news/leanstral" target="_blank" rel="noopener">Read →</a><a class="btn-dossier" href="#dossier-5">Full analysis ↓</a></div></div>
+        <div><p>By pairing a 6B-parameter model with deterministic kernel checks, the framework offers a path toward verifiable software beyond simple probabilistic generation.</p><div class="ctas"><a class="btn-read" href="https://mistral.ai/news/leanstral" target="_blank" rel="noopener">Read →</a>
+      <details class="analysis-drawer">
+        <summary class="btn-dossier">[ Analysis + ]</summary>
+        <div class="drawer-content">
+          <h4>Technical Analysis</h4>
+          <p>Mistral AI has released Leanstral, an open-source code agent specifically designed for the Lean 4 proof assistant. By utilizing a sparse 6B-parameter architecture, the model aims to automate formal verification tasks that typically require significant manual effort. The release includes the model weights under an Apache 2.0 license, a new benchmark suite called FLTEval, and integrations via the Mistral Vibe platform and a free API endpoint.</p>
+          <h4>Reader Reactions</h4>
+<p>Commenters generally agree that shifting from subjective &quot;vibe-based&quot; coding to formal verification represents a necessary evolution for software engineering, even if the current implementation of such tools remains in its infancy.</p>
+<p>Skeptics argue that Leanstral currently underperforms compared to frontier models like Opus, questioning the value of prioritizing cost savings and formal rigor over the superior performance seen in existing commercial alternatives.</p>
+<p>The most robust technical workflow involves humans writing domain-specific requirements, while the AI generates proofs that the Lean kernel then verifies deterministically, effectively bypassing the need to trust model output.</p>
+<p>The discussion sample reveals a significant knowledge gap, as many participants struggle to understand the practical application of Lean for general-purpose programming outside of specialized, high-consequence system development projects.</p>
+          <p class="drawer-footer"><a href="#dossier-5">View in Dossier ↓</a></p>
+        </div>
+      </details>
+    </div></div>
       </div>
     </div>
   </section>
@@ -411,7 +510,21 @@
         <p class="lede">High-performance memory allocation is the bedrock of large-scale data infrastructure. After a period of technical debt, Meta is pivoting back to refining jemalloc to improve memory efficiency and performance for modern AArch64 hardware.<span class="cursor"></span></p>
         <div class="ctas">
           <a href="https://engineering.fb.com/2026/03/02/data-infrastructure/investing-in-infrastructure-metas-renewed-commitment-to-jemalloc/" class="btn-read" target="_blank">RUN_PROCESS →</a>
-          <a href="#dossier-6" class="btn-dossier">VIEW_ANALYSIS ↓</a>
+          
+      <details class="analysis-drawer">
+        <summary class="btn-dossier">[ Analysis + ]</summary>
+        <div class="drawer-content">
+          <h4>Technical Analysis</h4>
+          <p>Meta has announced a renewed commitment to the maintenance and modernization of jemalloc, a high-performance memory allocator essential to its software infrastructure. The company acknowledged that recent development practices had prioritized short-term gains, resulting in technical debt that hindered the project&#x27;s long-term health. Moving forward, Meta intends to collaborate with the open-source community to refactor the codebase, improve memory efficiency, and optimize performance for emerging hardware like AArch64.</p>
+          <h4>Reader Reactions</h4>
+<p>Optimizing memory allocators is a critical engineering priority for large-scale infrastructure, as even marginal efficiency gains translate into substantial long-term savings in electricity, hardware costs, and data center resource utilization.</p>
+<p>There is significant debate over the real-world impact of custom allocator patches, with some engineers arguing that specific optimizations often fail to yield statistically significant improvements at the system-wide level.</p>
+<p>Developers favor various allocators like jemalloc, tcmalloc, and mimalloc based on specific workload requirements, with many noting that tuning page sizes and allocation patterns can significantly outperform default system libraries.</p>
+<p>The sample reflects a heavy bias toward systems-level engineering perspectives, largely ignoring the broader societal criticisms of major technology companies mentioned briefly by a small portion of the discussion participants.</p>
+          <p class="drawer-footer"><a href="#dossier-6">View in Dossier ↓</a></p>
+        </div>
+      </details>
+    
         </div>
       </div>
     </div>
@@ -423,7 +536,21 @@
       <h2 class="frnc">The Hidden Scale of the Personal Small Web</h2>
       <p class="story-meta">kevinboone.me &nbsp;·&nbsp; 555 pts &nbsp;·&nbsp; 234 comments</p>
       <p class="lede">The internet remains larger and more fragmented than corporate search dominance suggests. A recent audit of independent, non-commercial sites reveals that thousands of personal blogs continue to produce active updates daily, functioning entirely outside the influence of modern tracking and advertising.</p>
-      <div class="ctas"><a class="btn-read" href="https://kevinboone.me/small_web_is_big.html" target="_blank" rel="noopener">Read →</a><a class="btn-dossier" href="#dossier-7">Full analysis ↓</a></div>
+      <div class="ctas"><a class="btn-read" href="https://kevinboone.me/small_web_is_big.html" target="_blank" rel="noopener">Read →</a>
+      <details class="analysis-drawer">
+        <summary class="btn-dossier">[ Analysis + ]</summary>
+        <div class="drawer-content">
+          <h4>Technical Analysis</h4>
+          <p>The author investigates the scope of the &quot;small web,&quot; defined as non-commercial, personal websites free from corporate tracking and advertising. By analyzing a list of approximately 32,000 sites curated by the Kagi search engine, the author attempted to determine if a single, comprehensive feed aggregator—similar to those used in the niche Gemini protocol—could be implemented for these independent sites. After filtering for active feeds with timestamps and a minimum update frequency, the author discovered that roughly 9,000 sites produce over a thousand content updates per day.</p>
+          <h4>Reader Reactions</h4>
+<p>The &quot;small web&quot; is viewed as a valuable, non-commercial alternative to the modern internet, though many users feel it has been effectively buried and marginalized by corporate search engines and algorithmic trends.</p>
+<p>Disagreements persist regarding the role of encryption, with some arguing that rejecting TLS simplifies technical implementation for small servers while others maintain that security is essential for all modern web interactions.</p>
+<p>Discoverability remains a significant hurdle, as manual curation and RSS-based indexing struggle to capture the vast, fragmented landscape of personal blogs and infrequently updated websites without inviting massive amounts of spam.</p>
+<p>The sample highlights a tension between the desire for a lightweight, simplified web protocol and the practical reality that users often demand complex features like images, tables, and robust search capabilities.</p>
+          <p class="drawer-footer"><a href="#dossier-7">View in Dossier ↓</a></p>
+        </div>
+      </details>
+    </div>
     </div>
   </section>
   <section id="story-8" class="spread arc-notebook">
@@ -434,7 +561,21 @@
       <h2 class="frnc">Teaching AI to Navigate 3D Environments</h2>
       <p class="story-meta">davesnider.com &nbsp;·&nbsp; 24 pts &nbsp;·&nbsp; 2 comments</p>
       <p class="lede">Working with LLMs on 3D geometry often hits a wall when the model lacks spatial awareness. By creating a shared visual language through automated screenshots and coordinate markers, developers are finding new ways to bridge the gap between prompt logic and spatial execution.</p>
-      <div class="ctas"><a class="btn-read" href="https://www.davesnider.com/posts/claude-3d" target="_blank" rel="noopener">Read →</a><a class="btn-dossier" href="#dossier-8">Full analysis ↓</a></div>
+      <div class="ctas"><a class="btn-read" href="https://www.davesnider.com/posts/claude-3d" target="_blank" rel="noopener">Read →</a>
+      <details class="analysis-drawer">
+        <summary class="btn-dossier">[ Analysis + ]</summary>
+        <div class="drawer-content">
+          <h4>Technical Analysis</h4>
+          <p>The author describes a practical workflow for leveraging Claude to assist with complex 3D web development, despite the model&#x27;s inherent inability to natively perceive or reason through spatial 3D environments. By building custom tooling that allows Claude to navigate the application, manipulate the camera, and place visual markers like red spheres, the author creates a &quot;shared language&quot; for debugging. This iterative loop, which uses automated screenshots and Playwright to validate geometry, allows the AI to self-correct its positioning and coordinate logic without constant manual intervention.</p>
+          <h4>Reader Reactions</h4>
+<p>Users agree that LLMs function most effectively for complex 3D projects when integrated with custom tooling or direct access to CAD applications rather than relying solely on natural language prompts.</p>
+<p>While one user emphasizes building a shared, structured language to bridge communication gaps, another highlights the surprising capability of models to generate functional technical files with minimal manual intervention.</p>
+<p>The primary technical strategy for success involves creating simple, intermediary tools that constrain the model&#x27;s output and provide a standardized framework for solving specific 3D modeling or calculation challenges.</p>
+<p>This brief discussion sample is limited to two individual anecdotes, which may not capture the broader range of successes or failures users experience when applying different models to 3D workflows.</p>
+          <p class="drawer-footer"><a href="#dossier-8">View in Dossier ↓</a></p>
+        </div>
+      </details>
+    </div>
     </div>
   </section>
   <section id="story-9" class="spread arc-stat-hero">
@@ -444,7 +585,21 @@
       <h2 class="frnc">Quantifying Waste in the American Healthcare System</h2>
       <p class="story-meta">github.com &nbsp;·&nbsp; 522 pts &nbsp;·&nbsp; 643 comments</p>
       <p class="lede">Open-source data journalism is exposing the massive structural inefficiencies inherent in U.S. healthcare spending. By benchmarking domestic costs against Medicare rates and international data, analysts have mapped out billions in potential savings.</p>
-      <div class="ctas"><a class="btn-read" href="https://github.com/rexrodeo/american-healthcare-conundrum" target="_blank" rel="noopener">Read →</a><a class="btn-dossier" href="#dossier-9">Full analysis ↓</a></div>
+      <div class="ctas"><a class="btn-read" href="https://github.com/rexrodeo/american-healthcare-conundrum" target="_blank" rel="noopener">Read →</a>
+      <details class="analysis-drawer">
+        <summary class="btn-dossier">[ Analysis + ]</summary>
+        <div class="drawer-content">
+          <h4>Technical Analysis</h4>
+          <p>The &quot;American Healthcare Conundrum&quot; is an open-source data journalism project that quantifies inefficiency in the U.S. healthcare system by analyzing federal and international datasets. Created by Andrew Rexroad, the project breaks down systemic waste into specific, actionable issues—such as excessive hospital procedure pricing and prescription drug overspending—while providing reproducible Python code and clear documentation for every finding. To date, the analysis has identified $98.6 billion in potential annual savings by comparing U.S. expenditures against Medicare rates and international benchmarks.</p>
+          <h4>Reader Reactions</h4>
+<p>The primary consensus is that the U.S. healthcare system suffers from extreme administrative overhead, misaligned profit incentives, and structural inefficiencies that drive significantly higher costs compared to other developed nations.</p>
+<p>A strong disagreement exists regarding the role of insurance companies, with some arguing they act as necessary cost-containment negotiators while others contend their business model incentivizes them to deny essential patient care.</p>
+<p>A significant technical takeaway is that Medicare&#x27;s apparent administrative efficiency is often overstated because the system forces massive, complex, and costly compliance burdens onto healthcare providers through mandatory cost-reporting requirements.</p>
+<p>The provided sample displays a notable bias toward systemic critiques while largely neglecting the consumer perspective, potentially overemphasizing bureaucratic and macro-economic factors at the expense of individual patient-provider dynamics.</p>
+          <p class="drawer-footer"><a href="#dossier-9">View in Dossier ↓</a></p>
+        </div>
+      </details>
+    </div>
     </div>
   </section>
   <section id="story-10" class="spread arc-midnight">
@@ -455,7 +610,21 @@
       <h2 class="frnc">Building a Reliable Locally Hosted Voice Assistant</h2>
       <p class="story-meta">community.home-assistant.io &nbsp;·&nbsp; 423 pts &nbsp;·&nbsp; 140 comments</p>
       <p class="lede">Privacy-conscious home automation has moved from experimental hobby to functional reality. By leveraging local LLMs and custom wake-word training, users are finally successfully replacing cloud-dependent smart speakers with responsive, self-hosted alternatives.</p>
-      <div class="ctas"><a class="btn-read" href="https://community.home-assistant.io/t/my-journey-to-a-reliable-and-enjoyable-locally-hosted-voice-assistant/944860" target="_blank" rel="noopener">Read →</a><a class="btn-dossier" href="#dossier-10">Full analysis ↓</a></div>
+      <div class="ctas"><a class="btn-read" href="https://community.home-assistant.io/t/my-journey-to-a-reliable-and-enjoyable-locally-hosted-voice-assistant/944860" target="_blank" rel="noopener">Read →</a>
+      <details class="analysis-drawer">
+        <summary class="btn-dossier">[ Analysis + ]</summary>
+        <div class="drawer-content">
+          <h4>Technical Analysis</h4>
+          <p>The author details their multi-year transition from commercial Google Home smart speakers to a fully local, privacy-focused voice assistant setup powered by Home Assistant. By leveraging local LLMs running on an eGPU-equipped Mini PC, the author successfully replaced cloud-dependent services with a system capable of complex tool calling, music control, and general knowledge lookups. The project required extensive fine-tuning of system prompts, custom wake-word training, and specific software integrations like Kokoro TTS and llama.cpp to achieve consistent, responsive performance.</p>
+          <h4>Reader Reactions</h4>
+<p>Users prioritize reliable wake-word detection and consistent execution of simple tasks like timers over advanced LLM features, noting that current self-hosted solutions still struggle to match the convenience of commercial alternatives.</p>
+<p>While some enthusiasts prioritize complete local privacy and data control, others argue that integrated cloud-based models like Gemini provide a vastly superior, more reliable experience for everyday home automation needs.</p>
+<p>Achieving natural-sounding interactions requires addressing prosody issues through specialized training data, as models trained on static read text often fail to replicate the nuanced rhythm and stress of conversational speech patterns.</p>
+<p>This discussion sample is heavily skewed toward technical power users and Home Assistant hobbyists, which may not reflect the usability expectations or the specific functional priorities of a general consumer audience.</p>
+          <p class="drawer-footer"><a href="#dossier-10">View in Dossier ↓</a></p>
+        </div>
+      </details>
+    </div>
     </div>
   </section>
   <section id="dossier" class="dossier">
@@ -645,6 +814,19 @@
     localStorage.setItem(key, JSON.stringify(stored));
   }
 })();
+</script>
+<script>
+// Simple script to toggle the [+] and [-] labels on the drawers
+document.querySelectorAll('.analysis-drawer').forEach(drawer => {
+  drawer.addEventListener('toggle', () => {
+    const summary = drawer.querySelector('summary');
+    if (drawer.open) {
+      summary.textContent = '[ Analysis − ]';
+    } else {
+      summary.textContent = '[ Analysis + ]';
+    }
+  });
+});
 </script>
 </body>
 </html>

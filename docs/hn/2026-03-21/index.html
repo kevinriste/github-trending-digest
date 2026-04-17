@@ -40,14 +40,43 @@
   .story-meta { font-weight: 600; font-size: 1.1rem; margin-bottom: 3rem; opacity: 0.6; letter-spacing: 0.02em; }
   .lede { font-size: clamp(1.4rem, 2.5vw, 2.1rem); line-height: 1.35; max-width: 800px; margin: 0 0 4rem; font-weight: 450; }
   
-  .ctas { display: flex; gap: 2.5rem; align-items: center; }
+  .ctas { display: flex; gap: 2.5rem; align-items: flex-start; }
   .ctas a {
     text-decoration: none; font-weight: 700; font-size: 1.1rem; letter-spacing: 0.1em; text-transform: uppercase;
     padding: 1.2rem 2.4rem; transition: all 0.2s;
   }
-  .btn-read { background: var(--text-dark); color: var(--bg-light); }
-  .btn-dossier { border-bottom: 2px solid currentColor; padding: 0.5rem 0 !important; }
+  .btn-read { background: var(--text-dark); color: var(--bg-light); cursor: pointer; border: none; }
+  .btn-dossier { 
+    border-bottom: 2px solid currentColor; padding: 0.5rem 0 !important; 
+    text-decoration: none; font-weight: 700; font-size: 1.1rem; letter-spacing: 0.1em; 
+    text-transform: uppercase; cursor: pointer; background: transparent; color: inherit;
+    display: inline-block;
+  }
   
+  /* ───── ANALYSIS DRAWER ───── */
+  .analysis-drawer { margin-top: 0; width: 100%; max-width: 800px; }
+  .analysis-drawer summary { list-style: none; outline: none; }
+  .analysis-drawer summary::-webkit-details-marker { display: none; }
+  .analysis-drawer[open] summary { margin-bottom: 2rem; }
+  .analysis-drawer[open] summary::after { content: ""; } /* Could add JS to toggle label but we'll do CSS trick or just keep static */
+  
+  .drawer-content {
+    background: rgba(0,0,0,0.03); padding: 3rem; border-left: 4px solid var(--text-dark);
+    animation: slideDown 0.3s ease-out;
+  }
+  .arc-midnight .drawer-content { background: rgba(255,255,255,0.05); border-color: #fff; }
+  .arc-terminal .drawer-content { background: rgba(32, 194, 14, 0.05); border-color: #20c20e; }
+  
+  .drawer-content h4 { text-transform: uppercase; letter-spacing: 0.2em; font-size: 0.9rem; margin-top: 0; margin-bottom: 1.5rem; opacity: 0.6; }
+  .drawer-content p { font-family: 'Fraunces', serif; font-size: 1.3rem; line-height: 1.5; margin-bottom: 1.5rem; }
+  .drawer-footer { margin-top: 2rem; border-top: 1px solid rgba(0,0,0,0.1); padding-top: 1.5rem; }
+  .drawer-footer a { font-size: 0.9rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; text-decoration: none; color: inherit; opacity: 0.5; }
+  
+  @keyframes slideDown {
+    from { opacity: 0; transform: translateY(-10px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
   /* ───── ARCHETYPE CSS ───── */
   
   /* Stat Hero */
@@ -348,7 +377,21 @@
       <h2 class="frnc">OpenCode Brings Multi-Model Agent Orchestration to Your Desktop</h2>
       <p class="story-meta">opencode.ai &nbsp;·&nbsp; 1269 pts &nbsp;·&nbsp; 620 comments</p>
       <p class="lede">Developers are seeking modularity in their AI-assisted workflows. This new agent platform integrates with over 75 providers to manage complex coding tasks while keeping context local.</p>
-      <div class="ctas"><a class="btn-read" href="https://opencode.ai/" target="_blank" rel="noopener">Read →</a><a class="btn-dossier" href="#dossier-1">Full analysis ↓</a></div>
+      <div class="ctas"><a class="btn-read" href="https://opencode.ai/" target="_blank" rel="noopener">Read →</a>
+      <details class="analysis-drawer">
+        <summary class="btn-dossier">[ Analysis + ]</summary>
+        <div class="drawer-content">
+          <h4>Technical Analysis</h4>
+          <p>OpenCode is an open-source AI coding agent designed to assist developers within their terminal, IDE, or a dedicated desktop application. The platform is highly extensible, supporting over 75 LLM providers, including local models and integrations with existing subscriptions like GitHub Copilot and ChatGPT Plus. By utilizing Language Server Protocol (LSP) integration and allowing for multi-session parallel tasks, the tool aims to streamline complex programming workflows while prioritizing user privacy by not storing code or context data.</p>
+          <h4>Reader Reactions</h4>
+<p>While users appreciate the flexibility of OpenCode’s model-agnostic approach, there is a strong consensus that the software suffers from bloat, excessive resource consumption, and an unstable, feature-heavy development lifecycle.</p>
+<p>Critics argue that the project is marred by mandatory telemetry and quality control issues, whereas supporters counter that these claims are exaggerated and highlight the tool’s utility for remote agent orchestration.</p>
+<p>Developers report that using smaller, cheaper models for execution alongside specialized, high-performance models for planning and review provides a cost-effective and highly productive workflow for complex coding tasks.</p>
+<p>The sample shows significant polarization between those prioritizing vendor neutrality and those favoring the tighter, more stable integration found in purpose-built, closed-source tools like the official Claude Code implementation.</p>
+          <p class="drawer-footer"><a href="#dossier-1">View in Dossier ↓</a></p>
+        </div>
+      </details>
+    </div>
     </div>
   </section>
   <section id="story-2" class="spread arc-product-plate">
@@ -357,7 +400,21 @@
       <h2 class="frnc">Mamba-3 Refines State Space Architecture for High-Speed Inference</h2>
       <p class="story-meta">together.ai &nbsp;·&nbsp; 299 pts &nbsp;·&nbsp; 55 comments</p>
       <p class="lede">The latest evolution of the Mamba architecture optimizes complex-valued state tracking for better real-world performance. By utilizing custom kernels for modern hardware, it shifts the focus toward sub-millisecond inference delivery.</p>
-      <div class="ctas"><a class="btn-read" href="https://www.together.ai/blog/mamba-3" target="_blank" rel="noopener">Read →</a><a class="btn-dossier" href="#dossier-2">Full analysis ↓</a></div>
+      <div class="ctas"><a class="btn-read" href="https://www.together.ai/blog/mamba-3" target="_blank" rel="noopener">Read →</a>
+      <details class="analysis-drawer">
+        <summary class="btn-dossier">[ Analysis + ]</summary>
+        <div class="drawer-content">
+          <h4>Technical Analysis</h4>
+          <p>Mamba-3 is a new state space model (SSM) architecture that shifts focus from training efficiency toward inference speed and quality, addressing a growing industry demand for faster model deployment. Unlike its predecessor Mamba-2, which prioritized training throughput through architectural simplification, Mamba-3 incorporates a more expressive recurrence formula, complex-valued state tracking, and a multi-input, multi-output (MIMO) variant. These changes are designed to improve performance at the 1.5B scale without increasing decoding latency, utilizing custom kernels built with Triton, TileLang, and CuTe DSL to maximize hardware utilization.</p>
+          <h4>Reader Reactions</h4>
+<p>The discussion centers on whether Mamba-3’s focus on inference efficiency over training speed is genuinely beneficial, with some users questioning if the technical trade-offs actually improve performance for real-world production deployments.</p>
+<p>Debates persist regarding whether increased computational requirements per token inherently hurt throughput by reducing maximum batch sizes, despite arguments that modern GPU scheduling is specifically optimized to manage these memory-bound workloads.</p>
+<p>A key technical insight is that Mamba-3 is an architectural framework, making comparisons to non-exclusive objectives like diffusion or specific software applications logically flawed and technically inaccurate within an AI model context.</p>
+<p>The sample size reflects a highly technical discourse that highlights communication gaps, where participants struggle to interpret the marketing-heavy announcement language versus the underlying mathematical reality of state space model architectures.</p>
+          <p class="drawer-footer"><a href="#dossier-2">View in Dossier ↓</a></p>
+        </div>
+      </details>
+    </div>
     </div>
   </section>
   <section id="story-3" class="spread arc-academic-drop-cap">
@@ -371,7 +428,21 @@
       <p class="story-meta">blogs.igalia.com &nbsp;·&nbsp; 246 pts &nbsp;·&nbsp; 9 comments</p>
       <div class="cols">
         <div><p>F Multimedia processing often hides behind layers of abstraction, but direct interaction with libavcodec offers the ultimate granular control.</p></div>
-        <div><p>This study breaks down the lifecycle of a media stream from allocation to final frame rendering.</p><div class="ctas"><a class="btn-read" href="https://blogs.igalia.com/llepage/ffmpeg-101/" target="_blank" rel="noopener">Read →</a><a class="btn-dossier" href="#dossier-3">Full analysis ↓</a></div></div>
+        <div><p>This study breaks down the lifecycle of a media stream from allocation to final frame rendering.</p><div class="ctas"><a class="btn-read" href="https://blogs.igalia.com/llepage/ffmpeg-101/" target="_blank" rel="noopener">Read →</a>
+      <details class="analysis-drawer">
+        <summary class="btn-dossier">[ Analysis + ]</summary>
+        <div class="drawer-content">
+          <h4>Technical Analysis</h4>
+          <p>This article provides a foundational guide to using the FFmpeg C libraries for multimedia processing, moving beyond simple command-line usage. It breaks down the architecture of the FFmpeg suite, explaining how components like `libavformat` and `libavcodec` work together to demux multimedia files and decode them into raw audio or video frames. The post includes practical code snippets that demonstrate the life cycle of a media stream, from allocating context structures to managing packets and frames.</p>
+          <h4>Reader Reactions</h4>
+<p>Bullet 1: The community suggests that while introductory articles provide a helpful overview, more comprehensive tutorials are necessary for developers seeking a deep understanding of FFmpeg and its internal libav architecture.</p>
+<p>Bullet 2: There is no articulated disagreement or competing perspective in this single-comment thread, as the discussion currently focuses exclusively on recommending supplementary learning resources rather than critiquing the provided article.</p>
+<p>Bullet 3: Developers interested in mastering the complexities of multimedia processing should consult Leandro Moreira’s open-source tutorial, which is widely considered the industry standard for learning FFmpeg and libav internals.</p>
+<p>Bullet 4: With only one comment available for analysis, this sample cannot reflect the diverse range of opinions or potential criticisms that might emerge in a larger, more active Hacker News discussion.</p>
+          <p class="drawer-footer"><a href="#dossier-3">View in Dossier ↓</a></p>
+        </div>
+      </details>
+    </div></div>
       </div>
     </div>
   </section>
@@ -383,7 +454,21 @@
       <h2 class="frnc">Navigating the Social Taboos of Japanese Chopstick Etiquette</h2>
       <p class="story-meta">nippon.com &nbsp;·&nbsp; 491 pts &nbsp;·&nbsp; 391 comments</p>
       <p class="lede">Manners are rarely just arbitrary rules; they are reflections of a society’s deepest beliefs regarding life and transition. This guide catalogs the specific faux pas that separate simple dining errors from profound cultural insults.</p>
-      <div class="ctas"><a class="btn-read" href="https://www.nippon.com/en/japan-data/h01362/" target="_blank" rel="noopener">Read →</a><a class="btn-dossier" href="#dossier-4">Full analysis ↓</a></div>
+      <div class="ctas"><a class="btn-read" href="https://www.nippon.com/en/japan-data/h01362/" target="_blank" rel="noopener">Read →</a>
+      <details class="analysis-drawer">
+        <summary class="btn-dossier">[ Analysis + ]</summary>
+        <div class="drawer-content">
+          <h4>Technical Analysis</h4>
+          <p>This article from Nippon.com provides a comprehensive glossary of *kiraibashi*, a collection of behaviors considered improper or taboo when using chopsticks in Japan. The list categorizes various actions, ranging from minor etiquette breaches like licking one&#x27;s chopsticks to more culturally significant prohibitions. Notably, it highlights specific taboos—such as standing chopsticks upright in a bowl of rice or passing food directly between pairs—that are deeply linked to traditional Japanese funeral rites.</p>
+          <h4>Reader Reactions</h4>
+<p>While many Japanese chopstick rules are rooted in tradition, most commenters agree that the strictness of these customs is fading and that social context often outweighs rigid adherence to formal etiquette.</p>
+<p>Some participants argue that these rules are not merely arbitrary aesthetic choices but essential components of manners that reflect a necessary level of dignity and mutual respect during shared meals.</p>
+<p>Travelers should prioritize avoiding major taboos, such as upright chopsticks in rice, while observing local behavior to navigate situations where explicit chopstick rests are missing or specific utensils are preferred.</p>
+<p>This sample reflects a Western-centric perspective from expatriates and visitors, potentially overlooking evolving domestic Japanese attitudes or variations in etiquette across different social classes and specific geographic regions.</p>
+          <p class="drawer-footer"><a href="#dossier-4">View in Dossier ↓</a></p>
+        </div>
+      </details>
+    </div>
     </div>
   </section>
   <section id="story-5" class="spread arc-alert-stamp">
@@ -394,7 +479,21 @@
       <h2 class="frnc">The Rise of Reverse Molly Guards in Automated Systems</h2>
       <p class="story-meta">unsung.aresluna.org &nbsp;·&nbsp; 221 pts &nbsp;·&nbsp; 93 comments</p>
       <p class="lede">Hard-coding barriers to prevent human error is a classic engineering defensive move. Now, the logic is flipping: what happens when systems are programmed to act because a human chose not to?</p>
-      <div class="ctas"><a class="btn-read" href="https://unsung.aresluna.org/molly-guard-in-reverse/" target="_blank" rel="noopener">Read →</a><a class="btn-dossier" href="#dossier-5">Full analysis ↓</a></div>
+      <div class="ctas"><a class="btn-read" href="https://unsung.aresluna.org/molly-guard-in-reverse/" target="_blank" rel="noopener">Read →</a>
+      <details class="analysis-drawer">
+        <summary class="btn-dossier">[ Analysis + ]</summary>
+        <div class="drawer-content">
+          <h4>Technical Analysis</h4>
+          <p>The term &quot;molly guard&quot; refers to a protective cover or physical barrier designed to prevent the accidental activation of significant buttons or switches. Originating from an anecdote about an engineer’s daughter who repeatedly triggered a critical datacenter button, the concept has since evolved to include various hardware designs and software confirmation prompts. Beyond physical guards, the article discusses &quot;reverse molly guards,&quot; which are automated systems programmed to proceed with tasks if a human user fails to respond to a prompt within a specific timeframe.</p>
+          <h4>Reader Reactions</h4>
+<p>Users generally agree that &quot;molly-guards&quot; serve as valuable defensive design patterns that prevent catastrophic human error in both physical environments and complex software systems by introducing friction for high-stakes, irreversible actions.</p>
+<p>Some participants argue that adding such guards to software is counterproductive, suggesting that developers should favor better system design or automated checks rather than relying on manual intervention mechanisms that frustrate experienced users.</p>
+<p>Practitioners recommend implementing &quot;pair maintenance&quot; and contextual validation, such as checking for active network connections before allowing reboots, to ensure that safety measures remain unobtrusive while effectively protecting against critical operational failures.</p>
+<p>This discussion sample is heavily skewed toward engineering perspectives, potentially overlooking user experience limitations or the psychological phenomenon of &quot;alert fatigue&quot; where excessive warnings lead users to habitually ignore critical safety prompts.</p>
+          <p class="drawer-footer"><a href="#dossier-5">View in Dossier ↓</a></p>
+        </div>
+      </details>
+    </div>
     </div>
   </section>
   <section id="story-6" class="spread arc-stat-hero">
@@ -404,7 +503,21 @@
       <h2 class="frnc">Eliminating Serialization Bottlenecks Boosts Parser Throughput</h2>
       <p class="story-meta">openui.com &nbsp;·&nbsp; 291 pts &nbsp;·&nbsp; 213 comments</p>
       <p class="lede">The shift from WASM-based execution back to TypeScript revealed a surprising truth about data boundary costs. By flattening their architecture, the team saw a massive gain in algorithmic efficiency.</p>
-      <div class="ctas"><a class="btn-read" href="https://www.openui.com/blog/rust-wasm-parser" target="_blank" rel="noopener">Read →</a><a class="btn-dossier" href="#dossier-6">Full analysis ↓</a></div>
+      <div class="ctas"><a class="btn-read" href="https://www.openui.com/blog/rust-wasm-parser" target="_blank" rel="noopener">Read →</a>
+      <details class="analysis-drawer">
+        <summary class="btn-dossier">[ Analysis + ]</summary>
+        <div class="drawer-content">
+          <h4>Technical Analysis</h4>
+          <p>The team behind OpenUI initially developed their LLM-driven DSL parser in Rust, compiling it to WebAssembly (WASM) for high performance. They discovered, however, that the overhead of passing data across the JS-WASM boundary—specifically the cost of serializing and deserializing data—consistently outweighed the computational efficiency of Rust. By porting the pipeline to TypeScript and implementing incremental, statement-level caching, the team successfully eliminated the boundary tax and improved their algorithmic complexity from O(N²) to O(N).</p>
+          <h4>Reader Reactions</h4>
+<p>The primary consensus is that rewriting software often yields performance gains not because of the new language, but due to opportunities to fix algorithmic inefficiencies and remove legacy architectural bottlenecks.</p>
+<p>Some commenters argue that the move from Rust to TypeScript provided a tangible performance advantage by eliminating costly data serialization overheads that are inherently required at the JavaScript-WASM boundary.</p>
+<p>Developers should prioritize profiling code before making major architectural changes, as significant speed improvements frequently stem from fixing hidden bugs or optimizing data structures rather than switching programming languages.</p>
+<p>Skepticism persists regarding the article&#x27;s methodology, with several users suggesting the text and benchmarks were AI-generated, potentially obscuring the true technical reasons behind the reported performance improvements.</p>
+          <p class="drawer-footer"><a href="#dossier-6">View in Dossier ↓</a></p>
+        </div>
+      </details>
+    </div>
     </div>
   </section>
   <section id="story-7" class="spread arc-blueprint">
@@ -414,7 +527,21 @@
       <h2 class="frnc">Ghostling: Integrating Native Terminal Emulation via Libghostty</h2>
       <p class="story-meta">github.com &nbsp;·&nbsp; 332 pts &nbsp;·&nbsp; 70 comments</p>
       <p class="lede">Building a terminal emulator from scratch is a formidable task. This project demonstrates how to offload the heavy lifting of VT sequence parsing and text reflow to a robust shared library.</p>
-      <div class="ctas"><a class="btn-read" href="https://github.com/ghostty-org/ghostling" target="_blank" rel="noopener">Read →</a><a class="btn-dossier" href="#dossier-7">Full analysis ↓</a></div>
+      <div class="ctas"><a class="btn-read" href="https://github.com/ghostty-org/ghostling" target="_blank" rel="noopener">Read →</a>
+      <details class="analysis-drawer">
+        <summary class="btn-dossier">[ Analysis + ]</summary>
+        <div class="drawer-content">
+          <h4>Technical Analysis</h4>
+          <p>Ghostling is a minimal terminal emulator demo built to showcase the capabilities of `libghostty`, the core engine powering the Ghostty terminal. By utilizing the library&#x27;s C API alongside Raylib for windowing and rendering, the project provides a functional, single-threaded example of how developers can integrate robust terminal emulation into their own applications. The repository highlights that `libghostty` handles complex tasks like VT sequence parsing, Unicode support, and text reflow, while leaving GUI-specific features like tabs and configuration management to the consumer.</p>
+          <h4>Reader Reactions</h4>
+<p>Users generally praise Ghostling as a valuable tool for packaging command-line interfaces as native desktop applications, noting that the underlying library offers significant performance benefits for modern terminal emulator development.</p>
+<p>A recurring debate persists regarding whether terminal applications should handle tabs and window management or if those functions are better off delegated entirely to dedicated window managers and multiplexing tools.</p>
+<p>Developers discussing binary resource embedding caution that while generating header files from byte arrays is common, it can cause compilation issues in larger projects, necessitating more robust, format-aware alternatives.</p>
+<p>This sample represents early-adopter enthusiasm and technical discourse surrounding a specific developer tool, but may not reflect the broader challenges or feature requirements faced by average, less-technical end users.</p>
+          <p class="drawer-footer"><a href="#dossier-7">View in Dossier ↓</a></p>
+        </div>
+      </details>
+    </div>
     </div>
   </section>
   <section id="story-8" class="spread arc-pastel-playful">
@@ -425,7 +552,21 @@
       <h2 class="frnc">FilmKit Brings Fujifilm Raw Processing to the Modern Browser</h2>
       <p class="story-meta">github.com &nbsp;·&nbsp; 166 pts &nbsp;·&nbsp; 59 comments</p>
       <p class="lede">Managing camera profiles shouldn&#x27;t require clunky desktop software. This browser-based utility uses WebUSB to turn your camera into an active processing engine directly from your laptop.</p>
-      <div class="ctas"><a class="btn-read" href="https://github.com/eggricesoy/filmkit" target="_blank" rel="noopener">Read →</a><a class="btn-dossier" href="#dossier-8">Full analysis ↓</a></div>
+      <div class="ctas"><a class="btn-read" href="https://github.com/eggricesoy/filmkit" target="_blank" rel="noopener">Read →</a>
+      <details class="analysis-drawer">
+        <summary class="btn-dossier">[ Analysis + ]</summary>
+        <div class="drawer-content">
+          <h4>Technical Analysis</h4>
+          <p>FilmKit is a browser-based, open-source alternative to Fujifilm’s official X RAW STUDIO software, designed to manage camera profiles and process RAW images. By utilizing WebUSB, the tool allows users to connect their camera directly to a browser to perform tasks like preset management, live previewing, and JPEG conversion using the camera&#x27;s internal processor. The project currently focuses on the Fujifilm X100VI, using reverse-engineered PTP (Picture Transfer Protocol) communication to mimic the functionality of the official desktop application without requiring local software installation.</p>
+          <h4>Reader Reactions</h4>
+<p>Users generally praise the webapp for improving the usability of Fujifilm’s official software, which is widely described as frustratingly slow and difficult to navigate for managing in-camera film simulations and profiles.</p>
+<p>There is a notable technical debate regarding whether third-party raw converters can ever truly replicate the proprietary, in-camera processing algorithms that give Fujifilm and Canon cameras their signature color and image quality.</p>
+<p>The application uses WebUSB to offload intensive image processing to the physical camera hardware, effectively functioning as a remote interface for the device&#x27;s internal engine rather than performing software emulation locally.</p>
+<p>The discussion sample includes a pedantic linguistic side-thread concerning the capitalization of the word &quot;raw,&quot; which detracts from the technical subject matter and likely does not reflect the broader user sentiment.</p>
+          <p class="drawer-footer"><a href="#dossier-8">View in Dossier ↓</a></p>
+        </div>
+      </details>
+    </div>
     </div>
   </section>
   <section id="story-9" class="spread arc-archive">
@@ -435,7 +576,21 @@
       <h2 class="frnc">Revisiting The Fundamental APIs of Linux Application Development</h2>
       <p class="story-meta">github.com &nbsp;·&nbsp; 169 pts &nbsp;·&nbsp; 19 comments</p>
       <p class="lede">Classic texts remain the backbone of system knowledge, even as modern compilers change the landscape. This updated reference collection brings 2004-era systems wisdom into the current development cycle.</p>
-      <div class="ctas"><a class="btn-read" href="https://github.com/arnoldrobbins/LinuxByExample-2e" target="_blank" rel="noopener">Read →</a><a class="btn-dossier" href="#dossier-9">Full analysis ↓</a></div>
+      <div class="ctas"><a class="btn-read" href="https://github.com/arnoldrobbins/LinuxByExample-2e" target="_blank" rel="noopener">Read →</a>
+      <details class="analysis-drawer">
+        <summary class="btn-dossier">[ Analysis + ]</summary>
+        <div class="drawer-content">
+          <h4>Technical Analysis</h4>
+          <p>This GitHub repository provides the source code for the second edition of &quot;Linux Applications Programming by Example: The Fundamental APIs,&quot; a technical book authored by Arnold Robbins. The collection organizes example programs by chapter, following the structure of the 2004 text updated for a 2026 release. It serves as an official reference for developers looking to understand the core APIs that drive Linux application development.</p>
+          <h4>Reader Reactions</h4>
+<p>The thread focuses on evaluating the second edition of the featured book, highlighting its value for developers who prefer structured explanations of Unix system programming over raw manual pages and documentation.</p>
+<p>Users sharply debate the utility of using OCaml for Unix programming, with critics citing steep syntax complexity while proponents argue it offers safer error handling than shell scripts or low-level C.</p>
+<p>Beyond the featured book, participants suggest using NetBSD’s source tree as a practical reference for high-quality, readable examples that are less complex to navigate than the standard GNU code base.</p>
+<p>This discussion sample is heavily skewed toward debating specific programming language choices for system tasks rather than analyzing the actual pedagogical content or technical merits of the Linux-focused book provided.</p>
+          <p class="drawer-footer"><a href="#dossier-9">View in Dossier ↓</a></p>
+        </div>
+      </details>
+    </div>
     </div>
   </section>
   <section id="story-10" class="spread arc-editorial-pullquote">
@@ -445,7 +600,21 @@
       <h2 class="frnc">How the Los Angeles Aqueduct Masters Gravity-Fed Water Delivery</h2>
       <p class="story-meta">practical.engineering &nbsp;·&nbsp; 410 pts &nbsp;·&nbsp; 207 comments</p>
       <p class="lede">The survival of a sprawling desert metropolis depends on engineering that eschews mechanical reliance. This look at the 300-mile conduit examines how sheer geography can provide energy and water to millions.</p>
-      <div class="ctas"><a class="btn-read" href="https://practical.engineering/blog/2026/3/17/the-los-angeles-aqueduct-is-wild" target="_blank" rel="noopener">Read →</a><a class="btn-dossier" href="#dossier-10">Full analysis ↓</a></div>
+      <div class="ctas"><a class="btn-read" href="https://practical.engineering/blog/2026/3/17/the-los-angeles-aqueduct-is-wild" target="_blank" rel="noopener">Read →</a>
+      <details class="analysis-drawer">
+        <summary class="btn-dossier">[ Analysis + ]</summary>
+        <div class="drawer-content">
+          <h4>Technical Analysis</h4>
+          <p>The Los Angeles Aqueduct is a massive gravity-fed infrastructure system designed to transport water from the Eastern Sierra Nevada to the Los Angeles basin. Spanning over 300 miles, the project relies on a complex network of canals, tunnels, siphons, and reservoirs to move water without the use of mechanical pumps. Beyond water conveyance, the system integrates hydroelectric power generation and sophisticated flow-regulation mechanisms, serving as a critical pillar for the city&#x27;s water supply and energy production.</p>
+          <h4>Reader Reactions</h4>
+<p>Commenters broadly agree that California’s persistent water scarcity issues are driven more by inefficient allocation and political management decisions than by a genuine lack of physical water resources or environmental drought.</p>
+<p>A significant point of contention exists regarding whether agricultural exports, specifically alfalfa and almonds, are the primary culprit for water misuse or if they represent necessary components of sustainable, diversified farming.</p>
+<p>Unlike water systems in other regions that rely heavily on powered pumping, the Los Angeles water network utilizes gravity-fed infrastructure and elevated storage to maintain supply during frequent power grid interruptions.</p>
+<p>The discussion sample reflects a heavily skewed focus on Southern California urban perspectives, potentially overlooking the complex legal, contractual, and economic realities faced by rural farmers and specific municipal water districts.</p>
+          <p class="drawer-footer"><a href="#dossier-10">View in Dossier ↓</a></p>
+        </div>
+      </details>
+    </div>
     </div>
     <div class="quote-side">
       <blockquote class="pullquote">Gravity remains the most reliable and efficient engine for sustaining modern urban infrastructure</blockquote>
@@ -638,6 +807,19 @@
     localStorage.setItem(key, JSON.stringify(stored));
   }
 })();
+</script>
+<script>
+// Simple script to toggle the [+] and [-] labels on the drawers
+document.querySelectorAll('.analysis-drawer').forEach(drawer => {
+  drawer.addEventListener('toggle', () => {
+    const summary = drawer.querySelector('summary');
+    if (drawer.open) {
+      summary.textContent = '[ Analysis − ]';
+    } else {
+      summary.textContent = '[ Analysis + ]';
+    }
+  });
+});
 </script>
 </body>
 </html>

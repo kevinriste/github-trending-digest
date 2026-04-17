@@ -40,14 +40,43 @@
   .story-meta { font-weight: 600; font-size: 1.1rem; margin-bottom: 3rem; opacity: 0.6; letter-spacing: 0.02em; }
   .lede { font-size: clamp(1.4rem, 2.5vw, 2.1rem); line-height: 1.35; max-width: 800px; margin: 0 0 4rem; font-weight: 450; }
   
-  .ctas { display: flex; gap: 2.5rem; align-items: center; }
+  .ctas { display: flex; gap: 2.5rem; align-items: flex-start; }
   .ctas a {
     text-decoration: none; font-weight: 700; font-size: 1.1rem; letter-spacing: 0.1em; text-transform: uppercase;
     padding: 1.2rem 2.4rem; transition: all 0.2s;
   }
-  .btn-read { background: var(--text-dark); color: var(--bg-light); }
-  .btn-dossier { border-bottom: 2px solid currentColor; padding: 0.5rem 0 !important; }
+  .btn-read { background: var(--text-dark); color: var(--bg-light); cursor: pointer; border: none; }
+  .btn-dossier { 
+    border-bottom: 2px solid currentColor; padding: 0.5rem 0 !important; 
+    text-decoration: none; font-weight: 700; font-size: 1.1rem; letter-spacing: 0.1em; 
+    text-transform: uppercase; cursor: pointer; background: transparent; color: inherit;
+    display: inline-block;
+  }
   
+  /* ───── ANALYSIS DRAWER ───── */
+  .analysis-drawer { margin-top: 0; width: 100%; max-width: 800px; }
+  .analysis-drawer summary { list-style: none; outline: none; }
+  .analysis-drawer summary::-webkit-details-marker { display: none; }
+  .analysis-drawer[open] summary { margin-bottom: 2rem; }
+  .analysis-drawer[open] summary::after { content: ""; } /* Could add JS to toggle label but we'll do CSS trick or just keep static */
+  
+  .drawer-content {
+    background: rgba(0,0,0,0.03); padding: 3rem; border-left: 4px solid var(--text-dark);
+    animation: slideDown 0.3s ease-out;
+  }
+  .arc-midnight .drawer-content { background: rgba(255,255,255,0.05); border-color: #fff; }
+  .arc-terminal .drawer-content { background: rgba(32, 194, 14, 0.05); border-color: #20c20e; }
+  
+  .drawer-content h4 { text-transform: uppercase; letter-spacing: 0.2em; font-size: 0.9rem; margin-top: 0; margin-bottom: 1.5rem; opacity: 0.6; }
+  .drawer-content p { font-family: 'Fraunces', serif; font-size: 1.3rem; line-height: 1.5; margin-bottom: 1.5rem; }
+  .drawer-footer { margin-top: 2rem; border-top: 1px solid rgba(0,0,0,0.1); padding-top: 1.5rem; }
+  .drawer-footer a { font-size: 0.9rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; text-decoration: none; color: inherit; opacity: 0.5; }
+  
+  @keyframes slideDown {
+    from { opacity: 0; transform: translateY(-10px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
   /* ───── ARCHETYPE CSS ───── */
   
   /* Stat Hero */
@@ -348,7 +377,21 @@
       <h2 class="frnc">Refining the MacBook Chassis</h2>
       <p class="story-meta">kentwalters.com &nbsp;·&nbsp; 1398 pts &nbsp;·&nbsp; 675 comments</p>
       <p class="lede">The aluminum edges of modern laptops are often criticized for their sharp, uncompromising lines. One user took to the workshop to systematically sand away the aggression, prioritizing tactile comfort over factory aesthetics.</p>
-      <div class="ctas"><a class="btn-read" href="https://kentwalters.com/posts/corners/" target="_blank" rel="noopener">Read →</a><a class="btn-dossier" href="#dossier-1">Full analysis ↓</a></div>
+      <div class="ctas"><a class="btn-read" href="https://kentwalters.com/posts/corners/" target="_blank" rel="noopener">Read →</a>
+      <details class="analysis-drawer">
+        <summary class="btn-dossier">[ Analysis + ]</summary>
+        <div class="drawer-content">
+          <h4>Technical Analysis</h4>
+          <p>The author describes the process of manually filing down the sharp aluminum edges of their MacBook to improve ergonomic comfort while typing. By using metal files and progressively finer grit sandpaper, they successfully rounded the machine’s chassis edges, particularly around the wrist rests. The post emphasizes a philosophy of customizing expensive consumer electronics to better suit personal utility rather than strictly adhering to the manufacturer&#x27;s original industrial design.</p>
+          <h4>Reader Reactions</h4>
+<p>Users generally agree that Apple prioritizes aesthetics over ergonomic comfort, leading many to feel that the sharp aluminum edges of MacBooks are an unnecessary design flaw that negatively impacts daily usability.</p>
+<p>Some individuals argue that ergonomic issues with MacBooks are largely a matter of poor personal posture or seating arrangements rather than a design defect, suggesting that proper technique prevents any discomfort.</p>
+<p>For those choosing to manually soften edges, commenters recommend using high-grit wet sandpaper to carefully refine the aluminum finish, ensuring that the modification is subtle and preserves the laptop&#x27;s aesthetic integrity.</p>
+<p>The provided sample includes a tangential discussion about calendar seasons and virtual reality interface design, which dilutes the focus on the primary topic of hardware modification and laptop ergonomic challenges.</p>
+          <p class="drawer-footer"><a href="#dossier-1">View in Dossier ↓</a></p>
+        </div>
+      </details>
+    </div>
     </div>
   </section>
   <section id="story-2" class="spread arc-mint-pattern" style="--bg-word: 'ALGORITHMIC'">
@@ -360,7 +403,21 @@
       <h2 class="frnc">A Lightweight Strategy for Connect 4 Victory</h2>
       <p class="story-meta">2swap.github.io &nbsp;·&nbsp; 317 pts &nbsp;·&nbsp; 32 comments</p>
       <p class="lede">Mastery of a game as complex as Connect 4 usually demands massive look-up tables and brute-force computation. A new, human-readable strategy compresses the winning path into a mere 150 kilobytes, proving that structural insight often outweighs raw data.</p>
-      <div class="ctas"><a class="btn-read" href="https://2swap.github.io/WeakC4/explanation/" target="_blank" rel="noopener">Read →</a><a class="btn-dossier" href="#dossier-2">Full analysis ↓</a></div>
+      <div class="ctas"><a class="btn-read" href="https://2swap.github.io/WeakC4/explanation/" target="_blank" rel="noopener">Read →</a>
+      <details class="analysis-drawer">
+        <summary class="btn-dossier">[ Analysis + ]</summary>
+        <div class="drawer-content">
+          <h4>Technical Analysis</h4>
+          <p>The &quot;WeakC4&quot; project introduces a search-free, low-knowledge strategy for playing optimal Connect 4 as the first player. By identifying specific &quot;simple trick&quot; patterns that lead to guaranteed wins, the author constructed a compact opening tree that fits into approximately 150 kilobytes of data. Unlike strong solutions that store the entire game-theoretic value of every possible position, this approach prioritizes structural understanding and visual representation over raw computational force.</p>
+          <h4>Reader Reactions</h4>
+<p>The discussion overwhelmingly praises the creator’s YouTube channel for combining complex technical subjects with high-quality, aesthetically pleasing visualizations that make abstract game theory and mathematical concepts exceptionally accessible to general audiences.</p>
+<p>Participants debated whether the author’s technical methodology represents a fundamental innovation, with experienced researchers arguing that existing, more compressed solutions already provide equivalent practical performance for determining optimal moves in Connect 4.</p>
+<p>A technical takeaway is that a &quot;weak&quot; game solution provides a sufficient path to victory from a specific start point without needing to exhaustively map every possible branch of the game tree.</p>
+<p>The sample is heavily biased toward the creator&#x27;s video production quality rather than the technical merits of the Connect 4 solution, leaving the deeper algorithmic claims largely unverified by the community.</p>
+          <p class="drawer-footer"><a href="#dossier-2">View in Dossier ↓</a></p>
+        </div>
+      </details>
+    </div>
     </div>
   </section>
   <section id="story-3" class="spread arc-caution-tape">
@@ -372,7 +429,21 @@
       <h2 class="frnc">Windows Defender Zero-Day Exploited for System Access</h2>
       <p class="story-meta">hackingpassion.com &nbsp;·&nbsp; 28 pts &nbsp;·&nbsp; 11 comments</p>
       <p class="lede">A critical vulnerability in the Windows update process allows attackers to escalate privileges to full SYSTEM access. By chaining legitimate system services, the exploit bypasses standard security measures to manipulate core files.</p>
-      <div class="ctas"><a class="btn-read" href="https://hackingpassion.com/bluehammer-windows-defender-zero-day/" target="_blank" rel="noopener">Read →</a><a class="btn-dossier" href="#dossier-3">Full analysis ↓</a></div>
+      <div class="ctas"><a class="btn-read" href="https://hackingpassion.com/bluehammer-windows-defender-zero-day/" target="_blank" rel="noopener">Read →</a>
+      <details class="analysis-drawer">
+        <summary class="btn-dossier">[ Analysis + ]</summary>
+        <div class="drawer-content">
+          <h4>Technical Analysis</h4>
+          <p>The &quot;BlueHammer&quot; zero-day exploit abuses the Windows Defender update process to elevate low-privileged user accounts to NT AUTHORITY\SYSTEM access on Windows 10 and 11. By chaining together five legitimate system components—including the Volume Shadow Copy Service and the Cloud Files API—the exploit can intercept sensitive files and manipulate registry hives without triggering traditional security alerts. The researcher, operating under the alias &quot;Chaotic Eclipse,&quot; released the source code publicly after a reported dispute with Microsoft’s Security Response Center (MSRC) regarding the handling of their initial disclosure.</p>
+          <h4>Reader Reactions</h4>
+<p>Bullet 1: The community expressed strong frustration regarding the website&#x27;s poor accessibility, specifically criticizing the excessive advertising clutter that obscures content and the implementation of intrusive, user-hostile web development practices.</p>
+<p>Bullet 2: There is no meaningful disagreement present in this sample, as both participants align in their harsh condemnation of the site’s usability rather than discussing the technical merits of the exploit.</p>
+<p>Bullet 3: Developers should prioritize standard web functionality like text selection and clean page rendering, as failing to do so alienates technical audiences regardless of the quality of the underlying security content.</p>
+<p>Bullet 4: This analysis is limited by an extremely small sample size of only two comments, which focuses exclusively on web design critiques rather than providing any technical insights into the vulnerability itself.</p>
+          <p class="drawer-footer"><a href="#dossier-3">View in Dossier ↓</a></p>
+        </div>
+      </details>
+    </div>
     </div>
     <div class="tape bottom">CAUTION CAUTION CAUTION CAUTION CAUTION CAUTION CAUTION CAUTION</div>
   </section>
@@ -384,7 +455,21 @@
       <h2 class="frnc">Starfling: A Minimalist Orbital Game in One File</h2>
       <p class="story-meta">playstarfling.com &nbsp;·&nbsp; 625 pts &nbsp;·&nbsp; 152 comments</p>
       <p class="lede">This endless slingshot game packs its entire gravity-defying physics engine into a single HTML document. It is a masterclass in portable, browser-native design that invites players to navigate the stars with just a single tap.</p>
-      <div class="ctas"><a class="btn-read" href="https://playstarfling.com" target="_blank" rel="noopener">Read →</a><a class="btn-dossier" href="#dossier-4">Full analysis ↓</a></div>
+      <div class="ctas"><a class="btn-read" href="https://playstarfling.com" target="_blank" rel="noopener">Read →</a>
+      <details class="analysis-drawer">
+        <summary class="btn-dossier">[ Analysis + ]</summary>
+        <div class="drawer-content">
+          <h4>Technical Analysis</h4>
+          <p>Starfling is a minimalist, endless orbital slingshot game designed for web browsers that functions entirely within a single HTML file. Players navigate between stars using a simple one-tap mechanic to maintain momentum without missing their trajectories. The project emphasizes accessibility and portability, allowing users to play directly in their browsers without external dependencies or complex installations.</p>
+          <h4>Reader Reactions</h4>
+<p>Users generally enjoy the game&#x27;s addictive nature and the impressive performance of its single-file HTML distribution, though many feel the initial learning curve is steep and the user interface feels cluttered.</p>
+<p>Players strongly disagree on the physics model, with some finding the orbital mechanics intuitive and satisfying while others argue the trajectories feel unnatural, unpredictable, and inconsistent with real-world gravity simulations.</p>
+<p>Developers noted that the single-file HTML format is an excellent distribution strategy for portability and longevity, provided creators correctly escape specific character sequences like closing tags to prevent rendering errors.</p>
+<p>The feedback is heavily skewed toward technical enthusiasts and hobbyist developers who focus on control schemes, simulation accuracy, and code-level implementation details rather than typical hyper-casual gaming audience perspectives.</p>
+          <p class="drawer-footer"><a href="#dossier-4">View in Dossier ↓</a></p>
+        </div>
+      </details>
+    </div>
     </div>
   </section>
   <section id="story-5" class="spread arc-stat-hero">
@@ -394,7 +479,21 @@
       <h2 class="frnc">The Strange Geometry of 1D Chess</h2>
       <p class="story-meta">rowan441.github.io &nbsp;·&nbsp; 989 pts &nbsp;·&nbsp; 174 comments</p>
       <p class="lede">By compressing the sixty-four squares of a traditional board into a single line, we strip the game down to its most brutal, mathematical essence. Three pieces remain, and every move carries the weight of immediate checkmate.</p>
-      <div class="ctas"><a class="btn-read" href="https://rowan441.github.io/1dchess/chess.html" target="_blank" rel="noopener">Read →</a><a class="btn-dossier" href="#dossier-5">Full analysis ↓</a></div>
+      <div class="ctas"><a class="btn-read" href="https://rowan441.github.io/1dchess/chess.html" target="_blank" rel="noopener">Read →</a>
+      <details class="analysis-drawer">
+        <summary class="btn-dossier">[ Analysis + ]</summary>
+        <div class="drawer-content">
+          <h4>Technical Analysis</h4>
+          <p>1D Chess is a minimalist variant of the classic game, conceptualized by Martin Gardner in a 1980 *Scientific American* column and recently implemented as an interactive browser game. The game takes place on a single-dimensional board using only three piece types—the king, knight, and rook—which retain movement rules adapted for a linear space. Players must navigate these constrained mechanics to achieve checkmate, while standard draws like stalemate and threefold repetition remain in effect.</p>
+          <h4>Reader Reactions</h4>
+<p>Users generally appreciate the simplicity and mathematical nature of 1D Chess, often comparing it to other one-dimensional adaptations of classic board games like Go or Backgammon in the discussion.</p>
+<p>Debate exists regarding the implementation of castling, with some suggesting it maintains the game&#x27;s spirit, while others argue that it would be strategically counterproductive and expose the King to danger.</p>
+<p>Technical insights suggest that complex traditional games can be simplified into one dimension through specific rule adjustments, such as modifying piece movement or using scoring multipliers to increase competitive depth.</p>
+<p>This sample reflects enthusiasts&#x27; interest in theoretical game design and historical math columns, but it likely overlooks casual players who might focus more on the game&#x27;s immediate user interface experience.</p>
+          <p class="drawer-footer"><a href="#dossier-5">View in Dossier ↓</a></p>
+        </div>
+      </details>
+    </div>
     </div>
   </section>
   <section id="story-6" class="spread arc-archive">
@@ -404,7 +503,21 @@
       <h2 class="frnc">Rescuing Ten Thousand Concerts from Magnetic Tape</h2>
       <p class="story-meta">apnews.com &nbsp;·&nbsp; 400 pts &nbsp;·&nbsp; 76 comments</p>
       <p class="lede">For forty years, one fan documented the sound of live performance on analog tape. Now, a volunteer collective is meticulously digitizing this massive archive to ensure that these fleeting moments of musical history endure in lossless quality.</p>
-      <div class="ctas"><a class="btn-read" href="https://apnews.com/article/aadam-jacobs-collection-concerts-internet-archive-chicago-b1c9c4466a2db409a83523ad84b79d62" target="_blank" rel="noopener">Read →</a><a class="btn-dossier" href="#dossier-6">Full analysis ↓</a></div>
+      <div class="ctas"><a class="btn-read" href="https://apnews.com/article/aadam-jacobs-collection-concerts-internet-archive-chicago-b1c9c4466a2db409a83523ad84b79d62" target="_blank" rel="noopener">Read →</a>
+      <details class="analysis-drawer">
+        <summary class="btn-dossier">[ Analysis + ]</summary>
+        <div class="drawer-content">
+          <h4>Technical Analysis</h4>
+          <p>Aadam Jacobs spent four decades surreptitiously recording over 10,000 concerts, capturing raw performances of iconic artists ranging from Nirvana to James Brown. A group of volunteers is now working to digitize this massive analog archive, utilizing restored vintage equipment to transfer tapes to high-quality digital formats. The completed collection is being uploaded to the Internet Archive, where these historical recordings are made available for free public streaming and download.</p>
+          <h4>Reader Reactions</h4>
+<p>The community expresses strong appreciation for the extensive archive of concert recordings, highlighting the value of preserving live musical history through the Internet Archive and encouraging donations to support the effort.</p>
+<p>While there is broad consensus on the collection&#x27;s value, one participant observes that the rise of data hoarding likely stems from an increasing public awareness regarding the internet&#x27;s inherent digital ephemerality.</p>
+<p>The collection is technically significant for users because it includes high-quality, lossless FLAC audio files that offer a superior listening experience compared to standard lossy bootleg recordings found elsewhere online.</p>
+<p>This sample primarily reflects enthusiasm for specific bands and technical appreciation for the archive, but it fails to address potential legal or copyright complexities surrounding the distribution of these unauthorized concert recordings.</p>
+          <p class="drawer-footer"><a href="#dossier-6">View in Dossier ↓</a></p>
+        </div>
+      </details>
+    </div>
     </div>
   </section>
   <section id="story-7" class="spread arc-terminal">
@@ -418,7 +531,21 @@
         <p class="lede">The browser is not built to hold the weight of every available add-on simultaneously. Attempting to force the entire repository into a single instance yields a chaotic look at memory management, JSON thrashing, and the structural limits of modern web architecture.<span class="cursor"></span></p>
         <div class="ctas">
           <a href="https://jack.cab/blog/every-firefox-extension" class="btn-read" target="_blank">RUN_PROCESS →</a>
-          <a href="#dossier-7" class="btn-dossier">VIEW_ANALYSIS ↓</a>
+          
+      <details class="analysis-drawer">
+        <summary class="btn-dossier">[ Analysis + ]</summary>
+        <div class="drawer-content">
+          <h4>Technical Analysis</h4>
+          <p>The author, Rohan Adwankar, documents an exhaustive technical experiment involving the scraping and installation of all 84,194 available Firefox extensions. By leveraging the public add-ons store API, the project aims to bypass indexing limitations to archive every extension in a single dataset. The process required significant workarounds for browser performance, including manual manipulation of the `extensions.json` file and careful memory management to prevent total system failure.</p>
+          <h4>Reader Reactions</h4>
+<p>Readers generally view the experiment as an entertaining, chaotic, and insightful stress test that highlights browser performance bottlenecks, memory management issues, and the sheer volume of low-quality or malicious web extensions.</p>
+<p>While many appreciate the humorous approach to exposing browser limits, some commenters argue that designing for such an extreme, artificial edge case is unnecessary and a poor use of engineering resources.</p>
+<p>The performance degradation observed is largely linked to the browser’s practice of frequently rewriting a massive JSON configuration file to disk, a process optimized for normal usage but failing at scale.</p>
+<p>The sample discussion focuses heavily on technical implementation and anecdotal historical comparisons, potentially overlooking broader security policy implications or the long-term architectural impacts of modern extension frameworks like WebExtensions.</p>
+          <p class="drawer-footer"><a href="#dossier-7">View in Dossier ↓</a></p>
+        </div>
+      </details>
+    
         </div>
       </div>
     </div>
@@ -430,7 +557,21 @@
       <h2 class="frnc">Artemis II Completes Nine-Day Journey</h2>
       <p class="story-meta">cbsnews.com &nbsp;·&nbsp; 1281 pts &nbsp;·&nbsp; 452 comments</p>
       <p class="lede">The Orion capsule has returned to the Pacific, successfully weathering the extreme heat of reentry. This safe splashdown closes a vital chapter in the effort to move beyond low-Earth orbit and return to the lunar surface.</p>
-      <div class="ctas"><a class="btn-read" href="https://www.cbsnews.com/live-updates/artemis-ii-splashdown-return/" target="_blank" rel="noopener">Read →</a><a class="btn-dossier" href="#dossier-8">Full analysis ↓</a></div>
+      <div class="ctas"><a class="btn-read" href="https://www.cbsnews.com/live-updates/artemis-ii-splashdown-return/" target="_blank" rel="noopener">Read →</a>
+      <details class="analysis-drawer">
+        <summary class="btn-dossier">[ Analysis + ]</summary>
+        <div class="drawer-content">
+          <h4>Technical Analysis</h4>
+          <p>The Artemis II mission concluded successfully as the Orion capsule splashed down in the Pacific Ocean off the coast of San Diego following a nine-day lunar journey. The crew of four completed a high-speed atmospheric reentry, reaching temperatures of 5,000 degrees Fahrenheit before deploying parachutes for a controlled descent. This mission marks a significant milestone in NASA’s broader objective to return humans to the lunar surface and eventually prepare for missions to Mars.</p>
+          <h4>Reader Reactions</h4>
+<p>Commenters largely express relief and pride regarding the successful mission, framing it as a testament to the immense complexity of orbital mechanics and the dedicated effort required to manage extreme risks.</p>
+<p>Some participants argue the mission is a redundant repetition of past achievements that failed to spark a true space frontier, criticizing the reliance on legacy water-landing technology over reusable runway designs.</p>
+<p>The technical discussion highlights how precise reentry is achieved through advanced mathematical modeling and sensor data, while acknowledging that ablative heat shields require rigorous testing to prevent structural failure from gas buildup.</p>
+<p>This sample represents a niche audience of space enthusiasts and cynical tech observers, which potentially downplays broader public excitement while over-emphasizing internal criticisms regarding NASA&#x27;s risk management and operational inefficiencies.</p>
+          <p class="drawer-footer"><a href="#dossier-8">View in Dossier ↓</a></p>
+        </div>
+      </details>
+    </div>
     </div>
   </section>
   <section id="story-9" class="spread arc-academic-drop-cap">
@@ -444,7 +585,21 @@
       <p class="story-meta">bbc.com &nbsp;·&nbsp; 438 pts &nbsp;·&nbsp; 277 comments</p>
       <div class="cols">
         <div><p>T Researchers have documented a sustained territorial war within a once-unified chimpanzee population in Uganda.</p></div>
-        <div><p>The findings suggest that social fragmentation and the loss of key individuals can trigger cycles of violence that mirror human societal collapse.</p><div class="ctas"><a class="btn-read" href="https://www.bbc.com/news/articles/cr71lkzv49po" target="_blank" rel="noopener">Read →</a><a class="btn-dossier" href="#dossier-9">Full analysis ↓</a></div></div>
+        <div><p>The findings suggest that social fragmentation and the loss of key individuals can trigger cycles of violence that mirror human societal collapse.</p><div class="ctas"><a class="btn-read" href="https://www.bbc.com/news/articles/cr71lkzv49po" target="_blank" rel="noopener">Read →</a>
+      <details class="analysis-drawer">
+        <summary class="btn-dossier">[ Analysis + ]</summary>
+        <div class="drawer-content">
+          <h4>Technical Analysis</h4>
+          <p>Researchers at Uganda&#x27;s Kibale National Park have documented an unprecedented eight-year &quot;civil war&quot; within the Ngogo chimpanzee community, previously known for being a cohesive group of nearly 200 members. Since splitting into Western and Central factions in 2018, the chimpanzees have engaged in lethal territorial violence, resulting in at least 24 recorded deaths, including 17 infants. The study, published in *Science*, attributes this breakdown in social structure to a combination of population pressure, shifting dominance hierarchies, and the loss of key individuals who previously bridged social divides.</p>
+          <h4>Reader Reactions</h4>
+<p>The discussion highlights a broad consensus that chimpanzee conflict mirrors human group dynamics, suggesting that violence often stems from fundamental social processes like relational breakdown rather than solely ideological or cultural differences.</p>
+<p>Commenters sharply debate whether such lethal violence is an inevitable biological trait shaped by game theory or a consequence of specific external pressures and the breakdown of established, cross-group social connections.</p>
+<p>Analysis of the Ngogo chimpanzee group suggests that the loss of &quot;super-connectors&quot; and exceeding sustainable social group sizes, similar to Dunbar’s number, can trigger catastrophic polarization and eventual violent fissioning within societies.</p>
+<p>This sample primarily features anecdotal reflections from observers of popular media, such as the *Chimp Empire* documentary, rather than rigorous primary scientific evidence, potentially oversimplifying complex primatological models through casual pop-culture analogies.</p>
+          <p class="drawer-footer"><a href="#dossier-9">View in Dossier ↓</a></p>
+        </div>
+      </details>
+    </div></div>
       </div>
     </div>
   </section>
@@ -455,7 +610,21 @@
       <h2 class="frnc">Defining Accountability for AI in the Linux Kernel</h2>
       <p class="story-meta">github.com &nbsp;·&nbsp; 519 pts &nbsp;·&nbsp; 427 comments</p>
       <p class="lede">As machine-generated code enters the repository, the maintainers of Linux have issued a clear mandate regarding legal responsibility. Automated tools may assist in the process, but the human signature remains the sole gatekeeper for compliance and liability.</p>
-      <div class="ctas"><a class="btn-read" href="https://github.com/torvalds/linux/blob/master/Documentation/process/coding-assistants.rst" target="_blank" rel="noopener">Read →</a><a class="btn-dossier" href="#dossier-10">Full analysis ↓</a></div>
+      <div class="ctas"><a class="btn-read" href="https://github.com/torvalds/linux/blob/master/Documentation/process/coding-assistants.rst" target="_blank" rel="noopener">Read →</a>
+      <details class="analysis-drawer">
+        <summary class="btn-dossier">[ Analysis + ]</summary>
+        <div class="drawer-content">
+          <h4>Technical Analysis</h4>
+          <p>The Linux kernel project has officially released documentation detailing the requirements and ethical guidelines for using AI assistants in kernel development. The document mandates that all AI-generated contributions must strictly adhere to existing licensing laws, specifically GPL-2.0, and remain compliant with established kernel coding standards. Crucially, the guidelines forbid AI from providing &quot;Signed-off-by&quot; tags, placing the burden of legal responsibility and DCO certification entirely on the human contributor.</p>
+          <h4>Reader Reactions</h4>
+<p>The dominant view is that the Linux kernel’s new policy acts as a necessary legal shield by formally assigning human liability and accountability to contributors regardless of how their code was generated.</p>
+<p>Critics argue the policy is ineffective or unethical, claiming that LLMs inherently violate copyright licenses through mass-scraped training data and that the industry is effectively conceding its core open-source principles to automation.</p>
+<p>The practical technical requirement is that any AI-assisted contributions must now include an explicit &quot;Assisted-by&quot; tag, forcing developers to take full responsibility for reviewing, vetting, and certifying the code&#x27;s legal compliance.</p>
+<p>This sample is heavily skewed by a vocal minority of contributors deeply concerned about the philosophical and economic implications of AI, potentially obscuring the pragmatic viewpoints of more neutral kernel developers.</p>
+          <p class="drawer-footer"><a href="#dossier-10">View in Dossier ↓</a></p>
+        </div>
+      </details>
+    </div>
     </div>
     <div class="quote-side">
       <blockquote class="pullquote">The burden of legal responsibility must reside permanently with the human contributor</blockquote>
@@ -648,6 +817,19 @@
     localStorage.setItem(key, JSON.stringify(stored));
   }
 })();
+</script>
+<script>
+// Simple script to toggle the [+] and [-] labels on the drawers
+document.querySelectorAll('.analysis-drawer').forEach(drawer => {
+  drawer.addEventListener('toggle', () => {
+    const summary = drawer.querySelector('summary');
+    if (drawer.open) {
+      summary.textContent = '[ Analysis − ]';
+    } else {
+      summary.textContent = '[ Analysis + ]';
+    }
+  });
+});
 </script>
 </body>
 </html>

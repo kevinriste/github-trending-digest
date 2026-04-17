@@ -40,14 +40,43 @@
   .story-meta { font-weight: 600; font-size: 1.1rem; margin-bottom: 3rem; opacity: 0.6; letter-spacing: 0.02em; }
   .lede { font-size: clamp(1.4rem, 2.5vw, 2.1rem); line-height: 1.35; max-width: 800px; margin: 0 0 4rem; font-weight: 450; }
   
-  .ctas { display: flex; gap: 2.5rem; align-items: center; }
+  .ctas { display: flex; gap: 2.5rem; align-items: flex-start; }
   .ctas a {
     text-decoration: none; font-weight: 700; font-size: 1.1rem; letter-spacing: 0.1em; text-transform: uppercase;
     padding: 1.2rem 2.4rem; transition: all 0.2s;
   }
-  .btn-read { background: var(--text-dark); color: var(--bg-light); }
-  .btn-dossier { border-bottom: 2px solid currentColor; padding: 0.5rem 0 !important; }
+  .btn-read { background: var(--text-dark); color: var(--bg-light); cursor: pointer; border: none; }
+  .btn-dossier { 
+    border-bottom: 2px solid currentColor; padding: 0.5rem 0 !important; 
+    text-decoration: none; font-weight: 700; font-size: 1.1rem; letter-spacing: 0.1em; 
+    text-transform: uppercase; cursor: pointer; background: transparent; color: inherit;
+    display: inline-block;
+  }
   
+  /* ───── ANALYSIS DRAWER ───── */
+  .analysis-drawer { margin-top: 0; width: 100%; max-width: 800px; }
+  .analysis-drawer summary { list-style: none; outline: none; }
+  .analysis-drawer summary::-webkit-details-marker { display: none; }
+  .analysis-drawer[open] summary { margin-bottom: 2rem; }
+  .analysis-drawer[open] summary::after { content: ""; } /* Could add JS to toggle label but we'll do CSS trick or just keep static */
+  
+  .drawer-content {
+    background: rgba(0,0,0,0.03); padding: 3rem; border-left: 4px solid var(--text-dark);
+    animation: slideDown 0.3s ease-out;
+  }
+  .arc-midnight .drawer-content { background: rgba(255,255,255,0.05); border-color: #fff; }
+  .arc-terminal .drawer-content { background: rgba(32, 194, 14, 0.05); border-color: #20c20e; }
+  
+  .drawer-content h4 { text-transform: uppercase; letter-spacing: 0.2em; font-size: 0.9rem; margin-top: 0; margin-bottom: 1.5rem; opacity: 0.6; }
+  .drawer-content p { font-family: 'Fraunces', serif; font-size: 1.3rem; line-height: 1.5; margin-bottom: 1.5rem; }
+  .drawer-footer { margin-top: 2rem; border-top: 1px solid rgba(0,0,0,0.1); padding-top: 1.5rem; }
+  .drawer-footer a { font-size: 0.9rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; text-decoration: none; color: inherit; opacity: 0.5; }
+  
+  @keyframes slideDown {
+    from { opacity: 0; transform: translateY(-10px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
   /* ───── ARCHETYPE CSS ───── */
   
   /* Stat Hero */
@@ -348,7 +377,21 @@
       <h2 class="frnc">System76 Addresses Mandated Age Verification Requirements</h2>
       <p class="story-meta">blog.system76.com &nbsp;·&nbsp; 846 pts &nbsp;·&nbsp; 600 comments</p>
       <p class="lede">New state laws now require hardware manufacturers to verify the ages of their end users. The implications for open-source Linux distributors are as complex as they are controversial.</p>
-      <div class="ctas"><a class="btn-read" href="https://blog.system76.com/post/system76-on-age-verification/" target="_blank" rel="noopener">Read →</a><a class="btn-dossier" href="#dossier-1">Full analysis ↓</a></div>
+      <div class="ctas"><a class="btn-read" href="https://blog.system76.com/post/system76-on-age-verification/" target="_blank" rel="noopener">Read →</a>
+      <details class="analysis-drawer">
+        <summary class="btn-dossier">[ Analysis + ]</summary>
+        <div class="drawer-content">
+          <h4>Technical Analysis</h4>
+          <p>System76 CEO Carl Richell writes about his opposition to emerging legislation in Colorado, California, and New York that mandates age verification and age-bracket reporting for internet-connected devices and operating systems. These laws aim to restrict digital access for minors, but Richell argues they are fundamentally ineffective because users—especially tech-savvy children—can easily bypass such barriers through virtual machines or by simply providing false information. He further warns that these regulations could inadvertently implicate Linux distributors as &quot;device manufacturers,&quot; potentially forcing open-source ecosystems to comply with restrictive, centralized surveillance models.</p>
+          <h4>Reader Reactions</h4>
+<p>Users generally oppose the age verification laws, viewing them as harmful threats to online privacy and anonymity, yet they express disappointment that System76 plans to comply with these government mandates.</p>
+<p>A subset of participants argues that expecting a company to risk its financial survival and legal standing to resist government policy is an unreasonable demand that ignores real-world commercial pressures.</p>
+<p>Technically inclined users suggest that these regulations may drive the adoption of DIY operating systems, customized Linux distributions, or pirate software designed to bypass age-verification signals and maintain user privacy.</p>
+<p>This sample highlights a tension between the open-source community&#x27;s commitment to radical digital freedom and the pragmatic reality of corporate compliance, though the discussion lacks input from legal or policy experts.</p>
+          <p class="drawer-footer"><a href="#dossier-1">View in Dossier ↓</a></p>
+        </div>
+      </details>
+    </div>
     </div>
   </section>
   <section id="story-2" class="spread arc-product-plate">
@@ -357,7 +400,21 @@
       <h2 class="frnc">OpenAI Introduces GPT-5.4 With Native Computer Use</h2>
       <p class="story-meta">openai.com &nbsp;·&nbsp; 1017 pts &nbsp;·&nbsp; 806 comments</p>
       <p class="lede">The latest iteration of the frontier model features integrated browser navigation and a refined planning mode. It aims to bridge the gap between logical reasoning and direct software execution.</p>
-      <div class="ctas"><a class="btn-read" href="https://openai.com/index/introducing-gpt-5-4/" target="_blank" rel="noopener">Read →</a><a class="btn-dossier" href="#dossier-2">Full analysis ↓</a></div>
+      <div class="ctas"><a class="btn-read" href="https://openai.com/index/introducing-gpt-5-4/" target="_blank" rel="noopener">Read →</a>
+      <details class="analysis-drawer">
+        <summary class="btn-dossier">[ Analysis + ]</summary>
+        <div class="drawer-content">
+          <h4>Technical Analysis</h4>
+          <p>OpenAI has introduced GPT-5.4, a new frontier model designed to improve reasoning, coding, and professional task execution. Available via ChatGPT, the API, and Codex, the model features native computer-use capabilities that allow agents to operate software and navigate web interfaces directly. It also implements &quot;tool search&quot; functionality to optimize context management when dealing with large ecosystems of external tools, alongside a &quot;Thinking&quot; mode that allows users to adjust the model&#x27;s plan in real-time.</p>
+          <h4>Reader Reactions</h4>
+<p>Commenters generally appreciate the new 1M context window and improved coding capabilities, though many express frustration over OpenAI’s increasingly fragmented and confusing model versioning system compared to competitors like Anthropic.</p>
+<p>There is significant debate regarding the utility of screenshot-based UI interaction versus traditional API usage, with some arguing that direct browser manipulation is a necessary workaround for restrictive proprietary ecosystems.</p>
+<p>Users report that while GPT-5.4 shows measurable improvements in coding tasks and logical writing over previous versions, actual performance remains highly dependent on specific use cases rather than generic benchmark scores.</p>
+<p>This sample may over-represent power users and developers concerned with API pricing, model versioning, and coding agent performance, potentially overlooking the experiences of casual ChatGPT users or non-technical enterprise stakeholders.</p>
+          <p class="drawer-footer"><a href="#dossier-2">View in Dossier ↓</a></p>
+        </div>
+      </details>
+    </div>
     </div>
   </section>
   <section id="story-3" class="spread arc-mint-pattern" style="--bg-word: 'DATA'">
@@ -369,7 +426,21 @@
       <h2 class="frnc">The Hidden Costs of Serializing Rust Structs</h2>
       <p class="story-meta">feldera.com &nbsp;·&nbsp; 73 pts &nbsp;·&nbsp; 47 comments</p>
       <p class="lede">Mapping nullable SQL columns to Rust types can introduce unexpected padding and memory bloat. Performance-minded engineers are now reconsidering the role of zero-copy frameworks in sparse data environments.</p>
-      <div class="ctas"><a class="btn-read" href="https://www.feldera.com/blog/nobody-ever-got-fired-for-using-a-struct" target="_blank" rel="noopener">Read →</a><a class="btn-dossier" href="#dossier-3">Full analysis ↓</a></div>
+      <div class="ctas"><a class="btn-read" href="https://www.feldera.com/blog/nobody-ever-got-fired-for-using-a-struct" target="_blank" rel="noopener">Read →</a>
+      <details class="analysis-drawer">
+        <summary class="btn-dossier">[ Analysis + ]</summary>
+        <div class="drawer-content">
+          <h4>Technical Analysis</h4>
+          <p>The author describes a performance issue at Feldera where a Rust-based SQL engine suffered from significant slowdowns when processing wide, sparse tables. Because the engine mapped nullable SQL columns to Rust `Option&lt;T&gt;` types, the serialized format—handled by the zero-copy framework `rkyv`—bloated significantly. This occurred because `Option` wrappers in the serialized layout lost memory-efficient niche optimizations, forcing the engine to store large discriminants and unnecessary padding for hundreds of fields.</p>
+          <h4>Reader Reactions</h4>
+<p>Experts generally agree that using language-specific serialization, like pickles or structs, for large-scale on-disk storage is dangerous; they recommend using standardized, language-agnostic formats like Parquet, Arrow, or Protobuf for better safety.</p>
+<p>A significant debate exists regarding database schema design, where some argue that tables with hundreds of columns indicate poor design, while others note that large, mature enterprises often require complex schemas.</p>
+<p>Developers should prioritize designing data structures to align with specific access patterns and performance trade-offs, as optimizing the shape of data is often more effective than focusing solely on algorithmic complexity.</p>
+<p>This sample may overrepresent perspectives from Rust developers and database engine specialists, potentially skewing the discourse away from the broader, more common application development practices prevalent in other programming ecosystems.</p>
+          <p class="drawer-footer"><a href="#dossier-3">View in Dossier ↓</a></p>
+        </div>
+      </details>
+    </div>
     </div>
   </section>
   <section id="story-4" class="spread arc-editorial-pullquote">
@@ -379,7 +450,21 @@
       <h2 class="frnc">Anthropic Challenges Military Supply Chain Designation</h2>
       <p class="story-meta">anthropic.com &nbsp;·&nbsp; 629 pts &nbsp;·&nbsp; 785 comments</p>
       <p class="lede">The company faces a new classification by the Department of War regarding its role in national security infrastructure. This legal battle signals a growing friction between private AI development and state defense agendas.</p>
-      <div class="ctas"><a class="btn-read" href="https://www.anthropic.com/news/where-stand-department-war" target="_blank" rel="noopener">Read →</a><a class="btn-dossier" href="#dossier-4">Full analysis ↓</a></div>
+      <div class="ctas"><a class="btn-read" href="https://www.anthropic.com/news/where-stand-department-war" target="_blank" rel="noopener">Read →</a>
+      <details class="analysis-drawer">
+        <summary class="btn-dossier">[ Analysis + ]</summary>
+        <div class="drawer-content">
+          <h4>Technical Analysis</h4>
+          <p>Anthropic CEO Dario Amodei announced that the company has been formally designated a supply chain risk by the Department of War, a decision they intend to challenge in court. Despite this classification, Anthropic maintains that the designation is narrow and does not impact customers using Claude for purposes outside of specific Department of War contracts. The company has pledged to continue supporting national security tools at a nominal cost during this transition to ensure that frontline operations remain uninterrupted.</p>
+          <h4>Reader Reactions</h4>
+<p>Commenters express deep concern regarding the normalization of tech industry support for military operations, lamenting the decline of traditional ethical standards and the erosion of individual moral responsibility among developers.</p>
+<p>A subset of users argues that developing advanced defense technology is a necessary, ethical imperative for preserving Western stability and preventing global dominance by authoritarian powers that prioritize military expansionism.</p>
+<p>The discussion highlights how enterprise reliance on government contracts often forces tech companies to align with defense agendas, potentially creating dependency traps that make ethical independence difficult for businesses to maintain.</p>
+<p>The sample size of sixteen comments may be too small to represent the broader, more complex spectrum of opinion across the entire 329-comment thread regarding institutional AI ethics and policy.</p>
+          <p class="drawer-footer"><a href="#dossier-4">View in Dossier ↓</a></p>
+        </div>
+      </details>
+    </div>
     </div>
     <div class="quote-side">
       <blockquote class="pullquote">The normalization of defense contracting threatens the ethical independence of the modern AI ecosystem</blockquote>
@@ -392,7 +477,21 @@
       <h2 class="frnc">Hardware Instability Identified in Browser Crash Telemetry</h2>
       <p class="story-meta">mas.to &nbsp;·&nbsp; 915 pts &nbsp;·&nbsp; 477 comments</p>
       <p class="lede">A granular look at Firefox crash reports reveals that software bugs are only part of the story. Memory degradation is causing significant disruption across diverse hardware configurations.</p>
-      <div class="ctas"><a class="btn-read" href="https://mas.to/@gabrielesvelto/116171750653898304" target="_blank" rel="noopener">Read →</a><a class="btn-dossier" href="#dossier-5">Full analysis ↓</a></div>
+      <div class="ctas"><a class="btn-read" href="https://mas.to/@gabrielesvelto/116171750653898304" target="_blank" rel="noopener">Read →</a>
+      <details class="analysis-drawer">
+        <summary class="btn-dossier">[ Analysis + ]</summary>
+        <div class="drawer-content">
+          <h4>Technical Analysis</h4>
+          <p>Gabriele Svelto, a developer for Mozilla, analyzed Firefox crash reports and discovered that approximately 10% to 15% of browser crashes are caused by faulty hardware rather than software bugs. By deploying a memory-testing heuristic to opt-in user machines, Svelto identified that bit-flips—often resulting from degradation or defects in RAM—are a significant contributor to system instability. This phenomenon affects a wide array of devices, including modern ARM-based systems with soldered memory, suggesting that hardware failure is a much more pervasive issue than previously estimated by the software industry.</p>
+          <h4>Reader Reactions</h4>
+<p>Many commenters agree that bitflips and hardware-level memory errors are an underappreciated, persistent reality of modern computing, often exacerbated by high temperatures, overclocking, and the absence of error-correcting code (ECC) memory.</p>
+<p>Skeptics argue that attributing ten percent of all Firefox crashes to hardware defects is implausibly high, suggesting instead that the telemetry data may be misinterpreted or skewed by specific user hardware configurations.</p>
+<p>Detecting underlying hardware instability often requires proactive stress testing, such as running memory diagnostics or monitoring for corrected ECC errors, as many software crashes are symptoms of unreliable physical system components.</p>
+<p>The reliability of these crash statistics remains contentious because telemetry cannot easily distinguish between transient hardware faults, persistent physical defects, or software-driven bugs when users have disparate, non-standard computing environments.</p>
+          <p class="drawer-footer"><a href="#dossier-5">View in Dossier ↓</a></p>
+        </div>
+      </details>
+    </div>
     </div>
   </section>
   <section id="story-6" class="spread arc-archive">
@@ -402,7 +501,21 @@
       <h2 class="frnc">The Quartz Crisis and the Birth of Brand Luxury</h2>
       <p class="story-meta">paulgraham.com &nbsp;·&nbsp; 494 pts &nbsp;·&nbsp; 376 comments</p>
       <p class="lede">When Japanese precision challenged Swiss engineering in the 1970s, the watch industry underwent a fundamental shift. Mechanical mastery was set aside in favor of the intangible power of the luxury brand.</p>
-      <div class="ctas"><a class="btn-read" href="https://paulgraham.com/brandage.html" target="_blank" rel="noopener">Read →</a><a class="btn-dossier" href="#dossier-6">Full analysis ↓</a></div>
+      <div class="ctas"><a class="btn-read" href="https://paulgraham.com/brandage.html" target="_blank" rel="noopener">Read →</a>
+      <details class="analysis-drawer">
+        <summary class="btn-dossier">[ Analysis + ]</summary>
+        <div class="drawer-content">
+          <h4>Technical Analysis</h4>
+          <p>This story examines the transformation of the Swiss watch industry following the 1970s &quot;quartz crisis,&quot; which rendered traditional mechanical timekeeping obsolete. As Japanese manufacturers introduced cheaper, more accurate quartz movements, Swiss watchmakers were forced to pivot from engineering precision to luxury branding to survive. The author explains how companies like Patek Philippe and Audemars Piguet shifted their focus toward status-symbol design and aggressive marketing, effectively decoupling a product&#x27;s market value from its technological performance.</p>
+          <h4>Reader Reactions</h4>
+<p>Commenters broadly agree that once functional product differentiation disappears, companies transition from competing on engineering to relying on brand-driven status, artificial scarcity, and psychological signaling to maintain high profit margins.</p>
+<p>Several users strongly disagree with the essay’s premise that luxury watches lack beauty or engineering value, arguing instead that design excellence and technical craftsmanship remain central to consumer appreciation and brand identity.</p>
+<p>The discussion highlights that branding acts as a significant economic moat, making it difficult for new entrants to displace incumbents even when they provide superior functional alternatives or lower pricing models.</p>
+<p>The sample exhibits a strong selection bias toward the technology-oriented Hacker News demographic, whose tendency to prioritize logic and functionality may cause them to underappreciate the emotional or aesthetic drivers of branding.</p>
+          <p class="drawer-footer"><a href="#dossier-6">View in Dossier ↓</a></p>
+        </div>
+      </details>
+    </div>
     </div>
   </section>
   <section id="story-7" class="spread arc-notebook">
@@ -413,7 +526,21 @@
       <h2 class="frnc">Rethinking the Trend of Low-Contrast Text</h2>
       <p class="story-meta">catskull.net &nbsp;·&nbsp; 102 pts &nbsp;·&nbsp; 72 comments</p>
       <p class="lede">Grey text on off-white backgrounds has become a default aesthetic choice for many developers. It is time to consider whether readability should take precedence over subtle styling.</p>
-      <div class="ctas"><a class="btn-read" href="https://catskull.net/stop-using-grey-text.html" target="_blank" rel="noopener">Read →</a><a class="btn-dossier" href="#dossier-7">Full analysis ↓</a></div>
+      <div class="ctas"><a class="btn-read" href="https://catskull.net/stop-using-grey-text.html" target="_blank" rel="noopener">Read →</a>
+      <details class="analysis-drawer">
+        <summary class="btn-dossier">[ Analysis + ]</summary>
+        <div class="drawer-content">
+          <h4>Technical Analysis</h4>
+          <p>The article argues strongly against the common design practice of using low-contrast grey text on off-white backgrounds, labeling it an unnecessary aesthetic choice that degrades readability. The author points out that this trend requires designers to intentionally override browser defaults with specific CSS, effectively reducing the information fidelity of their content. The piece concludes by suggesting that if designers insist on these styling choices, they should at least implement the `prefers-contrast` media query to improve accessibility for all users.</p>
+          <h4>Reader Reactions</h4>
+<p>Commenters widely agree that low contrast—not the color grey itself—is the fundamental issue, advocating for adherence to established WCAG guidelines to ensure text remains legible for users with vision impairments.</p>
+<p>Some designers argue against using pure black text, suggesting that dark or charcoal grey often provides a more natural, comfortable viewing experience and improved readability compared to harsh high-contrast alternatives.</p>
+<p>Users recommend that developers use automated contrast checkers and CSS variables to verify accessibility and allow for personal customization, rather than relying on subjective design choices that may hinder information access.</p>
+<p>The discussion is heavily influenced by criticism of the original article&#x27;s hypocrisy, as readers pointed out that the author&#x27;s own website fails to meet the very accessibility standards it explicitly promotes.</p>
+          <p class="drawer-footer"><a href="#dossier-7">View in Dossier ↓</a></p>
+        </div>
+      </details>
+    </div>
     </div>
   </section>
   <section id="story-8" class="spread arc-academic-drop-cap">
@@ -427,7 +554,21 @@
       <p class="story-meta">anthropic.com &nbsp;·&nbsp; 332 pts &nbsp;·&nbsp; 563 comments</p>
       <div class="cols">
         <div><p>Current research suggests that while AI adoption is high in technical fields, systemic displacement remains absent from the broader economy.</p></div>
-        <div><p>We examine the delta between theoretical automation and actual workforce outcomes.</p><div class="ctas"><a class="btn-read" href="https://www.anthropic.com/research/labor-market-impacts" target="_blank" rel="noopener">Read →</a><a class="btn-dossier" href="#dossier-8">Full analysis ↓</a></div></div>
+        <div><p>We examine the delta between theoretical automation and actual workforce outcomes.</p><div class="ctas"><a class="btn-read" href="https://www.anthropic.com/research/labor-market-impacts" target="_blank" rel="noopener">Read →</a>
+      <details class="analysis-drawer">
+        <summary class="btn-dossier">[ Analysis + ]</summary>
+        <div class="drawer-content">
+          <h4>Technical Analysis</h4>
+          <p>Anthropic researchers have developed a new &quot;observed exposure&quot; metric to quantify how AI usage in professional settings compares to the theoretical task-displacement potential of large language models. By combining O*NET occupational data with real-world usage patterns from their own platforms, the study evaluates whether AI is currently reshaping labor markets. The findings indicate that while certain professions like computer programming and data entry show high coverage, there is currently no systematic evidence of widespread unemployment directly attributable to AI.</p>
+          <h4>Reader Reactions</h4>
+<p>While some developers report significant personal productivity gains using AI for coding and research tasks, there is little evidence that these individual improvements have yet translated into widespread, measurable organizational efficiency.</p>
+<p>Skeptics argue that AI&#x27;s impact is largely overstated, noting that existing organizational bottlenecks, coordination overhead, and corporate processes remain unchanged, meaning software delivery speeds have not accelerated for many professional teams.</p>
+<p>Practical integration of AI currently functions best as a collaborative tool for managing boilerplate and complex codebases, though it requires constant human oversight to mitigate errors and ensure high-quality output.</p>
+<p>The discussion is heavily skewed toward software engineering perspectives, potentially masking varied impacts across other industries and failing to account for the lag between tool adoption and actual macroeconomic labor shifts.</p>
+          <p class="drawer-footer"><a href="#dossier-8">View in Dossier ↓</a></p>
+        </div>
+      </details>
+    </div></div>
       </div>
     </div>
   </section>
@@ -438,7 +579,21 @@
       <h2 class="frnc">Programming a Colony in the Swarm Challenge</h2>
       <p class="story-meta">dev.moment.com &nbsp;·&nbsp; 189 pts &nbsp;·&nbsp; 63 comments</p>
       <p class="lede">This simulation asks developers to govern two hundred ants using a custom assembly language. It is a rigorous test of low-level logic applied to collective behavior systems.</p>
-      <div class="ctas"><a class="btn-read" href="https://dev.moment.com/" target="_blank" rel="noopener">Read →</a><a class="btn-dossier" href="#dossier-9">Full analysis ↓</a></div>
+      <div class="ctas"><a class="btn-read" href="https://dev.moment.com/" target="_blank" rel="noopener">Read →</a>
+      <details class="analysis-drawer">
+        <summary class="btn-dossier">[ Analysis + ]</summary>
+        <div class="drawer-content">
+          <h4>Technical Analysis</h4>
+          <p>Moment has launched a public programming challenge called &quot;Swarm,&quot; which invites developers to control an ant colony simulation using a custom assembly language. Participants must write a single program that governs the behavior of 200 individual ants, relying solely on local sensing and pheromone-based communication to collect food across various map layouts. The challenge serves as an internal hiring tool for the company, with the top performer on the live leaderboard earning a trip to Maui.</p>
+          <h4>Reader Reactions</h4>
+<p>Users generally perceive the project as an engaging and creative challenge, though some question whether the expensive travel incentive effectively identifies top talent or serves as an efficient recruitment strategy.</p>
+<p>Critics argue that the recruitment model may inadvertently filter for specific demographics, such as young people without children, rather than focusing solely on the technical skills required for the task.</p>
+<p>The project highlights the balance between exploration and collection algorithms in swarm intelligence, framing assembly programming as a collective effort to optimize individual behaviors within a limited system.</p>
+<p>This analysis is limited by a small sample size of seven comments, which may not capture the full range of community sentiment regarding the platform&#x27;s security or overall technical merit.</p>
+          <p class="drawer-footer"><a href="#dossier-9">View in Dossier ↓</a></p>
+        </div>
+      </details>
+    </div>
     </div>
   </section>
   <section id="story-10" class="spread arc-midnight">
@@ -449,7 +604,21 @@
       <h2 class="frnc">Border Protection Purchases Private Mobile Location Data</h2>
       <p class="story-meta">404media.co &nbsp;·&nbsp; 527 pts &nbsp;·&nbsp; 198 comments</p>
       <p class="lede">Federal agencies are bypassing warrants by sourcing movement data directly from the advertising ecosystem. The ubiquity of location-tracking apps has turned consumer software into a surveillance network.</p>
-      <div class="ctas"><a class="btn-read" href="https://www.404media.co/cbp-tapped-into-the-online-advertising-ecosystem-to-track-peoples-movements/" target="_blank" rel="noopener">Read →</a><a class="btn-dossier" href="#dossier-10">Full analysis ↓</a></div>
+      <div class="ctas"><a class="btn-read" href="https://www.404media.co/cbp-tapped-into-the-online-advertising-ecosystem-to-track-peoples-movements/" target="_blank" rel="noopener">Read →</a>
+      <details class="analysis-drawer">
+        <summary class="btn-dossier">[ Analysis + ]</summary>
+        <div class="drawer-content">
+          <h4>Technical Analysis</h4>
+          <p>An internal Department of Homeland Security document reveals that U.S. Customs and Border Protection (CBP) has been purchasing location data derived from the online advertising ecosystem to track individuals. This practice involves aggregating precise movement data siphoned from everyday mobile applications, such as fitness trackers, dating services, and video games. By leveraging the vast data brokerage market, the agency is able to conduct surveillance without the traditional judicial oversight typically required for physical tracking warrants.</p>
+          <h4>Reader Reactions</h4>
+<p>Commenters largely agree that the government’s ability to purchase sensitive location data from private brokers represents a significant, under-regulated end-run around constitutional privacy protections and traditional Fourth Amendment judicial oversight.</p>
+<p>Some participants argue that programmers and technical workers bear personal responsibility for building pervasive surveillance infrastructure, while others contend that systemic industry incentives and corporate management are the true culprits.</p>
+<p>Technically, the ad-tech ecosystem relies on fragmented, noisy, and often imprecise data signals, making reliable individual tracking difficult despite widespread data collection and the persistent challenges posed by browser fingerprinting.</p>
+<p>This sample reflects a cynical, tech-literate demographic that may overemphasize the intentionality of developers while potentially underestimating the utility or economic necessity of the advertising-supported business model for the broader web.</p>
+          <p class="drawer-footer"><a href="#dossier-10">View in Dossier ↓</a></p>
+        </div>
+      </details>
+    </div>
     </div>
   </section>
   <section id="dossier" class="dossier">
@@ -639,6 +808,19 @@
     localStorage.setItem(key, JSON.stringify(stored));
   }
 })();
+</script>
+<script>
+// Simple script to toggle the [+] and [-] labels on the drawers
+document.querySelectorAll('.analysis-drawer').forEach(drawer => {
+  drawer.addEventListener('toggle', () => {
+    const summary = drawer.querySelector('summary');
+    if (drawer.open) {
+      summary.textContent = '[ Analysis − ]';
+    } else {
+      summary.textContent = '[ Analysis + ]';
+    }
+  });
+});
 </script>
 </body>
 </html>

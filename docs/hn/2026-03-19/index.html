@@ -40,14 +40,43 @@
   .story-meta { font-weight: 600; font-size: 1.1rem; margin-bottom: 3rem; opacity: 0.6; letter-spacing: 0.02em; }
   .lede { font-size: clamp(1.4rem, 2.5vw, 2.1rem); line-height: 1.35; max-width: 800px; margin: 0 0 4rem; font-weight: 450; }
   
-  .ctas { display: flex; gap: 2.5rem; align-items: center; }
+  .ctas { display: flex; gap: 2.5rem; align-items: flex-start; }
   .ctas a {
     text-decoration: none; font-weight: 700; font-size: 1.1rem; letter-spacing: 0.1em; text-transform: uppercase;
     padding: 1.2rem 2.4rem; transition: all 0.2s;
   }
-  .btn-read { background: var(--text-dark); color: var(--bg-light); }
-  .btn-dossier { border-bottom: 2px solid currentColor; padding: 0.5rem 0 !important; }
+  .btn-read { background: var(--text-dark); color: var(--bg-light); cursor: pointer; border: none; }
+  .btn-dossier { 
+    border-bottom: 2px solid currentColor; padding: 0.5rem 0 !important; 
+    text-decoration: none; font-weight: 700; font-size: 1.1rem; letter-spacing: 0.1em; 
+    text-transform: uppercase; cursor: pointer; background: transparent; color: inherit;
+    display: inline-block;
+  }
   
+  /* ───── ANALYSIS DRAWER ───── */
+  .analysis-drawer { margin-top: 0; width: 100%; max-width: 800px; }
+  .analysis-drawer summary { list-style: none; outline: none; }
+  .analysis-drawer summary::-webkit-details-marker { display: none; }
+  .analysis-drawer[open] summary { margin-bottom: 2rem; }
+  .analysis-drawer[open] summary::after { content: ""; } /* Could add JS to toggle label but we'll do CSS trick or just keep static */
+  
+  .drawer-content {
+    background: rgba(0,0,0,0.03); padding: 3rem; border-left: 4px solid var(--text-dark);
+    animation: slideDown 0.3s ease-out;
+  }
+  .arc-midnight .drawer-content { background: rgba(255,255,255,0.05); border-color: #fff; }
+  .arc-terminal .drawer-content { background: rgba(32, 194, 14, 0.05); border-color: #20c20e; }
+  
+  .drawer-content h4 { text-transform: uppercase; letter-spacing: 0.2em; font-size: 0.9rem; margin-top: 0; margin-bottom: 1.5rem; opacity: 0.6; }
+  .drawer-content p { font-family: 'Fraunces', serif; font-size: 1.3rem; line-height: 1.5; margin-bottom: 1.5rem; }
+  .drawer-footer { margin-top: 2rem; border-top: 1px solid rgba(0,0,0,0.1); padding-top: 1.5rem; }
+  .drawer-footer a { font-size: 0.9rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; text-decoration: none; color: inherit; opacity: 0.5; }
+  
+  @keyframes slideDown {
+    from { opacity: 0; transform: translateY(-10px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
   /* ───── ARCHETYPE CSS ───── */
   
   /* Stat Hero */
@@ -351,7 +380,21 @@
         <p class="lede">The push toward agentic coding assumes that natural language specifications can bypass the rigor of traditional software development. Reality suggests that when documentation becomes this granular, it functions as code by another name, complete with all the vulnerabilities of uncompiled logic.<span class="cursor"></span></p>
         <div class="ctas">
           <a href="https://haskellforall.com/2026/03/a-sufficiently-detailed-spec-is-code" class="btn-read" target="_blank">RUN_PROCESS →</a>
-          <a href="#dossier-1" class="btn-dossier">VIEW_ANALYSIS ↓</a>
+          
+      <details class="analysis-drawer">
+        <summary class="btn-dossier">[ Analysis + ]</summary>
+        <div class="drawer-content">
+          <h4>Technical Analysis</h4>
+          <p>The author critiques the growing trend of &quot;agentic coding,&quot; which posits that AI can generate functional software directly from human-authored specification documents. By analyzing OpenAI’s Symphony project, the post argues that these specifications are often indistinguishable from code—containing raw logic, data schemas, and pseudocode—effectively negating the supposed efficiency of separating design from implementation. The author contends that this approach relies on the false belief that specifications can be simpler or more thoughtful than code, ultimately leading to unreliable results and &quot;AI-generated slop.&quot;</p>
+          <h4>Reader Reactions</h4>
+<p>There is broad agreement that as AI capabilities grow, the clarity of intent and specification becomes increasingly critical, though experts remain divided on whether this effectively replaces traditional hands-on coding cycles.</p>
+<p>A significant competing view argues that the true potential of AI lies in its ability to fill in underspecified requirements, making rigid, detailed documentation unnecessary as models become more intelligent at inferring.</p>
+<p>To improve agent performance, developers are experimenting with highly compressed, domain-specific vocabularies or formal &quot;intent-driven&quot; planning, aiming to reduce ambiguity and token consumption while maintaining strict control over the final software output.</p>
+<p>This sample highlights a tension between formalist and pragmatist software philosophies, though it potentially overrepresents developers interested in prompt engineering while lacking perspectives from those building large-scale, complex enterprise architectures.</p>
+          <p class="drawer-footer"><a href="#dossier-1">View in Dossier ↓</a></p>
+        </div>
+      </details>
+    
         </div>
       </div>
     </div>
@@ -363,7 +406,21 @@
       <h2 class="frnc">Orchestrating Claude workflows with Cook</h2>
       <p class="story-meta">rjcorwin.github.io &nbsp;·&nbsp; 302 pts &nbsp;·&nbsp; 97 comments</p>
       <p class="lede">Cook introduces a structured approach to AI interaction by chaining tasks through automated operators. It moves beyond simple interactive prompts, allowing developers to implement logic loops and review gates directly into their coding pipeline.</p>
-      <div class="ctas"><a class="btn-read" href="https://rjcorwin.github.io/cook/" target="_blank" rel="noopener">Read →</a><a class="btn-dossier" href="#dossier-2">Full analysis ↓</a></div>
+      <div class="ctas"><a class="btn-read" href="https://rjcorwin.github.io/cook/" target="_blank" rel="noopener">Read →</a>
+      <details class="analysis-drawer">
+        <summary class="btn-dossier">[ Analysis + ]</summary>
+        <div class="drawer-content">
+          <h4>Technical Analysis</h4>
+          <p>Cook is a command-line interface tool designed to orchestrate and automate Claude Code workflows through a flexible system of operators and compositional loops. It allows developers to chain tasks, run parallel branches with custom resolvers, and implement iterative review gates to improve code quality. By supporting complex logic like race conditions, sequential passes, and task-list progression via the &quot;ralph&quot; operator, it transforms simple AI code generation into a structured, multi-step engineering process.</p>
+          <h4>Reader Reactions</h4>
+<p>Users generally agree that the tool serves as a helpful wrapper for Claude’s CLI, simplifying the orchestration of complex, repeatable workflows that are difficult to manage with manual interactive sessions alone.</p>
+<p>Some skeptics argue that these orchestration features are unnecessary because similar functionality can be easily achieved through basic bash scripts or standard manual workflows rather than relying on external agentic tooling.</p>
+<p>Technically, the tool functions as an abstraction layer that allows users to loop agent outputs, though concerns exist regarding how it handles tool permissions and inconsistent subagent behavior during complex tasks.</p>
+<p>This sample is limited by its small size and anecdotal nature, failing to provide a comprehensive technical evaluation or account for the varied experiences of users with different AI automation requirements.</p>
+          <p class="drawer-footer"><a href="#dossier-2">View in Dossier ↓</a></p>
+        </div>
+      </details>
+    </div>
     </div>
   </section>
   <section id="story-3" class="spread arc-stat-hero">
@@ -373,7 +430,21 @@
       <h2 class="frnc">Thousands of interviews reveal the human cost of AI</h2>
       <p class="story-meta">anthropic.com &nbsp;·&nbsp; 201 pts &nbsp;·&nbsp; 188 comments</p>
       <p class="lede">A qualitative study of 81,000 global users uncovers deep-seated tensions regarding the future of work. As AI integration accelerates, the primary concern remains the friction between productivity gains and the potential for cognitive atrophy.</p>
-      <div class="ctas"><a class="btn-read" href="https://www.anthropic.com/features/81k-interviews" target="_blank" rel="noopener">Read →</a><a class="btn-dossier" href="#dossier-3">Full analysis ↓</a></div>
+      <div class="ctas"><a class="btn-read" href="https://www.anthropic.com/features/81k-interviews" target="_blank" rel="noopener">Read →</a>
+      <details class="analysis-drawer">
+        <summary class="btn-dossier">[ Analysis + ]</summary>
+        <div class="drawer-content">
+          <h4>Technical Analysis</h4>
+          <p>Anthropic recently conducted a large-scale qualitative study involving over 80,000 Claude users across 159 countries to understand how people currently use AI and what they envision for its future. The company utilized an AI-powered interviewing tool to categorize user responses regarding their professional aspirations, personal goals, and fears surrounding the technology. The resulting data highlights recurring tensions, such as the trade-off between productivity gains and the risk of cognitive atrophy, as well as the balance between AI-driven emotional support and potential dependency.</p>
+          <h4>Reader Reactions</h4>
+<p>Bullet 1: Users are skeptical of AI’s current focus on labor replacement and express a strong desire for technologies that improve individual quality of life and enable workers to capture productivity value.</p>
+<p>Bullet 2: Some commenters dismiss the report as vague propaganda, arguing that the findings lack concrete substance and merely reflect biased feedback from individuals who are already consistent users of AI tools.</p>
+<p>Bullet 3: The website’s heavy design and poor performance drew significant technical criticism, prompting users to rely on direct PDF links or community summaries rather than navigating the actual interactive web interface.</p>
+<p>Bullet 4: The provided report is criticized for over-relying on subjective user input, potentially missing the perspectives of non-users and failing to provide the actionable insights one might expect from 81,000 interviews.</p>
+          <p class="drawer-footer"><a href="#dossier-3">View in Dossier ↓</a></p>
+        </div>
+      </details>
+    </div>
     </div>
   </section>
   <section id="story-4" class="spread arc-caution-tape">
@@ -385,7 +456,21 @@
       <h2 class="frnc">Nvidia GreenBoost offloads VRAM to system memory</h2>
       <p class="story-meta">gitlab.com &nbsp;·&nbsp; 234 pts &nbsp;·&nbsp; 46 comments</p>
       <p class="lede">This Linux kernel module attempts to extend GPU VRAM capacity by utilizing system RAM and NVMe storage via DMA-BUF. While it allows larger models to run on modest hardware, the latency introduced by PCIe bandwidth remains a formidable obstacle.</p>
-      <div class="ctas"><a class="btn-read" href="https://gitlab.com/IsolatedOctopi/nvidia_greenboost" target="_blank" rel="noopener">Read →</a><a class="btn-dossier" href="#dossier-4">Full analysis ↓</a></div>
+      <div class="ctas"><a class="btn-read" href="https://gitlab.com/IsolatedOctopi/nvidia_greenboost" target="_blank" rel="noopener">Read →</a>
+      <details class="analysis-drawer">
+        <summary class="btn-dossier">[ Analysis + ]</summary>
+        <div class="drawer-content">
+          <h4>Technical Analysis</h4>
+          <p>GreenBoost is a newly released open-source Linux kernel module and CUDA userspace shim designed to transparently extend GPU VRAM by utilizing system DDR4 RAM and NVMe storage as additional memory tiers. Developed by Ferran Duarri, the project enables users to run large language models that exceed their GPU&#x27;s onboard capacity without needing to modify the inference software itself. It functions by intercepting CUDA memory allocations and routing overflow to system memory via DMA-BUF, allowing the GPU to access that data directly over the PCIe bus.</p>
+          <h4>Reader Reactions</h4>
+<p>The dominant consensus is that while the project is an interesting engineering exploration, the inherent bandwidth bottleneck of PCIe/system RAM makes it impractical for high-performance LLM inference compared to existing methods.</p>
+<p>Some participants argue the project holds long-term value by fostering new software-based memory management techniques and architectural possibilities that could eventually improve local AI performance despite current hardware and speed limitations.</p>
+<p>Technical analysis suggests that using system RAM for KV cache storage or model offloading is significantly slower than VRAM, leading many users to prefer quantization or smarter layer-offloading strategies instead.</p>
+<p>The discussion may be biased toward advanced users who prioritize professional-grade performance, potentially overlooking niche use cases where slower, memory-overflow capabilities could be acceptable for non-latency-sensitive, small-scale local automation tasks.</p>
+          <p class="drawer-footer"><a href="#dossier-4">View in Dossier ↓</a></p>
+        </div>
+      </details>
+    </div>
     </div>
     <div class="tape bottom">CAUTION CAUTION CAUTION CAUTION CAUTION CAUTION CAUTION CAUTION</div>
   </section>
@@ -400,7 +485,21 @@
       <p class="story-meta">pew.org &nbsp;·&nbsp; 812 pts &nbsp;·&nbsp; 996 comments</p>
       <div class="cols">
         <div><p>By systematically reforming zoning laws and eliminating parking requirements, Austin successfully increased its housing stock by 120,000 units.</p></div>
-        <div><p>The resulting surplus offers a rare empirical look at how supply-side interventions can counteract regional rent inflation.</p><div class="ctas"><a class="btn-read" href="https://www.pew.org/en/research-and-analysis/articles/2026/03/18/austins-surge-of-new-housing-construction-drove-down-rents" target="_blank" rel="noopener">Read →</a><a class="btn-dossier" href="#dossier-5">Full analysis ↓</a></div></div>
+        <div><p>The resulting surplus offers a rare empirical look at how supply-side interventions can counteract regional rent inflation.</p><div class="ctas"><a class="btn-read" href="https://www.pew.org/en/research-and-analysis/articles/2026/03/18/austins-surge-of-new-housing-construction-drove-down-rents" target="_blank" rel="noopener">Read →</a>
+      <details class="analysis-drawer">
+        <summary class="btn-dossier">[ Analysis + ]</summary>
+        <div class="drawer-content">
+          <h4>Technical Analysis</h4>
+          <p>Between 2015 and 2024, Austin, Texas, implemented a series of aggressive policy reforms to address a severe housing shortage that had caused rents to skyrocket during the previous decade. By reforming zoning laws, eliminating parking minimums, streamlining permitting processes, and utilizing density bonuses to encourage affordable development, the city facilitated the construction of 120,000 new housing units. This surge in supply—which outpaced national growth rates three times over—successfully cooled the rental market, making Austin one of the few major U.S. cities to see significant rent decreases in recent years.</p>
+          <h4>Reader Reactions</h4>
+<p>The discussion shows a sharp divide between those who believe increasing housing supply is the primary solution to rent inflation and those who argue it fails to address structural affordability issues.</p>
+<p>Critics of the supply-side argument contend that new construction often caters only to luxury markets, while others argue that recent price drops in Austin are driven by population stagnation, not development.</p>
+<p>Effective housing policy requires balancing construction with necessary infrastructure investments, such as schools and transit, while navigating the complex reality that many residents view their homes as primary financial assets.</p>
+<p>The sample reflects a high density of ideological polarization, focusing heavily on NIMBYism and rent control, while potentially overlooking granular economic data or the nuanced regional differences impacting specific municipal housing markets.</p>
+          <p class="drawer-footer"><a href="#dossier-5">View in Dossier ↓</a></p>
+        </div>
+      </details>
+    </div></div>
       </div>
     </div>
   </section>
@@ -412,7 +511,21 @@
       <h2 class="frnc">The precarious life of a software mechanic</h2>
       <p class="story-meta">nearzero.software &nbsp;·&nbsp; 519 pts &nbsp;·&nbsp; 319 comments</p>
       <p class="lede">In a future dominated by natural language generation, the role of the developer has shifted to that of a repairman. We watch as systems grow increasingly opaque, creating a fragile landscape where one minor model update can collapse an entire farm&#x27;s infrastructure.</p>
-      <div class="ctas"><a class="btn-read" href="https://nearzero.software/p/warranty-void-if-regenerated" target="_blank" rel="noopener">Read →</a><a class="btn-dossier" href="#dossier-6">Full analysis ↓</a></div>
+      <div class="ctas"><a class="btn-read" href="https://nearzero.software/p/warranty-void-if-regenerated" target="_blank" rel="noopener">Read →</a>
+      <details class="analysis-drawer">
+        <summary class="btn-dossier">[ Analysis + ]</summary>
+        <div class="drawer-content">
+          <h4>Technical Analysis</h4>
+          <p>&quot;Warranty Void If Regenerated&quot; is a fictional exploration of a post-transition economy where traditional software development has been replaced by natural language generation. The story follows Tom Hartmann, a &quot;Software Mechanic&quot; who helps non-technical professionals—primarily farmers—diagnose and repair the opaque, fragile systems created by AI tools. The narrative highlights the practical dangers of relying on generated code, specifically focusing on &quot;the ground moved&quot; problem, where upstream model shifts or inter-tool incompatibilities cause costly, unforeseen failures in complex, spaghetti-coded environments.</p>
+          <h4>Reader Reactions</h4>
+<p>Readers express deep unease and a sense of betrayal upon discovering that compelling, emotionally resonant stories were generated by AI, perceiving the lack of human experience as a profound, isolating deception.</p>
+<p>Some participants argue that AI-generated creative works remain valuable for their ideas and entertainment potential, suggesting that the medium of production is secondary to the quality of the speculative narrative.</p>
+<p>Technical analysis reveals that LLM-generated prose often contains logical inconsistencies, such as flawed cause-and-effect chains or narrative contradictions, because the models lack a grounded understanding of the systems they describe.</p>
+<p>This sample is heavily biased toward readers who prioritize the human-to-human social contract of literature, potentially downplaying the perspectives of those who prioritize the utility or novelty of automated content generation.</p>
+          <p class="drawer-footer"><a href="#dossier-6">View in Dossier ↓</a></p>
+        </div>
+      </details>
+    </div>
     </div>
   </section>
   <section id="story-7" class="spread arc-observatory">
@@ -422,7 +535,21 @@
       <h2 class="frnc">Designing flight vehicles with OpenRocket</h2>
       <p class="story-meta">openrocket.info &nbsp;·&nbsp; 480 pts &nbsp;·&nbsp; 88 comments</p>
       <p class="lede">This open-source simulator brings professional-grade aerodynamic analysis to the hobbyist level. By tracking stability metrics and center-of-gravity variables, engineers can model complex flight paths with high fidelity before the first stage even ignites.</p>
-      <div class="ctas"><a class="btn-read" href="https://openrocket.info/" target="_blank" rel="noopener">Read →</a><a class="btn-dossier" href="#dossier-7">Full analysis ↓</a></div>
+      <div class="ctas"><a class="btn-read" href="https://openrocket.info/" target="_blank" rel="noopener">Read →</a>
+      <details class="analysis-drawer">
+        <summary class="btn-dossier">[ Analysis + ]</summary>
+        <div class="drawer-content">
+          <h4>Technical Analysis</h4>
+          <p>OpenRocket is a comprehensive, open-source model rocket simulator that enables enthusiasts to design and analyze complex flight vehicles before physical construction. The software utilizes six-degrees-of-freedom flight simulation to track over 50 variables, including real-time stability metrics, center of gravity, and aerodynamic performance. Users can incorporate multi-stage designs, clustering, and dual-deployment triggers, while leveraging a vast, integrated database of real-world motor data from ThrustCurve.</p>
+          <h4>Reader Reactions</h4>
+<p>OpenRocket is widely praised by the hobbyist community as a reliable, essential tool for simulating model rocket trajectories, despite minor inaccuracies in maximum altitude predictions compared to real-world flight performance.</p>
+<p>Users hold polarized views on whether the current interest in hobbyist rocketry is a creative engineering pursuit or a concerning byproduct of geopolitical conflicts and military hardware democratization in the Middle East.</p>
+<p>Enthusiasts emphasize that achieving orbital spaceflight remains fundamentally different from high-altitude atmospheric flight, requiring complex active stabilization, liquid-fueled engines, and significantly higher delta-v capabilities beyond passive, solid-fuel rocket designs.</p>
+<p>The provided comment thread suffers from significant topic drift, shifting from software-focused feedback and design UI critiques to aggressive political debates regarding international sanctions and modern military strategic effectiveness.</p>
+          <p class="drawer-footer"><a href="#dossier-7">View in Dossier ↓</a></p>
+        </div>
+      </details>
+    </div>
     </div>
   </section>
   <section id="story-8" class="spread arc-midnight">
@@ -433,7 +560,21 @@
       <h2 class="frnc">Autonomous agents iterate on MaxSAT solvers</h2>
       <p class="story-meta">github.com &nbsp;·&nbsp; 167 pts &nbsp;·&nbsp; 32 comments</p>
       <p class="lede">The agent-sat project utilizes Claude to refine heuristic solvers for complex MaxSAT problems without human oversight. By sharing strategies across a repository, these agents aim to bridge the gap between static algorithms and adaptive, self-improving search techniques.</p>
-      <div class="ctas"><a class="btn-read" href="https://github.com/iliazintchenko/agent-sat" target="_blank" rel="noopener">Read →</a><a class="btn-dossier" href="#dossier-8">Full analysis ↓</a></div>
+      <div class="ctas"><a class="btn-read" href="https://github.com/iliazintchenko/agent-sat" target="_blank" rel="noopener">Read →</a>
+      <details class="analysis-drawer">
+        <summary class="btn-dossier">[ Analysis + ]</summary>
+        <div class="drawer-content">
+          <h4>Technical Analysis</h4>
+          <p>The &quot;agent-sat&quot; project is an autonomous AI system designed to improve performance on MaxSAT problems by iteratively refining its own strategies and toolkits without human intervention. By utilizing Claude Code to read and update a shared library of solvers and expert knowledge, the system experiments with various techniques like core-guided search and local search to solve complex instances from the 2024 MaxSAT Evaluation. The agents communicate through a shared GitHub repository, allowing multiple instances to contribute to a common codebase and refine approaches based on past successes and failures.</p>
+          <h4>Reader Reactions</h4>
+<p>Bullet 1: The community is actively evaluating the efficacy of autonomous agents in optimizing SAT solvers, noting that similar research is being applied to computationally complex fields like logic synthesis and chip design.</p>
+<p>Bullet 2: Critics argue that observed performance gains might be superficial, potentially stemming from the agent imitating existing non-competing solvers or exploiting randomized algorithm behavior rather than discovering genuinely novel algorithmic improvements.</p>
+<p>Bullet 3: The cost function in this context is defined as the total weight of unsatisfied clauses, and experts suggest comparing this approach against established frameworks like AlphaDev for better optimization results.</p>
+<p>Bullet 4: The discussion highlights a significant concern that training data contamination, where solvers are already present in the model&#x27;s knowledge base, may lead to illusory performance improvements rather than actual innovation.</p>
+          <p class="drawer-footer"><a href="#dossier-8">View in Dossier ↓</a></p>
+        </div>
+      </details>
+    </div>
     </div>
   </section>
   <section id="story-9" class="spread arc-editorial-pullquote">
@@ -443,7 +584,21 @@
       <h2 class="frnc">Rob Pike’s 1989 rules for maintainable code</h2>
       <p class="story-meta">cs.unc.edu &nbsp;·&nbsp; 1012 pts &nbsp;·&nbsp; 449 comments</p>
       <p class="lede">Thirty-five years later, Pike’s principles remain a vital rebuke to premature optimization and gratuitous complexity. The most efficient systems are rarely the most clever; they are the most transparent.</p>
-      <div class="ctas"><a class="btn-read" href="https://www.cs.unc.edu/~stotts/COMP590-059-f24/robsrules.html" target="_blank" rel="noopener">Read →</a><a class="btn-dossier" href="#dossier-9">Full analysis ↓</a></div>
+      <div class="ctas"><a class="btn-read" href="https://www.cs.unc.edu/~stotts/COMP590-059-f24/robsrules.html" target="_blank" rel="noopener">Read →</a>
+      <details class="analysis-drawer">
+        <summary class="btn-dossier">[ Analysis + ]</summary>
+        <div class="drawer-content">
+          <h4>Technical Analysis</h4>
+          <p>This article outlines the five foundational rules of programming established by Rob Pike in 1989, which prioritize simplicity and empirical data over speculative optimization. The guidelines advocate for measuring performance before making adjustments, avoiding complex algorithms unless necessary, and prioritizing well-structured data over intricate code logic. By emphasizing that bottlenecks are often unpredictable, Pike encourages developers to rely on brute force and simplicity to build more maintainable and reliable software.</p>
+          <h4>Reader Reactions</h4>
+<p>Participants generally agree that focusing on well-designed data structures is superior to over-engineering control flow or prematurely implementing complex algorithms, as clear data organization often renders algorithmic complexity self-evident and manageable.</p>
+<p>Some developers argue that modern systems, specifically regarding large-scale data and performance, require proactive architectural planning and algorithmic selection to avoid catastrophic bottlenecks that simple, &quot;stupid&quot; code cannot easily resolve later.</p>
+<p>The most effective engineering strategy involves writing straightforward, maintainable code first, then using profiling data to identify and optimize only the specific sections where bottlenecks actually exist, rather than guessing in advance.</p>
+<p>This discussion sample is heavily influenced by senior-level engineers debating architectural trade-offs, which may overshadow the practical needs of beginners or those working in less performance-constrained environments where simplicity remains paramount.</p>
+          <p class="drawer-footer"><a href="#dossier-9">View in Dossier ↓</a></p>
+        </div>
+      </details>
+    </div>
     </div>
     <div class="quote-side">
       <blockquote class="pullquote">Data structures are the primary architecture, while code logic remains secondary to the clear organization of information.</blockquote>
@@ -456,7 +611,21 @@
       <p class="story-meta">colossus.com &nbsp;·&nbsp; 87 pts &nbsp;·&nbsp; 57 comments</p>
       <p class="lede">Despite decades of design thinking and customer development, startup survival rates remain stubbornly flat. It appears that when methodology becomes standardized, it ceases to function as a competitive advantage and instead becomes a baseline, yielding no further growth.</p>
       <div class="ornament">†</div>
-      <div class="ctas"><a class="btn-read" href="https://colossus.com/article/we-have-learned-nothing-startup-pundits/" target="_blank" rel="noopener">Read →</a><a class="btn-dossier" href="#dossier-10">Full analysis ↓</a></div>
+      <div class="ctas"><a class="btn-read" href="https://colossus.com/article/we-have-learned-nothing-startup-pundits/" target="_blank" rel="noopener">Read →</a>
+      <details class="analysis-drawer">
+        <summary class="btn-dossier">[ Analysis + ]</summary>
+        <div class="drawer-content">
+          <h4>Technical Analysis</h4>
+          <p>This article critiques the &quot;New Punditry&quot; of the last 25 years, arguing that popular methodologies—such as the Lean Startup, Customer Development, and Design Thinking—have failed to improve actual startup survival rates. The author asserts that these frameworks have become standardized, leading founders to converge on identical processes that eliminate competitive differentiation. By comparing these trends to the &quot;Red Queen hypothesis,&quot; the piece suggests that once a business method becomes widely known, it loses its effectiveness as a source of strategic advantage.</p>
+          <h4>Reader Reactions</h4>
+<p>Bullet 1: Commenters widely question the efficacy of popular startup methodologies, noting that despite widespread dissemination of advice, failure rates remain stagnant and evidence of systematic progress in entrepreneurship is absent.</p>
+<p>Bullet 2: Some argue that the article incorrectly dismisses the value of formal methods, suggesting that such frameworks have actually raised the baseline for competition, which keeps overall success metrics appearing flat.</p>
+<p>Bullet 3: Standard experimental approaches like &quot;getting out of the building&quot; are often ineffective in complex, high-barrier industries where expert stakeholders are inaccessible or the problem space is already saturated by platforms.</p>
+<p>Bullet 4: The limited sample size of five comments focuses heavily on the failure of startup punditry, potentially omitting perspectives from those who have successfully applied these frameworks in specific, niche business environments.</p>
+          <p class="drawer-footer"><a href="#dossier-10">View in Dossier ↓</a></p>
+        </div>
+      </details>
+    </div>
     </div>
   </section>
   <section id="dossier" class="dossier">
@@ -646,6 +815,19 @@
     localStorage.setItem(key, JSON.stringify(stored));
   }
 })();
+</script>
+<script>
+// Simple script to toggle the [+] and [-] labels on the drawers
+document.querySelectorAll('.analysis-drawer').forEach(drawer => {
+  drawer.addEventListener('toggle', () => {
+    const summary = drawer.querySelector('summary');
+    if (drawer.open) {
+      summary.textContent = '[ Analysis − ]';
+    } else {
+      summary.textContent = '[ Analysis + ]';
+    }
+  });
+});
 </script>
 </body>
 </html>

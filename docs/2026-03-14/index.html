@@ -40,14 +40,43 @@
   .story-meta { font-weight: 600; font-size: 1.1rem; margin-bottom: 3rem; opacity: 0.6; letter-spacing: 0.02em; }
   .lede { font-size: clamp(1.4rem, 2.5vw, 2.1rem); line-height: 1.35; max-width: 800px; margin: 0 0 4rem; font-weight: 450; }
   
-  .ctas { display: flex; gap: 2.5rem; align-items: center; }
+  .ctas { display: flex; gap: 2.5rem; align-items: flex-start; }
   .ctas a {
     text-decoration: none; font-weight: 700; font-size: 1.1rem; letter-spacing: 0.1em; text-transform: uppercase;
     padding: 1.2rem 2.4rem; transition: all 0.2s;
   }
-  .btn-read { background: var(--text-dark); color: var(--bg-light); }
-  .btn-dossier { border-bottom: 2px solid currentColor; padding: 0.5rem 0 !important; }
+  .btn-read { background: var(--text-dark); color: var(--bg-light); cursor: pointer; border: none; }
+  .btn-dossier { 
+    border-bottom: 2px solid currentColor; padding: 0.5rem 0 !important; 
+    text-decoration: none; font-weight: 700; font-size: 1.1rem; letter-spacing: 0.1em; 
+    text-transform: uppercase; cursor: pointer; background: transparent; color: inherit;
+    display: inline-block;
+  }
   
+  /* ───── ANALYSIS DRAWER ───── */
+  .analysis-drawer { margin-top: 0; width: 100%; max-width: 800px; }
+  .analysis-drawer summary { list-style: none; outline: none; }
+  .analysis-drawer summary::-webkit-details-marker { display: none; }
+  .analysis-drawer[open] summary { margin-bottom: 2rem; }
+  .analysis-drawer[open] summary::after { content: ""; } /* Could add JS to toggle label but we'll do CSS trick or just keep static */
+  
+  .drawer-content {
+    background: rgba(0,0,0,0.03); padding: 3rem; border-left: 4px solid var(--text-dark);
+    animation: slideDown 0.3s ease-out;
+  }
+  .arc-midnight .drawer-content { background: rgba(255,255,255,0.05); border-color: #fff; }
+  .arc-terminal .drawer-content { background: rgba(32, 194, 14, 0.05); border-color: #20c20e; }
+  
+  .drawer-content h4 { text-transform: uppercase; letter-spacing: 0.2em; font-size: 0.9rem; margin-top: 0; margin-bottom: 1.5rem; opacity: 0.6; }
+  .drawer-content p { font-family: 'Fraunces', serif; font-size: 1.3rem; line-height: 1.5; margin-bottom: 1.5rem; }
+  .drawer-footer { margin-top: 2rem; border-top: 1px solid rgba(0,0,0,0.1); padding-top: 1.5rem; }
+  .drawer-footer a { font-size: 0.9rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; text-decoration: none; color: inherit; opacity: 0.5; }
+  
+  @keyframes slideDown {
+    from { opacity: 0; transform: translateY(-10px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
   /* ───── ARCHETYPE CSS ───── */
   
   /* Stat Hero */
@@ -347,7 +376,18 @@
       <h2 class="frnc">Run 1-Bit Large Language Models Locally With BitNet</h2>
       <p class="story-meta">github.com &nbsp;·&nbsp; 34,214 stars &nbsp;·&nbsp; 0 stars today</p>
       <p class="lede">BitNet transforms resource-heavy LLMs into efficient ternary models ready for consumer hardware. By integrating optimized kernels with the llama.cpp framework, it slashes energy requirements while maintaining model performance. This approach enables developers to deploy 100B parameter models directly on standard CPU architectures.</p>
-      <div class="ctas"><a class="btn-read" href="https://github.com/microsoft/BitNet" target="_blank" rel="noopener">Read →</a><a class="btn-dossier" href="#dossier-1">Full analysis ↓</a></div>
+      <div class="ctas"><a class="btn-read" href="https://github.com/microsoft/BitNet" target="_blank" rel="noopener">Read →</a>
+      <details class="analysis-drawer">
+        <summary class="btn-dossier">[ Analysis + ]</summary>
+        <div class="drawer-content">
+          <h4>Technical Analysis</h4>
+          <p>The BitNet repository provides `bitnet.cpp`, an official inference framework designed to run 1-bit Large Language Models, such as BitNet b1.58, with high efficiency. Built upon the `llama.cpp` framework, it utilizes optimized kernels and lookup table methodologies to deliver fast, lossless inference for ternary models on both CPU and GPU hardware. By leveraging quantization techniques like tiling and embedding compression, the project significantly reduces the computational overhead and energy requirements typically associated with running large-scale language models.</p>
+<p>Developers and researchers focusing on edge AI and local deployment will find this project particularly valuable due to its ability to make massive models performant on consumer-grade hardware. The project is currently trending because it offers a practical solution to the high memory and energy costs of LLMs, enabling even a 100B parameter model to run on a single CPU at readable speeds. By democratizing access to high-performance AI inference, BitNet is paving the way for more sustainable and accessible on-device intelligence.</p>
+          
+          <p class="drawer-footer"><a href="#dossier-1">View in Dossier ↓</a></p>
+        </div>
+      </details>
+    </div>
     </div>
   </section>
   <section id="story-2" class="spread arc-data-pipeline">
@@ -357,7 +397,18 @@
       <h2 class="frnc">Streamline Production RAG Workflows With OpenRAG</h2>
       <p class="story-meta">github.com &nbsp;·&nbsp; 2,372 stars &nbsp;·&nbsp; 0 stars today</p>
       <p class="lede">OpenRAG connects FastAPI, Next.js, and semantic search into a singular, modular orchestration layer. The platform abstracts complex document parsing and vector storage, allowing for rapid deployment of agentic search systems. It creates a seamless flow of data from raw input to actionable model context.</p>
-      <div class="ctas"><a class="btn-read" href="https://github.com/langflow-ai/openrag" target="_blank" rel="noopener">Read →</a><a class="btn-dossier" href="#dossier-2">Full analysis ↓</a></div>
+      <div class="ctas"><a class="btn-read" href="https://github.com/langflow-ai/openrag" target="_blank" rel="noopener">Read →</a>
+      <details class="analysis-drawer">
+        <summary class="btn-dossier">[ Analysis + ]</summary>
+        <div class="drawer-content">
+          <h4>Technical Analysis</h4>
+          <p>OpenRAG is a comprehensive, production-ready platform designed to simplify the deployment of Retrieval-Augmented Generation (RAG) systems by integrating Langflow, Docling, and OpenSearch. The project features a drag-and-drop workflow builder that enables users to process, parse, and store complex document data for intelligent semantic search. Technically, it leverages a robust tech stack—including FastAPI and Next.js—to provide an end-to-end orchestration layer that supports agentic workflows, re-ranking, and seamless integration through dedicated Python and TypeScript SDKs.</p>
+<p>This project is highly beneficial for developers and enterprise teams looking to rapidly prototype or scale AI-powered document search without the overhead of building infrastructure from scratch. It is gaining significant traction because it addresses the modern need for &quot;agentic&quot; RAG while offering immediate compatibility with popular AI tools like Claude Desktop and Cursor through the Model Context Protocol (MCP). By providing a pre-packaged, modular solution, OpenRAG empowers users to transform messy real-world data into actionable knowledge with minimal configuration.</p>
+          
+          <p class="drawer-footer"><a href="#dossier-2">View in Dossier ↓</a></p>
+        </div>
+      </details>
+    </div>
     </div>
   </section>
   <section id="story-3" class="spread arc-system-core">
@@ -367,7 +418,18 @@
       <h2 class="frnc">Lightpanda Rebuilds Browser Automation For Extreme Performance</h2>
       <p class="story-meta">github.com &nbsp;·&nbsp; 15,835 stars &nbsp;·&nbsp; 0 stars today</p>
       <p class="lede">Constructed in Zig and powered by V8, Lightpanda strips away the bloat of traditional web browsers to favor raw execution speed. It provides a lean, headless runtime designed specifically for high-concurrency scraping and agentic web interaction. Every cycle is reclaimed through a purposeful, ultra-lightweight architecture.</p>
-      <div class="ctas"><a class="btn-read" href="https://github.com/lightpanda-io/browser" target="_blank" rel="noopener">Read →</a><a class="btn-dossier" href="#dossier-3">Full analysis ↓</a></div>
+      <div class="ctas"><a class="btn-read" href="https://github.com/lightpanda-io/browser" target="_blank" rel="noopener">Read →</a>
+      <details class="analysis-drawer">
+        <summary class="btn-dossier">[ Analysis + ]</summary>
+        <div class="drawer-content">
+          <h4>Technical Analysis</h4>
+          <p>Lightpanda is an open-source, headless browser specifically engineered for high-performance automation, AI agents, and web scraping tasks. Built using Zig and the V8 JavaScript engine, it provides a lightweight alternative to traditional browsers by offering ultra-low memory usage, instant startup, and significantly faster execution speeds. It supports standard Web APIs and exposes a Chrome DevTools Protocol (CDP) server, allowing it to integrate seamlessly with existing automation frameworks like Puppeteer, Playwright, and chromedp.</p>
+<p>Developers and AI engineers focused on large-scale web interactions will benefit most from Lightpanda’s efficiency when running hundreds of concurrent browser sessions. The project is gaining traction because it solves the resource-intensive overhead typically associated with headless Chrome, enabling more cost-effective and scalable automation on cloud infrastructure. By providing a streamlined, purpose-built runtime, Lightpanda empowers users to perform complex data extraction and agentic tasks with a much smaller compute footprint.</p>
+          
+          <p class="drawer-footer"><a href="#dossier-3">View in Dossier ↓</a></p>
+        </div>
+      </details>
+    </div>
     </div>
   </section>
   <section id="story-4" class="spread arc-agent-foundry">
@@ -377,7 +439,18 @@
       <h2 class="frnc">Superpowers Standardizes Autonomous Software Development Cycles</h2>
       <p class="story-meta">github.com &nbsp;·&nbsp; 82,148 stars &nbsp;·&nbsp; 0 stars today</p>
       <p class="lede">This framework imposes a rigorous technical structure on coding agents, moving from arbitrary generation to disciplined engineering. It enforces Socratic planning and test-driven development protocols to eliminate ad-hoc coding errors. The system acts as the structural blueprint for reliable, repeatable AI software delivery.</p>
-      <div class="ctas"><a class="btn-read" href="https://github.com/obra/superpowers" target="_blank" rel="noopener">Read →</a><a class="btn-dossier" href="#dossier-4">Full analysis ↓</a></div>
+      <div class="ctas"><a class="btn-read" href="https://github.com/obra/superpowers" target="_blank" rel="noopener">Read →</a>
+      <details class="analysis-drawer">
+        <summary class="btn-dossier">[ Analysis + ]</summary>
+        <div class="drawer-content">
+          <h4>Technical Analysis</h4>
+          <p>Superpowers is an agentic framework designed to standardize the software development lifecycle by integrating a library of composable, automated &quot;skills&quot; directly into coding agents like Claude Code and Cursor. Instead of jumping straight to code, the system enforces a structured workflow that begins with Socratic brainstorming, proceeds to detailed implementation planning, and culminates in a rigorous subagent-driven development cycle. Technically, it functions as a plugin that triggers mandatory engineering protocols—such as strict test-driven development (TDD), git worktree management, and iterative code reviews—ensuring that agents maintain high-quality standards and consistent progress without requiring manual intervention.</p>
+<p>This project is highly beneficial for developers and software teams looking to minimize the &quot;hallucination&quot; and ad-hoc coding patterns often associated with AI-assisted programming. It is trending because it addresses a critical gap in the current AI developer tool ecosystem: the transition from simple code generation to reliable, autonomous project execution that mirrors professional engineering discipline. By embedding best practices like YAGNI and DRY into the agent&#x27;s core decision-making loop, Superpowers provides a repeatable, scalable methodology for building robust software applications.</p>
+          
+          <p class="drawer-footer"><a href="#dossier-4">View in Dossier ↓</a></p>
+        </div>
+      </details>
+    </div>
     </div>
   </section>
   <section id="story-5" class="spread arc-library-archive">
@@ -387,7 +460,18 @@
       <h2 class="frnc">Public APIs Offers A Curated Repository For Rapid Prototyping</h2>
       <p class="story-meta">github.com &nbsp;·&nbsp; 409,714 stars &nbsp;·&nbsp; 0 stars today</p>
       <p class="lede">This exhaustive collection serves as an essential reference for developers seeking reliable third-party integrations. Each entry is manually verified for technical requirements, CORS compatibility, and authentication standards. It stands as a scholarly record of the web&#x27;s accessible data surface.</p>
-      <div class="ctas"><a class="btn-read" href="https://github.com/public-apis/public-apis" target="_blank" rel="noopener">Read →</a><a class="btn-dossier" href="#dossier-5">Full analysis ↓</a></div>
+      <div class="ctas"><a class="btn-read" href="https://github.com/public-apis/public-apis" target="_blank" rel="noopener">Read →</a>
+      <details class="analysis-drawer">
+        <summary class="btn-dossier">[ Analysis + ]</summary>
+        <div class="drawer-content">
+          <h4>Technical Analysis</h4>
+          <p>The `public-apis` repository serves as a comprehensive, community-driven directory of free web APIs categorized across a vast array of domains, ranging from finance and weather to entertainment and software development. Each entry in the index provides technical metadata, including requirements for authentication, HTTPS support, and Cross-Origin Resource Sharing (CORS) compatibility, which allows developers to quickly assess suitability for their projects. The project operates as an open-source collaborative effort, maintained through manual curation by the community and supported by APILayer to ensure the data remains organized and accessible.</p>
+<p>This resource is primarily intended for developers, students, and hobbyists seeking to enrich their applications with real-time data without incurring high costs. It has become a trending staple in the developer community because it drastically reduces the time spent searching for reliable third-party integrations, effectively acting as a central &quot;treasure trove&quot; for rapid prototyping. By offering a structured and constantly updated list of services, the repository empowers creators to experiment with diverse features and build production-ready products with greater efficiency.</p>
+          
+          <p class="drawer-footer"><a href="#dossier-5">View in Dossier ↓</a></p>
+        </div>
+      </details>
+    </div>
     </div>
   </section>
   <section id="story-6" class="spread arc-privacy-shield">
@@ -397,7 +481,18 @@
       <h2 class="frnc">Promptfoo Automates Local Red Teaming And Model Evaluation</h2>
       <p class="story-meta">github.com &nbsp;·&nbsp; 15,444 stars &nbsp;·&nbsp; 0 stars today</p>
       <p class="lede">Automated security validation is the only defense against unpredictable model outputs in production environments. Promptfoo performs systematic vulnerability scanning locally, keeping your sensitive data shielded from external API leaks. It provides the necessary oversight to harden agents against adversarial prompts.</p>
-      <div class="ctas"><a class="btn-read" href="https://github.com/promptfoo/promptfoo" target="_blank" rel="noopener">Read →</a><a class="btn-dossier" href="#dossier-6">Full analysis ↓</a></div>
+      <div class="ctas"><a class="btn-read" href="https://github.com/promptfoo/promptfoo" target="_blank" rel="noopener">Read →</a>
+      <details class="analysis-drawer">
+        <summary class="btn-dossier">[ Analysis + ]</summary>
+        <div class="drawer-content">
+          <h4>Technical Analysis</h4>
+          <p>Promptfoo is a comprehensive CLI-based toolkit designed for the systematic evaluation, red teaming, and vulnerability scanning of LLMs, agents, and RAG applications. It enables developers to compare performance across a wide array of models—including GPT, Claude, and Llama—using simple, declarative configuration files. Technically, the tool operates locally to ensure data privacy, supports seamless integration into CI/CD pipelines, and provides robust reporting capabilities for security and compliance monitoring.</p>
+<p>This project is essential for AI engineers, security researchers, and DevOps teams who need to move beyond subjective testing toward data-driven, automated validation of LLM outputs. It is currently trending because it addresses the critical industry need for rigorous safety and performance benchmarks in increasingly complex AI production environments. By offering a developer-first approach that reduces reliance on gut feeling, Promptfoo empowers teams to deploy high-quality, secure, and reliable AI applications with confidence.</p>
+          
+          <p class="drawer-footer"><a href="#dossier-6">View in Dossier ↓</a></p>
+        </div>
+      </details>
+    </div>
     </div>
   </section>
   <section id="story-7" class="spread arc-stat-hero">
@@ -407,7 +502,18 @@
       <h2 class="frnc">Agency Agents Deploy Specialized AI Workforce Units</h2>
       <p class="story-meta">github.com &nbsp;·&nbsp; 40,949 stars &nbsp;·&nbsp; 0 stars today</p>
       <p class="lede">The Agency shifts the paradigm of AI utility from isolated chat sessions to a multi-disciplinary, personality-driven team. These configurations define clear operational workflows for engineering and project management tasks, allowing for immediate scaling of capacity.</p>
-      <div class="ctas"><a class="btn-read" href="https://github.com/msitarzewski/agency-agents" target="_blank" rel="noopener">Read →</a><a class="btn-dossier" href="#dossier-7">Full analysis ↓</a></div>
+      <div class="ctas"><a class="btn-read" href="https://github.com/msitarzewski/agency-agents" target="_blank" rel="noopener">Read →</a>
+      <details class="analysis-drawer">
+        <summary class="btn-dossier">[ Analysis + ]</summary>
+        <div class="drawer-content">
+          <h4>Technical Analysis</h4>
+          <p>&quot;The Agency&quot; is a comprehensive repository of specialized AI agents designed to function as an autonomous, multi-disciplinary workforce. Technically, the project provides structured, personality-driven prompt configurations that define clear missions, workflows, and deliverable metrics for specific roles across engineering, design, marketing, and operations. These agents are optimized for integration with platforms like Claude Code, allowing users to instantly summon expert-level assistance for tasks ranging from full-stack development and UI design to complex project management and quality assurance.</p>
+<p>This project is highly beneficial for developers, product managers, and entrepreneurs who need to scale their operational capacity without the overhead of hiring a massive team. It is currently trending because it offers a practical, production-ready solution for leveraging AI beyond simple chat interactions, turning LLMs into reliable, domain-specific specialists. By standardizing high-quality workflows, &quot;The Agency&quot; empowers individuals to execute professional-grade projects with the efficiency of a full-service agency at their fingertips.</p>
+          
+          <p class="drawer-footer"><a href="#dossier-7">View in Dossier ↓</a></p>
+        </div>
+      </details>
+    </div>
     </div>
   </section>
   <section id="story-8" class="spread arc-enterprise-engine">
@@ -417,7 +523,18 @@
       <h2 class="frnc">Dolt Brings Git-Style Version Control To SQL Databases</h2>
       <p class="story-meta">github.com &nbsp;·&nbsp; 21,155 stars &nbsp;·&nbsp; 0 stars today</p>
       <p class="lede">Data consistency is the foundation of scalable systems, and Dolt ensures integrity through native versioning. By treating table data as versioned assets, teams can branch, merge, and audit their databases with absolute reliability. It offers a standardized, production-ready solution for collaborative data management.</p>
-      <div class="ctas"><a class="btn-read" href="https://github.com/dolthub/dolt" target="_blank" rel="noopener">Read →</a><a class="btn-dossier" href="#dossier-8">Full analysis ↓</a></div>
+      <div class="ctas"><a class="btn-read" href="https://github.com/dolthub/dolt" target="_blank" rel="noopener">Read →</a>
+      <details class="analysis-drawer">
+        <summary class="btn-dossier">[ Analysis + ]</summary>
+        <div class="drawer-content">
+          <h4>Technical Analysis</h4>
+          <p>Dolt is an innovative SQL database that integrates Git-style version control directly into data management, allowing users to branch, merge, clone, and push tables as easily as source code. It functions as a MySQL-compatible database that exposes versioning functionality through SQL interfaces, system tables, and a familiar command-line tool. By tracking changes at the row and table level, it provides a comprehensive audit trail and historical record for datasets, effectively acting as &quot;Git for data.&quot;</p>
+<p>This project is highly beneficial for data engineers, scientists, and software developers who need to manage complex, evolving datasets with the same rigor applied to application code. It is trending because it solves the pervasive challenge of data reproducibility and collaborative data editing, offering a reliable way to track schema and content changes over time. With ecosystems like DoltHub for sharing data and seamless MySQL replication, Dolt empowers teams to treat their databases as versioned assets, streamlining workflows in collaborative data environments.</p>
+          
+          <p class="drawer-footer"><a href="#dossier-8">View in Dossier ↓</a></p>
+        </div>
+      </details>
+    </div>
     </div>
   </section>
   <section id="story-9" class="spread arc-ui-lab">
@@ -427,7 +544,18 @@
       <h2 class="frnc">A2UI Bridges Generative Agents With Declarative User Interfaces</h2>
       <p class="story-meta">github.com &nbsp;·&nbsp; 13,109 stars &nbsp;·&nbsp; 0 stars today</p>
       <p class="lede">A2UI introduces a secure, standardized language that allows AI agents to render rich, interactive dashboards without executing arbitrary code. It creates a bridge between abstract model output and native UI components across web and mobile frameworks. This is the new standard for functional, cross-platform AI interaction.</p>
-      <div class="ctas"><a class="btn-read" href="https://github.com/google/A2UI" target="_blank" rel="noopener">Read →</a><a class="btn-dossier" href="#dossier-9">Full analysis ↓</a></div>
+      <div class="ctas"><a class="btn-read" href="https://github.com/google/A2UI" target="_blank" rel="noopener">Read →</a>
+      <details class="analysis-drawer">
+        <summary class="btn-dossier">[ Analysis + ]</summary>
+        <div class="drawer-content">
+          <h4>Technical Analysis</h4>
+          <p>A2UI (Agent-to-User Interface) is an open-source framework designed to bridge the gap between generative AI agents and interactive user interfaces. By utilizing a declarative JSON format, it allows LLMs to &quot;speak UI&quot; without the security risks associated with executing arbitrary code, as the client only renders components from a pre-approved, trusted catalog. Technically, the architecture decouples UI generation from rendering by mapping abstract component descriptions to native widgets within frameworks like Flutter or web-based Lit, enabling the same UI payload to function consistently across diverse platforms.</p>
+<p>This project is primarily aimed at developers and organizations building agentic applications who need to present complex, dynamic data—such as custom forms, dashboards, or data visualizations—within a chat-based experience. It is gaining traction because it solves the core challenge of delivering rich, cross-platform user experiences in an agent-first world, ensuring that interfaces are both secure and incrementally updatable. By fostering an interoperable standard, A2UI provides a scalable solution for teams looking to transition from simple text-based LLM interactions to sophisticated, highly functional AI applications.</p>
+          
+          <p class="drawer-footer"><a href="#dossier-9">View in Dossier ↓</a></p>
+        </div>
+      </details>
+    </div>
     </div>
   </section>
   <section id="story-10" class="spread arc-experimental-workshop">
@@ -437,7 +565,18 @@
       <h2 class="frnc">Fish-Speech Pushes The Boundaries Of Expressive AI Audio</h2>
       <p class="story-meta">github.com &nbsp;·&nbsp; 26,938 stars &nbsp;·&nbsp; 0 stars today</p>
       <p class="lede">Fish-Speech uses a unique dual-autoregressive architecture to craft natural, emotionally resonant synthetic voices. This project explores the intersection of reinforcement learning and prosody control, offering a raw, powerful toolkit for voice cloning and dialogue. It remains a fascinating experiment in scaling human-like speech generation.</p>
-      <div class="ctas"><a class="btn-read" href="https://github.com/fishaudio/fish-speech" target="_blank" rel="noopener">Read →</a><a class="btn-dossier" href="#dossier-10">Full analysis ↓</a></div>
+      <div class="ctas"><a class="btn-read" href="https://github.com/fishaudio/fish-speech" target="_blank" rel="noopener">Read →</a>
+      <details class="analysis-drawer">
+        <summary class="btn-dossier">[ Analysis + ]</summary>
+        <div class="drawer-content">
+          <h4>Technical Analysis</h4>
+          <p>Fish-Speech is an advanced open-source text-to-speech (TTS) system featuring the flagship S2 model, which leverages a Dual-Autoregressive architecture to produce high-fidelity, emotionally rich audio. By utilizing 10 million hours of multilingual training data and reinforcement learning alignment via Group Relative Policy Optimization (GRPO), the model achieves state-of-the-art performance in word error rates and natural prosody. Its unique design allows for fine-grained, word-level control of expression through natural language tags, while its structural compatibility with LLM-native serving frameworks like SGLang ensures efficient, low-latency production inference.</p>
+<p>Developers and content creators looking for high-quality, expressive synthetic speech will find this project particularly valuable for its seamless support for multi-speaker generation, multi-turn dialogue, and rapid voice cloning. The repository is trending because it consistently outperforms both open-source and closed-source alternatives in rigorous benchmarks, making it a powerful tool for building sophisticated conversational agents. Its ability to generate natural-sounding speech across dozens of languages without complex preprocessing positions it as a leading solution for applications requiring versatile and realistic audio synthesis.</p>
+          
+          <p class="drawer-footer"><a href="#dossier-10">View in Dossier ↓</a></p>
+        </div>
+      </details>
+    </div>
     </div>
   </section>
   <section id="dossier" class="dossier">
@@ -597,6 +736,19 @@
     localStorage.setItem(key, JSON.stringify(stored));
   }
 })();
+</script>
+<script>
+// Simple script to toggle the [+] and [-] labels on the drawers
+document.querySelectorAll('.analysis-drawer').forEach(drawer => {
+  drawer.addEventListener('toggle', () => {
+    const summary = drawer.querySelector('summary');
+    if (drawer.open) {
+      summary.textContent = '[ Analysis − ]';
+    } else {
+      summary.textContent = '[ Analysis + ]';
+    }
+  });
+});
 </script>
 </body>
 </html>
