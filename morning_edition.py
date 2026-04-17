@@ -108,6 +108,7 @@ CONFIGS = {
 }
 
 ORDINAL_LABELS = ["01", "02", "03", "04", "05", "06", "07", "08", "09", "10"]
+ROMAN_LABELS = ["I", "II", "III", "IV", "V", "VI", "VII", "VIII", "IX", "X"]
 
 # ─────────────────────── Content helpers ───────────────────────
 
@@ -254,6 +255,23 @@ def _extract_domain(url: str) -> str:
 def _read_href(item: dict) -> str:
     return item.get("url") or item.get("discussion_url") or "#"
 
+def _meta_line(config: EditionConfig, item: dict) -> str:
+    domain = _extract_domain(item.get("url") or "") or ("news.ycombinator.com" if config.id == "hn" else "github.com")
+    score_label = "pts" if config.id == "hn" else "stars"
+    score = item.get("score") or item.get("stars") or 0
+    comments = item.get("comment_count") or item.get("today_stars") or 0
+    comments_label = "comments" if config.id == "hn" else "stars today"
+    return f"{_h(domain)} &nbsp;·&nbsp; {score} {score_label} &nbsp;·&nbsp; {comments} {comments_label}"
+
+def _links(item: dict, n: int) -> str:
+    """Primary outbound + secondary in-page Dossier anchor."""
+    return (
+        f'<div class="ctas">'
+        f'<a class="btn-read" href="{_read_href(item)}" target="_blank" rel="noopener">Read →</a>'
+        f'<a class="btn-dossier" href="#dossier-{n}">Full analysis ↓</a>'
+        f'</div>'
+    )
+
 def _render_masthead(config: EditionConfig, day: date) -> str:
     date_display = day.strftime("%B %-d, %Y")
     return f"""  <header class="masthead">
@@ -279,7 +297,6 @@ def _render_dossier(config: EditionConfig, items: list[dict], assignments: list[
         arch_name = arch.name if arch else a["archetype_id"]
         
         raw_analysis = (item.get("summary") or "").strip()
-        # For GH we might want to preserve both paragraphs
         if config.summary_paragraphs == 1:
             analysis = raw_analysis.split("\n\n")[0].strip()
         else:
@@ -304,7 +321,7 @@ def _render_dossier(config: EditionConfig, items: list[dict], assignments: list[
         title = item.get("title") or item.get("repo_name") or "Untitled"
         discussion_url = _h(item.get("discussion_url") or "")
         source_url = _read_href(item)
-        domain = _extract_domain(item.get("url") or "") or "news.ycombinator.com"
+        domain = _extract_domain(item.get("url") or "") or ("news.ycombinator.com" if config.id == "hn" else "github.com")
         
         score_label = "pts" if config.id == "hn" else "stars"
         score = item.get("score") or item.get("stars") or 0
@@ -362,362 +379,335 @@ def _render_readtracker(config: EditionConfig, day: date) -> str:
 
 # ─────────────────────── Spread Renderers ───────────────────────
 
-def _arc_stat_hero(i: int, a: dict, item: dict) -> str:
-    num = a.get("big_figure") or "0"
+def _arc_stat_hero(config: EditionConfig, i: int, a: dict, item: dict) -> str:
+    big = _h(a.get("big_figure") or "")
     return f"""  <section id="story-{i}" class="spread arc-stat-hero">
-    <div class="numeral">{_h(num)}</div>
+    <div class="numeral">{big}</div>
     <div class="body">
-      <div class="kicker">{_h(a['kicker'])}</div>
+      <div class="kicker">N<sup>o</sup> {ORDINAL_LABELS[i-1]} · {_h(a['kicker'])}</div>
       <h2 class="frnc">{_h(a['headline'])}</h2>
+      <p class="story-meta">{_meta_line(config, item)}</p>
       <p class="lede">{_h(a['lede'])}</p>
-      <div class="ctas">
-        <a href="{_read_href(item)}" class="btn-read" target="_blank">Read →</a>
-        <a href="#dossier-{i}" class="btn-dossier">Full analysis ↓</a>
-      </div>
+      {_links(item, i)}
     </div>
   </section>"""
 
-def _arc_midnight(i: int, a: dict, item: dict) -> str:
+def _arc_midnight(config: EditionConfig, i: int, a: dict, item: dict) -> str:
     return f"""  <section id="story-{i}" class="spread arc-midnight">
-    <div class="glow"></div>
+    <div class="numeral">{ORDINAL_LABELS[i-1]}</div>
     <div class="body">
-      <div class="kicker">{_h(a['kicker'])}</div>
+      <div class="glow"></div>
+      <div class="kicker">// {_h(a['kicker'])}</div>
       <h2 class="frnc">{_h(a['headline'])}</h2>
+      <p class="story-meta">{_meta_line(config, item)}</p>
       <p class="lede">{_h(a['lede'])}</p>
-      <div class="ctas">
-        <a href="{_read_href(item)}" class="btn-read" target="_blank">Read →</a>
-        <a href="#dossier-{i}" class="btn-dossier">Full analysis ↓</a>
-      </div>
+      {_links(item, i)}
     </div>
   </section>"""
 
-def _arc_alert_stamp(i: int, a: dict, item: dict) -> str:
+def _arc_alert_stamp(config: EditionConfig, i: int, a: dict, item: dict) -> str:
     return f"""  <section id="story-{i}" class="spread arc-alert-stamp">
     <div class="stamp">ALERT</div>
+    <div class="numeral">{ORDINAL_LABELS[i-1]}</div>
     <div class="body">
       <div class="kicker">{_h(a['kicker'])}</div>
       <h2 class="frnc">{_h(a['headline'])}</h2>
+      <p class="story-meta">{_meta_line(config, item)}</p>
       <p class="lede">{_h(a['lede'])}</p>
-      <div class="ctas">
-        <a href="{_read_href(item)}" class="btn-read" target="_blank">Read →</a>
-        <a href="#dossier-{i}" class="btn-dossier">Full analysis ↓</a>
-      </div>
+      {_links(item, i)}
     </div>
   </section>"""
 
-def _arc_academic_drop_cap(i: int, a: dict, item: dict) -> str:
+def _arc_academic_drop_cap(config: EditionConfig, i: int, a: dict, item: dict) -> str:
     lede = a['lede']
-    first_char = lede[0] if lede else ""
-    rest = lede[1:] if lede else ""
+    sentences = re.split(r"(?<=[.!?])\s+", lede.strip())
+    mid = max(1, len(sentences) // 2)
+    left = " ".join(sentences[:mid]) or lede
+    right = " ".join(sentences[mid:])
+    right_html = f"<p>{_h(right)}</p>" if right.strip() else ""
     return f"""  <section id="story-{i}" class="spread arc-academic-drop-cap">
+    <div class="paper-head">
+      <span>{_h(a['kicker'])}</span>
+      <span class="numeral-roman">{ROMAN_LABELS[i-1]}</span>
+      <span>{_h(_extract_domain(item.get('url') or '') or 'news.ycombinator.com')}</span>
+    </div>
     <div class="body">
-      <div class="kicker">{_h(a['kicker'])}</div>
       <h2 class="frnc">{_h(a['headline'])}</h2>
+      <p class="story-meta">{_meta_line(config, item)}</p>
       <div class="cols">
-        <p class="lede"><span class="drop">{_h(first_char)}</span>{_h(rest)}</p>
-      </div>
-      <div class="ctas">
-        <a href="{_read_href(item)}" class="btn-read" target="_blank">Read →</a>
-        <a href="#dossier-{i}" class="btn-dossier">Full analysis ↓</a>
+        <div><p>{_h(left)}</p></div>
+        <div>{right_html}{_links(item, i)}</div>
       </div>
     </div>
   </section>"""
 
-def _arc_terminal(i: int, a: dict, item: dict) -> str:
+def _arc_terminal(config: EditionConfig, i: int, a: dict, item: dict) -> str:
     return f"""  <section id="story-{i}" class="spread arc-terminal">
     <div class="window">
-      <div class="kicker"># {_h(a['kicker'])}</div>
-      <h2 class="frnc">> {_h(a['headline'])}</h2>
-      <p class="lede">{_h(a['lede'])}</p>
-      <div class="ctas">
-        <a href="{_read_href(item)}" class="btn-read" target="_blank">RUN_PROCESS →</a>
-        <a href="#dossier-{i}" class="btn-dossier">VIEW_ANALYSIS ↓</a>
+      <div class="prompt-row">user@morning-edition:~$ cat story_{ORDINAL_LABELS[i-1]}.md</div>
+      <div class="body">
+        <p class="numeral-label">{ORDINAL_LABELS[i-1]}</p>
+        <div class="kicker"># {_h(a['kicker'])}</div>
+        <h2 class="frnc">> {_h(a['headline'])}</h2>
+        <p class="story-meta">{_meta_line(config, item)}</p>
+        <p class="lede">{_h(a['lede'])}<span class="cursor"></span></p>
+        <div class="ctas">
+          <a href="{_read_href(item)}" class="btn-read" target="_blank">RUN_PROCESS →</a>
+          <a href="#dossier-{i}" class="btn-dossier">VIEW_ANALYSIS ↓</a>
+        </div>
       </div>
     </div>
   </section>"""
 
-def _arc_editorial_pullquote(i: int, a: dict, item: dict) -> str:
+def _arc_editorial_pullquote(config: EditionConfig, i: int, a: dict, item: dict) -> str:
     pq = a.get("pullquote") or ""
     return f"""  <section id="story-{i}" class="spread arc-editorial-pullquote">
     <div class="body">
+      <div class="numeral">{ORDINAL_LABELS[i-1]}</div>
       <div class="kicker">{_h(a['kicker'])}</div>
       <h2 class="frnc">{_h(a['headline'])}</h2>
+      <p class="story-meta">{_meta_line(config, item)}</p>
       <p class="lede">{_h(a['lede'])}</p>
-      <div class="ctas">
-        <a href="{_read_href(item)}" class="btn-read" target="_blank">Read →</a>
-        <a href="#dossier-{i}" class="btn-dossier">Full analysis ↓</a>
-      </div>
+      {_links(item, i)}
     </div>
     <div class="quote-side">
-      <blockquote>{_h(pq)}</blockquote>
+      <blockquote class="pullquote">{_h(pq)}</blockquote>
     </div>
   </section>"""
 
-def _arc_caution_tape(i: int, a: dict, item: dict) -> str:
+def _arc_caution_tape(config: EditionConfig, i: int, a: dict, item: dict) -> str:
     return f"""  <section id="story-{i}" class="spread arc-caution-tape">
+    <div class="numeral">{ORDINAL_LABELS[i-1]}</div>
     <div class="tape top">CAUTION CAUTION CAUTION CAUTION CAUTION CAUTION CAUTION CAUTION</div>
     <div class="body">
       <div class="tag">SECURITY ADVISORY</div>
       <div class="kicker">{_h(a['kicker'])}</div>
       <h2 class="frnc">{_h(a['headline'])}</h2>
+      <p class="story-meta">{_meta_line(config, item)}</p>
       <p class="lede">{_h(a['lede'])}</p>
-      <div class="ctas">
-        <a href="{_read_href(item)}" class="btn-read" target="_blank">Read →</a>
-        <a href="#dossier-{i}" class="btn-dossier">Full analysis ↓</a>
-      </div>
+      {_links(item, i)}
     </div>
     <div class="tape bottom">CAUTION CAUTION CAUTION CAUTION CAUTION CAUTION CAUTION CAUTION</div>
   </section>"""
 
-def _arc_notebook(i: int, a: dict, item: dict) -> str:
+def _arc_notebook(config: EditionConfig, i: int, a: dict, item: dict) -> str:
     return f"""  <section id="story-{i}" class="spread arc-notebook">
-    <div class="lines"></div>
+    <div class="numeral">{ORDINAL_LABELS[i-1]}</div>
     <div class="body">
+      <div class="lines"></div>
       <div class="kicker">{_h(a['kicker'])}</div>
       <h2 class="frnc">{_h(a['headline'])}</h2>
+      <p class="story-meta">{_meta_line(config, item)}</p>
       <p class="lede">{_h(a['lede'])}</p>
-      <div class="ctas">
-        <a href="{_read_href(item)}" class="btn-read" target="_blank">Read →</a>
-        <a href="#dossier-{i}" class="btn-dossier">Full analysis ↓</a>
-      </div>
+      {_links(item, i)}
     </div>
   </section>"""
 
-def _arc_mint_pattern(i: int, a: dict, item: dict) -> str:
+def _arc_mint_pattern(config: EditionConfig, i: int, a: dict, item: dict) -> str:
     word = a['kicker'].split()[0].upper() if a['kicker'] else "CODE"
     return f"""  <section id="story-{i}" class="spread arc-mint-pattern" style="--bg-word: '{_h(word)}'">
+    <div class="numeral-block">
+      <div class="numeral">{ORDINAL_LABELS[i-1]}</div>
+    </div>
     <div class="body">
       <div class="kicker">{_h(a['kicker'])}</div>
       <h2 class="frnc">{_h(a['headline'])}</h2>
+      <p class="story-meta">{_meta_line(config, item)}</p>
       <p class="lede">{_h(a['lede'])}</p>
-      <div class="ctas">
-        <a href="{_read_href(item)}" class="btn-read" target="_blank">Read →</a>
-        <a href="#dossier-{i}" class="btn-dossier">Full analysis ↓</a>
-      </div>
+      {_links(item, i)}
     </div>
   </section>"""
 
-def _arc_pastel_playful(i: int, a: dict, item: dict) -> str:
+def _arc_pastel_playful(config: EditionConfig, i: int, a: dict, item: dict) -> str:
     return f"""  <section id="story-{i}" class="spread arc-pastel-playful">
     <div class="alpha-grid">A B C D E F G H I J K L M N O P Q R S T U V W X Y Z</div>
     <div class="body">
+      <div class="numeral">{ORDINAL_LABELS[i-1]}</div>
       <div class="kicker">{_h(a['kicker'])}</div>
       <h2 class="frnc">{_h(a['headline'])}</h2>
+      <p class="story-meta">{_meta_line(config, item)}</p>
       <p class="lede">{_h(a['lede'])}</p>
-      <div class="ctas">
-        <a href="{_read_href(item)}" class="btn-read" target="_blank">Read →</a>
-        <a href="#dossier-{i}" class="btn-dossier">Full analysis ↓</a>
-      </div>
+      {_links(item, i)}
     </div>
   </section>"""
 
-def _arc_product_plate(i: int, a: dict, item: dict) -> str:
+def _arc_product_plate(config: EditionConfig, i: int, a: dict, item: dict) -> str:
     return f"""  <section id="story-{i}" class="spread arc-product-plate">
     <div class="plate">
       <div class="kicker">{_h(a['kicker'])}</div>
       <h2 class="frnc">{_h(a['headline'])}</h2>
+      <p class="story-meta">{_meta_line(config, item)}</p>
       <p class="lede">{_h(a['lede'])}</p>
-      <div class="ctas">
-        <a href="{_read_href(item)}" class="btn-read" target="_blank">Read →</a>
-        <a href="#dossier-{i}" class="btn-dossier">Full analysis ↓</a>
-      </div>
+      {_links(item, i)}
     </div>
   </section>"""
 
-def _arc_archive(i: int, a: dict, item: dict) -> str:
+def _arc_archive(config: EditionConfig, i: int, a: dict, item: dict) -> str:
     return f"""  <section id="story-{i}" class="spread arc-archive">
     <div class="mast">ARCHIVE N<sup>o</sup> {ORDINAL_LABELS[i-1]}</div>
     <div class="body">
       <div class="kicker">{_h(a['kicker'])}</div>
       <h2 class="frnc">{_h(a['headline'])}</h2>
+      <p class="story-meta">{_meta_line(config, item)}</p>
       <p class="lede">{_h(a['lede'])}</p>
-      <div class="ctas">
-        <a href="{_read_href(item)}" class="btn-read" target="_blank">Read →</a>
-        <a href="#dossier-{i}" class="btn-dossier">Full analysis ↓</a>
-      </div>
+      {_links(item, i)}
     </div>
   </section>"""
 
-def _arc_obituary(i: int, a: dict, item: dict) -> str:
+def _arc_obituary(config: EditionConfig, i: int, a: dict, item: dict) -> str:
     return f"""  <section id="story-{i}" class="spread arc-obituary">
     <div class="obit-frame">
       <div class="kicker">{_h(a['kicker'])}</div>
       <h2 class="frnc">{_h(a['headline'])}</h2>
+      <p class="story-meta">{_meta_line(config, item)}</p>
       <p class="lede">{_h(a['lede'])}</p>
       <div class="ornament">†</div>
-      <div class="ctas">
-        <a href="{_read_href(item)}" class="btn-read" target="_blank">Read →</a>
-        <a href="#dossier-{i}" class="btn-dossier">Full analysis ↓</a>
-      </div>
+      {_links(item, i)}
     </div>
   </section>"""
 
-def _arc_blueprint(i: int, a: dict, item: dict) -> str:
+def _arc_blueprint(config: EditionConfig, i: int, a: dict, item: dict) -> str:
     return f"""  <section id="story-{i}" class="spread arc-blueprint">
     <div class="grid"></div>
     <div class="body">
       <div class="kicker">{_h(a['kicker'])}</div>
       <h2 class="frnc">{_h(a['headline'])}</h2>
+      <p class="story-meta">{_meta_line(config, item)}</p>
       <p class="lede">{_h(a['lede'])}</p>
-      <div class="ctas">
-        <a href="{_read_href(item)}" class="btn-read" target="_blank">Read →</a>
-        <a href="#dossier-{i}" class="btn-dossier">Full analysis ↓</a>
-      </div>
+      {_links(item, i)}
     </div>
   </section>"""
 
-def _arc_observatory(i: int, a: dict, item: dict) -> str:
+def _arc_observatory(config: EditionConfig, i: int, a: dict, item: dict) -> str:
     return f"""  <section id="story-{i}" class="spread arc-observatory">
     <div class="stars"></div>
     <div class="body">
       <div class="kicker">{_h(a['kicker'])}</div>
       <h2 class="frnc">{_h(a['headline'])}</h2>
+      <p class="story-meta">{_meta_line(config, item)}</p>
       <p class="lede">{_h(a['lede'])}</p>
-      <div class="ctas">
-        <a href="{_read_href(item)}" class="btn-read" target="_blank">Read →</a>
-        <a href="#dossier-{i}" class="btn-dossier">Full analysis ↓</a>
-      </div>
+      {_links(item, i)}
     </div>
   </section>"""
 
 # GH Specific archetypes
-def _arc_agent_foundry(i: int, a: dict, item: dict) -> str:
+def _arc_agent_foundry(config: EditionConfig, i: int, a: dict, item: dict) -> str:
     return f"""  <section id="story-{i}" class="spread arc-agent-foundry">
     <div class="blueprint-bg"></div>
     <div class="body">
       <div class="kicker">{_h(a['kicker'])}</div>
       <h2 class="frnc">{_h(a['headline'])}</h2>
+      <p class="story-meta">{_meta_line(config, item)}</p>
       <p class="lede">{_h(a['lede'])}</p>
-      <div class="ctas">
-        <a href="{_read_href(item)}" class="btn-read" target="_blank">Deploy →</a>
-        <a href="#dossier-{i}" class="btn-dossier">Analysis ↓</a>
-      </div>
+      {_links(item, i)}
     </div>
   </section>"""
 
-def _arc_system_core(i: int, a: dict, item: dict) -> str:
+def _arc_system_core(config: EditionConfig, i: int, a: dict, item: dict) -> str:
     return f"""  <section id="story-{i}" class="spread arc-system-core">
     <div class="concrete"></div>
     <div class="body">
       <div class="kicker">{_h(a['kicker'])}</div>
       <h2 class="frnc">{_h(a['headline'])}</h2>
+      <p class="story-meta">{_meta_line(config, item)}</p>
       <p class="lede">{_h(a['lede'])}</p>
-      <div class="ctas">
-        <a href="{_read_href(item)}" class="btn-read" target="_blank">Inspect →</a>
-        <a href="#dossier-{i}" class="btn-dossier">Analysis ↓</a>
-      </div>
+      {_links(item, i)}
     </div>
   </section>"""
 
-def _arc_ui_lab(i: int, a: dict, item: dict) -> str:
+def _arc_ui_lab(config: EditionConfig, i: int, a: dict, item: dict) -> str:
     return f"""  <section id="story-{i}" class="spread arc-ui-lab">
     <div class="lab-gradient"></div>
     <div class="body">
       <div class="kicker">{_h(a['kicker'])}</div>
       <h2 class="frnc">{_h(a['headline'])}</h2>
+      <p class="story-meta">{_meta_line(config, item)}</p>
       <p class="lede">{_h(a['lede'])}</p>
-      <div class="ctas">
-        <a href="{_read_href(item)}" class="btn-read" target="_blank">Explore →</a>
-        <a href="#dossier-{i}" class="btn-dossier">Analysis ↓</a>
-      </div>
+      {_links(item, i)}
     </div>
   </section>"""
 
-def _arc_data_pipeline(i: int, a: dict, item: dict) -> str:
+def _arc_data_pipeline(config: EditionConfig, i: int, a: dict, item: dict) -> str:
     return f"""  <section id="story-{i}" class="spread arc-data-pipeline">
     <div class="pipeline-streams"></div>
     <div class="body">
       <div class="kicker">{_h(a['kicker'])}</div>
       <h2 class="frnc">{_h(a['headline'])}</h2>
+      <p class="story-meta">{_meta_line(config, item)}</p>
       <p class="lede">{_h(a['lede'])}</p>
-      <div class="ctas">
-        <a href="{_read_href(item)}" class="btn-read" target="_blank">Trace →</a>
-        <a href="#dossier-{i}" class="btn-dossier">Analysis ↓</a>
-      </div>
+      {_links(item, i)}
     </div>
   </section>"""
 
-def _arc_model_bench(i: int, a: dict, item: dict) -> str:
+def _arc_model_bench(config: EditionConfig, i: int, a: dict, item: dict) -> str:
     return f"""  <section id="story-{i}" class="spread arc-model-bench">
     <div class="bench-silver"></div>
     <div class="body">
       <div class="kicker">{_h(a['kicker'])}</div>
       <h2 class="frnc">{_h(a['headline'])}</h2>
+      <p class="story-meta">{_meta_line(config, item)}</p>
       <p class="lede">{_h(a['lede'])}</p>
-      <div class="ctas">
-        <a href="{_read_href(item)}" class="btn-read" target="_blank">Infer →</a>
-        <a href="#dossier-{i}" class="btn-dossier">Analysis ↓</a>
-      </div>
+      {_links(item, i)}
     </div>
   </section>"""
 
-def _arc_privacy_shield(i: int, a: dict, item: dict) -> str:
+def _arc_privacy_shield(config: EditionConfig, i: int, a: dict, item: dict) -> str:
     return f"""  <section id="story-{i}" class="spread arc-privacy-shield">
     <div class="shield-glitch"></div>
     <div class="body">
       <div class="kicker">{_h(a['kicker'])}</div>
       <h2 class="frnc">{_h(a['headline'])}</h2>
+      <p class="story-meta">{_meta_line(config, item)}</p>
       <p class="lede">{_h(a['lede'])}</p>
-      <div class="ctas">
-        <a href="{_read_href(item)}" class="btn-read" target="_blank">Secure →</a>
-        <a href="#dossier-{i}" class="btn-dossier">Analysis ↓</a>
-      </div>
+      {_links(item, i)}
     </div>
   </section>"""
 
-def _arc_enterprise_engine(i: int, a: dict, item: dict) -> str:
+def _arc_enterprise_engine(config: EditionConfig, i: int, a: dict, item: dict) -> str:
     return f"""  <section id="story-{i}" class="spread arc-enterprise-engine">
     <div class="engine-blue"></div>
     <div class="body">
       <div class="kicker">{_h(a['kicker'])}</div>
       <h2 class="frnc">{_h(a['headline'])}</h2>
+      <p class="story-meta">{_meta_line(config, item)}</p>
       <p class="lede">{_h(a['lede'])}</p>
-      <div class="ctas">
-        <a href="{_read_href(item)}" class="btn-read" target="_blank">Scale →</a>
-        <a href="#dossier-{i}" class="btn-dossier">Analysis ↓</a>
-      </div>
+      {_links(item, i)}
     </div>
   </section>"""
 
-def _arc_terminal_utility(i: int, a: dict, item: dict) -> str:
+def _arc_terminal_utility(config: EditionConfig, i: int, a: dict, item: dict) -> str:
     return f"""  <section id="story-{i}" class="spread arc-terminal-utility">
     <div class="crt-lines"></div>
     <div class="body">
       <div class="kicker">{_h(a['kicker'])}</div>
       <h2 class="frnc">{_h(a['headline'])}</h2>
+      <p class="story-meta">{_meta_line(config, item)}</p>
       <p class="lede">{_h(a['lede'])}</p>
-      <div class="ctas">
-        <a href="{_read_href(item)}" class="btn-read" target="_blank">Execute →</a>
-        <a href="#dossier-{i}" class="btn-dossier">Analysis ↓</a>
-      </div>
+      {_links(item, i)}
     </div>
   </section>"""
 
-def _arc_experimental_workshop(i: int, a: dict, item: dict) -> str:
+def _arc_experimental_workshop(config: EditionConfig, i: int, a: dict, item: dict) -> str:
     return f"""  <section id="story-{i}" class="spread arc-experimental-workshop">
     <div class="pad-lines"></div>
     <div class="body">
       <div class="kicker">{_h(a['kicker'])}</div>
       <h2 class="frnc">{_h(a['headline'])}</h2>
+      <p class="story-meta">{_meta_line(config, item)}</p>
       <p class="lede">{_h(a['lede'])}</p>
-      <div class="ctas">
-        <a href="{_read_href(item)}" class="btn-read" target="_blank">Iterate →</a>
-        <a href="#dossier-{i}" class="btn-dossier">Analysis ↓</a>
-      </div>
+      {_links(item, i)}
     </div>
   </section>"""
 
-def _arc_library_archive(i: int, a: dict, item: dict) -> str:
+def _arc_library_archive(config: EditionConfig, i: int, a: dict, item: dict) -> str:
     return f"""  <section id="story-{i}" class="spread arc-library-archive">
     <div class="parchment"></div>
     <div class="body">
       <div class="kicker">{_h(a['kicker'])}</div>
       <h2 class="frnc">{_h(a['headline'])}</h2>
+      <p class="story-meta">{_meta_line(config, item)}</p>
       <p class="lede">{_h(a['lede'])}</p>
-      <div class="ctas">
-        <a href="{_read_href(item)}" class="btn-read" target="_blank">Study →</a>
-        <a href="#dossier-{i}" class="btn-dossier">Analysis ↓</a>
-      </div>
+      {_links(item, i)}
     </div>
   </section>"""
 
@@ -776,13 +766,19 @@ CSS_TEMPLATE = """
     scroll-snap-align: start;
   }
   .body { position: relative; z-index: 10; width: 100%; max-width: 1200px; }
-  .kicker { font-weight: 700; font-size: 1.1rem; letter-spacing: 0.4em; text-transform: uppercase; margin-bottom: 2rem; opacity: 0.8; }
-  h2 { font-size: clamp(3rem, 8vw, 6.5rem); line-height: 0.95; font-weight: 400; margin: 0 0 3rem; letter-spacing: -0.03em; }
+  .kicker { font-weight: 700; font-size: 1rem; letter-spacing: 0.4em; text-transform: uppercase; margin-bottom: 2rem; opacity: 0.7; }
+  .numeral {
+    position: absolute; top: 10vh; right: 8vw; font-family: 'Fraunces', serif;
+    font-size: clamp(10rem, 25vw, 22rem); font-weight: 900; line-height: 0.8;
+    opacity: 0.05; pointer-events: none;
+  }
+  h2 { font-size: clamp(3rem, 8vw, 6.5rem); line-height: 0.95; font-weight: 400; margin: 0 0 1.5rem; letter-spacing: -0.03em; }
+  .story-meta { font-weight: 600; font-size: 1.1rem; margin-bottom: 3rem; opacity: 0.6; letter-spacing: 0.02em; }
   .lede { font-size: clamp(1.4rem, 2.5vw, 2.1rem); line-height: 1.35; max-width: 800px; margin: 0 0 4rem; font-weight: 450; }
   
-  .ctas { display: flex; gap: 2rem; align-items: center; }
+  .ctas { display: flex; gap: 2.5rem; align-items: center; }
   .ctas a {
-    text-decoration: none; font-weight: 600; font-size: 1.1rem; letter-spacing: 0.1em; text-transform: uppercase;
+    text-decoration: none; font-weight: 700; font-size: 1.1rem; letter-spacing: 0.1em; text-transform: uppercase;
     padding: 1.2rem 2.4rem; transition: all 0.2s;
   }
   .btn-read { background: var(--text-dark); color: var(--bg-light); }
@@ -792,11 +788,7 @@ CSS_TEMPLATE = """
   
   /* Stat Hero */
   .arc-stat-hero { background: #e8e4da; }
-  .arc-stat-hero .numeral {
-    position: absolute; right: 0; top: 10vh; font-family: 'Fraunces', serif;
-    font-size: clamp(20rem, 50vw, 45rem); font-weight: 900; line-height: 0.8;
-    color: #121212; opacity: 0.05; pointer-events: none;
-  }
+  .arc-stat-hero .numeral { opacity: 0.15; position: absolute; right: 0; top: 10vh; font-size: clamp(20rem, 50vw, 45rem); }
 
   /* Midnight */
   .arc-midnight { background: #0a0a0c; color: #fff; }
@@ -806,21 +798,28 @@ CSS_TEMPLATE = """
     filter: blur(60px); pointer-events: none;
   }
   .arc-midnight .btn-read { background: #fff; color: #000; }
+  .arc-midnight .numeral { color: #fff; }
 
   /* Alert Stamp */
   .arc-alert-stamp { background: #f9ebeb; color: #7a1e14; }
   .arc-alert-stamp .stamp {
     position: absolute; top: 15vh; right: 10vw; border: 6px solid #d32f2f;
-    padding: 1rem 2rem; font-weight: 900; font-size: 3rem; transform: rotate(12deg);
-    opacity: 0.2; pointer-events: none;
+    padding: 1rem 2rem; font-weight: 900; font-size: 4rem; transform: rotate(12deg);
+    opacity: 0.2; pointer-events: none; color: #d32f2f;
   }
   .arc-alert-stamp .btn-read { background: #d32f2f; color: #fff; }
 
   /* Academic */
   .arc-academic-drop-cap { background: #fdfaf3; color: #2c2925; }
-  .arc-academic-drop-cap h2 { font-size: clamp(2.5rem, 5vw, 4rem); border-bottom: 1px solid #ddd; padding-bottom: 2rem; margin-bottom: 4rem; }
-  .arc-academic-drop-cap .cols { columns: 2; column-gap: 4rem; }
-  .arc-academic-drop-cap .drop {
+  .arc-academic-drop-cap .paper-head {
+    position: absolute; top: 5vh; left: 8vw; right: 8vw; display: flex; justify-content: space-between;
+    font-weight: 700; text-transform: uppercase; letter-spacing: 0.3em; opacity: 0.4;
+    border-bottom: 1px solid rgba(0,0,0,0.1); padding-bottom: 2vh;
+  }
+  .arc-academic-drop-cap .numeral-roman { font-family: 'Fraunces', serif; }
+  .arc-academic-drop-cap h2 { font-size: clamp(2.5rem, 5vw, 4.5rem); border-bottom: 1px solid #ddd; padding-bottom: 2rem; margin-bottom: 3rem; }
+  .arc-academic-drop-cap .cols { display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: start; }
+  .arc-academic-drop-cap .cols p::first-letter {
     float: left; font-family: 'Fraunces', serif; font-size: 6.5rem; line-height: 0.75;
     margin: 0.8rem 1rem 0 0; font-weight: 600; color: #121212;
   }
@@ -828,35 +827,44 @@ CSS_TEMPLATE = """
 
   /* Terminal */
   .arc-terminal { background: #000; color: #20c20e; font-family: 'JetBrains Mono', monospace; }
-  .arc-terminal .window { border: 1px solid #20c20e; padding: 4rem; background: #050505; }
+  .arc-terminal .window { border: 1px solid #20c20e; padding: 4rem; background: #050505; width: 100%; max-width: 1000px; position: relative; }
+  .arc-terminal .prompt-row { position: absolute; top: -1.5rem; left: 1rem; background: #000; padding: 0 1rem; font-size: 0.9rem; opacity: 0.8; }
+  .arc-terminal .numeral-label { position: absolute; top: 2rem; right: 2rem; font-size: 3rem; opacity: 0.2; font-weight: 700; }
   .arc-terminal .frnc { font-family: 'JetBrains Mono', monospace; font-weight: 700; letter-spacing: -0.05em; }
+  .arc-terminal h2 { font-size: clamp(2rem, 5vw, 4rem); margin-bottom: 2rem; }
+  .arc-terminal .lede { font-size: 1.4rem; max-width: 100%; }
+  .arc-terminal .cursor { display: inline-block; width: 0.6em; height: 1.2em; background: #20c20e; margin-left: 0.5em; vertical-align: middle; animation: blink 1s step-end infinite; }
+  @keyframes blink { 50% { opacity: 0; } }
   .arc-terminal .btn-read { background: #20c20e; color: #000; border-radius: 0; }
   .arc-terminal .btn-dossier { border-color: #20c20e; }
 
   /* Editorial Pullquote */
-  .arc-editorial-pullquote { display: grid; grid-template-columns: 1.2fr 1fr; gap: 5vw; background: #1a1a1a; color: #f5f1e8; align-items: stretch; }
-  .arc-editorial-pullquote .quote-side { background: #d4af37; color: #1a1a1a; display: flex; align-items: center; padding: 6vw; position: relative; }
-  .arc-editorial-pullquote blockquote { font-family: 'Fraunces', serif; font-size: 3rem; line-height: 1.1; font-style: italic; font-weight: 400; margin: 0; }
-  .arc-editorial-pullquote blockquote::before { content: '“'; position: absolute; top: 2vw; left: 2vw; font-size: 8rem; opacity: 0.3; }
+  .arc-editorial-pullquote { background: #1a1a1a; color: #f5f1e8; display: grid; grid-template-columns: 1fr 1fr; gap: 0; padding: 0; }
+  .arc-editorial-pullquote .body { padding: 10vh 8vw; display: flex; flex-direction: column; justify-content: center; }
+  .arc-editorial-pullquote .quote-side { background: #d4af37; color: #1a1a1a; display: flex; align-items: center; padding: 6vw; position: relative; min-height: 100vh; }
+  .arc-editorial-pullquote blockquote { font-family: 'Fraunces', serif; font-size: clamp(2.5rem, 4vw, 4.5rem); line-height: 1.05; font-style: italic; font-weight: 400; margin: 0; }
+  .arc-editorial-pullquote blockquote::before { content: '“'; position: absolute; top: 2vw; left: 2vw; font-size: 12rem; opacity: 0.2; font-family: 'Fraunces', serif; }
   .arc-editorial-pullquote .btn-read { background: #f5f1e8; color: #1a1a1a; }
+  .arc-editorial-pullquote .numeral { color: #f5f1e8; }
 
   /* Caution Tape */
   .arc-caution-tape { background: #fcd116; color: #000; }
   .arc-caution-tape .tape {
     position: absolute; left: -10vw; width: 120vw; background: #000; color: #fcd116;
-    font-weight: 900; font-size: 1.5rem; padding: 1rem; transform: rotate(-3deg); z-index: 5;
+    font-weight: 900; font-size: 1.8rem; padding: 1rem; transform: rotate(-3deg); z-index: 5;
   }
   .arc-caution-tape .tape.top { top: 5vh; transform: rotate(2deg); }
   .arc-caution-tape .tape.bottom { bottom: 5vh; transform: rotate(-1.5deg); }
-  .arc-caution-tape .tag { background: #000; color: #fff; padding: 0.5rem 1rem; display: inline-block; font-weight: 800; margin-bottom: 2rem; }
+  .arc-caution-tape .tag { background: #000; color: #fff; padding: 0.6rem 1.2rem; display: inline-block; font-weight: 800; margin-bottom: 2rem; letter-spacing: 0.1em; }
   .arc-caution-tape .btn-read { background: #000; color: #fcd116; }
 
   /* Notebook */
   .arc-notebook { background: #fcfcf4; }
+  .arc-notebook .body { position: relative; padding: 4rem; }
   .arc-notebook .lines {
-    position: absolute; inset: 0;
-    background: repeating-linear-gradient(transparent, transparent 1.6rem, #e0e0d0 1.6rem, #e0e0d0 1.7rem);
-    opacity: 0.5;
+    position: absolute; inset: 0; z-index: -1;
+    background: repeating-linear-gradient(transparent, transparent 2.4rem, #e0e0d0 2.4rem, #e0e0d0 2.5rem);
+    border-left: 2px solid #ff5252; margin-left: -2rem; padding-left: 2rem;
   }
   .arc-notebook .btn-read { background: #333; color: #fff; }
 
@@ -864,9 +872,11 @@ CSS_TEMPLATE = """
   .arc-mint-pattern { background: #d0f0e4; color: #1b4d3e; }
   .arc-mint-pattern::before {
     content: var(--bg-word); position: absolute; inset: 0;
-    font-weight: 900; font-size: 14vw; line-height: 0.7; opacity: 0.04;
-    display: flex; flex-wrap: wrap; word-break: break-all; overflow: hidden;
+    font-weight: 900; font-size: 16vw; line-height: 0.7; opacity: 0.05;
+    display: flex; flex-wrap: wrap; word-break: break-all; overflow: hidden; font-family: 'Fraunces', serif;
   }
+  .arc-mint-pattern .numeral-block { position: absolute; top: 10vh; right: 8vw; border: 4px solid #1b4d3e; padding: 2rem; }
+  .arc-mint-pattern .numeral { position: static; opacity: 1; font-size: 6rem; }
   .arc-mint-pattern .btn-read { background: #1b4d3e; color: #d0f0e4; }
 
   /* Pastel Playful */
@@ -874,7 +884,7 @@ CSS_TEMPLATE = """
   .arc-pastel-playful .alpha-grid {
     position: absolute; right: 4vw; top: 10vh; bottom: 10vh; width: 40vw;
     display: grid; grid-template-columns: repeat(5, 1fr); gap: 1rem;
-    font-weight: 900; font-size: 2rem; opacity: 0.08; pointer-events: none;
+    font-weight: 900; font-size: 2.5rem; opacity: 0.1; pointer-events: none;
   }
   .arc-pastel-playful .btn-read { background: #8a4b4b; color: #fbe6e6; }
 
@@ -882,8 +892,8 @@ CSS_TEMPLATE = """
   .arc-product-plate { background: #eee; }
   .arc-product-plate .plate {
     background: linear-gradient(145deg, #ffffff, #dcdcdc);
-    padding: 6vw; box-shadow: 20px 20px 60px #cbcbcb, -20px -20px 60px #ffffff;
-    border-radius: 20px;
+    padding: 8vw; box-shadow: 30px 30px 80px #cbcbcb, -30px -30px 80px #ffffff;
+    border-radius: 40px; border: 1px solid rgba(255,255,255,0.4);
   }
   .arc-product-plate .btn-read { background: #121212; color: #eee; border-radius: 50px; }
 
@@ -891,93 +901,96 @@ CSS_TEMPLATE = """
   .arc-archive { background: #f4ece1; color: #4e3620; }
   .arc-archive .mast {
     position: absolute; top: 4vh; width: 100%; text-align: center;
-    font-family: 'Fraunces', serif; font-weight: 700; font-size: 1.2rem;
-    letter-spacing: 0.5em; opacity: 0.5; border-bottom: 1px double #ccc;
+    font-family: 'Fraunces', serif; font-weight: 700; font-size: 1.4rem;
+    letter-spacing: 0.6em; opacity: 0.4; border-bottom: 1px double #ccc;
     padding-bottom: 2vh;
   }
   .arc-archive .btn-read { background: #4e3620; color: #f4ece1; }
 
   /* Obituary */
   .arc-obituary { background: #fff; color: #000; }
-  .arc-obituary .obit-frame { border: 20px solid #000; padding: 6vw; text-align: center; }
+  .arc-obituary .obit-frame { border: 25px solid #000; padding: 8vw; text-align: center; }
   .arc-obituary .lede { margin-left: auto; margin-right: auto; }
-  .arc-obituary .ornament { font-size: 4rem; margin: 3rem 0; opacity: 0.2; }
+  .arc-obituary .ornament { font-size: 5rem; margin: 4rem 0; opacity: 0.2; }
   .arc-obituary .ctas { justify-content: center; }
   .arc-obituary .btn-read { background: #000; color: #fff; }
 
   /* Blueprint */
   .arc-blueprint { background: #0047ab; color: #fff; }
   .arc-blueprint .grid {
-    position: absolute; inset: 0; opacity: 0.2;
+    position: absolute; inset: 0; opacity: 0.25;
     background-image: linear-gradient(#fff 1px, transparent 1px), linear-gradient(90deg, #fff 1px, transparent 1px);
-    background-size: 40px 40px;
+    background-size: 50px 50px;
   }
   .arc-blueprint .btn-read { background: #fff; color: #0047ab; }
 
   /* Observatory */
   .arc-observatory { background: #050510; color: #e0e0ff; }
   .arc-observatory .stars {
-    position: absolute; inset: 0; opacity: 0.4;
+    position: absolute; inset: 0; opacity: 0.5;
     background: radial-gradient(white, rgba(255,255,255,.2) 2px, transparent 40px);
-    background-size: 100px 100px;
+    background-size: 150px 150px;
   }
   .arc-observatory .btn-read { background: #e0e0ff; color: #050510; border-radius: 100px; }
 
   /* GH Specific: Agent Foundry */
   .arc-agent-foundry { background: #f0f4f8; color: #1a365d; }
   .arc-agent-foundry .blueprint-bg {
-    position: absolute; inset: 0; opacity: 0.1;
+    position: absolute; inset: 0; opacity: 0.15;
     background-image: radial-gradient(#1a365d 1px, transparent 1px);
-    background-size: 20px 20px;
+    background-size: 25px 25px;
+    background-image: linear-gradient(#1a365d 1px, transparent 1px), linear-gradient(90deg, #1a365d 1px, transparent 1px);
+    background-size: 50px 50px;
   }
   .arc-agent-foundry .btn-read { background: #1a365d; color: #fff; }
 
   /* GH Specific: System Core */
   .arc-system-core { background: #2d3748; color: #edf2f7; }
   .arc-system-core .concrete {
-    position: absolute; inset: 0; opacity: 0.05;
+    position: absolute; inset: 0; opacity: 0.08;
     background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
   }
-  .arc-system-core .frnc { font-family: 'Inter', sans-serif; font-weight: 800; text-transform: uppercase; letter-spacing: -0.05em; }
+  .arc-system-core h2 { font-family: 'Inter', sans-serif; font-weight: 900; text-transform: uppercase; letter-spacing: -0.05em; font-size: clamp(3rem, 10vw, 8rem); }
   .arc-system-core .btn-read { background: #edf2f7; color: #2d3748; }
 
   /* GH Specific: UI Lab */
   .arc-ui-lab { background: #fff; color: #4c51bf; }
   .arc-ui-lab .lab-gradient {
-    position: absolute; inset: 0; opacity: 0.1;
+    position: absolute; inset: 0; opacity: 0.15;
     background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
   }
-  .arc-ui-lab .btn-read { background: #4c51bf; color: #fff; border-radius: 12px; }
+  .arc-ui-lab .btn-read { background: #4c51bf; color: #fff; border-radius: 16px; box-shadow: 0 10px 20px rgba(76, 81, 191, 0.2); }
 
   /* GH Specific: Data Pipeline */
   .arc-data-pipeline { background: #1a202c; color: #a3bffa; }
   .arc-data-pipeline .pipeline-streams {
-    position: absolute; inset: 0; opacity: 0.15;
-    background: repeating-linear-gradient(45deg, #a3bffa, #a3bffa 2px, transparent 2px, transparent 20px);
+    position: absolute; inset: 0; opacity: 0.2;
+    background: repeating-linear-gradient(45deg, #a3bffa, #a3bffa 2px, transparent 2px, transparent 24px);
   }
   .arc-data-pipeline .btn-read { background: #a3bffa; color: #1a202c; }
 
   /* GH Specific: Model Bench */
   .arc-model-bench { background: #f7fafc; color: #2d3748; }
   .arc-model-bench .bench-silver {
-    position: absolute; right: 0; top: 0; width: 40%; height: 100%;
-    background: linear-gradient(90deg, transparent, rgba(0,0,0,0.03));
+    position: absolute; right: 0; top: 0; width: 45%; height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(0,0,0,0.04));
+    border-left: 1px solid rgba(0,0,0,0.05);
   }
-  .arc-model-bench .btn-read { border: 1px solid #2d3748; background: transparent; color: #2d3748; }
+  .arc-model-bench .btn-read { border: 2px solid #2d3748; background: transparent; color: #2d3748; }
 
   /* GH Specific: Privacy Shield */
   .arc-privacy-shield { background: #000; color: #00ff41; }
   .arc-privacy-shield .shield-glitch {
-    position: absolute; inset: 0; opacity: 0.1;
-    background-image: repeating-linear-gradient(0deg, rgba(0,255,65,0.1) 0, rgba(0,255,65,0.1) 1px, transparent 1px, transparent 2px);
+    position: absolute; inset: 0; opacity: 0.15;
+    background-image: repeating-linear-gradient(0deg, rgba(0,255,65,0.1) 0, rgba(0,255,65,0.1) 1px, transparent 1px, transparent 3px);
   }
-  .arc-privacy-shield .btn-read { background: #00ff41; color: #000; }
+  .arc-privacy-shield .btn-read { background: #00ff41; color: #000; font-family: 'JetBrains Mono', monospace; }
 
   /* GH Specific: Enterprise Engine */
   .arc-enterprise-engine { background: #f0f7ff; color: #0056b3; }
   .arc-enterprise-engine .engine-blue {
-    position: absolute; right: -5vw; bottom: -5vw; width: 30vw; height: 30vw;
-    background: radial-gradient(circle, rgba(0,86,179,0.05) 0%, transparent 70%);
+    position: absolute; right: -10vw; bottom: -10vw; width: 40vw; height: 40vw;
+    background: radial-gradient(circle, rgba(0,86,179,0.08) 0%, transparent 70%);
   }
   .arc-enterprise-engine .btn-read { background: #0056b3; color: #fff; }
 
@@ -985,65 +998,67 @@ CSS_TEMPLATE = """
   .arc-terminal-utility { background: #1a1a1a; color: #ffb000; font-family: 'JetBrains Mono', monospace; }
   .arc-terminal-utility .crt-lines {
     position: absolute; inset: 0; pointer-events: none;
-    background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.06), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.06));
-    background-size: 100% 2px, 3px 100%;
+    background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.3) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.08), rgba(0, 255, 0, 0.03), rgba(0, 0, 255, 0.08));
+    background-size: 100% 3px, 4px 100%;
   }
-  .arc-terminal-utility .btn-read { background: #ffb000; color: #1a1a1a; }
+  .arc-terminal-utility .btn-read { background: #ffb000; color: #1a1a1a; border-radius: 4px; }
 
   /* GH Specific: Experimental Workshop */
   .arc-experimental-workshop { background: #fffde7; color: #5d4037; }
   .arc-experimental-workshop .pad-lines {
-    position: absolute; left: 4vw; top: 0; bottom: 0; width: 2px; background: #ff5252; opacity: 0.3;
+    position: absolute; left: 6vw; top: 0; bottom: 0; width: 3px; background: #ff5252; opacity: 0.4;
+    box-shadow: 60px 0 0 rgba(255,82,82,0.05);
   }
-  .arc-experimental-workshop .btn-read { border: 2px dashed #5d4037; background: transparent; color: #5d4037; }
+  .arc-experimental-workshop .btn-read { border: 3px dashed #5d4037; background: transparent; color: #5d4037; }
 
   /* GH Specific: Library Archive */
   .arc-library-archive { background: #fdfaf3; color: #3e2723; }
   .arc-library-archive .parchment {
-    position: absolute; inset: 0; opacity: 0.03;
+    position: absolute; inset: 0; opacity: 0.05;
     background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='f'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.02' numOctaves='5'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23f)'/%3E%3C/svg%3E");
   }
   .arc-library-archive .btn-read { background: #3e2723; color: #fdfaf3; }
 
   /* ───── MASTHEAD ───── */
-  .masthead { padding: 4vh 8vw 10vh; text-align: center; border-bottom: 1px solid #ddd; }
-  .masthead-nav { display: flex; justify-content: center; gap: 2rem; margin-bottom: 6vh; font-weight: 600; font-size: 0.9rem; text-transform: uppercase; letter-spacing: 0.2em; }
-  .masthead-nav a { color: inherit; text-decoration: none; opacity: 0.6; }
+  .masthead { padding: 6vh 8vw 12vh; text-align: center; border-bottom: 1px solid #ddd; position: relative; }
+  .masthead-nav { display: flex; justify-content: center; gap: 3rem; margin-bottom: 8vh; font-weight: 700; font-size: 0.95rem; text-transform: uppercase; letter-spacing: 0.3em; }
+  .masthead-nav a { color: inherit; text-decoration: none; opacity: 0.5; transition: opacity 0.2s; }
   .masthead-nav a:hover { opacity: 1; }
-  .masthead h1 { font-size: clamp(3rem, 10vw, 9rem); font-weight: 400; margin: 0 0 2rem; letter-spacing: -0.04em; }
-  .issue-line { display: flex; justify-content: center; gap: 4rem; font-weight: 700; font-size: 1rem; letter-spacing: 0.3em; text-transform: uppercase; opacity: 0.8; }
+  .masthead h1 { font-size: clamp(3.5rem, 12vw, 10rem); font-weight: 400; margin: 0 0 3rem; letter-spacing: -0.05em; line-height: 0.9; }
+  .issue-line { display: flex; justify-content: center; gap: 5rem; font-weight: 800; font-size: 1.1rem; letter-spacing: 0.4em; text-transform: uppercase; opacity: 0.7; border-top: 1px solid #eee; padding-top: 4vh; }
   
   /* ───── DOSSIER ───── */
-  .dossier { background: #f5f1e8; padding: 10vh 8vw; color: #121212; }
-  .dossier-head { margin-bottom: 8vh; }
-  .dossier-head h2 { font-size: clamp(4rem, 12vw, 12rem); margin-bottom: 2rem; }
-  .tagline { font-weight: 700; font-size: 1.2rem; letter-spacing: 0.5em; text-transform: uppercase; margin-bottom: 1rem; opacity: 0.5; }
-  .intro { font-size: 1.5rem; max-width: 600px; line-height: 1.4; opacity: 0.7; }
-  .intro a { color: inherit; }
+  .dossier { background: #f5f1e8; padding: 12vh 8vw; color: #121212; position: relative; border-top: 10px solid #121212; }
+  .dossier-head { margin-bottom: 10vh; }
+  .dossier-head h2 { font-size: clamp(4rem, 15vw, 14rem); margin-bottom: 2rem; letter-spacing: -0.05em; font-weight: 400; }
+  .tagline { font-weight: 800; font-size: 1.4rem; letter-spacing: 0.6em; text-transform: uppercase; margin-bottom: 1.5rem; opacity: 0.4; }
+  .intro { font-size: 1.8rem; max-width: 700px; line-height: 1.35; opacity: 0.6; font-family: 'Fraunces', serif; }
+  .intro a { color: inherit; text-decoration: underline; text-underline-offset: 4px; }
   
-  .dossier-entry { margin-bottom: 12vh; max-width: 900px; }
-  .dossier-meta { font-weight: 700; font-size: 0.9rem; letter-spacing: 0.2em; text-transform: uppercase; margin-bottom: 1.5rem; opacity: 0.5; }
-  .dossier-entry h3 { font-family: 'Fraunces', serif; font-size: clamp(2.5rem, 5vw, 4.5rem); line-height: 1.1; margin: 0 0 1.5rem; font-weight: 400; }
-  .dossier-source { font-size: 1.1rem; font-weight: 500; letter-spacing: 0.05em; margin: 0 0 3rem; opacity: 0.7; }
-  .dossier-source a { color: inherit; text-decoration: underline; }
-  .dossier-entry h4 { font-weight: 700; font-size: 1rem; letter-spacing: 0.3em; text-transform: uppercase; margin: 3rem 0 1.5rem; }
-  .dossier-entry p { font-family: 'Fraunces', serif; font-size: 1.3rem; line-height: 1.6; margin: 0 0 1.5rem; }
+  .dossier-entry { margin-bottom: 15vh; max-width: 1000px; border-bottom: 1px solid rgba(0,0,0,0.1); padding-bottom: 10vh; }
+  .dossier-entry:last-child { border-bottom: none; }
+  .dossier-meta { font-weight: 800; font-size: 1rem; letter-spacing: 0.3em; text-transform: uppercase; margin-bottom: 2rem; opacity: 0.4; }
+  .dossier-entry h3 { font-family: 'Fraunces', serif; font-size: clamp(2.8rem, 6vw, 5.5rem); line-height: 1.05; margin: 0 0 2rem; font-weight: 400; letter-spacing: -0.02em; }
+  .dossier-source { font-size: 1.2rem; font-weight: 600; letter-spacing: 0.03em; margin: 0 0 4rem; opacity: 0.6; }
+  .dossier-source a { color: inherit; text-decoration: underline; text-underline-offset: 4px; }
+  .dossier-entry h4 { font-weight: 800; font-size: 1.1rem; letter-spacing: 0.4em; text-transform: uppercase; margin: 4rem 0 2rem; opacity: 0.8; }
+  .dossier-entry p { font-family: 'Fraunces', serif; font-size: 1.45rem; line-height: 1.55; margin: 0 0 2rem; font-weight: 400; }
   
   /* ───── COLOPHON ───── */
-  .colophon { background: #121212; color: #f5f1e8; padding: 8vh 8vw; text-align: center; }
-  .colophon .sig { font-family: 'Fraunces', serif; font-style: italic; font-size: clamp(2rem, 5vw, 4rem); margin-bottom: 2rem; }
-  .colophon .meta { font-weight: 500; font-size: 0.9rem; letter-spacing: 0.3em; text-transform: uppercase; opacity: 0.6; }
-  .classic-link { margin-top: 3rem; font-size: 0.9rem; letter-spacing: 0.2em; text-transform: uppercase; }
-  .classic-link a { color: inherit; text-decoration: underline; }
+  .colophon { background: #121212; color: #f5f1e8; padding: 12vh 8vw; text-align: center; }
+  .colophon .sig { font-family: 'Fraunces', serif; font-style: italic; font-size: clamp(2.5rem, 6vw, 5rem); margin-bottom: 3rem; font-weight: 400; }
+  .colophon .meta { font-weight: 600; font-size: 1rem; letter-spacing: 0.4em; text-transform: uppercase; opacity: 0.5; }
+  .classic-link { margin-top: 5rem; font-size: 1.1rem; letter-spacing: 0.2em; text-transform: uppercase; font-weight: 700; }
+  .classic-link a { color: inherit; text-decoration: underline; text-underline-offset: 6px; }
 
   @media (max-width: 800px) {
     .spread { padding: 12vh 6vw; }
-    .issue-line { flex-direction: column; gap: 1rem; align-items: center; }
+    .issue-line { flex-direction: column; gap: 1.5rem; align-items: center; }
     .arc-stat-hero .numeral { font-size: 15rem; top: auto; bottom: 5vh; }
     .arc-editorial-pullquote { grid-template-columns: 1fr; }
-    .arc-editorial-pullquote .quote-side { padding: 12vw; }
-    .ctas { flex-direction: column; align-items: stretch; gap: 1rem; }
-    .arc-academic-drop-cap .cols { columns: 1; }
+    .arc-editorial-pullquote .quote-side { padding: 15vw; min-height: 60vh; }
+    .ctas { flex-direction: column; align-items: stretch; gap: 1.5rem; }
+    .arc-academic-drop-cap .cols { grid-template-columns: 1fr; gap: 2rem; }
   }
 """
 
@@ -1054,7 +1069,7 @@ def generate_morning_edition_html(config: EditionConfig, day: date, items: list[
     for i, (a, item) in enumerate(zip(assignments, items), start=1):
         arch_id = a["archetype_id"]
         renderer = SPREAD_RENDERERS.get(arch_id, _arc_stat_hero)
-        spreads.append(renderer(i, a, item))
+        spreads.append(renderer(config, i, a, item))
         
     spreads_html = "\n".join(spreads)
     
@@ -1126,7 +1141,6 @@ if __name__ == "__main__":
     
     day = date.fromisoformat(args.date)
     
-    # Simple direct DB access if run standalone
     import psycopg
     from psycopg.rows import dict_row
     from trending_digest import build_hn_view_rows, build_gh_view_rows, get_db_connection
