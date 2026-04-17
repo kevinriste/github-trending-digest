@@ -150,13 +150,14 @@ def _build_prompt(config: EditionConfig, items: list[dict]) -> str:
     
     story_blocks = []
     for n, item in enumerate(items, start=1):
-        title = item.get("title", "") or item.get("repo_name", "") or ""
+        title = item.get("title") or item.get("name") or item.get("repo_name") or ""
         url = item.get("url") or item.get("discussion_url") or ""
         domain = _extract_domain(url) or "github.com"
-        score_label = "pts" if config.id == "hn" else "stars"
-        score = item.get("score") or item.get("stars") or 0
-        comments = item.get("comment_count") or item.get("today_stars") or 0
-        comments_label = "comments" if config.id == "hn" else "stars today"
+        if config.id == "hn":
+            stats = f"{item.get('score') or 0} pts · {item.get('comment_count') or 0} comments"
+        else:
+            period = (item.get("period_stars") or "").strip() or "no new stars today"
+            stats = f"{item.get('stars') or '0'} stars · {period}"
         
         summary = (item.get("summary") or "").strip()
         comment_analysis = (item.get("comment_analysis") or "").strip()
@@ -170,7 +171,7 @@ def _build_prompt(config: EditionConfig, items: list[dict]) -> str:
             f"### Story {n}\n"
             f"Title: {title}\n"
             f"Domain: {domain}\n"
-            f"Stats: {score} {score_label} · {comments} {comments_label}\n"
+            f"Stats: {stats}\n"
             f"URL: {url}\n"
             f"Analysis: {summary or '(none)'}\n"
         )
@@ -257,11 +258,13 @@ def _read_href(item: dict) -> str:
 
 def _meta_line(config: EditionConfig, item: dict) -> str:
     domain = _extract_domain(item.get("url") or "") or ("news.ycombinator.com" if config.id == "hn" else "github.com")
-    score_label = "pts" if config.id == "hn" else "stars"
-    score = item.get("score") or item.get("stars") or 0
-    comments = item.get("comment_count") or item.get("today_stars") or 0
-    comments_label = "comments" if config.id == "hn" else "stars today"
-    return f"{_h(domain)} &nbsp;·&nbsp; {score} {score_label} &nbsp;·&nbsp; {comments} {comments_label}"
+    if config.id == "hn":
+        score = item.get("score") or 0
+        comments = item.get("comment_count") or 0
+        return f"{_h(domain)} &nbsp;·&nbsp; {score} pts &nbsp;·&nbsp; {comments} comments"
+    stars = item.get("stars") or "0"
+    period = (item.get("period_stars") or "").strip() or "no new stars today"
+    return f"{_h(domain)} &nbsp;·&nbsp; {_h(str(stars))} stars &nbsp;·&nbsp; {_h(period)}"
 
 def _render_analysis_drawer(config: EditionConfig, i: int, item: dict) -> str:
     """Renders a collapsible drawer containing the technical analysis."""
@@ -370,22 +373,24 @@ def _render_dossier(config: EditionConfig, items: list[dict], assignments: list[
         else:
             reactions_html = ""
 
-        title = item.get("title") or item.get("repo_name") or "Untitled"
+        title = item.get("title") or item.get("name") or item.get("repo_name") or "Untitled"
         discussion_url = _h(item.get("discussion_url") or "")
         source_url = _read_href(item)
         domain = _extract_domain(item.get("url") or "") or ("news.ycombinator.com" if config.id == "hn" else "github.com")
-        
-        score_label = "pts" if config.id == "hn" else "stars"
-        score = item.get("score") or item.get("stars") or 0
-        comments = item.get("comment_count") or item.get("today_stars") or 0
-        comments_label = "comments" if config.id == "hn" else "stars today"
+
+        if config.id == "hn":
+            stats_line = f"{item.get('score') or 0} pts &nbsp;·&nbsp; {item.get('comment_count') or 0} comments"
+        else:
+            stars = _h(str(item.get("stars") or "0"))
+            period = (item.get("period_stars") or "").strip() or "no new stars today"
+            stats_line = f"{stars} stars &nbsp;·&nbsp; {_h(period)}"
 
         entries.append(f"""    <article id="dossier-{i}" class="dossier-entry">
       <div class="dossier-meta">N<sup>o</sup> {ORDINAL_LABELS[i-1]} &nbsp;·&nbsp; {arch_name} &nbsp;·&nbsp; {_h(a['kicker'])}</div>
       <h3>{_h(title)}</h3>
       <p class="dossier-source">
         <a href="{source_url}" target="_blank" rel="noopener">{domain}</a>
-        &nbsp;·&nbsp; {score} {score_label} &nbsp;·&nbsp; {comments} {comments_label}
+        &nbsp;·&nbsp; {stats_line}
         {" &nbsp;·&nbsp; <a href='" + discussion_url + "' target='_blank' rel='noopener'>discussion</a>" if discussion_url else ""}
       </p>
       <h4>Analysis</h4>
@@ -1014,6 +1019,108 @@ CSS_TEMPLATE = r"""
   .arc-ui-lab { background: #fff; color: #5850ec; }
   .arc-ui-lab .lab-gradient { position: absolute; inset: 0; opacity: 0.18; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); }
   .arc-ui-lab .read-more { border-radius: 12px; border: none; background: #5850ec; color: #fff; padding: 1.2rem 2.4rem; box-shadow: 0 10px 25px rgba(88, 80, 236, 0.25); }
+  .arc-ui-lab .kicker { font-family: 'Inter', sans-serif; font-weight: 800; font-size: 1.1rem; letter-spacing: 0.35em; color: #5850ec; margin-bottom: 1.8rem; text-transform: uppercase; position: relative; z-index: 2; }
+  .arc-ui-lab .numeral { font-family: 'Fraunces', serif; font-style: italic; font-weight: 700; font-size: clamp(6rem, 13vw, 11rem); color: #5850ec; margin-bottom: 1.2rem; line-height: 0.95; position: relative; z-index: 2; }
+  .arc-ui-lab h2 { font-family: 'Inter', sans-serif; font-weight: 900; font-size: clamp(3rem, 7vw, 6rem); line-height: 1; letter-spacing: -0.03em; position: relative; z-index: 2; max-width: 20ch; }
+  .arc-ui-lab .lede { font-size: 1.4rem; line-height: 1.6; max-width: 780px; color: #312e81; position: relative; z-index: 2; }
+
+  /* GH Specific: Agent Foundry (overlays on arc-blueprint) */
+  .arc-agent-foundry .corner { font-family: 'JetBrains Mono', monospace; opacity: 0.75; }
+  .arc-agent-foundry .corner.tl { top: 3.5vh; left: 4vw; }
+  .arc-agent-foundry .corner.tr { top: 3.5vh; right: 4vw; }
+  .arc-agent-foundry .corner.bl { bottom: 3.5vh; left: 4vw; }
+  .arc-agent-foundry .corner.br { bottom: 3.5vh; right: 4vw; }
+  .arc-agent-foundry .kicker { font-family: 'JetBrains Mono', monospace; font-weight: 700; font-size: 1rem; letter-spacing: 0.35em; color: #a8c7e8; margin-bottom: 2rem; text-transform: uppercase; }
+  .arc-agent-foundry h2 { font-family: 'Inter', sans-serif; font-weight: 900; font-size: clamp(3rem, 7.5vw, 6.2rem); line-height: 1; max-width: 18ch; letter-spacing: -0.03em; }
+  .arc-agent-foundry .lede { font-size: 1.4rem; line-height: 1.55; max-width: 760px; color: #d8e7f5; }
+
+  /* GH Specific: Data Pipeline */
+  .arc-data-pipeline { background: radial-gradient(ellipse at 20% 85%, #4c1d95 0%, #1a0a47 55%, #0a0525 100%); color: #e9e2ff; padding: 10vh 8vw; }
+  .arc-data-pipeline .pipeline-streams { position: absolute; inset: 0; pointer-events: none; opacity: 0.55;
+    background-image:
+      radial-gradient(1px 140px at 18% 0%, #a78bfa, transparent),
+      radial-gradient(1px 200px at 48% 0%, #818cf8, transparent),
+      radial-gradient(1px 240px at 78% 0%, #c4b5fd, transparent),
+      radial-gradient(1px 180px at 92% 0%, #6366f1, transparent); }
+  .arc-data-pipeline .numeral { font-family: 'JetBrains Mono', monospace; font-weight: 300; font-size: clamp(6rem, 13vw, 11rem); letter-spacing: -0.04em; color: transparent; -webkit-text-stroke: 2px #a78bfa; margin-bottom: 2rem; line-height: 0.95; }
+  .arc-data-pipeline .kicker { font-family: 'JetBrains Mono', monospace; font-weight: 700; font-size: 1.05rem; letter-spacing: 0.3em; color: #a78bfa; margin-bottom: 1.8rem; text-transform: uppercase; }
+  .arc-data-pipeline h2 { font-family: 'Fraunces', serif; font-weight: 700; font-size: clamp(3rem, 7vw, 6rem); line-height: 1.02; letter-spacing: -0.03em; max-width: 20ch; }
+  .arc-data-pipeline .lede { font-size: 1.4rem; line-height: 1.6; max-width: 780px; color: #dcd3ff; }
+  .arc-data-pipeline .drawer-content { background: rgba(167,139,250,0.1); border-color: #a78bfa; color: #e9e2ff; }
+
+  /* GH Specific: Terminal Utility (overlays on arc-terminal) */
+  .arc-terminal-utility { box-shadow: inset 0 0 10rem rgba(0,0,0,0.75); }
+  .arc-terminal-utility .crt-lines { position: absolute; inset: 0; pointer-events: none; z-index: 1;
+    background: repeating-linear-gradient(transparent 0 2px, rgba(149,255,149,0.05) 2px 3px); }
+  .arc-terminal-utility .prompt-row,
+  .arc-terminal-utility .numeral,
+  .arc-terminal-utility h2,
+  .arc-terminal-utility .story-meta,
+  .arc-terminal-utility .lede,
+  .arc-terminal-utility .spread-links { position: relative; z-index: 2; }
+
+  /* GH Specific: Model Bench */
+  .arc-model-bench { background: linear-gradient(180deg, #fafafa 0%, #d4d4d8 100%); color: #18181b; padding: 10vh 8vw; }
+  .arc-model-bench .bench-silver { position: absolute; inset: 0; pointer-events: none;
+    background:
+      repeating-linear-gradient(90deg, transparent 0 49px, rgba(24,24,27,0.07) 49px 50px),
+      linear-gradient(135deg, rgba(255,255,255,0.55) 0%, transparent 55%); }
+  .arc-model-bench .numeral { font-family: 'Fraunces', serif; font-style: italic; font-weight: 300; font-size: clamp(6rem, 14vw, 12rem); letter-spacing: -0.05em; color: #52525b; margin-bottom: 2rem; line-height: 0.88; }
+  .arc-model-bench .kicker { font-family: 'JetBrains Mono', monospace; font-weight: 600; font-size: 0.95rem; letter-spacing: 0.4em; color: #52525b; margin-bottom: 1.8rem; text-transform: uppercase; }
+  .arc-model-bench h2 { font-family: 'Fraunces', serif; font-weight: 400; font-size: clamp(3rem, 7vw, 6rem); line-height: 1.04; letter-spacing: -0.03em; max-width: 20ch; }
+  .arc-model-bench .lede { font-size: 1.4rem; line-height: 1.6; max-width: 780px; color: #3f3f46; }
+
+  /* GH Specific: Privacy Shield */
+  .arc-privacy-shield { background: #0a0a0a; color: #fafafa; padding: 10vh 8vw; }
+  .arc-privacy-shield .shield-glitch { position: absolute; inset: 0; pointer-events: none;
+    background:
+      linear-gradient(90deg, transparent 0 49%, rgba(239,68,68,0.1) 49% 51%, transparent 51%),
+      radial-gradient(ellipse at 70% 30%, rgba(34,211,238,0.08) 0%, transparent 45%); }
+  .arc-privacy-shield::before { content: ""; position: absolute; top: 5vh; right: 5vw; width: 14rem; height: 14rem;
+    background: conic-gradient(from 90deg at 50% 50%, #22d3ee, transparent 60%, #ef4444);
+    opacity: 0.2; border-radius: 50%; filter: blur(22px); pointer-events: none; }
+  .arc-privacy-shield .numeral { font-family: 'JetBrains Mono', monospace; font-weight: 800; font-size: clamp(6rem, 13vw, 11rem); letter-spacing: -0.04em; color: #fafafa; margin-bottom: 1.5rem; line-height: 1; position: relative; z-index: 2; }
+  .arc-privacy-shield .numeral::after { content: "█"; color: #22d3ee; margin-left: 0.25em; animation: me-blink 1.2s steps(2, start) infinite; }
+  .arc-privacy-shield .kicker { font-family: 'JetBrains Mono', monospace; font-weight: 700; font-size: 1rem; letter-spacing: 0.35em; color: #22d3ee; margin-bottom: 2rem; text-transform: uppercase; position: relative; z-index: 2; }
+  .arc-privacy-shield h2 { font-family: 'JetBrains Mono', monospace; font-weight: 700; font-size: clamp(2.6rem, 5.5vw, 4.8rem); line-height: 1.1; letter-spacing: -0.02em; position: relative; z-index: 2; }
+  .arc-privacy-shield .lede { font-family: 'JetBrains Mono', monospace; font-size: 1.15rem; line-height: 1.75; max-width: 780px; color: #e4e4e7; position: relative; z-index: 2; }
+  .arc-privacy-shield .drawer-content { background: rgba(34,211,238,0.06); border-color: #22d3ee; color: #fafafa; }
+
+  /* GH Specific: Enterprise Engine */
+  .arc-enterprise-engine { background: #eff6ff; color: #0c1e4e; padding: 10vh 8vw; }
+  .arc-enterprise-engine .engine-blue { position: absolute; inset: 0; pointer-events: none;
+    background:
+      radial-gradient(ellipse at 85% 15%, rgba(29,78,216,0.14) 0%, transparent 42%),
+      radial-gradient(ellipse at 15% 85%, rgba(37,99,235,0.1) 0%, transparent 42%); }
+  .arc-enterprise-engine::before { content: ""; position: absolute; top: 0; left: 0; right: 0; height: 10px;
+    background: linear-gradient(90deg, #1d4ed8 0%, #3b82f6 50%, #1d4ed8 100%); }
+  .arc-enterprise-engine .numeral { font-family: 'Inter', sans-serif; font-weight: 100; font-size: clamp(6rem, 13vw, 11rem); color: #1d4ed8; letter-spacing: -0.06em; margin-bottom: 1.5rem; line-height: 1; }
+  .arc-enterprise-engine .kicker { font-family: 'Inter', sans-serif; font-weight: 700; font-size: 1rem; letter-spacing: 0.32em; color: #1d4ed8; margin-bottom: 2rem; text-transform: uppercase; }
+  .arc-enterprise-engine h2 { font-family: 'Inter', sans-serif; font-weight: 800; font-size: clamp(3rem, 7vw, 5.8rem); line-height: 1.02; letter-spacing: -0.03em; max-width: 20ch; }
+  .arc-enterprise-engine .lede { font-size: 1.4rem; line-height: 1.6; max-width: 780px; color: #1e3a8a; }
+
+  /* GH Specific: Experimental Workshop */
+  .arc-experimental-workshop { background: #fef9c3; color: #422006; padding: 10vh 8vw; }
+  .arc-experimental-workshop .pad-lines { position: absolute; inset: 0; pointer-events: none;
+    background-image: repeating-linear-gradient(transparent 0 2.2rem, rgba(66,32,6,0.22) 2.2rem 2.25rem); }
+  .arc-experimental-workshop::before { content: ""; position: absolute; top: 0; bottom: 0; left: calc(6vw + 3.5rem); width: 2px; background: #dc2626; opacity: 0.65; }
+  .arc-experimental-workshop .numeral { font-family: 'Fraunces', serif; font-style: italic; font-weight: 800; font-size: clamp(7rem, 14vw, 12rem); color: #422006; margin-bottom: 1.5rem; line-height: 0.9; transform: rotate(-3deg); display: inline-block; position: relative; z-index: 2; }
+  .arc-experimental-workshop .kicker { font-family: 'Fraunces', serif; font-style: italic; font-weight: 700; font-size: 1.3rem; color: #78350f; margin-bottom: 2rem; position: relative; z-index: 2; }
+  .arc-experimental-workshop h2 { font-family: 'Fraunces', serif; font-weight: 800; font-style: italic; font-size: clamp(3rem, 7vw, 5.8rem); line-height: 1.04; letter-spacing: -0.02em; max-width: 22ch; position: relative; z-index: 2; }
+  .arc-experimental-workshop .lede { font-family: 'Fraunces', serif; font-size: 1.45rem; line-height: 2.2rem; max-width: 780px; position: relative; z-index: 2; }
+
+  /* GH Specific: Library Archive */
+  .arc-library-archive { background: #f5ead8; color: #2a1f10; padding: 12vh 10vw; }
+  .arc-library-archive .parchment { position: absolute; inset: 0; pointer-events: none; opacity: 0.45;
+    background-image:
+      radial-gradient(ellipse at 0% 50%, rgba(120,80,20,0.18) 0%, transparent 55%),
+      radial-gradient(ellipse at 100% 50%, rgba(120,80,20,0.15) 0%, transparent 55%); }
+  .arc-library-archive::before { content: ""; position: absolute; top: 6vh; left: 0; right: 0; height: 6px; border-top: 2px solid #6b4a20; border-bottom: 2px solid #6b4a20; opacity: 0.55; }
+  .arc-library-archive::after { content: ""; position: absolute; bottom: 6vh; left: 0; right: 0; height: 6px; border-top: 2px solid #6b4a20; border-bottom: 2px solid #6b4a20; opacity: 0.55; }
+  .arc-library-archive .numeral { font-family: 'Fraunces', serif; font-style: italic; font-weight: 500; font-size: clamp(5rem, 11vw, 9rem); color: #6b4a20; margin-bottom: 1.5rem; line-height: 0.95; position: relative; z-index: 2; }
+  .arc-library-archive .kicker { font-family: 'Fraunces', serif; font-style: italic; font-weight: 700; font-size: 1.3rem; letter-spacing: 0.1em; color: #6b4a20; margin-bottom: 2rem; position: relative; z-index: 2; }
+  .arc-library-archive h2 { font-family: 'Fraunces', serif; font-weight: 500; font-style: italic; font-size: clamp(3rem, 7vw, 6rem); line-height: 1.06; letter-spacing: -0.01em; max-width: 24ch; position: relative; z-index: 2; }
+  .arc-library-archive .lede { font-family: 'Fraunces', serif; font-size: 1.4rem; line-height: 1.7; max-width: 780px; font-weight: 400; position: relative; z-index: 2; }
 
   /* ───── DOSSIER ───── */
   .dossier { background: #f5f1e8; color: #1b1a14; padding: 10rem 8vw 8rem; border-top: 10px solid #121212; }
@@ -1048,15 +1155,16 @@ CSS_TEMPLATE = r"""
 
 def generate_morning_edition_html(config: EditionConfig, day: date, items: list[dict], assignments: list[dict]) -> str:
     title = f"{config.name} — {day.strftime('%B %-d, %Y')}"
-    
+
     spreads = []
     for i, (a, item) in enumerate(zip(assignments, items), start=1):
         arch_id = a["archetype_id"]
         renderer = SPREAD_RENDERERS.get(arch_id, _arc_stat_hero)
         spreads.append(renderer(config, i, a, item))
-        
+
     spreads_html = "\n".join(spreads)
-    
+    pref_src = "../../preference.js" if config.id == "hn" else "../preference.js"
+
     return f"""<!DOCTYPE html>
 <html lang="en">
 <head>
@@ -1074,6 +1182,7 @@ def generate_morning_edition_html(config: EditionConfig, day: date, items: list[
 {_render_dossier(config, items, assignments)}
 {_render_colophon(day)}
 {_render_readtracker(config, day)}
+<script src="{pref_src}" defer></script>
 <script>
 // Simple script to toggle the [+] and [-] labels on the drawers
 document.querySelectorAll('.analysis-drawer').forEach(drawer => {{

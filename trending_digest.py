@@ -2177,6 +2177,7 @@ def generate_gh_daily_page(repos: list[dict], day: date, hn_dates_set: set[str],
         <p>Generated automatically. Data from <a href="https://github.com/trending">GitHub Trending</a>.</p>
     </footer>
 {generate_gh_daily_script(date_str)}
+<script src="../preference.js" defer></script>
 </body>
 </html>
 """
@@ -2276,6 +2277,7 @@ def generate_hn_daily_page(items: list[dict], day: date, gh_dates_set: set[str])
         <p>Generated automatically. Data from <a href="https://news.ycombinator.com/">Hacker News</a>.</p>
     </footer>
 {generate_hn_daily_script(date_str)}
+<script src="../../preference.js" defer></script>
 </body>
 </html>
 """
@@ -2314,6 +2316,7 @@ def generate_gh_index_page(gh_dates: list[date], hn_dates: list[date]) -> str:
         </p>
     </footer>
 {generate_read_days_script(READ_DAYS_KEY_GH)}
+<script src="preference.js" defer></script>
 </body>
 </html>
 """
@@ -2352,6 +2355,7 @@ def generate_hn_index_page(hn_dates: list[date], gh_dates: list[date]) -> str:
         </p>
     </footer>
 {generate_read_days_script(READ_DAYS_KEY_HN)}
+<script src="../preference.js" defer></script>
 </body>
 </html>
 """
