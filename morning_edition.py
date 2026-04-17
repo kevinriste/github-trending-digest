@@ -309,20 +309,25 @@ def _links(config: EditionConfig, item: dict, n: int) -> str:
     )
 
 def _render_masthead(config: EditionConfig, day: date) -> str:
-    date_display = day.strftime("%B %-d, %Y")
-    # Smart relative paths
+    day_str = day.isoformat()
     if config.id == "hn":
-        hn_cal = "../"
-        gh_trending = "../../"
+        # On HN Page: Link to Today's GH and HN Calendar
+        other_edition_label = "GitHub Trending"
+        other_edition_link = f"../../{day_str}/"
+        own_calendar_label = "HN Calendar"
+        own_calendar_link = "../"
     else:
-        hn_cal = "../hn/"
-        gh_trending = "../"
+        # On GH Page: Link to Today's HN and GH Calendar
+        other_edition_label = "Hacker News"
+        other_edition_link = f"../hn/{day_str}/"
+        own_calendar_label = "GitHub Calendar"
+        own_calendar_link = "../"
 
     return f"""  <header class="masthead">
     <div class="masthead-nav">
-      <a href="{hn_cal}">HN Calendar</a>
+      <a href="{own_calendar_link}">{own_calendar_label}</a>
       <span>&nbsp;·&nbsp;</span>
-      <a href="{gh_trending}">GitHub Trending</a>
+      <a href="{other_edition_link}">{other_edition_label} &nbsp;·&nbsp; {day.strftime("%b %-d")}</a>
       <span>&nbsp;·&nbsp;</span>
       <a href="classic.html">Classic View</a>
     </div>
@@ -330,7 +335,7 @@ def _render_masthead(config: EditionConfig, day: date) -> str:
     <h1 class="frnc">Ten stories, before your coffee.</h1>
     <div class="issue-line">
       <span>Vol. I</span>
-      <span>{date_display}</span>
+      <span>{day.strftime("%B %-d, %Y")}</span>
       <span>{config.tagline}</span>
     </div>
   </header>"""
