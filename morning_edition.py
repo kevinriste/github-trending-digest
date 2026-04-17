@@ -309,15 +309,25 @@ def _links(config: EditionConfig, item: dict, n: int) -> str:
     )
 
 def _render_masthead(config: EditionConfig, day: date) -> str:
-    date_display = day.strftime("%A, %B %-d, %Y")
+    date_display = day.strftime("%B %-d, %Y")
+    # Smart relative paths
+    if config.id == "hn":
+        hn_cal = "../"
+        gh_trending = "../../"
+    else:
+        hn_cal = "../hn/"
+        gh_trending = "../"
+
     return f"""  <header class="masthead">
     <div class="masthead-nav">
-      <a href="../../">Index</a>
-      <a href="../">Calendar</a>
-      <a href="classic.html">Classic view</a>
+      <a href="{hn_cal}">HN Calendar</a>
+      <span>&nbsp;·&nbsp;</span>
+      <a href="{gh_trending}">GitHub Trending</a>
+      <span>&nbsp;·&nbsp;</span>
+      <a href="classic.html">Classic View</a>
     </div>
-    <div class="tagline">Ten stories, before your coffee.</div>
-    <h1 class="frnc">{"Morning Edition" if config.id == "hn" else "Open Source Edition"}</h1>
+    <div class="tagline">{"The Morning Edition" if config.id == "hn" else "The Open Source Edition"}</div>
+    <h1 class="frnc">Ten stories, before your coffee.</h1>
     <div class="issue-line">
       <span>Vol. I</span>
       <span>{date_display}</span>
