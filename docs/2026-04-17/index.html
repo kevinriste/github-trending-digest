@@ -1,0 +1,683 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Open Source Edition — April 17, 2026</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght,SOFT@0,9..144,300..900,0..100;1,9..144,300..900,0..100&family=Inter:ital,wght@0,100..900;1,100..900&family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap" rel="stylesheet">
+  <style>
+  :root { --ink: #121212; --paper: #f5f1e8; }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  body {
+    font-family: 'Inter', system-ui, sans-serif;
+    font-size: 20px;
+    line-height: 1.5;
+    color: var(--ink);
+    background: var(--paper);
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+  a { color: inherit; }
+  a:hover { opacity: 0.7; }
+  .frnc { font-family: 'Fraunces', Georgia, serif; }
+  .mono { font-family: 'JetBrains Mono', ui-monospace, monospace; }
+
+  /* ───── MASTHEAD ───── */
+  .masthead { padding: 2.5rem 6vw 3rem; border-bottom: 3px double #121212; background: #f5f1e8; text-align: center; }
+  .masthead-nav {
+    display: flex;
+    justify-content: center;
+    gap: 1.5rem;
+    align-items: baseline;
+    margin-bottom: 2.5rem;
+    font-weight: 700;
+    font-size: 1rem;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+  }
+  .masthead-nav a { text-decoration: none; border-bottom: 2px solid transparent; padding-bottom: 4px; }
+  .masthead-nav a:hover { border-bottom-color: #121212; opacity: 1; }
+  .masthead .tagline { font-weight: 600; font-size: 1.3rem; letter-spacing: 0.4em; text-transform: uppercase; margin-bottom: 1.5rem; color: #7a1e14; }
+  .masthead h1 {
+    font-family: 'Fraunces', Georgia, serif;
+    font-weight: 900;
+    font-style: italic;
+    font-size: clamp(4.5rem, 14vw, 13rem);
+    line-height: 0.85;
+    letter-spacing: -0.04em;
+    margin: 0 0 1.5rem;
+    font-variation-settings: "SOFT" 50;
+  }
+  .masthead .issue-line {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    max-width: 1100px;
+    margin: 2.5rem auto 0;
+    padding-top: 1.5rem;
+    border-top: 1px solid #121212;
+    font-weight: 600;
+    font-size: 1.15rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+  }
+
+  /* ───── SPREAD BASE ───── */
+  .spread {
+    min-height: 100vh;
+    padding: 8vh 6vw;
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+  .spread .story-meta { font-weight: 600; font-size: 1.05rem; letter-spacing: 0.28em; text-transform: uppercase; margin-bottom: 2rem; opacity: 0.8; }
+  .spread-links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 2.5rem 3rem;
+    align-items: flex-start;
+    margin-top: 3rem;
+  }
+  .read-more {
+    display: inline-block;
+    font-size: 1.2rem;
+    font-weight: 800;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    text-decoration: none;
+    padding-bottom: 0.5rem;
+    border-bottom: 4px solid currentColor;
+  }
+  .btn-dossier {
+    font-size: 1.1rem;
+    font-weight: 700;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    text-decoration: none;
+    opacity: 0.7;
+    padding-bottom: 0.4rem;
+    border-bottom: 2px solid currentColor;
+    cursor: pointer; background: transparent; border: none; color: inherit; display: inline-block;
+  }
+  .btn-dossier:hover { opacity: 1; }
+
+  /* ───── ANALYSIS DRAWER ───── */
+  .analysis-drawer { margin-top: 0; width: 100%; max-width: 850px; position: relative; z-index: 50; }
+  .analysis-drawer summary { list-style: none; outline: none; }
+  .analysis-drawer summary::-webkit-details-marker { display: none; }
+  .analysis-drawer[open] summary { margin-bottom: 2.5rem; }
+  .drawer-content {
+    background: rgba(0,0,0,0.04); padding: 3.5rem; border-left: 6px solid var(--ink);
+    animation: slideDown 0.35s cubic-bezier(0.23, 1, 0.32, 1); margin-bottom: 2.5rem;
+  }
+  .drawer-content h4 { text-transform: uppercase; letter-spacing: 0.25em; font-size: 0.95rem; margin-top: 0; margin-bottom: 1.5rem; opacity: 0.6; font-weight: 800; }
+  .drawer-content p { font-family: 'Fraunces', serif; font-size: 1.35rem; line-height: 1.55; margin-bottom: 1.5rem; font-weight: 400; }
+  .drawer-footer { margin-top: 2.5rem; border-top: 1px solid rgba(0,0,0,0.1); padding-top: 1.5rem; }
+  .drawer-footer a { font-size: 0.9rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.15em; text-decoration: none; color: inherit; opacity: 0.5; }
+  @keyframes slideDown { from { opacity: 0; transform: translateY(-15px); } to { opacity: 1; transform: translateY(0); } }
+
+  /* ───── STAT HERO ───── */
+  .arc-stat-hero { background: #eee6d3; color: #0d1a2e; }
+  .arc-stat-hero .numeral {
+    font-family: 'Fraunces', serif; font-weight: 900; font-style: italic; font-size: clamp(15rem, 40vw, 38rem);
+    line-height: 0.8; letter-spacing: -0.06em; color: #0d1a2e;
+    position: absolute; right: -3vw; top: 5vh; opacity: 0.95; pointer-events: none;
+  }
+  .arc-stat-hero .kicker { font-weight: 800; font-size: 1.2rem; letter-spacing: 0.45em; color: #c13830; margin-bottom: 1.8rem; }
+  .arc-stat-hero h2 { font-family: 'Fraunces', serif; font-weight: 800; font-size: clamp(3.5rem, 9vw, 8rem); line-height: 0.92; letter-spacing: -0.035em; max-width: 65%; margin: 0 0 2.5rem; }
+  .arc-stat-hero .lede { font-family: 'Fraunces', serif; font-size: clamp(1.5rem, 2.4vw, 2.1rem); line-height: 1.4; max-width: 60%; font-weight: 400; margin: 0; }
+  .arc-stat-hero .story-meta { color: #c13830; opacity: 1; }
+
+  /* ───── MIDNIGHT ───── */
+  .arc-midnight { background: radial-gradient(ellipse at 75% 25%, #1d1440 0%, #05050c 70%); color: #ece9ff; }
+  .arc-midnight .numeral {
+    font-family: 'Fraunces', serif; font-size: clamp(10rem, 25vw, 22rem); font-weight: 300; font-style: italic;
+    color: transparent; -webkit-text-stroke: 2px rgba(236,233,255,0.5);
+    position: absolute; top: 5vh; left: 4vw; letter-spacing: -0.05em; line-height: 1;
+  }
+  .arc-midnight .kicker { font-family: 'JetBrains Mono', monospace; font-size: 1.15rem; letter-spacing: 0.25em; color: #b994ff; margin-bottom: 2.2rem; }
+  .arc-midnight h2 { font-weight: 900; font-size: clamp(3.2rem, 8vw, 7rem); line-height: 0.98; letter-spacing: -0.04em; margin: 12rem 0 3rem; }
+  .arc-midnight .lede { font-size: 1.45rem; line-height: 1.6; color: #d0c9f0; max-width: 820px; }
+  .arc-midnight .story-meta { color: #9486d3; }
+  .arc-midnight .drawer-content { background: rgba(255,255,255,0.06); border-color: #ece9ff; color: #ece9ff; }
+
+  /* ───── ALERT STAMP ───── */
+  .arc-alert-stamp { background: #fbeae3; color: #2d0a0a; background-image: repeating-linear-gradient(transparent, transparent 3.5rem, rgba(193,56,48,0.1) 3.5rem, rgba(193,56,48,0.1) calc(3.5rem + 1px)); }
+  .arc-alert-stamp .stamp {
+    position: absolute; top: 10vh; right: 6vw; transform: rotate(-12deg); border: 8px solid #c13830;
+    padding: 1.5rem 3rem; font-weight: 900; font-size: clamp(2.5rem, 5vw, 4rem); letter-spacing: 0.2em; color: #c13830; background: rgba(251,234,227,0.7); text-transform: uppercase;
+  }
+  .arc-alert-stamp .numeral { font-family: 'Fraunces', serif; font-style: italic; font-weight: 950; font-size: clamp(7rem, 16vw, 13rem); color: #c13830; margin: 0 0 1.2rem; }
+  .arc-alert-stamp h2 { font-family: 'Fraunces', serif; font-weight: 900; font-size: clamp(2.8rem, 6.5vw, 6rem); line-height: 1; letter-spacing: -0.03em; max-width: 80%; }
+  .arc-alert-stamp .story-meta { color: #c13830; }
+
+  /* ───── ACADEMIC DROP CAP ───── */
+  .arc-academic-drop-cap { background: #f2ebd5; color: #1d1c16; padding: 10vh 8vw; }
+  .arc-academic-drop-cap .paper-head {
+    display: flex; justify-content: space-between; align-items: baseline; border-bottom: 2px solid #1d1c16;
+    padding-bottom: 1rem; margin-bottom: 4rem; font-weight: 600; font-size: 1.1rem; letter-spacing: 0.3em; text-transform: uppercase; opacity: 0.5;
+  }
+  .arc-academic-drop-cap .numeral-roman { font-family: 'Fraunces', serif; font-weight: 700; font-size: clamp(3rem, 4.5vw, 4.5rem); font-style: italic; }
+  .arc-academic-drop-cap h2 { font-family: 'Fraunces', serif; font-weight: 400; font-style: italic; font-size: clamp(2.8rem, 6vw, 5.5rem); line-height: 1.02; margin-bottom: 2rem; }
+  .arc-academic-drop-cap .cols { display: grid; grid-template-columns: 1fr 1fr; gap: 4.5rem; }
+  .arc-academic-drop-cap .cols p { font-family: 'Fraunces', serif; font-size: 1.45rem; line-height: 1.6; text-align: justify; hyphens: auto; }
+  .arc-academic-drop-cap .cols > div:first-child p:first-child::first-letter {
+    font-family: 'Fraunces', serif; font-weight: 950; font-size: 7.5em; float: left; line-height: 0.78; padding: 0.1em 0.15em 0 0; color: #7a1e14;
+  }
+
+  /* ───── TERMINAL ───── */
+  .arc-terminal { background: #000; color: #95ff95; font-family: 'JetBrains Mono', monospace; padding: 10vh 8vw; }
+  .arc-terminal .prompt-row { font-size: 1.2rem; font-weight: 600; color: #51da51; margin-bottom: 4rem; }
+  .arc-terminal .numeral { font-size: clamp(7rem, 15vw, 14rem); font-weight: 800; line-height: 1; color: #95ff95; margin: 0 0 1.5rem; }
+  .arc-terminal .numeral::before { content: "> "; color: #51da51; }
+  .arc-terminal h2 { font-weight: 800; font-size: clamp(2.5rem, 5.5vw, 5rem); line-height: 1.05; color: #e1ffe1; }
+  .arc-terminal .lede { font-size: 1.4rem; line-height: 1.7; max-width: 850px; color: #95ff95; }
+  .arc-terminal .lede::before { content: "# "; color: #51da51; }
+  .arc-terminal .cursor { display: inline-block; width: 0.6em; height: 1.2em; background: #95ff95; vertical-align: text-bottom; margin-left: 0.3em; animation: me-blink 1.2s steps(2, start) infinite; }
+  @keyframes me-blink { to { visibility: hidden; } }
+  .arc-terminal .drawer-content { background: rgba(149, 255, 149, 0.06); border-color: #95ff95; color: #95ff95; }
+
+  /* ───── EDITORIAL PULLQUOTE ───── */
+  .arc-editorial-pullquote { background: #181818; color: #fcfaf5; padding: 10vh 8vw; display: grid; grid-template-columns: 1fr 1.15fr; gap: 6rem; align-items: center; }
+  .arc-editorial-pullquote .numeral { font-family: 'Fraunces', serif; font-weight: 950; font-style: italic; font-size: clamp(10rem, 20vw, 18rem); line-height: 0.85; color: #fcfaf5; letter-spacing: -0.06em; margin-bottom: 1.5rem; }
+  .arc-editorial-pullquote .kicker { font-weight: 800; font-size: 1.2rem; letter-spacing: 0.4em; color: #f1c40f; margin-bottom: 2rem; }
+  .arc-editorial-pullquote h2 { font-family: 'Fraunces', serif; font-weight: 800; font-size: clamp(2.4rem, 4.5vw, 4rem); line-height: 1.05; }
+  .arc-editorial-pullquote .pullquote {
+    font-family: 'Fraunces', serif; font-style: italic; font-weight: 400; font-size: clamp(2rem, 3.8vw, 3.4rem); line-height: 1.1; color: #fcfaf5; border-left: 6px solid #f1c40f; padding-left: 2.5rem; margin: 0;
+  }
+  .arc-editorial-pullquote .pullquote::before { content: "\201C"; color: #f1c40f; font-size: 1.5em; vertical-align: -0.4em; line-height: 0; }
+
+  /* ───── CAUTION TAPE ───── */
+  .arc-caution-tape { background: #ffd900; color: #050505; padding: 10vh 8vw; }
+  .arc-caution-tape::before, .arc-caution-tape::after { content: ""; position: absolute; left: 0; right: 0; height: 3.2rem; background: repeating-linear-gradient(135deg, #050505 0 2.5rem, #ffd900 2.5rem 5rem); }
+  .arc-caution-tape::before { top: 0; } .arc-caution-tape::after { bottom: 0; }
+  .arc-caution-tape .tag { position: absolute; top: 8vh; right: 6vw; writing-mode: vertical-rl; transform: rotate(180deg); font-weight: 950; font-size: 1.5rem; letter-spacing: 0.6em; background: #050505; color: #ffd900; padding: 1.2rem 0.8rem; }
+  .arc-caution-tape .numeral { font-weight: 950; font-size: clamp(12rem, 32vw, 28rem); line-height: 0.8; -webkit-text-stroke: 4px #050505; color: transparent; margin-bottom: 1.5rem; }
+  .arc-caution-tape .kicker { font-weight: 950; font-size: 1.4rem; letter-spacing: 0.4em; background: #050505; color: #ffd900; padding: 0.6rem 1.2rem; display: inline-block; }
+  .arc-caution-tape h2 { font-weight: 950; font-size: clamp(3rem, 7vw, 6.5rem); line-height: 0.95; letter-spacing: -0.04em; text-transform: uppercase; }
+
+  /* ───── NOTEBOOK ───── */
+  .arc-notebook { background: repeating-linear-gradient(#fdfbf2 0 2.5rem, rgba(130,110,70,0.25) 2.5rem 2.55rem); color: #221c0e; padding: 10vh 10vw; }
+  .arc-notebook::before { content: ""; position: absolute; top: 0; bottom: 0; left: 10vw; width: 3px; background: #d32f2f; opacity: 0.6; }
+  .arc-notebook h2 { font-family: 'Fraunces', serif; font-weight: 400; font-style: italic; font-size: clamp(3.2rem, 7vw, 6.5rem); line-height: 1; letter-spacing: -0.03em; }
+  .arc-notebook .lede { font-family: 'Fraunces', serif; font-size: clamp(1.5rem, 2.2vw, 1.9rem); line-height: 2.5rem; max-width: 780px; }
+
+  /* ───── MINT PATTERN ───── */
+  .arc-mint-pattern { background: #b0eed4; color: #0a3325; padding: 10vh 8vw; }
+  .arc-mint-pattern::before {
+    content: "LISP AWK SED GREP CURL MAKE GIT VIM SSH BASH"; font-family: 'JetBrains Mono', monospace; font-weight: 800; font-size: 3rem; letter-spacing: 0.4em;
+    position: absolute; top: 12vh; left: 0; right: 0; color: rgba(10,51,37,0.12); white-space: nowrap; overflow: hidden; pointer-events: none;
+  }
+  .arc-mint-pattern h2 { font-family: 'Fraunces', serif; font-weight: 900; font-size: clamp(3rem, 7vw, 6rem); line-height: 0.95; }
+
+  /* ───── PASTEL PLAYFUL ───── */
+  .arc-pastel-playful { background: #fdeaf5; color: #300c35; padding: 10vh 8vw 6vh; }
+  .arc-pastel-playful .alpha-grid { position: absolute; top: 0; left: 0; right: 0; display: grid; grid-template-columns: repeat(13, 1fr); font-family: 'Fraunces', serif; font-style: italic; font-size: clamp(1.4rem, 2.8vw, 2.2rem); font-weight: 800; color: rgba(48,12,53,0.22); padding: 1.2rem 8vw; letter-spacing: 0.25em; pointer-events: none; }
+  .arc-pastel-playful .alpha-grid span { text-align: center; }
+  .arc-pastel-playful .numeral { font-family: 'Fraunces', serif; font-weight: 950; font-style: italic; font-size: clamp(12rem, 30vw, 25rem); color: #c93d7c; margin-top: 3rem; line-height: 0.8; }
+
+  /* ───── PRODUCT PLATE ───── */
+  .arc-product-plate { background: linear-gradient(135deg, #fcfcfb 0%, #f0f0ee 100%); color: #151515; padding: 12vh 10vw; text-align: center; }
+  .arc-product-plate .product-chip { font-weight: 800; font-size: 1.1rem; letter-spacing: 0.5em; background: #151515; color: #fcfcfb; padding: 0.6rem 1.6rem; display: inline-block; margin-bottom: 3.5rem; }
+  .arc-product-plate h2 { font-family: 'Inter', sans-serif; font-weight: 950; font-size: clamp(3.5rem, 10vw, 9rem); line-height: 0.92; letter-spacing: -0.05em; max-width: 15ch; margin: 0 auto 2.5rem; }
+  .arc-product-plate .product-rule { width: 8rem; height: 3px; background: #151515; margin: 2rem auto 2.5rem; }
+
+  /* ───── ARCHIVE ───── */
+  .arc-archive { background: #f0e2c5; background-image: radial-gradient(rgba(90,50,15,0.06) 1px, transparent 1px), radial-gradient(rgba(90,50,15,0.05) 1px, transparent 1px); background-size: 5px 5px, 9px 9px; color: #30200a; padding: 10vh 10vw; }
+  .arc-archive .archive-head { display: flex; justify-content: space-between; align-items: baseline; border-top: 8px double #4a3a15; border-bottom: 8px double #4a3a15; padding: 1.2rem 0; margin-bottom: 4rem; font-family: 'Fraunces', serif; font-style: italic; font-weight: 600; font-size: 1.2rem; letter-spacing: 0.2em; color: #4a3a15; }
+
+  /* ───── OBITUARY ───── */
+  .arc-obituary { background: #faf8f2; color: #151515; padding: 12vh 8vw; align-items: center; justify-content: center; }
+  .arc-obituary .obit-frame { border: 4px solid #151515; padding: 7rem 6rem; max-width: 850px; text-align: center; position: relative; }
+  .arc-obituary .obit-frame::before, .arc-obituary .obit-frame::after { content: ""; position: absolute; left: -15px; right: -15px; height: 1.5px; background: #151515; }
+  .arc-obituary .obit-frame::before { top: -15px; } .arc-obituary .obit-frame::after { bottom: -15px; }
+  .arc-obituary .ornament { font-family: 'Fraunces', serif; font-size: 4.5rem; margin-bottom: 2.5rem; }
+
+  /* ───── BLUEPRINT ───── */
+  .arc-blueprint { background: #0c4876; background-image: linear-gradient(rgba(255,255,255,0.1) 1.5px, transparent 1.5px), linear-gradient(90deg, rgba(255,255,255,0.1) 1.5px, transparent 1.5px); background-size: 2.5rem 2.5rem; color: #f0f7ff; padding: 10vh 8vw; }
+  .arc-blueprint .corner { position: absolute; font-family: 'JetBrains Mono', monospace; font-size: 3rem; color: #f0f7ff; opacity: 0.8; }
+  .arc-blueprint .numeral { font-family: 'JetBrains Mono', monospace; font-weight: 800; font-size: clamp(5rem, 11vw, 9rem); border-bottom: 3px dashed rgba(240,247,255,0.6); padding-bottom: 1.2rem; display: inline-block; margin-bottom: 2rem; }
+
+  /* ───── OBSERVATORY ───── */
+  .arc-observatory { background: #080f3d; color: #f0f4ff; padding: 10vh 8vw; }
+  .arc-observatory .starfield { position: absolute; inset: 0; background-image: radial-gradient(1.5px 1.5px at 10% 20%, #fff, transparent), radial-gradient(1.5px 1.5px at 25% 70%, #fff, transparent), radial-gradient(2px 2px at 40% 30%, #fff, transparent), radial-gradient(1.5px 1.5px at 70% 15%, #fff, transparent), radial-gradient(2px 2px at 85% 55%, #fff, transparent); }
+  .arc-observatory .numeral { font-family: 'Fraunces', serif; font-style: italic; font-weight: 500; font-size: clamp(4rem, 9vw, 8rem); border-bottom: 2px solid rgba(240,244,255,0.5); padding-bottom: 1.2rem; display: inline-block; margin-bottom: 2.5rem; }
+
+  /* GH Specific: Brutalist System Core */
+  .arc-system-core { background: #344054; color: #f9fafb; }
+  .arc-system-core .concrete { position: absolute; inset: 0; opacity: 0.12; background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E"); }
+  .arc-system-core h2 { font-family: 'Inter', sans-serif; font-weight: 950; text-transform: uppercase; letter-spacing: -0.06em; font-size: clamp(3.5rem, 12vw, 9.5rem); line-height: 0.88; }
+  .arc-system-core .drawer-content { background: rgba(0,0,0,0.1); border-color: #f9fafb; color: #f9fafb; }
+
+  /* GH Specific: UI Lab */
+  .arc-ui-lab { background: #fff; color: #5850ec; }
+  .arc-ui-lab .lab-gradient { position: absolute; inset: 0; opacity: 0.18; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); }
+  .arc-ui-lab .read-more { border-radius: 12px; border: none; background: #5850ec; color: #fff; padding: 1.2rem 2.4rem; box-shadow: 0 10px 25px rgba(88, 80, 236, 0.25); }
+
+  /* ───── DOSSIER ───── */
+  .dossier { background: #f5f1e8; color: #1b1a14; padding: 10rem 8vw 8rem; border-top: 10px solid #121212; }
+  .dossier .dossier-head { text-align: center; margin-bottom: 6rem; }
+  .dossier h2 { font-family: 'Fraunces', serif; font-style: italic; font-weight: 950; font-size: clamp(5rem, 12vw, 11rem); line-height: 0.85; margin-bottom: 2rem; font-variation-settings: "SOFT" 30; }
+  .dossier .intro { font-family: 'Fraunces', serif; font-style: italic; font-size: 1.5rem; line-height: 1.45; max-width: 700px; margin: 0 auto; opacity: 0.7; }
+  .dossier-entry { border-top: 2px solid #1b1a14; padding: 4rem 0 3.5rem; max-width: 900px; margin: 0 auto; }
+  .dossier-meta { font-weight: 700; font-size: 1.1rem; letter-spacing: 0.35em; color: #7a1e14; margin-bottom: 1.5rem; }
+  .dossier-entry h3 { font-family: 'Fraunces', serif; font-weight: 800; font-size: clamp(2rem, 4vw, 3rem); line-height: 1.1; letter-spacing: -0.02em; }
+  .dossier-entry h4 { font-family: 'Inter', sans-serif; font-weight: 800; font-size: 1.1rem; letter-spacing: 0.4em; color: #7a1e14; margin: 2.5rem 0 1.5rem; }
+  .dossier-entry p { font-family: 'Fraunces', serif; font-size: 1.35rem; line-height: 1.6; margin-bottom: 1.2rem; }
+
+  /* ───── COLOPHON ───── */
+  .colophon { background: #121212; color: #f5f1e8; padding: 7rem 6vw; text-align: center; }
+  .colophon .sig { font-family: 'Fraunces', serif; font-style: italic; font-weight: 400; font-size: clamp(3rem, 6vw, 5rem); margin-bottom: 2rem; font-variation-settings: "SOFT" 60; }
+  .colophon .classic-link { margin-top: 3rem; font-weight: 600; font-size: 1.1rem; letter-spacing: 0.25em; text-transform: uppercase; }
+
+  /* ───── RESPONSIVE ───── */
+  @media (max-width: 800px) {
+    .masthead-nav { flex-wrap: wrap; gap: 1rem; }
+    .masthead h1 { font-size: 4rem; line-height: 0.9; }
+    .issue-line { flex-direction: column; gap: 1.5rem; align-items: center; text-align: center; }
+    .arc-stat-hero h2, .arc-stat-hero .lede { max-width: 100%; }
+    .arc-stat-hero .numeral { font-size: 16rem; opacity: 0.25; top: 35vh; }
+    .arc-academic-drop-cap .cols { grid-template-columns: 1fr; gap: 2.5rem; }
+    .arc-editorial-pullquote { grid-template-columns: 1fr; gap: 4rem; }
+    .arc-caution-tape .tag { display: none; }
+    .arc-pastel-playful .alpha-grid { display: none; }
+    .arc-blueprint .corner { display: none; }
+  }
+</style>
+</head>
+<body id="top">
+  <header class="masthead">
+    <div class="masthead-nav">
+      <a href="../">GitHub Calendar</a>
+      <span>&nbsp;·&nbsp;</span>
+      <a href="../hn/2026-04-17/">Hacker News &nbsp;·&nbsp; Apr 17</a>
+      <span>&nbsp;·&nbsp;</span>
+      <a href="classic.html">Classic View</a>
+    </div>
+    <div class="tagline">The Open Source Edition</div>
+    <h1 class="frnc">Ten stories, before your coffee.</h1>
+    <div class="issue-line">
+      <span>Vol. I</span>
+      <span>April 17, 2026</span>
+      <span>GitHub Daily Trending</span>
+    </div>
+  </header>
+  <section id="story-1" class="spread arc-blueprint arc-agent-foundry">
+    <div class="corner tl">+</div><div class="corner tr">+</div>
+    <div class="corner bl">+</div><div class="corner br">+</div>
+    <div class="numeral">01</div>
+    <div class="kicker">Foundry // Control Plane</div>
+    <h2>Evolver Codifies Agent Behavior Through Auditable Genomic Blueprints</h2>
+    <p class="story-meta">github.com &nbsp;·&nbsp; 3,525 stars &nbsp;·&nbsp; 0 stars today</p>
+    <p class="lede">Moving beyond erratic prompt tuning, Evolver establishes a formal governance layer for autonomous systems. By treating logical refinements as reusable assets, developers can now trace the evolutionary history of their AI agents with engineering precision.</p>
+    <div class="spread-links"><a class="read-more" href="https://github.com/EvoMap/evolver" target="_blank" rel="noopener">Read →</a>
+      <details class="analysis-drawer">
+        <summary class="btn-dossier">[ Analysis + ]</summary>
+        <div class="drawer-content">
+          <h4>Technical Analysis</h4>
+          <p>Evolver is a Genome Evolution Protocol (GEP) engine designed to govern the self-evolution of AI agents by transforming ad hoc prompt adjustments into auditable, reusable assets known as &quot;genes&quot; and &quot;capsules.&quot; Technically, the engine operates by scanning local memory logs and error patterns to identify areas for improvement, subsequently generating strict, protocol-bound prompts that guide agent refinement. It offers flexible operation modes, ranging from manual review to autonomous background loops, and utilizes Git to maintain a rigorous audit trail of all evolution events. By separating logic from execution, Evolver avoids direct source code modification, instead emitting standardized directives that host runtimes—such as OpenClaw—interpret to trigger agent updates. Furthermore, the system is highly configurable, allowing users to toggle between strategies like &quot;innovate&quot; or &quot;harden&quot; based on the specific stability requirements of their agent environment.</p>
+<p>This project is primarily intended for teams and developers managing complex AI agents at scale who require deterministic, traceable, and reproducible prompt evolution. It significantly benefits those who struggle with &quot;flaky&quot; agent loops or who need to codify recurring fixes into a shareable knowledge base. Evolver is currently gaining traction because it bridges the gap between chaotic, experimental prompt engineering and the need for enterprise-grade governance and reliability. As AI development shifts toward more autonomous and self-optimizing architectures, the ability to turn isolated prompt tweaks into a structured, audit-ready evolution pipeline becomes an essential requirement for production environments. By providing a standardized protocol for intelligence growth, Evolver offers a sophisticated solution for engineers looking to move beyond manual tinkering toward automated, collaborative agent refinement.</p>
+          
+          <p class="drawer-footer"><a href="#dossier-1">View in Dossier ↓</a></p>
+        </div>
+      </details>
+    </div>
+  </section>
+  <section id="story-2" class="spread arc-midnight">
+    <div class="numeral">02</div>
+    <div class="body">
+      <div class="kicker">// Deep Automation</div>
+      <h2>GenericAgent Delivers System-Level Control Through Compact Local Loops</h2>
+      <p class="story-meta">github.com &nbsp;·&nbsp; 3,205 stars &nbsp;·&nbsp; 0 stars today</p>
+      <p class="lede">This minimalist framework minimizes token overhead by crystallizing successful task paths into a persistent, growing skill tree. Designed for nocturnal computation, it empowers agents to manage local file systems and hardware without reaching for the cloud.</p>
+      <div class="spread-links"><a class="read-more" href="https://github.com/lsdefine/GenericAgent" target="_blank" rel="noopener">Read →</a>
+      <details class="analysis-drawer">
+        <summary class="btn-dossier">[ Analysis + ]</summary>
+        <div class="drawer-content">
+          <h4>Technical Analysis</h4>
+          <p>GenericAgent is a minimalist autonomous agent framework that empowers LLMs to achieve system-level control over a local computer through a compact 3,000-line codebase. By utilizing a core loop of only 100 lines and nine atomic tools, it enables agents to interact with web browsers, file systems, and hardware inputs without pre-loading static capabilities. Its standout feature is an &quot;evolutionary&quot; memory system that crystallizes successful task-execution paths into reusable skills, building a personalized, growing skill tree that minimizes token consumption while increasing long-term task efficiency.</p>
+<p>This project is highly beneficial for power users and developers who seek a cost-effective, high-autonomy alternative to resource-heavy, cloud-reliant agent frameworks. It is currently trending because it addresses the industry&#x27;s struggle with high costs and &quot;stateless&quot; AI by offering a solution that grows smarter and more specialized the longer it is used. By delivering local, persistent, and self-improving automation, GenericAgent appeals to those looking for a practical, low-overhead way to delegate complex, multi-step digital workflows to an intelligent assistant.</p>
+          
+          <p class="drawer-footer"><a href="#dossier-2">View in Dossier ↓</a></p>
+        </div>
+      </details>
+    </div>
+    </div>
+  </section>
+  <section id="story-3" class="spread arc-terminal arc-terminal-utility">
+    <div class="crt-lines"></div>
+    <div class="prompt-row">dev@open-source:~$ ./bin/explore story_03</div>
+    <div class="numeral">03</div>
+    <h2 class="mono">Streamline Android Reverse Engineering Inside the Claude Code Environment</h2>
+    <p class="story-meta mono">github.com &nbsp;·&nbsp; 2,512 stars &nbsp;·&nbsp; 0 stars today</p>
+    <p class="lede mono">Extracting architectural secrets from obfuscated binaries has traditionally been a manual grind. This plugin automates the extraction of endpoints and data flows, bringing clarity to complex mobile structures directly from the command line.<span class="cursor"></span></p>
+    <div class="spread-links"><a class="read-more" href="https://github.com/SimoneAvogadro/android-reverse-engineering-skill" target="_blank" rel="noopener">Read →</a>
+      <details class="analysis-drawer">
+        <summary class="btn-dossier">[ Analysis + ]</summary>
+        <div class="drawer-content">
+          <h4>Technical Analysis</h4>
+          <p>The `android-reverse-engineering-skill` is a specialized plugin designed to integrate advanced mobile security analysis directly into the Claude Code environment. It streamlines the reverse engineering workflow by automating the decompilation of APK, XAPK, JAR, and AAR files using industry-standard tools like jadx, Fernflower, and Vineflower. Technically, the plugin provides a structured pipeline that extracts critical architectural details, such as Retrofit endpoints, OkHttp call patterns, and hardcoded URLs from obfuscated binaries. By tracing data flows from UI components down to network requests, it enables users to reconstruct API documentation without access to the original source code. Additionally, the project includes automated dependency management and flexible command-line scripts, allowing for both guided conversational analysis and granular manual inspection.</p>
+<p>This project is highly valuable for security researchers, penetration testers, and developers involved in mobile application interoperability analysis. It is trending because it bridges the gap between complex binary analysis and AI-assisted workflows, allowing engineers to ask natural language questions about an application&#x27;s internal structure or authentication mechanisms. By offloading the tedious tasks of environment setup and code deobfuscation to an automated skill, it significantly accelerates the discovery process for malware analysis and educational research. The tool’s focus on documentation and API extraction makes it particularly useful for teams attempting to integrate with legacy or undocumented systems. Ultimately, it empowers users to gain deep insights into Android apps while ensuring they can easily navigate even heavily protected or R8-obfuscated codebases.</p>
+          
+          <p class="drawer-footer"><a href="#dossier-3">View in Dossier ↓</a></p>
+        </div>
+      </details>
+    </div>
+  </section>
+  <section id="story-4" class="spread arc-privacy-shield">
+    <div class="shield-glitch"></div>
+    <div class="numeral">04</div>
+    <div class="kicker">Shield // Data Sovereignty</div>
+    <h2 class="mono">Omi Provides a Transparent Open-Source Platform for Personal Intelligence</h2>
+    <p class="story-meta mono">github.com &nbsp;·&nbsp; 9,466 stars &nbsp;·&nbsp; 0 stars today</p>
+    <p class="lede mono">Monitoring your digital and physical environment requires absolute trust in the underlying infrastructure. Omi replaces proprietary data-harvesting assistants with a verifiable, open-source second brain that prioritizes your local privacy.</p>
+    <div class="spread-links"><a class="read-more" href="https://github.com/BasedHardware/omi" target="_blank" rel="noopener">Read →</a>
+      <details class="analysis-drawer">
+        <summary class="btn-dossier">[ Analysis + ]</summary>
+        <div class="drawer-content">
+          <h4>Technical Analysis</h4>
+          <p>Omi is an open-source &quot;second brain&quot; platform designed to capture, transcribe, and synthesize digital and physical experiences in real-time. By monitoring screen activity and ambient conversations through desktop, mobile, and wearable hardware, the system generates actionable summaries and provides an AI-driven chat interface that maintains a contextual history of the user&#x27;s life. Technically, the project utilizes a distributed architecture: the macOS and mobile applications stream audio and visual data to a Python-based FastAPI backend, which leverages services like Deepgram for speech-to-text, Firebase for storage, and various LLMs for intelligence. The platform is hardware-agnostic, supporting custom wearables like the Omi Glass (ESP32-S3) while providing comprehensive SDKs for developers to build modular, AI-integrated extensions.</p>
+<p>This project is primarily aimed at productivity-focused professionals, developers, and early adopters who want to augment their memory and decision-making capabilities through continuous AI monitoring. It is currently trending because it offers a transparent, fully open-source alternative to proprietary AI assistants, appealing to users who prioritize data control and customizable hardware integration. The ability to bridge the gap between digital screen work and real-world interactions fills a growing demand for unified &quot;personal intelligence&quot; tools. Furthermore, by providing an extensive development ecosystem, Omi empowers its large community of 300,000+ users to create specific AI personas and workflows tailored to their unique professional needs. Its rapid adoption reflects a broader industry shift toward ambient computing and wearable AI devices that function as seamless productivity companions.</p>
+          
+          <p class="drawer-footer"><a href="#dossier-4">View in Dossier ↓</a></p>
+        </div>
+      </details>
+    </div>
+  </section>
+  <section id="story-5" class="spread arc-library-archive">
+    <div class="parchment"></div>
+    <div class="numeral">05</div>
+    <div class="kicker">Archive // Scholarship</div>
+    <h2>Dive Into LLMs Offers A Rigorous Full-Stack AI Curriculum</h2>
+    <p class="story-meta">github.com &nbsp;·&nbsp; 31,222 stars &nbsp;·&nbsp; 0 stars today</p>
+    <p class="lede">Mastering the intricacies of model security, watermarking, and fine-tuning requires more than superficial experimentation. This comprehensive collection provides the academic foundation and practical code necessary to navigate the evolution of Large Language Models.</p>
+    <div class="spread-links"><a class="read-more" href="https://github.com/Lordog/dive-into-llms" target="_blank" rel="noopener">Read →</a>
+      <details class="analysis-drawer">
+        <summary class="btn-dossier">[ Analysis + ]</summary>
+        <div class="drawer-content">
+          <h4>Technical Analysis</h4>
+          <p>The &quot;Dive into LLMs&quot; repository is an open-source, educational project developed by the Shanghai Jiao Tong University team that provides comprehensive programming tutorials on Large Language Models (LLMs). The project covers a wide array of technical subjects, including fine-tuning, prompt engineering, knowledge editing, mathematical reasoning, and advanced topics like model security, watermarking, and GUI agents. By offering practical scripts, slides, and tutorials, it enables users to apply cutting-edge AI techniques through hands-on experimentation, now further bolstered by a collaborative series with Huawei Ascend focused on full-stack model development.</p>
+<p>This project is an essential resource for students, academic researchers, and developers who seek a low-barrier, high-quality entry point into the rapidly evolving field of LLM development and security. It is trending because it bridges the gap between theoretical knowledge and practical application, providing a community-driven repository that is both free and regularly updated with industry-relevant trends. The project&#x27;s academic credibility and recent partnership with the Huawei Ascend ecosystem make it a highly reliable and authoritative guide for those looking to master AI skills in both domestic and global frameworks.</p>
+          
+          <p class="drawer-footer"><a href="#dossier-5">View in Dossier ↓</a></p>
+        </div>
+      </details>
+    </div>
+  </section>
+  <section id="story-6" class="spread arc-experimental-workshop">
+    <div class="pad-lines"></div>
+    <div class="numeral">06</div>
+    <div class="kicker">Workshop // Prototyping</div>
+    <h2>Claude Code Game Studios Organizes AI Into Professional Hierarchical Teams</h2>
+    <p class="story-meta">github.com &nbsp;·&nbsp; 11,403 stars &nbsp;·&nbsp; 0 stars today</p>
+    <p class="lede">When solo development turns into spaghetti code, the structure of a professional studio is the antidote. This collection of agents forces project discipline, ensuring creative vision meets technical rigor across every implementation phase.</p>
+    <div class="spread-links"><a class="read-more" href="https://github.com/Donchitos/Claude-Code-Game-Studios" target="_blank" rel="noopener">Read →</a>
+      <details class="analysis-drawer">
+        <summary class="btn-dossier">[ Analysis + ]</summary>
+        <div class="drawer-content">
+          <h4>Technical Analysis</h4>
+          <p>Claude Code Game Studios transforms a standard Claude Code session into a structured, professional game development environment by implementing a hierarchical management system. It introduces 49 specialized AI agents organized into tiers—Directors, Department Leads, and Specialists—to handle tasks ranging from high-level creative vision to technical implementation in engines like Godot, Unity, and Unreal. The system functions through 72 slash commands and 12 automated hooks that enforce design integrity, coding standards, and project workflows across the entire development lifecycle. By integrating these custom agents, rules, and document templates into a single repository, the project creates a &quot;human-in-the-loop&quot; studio where AI agents provide domain-specific expertise while deferring final authority to the user. This technical orchestration ensures that projects maintain consistency, adhere to documentation standards, and follow formal escalation paths typical of real-world game studios.</p>
+<p>This project is ideal for solo developers, indie teams, and hobbyists who want to scale their productivity without sacrificing the structural rigor of a professional studio. It is currently trending because it addresses the core frustration of AI-assisted coding: the tendency for models to generate disorganized &quot;spaghetti code&quot; or lose track of long-term project requirements. By replacing a generalist AI assistant with a specialized, multi-agent team, developers can offload complex project management, QA, and documentation tasks, significantly reducing the cognitive burden of tracking game architecture. This framework provides the necessary guardrails to ensure that AI contributions actually align with a specific creative vision and technical roadmap. Ultimately, it appeals to a growing movement of developers seeking to harness large language models not just as autocomplete tools, but as robust, organized partners in the creative process.</p>
+          
+          <p class="drawer-footer"><a href="#dossier-6">View in Dossier ↓</a></p>
+        </div>
+      </details>
+    </div>
+  </section>
+  <section id="story-7" class="spread arc-ui-lab">
+    <div class="lab-gradient"></div>
+    <div class="numeral">07</div>
+    <div class="kicker">UI Lab // Audio Lab</div>
+    <h2>Voicebox Democratizes Local Voice Synthesis With High-Fidelity Controls</h2>
+    <p class="story-meta">github.com &nbsp;·&nbsp; 19,482 stars &nbsp;·&nbsp; 0 stars today</p>
+    <p class="lede">High-quality voice cloning is no longer confined to expensive subscription services. This Tauri-based studio provides an intuitive, multi-track interface for professional audio generation that runs entirely on your local hardware.</p>
+    <div class="spread-links"><a class="read-more" href="https://github.com/jamiepine/voicebox" target="_blank" rel="noopener">Read →</a>
+      <details class="analysis-drawer">
+        <summary class="btn-dossier">[ Analysis + ]</summary>
+        <div class="drawer-content">
+          <h4>Technical Analysis</h4>
+          <p>Voicebox is an open-source, local-first voice synthesis studio that serves as a private, high-performance alternative to cloud-based services like ElevenLabs. Built using a robust tech stack—featuring a Tauri (Rust) desktop interface, a Python/FastAPI backend, and multi-engine support including Qwen3-TTS and HumeAI’s TADA—the application enables users to clone voices, generate speech in 23 languages, and apply professional audio effects. The software excels in workflow management by offering a multi-track timeline editor, an asynchronous generation queue, and comprehensive REST API access for seamless integration into external development projects.</p>
+<p>This project is highly beneficial for developers, content creators, and accessibility advocates who require enterprise-grade voice synthesis without sacrificing data privacy or incurring recurring subscription costs. It is currently trending because it democratizes access to sophisticated AI audio tools, allowing users to run complex models locally on various hardware, including Apple Silicon, NVIDIA GPUs, and AMD/Intel systems. By combining a user-friendly interface with advanced features like paralinguistic emotion tagging and unlimited-length audio chunking, Voicebox provides a flexible, powerful solution for professional-quality media production.</p>
+          
+          <p class="drawer-footer"><a href="#dossier-7">View in Dossier ↓</a></p>
+        </div>
+      </details>
+    </div>
+  </section>
+  <section id="story-8" class="spread arc-data-pipeline">
+    <div class="pipeline-streams"></div>
+    <div class="numeral">08</div>
+    <div class="kicker">Pipeline // Workflow Integration</div>
+    <h2>Craft Agents Bridges Document Management and AI-Driven Task Execution</h2>
+    <p class="story-meta">github.com &nbsp;·&nbsp; 4,178 stars &nbsp;·&nbsp; 0 stars today</p>
+    <p class="lede">Managing multiple AI sessions often creates friction in daily knowledge work. Craft Agents harmonizes API calls, local file interactions, and background tasks into a fluid, prompt-controllable interface that removes the overhead of complex configuration.</p>
+    <div class="spread-links"><a class="read-more" href="https://github.com/lukilabs/craft-agents-oss" target="_blank" rel="noopener">Read →</a>
+      <details class="analysis-drawer">
+        <summary class="btn-dossier">[ Analysis + ]</summary>
+        <div class="drawer-content">
+          <h4>Technical Analysis</h4>
+          <p>Craft Agents is a document-centric, open-source desktop application designed to provide a highly intuitive and &quot;agent-native&quot; workflow for interacting with large language models. Built using the Claude Agent SDK and Pi SDK, the platform facilitates complex multitasking by allowing users to connect seamlessly to APIs, local filesystems, and MCP servers through natural language prompts rather than complex configuration files. The application supports a wide array of LLM providers and offers robust features such as a multi-session inbox, customizable permission modes, and a remote headless server mode for executing compute-heavy tasks. Technically, it functions as a fluid UI that manages sessions and tools locally or via remote connection, emphasizing a non-CLI experience where agents can dynamically configure their own skills and data sources. The architecture is built on the philosophy that software should be &quot;prompt-controllable,&quot; enabling users to customize the tool itself entirely through agent-led interactions.</p>
+<p>This project is particularly beneficial for developers, power users, and knowledge workers who seek a more structured and sophisticated way to manage AI-driven workflows without the friction of terminal-based interfaces. It appeals to those who require a unified environment to juggle multiple AI agents, deep API integrations, and ongoing background tasks while maintaining a clean, document-oriented interface. The repository is trending because it addresses the growing demand for &quot;agent-native&quot; software that lowers the barrier to entry for complex automation while maintaining high flexibility and security through configurable permission levels. By offering a &quot;just works&quot; experience for connecting tools like Slack, GitHub, and local databases, Craft Agents democratizes access to sophisticated AI automation. Its commitment to an open-source, highly hackable architecture ensures that users are not locked into proprietary ecosystems, making it a compelling alternative to standard CLI coding assistants.</p>
+          
+          <p class="drawer-footer"><a href="#dossier-8">View in Dossier ↓</a></p>
+        </div>
+      </details>
+    </div>
+  </section>
+  <section id="story-9" class="spread arc-enterprise-engine">
+    <div class="engine-blue"></div>
+    <div class="numeral">09</div>
+    <div class="kicker">Enterprise // Reliability Engineering</div>
+    <h2>OpenSRE Automates Production Incident Response Through AI Agent Training</h2>
+    <p class="story-meta">github.com &nbsp;·&nbsp; 1,110 stars &nbsp;·&nbsp; 0 stars today</p>
+    <p class="lede">Infrastructure failures demand immediate, evidence-backed remediation. By benchmarking root-cause analysis against synthetic incidents, this framework brings standardized engineering rigor to cloud platform management and outage response.</p>
+    <div class="spread-links"><a class="read-more" href="https://github.com/Tracer-Cloud/opensre" target="_blank" rel="noopener">Read →</a>
+      <details class="analysis-drawer">
+        <summary class="btn-dossier">[ Analysis + ]</summary>
+        <div class="drawer-content">
+          <h4>Technical Analysis</h4>
+          <p>OpenSRE is an open-source framework designed to automate production incident response by leveraging AI SRE agents. The platform functions by aggregating fragmented data from logs, metrics, traces, and runbooks to perform automated root-cause analysis and suggest remediation strategies. Technically, it functions as a comprehensive reinforcement learning environment that utilizes synthetic incident simulations and end-to-end testing across major cloud providers like AWS and Kubernetes. Users maintain control over their infrastructure by bringing their own LLM providers, including Anthropic, OpenAI, or local models via Ollama. By integrating with over 40 observability and communication tools, the framework provides evidence-backed insights directly into platforms like Slack or PagerDuty.</p>
+<p>This project is primarily intended for DevOps engineers, SRE teams, and platform architects looking to reduce manual toil during high-pressure production outages. It is trending because it addresses the significant gap in automated, scalable training data for AI-driven incident management, functioning much like an &quot;SWE-bench&quot; for infrastructure reliability. Organizations benefit from its ability to standardize diagnostic procedures, minimize context switching, and implement repeatable, automated troubleshooting workflows. Furthermore, its focus on security—keeping sensitive log data local and ensuring auditable LLM prompts—makes it an attractive option for teams with strict compliance requirements. By providing an open ecosystem for benchmarking infrastructure failures, OpenSRE is quickly becoming a foundational toolkit for teams aiming to modernize their incident response capabilities.</p>
+          
+          <p class="drawer-footer"><a href="#dossier-9">View in Dossier ↓</a></p>
+        </div>
+      </details>
+    </div>
+  </section>
+  <section id="story-10" class="spread arc-stat-hero">
+    <div class="numeral">157K</div>
+    <div class="kicker">N<sup>o</sup> 10 · Milestone</div>
+    <h2>Superpowers Standardizes Agentic Coding Through Rigorous Engineering Protocols</h2>
+    <p class="story-meta">github.com &nbsp;·&nbsp; 157,050 stars &nbsp;·&nbsp; 0 stars today</p>
+    <p class="lede">Standardizing the software development lifecycle is essential for building scalable applications with AI assistance. By enforcing TDD and iterative code reviews, Superpowers ensures that agents operate with the discipline of senior engineers.</p>
+    <div class="spread-links"><a class="read-more" href="https://github.com/obra/superpowers" target="_blank" rel="noopener">Read →</a>
+      <details class="analysis-drawer">
+        <summary class="btn-dossier">[ Analysis + ]</summary>
+        <div class="drawer-content">
+          <h4>Technical Analysis</h4>
+          <p>Superpowers is an agentic framework designed to standardize the software development lifecycle by integrating a library of composable, automated &quot;skills&quot; directly into coding agents like Claude Code and Cursor. Instead of jumping straight to code, the system enforces a structured workflow that begins with Socratic brainstorming, proceeds to detailed implementation planning, and culminates in a rigorous subagent-driven development cycle. Technically, it functions as a plugin that triggers mandatory engineering protocols—such as strict test-driven development (TDD), git worktree management, and iterative code reviews—ensuring that agents maintain high-quality standards and consistent progress without requiring manual intervention.</p>
+<p>This project is highly beneficial for developers and software teams looking to minimize the &quot;hallucination&quot; and ad-hoc coding patterns often associated with AI-assisted programming. It is trending because it addresses a critical gap in the current AI developer tool ecosystem: the transition from simple code generation to reliable, autonomous project execution that mirrors professional engineering discipline. By embedding best practices like YAGNI and DRY into the agent&#x27;s core decision-making loop, Superpowers provides a repeatable, scalable methodology for building robust software applications.</p>
+          
+          <p class="drawer-footer"><a href="#dossier-10">View in Dossier ↓</a></p>
+        </div>
+      </details>
+    </div>
+  </section>
+  <section id="dossier" class="dossier">
+    <div class="dossier-head">
+      <div class="tagline">Appendix</div>
+      <h2>The Dossier</h2>
+      <p class="intro">Full analysis and reactions for today's ten stories. <a href="#top">↑ Back to the edition</a></p>
+    </div>
+    <article id="dossier-1" class="dossier-entry">
+      <div class="dossier-meta">N<sup>o</sup> 01 &nbsp;·&nbsp; Agent Foundry &nbsp;·&nbsp; Control Plane</div>
+      <h3>Untitled</h3>
+      <p class="dossier-source">
+        <a href="https://github.com/EvoMap/evolver" target="_blank" rel="noopener">github.com</a>
+        &nbsp;·&nbsp; 3,525 stars &nbsp;·&nbsp; 0 stars today
+        
+      </p>
+      <h4>Analysis</h4>
+      <p>Evolver is a Genome Evolution Protocol (GEP) engine designed to govern the self-evolution of AI agents by transforming ad hoc prompt adjustments into auditable, reusable assets known as &quot;genes&quot; and &quot;capsules.&quot; Technically, the engine operates by scanning local memory logs and error patterns to identify areas for improvement, subsequently generating strict, protocol-bound prompts that guide agent refinement. It offers flexible operation modes, ranging from manual review to autonomous background loops, and utilizes Git to maintain a rigorous audit trail of all evolution events. By separating logic from execution, Evolver avoids direct source code modification, instead emitting standardized directives that host runtimes—such as OpenClaw—interpret to trigger agent updates. Furthermore, the system is highly configurable, allowing users to toggle between strategies like &quot;innovate&quot; or &quot;harden&quot; based on the specific stability requirements of their agent environment.</p>
+<p>This project is primarily intended for teams and developers managing complex AI agents at scale who require deterministic, traceable, and reproducible prompt evolution. It significantly benefits those who struggle with &quot;flaky&quot; agent loops or who need to codify recurring fixes into a shareable knowledge base. Evolver is currently gaining traction because it bridges the gap between chaotic, experimental prompt engineering and the need for enterprise-grade governance and reliability. As AI development shifts toward more autonomous and self-optimizing architectures, the ability to turn isolated prompt tweaks into a structured, audit-ready evolution pipeline becomes an essential requirement for production environments. By providing a standardized protocol for intelligence growth, Evolver offers a sophisticated solution for engineers looking to move beyond manual tinkering toward automated, collaborative agent refinement.</p>
+      
+    </article>
+    <article id="dossier-2" class="dossier-entry">
+      <div class="dossier-meta">N<sup>o</sup> 02 &nbsp;·&nbsp; Night Shift &nbsp;·&nbsp; Deep Automation</div>
+      <h3>Untitled</h3>
+      <p class="dossier-source">
+        <a href="https://github.com/lsdefine/GenericAgent" target="_blank" rel="noopener">github.com</a>
+        &nbsp;·&nbsp; 3,205 stars &nbsp;·&nbsp; 0 stars today
+        
+      </p>
+      <h4>Analysis</h4>
+      <p>GenericAgent is a minimalist autonomous agent framework that empowers LLMs to achieve system-level control over a local computer through a compact 3,000-line codebase. By utilizing a core loop of only 100 lines and nine atomic tools, it enables agents to interact with web browsers, file systems, and hardware inputs without pre-loading static capabilities. Its standout feature is an &quot;evolutionary&quot; memory system that crystallizes successful task-execution paths into reusable skills, building a personalized, growing skill tree that minimizes token consumption while increasing long-term task efficiency.</p>
+<p>This project is highly beneficial for power users and developers who seek a cost-effective, high-autonomy alternative to resource-heavy, cloud-reliant agent frameworks. It is currently trending because it addresses the industry&#x27;s struggle with high costs and &quot;stateless&quot; AI by offering a solution that grows smarter and more specialized the longer it is used. By delivering local, persistent, and self-improving automation, GenericAgent appeals to those looking for a practical, low-overhead way to delegate complex, multi-step digital workflows to an intelligent assistant.</p>
+      
+    </article>
+    <article id="dossier-3" class="dossier-entry">
+      <div class="dossier-meta">N<sup>o</sup> 03 &nbsp;·&nbsp; Terminal Utility &nbsp;·&nbsp; Security Scan</div>
+      <h3>Untitled</h3>
+      <p class="dossier-source">
+        <a href="https://github.com/SimoneAvogadro/android-reverse-engineering-skill" target="_blank" rel="noopener">github.com</a>
+        &nbsp;·&nbsp; 2,512 stars &nbsp;·&nbsp; 0 stars today
+        
+      </p>
+      <h4>Analysis</h4>
+      <p>The `android-reverse-engineering-skill` is a specialized plugin designed to integrate advanced mobile security analysis directly into the Claude Code environment. It streamlines the reverse engineering workflow by automating the decompilation of APK, XAPK, JAR, and AAR files using industry-standard tools like jadx, Fernflower, and Vineflower. Technically, the plugin provides a structured pipeline that extracts critical architectural details, such as Retrofit endpoints, OkHttp call patterns, and hardcoded URLs from obfuscated binaries. By tracing data flows from UI components down to network requests, it enables users to reconstruct API documentation without access to the original source code. Additionally, the project includes automated dependency management and flexible command-line scripts, allowing for both guided conversational analysis and granular manual inspection.</p>
+<p>This project is highly valuable for security researchers, penetration testers, and developers involved in mobile application interoperability analysis. It is trending because it bridges the gap between complex binary analysis and AI-assisted workflows, allowing engineers to ask natural language questions about an application&#x27;s internal structure or authentication mechanisms. By offloading the tedious tasks of environment setup and code deobfuscation to an automated skill, it significantly accelerates the discovery process for malware analysis and educational research. The tool’s focus on documentation and API extraction makes it particularly useful for teams attempting to integrate with legacy or undocumented systems. Ultimately, it empowers users to gain deep insights into Android apps while ensuring they can easily navigate even heavily protected or R8-obfuscated codebases.</p>
+      
+    </article>
+    <article id="dossier-4" class="dossier-entry">
+      <div class="dossier-meta">N<sup>o</sup> 04 &nbsp;·&nbsp; Privacy Shield &nbsp;·&nbsp; Data Sovereignty</div>
+      <h3>Untitled</h3>
+      <p class="dossier-source">
+        <a href="https://github.com/BasedHardware/omi" target="_blank" rel="noopener">github.com</a>
+        &nbsp;·&nbsp; 9,466 stars &nbsp;·&nbsp; 0 stars today
+        
+      </p>
+      <h4>Analysis</h4>
+      <p>Omi is an open-source &quot;second brain&quot; platform designed to capture, transcribe, and synthesize digital and physical experiences in real-time. By monitoring screen activity and ambient conversations through desktop, mobile, and wearable hardware, the system generates actionable summaries and provides an AI-driven chat interface that maintains a contextual history of the user&#x27;s life. Technically, the project utilizes a distributed architecture: the macOS and mobile applications stream audio and visual data to a Python-based FastAPI backend, which leverages services like Deepgram for speech-to-text, Firebase for storage, and various LLMs for intelligence. The platform is hardware-agnostic, supporting custom wearables like the Omi Glass (ESP32-S3) while providing comprehensive SDKs for developers to build modular, AI-integrated extensions.</p>
+<p>This project is primarily aimed at productivity-focused professionals, developers, and early adopters who want to augment their memory and decision-making capabilities through continuous AI monitoring. It is currently trending because it offers a transparent, fully open-source alternative to proprietary AI assistants, appealing to users who prioritize data control and customizable hardware integration. The ability to bridge the gap between digital screen work and real-world interactions fills a growing demand for unified &quot;personal intelligence&quot; tools. Furthermore, by providing an extensive development ecosystem, Omi empowers its large community of 300,000+ users to create specific AI personas and workflows tailored to their unique professional needs. Its rapid adoption reflects a broader industry shift toward ambient computing and wearable AI devices that function as seamless productivity companions.</p>
+      
+    </article>
+    <article id="dossier-5" class="dossier-entry">
+      <div class="dossier-meta">N<sup>o</sup> 05 &nbsp;·&nbsp; The Library &nbsp;·&nbsp; Scholarship</div>
+      <h3>Untitled</h3>
+      <p class="dossier-source">
+        <a href="https://github.com/Lordog/dive-into-llms" target="_blank" rel="noopener">github.com</a>
+        &nbsp;·&nbsp; 31,222 stars &nbsp;·&nbsp; 0 stars today
+        
+      </p>
+      <h4>Analysis</h4>
+      <p>The &quot;Dive into LLMs&quot; repository is an open-source, educational project developed by the Shanghai Jiao Tong University team that provides comprehensive programming tutorials on Large Language Models (LLMs). The project covers a wide array of technical subjects, including fine-tuning, prompt engineering, knowledge editing, mathematical reasoning, and advanced topics like model security, watermarking, and GUI agents. By offering practical scripts, slides, and tutorials, it enables users to apply cutting-edge AI techniques through hands-on experimentation, now further bolstered by a collaborative series with Huawei Ascend focused on full-stack model development.</p>
+<p>This project is an essential resource for students, academic researchers, and developers who seek a low-barrier, high-quality entry point into the rapidly evolving field of LLM development and security. It is trending because it bridges the gap between theoretical knowledge and practical application, providing a community-driven repository that is both free and regularly updated with industry-relevant trends. The project&#x27;s academic credibility and recent partnership with the Huawei Ascend ecosystem make it a highly reliable and authoritative guide for those looking to master AI skills in both domestic and global frameworks.</p>
+      
+    </article>
+    <article id="dossier-6" class="dossier-entry">
+      <div class="dossier-meta">N<sup>o</sup> 06 &nbsp;·&nbsp; The Workshop &nbsp;·&nbsp; Prototyping</div>
+      <h3>Untitled</h3>
+      <p class="dossier-source">
+        <a href="https://github.com/Donchitos/Claude-Code-Game-Studios" target="_blank" rel="noopener">github.com</a>
+        &nbsp;·&nbsp; 11,403 stars &nbsp;·&nbsp; 0 stars today
+        
+      </p>
+      <h4>Analysis</h4>
+      <p>Claude Code Game Studios transforms a standard Claude Code session into a structured, professional game development environment by implementing a hierarchical management system. It introduces 49 specialized AI agents organized into tiers—Directors, Department Leads, and Specialists—to handle tasks ranging from high-level creative vision to technical implementation in engines like Godot, Unity, and Unreal. The system functions through 72 slash commands and 12 automated hooks that enforce design integrity, coding standards, and project workflows across the entire development lifecycle. By integrating these custom agents, rules, and document templates into a single repository, the project creates a &quot;human-in-the-loop&quot; studio where AI agents provide domain-specific expertise while deferring final authority to the user. This technical orchestration ensures that projects maintain consistency, adhere to documentation standards, and follow formal escalation paths typical of real-world game studios.</p>
+<p>This project is ideal for solo developers, indie teams, and hobbyists who want to scale their productivity without sacrificing the structural rigor of a professional studio. It is currently trending because it addresses the core frustration of AI-assisted coding: the tendency for models to generate disorganized &quot;spaghetti code&quot; or lose track of long-term project requirements. By replacing a generalist AI assistant with a specialized, multi-agent team, developers can offload complex project management, QA, and documentation tasks, significantly reducing the cognitive burden of tracking game architecture. This framework provides the necessary guardrails to ensure that AI contributions actually align with a specific creative vision and technical roadmap. Ultimately, it appeals to a growing movement of developers seeking to harness large language models not just as autocomplete tools, but as robust, organized partners in the creative process.</p>
+      
+    </article>
+    <article id="dossier-7" class="dossier-entry">
+      <div class="dossier-meta">N<sup>o</sup> 07 &nbsp;·&nbsp; UI Lab &nbsp;·&nbsp; Audio Lab</div>
+      <h3>Untitled</h3>
+      <p class="dossier-source">
+        <a href="https://github.com/jamiepine/voicebox" target="_blank" rel="noopener">github.com</a>
+        &nbsp;·&nbsp; 19,482 stars &nbsp;·&nbsp; 0 stars today
+        
+      </p>
+      <h4>Analysis</h4>
+      <p>Voicebox is an open-source, local-first voice synthesis studio that serves as a private, high-performance alternative to cloud-based services like ElevenLabs. Built using a robust tech stack—featuring a Tauri (Rust) desktop interface, a Python/FastAPI backend, and multi-engine support including Qwen3-TTS and HumeAI’s TADA—the application enables users to clone voices, generate speech in 23 languages, and apply professional audio effects. The software excels in workflow management by offering a multi-track timeline editor, an asynchronous generation queue, and comprehensive REST API access for seamless integration into external development projects.</p>
+<p>This project is highly beneficial for developers, content creators, and accessibility advocates who require enterprise-grade voice synthesis without sacrificing data privacy or incurring recurring subscription costs. It is currently trending because it democratizes access to sophisticated AI audio tools, allowing users to run complex models locally on various hardware, including Apple Silicon, NVIDIA GPUs, and AMD/Intel systems. By combining a user-friendly interface with advanced features like paralinguistic emotion tagging and unlimited-length audio chunking, Voicebox provides a flexible, powerful solution for professional-quality media production.</p>
+      
+    </article>
+    <article id="dossier-8" class="dossier-entry">
+      <div class="dossier-meta">N<sup>o</sup> 08 &nbsp;·&nbsp; Data Pipeline &nbsp;·&nbsp; Workflow Integration</div>
+      <h3>Untitled</h3>
+      <p class="dossier-source">
+        <a href="https://github.com/lukilabs/craft-agents-oss" target="_blank" rel="noopener">github.com</a>
+        &nbsp;·&nbsp; 4,178 stars &nbsp;·&nbsp; 0 stars today
+        
+      </p>
+      <h4>Analysis</h4>
+      <p>Craft Agents is a document-centric, open-source desktop application designed to provide a highly intuitive and &quot;agent-native&quot; workflow for interacting with large language models. Built using the Claude Agent SDK and Pi SDK, the platform facilitates complex multitasking by allowing users to connect seamlessly to APIs, local filesystems, and MCP servers through natural language prompts rather than complex configuration files. The application supports a wide array of LLM providers and offers robust features such as a multi-session inbox, customizable permission modes, and a remote headless server mode for executing compute-heavy tasks. Technically, it functions as a fluid UI that manages sessions and tools locally or via remote connection, emphasizing a non-CLI experience where agents can dynamically configure their own skills and data sources. The architecture is built on the philosophy that software should be &quot;prompt-controllable,&quot; enabling users to customize the tool itself entirely through agent-led interactions.</p>
+<p>This project is particularly beneficial for developers, power users, and knowledge workers who seek a more structured and sophisticated way to manage AI-driven workflows without the friction of terminal-based interfaces. It appeals to those who require a unified environment to juggle multiple AI agents, deep API integrations, and ongoing background tasks while maintaining a clean, document-oriented interface. The repository is trending because it addresses the growing demand for &quot;agent-native&quot; software that lowers the barrier to entry for complex automation while maintaining high flexibility and security through configurable permission levels. By offering a &quot;just works&quot; experience for connecting tools like Slack, GitHub, and local databases, Craft Agents democratizes access to sophisticated AI automation. Its commitment to an open-source, highly hackable architecture ensures that users are not locked into proprietary ecosystems, making it a compelling alternative to standard CLI coding assistants.</p>
+      
+    </article>
+    <article id="dossier-9" class="dossier-entry">
+      <div class="dossier-meta">N<sup>o</sup> 09 &nbsp;·&nbsp; Enterprise Engine &nbsp;·&nbsp; Reliability Engineering</div>
+      <h3>Untitled</h3>
+      <p class="dossier-source">
+        <a href="https://github.com/Tracer-Cloud/opensre" target="_blank" rel="noopener">github.com</a>
+        &nbsp;·&nbsp; 1,110 stars &nbsp;·&nbsp; 0 stars today
+        
+      </p>
+      <h4>Analysis</h4>
+      <p>OpenSRE is an open-source framework designed to automate production incident response by leveraging AI SRE agents. The platform functions by aggregating fragmented data from logs, metrics, traces, and runbooks to perform automated root-cause analysis and suggest remediation strategies. Technically, it functions as a comprehensive reinforcement learning environment that utilizes synthetic incident simulations and end-to-end testing across major cloud providers like AWS and Kubernetes. Users maintain control over their infrastructure by bringing their own LLM providers, including Anthropic, OpenAI, or local models via Ollama. By integrating with over 40 observability and communication tools, the framework provides evidence-backed insights directly into platforms like Slack or PagerDuty.</p>
+<p>This project is primarily intended for DevOps engineers, SRE teams, and platform architects looking to reduce manual toil during high-pressure production outages. It is trending because it addresses the significant gap in automated, scalable training data for AI-driven incident management, functioning much like an &quot;SWE-bench&quot; for infrastructure reliability. Organizations benefit from its ability to standardize diagnostic procedures, minimize context switching, and implement repeatable, automated troubleshooting workflows. Furthermore, its focus on security—keeping sensitive log data local and ensuring auditable LLM prompts—makes it an attractive option for teams with strict compliance requirements. By providing an open ecosystem for benchmarking infrastructure failures, OpenSRE is quickly becoming a foundational toolkit for teams aiming to modernize their incident response capabilities.</p>
+      
+    </article>
+    <article id="dossier-10" class="dossier-entry">
+      <div class="dossier-meta">N<sup>o</sup> 10 &nbsp;·&nbsp; Growth Stat &nbsp;·&nbsp; Milestone</div>
+      <h3>Untitled</h3>
+      <p class="dossier-source">
+        <a href="https://github.com/obra/superpowers" target="_blank" rel="noopener">github.com</a>
+        &nbsp;·&nbsp; 157,050 stars &nbsp;·&nbsp; 0 stars today
+        
+      </p>
+      <h4>Analysis</h4>
+      <p>Superpowers is an agentic framework designed to standardize the software development lifecycle by integrating a library of composable, automated &quot;skills&quot; directly into coding agents like Claude Code and Cursor. Instead of jumping straight to code, the system enforces a structured workflow that begins with Socratic brainstorming, proceeds to detailed implementation planning, and culminates in a rigorous subagent-driven development cycle. Technically, it functions as a plugin that triggers mandatory engineering protocols—such as strict test-driven development (TDD), git worktree management, and iterative code reviews—ensuring that agents maintain high-quality standards and consistent progress without requiring manual intervention.</p>
+<p>This project is highly beneficial for developers and software teams looking to minimize the &quot;hallucination&quot; and ad-hoc coding patterns often associated with AI-assisted programming. It is trending because it addresses a critical gap in the current AI developer tool ecosystem: the transition from simple code generation to reliable, autonomous project execution that mirrors professional engineering discipline. By embedding best practices like YAGNI and DRY into the agent&#x27;s core decision-making loop, Superpowers provides a repeatable, scalable methodology for building robust software applications.</p>
+      
+    </article>
+  </section>
+  <footer class="colophon">
+    <p class="sig">— that's the edition.</p>
+    <p class="meta">Set in Fraunces &amp; Inter · Compiled April 17, 2026</p>
+    <p class="classic-link"><a href="classic.html">Prefer the classic card view? →</a></p>
+  </footer>
+<script>
+(() => {
+  const key = "gtd:read_days:gh:v1";
+  const day = "2026-04-17";
+  let stored = [];
+  try {
+    stored = JSON.parse(localStorage.getItem(key) || "[]");
+    if (!Array.isArray(stored)) stored = [];
+  } catch (e) {}
+  if (!stored.includes(day)) {
+    stored.push(day);
+    stored.sort();
+    localStorage.setItem(key, JSON.stringify(stored));
+  }
+})();
+</script>
+<script>
+// Simple script to toggle the [+] and [-] labels on the drawers
+document.querySelectorAll('.analysis-drawer').forEach(drawer => {
+  drawer.addEventListener('toggle', () => {
+    const summary = drawer.querySelector('summary');
+    if (drawer.open) {
+      summary.textContent = '[ Analysis − ]';
+    } else {
+      summary.textContent = '[ Analysis + ]';
+    }
+  });
+});
+</script>
+</body>
+</html>
