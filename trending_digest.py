@@ -30,6 +30,8 @@ from markitdown import MarkItDown
 from psycopg.rows import dict_row
 from youtube_transcript_api import YouTubeTranscriptApi
 
+from morning_edition import generate_morning_edition, first_paragraph, limit_bullets
+
 logging.basicConfig(level=logging.INFO, format="%(levelname)s %(message)s")
 
 GITHUB_TRENDING_BASE_URL = "https://github.com/trending?since={period}"
@@ -50,8 +52,8 @@ GITHUB_PAGES_URL = "https://www.kevinriste.com/github-trending-digest/"
 
 SUMMARY_MODEL = "gemini-3.1-flash-lite-preview"
 GH_SUMMARY_PROMPT_VERSION = "gh_v2"
-HN_SUMMARY_PROMPT_VERSION = "hn_v3"
-HN_COMMENT_ANALYSIS_PROMPT_VERSION = "hn_comments_v1"
+HN_SUMMARY_PROMPT_VERSION = "hn_v4"
+HN_COMMENT_ANALYSIS_PROMPT_VERSION = "hn_comments_v2"
 SUMMARY_REFRESH_DAYS = 60
 RUN_LOCK_KEY = 348_112_907
 READ_DAYS_KEY_GH = "gtd:read_days:gh:v1"
@@ -999,7 +1001,7 @@ def generate_hn_summary(item: dict, file_path: str = "") -> str:
     score = item.get("score", 0)
     comments = item.get("comment_count", 0)
 
-    prompt = f"""Summarize this Hacker News story in exactly two paragraphs.
+    prompt = f"""Summarize this Hacker News story in exactly one concise paragraph.
 
 Title: {title}
 Source URL: {url or 'N/A'}
@@ -1011,11 +1013,9 @@ Story self-text (if available):
 Article content (fetched from source URL):
 {article_content or 'Could not fetch article content.'}
 
-Write exactly two paragraphs:
-1. First paragraph: Explain what the story is about and the key technical/business context.
-2. Second paragraph: Explain why Hacker News readers might find it interesting or important.
+Write exactly one paragraph explaining what the story is about, the key technical/business context, and why it is important.
 {"NOTE: Article content could not be fetched. Start your summary with 'Could not fetch article content.' then do your best based on the title and URL alone." if not has_any_content else ""}
-Keep each paragraph concise (3-4 sentences) and avoid hype."""
+Keep the paragraph concise (4-5 sentences) and avoid hype."""
 
     try:
         client = get_gemini_client()
@@ -1411,7 +1411,7 @@ def cache_hn_comment_analysis(
 
 
 def generate_hn_comment_analysis(item: dict, sampled_comments: list[dict], total_comments: int) -> str:
-    """Generate four bullet points from sampled Hacker News comments."""
+    """Generate three bullet points from sampled Hacker News comments."""
     comment_block = "\n\n".join(
         (
             f"[{idx}] depth={comment['depth']} top_thread={comment['root_pos']} "
@@ -1420,7 +1420,7 @@ def generate_hn_comment_analysis(item: dict, sampled_comments: list[dict], total
         for idx, comment in enumerate(sampled_comments, start=1)
     )
 
-    prompt = f"""Analyze this Hacker News discussion sample and provide exactly 4 concise bullet points.
+    prompt = f"""Analyze this Hacker News discussion sample and provide exactly 3 concise bullet points.
 
 Story title: {item.get("title", "")}
 Story URL: {item.get("url") or item.get("discussion_url") or "N/A"}
@@ -1430,11 +1430,10 @@ Sample size: {len(sampled_comments)}
 Comment sample:
 {comment_block}
 
-Return exactly 4 bullet points:
+Return exactly 3 bullet points:
 - Bullet 1: Core consensus or dominant viewpoint.
 - Bullet 2: Strongest disagreement or competing view.
 - Bullet 3: Practical technical takeaway.
-- Bullet 4: Caveat about sample bias/coverage.
 
 Rules:
 - One sentence per bullet.
@@ -2684,7 +2683,7 @@ def save_files(
 ) -> None:
     """Write all generated pages and metadata files."""
     gh_daily_file = DOCS_DIR / run_day.isoformat() / "index.html"
-    hn_daily_file = HN_DOCS_DIR / run_day.isoformat() / "index.html"
+    hn_daily_file = HN_DOCS_DIR / run_day.isoformat() / "classic.html"
 
     write_text(gh_daily_file, gh_daily_html)
     write_text(INDEX_FILE, gh_index_html)
@@ -2725,8 +2724,12 @@ def regenerate_hn_daily_pages(conn: psycopg.Connection, hn_dates: list[date], gh
     for render_day in sorted(hn_dates):
         hn_rows = build_hn_view_rows(conn, render_day, allow_summary_generation=False)
         hn_daily_html = generate_hn_daily_page(hn_rows, render_day, gh_dates_set)
-        hn_daily_file = HN_DOCS_DIR / render_day.isoformat() / "index.html"
+        hn_daily_file = HN_DOCS_DIR / render_day.isoformat() / "classic.html"
         write_text(hn_daily_file, hn_daily_html)
+        try:
+            generate_morning_edition(render_day, hn_rows, force_regenerate=False)
+        except Exception as exc:
+            logging.exception("Morning Edition render failed for %s: %s", render_day, exc)
 
     logging.info("Regenerated %d Hacker News daily pages", len(hn_dates))
 
@@ -3307,6 +3310,11 @@ def main() -> None:
         css = generate_css()
 
         save_files(run_day, gh_daily_html, gh_index_html, hn_daily_html, hn_index_html, css, gh_dates, hn_dates)
+
+        try:
+            generate_morning_edition(run_day, hn_rows, force_regenerate=True)
+        except Exception as exc:
+            logging.exception("Morning Edition generation failed for %s: %s", run_day, exc)
 
         changed = git_commit_and_push()
 

@@ -1,535 +1,785 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Hacker News Digest - March 06, 2026</title>
-    <link rel="stylesheet" href="../../style.css">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Morning Edition — Friday, March 6, 2026</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght,SOFT@0,9..144,300..900,0..100;1,9..144,300..900,0..100&family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+
+  :root { --ink: #121212; --paper: #f5f1e8; }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  body {
+    font-family: 'Inter', system-ui, sans-serif;
+    font-size: 20px;
+    line-height: 1.5;
+    color: var(--ink);
+    background: var(--paper);
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+  a { color: inherit; }
+  a:hover { opacity: 0.7; }
+  .frnc { font-family: 'Fraunces', Georgia, serif; }
+  .mono { font-family: 'JetBrains Mono', ui-monospace, monospace; }
+
+  /* ───── MASTHEAD ───── */
+  .masthead { padding: 2rem 6vw 2.5rem; border-bottom: 3px double #121212; background: #f5f1e8; text-align: center; }
+  .masthead-nav {
+    display: flex;
+    justify-content: center;
+    gap: 1.2rem;
+    align-items: baseline;
+    margin-bottom: 2rem;
+    font-weight: 600;
+    font-size: 1rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+  }
+  .masthead-nav a { text-decoration: none; border-bottom: 2px solid transparent; padding-bottom: 2px; }
+  .masthead-nav a:hover { border-bottom-color: #121212; opacity: 1; }
+  .masthead-nav span { opacity: 0.4; }
+  .masthead .tagline { font-weight: 600; font-size: 1.2rem; letter-spacing: 0.4em; text-transform: uppercase; margin-bottom: 1.2rem; }
+  .masthead h1 {
+    font-family: 'Fraunces', Georgia, serif;
+    font-weight: 900;
+    font-style: italic;
+    font-size: clamp(4rem, 13vw, 12rem);
+    line-height: 0.88;
+    letter-spacing: -0.035em;
+    margin: 0 0 1rem;
+    font-variation-settings: "SOFT" 50;
+  }
+  .masthead .issue-line {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    max-width: 1000px;
+    margin: 2rem auto 0;
+    padding-top: 1.25rem;
+    border-top: 1px solid #121212;
+    font-weight: 500;
+    font-size: 1.1rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+  }
+
+  /* ───── SPREAD BASE ───── */
+  .spread {
+    min-height: 100vh;
+    padding: 6vh 6vw;
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+  .spread .story-meta { font-weight: 600; font-size: 1rem; letter-spacing: 0.28em; text-transform: uppercase; }
+  .spread-links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 2rem 2.5rem;
+    align-items: baseline;
+    margin-top: 2.5rem;
+  }
+  .spread .read-more {
+    display: inline-block;
+    font-size: 1.1rem;
+    font-weight: 700;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    text-decoration: none;
+    padding-bottom: 0.4rem;
+    border-bottom: 3px solid currentColor;
+  }
+  .spread .dossier-link {
+    font-size: 1rem;
+    font-weight: 500;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    text-decoration: none;
+    opacity: 0.7;
+    padding-bottom: 0.3rem;
+    border-bottom: 1px solid currentColor;
+  }
+  .spread .dossier-link:hover { opacity: 1; }
+
+  /* ───── STAT HERO ───── */
+  .arc-stat-hero { background: #eee6d3; color: #0d1a2e; padding: 8vh 6vw; }
+  .arc-stat-hero .numeral {
+    font-family: 'Fraunces', serif;
+    font-weight: 900;
+    font-style: italic;
+    font-size: clamp(12rem, 36vw, 34rem);
+    line-height: 0.8;
+    letter-spacing: -0.06em;
+    color: #0d1a2e;
+    position: absolute;
+    right: -2vw;
+    top: 8vh;
+    opacity: 0.94;
+    pointer-events: none;
+    white-space: nowrap;
+  }
+  .arc-stat-hero .kicker { font-weight: 700; font-size: 1.15rem; letter-spacing: 0.4em; text-transform: uppercase; color: #c13830; position: relative; z-index: 2; margin-bottom: 1.5rem; }
+  .arc-stat-hero h2 { font-family: 'Fraunces', serif; font-weight: 800; font-size: clamp(3rem, 8vw, 7.5rem); line-height: 0.95; letter-spacing: -0.03em; max-width: 60%; margin: 0 0 2rem; position: relative; z-index: 2; }
+  .arc-stat-hero .lede { font-family: 'Fraunces', serif; font-size: clamp(1.4rem, 2.2vw, 2rem); line-height: 1.45; max-width: 55%; font-weight: 400; position: relative; z-index: 2; margin: 0; }
+  .arc-stat-hero .story-meta { color: #c13830; position: relative; z-index: 2; }
+  .arc-stat-hero .spread-links { position: relative; z-index: 2; }
+
+  /* ───── MIDNIGHT ───── */
+  .arc-midnight { background: radial-gradient(ellipse at 70% 30%, #1a1235 0%, #05050c 65%); color: #e9e4ff; }
+  .arc-midnight::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background-image:
+      radial-gradient(circle at 20% 80%, rgba(180,120,255,0.18), transparent 50%),
+      radial-gradient(circle at 80% 20%, rgba(120,200,255,0.12), transparent 55%);
+    pointer-events: none;
+  }
+  .arc-midnight .numeral {
+    font-family: 'Fraunces', serif;
+    font-size: clamp(8rem, 22vw, 20rem);
+    font-weight: 300;
+    font-style: italic;
+    color: transparent;
+    -webkit-text-stroke: 2px rgba(233,228,255,0.45);
+    line-height: 1;
+    position: absolute;
+    top: 6vh;
+    left: 5vw;
+    letter-spacing: -0.05em;
+  }
+  .arc-midnight .body { position: relative; z-index: 2; margin-top: 12rem; max-width: 90%; }
+  .arc-midnight .kicker { font-family: 'JetBrains Mono', monospace; font-size: 1.1rem; letter-spacing: 0.2em; text-transform: uppercase; color: #b48bff; margin-bottom: 2rem; }
+  .arc-midnight h2 { font-weight: 800; font-size: clamp(3rem, 7.5vw, 6.5rem); line-height: 1; letter-spacing: -0.035em; margin: 0 0 2.5rem; }
+  .arc-midnight .lede { font-size: 1.35rem; line-height: 1.55; color: #cdc6e8; max-width: 780px; margin: 0; }
+  .arc-midnight .story-meta { color: #8a7cc6; margin-bottom: 1.5rem; }
+
+  /* ───── ALERT STAMP ───── */
+  .arc-alert-stamp { background: #f8e5de; color: #2b0808; background-image: repeating-linear-gradient(transparent, transparent 3rem, rgba(193,56,48,0.08) 3rem, rgba(193,56,48,0.08) calc(3rem + 1px)); }
+  .arc-alert-stamp .stamp {
+    position: absolute; top: 8vh; right: 5vw;
+    transform: rotate(-14deg);
+    border: 6px solid #c13830;
+    padding: 1.2rem 2.5rem;
+    font-weight: 900;
+    font-size: clamp(2rem, 4vw, 3.5rem);
+    letter-spacing: 0.15em;
+    color: #c13830;
+    background: rgba(248,229,222,0.6);
+    text-transform: uppercase;
+  }
+  .arc-alert-stamp .numeral { font-family: 'Fraunces', serif; font-style: italic; font-weight: 900; font-size: clamp(6rem, 15vw, 12rem); line-height: 1; color: #c13830; margin: 0 0 1rem; }
+  .arc-alert-stamp .kicker { font-weight: 800; font-size: 1.2rem; letter-spacing: 0.3em; text-transform: uppercase; color: #c13830; margin-bottom: 1rem; }
+  .arc-alert-stamp h2 { font-family: 'Fraunces', serif; font-weight: 800; font-size: clamp(2.5rem, 6vw, 5.5rem); line-height: 1.02; letter-spacing: -0.025em; max-width: 75%; margin: 0 0 2rem; }
+  .arc-alert-stamp .lede { font-size: 1.4rem; line-height: 1.55; max-width: 700px; font-weight: 400; margin: 0; }
+  .arc-alert-stamp .story-meta { color: #c13830; margin-bottom: 1.5rem; }
+
+  /* ───── ACADEMIC DROP CAP ───── */
+  .arc-academic-drop-cap { background: #efe7d1; color: #1b1a14; padding: 8vh 8vw; }
+  .arc-academic-drop-cap .paper-head {
+    display: flex; justify-content: space-between; align-items: baseline;
+    border-bottom: 1.5px solid #1b1a14;
+    padding-bottom: 0.7rem; margin-bottom: 3rem;
+    font-weight: 500; font-size: 1rem; letter-spacing: 0.25em; text-transform: uppercase;
+  }
+  .arc-academic-drop-cap .numeral-roman { font-family: 'Fraunces', serif; font-weight: 700; font-size: clamp(2.5rem, 4vw, 4rem); font-style: italic; letter-spacing: 0.08em; }
+  .arc-academic-drop-cap h2 { font-family: 'Fraunces', serif; font-weight: 400; font-style: italic; font-size: clamp(2.5rem, 5.5vw, 5rem); line-height: 1.05; letter-spacing: -0.015em; margin: 0 0 1.5rem; max-width: 85%; }
+  .arc-academic-drop-cap .story-meta { margin-bottom: 2rem; }
+  .arc-academic-drop-cap .cols { display: grid; grid-template-columns: 1fr 1fr; gap: 3.5rem; }
+  .arc-academic-drop-cap .cols p { font-family: 'Fraunces', serif; font-size: 1.35rem; line-height: 1.55; text-align: justify; hyphens: auto; margin: 0 0 1.2rem; }
+  .arc-academic-drop-cap .cols > div:first-child p:first-child::first-letter {
+    font-family: 'Fraunces', serif;
+    font-weight: 900;
+    font-size: 7em;
+    float: left;
+    line-height: 0.82;
+    padding: 0.1em 0.15em 0 0;
+    color: #7a1e14;
+  }
+
+  /* ───── TERMINAL ───── */
+  .arc-terminal { background: #000; color: #8cff8c; font-family: 'JetBrains Mono', ui-monospace, monospace; padding: 8vh 6vw; }
+  .arc-terminal .prompt-row { font-size: 1.15rem; font-weight: 500; color: #4ac94a; margin-bottom: 3rem; }
+  .arc-terminal .numeral { font-size: clamp(6rem, 14vw, 13rem); font-weight: 700; line-height: 1; color: #8cff8c; margin: 0 0 1rem; }
+  .arc-terminal .numeral::before { content: "> "; color: #4ac94a; }
+  .arc-terminal h2 { font-weight: 700; font-size: clamp(2.2rem, 5vw, 4.5rem); line-height: 1.1; margin: 0 0 2rem; max-width: 90%; color: #d4ffd4; }
+  .arc-terminal .lede { font-size: 1.3rem; line-height: 1.6; max-width: 780px; color: #8cff8c; margin: 0; }
+  .arc-terminal .lede::before { content: "# "; color: #4ac94a; }
+  .arc-terminal .story-meta { color: #4ac94a; margin-bottom: 1.5rem; }
+  .arc-terminal .cursor { display: inline-block; width: 0.55em; height: 1.1em; background: #8cff8c; vertical-align: text-bottom; margin-left: 0.2em; animation: me-blink 1s steps(2, start) infinite; }
+  @keyframes me-blink { to { visibility: hidden; } }
+  .arc-terminal .read-more { color: #8cff8c; border-color: #4ac94a; }
+  .arc-terminal .dossier-link { color: #8cff8c; border-color: rgba(140,255,140,0.4); }
+
+  /* ───── EDITORIAL PULLQUOTE ───── */
+  .arc-editorial-pullquote {
+    background: #1a1a1a; color: #f5f1e8; padding: 8vh 6vw;
+    display: grid; grid-template-columns: 1fr 1.1fr; gap: 5rem; align-items: center;
+  }
+  .arc-editorial-pullquote .left { position: relative; }
+  .arc-editorial-pullquote .numeral { font-family: 'Fraunces', serif; font-weight: 900; font-style: italic; font-size: clamp(8rem, 18vw, 16rem); line-height: 0.9; color: #f5f1e8; margin: 0 0 1rem; letter-spacing: -0.05em; }
+  .arc-editorial-pullquote .kicker { font-weight: 700; font-size: 1.1rem; letter-spacing: 0.35em; text-transform: uppercase; color: #e8b84a; margin-bottom: 1.5rem; }
+  .arc-editorial-pullquote h2 { font-family: 'Fraunces', serif; font-weight: 700; font-size: clamp(2rem, 4vw, 3.5rem); line-height: 1.1; margin: 0 0 2rem; }
+  .arc-editorial-pullquote .pullquote {
+    font-family: 'Fraunces', serif; font-style: italic; font-weight: 400;
+    font-size: clamp(1.8rem, 3.5vw, 3rem); line-height: 1.15;
+    color: #f5f1e8; border-left: 4px solid #e8b84a; padding-left: 2rem; margin: 0;
+  }
+  .arc-editorial-pullquote .pullquote::before { content: "\201C"; font-size: 1.4em; line-height: 0; vertical-align: -0.4em; color: #e8b84a; margin-right: 0.1em; }
+  .arc-editorial-pullquote .pullquote::after { content: "\201D"; font-size: 1.4em; line-height: 0; vertical-align: -0.6em; color: #e8b84a; margin-left: 0.05em; }
+  .arc-editorial-pullquote .story-meta { color: #e8b84a; }
+
+  /* ───── CAUTION TAPE ───── */
+  .arc-caution-tape { background: #fff200; color: #0a0a0a; padding: 8vh 6vw; }
+  .arc-caution-tape::before { content: ""; position: absolute; inset: 0 0 auto 0; height: 2.5rem; background: repeating-linear-gradient(135deg, #0a0a0a 0 2rem, #fff200 2rem 4rem); }
+  .arc-caution-tape::after { content: ""; position: absolute; inset: auto 0 0 0; height: 2.5rem; background: repeating-linear-gradient(135deg, #0a0a0a 0 2rem, #fff200 2rem 4rem); }
+  .arc-caution-tape .tag {
+    position: absolute; top: 6vh; right: 6vw;
+    writing-mode: vertical-rl; transform: rotate(180deg);
+    font-weight: 900; font-size: 1.3rem; letter-spacing: 0.5em; text-transform: uppercase;
+    background: #0a0a0a; color: #fff200; padding: 1rem 0.6rem;
+  }
+  .arc-caution-tape .numeral { font-weight: 900; font-size: clamp(10rem, 28vw, 24rem); line-height: 0.85; letter-spacing: -0.06em; margin: 0 0 1rem; -webkit-text-stroke: 3px #0a0a0a; color: transparent; }
+  .arc-caution-tape .kicker { font-weight: 900; font-size: 1.3rem; letter-spacing: 0.35em; text-transform: uppercase; background: #0a0a0a; color: #fff200; padding: 0.5rem 1rem; display: inline-block; margin-bottom: 1.5rem; }
+  .arc-caution-tape h2 { font-weight: 900; font-size: clamp(2.5rem, 6vw, 5.5rem); line-height: 0.98; letter-spacing: -0.03em; margin: 0 0 2rem; max-width: 85%; text-transform: uppercase; }
+  .arc-caution-tape .lede { font-size: 1.35rem; line-height: 1.5; max-width: 680px; font-weight: 500; margin: 0; }
+  .arc-caution-tape .story-meta { margin-bottom: 1.5rem; }
+
+  /* ───── NOTEBOOK ───── */
+  .arc-notebook { background: repeating-linear-gradient(#fdfaf0 0 2.2rem, rgba(120,104,60,0.22) 2.2rem 2.25rem); color: #1f1a0d; padding: 8vh 8vw; }
+  .arc-notebook::before { content: ""; position: absolute; top: 0; bottom: 0; left: 8vw; width: 2px; background: #c13830; opacity: 0.5; }
+  .arc-notebook .numeral { font-family: 'Fraunces', serif; font-weight: 400; font-style: italic; font-size: clamp(7rem, 17vw, 15rem); line-height: 1; letter-spacing: -0.02em; color: #1f1a0d; margin: 0 0 0.5rem; }
+  .arc-notebook .kicker { font-weight: 600; font-size: 1.1rem; letter-spacing: 0.3em; text-transform: uppercase; color: #8a6b1f; margin-bottom: 1rem; }
+  .arc-notebook h2 { font-family: 'Fraunces', serif; font-weight: 400; font-style: italic; font-size: clamp(2.8rem, 6.5vw, 6rem); line-height: 1; letter-spacing: -0.02em; margin: 0 0 2rem; max-width: 85%; }
+  .arc-notebook .lede { font-family: 'Fraunces', serif; font-weight: 400; font-size: clamp(1.35rem, 2vw, 1.7rem); line-height: 2.2rem; max-width: 700px; margin: 0; }
+
+  /* ───── MINT PATTERN ───── */
+  .arc-mint-pattern { background: #a8e6cf; color: #0d2a1e; padding: 8vh 6vw; }
+  .arc-mint-pattern::before {
+    content: "XOR LISP AWK SED GREP CURL MAKE GIT VIM SSH";
+    position: absolute; top: 10vh; left: 0; right: 0;
+    font-family: 'JetBrains Mono', monospace;
+    font-weight: 700; font-size: 2.5rem; letter-spacing: 0.3em;
+    color: rgba(13,42,30,0.1); white-space: nowrap; overflow: hidden; pointer-events: none;
+  }
+  .arc-mint-pattern .numeral-block { position: relative; z-index: 2; }
+  .arc-mint-pattern .numeral { font-family: 'Fraunces', serif; font-weight: 900; font-size: clamp(10rem, 28vw, 24rem); line-height: 0.85; letter-spacing: -0.06em; color: #0d2a1e; margin: 0; font-style: italic; }
+  .arc-mint-pattern .kicker { font-family: 'JetBrains Mono', monospace; font-weight: 700; font-size: 1.1rem; letter-spacing: 0.2em; text-transform: uppercase; color: #0d2a1e; margin: 1.5rem 0; position: relative; z-index: 2; }
+  .arc-mint-pattern h2 { font-family: 'Fraunces', serif; font-weight: 800; font-size: clamp(2.5rem, 6vw, 5rem); line-height: 1; letter-spacing: -0.025em; margin: 0 0 2rem; max-width: 85%; position: relative; z-index: 2; }
+  .arc-mint-pattern .lede { font-family: 'Fraunces', serif; font-size: 1.4rem; line-height: 1.55; max-width: 680px; font-weight: 400; margin: 0; position: relative; z-index: 2; }
+  .arc-mint-pattern .story-meta { position: relative; z-index: 2; margin-bottom: 1.5rem; }
+  .arc-mint-pattern .spread-links { position: relative; z-index: 2; }
+
+  /* ───── PASTEL PLAYFUL ───── */
+  .arc-pastel-playful { background: #fde6f2; color: #2a0a2e; padding: 8vh 6vw 4vh; }
+  .arc-pastel-playful .alpha-grid {
+    position: absolute; top: 0; left: 0; right: 0;
+    display: grid; grid-template-columns: repeat(13, 1fr);
+    font-family: 'Fraunces', serif; font-style: italic;
+    font-size: clamp(1.2rem, 2.5vw, 2rem); font-weight: 700;
+    color: rgba(42,10,46,0.2); padding: 1rem 6vw; letter-spacing: 0.2em; pointer-events: none;
+  }
+  .arc-pastel-playful .alpha-grid span { text-align: center; }
+  .arc-pastel-playful .numeral { font-family: 'Fraunces', serif; font-weight: 900; font-style: italic; font-size: clamp(10rem, 26vw, 22rem); line-height: 0.85; letter-spacing: -0.05em; color: #c13871; margin: 2rem 0 0; }
+  .arc-pastel-playful .kicker { font-weight: 700; font-size: 1.1rem; letter-spacing: 0.35em; text-transform: uppercase; color: #c13871; margin-bottom: 1rem; }
+  .arc-pastel-playful h2 { font-family: 'Fraunces', serif; font-weight: 400; font-style: italic; font-size: clamp(2.8rem, 6.5vw, 5.5rem); line-height: 1; letter-spacing: -0.02em; margin: 0 0 2rem; max-width: 85%; }
+  .arc-pastel-playful .lede { font-size: 1.35rem; line-height: 1.5; max-width: 680px; margin: 0; }
+  .arc-pastel-playful .story-meta { color: #c13871; margin-bottom: 1.5rem; }
+
+  /* ───── PRODUCT PLATE ───── */
+  .arc-product-plate {
+    background: linear-gradient(135deg, #f5f5f3 0%, #e8e8e6 100%);
+    color: #121212; padding: 10vh 8vw; text-align: center; align-items: center; justify-content: center;
+  }
+  .arc-product-plate .product-chip {
+    font-weight: 700; font-size: 1rem; letter-spacing: 0.4em; text-transform: uppercase;
+    background: #121212; color: #f5f5f3; padding: 0.5rem 1.4rem; display: inline-block; margin-bottom: 3rem;
+  }
+  .arc-product-plate .kicker { font-weight: 700; font-size: 1.15rem; letter-spacing: 0.5em; text-transform: uppercase; color: #666; margin-bottom: 1.5rem; }
+  .arc-product-plate h2 {
+    font-family: 'Inter', sans-serif;
+    font-weight: 900;
+    font-size: clamp(3.2rem, 9vw, 8rem);
+    line-height: 0.95;
+    letter-spacing: -0.045em;
+    margin: 0 auto 2rem;
+    max-width: 14ch;
+  }
+  .arc-product-plate .product-rule { width: 6rem; height: 2px; background: #121212; margin: 1.5rem auto 2rem; }
+  .arc-product-plate .story-meta { color: #666; margin-bottom: 1.5rem; }
+  .arc-product-plate .lede { font-family: 'Fraunces', serif; font-weight: 400; font-size: clamp(1.4rem, 2.2vw, 1.9rem); line-height: 1.45; max-width: 720px; margin: 0 auto; }
+  .arc-product-plate .spread-links { justify-content: center; }
+
+  /* ───── ARCHIVE ───── */
+  .arc-archive {
+    background: #eadbb8;
+    background-image:
+      radial-gradient(rgba(80,40,10,0.05) 1px, transparent 1px),
+      radial-gradient(rgba(80,40,10,0.04) 1px, transparent 1px);
+    background-size: 4px 4px, 7px 7px;
+    background-position: 0 0, 2px 2px;
+    color: #2a1a08; padding: 8vh 8vw;
+  }
+  .arc-archive .archive-head {
+    display: flex; justify-content: space-between; align-items: baseline;
+    padding-bottom: 1rem; margin-bottom: 3rem;
+    border-top: 6px double #3a2a10; border-bottom: 6px double #3a2a10;
+    padding-top: 1rem;
+    font-family: 'Fraunces', serif; font-style: italic; font-weight: 500;
+    font-size: 1.1rem; letter-spacing: 0.15em; text-transform: uppercase; color: #3a2a10;
+  }
+  .arc-archive .kicker { font-family: 'Fraunces', serif; font-style: italic; font-weight: 600; font-size: 1.2rem; letter-spacing: 0.3em; text-transform: uppercase; color: #8a3a10; margin-bottom: 1.2rem; }
+  .arc-archive h2 {
+    font-family: 'Fraunces', serif; font-weight: 700; font-style: normal;
+    font-size: clamp(2.8rem, 6.5vw, 6rem); line-height: 1; letter-spacing: -0.02em;
+    margin: 0 0 2rem; max-width: 85%;
+  }
+  .arc-archive .lede {
+    font-family: 'Fraunces', serif; font-size: clamp(1.35rem, 2vw, 1.7rem);
+    line-height: 1.55; max-width: 760px; font-weight: 400; margin: 0;
+  }
+  .arc-archive .lede::first-letter {
+    font-family: 'Fraunces', serif; font-weight: 900; font-size: 5em;
+    float: left; line-height: 0.82; padding: 0.1em 0.15em 0 0; color: #8a3a10;
+  }
+  .arc-archive .story-meta { color: #8a3a10; margin-bottom: 1.5rem; }
+
+  /* ───── OBITUARY ───── */
+  .arc-obituary {
+    background: #f8f4ec; color: #121212;
+    padding: 10vh 6vw; align-items: center; justify-content: center;
+  }
+  .arc-obituary .obit-frame {
+    border: 3px solid #121212; padding: 6rem 5rem;
+    max-width: 780px; text-align: center; background: #f8f4ec;
+    position: relative; z-index: 2;
+  }
+  .arc-obituary .obit-frame::before,
+  .arc-obituary .obit-frame::after {
+    content: ""; position: absolute; left: -12px; right: -12px; height: 1px; background: #121212;
+  }
+  .arc-obituary .obit-frame::before { top: -12px; }
+  .arc-obituary .obit-frame::after { bottom: -12px; }
+  .arc-obituary .ornament { font-family: 'Fraunces', serif; font-size: 3.5rem; line-height: 1; margin-bottom: 2rem; color: #121212; }
+  .arc-obituary .kicker { font-family: 'Fraunces', serif; font-style: italic; font-weight: 500; font-size: 1.1rem; letter-spacing: 0.3em; text-transform: uppercase; margin-bottom: 2rem; opacity: 0.7; }
+  .arc-obituary h2 {
+    font-family: 'Fraunces', serif; font-weight: 400; font-style: italic;
+    font-size: clamp(2.4rem, 5vw, 4.5rem); line-height: 1.1; letter-spacing: -0.015em;
+    margin: 0 0 2.5rem;
+  }
+  .arc-obituary .story-meta { margin-bottom: 2rem; opacity: 0.6; }
+  .arc-obituary .lede { font-family: 'Fraunces', serif; font-size: clamp(1.3rem, 1.9vw, 1.6rem); line-height: 1.6; margin: 0 auto; max-width: 60ch; }
+  .arc-obituary .spread-links { justify-content: center; margin-top: 3rem; }
+
+  /* ───── BLUEPRINT ───── */
+  .arc-blueprint {
+    background: #0a3d62;
+    background-image:
+      linear-gradient(rgba(255,255,255,0.08) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255,255,255,0.08) 1px, transparent 1px);
+    background-size: 2.2rem 2.2rem;
+    color: #eaf4ff; padding: 8vh 6vw;
+  }
+  .arc-blueprint .corner {
+    position: absolute; font-family: 'JetBrains Mono', monospace;
+    font-size: 2.5rem; color: #eaf4ff; opacity: 0.7;
+  }
+  .arc-blueprint .corner.tl { top: 3vh; left: 3vw; }
+  .arc-blueprint .corner.tr { top: 3vh; right: 3vw; }
+  .arc-blueprint .corner.bl { bottom: 3vh; left: 3vw; }
+  .arc-blueprint .corner.br { bottom: 3vh; right: 3vw; }
+  .arc-blueprint .numeral {
+    font-family: 'JetBrains Mono', monospace;
+    font-weight: 700; font-size: clamp(4rem, 9vw, 7.5rem); line-height: 1;
+    letter-spacing: -0.01em; color: #eaf4ff;
+    margin: 0 0 1.5rem;
+    border-bottom: 2px dashed rgba(234,244,255,0.5);
+    padding-bottom: 1rem;
+    display: inline-block;
+  }
+  .arc-blueprint .kicker { font-family: 'JetBrains Mono', monospace; font-weight: 700; font-size: 1.15rem; letter-spacing: 0.3em; text-transform: uppercase; color: #9bd2ff; margin-bottom: 1.5rem; }
+  .arc-blueprint h2 { font-family: 'Fraunces', serif; font-weight: 700; font-size: clamp(2.8rem, 6.5vw, 5.5rem); line-height: 1; letter-spacing: -0.025em; margin: 0 0 2rem; max-width: 85%; }
+  .arc-blueprint .lede { font-family: 'JetBrains Mono', monospace; font-size: 1.2rem; line-height: 1.65; max-width: 720px; margin: 0; }
+  .arc-blueprint .story-meta { color: #9bd2ff; margin-bottom: 1.5rem; font-family: 'JetBrains Mono', monospace; }
+
+  /* ───── OBSERVATORY ───── */
+  .arc-observatory {
+    background: #070c2e; color: #e8ecff; padding: 8vh 6vw;
+  }
+  .arc-observatory .starfield {
+    position: absolute; inset: 0; pointer-events: none;
+    background-image:
+      radial-gradient(1px 1px at 10% 20%, rgba(255,255,255,0.9), transparent),
+      radial-gradient(1px 1px at 25% 70%, rgba(255,255,255,0.6), transparent),
+      radial-gradient(1.5px 1.5px at 40% 30%, rgba(255,255,255,0.8), transparent),
+      radial-gradient(1px 1px at 55% 85%, rgba(255,255,255,0.5), transparent),
+      radial-gradient(1px 1px at 70% 15%, rgba(255,255,255,0.9), transparent),
+      radial-gradient(1.5px 1.5px at 85% 55%, rgba(255,255,255,0.7), transparent),
+      radial-gradient(1px 1px at 92% 25%, rgba(255,255,255,0.5), transparent),
+      radial-gradient(1px 1px at 15% 90%, rgba(255,255,255,0.4), transparent),
+      radial-gradient(1px 1px at 48% 50%, rgba(255,255,255,0.6), transparent),
+      radial-gradient(1px 1px at 78% 78%, rgba(255,255,255,0.5), transparent);
+    background-repeat: no-repeat;
+  }
+  .arc-observatory > * { position: relative; z-index: 2; }
+  .arc-observatory .numeral {
+    font-family: 'Fraunces', serif; font-style: italic; font-weight: 400;
+    font-size: clamp(3rem, 7vw, 6rem); line-height: 1; letter-spacing: 0.04em;
+    color: #e8ecff; margin: 0 0 2rem;
+    border-bottom: 1px solid rgba(232,236,255,0.4);
+    padding-bottom: 1rem; display: inline-block;
+  }
+  .arc-observatory .kicker { font-family: 'Fraunces', serif; font-style: italic; font-weight: 500; font-size: 1.15rem; letter-spacing: 0.3em; text-transform: uppercase; color: #9ab3ff; margin-bottom: 1.5rem; }
+  .arc-observatory h2 { font-family: 'Fraunces', serif; font-weight: 400; font-style: italic; font-size: clamp(2.8rem, 6.5vw, 5.5rem); line-height: 1.05; letter-spacing: -0.015em; margin: 0 0 2rem; max-width: 85%; }
+  .arc-observatory .lede { font-family: 'Fraunces', serif; font-size: clamp(1.35rem, 2vw, 1.7rem); line-height: 1.55; max-width: 720px; font-weight: 400; margin: 0; }
+  .arc-observatory .story-meta { color: #9ab3ff; margin-bottom: 1.5rem; }
+
+  /* ───── DOSSIER ───── */
+  .dossier {
+    background: #f5f1e8; color: #1b1a14;
+    padding: 8rem 8vw 6rem;
+    border-top: 6px double #121212;
+  }
+  .dossier .dossier-head { text-align: center; margin-bottom: 4rem; }
+  .dossier .tagline { font-weight: 600; font-size: 1.1rem; letter-spacing: 0.4em; text-transform: uppercase; margin-bottom: 1rem; opacity: 0.7; }
+  .dossier h2 {
+    font-family: 'Fraunces', serif; font-style: italic; font-weight: 900;
+    font-size: clamp(4rem, 10vw, 9rem); line-height: 0.9; letter-spacing: -0.035em;
+    margin: 0 0 1.5rem;
+  }
+  .dossier .intro { font-family: 'Fraunces', serif; font-style: italic; font-size: 1.35rem; line-height: 1.5; max-width: 620px; margin: 0 auto; }
+  .dossier .intro a { font-style: normal; font-weight: 600; text-decoration: underline; }
+  .dossier-entry {
+    border-top: 1.5px solid #1b1a14;
+    padding: 3rem 0 2.5rem;
+    max-width: 820px; margin: 0 auto;
+  }
+  .dossier-entry:last-child { border-bottom: 1.5px solid #1b1a14; }
+  .dossier-meta { font-weight: 600; font-size: 1rem; letter-spacing: 0.28em; text-transform: uppercase; color: #7a1e14; margin-bottom: 1.2rem; }
+  .dossier-entry h3 {
+    font-family: 'Fraunces', serif; font-weight: 700;
+    font-size: clamp(1.8rem, 3.5vw, 2.6rem); line-height: 1.1; letter-spacing: -0.015em;
+    margin: 0 0 1.2rem;
+  }
+  .dossier-source { font-size: 1.05rem; font-weight: 500; letter-spacing: 0.08em; margin: 0 0 2rem; opacity: 0.75; }
+  .dossier-source a { text-decoration: underline; }
+  .dossier-entry h4 {
+    font-family: 'Inter', sans-serif; font-weight: 700; font-size: 1rem;
+    letter-spacing: 0.35em; text-transform: uppercase; margin: 2rem 0 1rem; color: #7a1e14;
+  }
+  .dossier-entry p {
+    font-family: 'Fraunces', serif; font-size: 1.25rem; line-height: 1.55; margin: 0 0 1rem;
+  }
+  .dossier-entry p.muted { opacity: 0.6; }
+
+  /* ───── COLOPHON ───── */
+  .colophon { background: #121212; color: #f5f1e8; padding: 5rem 6vw; text-align: center; }
+  .colophon .sig { font-family: 'Fraunces', serif; font-style: italic; font-weight: 400; font-size: clamp(2.5rem, 5vw, 4rem); line-height: 1.1; letter-spacing: -0.02em; margin: 0 0 1.5rem; }
+  .colophon .meta { font-weight: 500; font-size: 1rem; letter-spacing: 0.3em; text-transform: uppercase; opacity: 0.7; }
+  .colophon .classic-link { margin-top: 2rem; font-weight: 500; font-size: 1rem; letter-spacing: 0.2em; text-transform: uppercase; }
+  .colophon .classic-link a { text-decoration: underline; opacity: 0.85; }
+
+  /* ───── RESPONSIVE ───── */
+  @media (max-width: 800px) {
+    .masthead-nav { flex-wrap: wrap; gap: 0.8rem; }
+    .arc-stat-hero h2, .arc-stat-hero .lede { max-width: 100%; }
+    .arc-stat-hero .numeral { font-size: 14rem; opacity: 0.2; right: -2vw; top: 30vh; }
+    .arc-midnight .body { margin-top: 8rem; }
+    .arc-alert-stamp h2 { max-width: 100%; }
+    .arc-alert-stamp .stamp { top: 4vh; right: 4vw; font-size: 1.5rem; padding: 0.8rem 1.4rem; }
+    .arc-academic-drop-cap .cols { grid-template-columns: 1fr; gap: 2rem; }
+    .arc-editorial-pullquote { grid-template-columns: 1fr; gap: 3rem; }
+    .arc-caution-tape h2, .arc-notebook h2, .arc-pastel-playful h2, .arc-archive h2, .arc-obituary h2, .arc-blueprint h2, .arc-observatory h2 { max-width: 100%; }
+    .arc-caution-tape .tag { display: none; }
+    .arc-pastel-playful .alpha-grid { display: none; }
+    .arc-obituary .obit-frame { padding: 3rem 2rem; }
+    .arc-blueprint .corner { display: none; }
+  }
+
+</style>
 </head>
-<body>
-    <header>
-        <h1>Hacker News Digest - March 06, 2026</h1>
-        <nav>
-            <a href="../">&larr; Hacker News Calendar</a>
-            <a href="../../2026-03-06/">GitHub Trending</a>
-        </nav>
-    </header>
-    <main>
-        <div class="repo-controls">
-            <button id="collapse-seen-btn" type="button">Collapse Stories Not New Today</button>
-            <button id="expand-all-btn" type="button">Expand All</button>
-        </div>
-        <p class="seen-help">Stories marked "Not new today" appeared on one or more previous daily pages.</p>
-        <article>
-            <div class="repos">
+<body id="top">
 
-            <section class="repo" data-seen-before="0"
-                     data-share-title="System76 on Age Verification Laws"
-                     data-share-url="https://blog.system76.com/post/system76-on-age-verification/"
-                     data-share-points="846"
-                     data-share-comments="600">
-                <div class="repo-header-row">
-                    <h3>1. <a href="https://blog.system76.com/post/system76-on-age-verification/" target="_blank" rel="noopener noreferrer">System76 on Age Verification Laws</a> </h3>
-                    <div class="header-buttons">
-                        <button type="button" class="discuss-btn" aria-label="Discuss with AI" title="Discuss with AI">&#x1F4AC;</button>
-                        <button type="button" class="repo-toggle" aria-expanded="true">Hide details</button>
-                    </div>
-                </div>
-                <div class="repo-body">
-                    <p class="meta">
-                        <span class="language">blog.system76.com</span> |
-                        <span>LorenDB</span> |
-                        <span>846 points</span> |
-                        <span>600 comments</span> |
-                        <a href="https://news.ycombinator.com/item?id=47270784" target="_blank" rel="noopener noreferrer">discussion</a>
-                    </p>
-                    <p class="history">First seen: March 06, 2026 | Consecutive daily streak: 1 day</p>
-                    <div class="ai-summary">
-                        <h4>Analysis</h4>
-                        <p>System76 CEO Carl Richell writes about his opposition to emerging legislation in Colorado, California, and New York that mandates age verification and age-bracket reporting for internet-connected devices and operating systems. These laws aim to restrict digital access for minors, but Richell argues they are fundamentally ineffective because users—especially tech-savvy children—can easily bypass such barriers through virtual machines or by simply providing false information. He further warns that these regulations could inadvertently implicate Linux distributors as &quot;device manufacturers,&quot; potentially forcing open-source ecosystems to comply with restrictive, centralized surveillance models.</p>
-<p>Hacker News readers are likely to find this topic significant because it touches on the philosophical and practical friction between open-source autonomy and state-mandated digital controls. The community generally values unrestricted access to technology as a tool for early learning and professional development, a sentiment echoed by the author’s own experience with programming in his youth. By highlighting the potential erosion of privacy and the technical challenges of enforcing these mandates on decentralized platforms, the article resonates with the site&#x27;s long-standing concerns regarding digital liberty and the unintended consequences of regulatory overreach.</p>
-                    </div>
-                    
-                <div class="ai-summary">
-                    <h4>Comment Analysis</h4>
-                    <p>Users generally oppose the age verification laws, viewing them as harmful threats to online privacy and anonymity, yet they express disappointment that System76 plans to comply with these government mandates.</p>
-<p>A subset of participants argues that expecting a company to risk its financial survival and legal standing to resist government policy is an unreasonable demand that ignores real-world commercial pressures.</p>
-<p>Technically inclined users suggest that these regulations may drive the adoption of DIY operating systems, customized Linux distributions, or pirate software designed to bypass age-verification signals and maintain user privacy.</p>
-<p>This sample highlights a tension between the open-source community&#x27;s commitment to radical digital freedom and the pragmatic reality of corporate compliance, though the discussion lacks input from legal or policy experts.</p>
-                </div>
+  <header class="masthead">
+    <div class="masthead-nav">
+      <a href="../">HN Calendar</a>
+      <span>·</span>
+      <a href="../../2026-03-06/">GitHub Trending</a>
+      <span>·</span>
+      <a href="classic.html">Classic view</a>
+    </div>
+    <div class="tagline">The Morning Edition</div>
+    <h1 class="frnc">Ten stories, before your coffee.</h1>
+    <div class="issue-line">
+      <span>Vol. I</span>
+      <span>Friday, March 6, 2026</span>
+      <span>HN Front Page Digest</span>
+    </div>
+  </header>
 
-                </div>
-            </section>
+  <section class="spread arc-alert-stamp">
+    <div class="stamp">Alert</div>
+    <div class="numeral">01</div>
+    <div class="kicker">Digital Policy</div>
+    <h2>System76 Addresses Mandated Age Verification Requirements</h2>
+    <p class="story-meta">blog.system76.com &nbsp;·&nbsp; 846 pts &nbsp;·&nbsp; 600 comments</p>
+    <p class="lede">New state laws now require hardware manufacturers to verify the ages of their end users. The implications for open-source Linux distributors are as complex as they are controversial.</p>
+    <div class="spread-links"><a class="read-more" href="https://blog.system76.com/post/system76-on-age-verification/" target="_blank" rel="noopener">Read →</a><a class="dossier-link" href="#dossier-1">Full analysis ↓</a></div>
+  </section>
 
-            <section class="repo" data-seen-before="0"
-                     data-share-title="GPT-5.4"
-                     data-share-url="https://openai.com/index/introducing-gpt-5-4/"
-                     data-share-points="1017"
-                     data-share-comments="806">
-                <div class="repo-header-row">
-                    <h3>2. <a href="https://openai.com/index/introducing-gpt-5-4/" target="_blank" rel="noopener noreferrer">GPT-5.4</a> </h3>
-                    <div class="header-buttons">
-                        <button type="button" class="discuss-btn" aria-label="Discuss with AI" title="Discuss with AI">&#x1F4AC;</button>
-                        <button type="button" class="repo-toggle" aria-expanded="true">Hide details</button>
-                    </div>
-                </div>
-                <div class="repo-body">
-                    <p class="meta">
-                        <span class="language">openai.com</span> |
-                        <span>mudkipdev</span> |
-                        <span>1017 points</span> |
-                        <span>806 comments</span> |
-                        <a href="https://news.ycombinator.com/item?id=47265045" target="_blank" rel="noopener noreferrer">discussion</a>
-                    </p>
-                    <p class="history">First seen: March 06, 2026 | Consecutive daily streak: 1 day</p>
-                    <div class="ai-summary">
-                        <h4>Analysis</h4>
-                        <p>OpenAI has introduced GPT-5.4, a new frontier model designed to improve reasoning, coding, and professional task execution. Available via ChatGPT, the API, and Codex, the model features native computer-use capabilities that allow agents to operate software and navigate web interfaces directly. It also implements &quot;tool search&quot; functionality to optimize context management when dealing with large ecosystems of external tools, alongside a &quot;Thinking&quot; mode that allows users to adjust the model&#x27;s plan in real-time.</p>
-<p>Hacker News readers are likely interested in the transition toward agentic workflows and the practical shift from conversational chatbots to autonomous computer-use systems. The discussion will likely focus on the technical implementation of &quot;tool search&quot; as a solution to context window bloat and the implications of OpenAI’s continued efforts to standardize computer interaction through native APIs. Furthermore, developers will likely scrutinize the model&#x27;s performance on coding benchmarks like SWE-Bench Pro and the potential for these advancements to meaningfully reduce latency in complex, multi-step engineering tasks.</p>
-                    </div>
-                    
-                <div class="ai-summary">
-                    <h4>Comment Analysis</h4>
-                    <p>Commenters generally appreciate the new 1M context window and improved coding capabilities, though many express frustration over OpenAI’s increasingly fragmented and confusing model versioning system compared to competitors like Anthropic.</p>
-<p>There is significant debate regarding the utility of screenshot-based UI interaction versus traditional API usage, with some arguing that direct browser manipulation is a necessary workaround for restrictive proprietary ecosystems.</p>
-<p>Users report that while GPT-5.4 shows measurable improvements in coding tasks and logical writing over previous versions, actual performance remains highly dependent on specific use cases rather than generic benchmark scores.</p>
-<p>This sample may over-represent power users and developers concerned with API pricing, model versioning, and coding agent performance, potentially overlooking the experiences of casual ChatGPT users or non-technical enterprise stakeholders.</p>
-                </div>
+  <section class="spread arc-product-plate">
+    <div class="product-chip">Release &nbsp;·&nbsp; N<sup>o</sup> 02</div>
+    <div class="kicker">Launch / AI</div>
+    <h2>OpenAI Introduces GPT-5.4 With Native Computer Use</h2>
+    <div class="product-rule"></div>
+    <p class="story-meta">openai.com &nbsp;·&nbsp; 1017 pts &nbsp;·&nbsp; 806 comments</p>
+    <p class="lede">The latest iteration of the frontier model features integrated browser navigation and a refined planning mode. It aims to bridge the gap between logical reasoning and direct software execution.</p>
+    <div class="spread-links"><a class="read-more" href="https://openai.com/index/introducing-gpt-5-4/" target="_blank" rel="noopener">Read →</a><a class="dossier-link" href="#dossier-2">Full analysis ↓</a></div>
+  </section>
 
-                </div>
-            </section>
+  <section class="spread arc-mint-pattern">
+    <div class="numeral-block">
+      <div class="numeral">03</div>
+    </div>
+    <p class="kicker">// Data Structures</p>
+    <h2>The Hidden Costs of Serializing Rust Structs</h2>
+    <p class="story-meta">feldera.com &nbsp;·&nbsp; 73 pts &nbsp;·&nbsp; 47 comments</p>
+    <p class="lede">Mapping nullable SQL columns to Rust types can introduce unexpected padding and memory bloat. Performance-minded engineers are now reconsidering the role of zero-copy frameworks in sparse data environments.</p>
+    <div class="spread-links"><a class="read-more" href="https://www.feldera.com/blog/nobody-ever-got-fired-for-using-a-struct" target="_blank" rel="noopener">Read →</a><a class="dossier-link" href="#dossier-3">Full analysis ↓</a></div>
+  </section>
 
-            <section class="repo" data-seen-before="0"
-                     data-share-title="Nobody ever got fired for using a struct"
-                     data-share-url="https://www.feldera.com/blog/nobody-ever-got-fired-for-using-a-struct"
-                     data-share-points="73"
-                     data-share-comments="47">
-                <div class="repo-header-row">
-                    <h3>3. <a href="https://www.feldera.com/blog/nobody-ever-got-fired-for-using-a-struct" target="_blank" rel="noopener noreferrer">Nobody ever got fired for using a struct</a> </h3>
-                    <div class="header-buttons">
-                        <button type="button" class="discuss-btn" aria-label="Discuss with AI" title="Discuss with AI">&#x1F4AC;</button>
-                        <button type="button" class="repo-toggle" aria-expanded="true">Hide details</button>
-                    </div>
-                </div>
-                <div class="repo-body">
-                    <p class="meta">
-                        <span class="language">feldera.com</span> |
-                        <span>gz09</span> |
-                        <span>73 points</span> |
-                        <span>47 comments</span> |
-                        <a href="https://news.ycombinator.com/item?id=47225655" target="_blank" rel="noopener noreferrer">discussion</a>
-                    </p>
-                    <p class="history">First seen: March 06, 2026 | Consecutive daily streak: 1 day</p>
-                    <div class="ai-summary">
-                        <h4>Analysis</h4>
-                        <p>The author describes a performance issue at Feldera where a Rust-based SQL engine suffered from significant slowdowns when processing wide, sparse tables. Because the engine mapped nullable SQL columns to Rust `Option&lt;T&gt;` types, the serialized format—handled by the zero-copy framework `rkyv`—bloated significantly. This occurred because `Option` wrappers in the serialized layout lost memory-efficient niche optimizations, forcing the engine to store large discriminants and unnecessary padding for hundreds of fields.</p>
-<p>Hacker News readers likely find this valuable because it illustrates a common friction point between high-level database abstractions and low-level memory layouts. The post provides a practical, real-world case study on using custom serialization macros and traits to bypass standard struct overheads without sacrificing an intuitive code interface. By implementing a bitmap-based serialization strategy, the team successfully reduced disk I/O and improved throughput, offering a clear lesson on the trade-offs between dense and sparse data representation.</p>
-                    </div>
-                    
-                <div class="ai-summary">
-                    <h4>Comment Analysis</h4>
-                    <p>Experts generally agree that using language-specific serialization, like pickles or structs, for large-scale on-disk storage is dangerous; they recommend using standardized, language-agnostic formats like Parquet, Arrow, or Protobuf for better safety.</p>
-<p>A significant debate exists regarding database schema design, where some argue that tables with hundreds of columns indicate poor design, while others note that large, mature enterprises often require complex schemas.</p>
-<p>Developers should prioritize designing data structures to align with specific access patterns and performance trade-offs, as optimizing the shape of data is often more effective than focusing solely on algorithmic complexity.</p>
-<p>This sample may overrepresent perspectives from Rust developers and database engine specialists, potentially skewing the discourse away from the broader, more common application development practices prevalent in other programming ecosystems.</p>
-                </div>
+  <section class="spread arc-editorial-pullquote">
+    <div class="left">
+      <div class="numeral">04</div>
+      <div class="kicker">Industry Ethics</div>
+      <h2>Anthropic Challenges Military Supply Chain Designation</h2>
+      <p class="story-meta">anthropic.com &nbsp;·&nbsp; 629 pts &nbsp;·&nbsp; 785 comments</p>
+      <div class="spread-links"><a class="read-more" href="https://www.anthropic.com/news/where-stand-department-war" target="_blank" rel="noopener">Read →</a><a class="dossier-link" href="#dossier-4">Full analysis ↓</a></div>
+    </div>
+    <blockquote class="pullquote">The normalization of defense contracting threatens the ethical independence of the modern AI ecosystem</blockquote>
+  </section>
 
-                </div>
-            </section>
+  <section class="spread arc-stat-hero">
+    <div class="numeral">10%</div>
+    <div class="kicker">N<sup>o</sup> 05 · Browser Stability</div>
+    <h2>Hardware Instability Identified in Browser Crash Telemetry</h2>
+    <p class="story-meta">mas.to &nbsp;·&nbsp; 915 pts &nbsp;·&nbsp; 477 comments</p>
+    <p class="lede">A granular look at Firefox crash reports reveals that software bugs are only part of the story. Memory degradation is causing significant disruption across diverse hardware configurations.</p>
+    <div class="spread-links"><a class="read-more" href="https://mas.to/@gabrielesvelto/116171750653898304" target="_blank" rel="noopener">Read →</a><a class="dossier-link" href="#dossier-5">Full analysis ↓</a></div>
+  </section>
 
-            <section class="repo" data-seen-before="0"
-                     data-share-title="Where things stand with the Department of War"
-                     data-share-url="https://www.anthropic.com/news/where-stand-department-war"
-                     data-share-points="629"
-                     data-share-comments="785">
-                <div class="repo-header-row">
-                    <h3>4. <a href="https://www.anthropic.com/news/where-stand-department-war" target="_blank" rel="noopener noreferrer">Where things stand with the Department of War</a> </h3>
-                    <div class="header-buttons">
-                        <button type="button" class="discuss-btn" aria-label="Discuss with AI" title="Discuss with AI">&#x1F4AC;</button>
-                        <button type="button" class="repo-toggle" aria-expanded="true">Hide details</button>
-                    </div>
-                </div>
-                <div class="repo-body">
-                    <p class="meta">
-                        <span class="language">anthropic.com</span> |
-                        <span>surprisetalk</span> |
-                        <span>629 points</span> |
-                        <span>785 comments</span> |
-                        <a href="https://news.ycombinator.com/item?id=47269263" target="_blank" rel="noopener noreferrer">discussion</a>
-                    </p>
-                    <p class="history">First seen: March 06, 2026 | Consecutive daily streak: 1 day</p>
-                    <div class="ai-summary">
-                        <h4>Analysis</h4>
-                        <p>Anthropic CEO Dario Amodei announced that the company has been formally designated a supply chain risk by the Department of War, a decision they intend to challenge in court. Despite this classification, Anthropic maintains that the designation is narrow and does not impact customers using Claude for purposes outside of specific Department of War contracts. The company has pledged to continue supporting national security tools at a nominal cost during this transition to ensure that frontline operations remain uninterrupted.</p>
-<p>Hacker News readers are likely focused on this story due to its significant implications for the intersection of private AI development and national security policy. The discussion highlights the legal complexities surrounding federal supply chain risk designations and the delicate balance between corporate ethical boundaries—such as Anthropic&#x27;s restrictions on autonomous weapons—and government requirements. Additionally, the public nature of this dispute, exacerbated by internal leaks and shifts in federal partnerships, serves as a case study in how AI firms navigate intense political and bureaucratic scrutiny.</p>
-                    </div>
-                    
-                <div class="ai-summary">
-                    <h4>Comment Analysis</h4>
-                    <p>Commenters express deep concern regarding the normalization of tech industry support for military operations, lamenting the decline of traditional ethical standards and the erosion of individual moral responsibility among developers.</p>
-<p>A subset of users argues that developing advanced defense technology is a necessary, ethical imperative for preserving Western stability and preventing global dominance by authoritarian powers that prioritize military expansionism.</p>
-<p>The discussion highlights how enterprise reliance on government contracts often forces tech companies to align with defense agendas, potentially creating dependency traps that make ethical independence difficult for businesses to maintain.</p>
-<p>The sample size of sixteen comments may be too small to represent the broader, more complex spectrum of opinion across the entire 329-comment thread regarding institutional AI ethics and policy.</p>
-                </div>
+  <section class="spread arc-archive">
+    <div class="archive-head">
+      <span>Filed</span>
+      <span>Archival Desk · N<sup>o</sup> VI</span>
+      <span>From the Vault</span>
+    </div>
+    <div class="kicker">Economic History</div>
+    <h2>The Quartz Crisis and the Birth of Brand Luxury</h2>
+    <p class="story-meta">paulgraham.com &nbsp;·&nbsp; 494 pts &nbsp;·&nbsp; 376 comments</p>
+    <p class="lede">When Japanese precision challenged Swiss engineering in the 1970s, the watch industry underwent a fundamental shift. Mechanical mastery was set aside in favor of the intangible power of the luxury brand.</p>
+    <div class="spread-links"><a class="read-more" href="https://paulgraham.com/brandage.html" target="_blank" rel="noopener">Read →</a><a class="dossier-link" href="#dossier-6">Full analysis ↓</a></div>
+  </section>
 
-                </div>
-            </section>
+  <section class="spread arc-notebook">
+    <div class="numeral">07</div>
+    <div class="kicker">Design Standards</div>
+    <h2>Rethinking the Trend of Low-Contrast Text</h2>
+    <p class="story-meta">catskull.net &nbsp;·&nbsp; 102 pts &nbsp;·&nbsp; 72 comments</p>
+    <p class="lede">Grey text on off-white backgrounds has become a default aesthetic choice for many developers. It is time to consider whether readability should take precedence over subtle styling.</p>
+    <div class="spread-links"><a class="read-more" href="https://catskull.net/stop-using-grey-text.html" target="_blank" rel="noopener">Read →</a><a class="dossier-link" href="#dossier-7">Full analysis ↓</a></div>
+  </section>
 
-            <section class="repo" data-seen-before="1"
-                     data-share-title="10% of Firefox crashes are caused by bitflips"
-                     data-share-url="https://mas.to/@gabrielesvelto/116171750653898304"
-                     data-share-points="915"
-                     data-share-comments="477">
-                <div class="repo-header-row">
-                    <h3>5. <a href="https://mas.to/@gabrielesvelto/116171750653898304" target="_blank" rel="noopener noreferrer">10% of Firefox crashes are caused by bitflips</a> <span class="seen-badge">Not new today</span></h3>
-                    <div class="header-buttons">
-                        <button type="button" class="discuss-btn" aria-label="Discuss with AI" title="Discuss with AI">&#x1F4AC;</button>
-                        <button type="button" class="repo-toggle" aria-expanded="true">Hide details</button>
-                    </div>
-                </div>
-                <div class="repo-body">
-                    <p class="meta">
-                        <span class="language">mas.to</span> |
-                        <span>marvinborner</span> |
-                        <span>915 points</span> |
-                        <span>477 comments</span> |
-                        <a href="https://news.ycombinator.com/item?id=47252971" target="_blank" rel="noopener noreferrer">discussion</a>
-                    </p>
-                    <p class="history">First seen: March 05, 2026 | Consecutive daily streak: 2 days</p>
-                    <div class="ai-summary">
-                        <h4>Analysis</h4>
-                        <p>Gabriele Svelto, a developer for Mozilla, analyzed Firefox crash reports and discovered that approximately 10% to 15% of browser crashes are caused by faulty hardware rather than software bugs. By deploying a memory-testing heuristic to opt-in user machines, Svelto identified that bit-flips—often resulting from degradation or defects in RAM—are a significant contributor to system instability. This phenomenon affects a wide array of devices, including modern ARM-based systems with soldered memory, suggesting that hardware failure is a much more pervasive issue than previously estimated by the software industry.</p>
-<p>Hacker News readers are likely to find this topic compelling because it challenges the standard assumption that recurring crashes are exclusively the result of faulty code. The discussion highlights the systemic lack of error-correcting memory (ECC) in consumer devices and underscores the ongoing debate regarding industry-wide cost-cutting at the expense of hardware reliability. Furthermore, the technical discourse surrounding the difficulty of isolating hardware faults in a secure, privacy-preserving manner resonates with the community&#x27;s interest in system-level diagnostics and the long-term sustainability of computing hardware.</p>
-                    </div>
-                    
-                <div class="ai-summary">
-                    <h4>Comment Analysis</h4>
-                    <p>Many commenters agree that bitflips and hardware-level memory errors are an underappreciated, persistent reality of modern computing, often exacerbated by high temperatures, overclocking, and the absence of error-correcting code (ECC) memory.</p>
-<p>Skeptics argue that attributing ten percent of all Firefox crashes to hardware defects is implausibly high, suggesting instead that the telemetry data may be misinterpreted or skewed by specific user hardware configurations.</p>
-<p>Detecting underlying hardware instability often requires proactive stress testing, such as running memory diagnostics or monitoring for corrected ECC errors, as many software crashes are symptoms of unreliable physical system components.</p>
-<p>The reliability of these crash statistics remains contentious because telemetry cannot easily distinguish between transient hardware faults, persistent physical defects, or software-driven bugs when users have disparate, non-standard computing environments.</p>
-                </div>
+  <section class="spread arc-academic-drop-cap">
+    <div class="paper-head">
+      <span>Labor Research</span>
+      <span class="numeral-roman">VIII</span>
+      <span>anthropic.com</span>
+    </div>
+    <h2>Measuring the Real-World Impact of AI on Labor</h2>
+    <p class="story-meta">anthropic.com &nbsp;·&nbsp; 332 pts &nbsp;·&nbsp; 563 comments</p>
+    <div class="cols">
+      <div><p>Current research suggests that while AI adoption is high in technical fields, systemic displacement remains absent from the broader economy.</p></div>
+      <div><p>We examine the delta between theoretical automation and actual workforce outcomes.</p><div class="spread-links"><a class="read-more" href="https://www.anthropic.com/research/labor-market-impacts" target="_blank" rel="noopener">Read →</a><a class="dossier-link" href="#dossier-8">Full analysis ↓</a></div></div>
+    </div>
+  </section>
 
-                </div>
-            </section>
+  <section class="spread arc-blueprint">
+    <div class="corner tl">┌</div><div class="corner tr">┐</div>
+    <div class="corner bl">└</div><div class="corner br">┘</div>
+    <div class="numeral">FIG.&nbsp;09</div>
+    <div class="kicker">Maker Challenge</div>
+    <h2>Programming a Colony in the Swarm Challenge</h2>
+    <p class="story-meta">dev.moment.com &nbsp;·&nbsp; 189 pts &nbsp;·&nbsp; 63 comments</p>
+    <p class="lede">This simulation asks developers to govern two hundred ants using a custom assembly language. It is a rigorous test of low-level logic applied to collective behavior systems.</p>
+    <div class="spread-links"><a class="read-more" href="https://dev.moment.com/" target="_blank" rel="noopener">Read →</a><a class="dossier-link" href="#dossier-9">Full analysis ↓</a></div>
+  </section>
 
-            <section class="repo" data-seen-before="0"
-                     data-share-title="The Brand Age"
-                     data-share-url="https://paulgraham.com/brandage.html"
-                     data-share-points="494"
-                     data-share-comments="376">
-                <div class="repo-header-row">
-                    <h3>6. <a href="https://paulgraham.com/brandage.html" target="_blank" rel="noopener noreferrer">The Brand Age</a> </h3>
-                    <div class="header-buttons">
-                        <button type="button" class="discuss-btn" aria-label="Discuss with AI" title="Discuss with AI">&#x1F4AC;</button>
-                        <button type="button" class="repo-toggle" aria-expanded="true">Hide details</button>
-                    </div>
-                </div>
-                <div class="repo-body">
-                    <p class="meta">
-                        <span class="language">paulgraham.com</span> |
-                        <span>bigwheels</span> |
-                        <span>494 points</span> |
-                        <span>376 comments</span> |
-                        <a href="https://news.ycombinator.com/item?id=47264756" target="_blank" rel="noopener noreferrer">discussion</a>
-                    </p>
-                    <p class="history">First seen: March 06, 2026 | Consecutive daily streak: 1 day</p>
-                    <div class="ai-summary">
-                        <h4>Analysis</h4>
-                        <p>This story examines the transformation of the Swiss watch industry following the 1970s &quot;quartz crisis,&quot; which rendered traditional mechanical timekeeping obsolete. As Japanese manufacturers introduced cheaper, more accurate quartz movements, Swiss watchmakers were forced to pivot from engineering precision to luxury branding to survive. The author explains how companies like Patek Philippe and Audemars Piguet shifted their focus toward status-symbol design and aggressive marketing, effectively decoupling a product&#x27;s market value from its technological performance.</p>
-<p>Hacker News readers are likely to find this analysis compelling because it articulates a fundamental tension between product design and marketing that persists across many modern technology sectors. The piece highlights how technological advancement often leads to commodity pricing, forcing incumbent companies to choose between innovation and branding as their primary value proposition. This serves as a cautionary and insightful case study on how market dynamics can drive a shift from &quot;centripetal&quot; design—which seeks the optimal solution—to &quot;centrifugal&quot; branding, which prioritizes differentiation at the cost of functional integrity.</p>
-                    </div>
-                    
-                <div class="ai-summary">
-                    <h4>Comment Analysis</h4>
-                    <p>Commenters broadly agree that once functional product differentiation disappears, companies transition from competing on engineering to relying on brand-driven status, artificial scarcity, and psychological signaling to maintain high profit margins.</p>
-<p>Several users strongly disagree with the essay’s premise that luxury watches lack beauty or engineering value, arguing instead that design excellence and technical craftsmanship remain central to consumer appreciation and brand identity.</p>
-<p>The discussion highlights that branding acts as a significant economic moat, making it difficult for new entrants to displace incumbents even when they provide superior functional alternatives or lower pricing models.</p>
-<p>The sample exhibits a strong selection bias toward the technology-oriented Hacker News demographic, whose tendency to prioritize logic and functionality may cause them to underappreciate the emotional or aesthetic drivers of branding.</p>
-                </div>
+  <section class="spread arc-midnight">
+    <div class="numeral">10</div>
+    <div class="body">
+      <div class="kicker">// Surveillance Tech</div>
+      <h2>Border Protection Purchases Private Mobile Location Data</h2>
+      <p class="story-meta">404media.co &nbsp;·&nbsp; 527 pts &nbsp;·&nbsp; 198 comments</p>
+      <p class="lede">Federal agencies are bypassing warrants by sourcing movement data directly from the advertising ecosystem. The ubiquity of location-tracking apps has turned consumer software into a surveillance network.</p>
+      <div class="spread-links"><a class="read-more" href="https://www.404media.co/cbp-tapped-into-the-online-advertising-ecosystem-to-track-peoples-movements/" target="_blank" rel="noopener">Read →</a><a class="dossier-link" href="#dossier-10">Full analysis ↓</a></div>
+    </div>
+  </section>
 
-                </div>
-            </section>
+  <section id="dossier" class="dossier">
+    <div class="dossier-head">
+      <div class="tagline">Appendix</div>
+      <h2>The Dossier</h2>
+      <p class="intro">Full analysis and reader reactions for today's ten stories. <a href="#top">↑ Back to the edition</a></p>
+    </div>
+    <article id="dossier-1" class="dossier-entry">
+      <div class="dossier-meta">N<sup>o</sup> 01 &nbsp;·&nbsp; Rose Alert &nbsp;·&nbsp; Digital Policy</div>
+      <h3>System76 on Age Verification Laws</h3>
+      <p class="dossier-source">
+        <a href="https://blog.system76.com/post/system76-on-age-verification/" target="_blank" rel="noopener">blog.system76.com</a>
+        &nbsp;·&nbsp; 846 pts &nbsp;·&nbsp; 600 comments
+        &nbsp;·&nbsp; <a href="https://news.ycombinator.com/item?id=47270784" target="_blank" rel="noopener">discussion</a>
+      </p>
+      <h4>Analysis</h4>
+      <p class="muted"><em>Analysis not available.</em></p>
+      
+    </article>
+    <article id="dossier-2" class="dossier-entry">
+      <div class="dossier-meta">N<sup>o</sup> 02 &nbsp;·&nbsp; Product Plate &nbsp;·&nbsp; Launch / AI</div>
+      <h3>GPT-5.4</h3>
+      <p class="dossier-source">
+        <a href="https://openai.com/index/introducing-gpt-5-4/" target="_blank" rel="noopener">openai.com</a>
+        &nbsp;·&nbsp; 1017 pts &nbsp;·&nbsp; 806 comments
+        &nbsp;·&nbsp; <a href="https://news.ycombinator.com/item?id=47265045" target="_blank" rel="noopener">discussion</a>
+      </p>
+      <h4>Analysis</h4>
+      <p class="muted"><em>Analysis not available.</em></p>
+      
+    </article>
+    <article id="dossier-3" class="dossier-entry">
+      <div class="dossier-meta">N<sup>o</sup> 03 &nbsp;·&nbsp; Mint Pattern &nbsp;·&nbsp; Data Structures</div>
+      <h3>Nobody ever got fired for using a struct</h3>
+      <p class="dossier-source">
+        <a href="https://www.feldera.com/blog/nobody-ever-got-fired-for-using-a-struct" target="_blank" rel="noopener">feldera.com</a>
+        &nbsp;·&nbsp; 73 pts &nbsp;·&nbsp; 47 comments
+        &nbsp;·&nbsp; <a href="https://news.ycombinator.com/item?id=47225655" target="_blank" rel="noopener">discussion</a>
+      </p>
+      <h4>Analysis</h4>
+      <p class="muted"><em>Analysis not available.</em></p>
+      
+    </article>
+    <article id="dossier-4" class="dossier-entry">
+      <div class="dossier-meta">N<sup>o</sup> 04 &nbsp;·&nbsp; Editorial Op-Ed &nbsp;·&nbsp; Industry Ethics</div>
+      <h3>Where things stand with the Department of War</h3>
+      <p class="dossier-source">
+        <a href="https://www.anthropic.com/news/where-stand-department-war" target="_blank" rel="noopener">anthropic.com</a>
+        &nbsp;·&nbsp; 629 pts &nbsp;·&nbsp; 785 comments
+        &nbsp;·&nbsp; <a href="https://news.ycombinator.com/item?id=47269263" target="_blank" rel="noopener">discussion</a>
+      </p>
+      <h4>Analysis</h4>
+      <p class="muted"><em>Analysis not available.</em></p>
+      
+    </article>
+    <article id="dossier-5" class="dossier-entry">
+      <div class="dossier-meta">N<sup>o</sup> 05 &nbsp;·&nbsp; Stat Hero &nbsp;·&nbsp; Browser Stability</div>
+      <h3>10% of Firefox crashes are caused by bitflips</h3>
+      <p class="dossier-source">
+        <a href="https://mas.to/@gabrielesvelto/116171750653898304" target="_blank" rel="noopener">mas.to</a>
+        &nbsp;·&nbsp; 915 pts &nbsp;·&nbsp; 477 comments
+        &nbsp;·&nbsp; <a href="https://news.ycombinator.com/item?id=47252971" target="_blank" rel="noopener">discussion</a>
+      </p>
+      <h4>Analysis</h4>
+      <p class="muted"><em>Analysis not available.</em></p>
+      
+    </article>
+    <article id="dossier-6" class="dossier-entry">
+      <div class="dossier-meta">N<sup>o</sup> 06 &nbsp;·&nbsp; Archive &nbsp;·&nbsp; Economic History</div>
+      <h3>The Brand Age</h3>
+      <p class="dossier-source">
+        <a href="https://paulgraham.com/brandage.html" target="_blank" rel="noopener">paulgraham.com</a>
+        &nbsp;·&nbsp; 494 pts &nbsp;·&nbsp; 376 comments
+        &nbsp;·&nbsp; <a href="https://news.ycombinator.com/item?id=47264756" target="_blank" rel="noopener">discussion</a>
+      </p>
+      <h4>Analysis</h4>
+      <p class="muted"><em>Analysis not available.</em></p>
+      
+    </article>
+    <article id="dossier-7" class="dossier-entry">
+      <div class="dossier-meta">N<sup>o</sup> 07 &nbsp;·&nbsp; Notebook &nbsp;·&nbsp; Design Standards</div>
+      <h3>Stop using grey text (2025)</h3>
+      <p class="dossier-source">
+        <a href="https://catskull.net/stop-using-grey-text.html" target="_blank" rel="noopener">catskull.net</a>
+        &nbsp;·&nbsp; 102 pts &nbsp;·&nbsp; 72 comments
+        &nbsp;·&nbsp; <a href="https://news.ycombinator.com/item?id=47268574" target="_blank" rel="noopener">discussion</a>
+      </p>
+      <h4>Analysis</h4>
+      <p class="muted"><em>Analysis not available.</em></p>
+      
+    </article>
+    <article id="dossier-8" class="dossier-entry">
+      <div class="dossier-meta">N<sup>o</sup> 08 &nbsp;·&nbsp; Academic &nbsp;·&nbsp; Labor Research</div>
+      <h3>Labor market impacts of AI: A new measure and early evidence</h3>
+      <p class="dossier-source">
+        <a href="https://www.anthropic.com/research/labor-market-impacts" target="_blank" rel="noopener">anthropic.com</a>
+        &nbsp;·&nbsp; 332 pts &nbsp;·&nbsp; 563 comments
+        &nbsp;·&nbsp; <a href="https://news.ycombinator.com/item?id=47268391" target="_blank" rel="noopener">discussion</a>
+      </p>
+      <h4>Analysis</h4>
+      <p class="muted"><em>Analysis not available.</em></p>
+      
+    </article>
+    <article id="dossier-9" class="dossier-entry">
+      <div class="dossier-meta">N<sup>o</sup> 09 &nbsp;·&nbsp; Blueprint &nbsp;·&nbsp; Maker Challenge</div>
+      <h3>Show HN: Swarm – Program a colony of 200 ants using a custom assembly language</h3>
+      <p class="dossier-source">
+        <a href="https://dev.moment.com/" target="_blank" rel="noopener">dev.moment.com</a>
+        &nbsp;·&nbsp; 189 pts &nbsp;·&nbsp; 63 comments
+        &nbsp;·&nbsp; <a href="https://news.ycombinator.com/item?id=47270807" target="_blank" rel="noopener">discussion</a>
+      </p>
+      <h4>Analysis</h4>
+      <p class="muted"><em>Analysis not available.</em></p>
+      
+    </article>
+    <article id="dossier-10" class="dossier-entry">
+      <div class="dossier-meta">N<sup>o</sup> 10 &nbsp;·&nbsp; Midnight &nbsp;·&nbsp; Surveillance Tech</div>
+      <h3>CBP tapped into the online advertising ecosystem to track peoples’ movements</h3>
+      <p class="dossier-source">
+        <a href="https://www.404media.co/cbp-tapped-into-the-online-advertising-ecosystem-to-track-peoples-movements/" target="_blank" rel="noopener">404media.co</a>
+        &nbsp;·&nbsp; 527 pts &nbsp;·&nbsp; 198 comments
+        &nbsp;·&nbsp; <a href="https://news.ycombinator.com/item?id=47249387" target="_blank" rel="noopener">discussion</a>
+      </p>
+      <h4>Analysis</h4>
+      <p class="muted"><em>Analysis not available.</em></p>
+      
+    </article>
+  </section>
 
-            <section class="repo" data-seen-before="0"
-                     data-share-title="Stop using grey text (2025)"
-                     data-share-url="https://catskull.net/stop-using-grey-text.html"
-                     data-share-points="102"
-                     data-share-comments="72">
-                <div class="repo-header-row">
-                    <h3>7. <a href="https://catskull.net/stop-using-grey-text.html" target="_blank" rel="noopener noreferrer">Stop using grey text (2025)</a> </h3>
-                    <div class="header-buttons">
-                        <button type="button" class="discuss-btn" aria-label="Discuss with AI" title="Discuss with AI">&#x1F4AC;</button>
-                        <button type="button" class="repo-toggle" aria-expanded="true">Hide details</button>
-                    </div>
-                </div>
-                <div class="repo-body">
-                    <p class="meta">
-                        <span class="language">catskull.net</span> |
-                        <span>catskull</span> |
-                        <span>102 points</span> |
-                        <span>72 comments</span> |
-                        <a href="https://news.ycombinator.com/item?id=47268574" target="_blank" rel="noopener noreferrer">discussion</a>
-                    </p>
-                    <p class="history">First seen: March 06, 2026 | Consecutive daily streak: 1 day</p>
-                    <div class="ai-summary">
-                        <h4>Analysis</h4>
-                        <p>The article argues strongly against the common design practice of using low-contrast grey text on off-white backgrounds, labeling it an unnecessary aesthetic choice that degrades readability. The author points out that this trend requires designers to intentionally override browser defaults with specific CSS, effectively reducing the information fidelity of their content. The piece concludes by suggesting that if designers insist on these styling choices, they should at least implement the `prefers-contrast` media query to improve accessibility for all users.</p>
-<p>Hacker News readers are likely interested in this topic because it touches on the frequent tension between modern web aesthetics and core usability principles. The community often debates the trade-offs of minimalist design, and this post provides a technical perspective on how poor styling choices can actively hinder user experience. By framing accessibility as a matter of information density and high-fidelity content delivery, the author appeals to the engineering-focused mindset that values functional performance over superficial visual trends.</p>
-                    </div>
-                    
-                <div class="ai-summary">
-                    <h4>Comment Analysis</h4>
-                    <p>Commenters widely agree that low contrast—not the color grey itself—is the fundamental issue, advocating for adherence to established WCAG guidelines to ensure text remains legible for users with vision impairments.</p>
-<p>Some designers argue against using pure black text, suggesting that dark or charcoal grey often provides a more natural, comfortable viewing experience and improved readability compared to harsh high-contrast alternatives.</p>
-<p>Users recommend that developers use automated contrast checkers and CSS variables to verify accessibility and allow for personal customization, rather than relying on subjective design choices that may hinder information access.</p>
-<p>The discussion is heavily influenced by criticism of the original article&#x27;s hypocrisy, as readers pointed out that the author&#x27;s own website fails to meet the very accessibility standards it explicitly promotes.</p>
-                </div>
-
-                </div>
-            </section>
-
-            <section class="repo" data-seen-before="0"
-                     data-share-title="Labor market impacts of AI: A new measure and early evidence"
-                     data-share-url="https://www.anthropic.com/research/labor-market-impacts"
-                     data-share-points="332"
-                     data-share-comments="563">
-                <div class="repo-header-row">
-                    <h3>8. <a href="https://www.anthropic.com/research/labor-market-impacts" target="_blank" rel="noopener noreferrer">Labor market impacts of AI: A new measure and early evidence</a> </h3>
-                    <div class="header-buttons">
-                        <button type="button" class="discuss-btn" aria-label="Discuss with AI" title="Discuss with AI">&#x1F4AC;</button>
-                        <button type="button" class="repo-toggle" aria-expanded="true">Hide details</button>
-                    </div>
-                </div>
-                <div class="repo-body">
-                    <p class="meta">
-                        <span class="language">anthropic.com</span> |
-                        <span>jjwiseman</span> |
-                        <span>332 points</span> |
-                        <span>563 comments</span> |
-                        <a href="https://news.ycombinator.com/item?id=47268391" target="_blank" rel="noopener noreferrer">discussion</a>
-                    </p>
-                    <p class="history">First seen: March 06, 2026 | Consecutive daily streak: 1 day</p>
-                    <div class="ai-summary">
-                        <h4>Analysis</h4>
-                        <p>Anthropic researchers have developed a new &quot;observed exposure&quot; metric to quantify how AI usage in professional settings compares to the theoretical task-displacement potential of large language models. By combining O*NET occupational data with real-world usage patterns from their own platforms, the study evaluates whether AI is currently reshaping labor markets. The findings indicate that while certain professions like computer programming and data entry show high coverage, there is currently no systematic evidence of widespread unemployment directly attributable to AI.</p>
-<p>Hacker News readers will likely find this study significant because it moves beyond speculative fear-mongering to provide a data-driven framework for tracking economic disruption. The paper’s transparent methodology, which acknowledges the gap between theoretical AI capabilities and actual workplace adoption, offers a pragmatic lens for evaluating ongoing shifts in professional roles. Furthermore, the suggestive evidence that hiring for younger workers has slowed in high-exposure occupations provides a concrete starting point for debating the long-term impact of AI on career entry and professional development.</p>
-                    </div>
-                    
-                <div class="ai-summary">
-                    <h4>Comment Analysis</h4>
-                    <p>While some developers report significant personal productivity gains using AI for coding and research tasks, there is little evidence that these individual improvements have yet translated into widespread, measurable organizational efficiency.</p>
-<p>Skeptics argue that AI&#x27;s impact is largely overstated, noting that existing organizational bottlenecks, coordination overhead, and corporate processes remain unchanged, meaning software delivery speeds have not accelerated for many professional teams.</p>
-<p>Practical integration of AI currently functions best as a collaborative tool for managing boilerplate and complex codebases, though it requires constant human oversight to mitigate errors and ensure high-quality output.</p>
-<p>The discussion is heavily skewed toward software engineering perspectives, potentially masking varied impacts across other industries and failing to account for the lag between tool adoption and actual macroeconomic labor shifts.</p>
-                </div>
-
-                </div>
-            </section>
-
-            <section class="repo" data-seen-before="0"
-                     data-share-title="Show HN: Swarm – Program a colony of 200 ants using a custom assembly language"
-                     data-share-url="https://dev.moment.com/"
-                     data-share-points="189"
-                     data-share-comments="63">
-                <div class="repo-header-row">
-                    <h3>9. <a href="https://dev.moment.com/" target="_blank" rel="noopener noreferrer">Show HN: Swarm – Program a colony of 200 ants using a custom assembly language</a> </h3>
-                    <div class="header-buttons">
-                        <button type="button" class="discuss-btn" aria-label="Discuss with AI" title="Discuss with AI">&#x1F4AC;</button>
-                        <button type="button" class="repo-toggle" aria-expanded="true">Hide details</button>
-                    </div>
-                </div>
-                <div class="repo-body">
-                    <p class="meta">
-                        <span class="language">dev.moment.com</span> |
-                        <span>armandhammer10</span> |
-                        <span>189 points</span> |
-                        <span>63 comments</span> |
-                        <a href="https://news.ycombinator.com/item?id=47270807" target="_blank" rel="noopener noreferrer">discussion</a>
-                    </p>
-                    <p class="history">First seen: March 06, 2026 | Consecutive daily streak: 1 day</p>
-                    <div class="ai-summary">
-                        <h4>Analysis</h4>
-                        <p>Moment has launched a public programming challenge called &quot;Swarm,&quot; which invites developers to control an ant colony simulation using a custom assembly language. Participants must write a single program that governs the behavior of 200 individual ants, relying solely on local sensing and pheromone-based communication to collect food across various map layouts. The challenge serves as an internal hiring tool for the company, with the top performer on the live leaderboard earning a trip to Maui.</p>
-<p>Hacker News readers are likely to appreciate this challenge because it emphasizes algorithmic optimization, emergent behavior, and resource-constrained programming. The constraint of using an assembly-like language to manage decentralized agents provides a classic puzzle that rewards elegant, low-level logic. By framing the competition as both a fun coding exercise and a high-stakes recruitment tool, Moment engages the community&#x27;s interest in systems design and competitive optimization.</p>
-                    </div>
-                    
-                <div class="ai-summary">
-                    <h4>Comment Analysis</h4>
-                    <p>Users generally perceive the project as an engaging and creative challenge, though some question whether the expensive travel incentive effectively identifies top talent or serves as an efficient recruitment strategy.</p>
-<p>Critics argue that the recruitment model may inadvertently filter for specific demographics, such as young people without children, rather than focusing solely on the technical skills required for the task.</p>
-<p>The project highlights the balance between exploration and collection algorithms in swarm intelligence, framing assembly programming as a collective effort to optimize individual behaviors within a limited system.</p>
-<p>This analysis is limited by a small sample size of seven comments, which may not capture the full range of community sentiment regarding the platform&#x27;s security or overall technical merit.</p>
-                </div>
-
-                </div>
-            </section>
-
-            <section class="repo" data-seen-before="1"
-                     data-share-title="CBP tapped into the online advertising ecosystem to track peoples’ movements"
-                     data-share-url="https://www.404media.co/cbp-tapped-into-the-online-advertising-ecosystem-to-track-peoples-movements/"
-                     data-share-points="527"
-                     data-share-comments="198">
-                <div class="repo-header-row">
-                    <h3>10. <a href="https://www.404media.co/cbp-tapped-into-the-online-advertising-ecosystem-to-track-peoples-movements/" target="_blank" rel="noopener noreferrer">CBP tapped into the online advertising ecosystem to track peoples’ movements</a> <span class="seen-badge">Not new today</span></h3>
-                    <div class="header-buttons">
-                        <button type="button" class="discuss-btn" aria-label="Discuss with AI" title="Discuss with AI">&#x1F4AC;</button>
-                        <button type="button" class="repo-toggle" aria-expanded="true">Hide details</button>
-                    </div>
-                </div>
-                <div class="repo-body">
-                    <p class="meta">
-                        <span class="language">404media.co</span> |
-                        <span>ece</span> |
-                        <span>527 points</span> |
-                        <span>198 comments</span> |
-                        <a href="https://news.ycombinator.com/item?id=47249387" target="_blank" rel="noopener noreferrer">discussion</a>
-                    </p>
-                    <p class="history">First seen: March 05, 2026 | Consecutive daily streak: 2 days</p>
-                    <div class="ai-summary">
-                        <h4>Analysis</h4>
-                        <p>An internal Department of Homeland Security document reveals that U.S. Customs and Border Protection (CBP) has been purchasing location data derived from the online advertising ecosystem to track individuals. This practice involves aggregating precise movement data siphoned from everyday mobile applications, such as fitness trackers, dating services, and video games. By leveraging the vast data brokerage market, the agency is able to conduct surveillance without the traditional judicial oversight typically required for physical tracking warrants.</p>
-<p>Hacker News readers will likely find this significant because it highlights the alarming ease with which government entities can bypass privacy protections by purchasing commercially available data. The story underscores the pervasive nature of the ad-tech surveillance machine, illustrating that data harvested for targeted advertising serves as a potent tool for state-level monitoring. Furthermore, it adds urgency to ongoing debates regarding legislative oversight, as nearly 70 lawmakers are currently calling for investigations into these procurement practices by various DHS agencies.</p>
-                    </div>
-                    
-                <div class="ai-summary">
-                    <h4>Comment Analysis</h4>
-                    <p>Commenters largely agree that the government’s ability to purchase sensitive location data from private brokers represents a significant, under-regulated end-run around constitutional privacy protections and traditional Fourth Amendment judicial oversight.</p>
-<p>Some participants argue that programmers and technical workers bear personal responsibility for building pervasive surveillance infrastructure, while others contend that systemic industry incentives and corporate management are the true culprits.</p>
-<p>Technically, the ad-tech ecosystem relies on fragmented, noisy, and often imprecise data signals, making reliable individual tracking difficult despite widespread data collection and the persistent challenges posed by browser fingerprinting.</p>
-<p>This sample reflects a cynical, tech-literate demographic that may overemphasize the intentionality of developers while potentially underestimating the utility or economic necessity of the advertising-supported business model for the broader web.</p>
-                </div>
-
-                </div>
-            </section>
-
-            </div>
-        </article>
-    </main>
-    <footer>
-        <p>Generated automatically. Data from <a href="https://news.ycombinator.com/">Hacker News</a>.</p>
-    </footer>
+  <footer class="colophon">
+    <p class="sig">— that's the edition.</p>
+    <p class="meta">Set in Fraunces &amp; Inter · Compiled March 6, 2026</p>
+    <p class="classic-link"><a href="classic.html">Prefer the classic card view? →</a></p>
+  </footer>
 
 <script>
 (() => {
-    const readKey = "gtd:read_days:hn:v1";
-    const dayStr = "2026-03-06";
-
-    let stored = [];
-    try {
-        stored = JSON.parse(localStorage.getItem(readKey) || "[]");
-        if (!Array.isArray(stored)) {
-            stored = [];
-        }
-    } catch (_err) {
-        stored = [];
-    }
-
-    if (!stored.includes(dayStr)) {
-        stored.push(dayStr);
-        stored.sort();
-        localStorage.setItem(readKey, JSON.stringify(stored));
-    }
-
-    const collapseParam = new URLSearchParams(window.location.search).get("collapse_seen");
-    const collapseSeen = collapseParam === "0" ? false : true;
-
-    function setCollapsed(repoEl, collapsed) {
-        repoEl.classList.toggle("collapsed", collapsed);
-        const button = repoEl.querySelector(".repo-toggle");
-        if (button) {
-            button.textContent = collapsed ? "Show details" : "Hide details";
-            button.setAttribute("aria-expanded", String(!collapsed));
-        }
-    }
-
-    const repos = Array.from(document.querySelectorAll("section.repo[data-seen-before]"));
-
-    repos.forEach((repoEl) => {
-        const toggle = repoEl.querySelector(".repo-toggle");
-        if (!toggle) {
-            return;
-        }
-
-        toggle.addEventListener("click", () => {
-            setCollapsed(repoEl, !repoEl.classList.contains("collapsed"));
-        });
-    });
-
-    const collapseBtn = document.getElementById("collapse-seen-btn");
-    const expandBtn = document.getElementById("expand-all-btn");
-
-    if (collapseBtn) {
-        collapseBtn.addEventListener("click", () => {
-            repos.forEach((repoEl) => {
-                if (repoEl.dataset.seenBefore === "1") {
-                    setCollapsed(repoEl, true);
-                }
-            });
-        });
-    }
-
-    if (expandBtn) {
-        expandBtn.addEventListener("click", () => {
-            repos.forEach((repoEl) => setCollapsed(repoEl, false));
-        });
-    }
-
-    if (collapseSeen) {
-        repos.forEach((repoEl) => {
-            if (repoEl.dataset.seenBefore === "1") {
-                setCollapsed(repoEl, true);
-            }
-        });
-    }
-
-    // Discuss with AI button
-    const toast = document.createElement("div");
-    toast.className = "discuss-toast";
-    document.body.appendChild(toast);
-
-    function showToast(msg) {
-        toast.textContent = msg;
-        toast.classList.add("show");
-        setTimeout(() => toast.classList.remove("show"), 2500);
-    }
-
-    function buildHNMarkdown(card) {
-        const title = card.dataset.shareTitle || "";
-        const url = card.dataset.shareUrl || "";
-        const points = card.dataset.sharePoints || "0";
-        const comments = card.dataset.shareComments || "0";
-        const summaries = card.querySelectorAll(".ai-summary");
-        let md = "# " + title + "\n";
-        md += "Source: " + url + " | " + points + " points | " + comments + " comments\n";
-        summaries.forEach((s) => {
-            const heading = s.querySelector("h4");
-            const label = heading ? heading.textContent.trim() : "Analysis";
-            const content = Array.from(s.querySelectorAll("p"))
-                .map((p) => p.textContent.trim())
-                .join("\n");
-            md += "\n## " + label + "\n" + content + "\n";
-        });
-        return md;
-    }
-
-    document.querySelectorAll(".discuss-btn").forEach((btn) => {
-        btn.addEventListener("click", () => {
-            const card = btn.closest("section.repo");
-            if (!card) return;
-            const md = buildHNMarkdown(card);
-            const text = "I'd like to discuss this article with you. Here's a summary:\n\n" + md;
-            const title = "Discuss: " + (card.dataset.shareTitle || "");
-            if (navigator.share) {
-                navigator.share({ title: title, text: text }).catch(() => {});
-            } else {
-                navigator.clipboard.writeText(text).then(
-                    () => showToast("Copied to clipboard \u2014 paste into your AI chat"),
-                    () => showToast("Failed to copy")
-                );
-            }
-        });
-    });
+  const key = "gtd:read_days:hn:v1";
+  const day = "2026-03-06";
+  let stored = [];
+  try {
+    stored = JSON.parse(localStorage.getItem(key) || "[]");
+    if (!Array.isArray(stored)) stored = [];
+  } catch (_) { stored = []; }
+  if (!stored.includes(day)) {
+    stored.push(day);
+    stored.sort();
+    localStorage.setItem(key, JSON.stringify(stored));
+  }
 })();
 </script>
 

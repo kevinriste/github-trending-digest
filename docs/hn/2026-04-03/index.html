@@ -1,535 +1,781 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Hacker News Digest - April 03, 2026</title>
-    <link rel="stylesheet" href="../../style.css">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Morning Edition — Friday, April 3, 2026</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght,SOFT@0,9..144,300..900,0..100;1,9..144,300..900,0..100&family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+
+  :root { --ink: #121212; --paper: #f5f1e8; }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  body {
+    font-family: 'Inter', system-ui, sans-serif;
+    font-size: 20px;
+    line-height: 1.5;
+    color: var(--ink);
+    background: var(--paper);
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+  a { color: inherit; }
+  a:hover { opacity: 0.7; }
+  .frnc { font-family: 'Fraunces', Georgia, serif; }
+  .mono { font-family: 'JetBrains Mono', ui-monospace, monospace; }
+
+  /* ───── MASTHEAD ───── */
+  .masthead { padding: 2rem 6vw 2.5rem; border-bottom: 3px double #121212; background: #f5f1e8; text-align: center; }
+  .masthead-nav {
+    display: flex;
+    justify-content: center;
+    gap: 1.2rem;
+    align-items: baseline;
+    margin-bottom: 2rem;
+    font-weight: 600;
+    font-size: 1rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+  }
+  .masthead-nav a { text-decoration: none; border-bottom: 2px solid transparent; padding-bottom: 2px; }
+  .masthead-nav a:hover { border-bottom-color: #121212; opacity: 1; }
+  .masthead-nav span { opacity: 0.4; }
+  .masthead .tagline { font-weight: 600; font-size: 1.2rem; letter-spacing: 0.4em; text-transform: uppercase; margin-bottom: 1.2rem; }
+  .masthead h1 {
+    font-family: 'Fraunces', Georgia, serif;
+    font-weight: 900;
+    font-style: italic;
+    font-size: clamp(4rem, 13vw, 12rem);
+    line-height: 0.88;
+    letter-spacing: -0.035em;
+    margin: 0 0 1rem;
+    font-variation-settings: "SOFT" 50;
+  }
+  .masthead .issue-line {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    max-width: 1000px;
+    margin: 2rem auto 0;
+    padding-top: 1.25rem;
+    border-top: 1px solid #121212;
+    font-weight: 500;
+    font-size: 1.1rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+  }
+
+  /* ───── SPREAD BASE ───── */
+  .spread {
+    min-height: 100vh;
+    padding: 6vh 6vw;
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+  .spread .story-meta { font-weight: 600; font-size: 1rem; letter-spacing: 0.28em; text-transform: uppercase; }
+  .spread-links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 2rem 2.5rem;
+    align-items: baseline;
+    margin-top: 2.5rem;
+  }
+  .spread .read-more {
+    display: inline-block;
+    font-size: 1.1rem;
+    font-weight: 700;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    text-decoration: none;
+    padding-bottom: 0.4rem;
+    border-bottom: 3px solid currentColor;
+  }
+  .spread .dossier-link {
+    font-size: 1rem;
+    font-weight: 500;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    text-decoration: none;
+    opacity: 0.7;
+    padding-bottom: 0.3rem;
+    border-bottom: 1px solid currentColor;
+  }
+  .spread .dossier-link:hover { opacity: 1; }
+
+  /* ───── STAT HERO ───── */
+  .arc-stat-hero { background: #eee6d3; color: #0d1a2e; padding: 8vh 6vw; }
+  .arc-stat-hero .numeral {
+    font-family: 'Fraunces', serif;
+    font-weight: 900;
+    font-style: italic;
+    font-size: clamp(12rem, 36vw, 34rem);
+    line-height: 0.8;
+    letter-spacing: -0.06em;
+    color: #0d1a2e;
+    position: absolute;
+    right: -2vw;
+    top: 8vh;
+    opacity: 0.94;
+    pointer-events: none;
+    white-space: nowrap;
+  }
+  .arc-stat-hero .kicker { font-weight: 700; font-size: 1.15rem; letter-spacing: 0.4em; text-transform: uppercase; color: #c13830; position: relative; z-index: 2; margin-bottom: 1.5rem; }
+  .arc-stat-hero h2 { font-family: 'Fraunces', serif; font-weight: 800; font-size: clamp(3rem, 8vw, 7.5rem); line-height: 0.95; letter-spacing: -0.03em; max-width: 60%; margin: 0 0 2rem; position: relative; z-index: 2; }
+  .arc-stat-hero .lede { font-family: 'Fraunces', serif; font-size: clamp(1.4rem, 2.2vw, 2rem); line-height: 1.45; max-width: 55%; font-weight: 400; position: relative; z-index: 2; margin: 0; }
+  .arc-stat-hero .story-meta { color: #c13830; position: relative; z-index: 2; }
+  .arc-stat-hero .spread-links { position: relative; z-index: 2; }
+
+  /* ───── MIDNIGHT ───── */
+  .arc-midnight { background: radial-gradient(ellipse at 70% 30%, #1a1235 0%, #05050c 65%); color: #e9e4ff; }
+  .arc-midnight::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background-image:
+      radial-gradient(circle at 20% 80%, rgba(180,120,255,0.18), transparent 50%),
+      radial-gradient(circle at 80% 20%, rgba(120,200,255,0.12), transparent 55%);
+    pointer-events: none;
+  }
+  .arc-midnight .numeral {
+    font-family: 'Fraunces', serif;
+    font-size: clamp(8rem, 22vw, 20rem);
+    font-weight: 300;
+    font-style: italic;
+    color: transparent;
+    -webkit-text-stroke: 2px rgba(233,228,255,0.45);
+    line-height: 1;
+    position: absolute;
+    top: 6vh;
+    left: 5vw;
+    letter-spacing: -0.05em;
+  }
+  .arc-midnight .body { position: relative; z-index: 2; margin-top: 12rem; max-width: 90%; }
+  .arc-midnight .kicker { font-family: 'JetBrains Mono', monospace; font-size: 1.1rem; letter-spacing: 0.2em; text-transform: uppercase; color: #b48bff; margin-bottom: 2rem; }
+  .arc-midnight h2 { font-weight: 800; font-size: clamp(3rem, 7.5vw, 6.5rem); line-height: 1; letter-spacing: -0.035em; margin: 0 0 2.5rem; }
+  .arc-midnight .lede { font-size: 1.35rem; line-height: 1.55; color: #cdc6e8; max-width: 780px; margin: 0; }
+  .arc-midnight .story-meta { color: #8a7cc6; margin-bottom: 1.5rem; }
+
+  /* ───── ALERT STAMP ───── */
+  .arc-alert-stamp { background: #f8e5de; color: #2b0808; background-image: repeating-linear-gradient(transparent, transparent 3rem, rgba(193,56,48,0.08) 3rem, rgba(193,56,48,0.08) calc(3rem + 1px)); }
+  .arc-alert-stamp .stamp {
+    position: absolute; top: 8vh; right: 5vw;
+    transform: rotate(-14deg);
+    border: 6px solid #c13830;
+    padding: 1.2rem 2.5rem;
+    font-weight: 900;
+    font-size: clamp(2rem, 4vw, 3.5rem);
+    letter-spacing: 0.15em;
+    color: #c13830;
+    background: rgba(248,229,222,0.6);
+    text-transform: uppercase;
+  }
+  .arc-alert-stamp .numeral { font-family: 'Fraunces', serif; font-style: italic; font-weight: 900; font-size: clamp(6rem, 15vw, 12rem); line-height: 1; color: #c13830; margin: 0 0 1rem; }
+  .arc-alert-stamp .kicker { font-weight: 800; font-size: 1.2rem; letter-spacing: 0.3em; text-transform: uppercase; color: #c13830; margin-bottom: 1rem; }
+  .arc-alert-stamp h2 { font-family: 'Fraunces', serif; font-weight: 800; font-size: clamp(2.5rem, 6vw, 5.5rem); line-height: 1.02; letter-spacing: -0.025em; max-width: 75%; margin: 0 0 2rem; }
+  .arc-alert-stamp .lede { font-size: 1.4rem; line-height: 1.55; max-width: 700px; font-weight: 400; margin: 0; }
+  .arc-alert-stamp .story-meta { color: #c13830; margin-bottom: 1.5rem; }
+
+  /* ───── ACADEMIC DROP CAP ───── */
+  .arc-academic-drop-cap { background: #efe7d1; color: #1b1a14; padding: 8vh 8vw; }
+  .arc-academic-drop-cap .paper-head {
+    display: flex; justify-content: space-between; align-items: baseline;
+    border-bottom: 1.5px solid #1b1a14;
+    padding-bottom: 0.7rem; margin-bottom: 3rem;
+    font-weight: 500; font-size: 1rem; letter-spacing: 0.25em; text-transform: uppercase;
+  }
+  .arc-academic-drop-cap .numeral-roman { font-family: 'Fraunces', serif; font-weight: 700; font-size: clamp(2.5rem, 4vw, 4rem); font-style: italic; letter-spacing: 0.08em; }
+  .arc-academic-drop-cap h2 { font-family: 'Fraunces', serif; font-weight: 400; font-style: italic; font-size: clamp(2.5rem, 5.5vw, 5rem); line-height: 1.05; letter-spacing: -0.015em; margin: 0 0 1.5rem; max-width: 85%; }
+  .arc-academic-drop-cap .story-meta { margin-bottom: 2rem; }
+  .arc-academic-drop-cap .cols { display: grid; grid-template-columns: 1fr 1fr; gap: 3.5rem; }
+  .arc-academic-drop-cap .cols p { font-family: 'Fraunces', serif; font-size: 1.35rem; line-height: 1.55; text-align: justify; hyphens: auto; margin: 0 0 1.2rem; }
+  .arc-academic-drop-cap .cols > div:first-child p:first-child::first-letter {
+    font-family: 'Fraunces', serif;
+    font-weight: 900;
+    font-size: 7em;
+    float: left;
+    line-height: 0.82;
+    padding: 0.1em 0.15em 0 0;
+    color: #7a1e14;
+  }
+
+  /* ───── TERMINAL ───── */
+  .arc-terminal { background: #000; color: #8cff8c; font-family: 'JetBrains Mono', ui-monospace, monospace; padding: 8vh 6vw; }
+  .arc-terminal .prompt-row { font-size: 1.15rem; font-weight: 500; color: #4ac94a; margin-bottom: 3rem; }
+  .arc-terminal .numeral { font-size: clamp(6rem, 14vw, 13rem); font-weight: 700; line-height: 1; color: #8cff8c; margin: 0 0 1rem; }
+  .arc-terminal .numeral::before { content: "> "; color: #4ac94a; }
+  .arc-terminal h2 { font-weight: 700; font-size: clamp(2.2rem, 5vw, 4.5rem); line-height: 1.1; margin: 0 0 2rem; max-width: 90%; color: #d4ffd4; }
+  .arc-terminal .lede { font-size: 1.3rem; line-height: 1.6; max-width: 780px; color: #8cff8c; margin: 0; }
+  .arc-terminal .lede::before { content: "# "; color: #4ac94a; }
+  .arc-terminal .story-meta { color: #4ac94a; margin-bottom: 1.5rem; }
+  .arc-terminal .cursor { display: inline-block; width: 0.55em; height: 1.1em; background: #8cff8c; vertical-align: text-bottom; margin-left: 0.2em; animation: me-blink 1s steps(2, start) infinite; }
+  @keyframes me-blink { to { visibility: hidden; } }
+  .arc-terminal .read-more { color: #8cff8c; border-color: #4ac94a; }
+  .arc-terminal .dossier-link { color: #8cff8c; border-color: rgba(140,255,140,0.4); }
+
+  /* ───── EDITORIAL PULLQUOTE ───── */
+  .arc-editorial-pullquote {
+    background: #1a1a1a; color: #f5f1e8; padding: 8vh 6vw;
+    display: grid; grid-template-columns: 1fr 1.1fr; gap: 5rem; align-items: center;
+  }
+  .arc-editorial-pullquote .left { position: relative; }
+  .arc-editorial-pullquote .numeral { font-family: 'Fraunces', serif; font-weight: 900; font-style: italic; font-size: clamp(8rem, 18vw, 16rem); line-height: 0.9; color: #f5f1e8; margin: 0 0 1rem; letter-spacing: -0.05em; }
+  .arc-editorial-pullquote .kicker { font-weight: 700; font-size: 1.1rem; letter-spacing: 0.35em; text-transform: uppercase; color: #e8b84a; margin-bottom: 1.5rem; }
+  .arc-editorial-pullquote h2 { font-family: 'Fraunces', serif; font-weight: 700; font-size: clamp(2rem, 4vw, 3.5rem); line-height: 1.1; margin: 0 0 2rem; }
+  .arc-editorial-pullquote .pullquote {
+    font-family: 'Fraunces', serif; font-style: italic; font-weight: 400;
+    font-size: clamp(1.8rem, 3.5vw, 3rem); line-height: 1.15;
+    color: #f5f1e8; border-left: 4px solid #e8b84a; padding-left: 2rem; margin: 0;
+  }
+  .arc-editorial-pullquote .pullquote::before { content: "\201C"; font-size: 1.4em; line-height: 0; vertical-align: -0.4em; color: #e8b84a; margin-right: 0.1em; }
+  .arc-editorial-pullquote .pullquote::after { content: "\201D"; font-size: 1.4em; line-height: 0; vertical-align: -0.6em; color: #e8b84a; margin-left: 0.05em; }
+  .arc-editorial-pullquote .story-meta { color: #e8b84a; }
+
+  /* ───── CAUTION TAPE ───── */
+  .arc-caution-tape { background: #fff200; color: #0a0a0a; padding: 8vh 6vw; }
+  .arc-caution-tape::before { content: ""; position: absolute; inset: 0 0 auto 0; height: 2.5rem; background: repeating-linear-gradient(135deg, #0a0a0a 0 2rem, #fff200 2rem 4rem); }
+  .arc-caution-tape::after { content: ""; position: absolute; inset: auto 0 0 0; height: 2.5rem; background: repeating-linear-gradient(135deg, #0a0a0a 0 2rem, #fff200 2rem 4rem); }
+  .arc-caution-tape .tag {
+    position: absolute; top: 6vh; right: 6vw;
+    writing-mode: vertical-rl; transform: rotate(180deg);
+    font-weight: 900; font-size: 1.3rem; letter-spacing: 0.5em; text-transform: uppercase;
+    background: #0a0a0a; color: #fff200; padding: 1rem 0.6rem;
+  }
+  .arc-caution-tape .numeral { font-weight: 900; font-size: clamp(10rem, 28vw, 24rem); line-height: 0.85; letter-spacing: -0.06em; margin: 0 0 1rem; -webkit-text-stroke: 3px #0a0a0a; color: transparent; }
+  .arc-caution-tape .kicker { font-weight: 900; font-size: 1.3rem; letter-spacing: 0.35em; text-transform: uppercase; background: #0a0a0a; color: #fff200; padding: 0.5rem 1rem; display: inline-block; margin-bottom: 1.5rem; }
+  .arc-caution-tape h2 { font-weight: 900; font-size: clamp(2.5rem, 6vw, 5.5rem); line-height: 0.98; letter-spacing: -0.03em; margin: 0 0 2rem; max-width: 85%; text-transform: uppercase; }
+  .arc-caution-tape .lede { font-size: 1.35rem; line-height: 1.5; max-width: 680px; font-weight: 500; margin: 0; }
+  .arc-caution-tape .story-meta { margin-bottom: 1.5rem; }
+
+  /* ───── NOTEBOOK ───── */
+  .arc-notebook { background: repeating-linear-gradient(#fdfaf0 0 2.2rem, rgba(120,104,60,0.22) 2.2rem 2.25rem); color: #1f1a0d; padding: 8vh 8vw; }
+  .arc-notebook::before { content: ""; position: absolute; top: 0; bottom: 0; left: 8vw; width: 2px; background: #c13830; opacity: 0.5; }
+  .arc-notebook .numeral { font-family: 'Fraunces', serif; font-weight: 400; font-style: italic; font-size: clamp(7rem, 17vw, 15rem); line-height: 1; letter-spacing: -0.02em; color: #1f1a0d; margin: 0 0 0.5rem; }
+  .arc-notebook .kicker { font-weight: 600; font-size: 1.1rem; letter-spacing: 0.3em; text-transform: uppercase; color: #8a6b1f; margin-bottom: 1rem; }
+  .arc-notebook h2 { font-family: 'Fraunces', serif; font-weight: 400; font-style: italic; font-size: clamp(2.8rem, 6.5vw, 6rem); line-height: 1; letter-spacing: -0.02em; margin: 0 0 2rem; max-width: 85%; }
+  .arc-notebook .lede { font-family: 'Fraunces', serif; font-weight: 400; font-size: clamp(1.35rem, 2vw, 1.7rem); line-height: 2.2rem; max-width: 700px; margin: 0; }
+
+  /* ───── MINT PATTERN ───── */
+  .arc-mint-pattern { background: #a8e6cf; color: #0d2a1e; padding: 8vh 6vw; }
+  .arc-mint-pattern::before {
+    content: "XOR LISP AWK SED GREP CURL MAKE GIT VIM SSH";
+    position: absolute; top: 10vh; left: 0; right: 0;
+    font-family: 'JetBrains Mono', monospace;
+    font-weight: 700; font-size: 2.5rem; letter-spacing: 0.3em;
+    color: rgba(13,42,30,0.1); white-space: nowrap; overflow: hidden; pointer-events: none;
+  }
+  .arc-mint-pattern .numeral-block { position: relative; z-index: 2; }
+  .arc-mint-pattern .numeral { font-family: 'Fraunces', serif; font-weight: 900; font-size: clamp(10rem, 28vw, 24rem); line-height: 0.85; letter-spacing: -0.06em; color: #0d2a1e; margin: 0; font-style: italic; }
+  .arc-mint-pattern .kicker { font-family: 'JetBrains Mono', monospace; font-weight: 700; font-size: 1.1rem; letter-spacing: 0.2em; text-transform: uppercase; color: #0d2a1e; margin: 1.5rem 0; position: relative; z-index: 2; }
+  .arc-mint-pattern h2 { font-family: 'Fraunces', serif; font-weight: 800; font-size: clamp(2.5rem, 6vw, 5rem); line-height: 1; letter-spacing: -0.025em; margin: 0 0 2rem; max-width: 85%; position: relative; z-index: 2; }
+  .arc-mint-pattern .lede { font-family: 'Fraunces', serif; font-size: 1.4rem; line-height: 1.55; max-width: 680px; font-weight: 400; margin: 0; position: relative; z-index: 2; }
+  .arc-mint-pattern .story-meta { position: relative; z-index: 2; margin-bottom: 1.5rem; }
+  .arc-mint-pattern .spread-links { position: relative; z-index: 2; }
+
+  /* ───── PASTEL PLAYFUL ───── */
+  .arc-pastel-playful { background: #fde6f2; color: #2a0a2e; padding: 8vh 6vw 4vh; }
+  .arc-pastel-playful .alpha-grid {
+    position: absolute; top: 0; left: 0; right: 0;
+    display: grid; grid-template-columns: repeat(13, 1fr);
+    font-family: 'Fraunces', serif; font-style: italic;
+    font-size: clamp(1.2rem, 2.5vw, 2rem); font-weight: 700;
+    color: rgba(42,10,46,0.2); padding: 1rem 6vw; letter-spacing: 0.2em; pointer-events: none;
+  }
+  .arc-pastel-playful .alpha-grid span { text-align: center; }
+  .arc-pastel-playful .numeral { font-family: 'Fraunces', serif; font-weight: 900; font-style: italic; font-size: clamp(10rem, 26vw, 22rem); line-height: 0.85; letter-spacing: -0.05em; color: #c13871; margin: 2rem 0 0; }
+  .arc-pastel-playful .kicker { font-weight: 700; font-size: 1.1rem; letter-spacing: 0.35em; text-transform: uppercase; color: #c13871; margin-bottom: 1rem; }
+  .arc-pastel-playful h2 { font-family: 'Fraunces', serif; font-weight: 400; font-style: italic; font-size: clamp(2.8rem, 6.5vw, 5.5rem); line-height: 1; letter-spacing: -0.02em; margin: 0 0 2rem; max-width: 85%; }
+  .arc-pastel-playful .lede { font-size: 1.35rem; line-height: 1.5; max-width: 680px; margin: 0; }
+  .arc-pastel-playful .story-meta { color: #c13871; margin-bottom: 1.5rem; }
+
+  /* ───── PRODUCT PLATE ───── */
+  .arc-product-plate {
+    background: linear-gradient(135deg, #f5f5f3 0%, #e8e8e6 100%);
+    color: #121212; padding: 10vh 8vw; text-align: center; align-items: center; justify-content: center;
+  }
+  .arc-product-plate .product-chip {
+    font-weight: 700; font-size: 1rem; letter-spacing: 0.4em; text-transform: uppercase;
+    background: #121212; color: #f5f5f3; padding: 0.5rem 1.4rem; display: inline-block; margin-bottom: 3rem;
+  }
+  .arc-product-plate .kicker { font-weight: 700; font-size: 1.15rem; letter-spacing: 0.5em; text-transform: uppercase; color: #666; margin-bottom: 1.5rem; }
+  .arc-product-plate h2 {
+    font-family: 'Inter', sans-serif;
+    font-weight: 900;
+    font-size: clamp(3.2rem, 9vw, 8rem);
+    line-height: 0.95;
+    letter-spacing: -0.045em;
+    margin: 0 auto 2rem;
+    max-width: 14ch;
+  }
+  .arc-product-plate .product-rule { width: 6rem; height: 2px; background: #121212; margin: 1.5rem auto 2rem; }
+  .arc-product-plate .story-meta { color: #666; margin-bottom: 1.5rem; }
+  .arc-product-plate .lede { font-family: 'Fraunces', serif; font-weight: 400; font-size: clamp(1.4rem, 2.2vw, 1.9rem); line-height: 1.45; max-width: 720px; margin: 0 auto; }
+  .arc-product-plate .spread-links { justify-content: center; }
+
+  /* ───── ARCHIVE ───── */
+  .arc-archive {
+    background: #eadbb8;
+    background-image:
+      radial-gradient(rgba(80,40,10,0.05) 1px, transparent 1px),
+      radial-gradient(rgba(80,40,10,0.04) 1px, transparent 1px);
+    background-size: 4px 4px, 7px 7px;
+    background-position: 0 0, 2px 2px;
+    color: #2a1a08; padding: 8vh 8vw;
+  }
+  .arc-archive .archive-head {
+    display: flex; justify-content: space-between; align-items: baseline;
+    padding-bottom: 1rem; margin-bottom: 3rem;
+    border-top: 6px double #3a2a10; border-bottom: 6px double #3a2a10;
+    padding-top: 1rem;
+    font-family: 'Fraunces', serif; font-style: italic; font-weight: 500;
+    font-size: 1.1rem; letter-spacing: 0.15em; text-transform: uppercase; color: #3a2a10;
+  }
+  .arc-archive .kicker { font-family: 'Fraunces', serif; font-style: italic; font-weight: 600; font-size: 1.2rem; letter-spacing: 0.3em; text-transform: uppercase; color: #8a3a10; margin-bottom: 1.2rem; }
+  .arc-archive h2 {
+    font-family: 'Fraunces', serif; font-weight: 700; font-style: normal;
+    font-size: clamp(2.8rem, 6.5vw, 6rem); line-height: 1; letter-spacing: -0.02em;
+    margin: 0 0 2rem; max-width: 85%;
+  }
+  .arc-archive .lede {
+    font-family: 'Fraunces', serif; font-size: clamp(1.35rem, 2vw, 1.7rem);
+    line-height: 1.55; max-width: 760px; font-weight: 400; margin: 0;
+  }
+  .arc-archive .lede::first-letter {
+    font-family: 'Fraunces', serif; font-weight: 900; font-size: 5em;
+    float: left; line-height: 0.82; padding: 0.1em 0.15em 0 0; color: #8a3a10;
+  }
+  .arc-archive .story-meta { color: #8a3a10; margin-bottom: 1.5rem; }
+
+  /* ───── OBITUARY ───── */
+  .arc-obituary {
+    background: #f8f4ec; color: #121212;
+    padding: 10vh 6vw; align-items: center; justify-content: center;
+  }
+  .arc-obituary .obit-frame {
+    border: 3px solid #121212; padding: 6rem 5rem;
+    max-width: 780px; text-align: center; background: #f8f4ec;
+    position: relative; z-index: 2;
+  }
+  .arc-obituary .obit-frame::before,
+  .arc-obituary .obit-frame::after {
+    content: ""; position: absolute; left: -12px; right: -12px; height: 1px; background: #121212;
+  }
+  .arc-obituary .obit-frame::before { top: -12px; }
+  .arc-obituary .obit-frame::after { bottom: -12px; }
+  .arc-obituary .ornament { font-family: 'Fraunces', serif; font-size: 3.5rem; line-height: 1; margin-bottom: 2rem; color: #121212; }
+  .arc-obituary .kicker { font-family: 'Fraunces', serif; font-style: italic; font-weight: 500; font-size: 1.1rem; letter-spacing: 0.3em; text-transform: uppercase; margin-bottom: 2rem; opacity: 0.7; }
+  .arc-obituary h2 {
+    font-family: 'Fraunces', serif; font-weight: 400; font-style: italic;
+    font-size: clamp(2.4rem, 5vw, 4.5rem); line-height: 1.1; letter-spacing: -0.015em;
+    margin: 0 0 2.5rem;
+  }
+  .arc-obituary .story-meta { margin-bottom: 2rem; opacity: 0.6; }
+  .arc-obituary .lede { font-family: 'Fraunces', serif; font-size: clamp(1.3rem, 1.9vw, 1.6rem); line-height: 1.6; margin: 0 auto; max-width: 60ch; }
+  .arc-obituary .spread-links { justify-content: center; margin-top: 3rem; }
+
+  /* ───── BLUEPRINT ───── */
+  .arc-blueprint {
+    background: #0a3d62;
+    background-image:
+      linear-gradient(rgba(255,255,255,0.08) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255,255,255,0.08) 1px, transparent 1px);
+    background-size: 2.2rem 2.2rem;
+    color: #eaf4ff; padding: 8vh 6vw;
+  }
+  .arc-blueprint .corner {
+    position: absolute; font-family: 'JetBrains Mono', monospace;
+    font-size: 2.5rem; color: #eaf4ff; opacity: 0.7;
+  }
+  .arc-blueprint .corner.tl { top: 3vh; left: 3vw; }
+  .arc-blueprint .corner.tr { top: 3vh; right: 3vw; }
+  .arc-blueprint .corner.bl { bottom: 3vh; left: 3vw; }
+  .arc-blueprint .corner.br { bottom: 3vh; right: 3vw; }
+  .arc-blueprint .numeral {
+    font-family: 'JetBrains Mono', monospace;
+    font-weight: 700; font-size: clamp(4rem, 9vw, 7.5rem); line-height: 1;
+    letter-spacing: -0.01em; color: #eaf4ff;
+    margin: 0 0 1.5rem;
+    border-bottom: 2px dashed rgba(234,244,255,0.5);
+    padding-bottom: 1rem;
+    display: inline-block;
+  }
+  .arc-blueprint .kicker { font-family: 'JetBrains Mono', monospace; font-weight: 700; font-size: 1.15rem; letter-spacing: 0.3em; text-transform: uppercase; color: #9bd2ff; margin-bottom: 1.5rem; }
+  .arc-blueprint h2 { font-family: 'Fraunces', serif; font-weight: 700; font-size: clamp(2.8rem, 6.5vw, 5.5rem); line-height: 1; letter-spacing: -0.025em; margin: 0 0 2rem; max-width: 85%; }
+  .arc-blueprint .lede { font-family: 'JetBrains Mono', monospace; font-size: 1.2rem; line-height: 1.65; max-width: 720px; margin: 0; }
+  .arc-blueprint .story-meta { color: #9bd2ff; margin-bottom: 1.5rem; font-family: 'JetBrains Mono', monospace; }
+
+  /* ───── OBSERVATORY ───── */
+  .arc-observatory {
+    background: #070c2e; color: #e8ecff; padding: 8vh 6vw;
+  }
+  .arc-observatory .starfield {
+    position: absolute; inset: 0; pointer-events: none;
+    background-image:
+      radial-gradient(1px 1px at 10% 20%, rgba(255,255,255,0.9), transparent),
+      radial-gradient(1px 1px at 25% 70%, rgba(255,255,255,0.6), transparent),
+      radial-gradient(1.5px 1.5px at 40% 30%, rgba(255,255,255,0.8), transparent),
+      radial-gradient(1px 1px at 55% 85%, rgba(255,255,255,0.5), transparent),
+      radial-gradient(1px 1px at 70% 15%, rgba(255,255,255,0.9), transparent),
+      radial-gradient(1.5px 1.5px at 85% 55%, rgba(255,255,255,0.7), transparent),
+      radial-gradient(1px 1px at 92% 25%, rgba(255,255,255,0.5), transparent),
+      radial-gradient(1px 1px at 15% 90%, rgba(255,255,255,0.4), transparent),
+      radial-gradient(1px 1px at 48% 50%, rgba(255,255,255,0.6), transparent),
+      radial-gradient(1px 1px at 78% 78%, rgba(255,255,255,0.5), transparent);
+    background-repeat: no-repeat;
+  }
+  .arc-observatory > * { position: relative; z-index: 2; }
+  .arc-observatory .numeral {
+    font-family: 'Fraunces', serif; font-style: italic; font-weight: 400;
+    font-size: clamp(3rem, 7vw, 6rem); line-height: 1; letter-spacing: 0.04em;
+    color: #e8ecff; margin: 0 0 2rem;
+    border-bottom: 1px solid rgba(232,236,255,0.4);
+    padding-bottom: 1rem; display: inline-block;
+  }
+  .arc-observatory .kicker { font-family: 'Fraunces', serif; font-style: italic; font-weight: 500; font-size: 1.15rem; letter-spacing: 0.3em; text-transform: uppercase; color: #9ab3ff; margin-bottom: 1.5rem; }
+  .arc-observatory h2 { font-family: 'Fraunces', serif; font-weight: 400; font-style: italic; font-size: clamp(2.8rem, 6.5vw, 5.5rem); line-height: 1.05; letter-spacing: -0.015em; margin: 0 0 2rem; max-width: 85%; }
+  .arc-observatory .lede { font-family: 'Fraunces', serif; font-size: clamp(1.35rem, 2vw, 1.7rem); line-height: 1.55; max-width: 720px; font-weight: 400; margin: 0; }
+  .arc-observatory .story-meta { color: #9ab3ff; margin-bottom: 1.5rem; }
+
+  /* ───── DOSSIER ───── */
+  .dossier {
+    background: #f5f1e8; color: #1b1a14;
+    padding: 8rem 8vw 6rem;
+    border-top: 6px double #121212;
+  }
+  .dossier .dossier-head { text-align: center; margin-bottom: 4rem; }
+  .dossier .tagline { font-weight: 600; font-size: 1.1rem; letter-spacing: 0.4em; text-transform: uppercase; margin-bottom: 1rem; opacity: 0.7; }
+  .dossier h2 {
+    font-family: 'Fraunces', serif; font-style: italic; font-weight: 900;
+    font-size: clamp(4rem, 10vw, 9rem); line-height: 0.9; letter-spacing: -0.035em;
+    margin: 0 0 1.5rem;
+  }
+  .dossier .intro { font-family: 'Fraunces', serif; font-style: italic; font-size: 1.35rem; line-height: 1.5; max-width: 620px; margin: 0 auto; }
+  .dossier .intro a { font-style: normal; font-weight: 600; text-decoration: underline; }
+  .dossier-entry {
+    border-top: 1.5px solid #1b1a14;
+    padding: 3rem 0 2.5rem;
+    max-width: 820px; margin: 0 auto;
+  }
+  .dossier-entry:last-child { border-bottom: 1.5px solid #1b1a14; }
+  .dossier-meta { font-weight: 600; font-size: 1rem; letter-spacing: 0.28em; text-transform: uppercase; color: #7a1e14; margin-bottom: 1.2rem; }
+  .dossier-entry h3 {
+    font-family: 'Fraunces', serif; font-weight: 700;
+    font-size: clamp(1.8rem, 3.5vw, 2.6rem); line-height: 1.1; letter-spacing: -0.015em;
+    margin: 0 0 1.2rem;
+  }
+  .dossier-source { font-size: 1.05rem; font-weight: 500; letter-spacing: 0.08em; margin: 0 0 2rem; opacity: 0.75; }
+  .dossier-source a { text-decoration: underline; }
+  .dossier-entry h4 {
+    font-family: 'Inter', sans-serif; font-weight: 700; font-size: 1rem;
+    letter-spacing: 0.35em; text-transform: uppercase; margin: 2rem 0 1rem; color: #7a1e14;
+  }
+  .dossier-entry p {
+    font-family: 'Fraunces', serif; font-size: 1.25rem; line-height: 1.55; margin: 0 0 1rem;
+  }
+  .dossier-entry p.muted { opacity: 0.6; }
+
+  /* ───── COLOPHON ───── */
+  .colophon { background: #121212; color: #f5f1e8; padding: 5rem 6vw; text-align: center; }
+  .colophon .sig { font-family: 'Fraunces', serif; font-style: italic; font-weight: 400; font-size: clamp(2.5rem, 5vw, 4rem); line-height: 1.1; letter-spacing: -0.02em; margin: 0 0 1.5rem; }
+  .colophon .meta { font-weight: 500; font-size: 1rem; letter-spacing: 0.3em; text-transform: uppercase; opacity: 0.7; }
+  .colophon .classic-link { margin-top: 2rem; font-weight: 500; font-size: 1rem; letter-spacing: 0.2em; text-transform: uppercase; }
+  .colophon .classic-link a { text-decoration: underline; opacity: 0.85; }
+
+  /* ───── RESPONSIVE ───── */
+  @media (max-width: 800px) {
+    .masthead-nav { flex-wrap: wrap; gap: 0.8rem; }
+    .arc-stat-hero h2, .arc-stat-hero .lede { max-width: 100%; }
+    .arc-stat-hero .numeral { font-size: 14rem; opacity: 0.2; right: -2vw; top: 30vh; }
+    .arc-midnight .body { margin-top: 8rem; }
+    .arc-alert-stamp h2 { max-width: 100%; }
+    .arc-alert-stamp .stamp { top: 4vh; right: 4vw; font-size: 1.5rem; padding: 0.8rem 1.4rem; }
+    .arc-academic-drop-cap .cols { grid-template-columns: 1fr; gap: 2rem; }
+    .arc-editorial-pullquote { grid-template-columns: 1fr; gap: 3rem; }
+    .arc-caution-tape h2, .arc-notebook h2, .arc-pastel-playful h2, .arc-archive h2, .arc-obituary h2, .arc-blueprint h2, .arc-observatory h2 { max-width: 100%; }
+    .arc-caution-tape .tag { display: none; }
+    .arc-pastel-playful .alpha-grid { display: none; }
+    .arc-obituary .obit-frame { padding: 3rem 2rem; }
+    .arc-blueprint .corner { display: none; }
+  }
+
+</style>
 </head>
-<body>
-    <header>
-        <h1>Hacker News Digest - April 03, 2026</h1>
-        <nav>
-            <a href="../">&larr; Hacker News Calendar</a>
-            <a href="../../2026-04-03/">GitHub Trending</a>
-        </nav>
-    </header>
-    <main>
-        <div class="repo-controls">
-            <button id="collapse-seen-btn" type="button">Collapse Stories Not New Today</button>
-            <button id="expand-all-btn" type="button">Expand All</button>
-        </div>
-        <p class="seen-help">Stories marked "Not new today" appeared on one or more previous daily pages.</p>
-        <article>
-            <div class="repos">
+<body id="top">
 
-            <section class="repo" data-seen-before="0"
-                     data-share-title="Show HN: European alternatives to Google, Apple, Dropbox and 120 US apps"
-                     data-share-url="https://only-eu.eu/en/"
-                     data-share-points="136"
-                     data-share-comments="45">
-                <div class="repo-header-row">
-                    <h3>1. <a href="https://only-eu.eu/en/" target="_blank" rel="noopener noreferrer">Show HN: European alternatives to Google, Apple, Dropbox and 120 US apps</a> </h3>
-                    <div class="header-buttons">
-                        <button type="button" class="discuss-btn" aria-label="Discuss with AI" title="Discuss with AI">&#x1F4AC;</button>
-                        <button type="button" class="repo-toggle" aria-expanded="true">Hide details</button>
-                    </div>
-                </div>
-                <div class="repo-body">
-                    <p class="meta">
-                        <span class="language">only-eu.eu</span> |
-                        <span>madman_dev</span> |
-                        <span>136 points</span> |
-                        <span>45 comments</span> |
-                        <a href="https://news.ycombinator.com/item?id=47624741" target="_blank" rel="noopener noreferrer">discussion</a>
-                    </p>
-                    <p class="history">First seen: April 03, 2026 | Consecutive daily streak: 1 day</p>
-                    <div class="ai-summary">
-                        <h4>Analysis</h4>
-                        <p>&quot;Only EU&quot; is a curated directory designed to help users replace popular US-based software and consumer products with European-made alternatives. The platform categorizes these substitutions across a wide range of sectors, including cloud storage, office software, cybersecurity, and hardware. By highlighting European providers, the project emphasizes adherence to GDPR privacy standards and strict environmental regulations as primary benefits over international competitors.</p>
-<p>Hacker News readers are likely interested in this project due to the ongoing discussions regarding data sovereignty, the US CLOUD Act, and the privacy implications of using dominant American tech platforms. The directory serves as a practical resource for those looking to decouple their workflows from major US-based ecosystems in favor of more transparent, regulation-compliant alternatives. Furthermore, the community-driven aspect of the site invites technical debate regarding the quality and viability of these European tools compared to established market leaders.</p>
-                    </div>
-                    
-                <div class="ai-summary">
-                    <h4>Comment Analysis</h4>
-                    <p>Many users appreciate the effort to curate European software alternatives to avoid US surveillance, though they remain skeptical of marketing claims that frame European products as inherently superior or private.</p>
-<p>Critics argue that the site suffers from superficial categorization, inaccurate geographical labeling of companies, and questionable privacy benefits, suggesting many listed tools are not true alternatives to US incumbents.</p>
-<p>Building a directory for software discovery is technically straightforward using static site generators and search libraries, but it faces significant challenges regarding data maintenance, platform selection, and service verification.</p>
-<p>The project faces scrutiny for platform hypocrisy because the author hosts their site on US infrastructure, highlighting the practical difficulty of achieving complete independence from American cloud and domain services.</p>
-                </div>
+  <header class="masthead">
+    <div class="masthead-nav">
+      <a href="../">HN Calendar</a>
+      <span>·</span>
+      <a href="../../2026-04-03/">GitHub Trending</a>
+      <span>·</span>
+      <a href="classic.html">Classic view</a>
+    </div>
+    <div class="tagline">The Morning Edition</div>
+    <h1 class="frnc">Ten stories, before your coffee.</h1>
+    <div class="issue-line">
+      <span>Vol. I</span>
+      <span>Friday, April 3, 2026</span>
+      <span>HN Front Page Digest</span>
+    </div>
+  </header>
 
-                </div>
-            </section>
+  <section class="spread arc-pastel-playful">
+    <div class="alpha-grid"><span>A</span><span>B</span><span>C</span><span>D</span><span>E</span><span>F</span><span>G</span><span>H</span><span>I</span><span>J</span><span>K</span><span>L</span><span>M</span></div>
+    <div class="numeral">01</div>
+    <div class="kicker">Digital Sovereignty</div>
+    <h2>A directory of European alternatives to common US software</h2>
+    <p class="story-meta">only-eu.eu &nbsp;·&nbsp; 136 pts &nbsp;·&nbsp; 45 comments</p>
+    <p class="lede">Navigating the digital landscape often leads to the same few American giants. This curated directory offers a thoughtful collection of European-made tools, aiming to align your workflow with regional standards for privacy and data regulation.</p>
+    <div class="spread-links"><a class="read-more" href="https://only-eu.eu/en/" target="_blank" rel="noopener">Read →</a><a class="dossier-link" href="#dossier-1">Full analysis ↓</a></div>
+  </section>
 
-            <section class="repo" data-seen-before="0"
-                     data-share-title="April 2026 TLDR Setup for Ollama and Gemma 4 26B on a Mac mini"
-                     data-share-url="https://gist.github.com/greenstevester/fc49b4e60a4fef9effc79066c1033ae5"
-                     data-share-points="325"
-                     data-share-comments="121">
-                <div class="repo-header-row">
-                    <h3>2. <a href="https://gist.github.com/greenstevester/fc49b4e60a4fef9effc79066c1033ae5" target="_blank" rel="noopener noreferrer">April 2026 TLDR Setup for Ollama and Gemma 4 26B on a Mac mini</a> </h3>
-                    <div class="header-buttons">
-                        <button type="button" class="discuss-btn" aria-label="Discuss with AI" title="Discuss with AI">&#x1F4AC;</button>
-                        <button type="button" class="repo-toggle" aria-expanded="true">Hide details</button>
-                    </div>
-                </div>
-                <div class="repo-body">
-                    <p class="meta">
-                        <span class="language">gist.github.com</span> |
-                        <span>greenstevester</span> |
-                        <span>325 points</span> |
-                        <span>121 comments</span> |
-                        <a href="https://news.ycombinator.com/item?id=47624731" target="_blank" rel="noopener noreferrer">discussion</a>
-                    </p>
-                    <p class="history">First seen: April 03, 2026 | Consecutive daily streak: 1 day</p>
-                    <div class="ai-summary">
-                        <h4>Analysis</h4>
-                        <p>This guide provides a technical walkthrough for running the Gemma 4 26B model on Apple Silicon Mac minis using Ollama. It details the process of installing the software via Homebrew, configuring launch agents to preload the model into memory, and setting environment variables to maintain persistence. The post also highlights recent performance enhancements, such as native MLX framework support and NVIDIA NVFP4 format compatibility, which optimize memory usage and inference speed for local workloads.</p>
-<p>Hacker News readers are likely interested in this guide because it offers a practical, low-latency approach to deploying large language models on local hardware. The inclusion of system-level configurations, like custom launch agents and environment variables, appeals to the community&#x27;s preference for fine-tuned, reproducible infrastructure setups. Furthermore, the discussion of memory-efficient cache reuse and intelligent checkpointing provides relevant insights for developers looking to integrate local models into their existing terminal-based workflows.</p>
-                    </div>
-                    
-                <div class="ai-summary">
-                    <h4>Comment Analysis</h4>
-                    <p>Bullet 1: Commenters express skepticism toward Ollama, questioning why it is the default recommendation when alternative tools like llama.cpp, LM Studio, and Unsloth Studio appear more capable or transparently developed.</p>
-<p>Bullet 2: Supporters argue that Ollama remains relevant due to its open-source nature, containerization support via Docker, and specific hardware compatibility for users running Intel Macs with AMD GPUs through Vulkan.</p>
-<p>Bullet 3: Users seeking high performance or modularity should consider installing llama.cpp directly for its CLI and server features, or exploring specialized alternatives that offer more advanced control than simplified wrappers.</p>
-<p>Bullet 4: The sample size is extremely limited and exclusively focuses on developer sentiment, potentially failing to represent the broader user base that values Ollama primarily for its ease of use.</p>
-                </div>
+  <section class="spread arc-terminal">
+    <div class="prompt-row">user@morning-edition:~$ cat story_02.md</div>
+    <p class="numeral">02</p>
+    <p class="story-meta">gist.github.com &nbsp;·&nbsp; 325 pts &nbsp;·&nbsp; 121 comments</p>
+    <h2>Optimizing Gemma 4 inference on Apple Silicon hardware</h2>
+    <p class="lede">The deployment of high-parameter models on consumer-grade hardware requires precise memory management. This walkthrough outlines the necessary configuration for running large models locally via Ollama with persistence.<span class="cursor"></span></p>
+    <div class="spread-links"><a class="read-more" href="https://gist.github.com/greenstevester/fc49b4e60a4fef9effc79066c1033ae5" target="_blank" rel="noopener">Read →</a><a class="dossier-link" href="#dossier-2">Full analysis ↓</a></div>
+  </section>
 
-                </div>
-            </section>
+  <section class="spread arc-blueprint">
+    <div class="corner tl">┌</div><div class="corner tr">┐</div>
+    <div class="corner bl">└</div><div class="corner br">┘</div>
+    <div class="numeral">FIG.&nbsp;03</div>
+    <div class="kicker">Local AI</div>
+    <h2>Apfel brings macOS system-integrated AI to the command line</h2>
+    <p class="story-meta">apfel.franzai.com &nbsp;·&nbsp; 738 pts &nbsp;·&nbsp; 157 comments</p>
+    <p class="lede">By tapping into the foundational models already resident in macOS, this utility provides a direct bridge for local AI interaction. It allows for server-compatible workflows without the overhead of external API dependencies.</p>
+    <div class="spread-links"><a class="read-more" href="https://apfel.franzai.com" target="_blank" rel="noopener">Read →</a><a class="dossier-link" href="#dossier-3">Full analysis ↓</a></div>
+  </section>
 
-            <section class="repo" data-seen-before="0"
-                     data-share-title="Show HN: Apfel – The free AI already on your Mac"
-                     data-share-url="https://apfel.franzai.com"
-                     data-share-points="738"
-                     data-share-comments="157">
-                <div class="repo-header-row">
-                    <h3>3. <a href="https://apfel.franzai.com" target="_blank" rel="noopener noreferrer">Show HN: Apfel – The free AI already on your Mac</a> </h3>
-                    <div class="header-buttons">
-                        <button type="button" class="discuss-btn" aria-label="Discuss with AI" title="Discuss with AI">&#x1F4AC;</button>
-                        <button type="button" class="repo-toggle" aria-expanded="true">Hide details</button>
-                    </div>
-                </div>
-                <div class="repo-body">
-                    <p class="meta">
-                        <span class="language">apfel.franzai.com</span> |
-                        <span>franze</span> |
-                        <span>738 points</span> |
-                        <span>157 comments</span> |
-                        <a href="https://news.ycombinator.com/item?id=47624645" target="_blank" rel="noopener noreferrer">discussion</a>
-                    </p>
-                    <p class="history">First seen: April 03, 2026 | Consecutive daily streak: 1 day</p>
-                    <div class="ai-summary">
-                        <h4>Analysis</h4>
-                        <p>Apfel is an open-source tool that provides a command-line interface and an OpenAI-compatible server for the large language model already embedded within macOS Tahoe. By leveraging Apple&#x27;s `FoundationModels` framework, the utility enables developers to interact with the system&#x27;s built-in AI via standard terminal commands, shell scripts, or existing OpenAI-compatible SDKs. It operates entirely on-device using Apple Silicon hardware, ensuring that user data remains local without requiring API keys or subscription costs.</p>
-<p>Hacker News readers are likely interested in this project because it circumvents the walled-garden approach Apple traditionally takes with its system-level features. The ability to programmatically pipe text into a high-performance, on-device model offers significant utility for power users and developers looking to integrate local AI into their existing CLI workflows. Furthermore, the tool’s compatibility with the OpenAI API standard provides a convenient, privacy-focused alternative to cloud-based LLM services for local development and automation tasks.</p>
-                    </div>
-                    
-                <div class="ai-summary">
-                    <h4>Comment Analysis</h4>
-                    <p>Users express interest in the utility of local AI tools on macOS but remain cautious regarding the functional limitations of Apple&#x27;s underlying foundation models for complex or conversational tasks.</p>
-<p>There is a debate concerning whether these models are suitable for general interaction, as some argue they were not designed for chat and possess restrictive guardrails that limit their performance.</p>
-<p>The primary technical constraint identified for this tool is the restrictive 4k token context window, which creates significant difficulties when attempting to process large documents or extensive server log files.</p>
-<p>This brief analysis is limited by a tiny sample size consisting of only six comments, meaning the discussion lacks the breadth required to represent a broader community consensus on performance.</p>
-                </div>
+  <section class="spread arc-product-plate">
+    <div class="product-chip">Release &nbsp;·&nbsp; N<sup>o</sup> 04</div>
+    <div class="kicker">Model Release</div>
+    <h2>Google debuts Gemma 4 open-weights model series</h2>
+    <div class="product-rule"></div>
+    <p class="story-meta">deepmind.google &nbsp;·&nbsp; 1806 pts &nbsp;·&nbsp; 473 comments</p>
+    <p class="lede">The latest iteration of Google&#x27;s open models focuses on maximizing inference efficiency across varied hardware architectures. The release includes a spectrum of sizes designed for multimodal tasks on edge and local compute devices.</p>
+    <div class="spread-links"><a class="read-more" href="https://deepmind.google/models/gemma/gemma-4/" target="_blank" rel="noopener">Read →</a><a class="dossier-link" href="#dossier-4">Full analysis ↓</a></div>
+  </section>
 
-                </div>
-            </section>
+  <section class="spread arc-mint-pattern">
+    <div class="numeral-block">
+      <div class="numeral">05</div>
+    </div>
+    <p class="kicker">// Hardware Specs</p>
+    <h2>Espressif announces the high-performance dual-core ESP32-S31</h2>
+    <p class="story-meta">espressif.com &nbsp;·&nbsp; 58 pts &nbsp;·&nbsp; 31 comments</p>
+    <p class="lede">With 320MHz of processing power and integrated support for Wi-Fi 6 and Ethernet, the new ESP32-S31 is aimed at demanding industrial IoT applications. It represents a significant step in embedding robust connectivity and multimedia acceleration into a small-form chip.</p>
+    <div class="spread-links"><a class="read-more" href="https://www.espressif.com/en/news/ESP32_S31_Release" target="_blank" rel="noopener">Read →</a><a class="dossier-link" href="#dossier-5">Full analysis ↓</a></div>
+  </section>
 
-            <section class="repo" data-seen-before="0"
-                     data-share-title="Google releases Gemma 4 open models"
-                     data-share-url="https://deepmind.google/models/gemma/gemma-4/"
-                     data-share-points="1806"
-                     data-share-comments="473">
-                <div class="repo-header-row">
-                    <h3>4. <a href="https://deepmind.google/models/gemma/gemma-4/" target="_blank" rel="noopener noreferrer">Google releases Gemma 4 open models</a> </h3>
-                    <div class="header-buttons">
-                        <button type="button" class="discuss-btn" aria-label="Discuss with AI" title="Discuss with AI">&#x1F4AC;</button>
-                        <button type="button" class="repo-toggle" aria-expanded="true">Hide details</button>
-                    </div>
-                </div>
-                <div class="repo-body">
-                    <p class="meta">
-                        <span class="language">deepmind.google</span> |
-                        <span>jeffmcjunkin</span> |
-                        <span>1806 points</span> |
-                        <span>473 comments</span> |
-                        <a href="https://news.ycombinator.com/item?id=47616361" target="_blank" rel="noopener noreferrer">discussion</a>
-                    </p>
-                    <p class="history">First seen: April 03, 2026 | Consecutive daily streak: 1 day</p>
-                    <div class="ai-summary">
-                        <h4>Analysis</h4>
-                        <p>Google has released Gemma 4, a new series of open models derived from the research and technology behind Gemini 3. These models are designed for maximum compute and memory efficiency, aiming to deliver high-level intelligence for edge devices like mobile hardware, IoT, and personal computers. The release features a range of parameter sizes, including 2B, 4B, 26B, and 31B variants, all featuring multimodal capabilities such as audio and visual processing.</p>
-<p>Hacker News readers are likely interested in this release because it provides developers with accessible, high-performance local AI models that do not rely on cloud-based APIs. The emphasis on transparency and enterprise-grade security protocols suggests a shift toward integrating robust, private AI into sovereign and commercial infrastructures. Additionally, the focus on parameter efficiency is particularly relevant for the community, as it enables advanced machine learning tasks on consumer-grade hardware with limited resources.</p>
-                    </div>
-                    
-                <div class="ai-summary">
-                    <h4>Comment Analysis</h4>
-                    <p>Users generally acknowledge Gemma 4 as a powerful, high-performance open model, particularly praising the 26B variant for its impressive token generation speeds and efficient handling of large context windows on consumer hardware.</p>
-<p>A significant divide exists regarding the model&#x27;s reliability, with some users reporting excellent reasoning capabilities while others highlight frequent hallucinations, failed tool calls, and inconsistent output compared to competitors like Qwen.</p>
-<p>For optimal performance and local execution, developers recommend specific inference parameters, such as setting temperature to 1.0 and utilizing specialized tool-calling flags within frameworks like llama.cpp to manage the &quot;thinking&quot; trace.</p>
-<p>This analysis reflects a small, technically proficient subset of power users, potentially over-representing those capable of troubleshooting complex local installations and likely overlooking the typical experiences of less technical, casual users.</p>
-                </div>
+  <section class="spread arc-editorial-pullquote">
+    <div class="left">
+      <div class="numeral">06</div>
+      <div class="kicker">Infrastructure Analysis</div>
+      <h2>Internal dysfunction and the degradation of Azure Core services</h2>
+      <p class="story-meta">isolveproblems.substack.com &nbsp;·&nbsp; 1280 pts &nbsp;·&nbsp; 646 comments</p>
+      <div class="spread-links"><a class="read-more" href="https://isolveproblems.substack.com/p/how-microsoft-vaporized-a-trillion" target="_blank" rel="noopener">Read →</a><a class="dossier-link" href="#dossier-6">Full analysis ↓</a></div>
+    </div>
+    <blockquote class="pullquote">The accumulation of undocumented background agents created critical risks for global infrastructure services</blockquote>
+  </section>
 
-                </div>
-            </section>
+  <section class="spread arc-alert-stamp">
+    <div class="stamp">Alert</div>
+    <div class="numeral">07</div>
+    <div class="kicker">Public Oversight</div>
+    <h2>NHS employees resist Palantir-managed data platform</h2>
+    <p class="story-meta">freevacy.com &nbsp;·&nbsp; 356 pts &nbsp;·&nbsp; 172 comments</p>
+    <p class="lede">The integration of a private data platform into the UK&#x27;s National Health Service has met with significant internal pushback. Staff cite ethical concerns regarding the contractor&#x27;s history and potential implications for patient data privacy.</p>
+    <div class="spread-links"><a class="read-more" href="https://www.freevacy.com/news/financial-times/nhs-staff-refusing-to-use-fdp-over-palantir-ethical-concerns/7272" target="_blank" rel="noopener">Read →</a><a class="dossier-link" href="#dossier-7">Full analysis ↓</a></div>
+  </section>
 
-            <section class="repo" data-seen-before="0"
-                     data-share-title="ESP32-S31: 320MHz 2C RV32IMAFCP+CLIC, 512KB SRAM, GbE, 802.11ax, 61 GPIO"
-                     data-share-url="https://www.espressif.com/en/news/ESP32_S31_Release"
-                     data-share-points="58"
-                     data-share-comments="31">
-                <div class="repo-header-row">
-                    <h3>5. <a href="https://www.espressif.com/en/news/ESP32_S31_Release" target="_blank" rel="noopener noreferrer">ESP32-S31: 320MHz 2C RV32IMAFCP+CLIC, 512KB SRAM, GbE, 802.11ax, 61 GPIO</a> </h3>
-                    <div class="header-buttons">
-                        <button type="button" class="discuss-btn" aria-label="Discuss with AI" title="Discuss with AI">&#x1F4AC;</button>
-                        <button type="button" class="repo-toggle" aria-expanded="true">Hide details</button>
-                    </div>
-                </div>
-                <div class="repo-body">
-                    <p class="meta">
-                        <span class="language">espressif.com</span> |
-                        <span>topspin</span> |
-                        <span>58 points</span> |
-                        <span>31 comments</span> |
-                        <a href="https://news.ycombinator.com/item?id=47561678" target="_blank" rel="noopener noreferrer">discussion</a>
-                    </p>
-                    <p class="history">First seen: April 03, 2026 | Consecutive daily streak: 1 day</p>
-                    <div class="ai-summary">
-                        <h4>Analysis</h4>
-                        <p>Espressif Systems has announced the ESP32-S31, a new high-performance System-on-Chip featuring a dual-core 320MHz RISC-V processor. The chip offers a comprehensive suite of connectivity options, including Wi-Fi 6, Bluetooth 5.4, IEEE 802.15.4 for Thread/Zigbee, and 1000 Mbps Ethernet. Designed for advanced IoT and HMI applications, the device also includes hardware acceleration for AI, multimedia tasks, and robust security features like a Trusted Execution Environment and PUF-based key management.</p>
-<p>Hacker News readers are likely interested in this release due to the transition toward RISC-V architectures in mainstream, widely available IoT hardware. The inclusion of high-speed Ethernet and advanced multimedia peripherals makes this a notable step up for projects requiring significant edge processing and high-bandwidth connectivity. Furthermore, the chip&#x27;s broad support for Matter and compatibility with existing development frameworks like ESP-IDF makes it a versatile tool for hobbyists and industrial engineers looking to standardize their hardware stacks.</p>
-                    </div>
-                    
-                <div class="ai-summary">
-                    <h4>Comment Analysis</h4>
-                    <p>Users are confused and skeptical about Espressif’s cryptic naming conventions for the S31, noting that the new part numbers seem inconsistent with previous product generations and lack clear organizational logic.</p>
-<p>While some commenters hope the new chip facilitates better Ethernet and PoE integration, others argue that Espressif’s hardware support remains inconsistent, citing long delays for previous releases like the ESP32-P4.</p>
-<p>Technically, the chip’s memory management unit appears to be a peripheral for external memory access rather than a true RISC-V MMU capable of providing full process isolation and dynamic paging.</p>
-<p>The sample focuses heavily on enthusiast-level hardware limitations and branding, potentially overlooking the chip&#x27;s utility in professional industrial applications or the specific needs of the broader embedded engineering market.</p>
-                </div>
+  <section class="spread arc-caution-tape">
+    <div class="tag">Vulnerability</div>
+    <div class="numeral">08</div>
+    <div class="kicker">Privacy Audit</div>
+    <h2>Proton Meet infrastructure relies on American-based cloud providers</h2>
+    <p class="story-meta">sambent.com &nbsp;·&nbsp; 163 pts &nbsp;·&nbsp; 164 comments</p>
+    <p class="lede">Despite branding focused on Swiss-based privacy, technical analysis reveals that Proton Meet leverages US infrastructure for routing and telemetry. This reliance highlights the complex reality of maintaining jurisdictional isolation in modern video conferencing.</p>
+    <div class="spread-links"><a class="read-more" href="https://www.sambent.com/proton-meet-isnt-what-they-told-you/" target="_blank" rel="noopener">Read →</a><a class="dossier-link" href="#dossier-8">Full analysis ↓</a></div>
+  </section>
 
-                </div>
-            </section>
+  <section class="spread arc-academic-drop-cap">
+    <div class="paper-head">
+      <span>Theoretical Data</span>
+      <span class="numeral-roman">IX</span>
+      <span>mchav.github.io</span>
+    </div>
+    <h2>Applying category theory to modernize dataframe library structures</h2>
+    <p class="story-meta">mchav.github.io &nbsp;·&nbsp; 15 pts &nbsp;·&nbsp; 1 comments</p>
+    <div class="cols">
+      <div><p>E Modern data analysis is often hindered by the sprawling and inconsistent API design of traditional libraries.</p></div>
+      <div><p>By applying category theory, researchers propose a formal reduction of complex operations into a small, fundamental set of composable primitives.</p><div class="spread-links"><a class="read-more" href="https://mchav.github.io/what-category-theory-teaches-us-about-dataframes/" target="_blank" rel="noopener">Read →</a><a class="dossier-link" href="#dossier-9">Full analysis ↓</a></div></div>
+    </div>
+  </section>
 
-            <section class="repo" data-seen-before="0"
-                     data-share-title="Decisions that eroded trust in Azure – by a former Azure Core engineer"
-                     data-share-url="https://isolveproblems.substack.com/p/how-microsoft-vaporized-a-trillion"
-                     data-share-points="1280"
-                     data-share-comments="646">
-                <div class="repo-header-row">
-                    <h3>6. <a href="https://isolveproblems.substack.com/p/how-microsoft-vaporized-a-trillion" target="_blank" rel="noopener noreferrer">Decisions that eroded trust in Azure – by a former Azure Core engineer</a> </h3>
-                    <div class="header-buttons">
-                        <button type="button" class="discuss-btn" aria-label="Discuss with AI" title="Discuss with AI">&#x1F4AC;</button>
-                        <button type="button" class="repo-toggle" aria-expanded="true">Hide details</button>
-                    </div>
-                </div>
-                <div class="repo-body">
-                    <p class="meta">
-                        <span class="language">isolveproblems.substack.com</span> |
-                        <span>axelriet</span> |
-                        <span>1280 points</span> |
-                        <span>646 comments</span> |
-                        <a href="https://news.ycombinator.com/item?id=47616242" target="_blank" rel="noopener noreferrer">discussion</a>
-                    </p>
-                    <p class="history">First seen: April 03, 2026 | Consecutive daily streak: 1 day</p>
-                    <div class="ai-summary">
-                        <h4>Analysis</h4>
-                        <p>This article, written by a former Azure Core engineer, details the internal mismanagement and technical dysfunction the author encountered upon rejoining Microsoft in 2023. The narrative centers on a misguided initiative to port complex Windows-based software stacks onto the limited hardware resources of the Azure Boost accelerator card. The author highlights a bloated architecture involving 173 undocumented background agents, arguing that this lack of oversight created significant risks for mission-critical infrastructure like OpenAI and government cloud services.</p>
-<p>Hacker News readers are likely interested in this account because it provides an insider&#x27;s critique of the institutional inertia and technical rot that can plague massive, legacy-heavy organizations. The discussion touches on recurring community themes, such as the dangers of engineering bloat, the difficulties of cross-platform porting, and the potential for systemic failures in hyperscale cloud environments. Furthermore, the author&#x27;s claims regarding the erosion of trust with major enterprise customers offer a sobering look at how high-level corporate decisions can undermine foundational technical reliability.</p>
-                    </div>
-                    
-                <div class="ai-summary">
-                    <h4>Comment Analysis</h4>
-                    <p>Many users and former employees corroborate the author&#x27;s claims, citing chronic understaffing, technical debt, and poor software quality as systemic issues that cause frequent outages and frustration for Azure customers.</p>
-<p>Skeptics argue that the post is overly dramatized, unprofessional, and reflective of a disgruntled employee who failed to understand the inevitable complexities and inherent trade-offs of maintaining massive-scale cloud infrastructure.</p>
-<p>Maintaining stable infrastructure at scale requires management support for rigorous testing and refactoring, which often stalls when organizations prioritize rapid feature delivery and executive-level &quot;wins&quot; over long-term code health.</p>
-<p>The sample reflects a high concentration of disgruntled perspectives and technical critiques, which may be unrepresentative of the broader, silent majority of organizations that continue to operate successfully on Azure.</p>
-                </div>
+  <section class="spread arc-stat-hero">
+    <div class="numeral">320km</div>
+    <div class="kicker">N<sup>o</sup> 10 · Planetary Science</div>
+    <h2>Reevaluating the topographical reality of Io’s Steeple Mountain</h2>
+    <p class="story-meta">weareinquisitive.com &nbsp;·&nbsp; 57 pts &nbsp;·&nbsp; 1 comments</p>
+    <p class="lede">New geometric analysis of Juno mission data corrects long-standing artistic misconceptions regarding the profile of this lunar peak. What was once thought to be a needle-like structure is actually a broad tectonic formation.</p>
+    <div class="spread-links"><a class="read-more" href="https://www.weareinquisitive.com/news/hidden-in-the-shadow" target="_blank" rel="noopener">Read →</a><a class="dossier-link" href="#dossier-10">Full analysis ↓</a></div>
+  </section>
 
-                </div>
-            </section>
+  <section id="dossier" class="dossier">
+    <div class="dossier-head">
+      <div class="tagline">Appendix</div>
+      <h2>The Dossier</h2>
+      <p class="intro">Full analysis and reader reactions for today's ten stories. <a href="#top">↑ Back to the edition</a></p>
+    </div>
+    <article id="dossier-1" class="dossier-entry">
+      <div class="dossier-meta">N<sup>o</sup> 01 &nbsp;·&nbsp; Pastel Finale &nbsp;·&nbsp; Digital Sovereignty</div>
+      <h3>Show HN: European alternatives to Google, Apple, Dropbox and 120 US apps</h3>
+      <p class="dossier-source">
+        <a href="https://only-eu.eu/en/" target="_blank" rel="noopener">only-eu.eu</a>
+        &nbsp;·&nbsp; 136 pts &nbsp;·&nbsp; 45 comments
+        &nbsp;·&nbsp; <a href="https://news.ycombinator.com/item?id=47624741" target="_blank" rel="noopener">discussion</a>
+      </p>
+      <h4>Analysis</h4>
+      <p class="muted"><em>Analysis not available.</em></p>
+      
+    </article>
+    <article id="dossier-2" class="dossier-entry">
+      <div class="dossier-meta">N<sup>o</sup> 02 &nbsp;·&nbsp; Terminal &nbsp;·&nbsp; Model Deployment</div>
+      <h3>April 2026 TLDR Setup for Ollama and Gemma 4 26B on a Mac mini</h3>
+      <p class="dossier-source">
+        <a href="https://gist.github.com/greenstevester/fc49b4e60a4fef9effc79066c1033ae5" target="_blank" rel="noopener">gist.github.com</a>
+        &nbsp;·&nbsp; 325 pts &nbsp;·&nbsp; 121 comments
+        &nbsp;·&nbsp; <a href="https://news.ycombinator.com/item?id=47624731" target="_blank" rel="noopener">discussion</a>
+      </p>
+      <h4>Analysis</h4>
+      <p class="muted"><em>Analysis not available.</em></p>
+      
+    </article>
+    <article id="dossier-3" class="dossier-entry">
+      <div class="dossier-meta">N<sup>o</sup> 03 &nbsp;·&nbsp; Blueprint &nbsp;·&nbsp; Local AI</div>
+      <h3>Show HN: Apfel – The free AI already on your Mac</h3>
+      <p class="dossier-source">
+        <a href="https://apfel.franzai.com" target="_blank" rel="noopener">apfel.franzai.com</a>
+        &nbsp;·&nbsp; 738 pts &nbsp;·&nbsp; 157 comments
+        &nbsp;·&nbsp; <a href="https://news.ycombinator.com/item?id=47624645" target="_blank" rel="noopener">discussion</a>
+      </p>
+      <h4>Analysis</h4>
+      <p class="muted"><em>Analysis not available.</em></p>
+      
+    </article>
+    <article id="dossier-4" class="dossier-entry">
+      <div class="dossier-meta">N<sup>o</sup> 04 &nbsp;·&nbsp; Product Plate &nbsp;·&nbsp; Model Release</div>
+      <h3>Google releases Gemma 4 open models</h3>
+      <p class="dossier-source">
+        <a href="https://deepmind.google/models/gemma/gemma-4/" target="_blank" rel="noopener">deepmind.google</a>
+        &nbsp;·&nbsp; 1806 pts &nbsp;·&nbsp; 473 comments
+        &nbsp;·&nbsp; <a href="https://news.ycombinator.com/item?id=47616361" target="_blank" rel="noopener">discussion</a>
+      </p>
+      <h4>Analysis</h4>
+      <p class="muted"><em>Analysis not available.</em></p>
+      
+    </article>
+    <article id="dossier-5" class="dossier-entry">
+      <div class="dossier-meta">N<sup>o</sup> 05 &nbsp;·&nbsp; Mint Pattern &nbsp;·&nbsp; Hardware Specs</div>
+      <h3>ESP32-S31: 320MHz 2C RV32IMAFCP+CLIC, 512KB SRAM, GbE, 802.11ax, 61 GPIO</h3>
+      <p class="dossier-source">
+        <a href="https://www.espressif.com/en/news/ESP32_S31_Release" target="_blank" rel="noopener">espressif.com</a>
+        &nbsp;·&nbsp; 58 pts &nbsp;·&nbsp; 31 comments
+        &nbsp;·&nbsp; <a href="https://news.ycombinator.com/item?id=47561678" target="_blank" rel="noopener">discussion</a>
+      </p>
+      <h4>Analysis</h4>
+      <p class="muted"><em>Analysis not available.</em></p>
+      
+    </article>
+    <article id="dossier-6" class="dossier-entry">
+      <div class="dossier-meta">N<sup>o</sup> 06 &nbsp;·&nbsp; Editorial Op-Ed &nbsp;·&nbsp; Infrastructure Analysis</div>
+      <h3>Decisions that eroded trust in Azure – by a former Azure Core engineer</h3>
+      <p class="dossier-source">
+        <a href="https://isolveproblems.substack.com/p/how-microsoft-vaporized-a-trillion" target="_blank" rel="noopener">isolveproblems.substack.com</a>
+        &nbsp;·&nbsp; 1280 pts &nbsp;·&nbsp; 646 comments
+        &nbsp;·&nbsp; <a href="https://news.ycombinator.com/item?id=47616242" target="_blank" rel="noopener">discussion</a>
+      </p>
+      <h4>Analysis</h4>
+      <p class="muted"><em>Analysis not available.</em></p>
+      
+    </article>
+    <article id="dossier-7" class="dossier-entry">
+      <div class="dossier-meta">N<sup>o</sup> 07 &nbsp;·&nbsp; Rose Alert &nbsp;·&nbsp; Public Oversight</div>
+      <h3>NHS staff refusing to use FDP over Palantir ethical concerns</h3>
+      <p class="dossier-source">
+        <a href="https://www.freevacy.com/news/financial-times/nhs-staff-refusing-to-use-fdp-over-palantir-ethical-concerns/7272" target="_blank" rel="noopener">freevacy.com</a>
+        &nbsp;·&nbsp; 356 pts &nbsp;·&nbsp; 172 comments
+        &nbsp;·&nbsp; <a href="https://news.ycombinator.com/item?id=47624736" target="_blank" rel="noopener">discussion</a>
+      </p>
+      <h4>Analysis</h4>
+      <p class="muted"><em>Analysis not available.</em></p>
+      
+    </article>
+    <article id="dossier-8" class="dossier-entry">
+      <div class="dossier-meta">N<sup>o</sup> 08 &nbsp;·&nbsp; Caution Tape &nbsp;·&nbsp; Privacy Audit</div>
+      <h3>Proton Meet isn&#x27;t what they told you it was</h3>
+      <p class="dossier-source">
+        <a href="https://www.sambent.com/proton-meet-isnt-what-they-told-you/" target="_blank" rel="noopener">sambent.com</a>
+        &nbsp;·&nbsp; 163 pts &nbsp;·&nbsp; 164 comments
+        &nbsp;·&nbsp; <a href="https://news.ycombinator.com/item?id=47624558" target="_blank" rel="noopener">discussion</a>
+      </p>
+      <h4>Analysis</h4>
+      <p class="muted"><em>Analysis not available.</em></p>
+      
+    </article>
+    <article id="dossier-9" class="dossier-entry">
+      <div class="dossier-meta">N<sup>o</sup> 09 &nbsp;·&nbsp; Academic &nbsp;·&nbsp; Theoretical Data</div>
+      <h3>What Category Theory Teaches Us About DataFrames</h3>
+      <p class="dossier-source">
+        <a href="https://mchav.github.io/what-category-theory-teaches-us-about-dataframes/" target="_blank" rel="noopener">mchav.github.io</a>
+        &nbsp;·&nbsp; 15 pts &nbsp;·&nbsp; 1 comments
+        &nbsp;·&nbsp; <a href="https://news.ycombinator.com/item?id=47561426" target="_blank" rel="noopener">discussion</a>
+      </p>
+      <h4>Analysis</h4>
+      <p class="muted"><em>Analysis not available.</em></p>
+      
+    </article>
+    <article id="dossier-10" class="dossier-entry">
+      <div class="dossier-meta">N<sup>o</sup> 10 &nbsp;·&nbsp; Stat Hero &nbsp;·&nbsp; Planetary Science</div>
+      <h3>The True Shape of Io&#x27;s Steeple Mountain</h3>
+      <p class="dossier-source">
+        <a href="https://www.weareinquisitive.com/news/hidden-in-the-shadow" target="_blank" rel="noopener">weareinquisitive.com</a>
+        &nbsp;·&nbsp; 57 pts &nbsp;·&nbsp; 1 comments
+        &nbsp;·&nbsp; <a href="https://news.ycombinator.com/item?id=47562455" target="_blank" rel="noopener">discussion</a>
+      </p>
+      <h4>Analysis</h4>
+      <p class="muted"><em>Analysis not available.</em></p>
+      
+    </article>
+  </section>
 
-            <section class="repo" data-seen-before="0"
-                     data-share-title="NHS staff refusing to use FDP over Palantir ethical concerns"
-                     data-share-url="https://www.freevacy.com/news/financial-times/nhs-staff-refusing-to-use-fdp-over-palantir-ethical-concerns/7272"
-                     data-share-points="356"
-                     data-share-comments="172">
-                <div class="repo-header-row">
-                    <h3>7. <a href="https://www.freevacy.com/news/financial-times/nhs-staff-refusing-to-use-fdp-over-palantir-ethical-concerns/7272" target="_blank" rel="noopener noreferrer">NHS staff refusing to use FDP over Palantir ethical concerns</a> </h3>
-                    <div class="header-buttons">
-                        <button type="button" class="discuss-btn" aria-label="Discuss with AI" title="Discuss with AI">&#x1F4AC;</button>
-                        <button type="button" class="repo-toggle" aria-expanded="true">Hide details</button>
-                    </div>
-                </div>
-                <div class="repo-body">
-                    <p class="meta">
-                        <span class="language">freevacy.com</span> |
-                        <span>chrisjj</span> |
-                        <span>356 points</span> |
-                        <span>172 comments</span> |
-                        <a href="https://news.ycombinator.com/item?id=47624736" target="_blank" rel="noopener noreferrer">discussion</a>
-                    </p>
-                    <p class="history">First seen: April 03, 2026 | Consecutive daily streak: 1 day</p>
-                    <div class="ai-summary">
-                        <h4>Analysis</h4>
-                        <p>The UK’s National Health Service (NHS) is facing internal resistance as staff increasingly refuse to use the Federated Data Platform (FDP), a system managed by the US-based technology firm Palantir. The company secured a £330 million contract to aggregate operational data and patient information, but the partnership has sparked significant pushback due to Palantir’s history in the defense sector and its leadership&#x27;s political ties. While the FDP remains active in over half of England&#x27;s hospital trusts and has met delivery targets, some employees are actively avoiding the software or slowing their workflows to signal their ethical disapproval.</p>
-<p>Hacker News readers likely find this story compelling because it highlights the growing tension between government reliance on large-scale data contractors and the privacy concerns held by the technical workforce. The situation illustrates the complexities of implementing &quot;data-driven&quot; public infrastructure when the chosen vendor’s corporate background conflicts with the values of those tasked with its daily operation. Additionally, the potential use of contract break clauses and the ongoing debate over the suitability of foreign intelligence-linked firms in national healthcare provide a significant case study in modern vendor management and professional resistance.</p>
-                    </div>
-                    
-                <div class="ai-summary">
-                    <h4>Comment Analysis</h4>
-                    <p>Bullet 1: Commenters express deep skepticism and moral outrage regarding the NHS awarding a massive £330 million contract to Palantir, questioning both the financial justification and the ethical implications of the partnership.</p>
-<p>Bullet 2: One commenter argues that despite the company&#x27;s controversial reputation, the firm’s leadership remains highly competent and mission-focused, which may ensure the technical project is delivered effectively for the NHS.</p>
-<p>Bullet 3: The debate highlights critical concerns regarding the integration of private operational data platforms within public healthcare, suggesting that outsourcing essential infrastructure requires greater transparency and oversight of procurement processes.</p>
-<p>Bullet 4: This sample reflects only three highly critical viewpoints, failing to provide a balanced perspective from stakeholders who might support the operational improvements promised by the new data platform deployment.</p>
-                </div>
-
-                </div>
-            </section>
-
-            <section class="repo" data-seen-before="0"
-                     data-share-title="Proton Meet isn&#x27;t what they told you it was"
-                     data-share-url="https://www.sambent.com/proton-meet-isnt-what-they-told-you/"
-                     data-share-points="163"
-                     data-share-comments="164">
-                <div class="repo-header-row">
-                    <h3>8. <a href="https://www.sambent.com/proton-meet-isnt-what-they-told-you/" target="_blank" rel="noopener noreferrer">Proton Meet isn&#x27;t what they told you it was</a> </h3>
-                    <div class="header-buttons">
-                        <button type="button" class="discuss-btn" aria-label="Discuss with AI" title="Discuss with AI">&#x1F4AC;</button>
-                        <button type="button" class="repo-toggle" aria-expanded="true">Hide details</button>
-                    </div>
-                </div>
-                <div class="repo-body">
-                    <p class="meta">
-                        <span class="language">sambent.com</span> |
-                        <span>bundie</span> |
-                        <span>163 points</span> |
-                        <span>164 comments</span> |
-                        <a href="https://news.ycombinator.com/item?id=47624558" target="_blank" rel="noopener noreferrer">discussion</a>
-                    </p>
-                    <p class="history">First seen: April 03, 2026 | Consecutive daily streak: 1 day</p>
-                    <div class="ai-summary">
-                        <h4>Analysis</h4>
-                        <p>This article analyzes Proton Meet, a new video conferencing tool marketed by Proton as a secure, Swiss-based alternative to U.S.-owned platforms that are subject to the CLOUD Act. The author demonstrates through network-layer analysis and documentation review that Proton Meet relies on LiveKit Cloud, an American infrastructure provider. While the tool uses legitimate encryption for key exchanges in Switzerland, the actual routing and telemetry data for calls pass through U.S. servers operated by companies like Oracle and Amazon, which are subject to U.S. legal processes and surveillance requests.</p>
-<p>Hacker News readers will likely find this investigation significant because it highlights a potential gap between privacy-focused marketing and the underlying technical reality of service delivery. The report challenges the &quot;Swiss privacy&quot; narrative by revealing that the product&#x27;s infrastructure chain includes U.S.-based sub-processors that handle metadata, connection records, and IP addresses. For a community that values transparency and technical accuracy, the post serves as a critical case study on how third-party dependencies can undermine a company&#x27;s fundamental value proposition.</p>
-                    </div>
-                    
-                <div class="ai-summary">
-                    <h4>Comment Analysis</h4>
-                    <p>Commenters widely criticize Proton for marketing itself as a bastion of privacy while legally complying with government data requests, which many users perceive as a contradiction of its core branding.</p>
-<p>Some users argue that the negative sentiment towards Proton is disproportionate or fueled by skepticism toward any European tech company attempting to compete with dominant, established United States-based service providers.</p>
-<p>Technical analysis suggests that users should remain wary of third-party infrastructure dependencies, such as the use of LiveKit Cloud, as these integrations introduce potential privacy risks and jurisdictional complexities regarding data.</p>
-<p>This discussion sample focuses heavily on institutional trust and legal transparency, potentially overlooking the utility and accessibility benefits that Proton’s suite of services provides to average, less security-focused users.</p>
-                </div>
-
-                </div>
-            </section>
-
-            <section class="repo" data-seen-before="0"
-                     data-share-title="What Category Theory Teaches Us About DataFrames"
-                     data-share-url="https://mchav.github.io/what-category-theory-teaches-us-about-dataframes/"
-                     data-share-points="15"
-                     data-share-comments="1">
-                <div class="repo-header-row">
-                    <h3>9. <a href="https://mchav.github.io/what-category-theory-teaches-us-about-dataframes/" target="_blank" rel="noopener noreferrer">What Category Theory Teaches Us About DataFrames</a> </h3>
-                    <div class="header-buttons">
-                        <button type="button" class="discuss-btn" aria-label="Discuss with AI" title="Discuss with AI">&#x1F4AC;</button>
-                        <button type="button" class="repo-toggle" aria-expanded="true">Hide details</button>
-                    </div>
-                </div>
-                <div class="repo-body">
-                    <p class="meta">
-                        <span class="language">mchav.github.io</span> |
-                        <span>mchav</span> |
-                        <span>15 points</span> |
-                        <span>1 comments</span> |
-                        <a href="https://news.ycombinator.com/item?id=47561426" target="_blank" rel="noopener noreferrer">discussion</a>
-                    </p>
-                    <p class="history">First seen: April 03, 2026 | Consecutive daily streak: 1 day</p>
-                    <div class="ai-summary">
-                        <h4>Analysis</h4>
-                        <p>The author examines the complexity of modern dataframe libraries like pandas, which often contain hundreds of overlapping and poorly defined methods. By building on the work of Petersohn et al., who categorized typical dataframe usage into a formal 15-operator algebra, the post explores whether these operations can be reduced to a smaller set of fundamental primitives. The author successfully maps these operations to concepts in category theory, specifically using three migration functors—Delta, Sigma, and Pi—to describe schema changes and topos-theoretic structures to handle row-level operations.</p>
-<p>Hacker News readers, particularly those involved in library design or database internals, will likely appreciate this attempt to bring mathematical rigor to the often chaotic API design of data manipulation tools. The post provides a compelling argument for how category theory can serve as a foundational blueprint for building safer, more predictable APIs that leverage static typing to catch errors at compile time. By demonstrating how complex chains of operations can be optimized through algebraic laws, the article offers practical insights into making data engineering pipelines both more performant and easier to reason about.</p>
-                    </div>
-                    
-                <div class="ai-summary">
-                    <h4>Comment Analysis</h4>
-                    <p>Bullet 1: The user agrees that the current pandas API is inconsistently designed and suffers from an excessive number of deprecated functions, making it a poor foundation for modern data analysis tasks.</p>
-<p>Bullet 2: While the user admires the idea of simplifying data operations, they criticize projects like Modin for prioritizing faster execution of the existing, flawed API rather than replacing it with better abstractions.</p>
-<p>Bullet 3: The commenter suggests that developers should prioritize creating small, composable sets of operations for dataframes instead of simply optimizing the performance of historically bloated and confusing functional library interfaces.</p>
-<p>Bullet 4: This analysis is based on a single comment, which may not capture the broader community perspective on the theoretical benefits of category theory or the widespread utility of established pandas workflows.</p>
-                </div>
-
-                </div>
-            </section>
-
-            <section class="repo" data-seen-before="0"
-                     data-share-title="The True Shape of Io&#x27;s Steeple Mountain"
-                     data-share-url="https://www.weareinquisitive.com/news/hidden-in-the-shadow"
-                     data-share-points="57"
-                     data-share-comments="1">
-                <div class="repo-header-row">
-                    <h3>10. <a href="https://www.weareinquisitive.com/news/hidden-in-the-shadow" target="_blank" rel="noopener noreferrer">The True Shape of Io&#x27;s Steeple Mountain</a> </h3>
-                    <div class="header-buttons">
-                        <button type="button" class="discuss-btn" aria-label="Discuss with AI" title="Discuss with AI">&#x1F4AC;</button>
-                        <button type="button" class="repo-toggle" aria-expanded="true">Hide details</button>
-                    </div>
-                </div>
-                <div class="repo-body">
-                    <p class="meta">
-                        <span class="language">weareinquisitive.com</span> |
-                        <span>carlosjobim</span> |
-                        <span>57 points</span> |
-                        <span>1 comments</span> |
-                        <a href="https://news.ycombinator.com/item?id=47562455" target="_blank" rel="noopener noreferrer">discussion</a>
-                    </p>
-                    <p class="history">First seen: April 03, 2026 | Consecutive daily streak: 1 day</p>
-                    <div class="ai-summary">
-                        <h4>Analysis</h4>
-                        <p>The article examines the common misconception that &quot;Steeple Mountain&quot; (Dis Mons) on Jupiter&#x27;s moon, Io, is a sharp, jagged peak, arguing that popular illustrations have significantly exaggerated its steepness. By analyzing shadow lengths and topographical data from NASA’s Juno mission, the authors reconstructed a more scientifically accurate model of the mountain, which is actually a broad, tectonic uplift rather than a needle-like structure. This project emphasizes the importance of utilizing modern planetary mapping and geometric analysis to correct long-standing, stylized visualizations of extraterrestrial landscapes.</p>
-<p>Hacker News readers are likely to appreciate this story because it applies technical forensic techniques, such as manual photoclinometry and geometric reconstruction, to challenge a widely accepted scientific narrative. The discussion of Io’s unique geology—specifically how tidal heating and deep faulting drive mountain formation—offers a compelling look at non-Earth-like planetary processes. Furthermore, the focus on replacing &quot;cosmic hype&quot; with data-driven, accurate visualizations resonates with the community’s preference for rigorous inquiry and transparency in scientific communication.</p>
-                    </div>
-                    
-                <div class="ai-summary">
-                    <h4>Comment Analysis</h4>
-                    <p>Bullet 1: The singular commenter expresses profound skepticism toward public discourse surrounding potential extraterrestrial phenomena, comparing the current discussion unfavorably to past viral videos that purportedly showcased unexplained aerial sightings.</p>
-<p>Bullet 2: Because there is only one comment in this dataset, no consensus or competing viewpoint exists within the thread to provide a balanced perspective on the article’s scientific claims.</p>
-<p>Bullet 3: The provided discussion offers no technical insight into Io’s topography or geological features, as the lone contributor focused exclusively on the sociological implications of public interest in extraterrestrial subjects.</p>
-<p>Bullet 4: With a sample size of just one comment, this analysis cannot represent the broader Hacker News community sentiment or provide an accurate reflection of how users reacted to the content.</p>
-                </div>
-
-                </div>
-            </section>
-
-            </div>
-        </article>
-    </main>
-    <footer>
-        <p>Generated automatically. Data from <a href="https://news.ycombinator.com/">Hacker News</a>.</p>
-    </footer>
+  <footer class="colophon">
+    <p class="sig">— that's the edition.</p>
+    <p class="meta">Set in Fraunces &amp; Inter · Compiled April 3, 2026</p>
+    <p class="classic-link"><a href="classic.html">Prefer the classic card view? →</a></p>
+  </footer>
 
 <script>
 (() => {
-    const readKey = "gtd:read_days:hn:v1";
-    const dayStr = "2026-04-03";
-
-    let stored = [];
-    try {
-        stored = JSON.parse(localStorage.getItem(readKey) || "[]");
-        if (!Array.isArray(stored)) {
-            stored = [];
-        }
-    } catch (_err) {
-        stored = [];
-    }
-
-    if (!stored.includes(dayStr)) {
-        stored.push(dayStr);
-        stored.sort();
-        localStorage.setItem(readKey, JSON.stringify(stored));
-    }
-
-    const collapseParam = new URLSearchParams(window.location.search).get("collapse_seen");
-    const collapseSeen = collapseParam === "0" ? false : true;
-
-    function setCollapsed(repoEl, collapsed) {
-        repoEl.classList.toggle("collapsed", collapsed);
-        const button = repoEl.querySelector(".repo-toggle");
-        if (button) {
-            button.textContent = collapsed ? "Show details" : "Hide details";
-            button.setAttribute("aria-expanded", String(!collapsed));
-        }
-    }
-
-    const repos = Array.from(document.querySelectorAll("section.repo[data-seen-before]"));
-
-    repos.forEach((repoEl) => {
-        const toggle = repoEl.querySelector(".repo-toggle");
-        if (!toggle) {
-            return;
-        }
-
-        toggle.addEventListener("click", () => {
-            setCollapsed(repoEl, !repoEl.classList.contains("collapsed"));
-        });
-    });
-
-    const collapseBtn = document.getElementById("collapse-seen-btn");
-    const expandBtn = document.getElementById("expand-all-btn");
-
-    if (collapseBtn) {
-        collapseBtn.addEventListener("click", () => {
-            repos.forEach((repoEl) => {
-                if (repoEl.dataset.seenBefore === "1") {
-                    setCollapsed(repoEl, true);
-                }
-            });
-        });
-    }
-
-    if (expandBtn) {
-        expandBtn.addEventListener("click", () => {
-            repos.forEach((repoEl) => setCollapsed(repoEl, false));
-        });
-    }
-
-    if (collapseSeen) {
-        repos.forEach((repoEl) => {
-            if (repoEl.dataset.seenBefore === "1") {
-                setCollapsed(repoEl, true);
-            }
-        });
-    }
-
-    // Discuss with AI button
-    const toast = document.createElement("div");
-    toast.className = "discuss-toast";
-    document.body.appendChild(toast);
-
-    function showToast(msg) {
-        toast.textContent = msg;
-        toast.classList.add("show");
-        setTimeout(() => toast.classList.remove("show"), 2500);
-    }
-
-    function buildHNMarkdown(card) {
-        const title = card.dataset.shareTitle || "";
-        const url = card.dataset.shareUrl || "";
-        const points = card.dataset.sharePoints || "0";
-        const comments = card.dataset.shareComments || "0";
-        const summaries = card.querySelectorAll(".ai-summary");
-        let md = "# " + title + "\n";
-        md += "Source: " + url + " | " + points + " points | " + comments + " comments\n";
-        summaries.forEach((s) => {
-            const heading = s.querySelector("h4");
-            const label = heading ? heading.textContent.trim() : "Analysis";
-            const content = Array.from(s.querySelectorAll("p"))
-                .map((p) => p.textContent.trim())
-                .join("\n");
-            md += "\n## " + label + "\n" + content + "\n";
-        });
-        return md;
-    }
-
-    document.querySelectorAll(".discuss-btn").forEach((btn) => {
-        btn.addEventListener("click", () => {
-            const card = btn.closest("section.repo");
-            if (!card) return;
-            const md = buildHNMarkdown(card);
-            const text = "I'd like to discuss this article with you. Here's a summary:\n\n" + md;
-            const title = "Discuss: " + (card.dataset.shareTitle || "");
-            if (navigator.share) {
-                navigator.share({ title: title, text: text }).catch(() => {});
-            } else {
-                navigator.clipboard.writeText(text).then(
-                    () => showToast("Copied to clipboard \u2014 paste into your AI chat"),
-                    () => showToast("Failed to copy")
-                );
-            }
-        });
-    });
+  const key = "gtd:read_days:hn:v1";
+  const day = "2026-04-03";
+  let stored = [];
+  try {
+    stored = JSON.parse(localStorage.getItem(key) || "[]");
+    if (!Array.isArray(stored)) stored = [];
+  } catch (_) { stored = []; }
+  if (!stored.includes(day)) {
+    stored.push(day);
+    stored.sort();
+    localStorage.setItem(key, JSON.stringify(stored));
+  }
 })();
 </script>
 

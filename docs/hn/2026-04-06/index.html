@@ -1,519 +1,781 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Hacker News Digest - April 06, 2026</title>
-    <link rel="stylesheet" href="../../style.css">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Morning Edition — Monday, April 6, 2026</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght,SOFT@0,9..144,300..900,0..100;1,9..144,300..900,0..100&family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+
+  :root { --ink: #121212; --paper: #f5f1e8; }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  body {
+    font-family: 'Inter', system-ui, sans-serif;
+    font-size: 20px;
+    line-height: 1.5;
+    color: var(--ink);
+    background: var(--paper);
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+  a { color: inherit; }
+  a:hover { opacity: 0.7; }
+  .frnc { font-family: 'Fraunces', Georgia, serif; }
+  .mono { font-family: 'JetBrains Mono', ui-monospace, monospace; }
+
+  /* ───── MASTHEAD ───── */
+  .masthead { padding: 2rem 6vw 2.5rem; border-bottom: 3px double #121212; background: #f5f1e8; text-align: center; }
+  .masthead-nav {
+    display: flex;
+    justify-content: center;
+    gap: 1.2rem;
+    align-items: baseline;
+    margin-bottom: 2rem;
+    font-weight: 600;
+    font-size: 1rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+  }
+  .masthead-nav a { text-decoration: none; border-bottom: 2px solid transparent; padding-bottom: 2px; }
+  .masthead-nav a:hover { border-bottom-color: #121212; opacity: 1; }
+  .masthead-nav span { opacity: 0.4; }
+  .masthead .tagline { font-weight: 600; font-size: 1.2rem; letter-spacing: 0.4em; text-transform: uppercase; margin-bottom: 1.2rem; }
+  .masthead h1 {
+    font-family: 'Fraunces', Georgia, serif;
+    font-weight: 900;
+    font-style: italic;
+    font-size: clamp(4rem, 13vw, 12rem);
+    line-height: 0.88;
+    letter-spacing: -0.035em;
+    margin: 0 0 1rem;
+    font-variation-settings: "SOFT" 50;
+  }
+  .masthead .issue-line {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    max-width: 1000px;
+    margin: 2rem auto 0;
+    padding-top: 1.25rem;
+    border-top: 1px solid #121212;
+    font-weight: 500;
+    font-size: 1.1rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+  }
+
+  /* ───── SPREAD BASE ───── */
+  .spread {
+    min-height: 100vh;
+    padding: 6vh 6vw;
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+  .spread .story-meta { font-weight: 600; font-size: 1rem; letter-spacing: 0.28em; text-transform: uppercase; }
+  .spread-links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 2rem 2.5rem;
+    align-items: baseline;
+    margin-top: 2.5rem;
+  }
+  .spread .read-more {
+    display: inline-block;
+    font-size: 1.1rem;
+    font-weight: 700;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    text-decoration: none;
+    padding-bottom: 0.4rem;
+    border-bottom: 3px solid currentColor;
+  }
+  .spread .dossier-link {
+    font-size: 1rem;
+    font-weight: 500;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    text-decoration: none;
+    opacity: 0.7;
+    padding-bottom: 0.3rem;
+    border-bottom: 1px solid currentColor;
+  }
+  .spread .dossier-link:hover { opacity: 1; }
+
+  /* ───── STAT HERO ───── */
+  .arc-stat-hero { background: #eee6d3; color: #0d1a2e; padding: 8vh 6vw; }
+  .arc-stat-hero .numeral {
+    font-family: 'Fraunces', serif;
+    font-weight: 900;
+    font-style: italic;
+    font-size: clamp(12rem, 36vw, 34rem);
+    line-height: 0.8;
+    letter-spacing: -0.06em;
+    color: #0d1a2e;
+    position: absolute;
+    right: -2vw;
+    top: 8vh;
+    opacity: 0.94;
+    pointer-events: none;
+    white-space: nowrap;
+  }
+  .arc-stat-hero .kicker { font-weight: 700; font-size: 1.15rem; letter-spacing: 0.4em; text-transform: uppercase; color: #c13830; position: relative; z-index: 2; margin-bottom: 1.5rem; }
+  .arc-stat-hero h2 { font-family: 'Fraunces', serif; font-weight: 800; font-size: clamp(3rem, 8vw, 7.5rem); line-height: 0.95; letter-spacing: -0.03em; max-width: 60%; margin: 0 0 2rem; position: relative; z-index: 2; }
+  .arc-stat-hero .lede { font-family: 'Fraunces', serif; font-size: clamp(1.4rem, 2.2vw, 2rem); line-height: 1.45; max-width: 55%; font-weight: 400; position: relative; z-index: 2; margin: 0; }
+  .arc-stat-hero .story-meta { color: #c13830; position: relative; z-index: 2; }
+  .arc-stat-hero .spread-links { position: relative; z-index: 2; }
+
+  /* ───── MIDNIGHT ───── */
+  .arc-midnight { background: radial-gradient(ellipse at 70% 30%, #1a1235 0%, #05050c 65%); color: #e9e4ff; }
+  .arc-midnight::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background-image:
+      radial-gradient(circle at 20% 80%, rgba(180,120,255,0.18), transparent 50%),
+      radial-gradient(circle at 80% 20%, rgba(120,200,255,0.12), transparent 55%);
+    pointer-events: none;
+  }
+  .arc-midnight .numeral {
+    font-family: 'Fraunces', serif;
+    font-size: clamp(8rem, 22vw, 20rem);
+    font-weight: 300;
+    font-style: italic;
+    color: transparent;
+    -webkit-text-stroke: 2px rgba(233,228,255,0.45);
+    line-height: 1;
+    position: absolute;
+    top: 6vh;
+    left: 5vw;
+    letter-spacing: -0.05em;
+  }
+  .arc-midnight .body { position: relative; z-index: 2; margin-top: 12rem; max-width: 90%; }
+  .arc-midnight .kicker { font-family: 'JetBrains Mono', monospace; font-size: 1.1rem; letter-spacing: 0.2em; text-transform: uppercase; color: #b48bff; margin-bottom: 2rem; }
+  .arc-midnight h2 { font-weight: 800; font-size: clamp(3rem, 7.5vw, 6.5rem); line-height: 1; letter-spacing: -0.035em; margin: 0 0 2.5rem; }
+  .arc-midnight .lede { font-size: 1.35rem; line-height: 1.55; color: #cdc6e8; max-width: 780px; margin: 0; }
+  .arc-midnight .story-meta { color: #8a7cc6; margin-bottom: 1.5rem; }
+
+  /* ───── ALERT STAMP ───── */
+  .arc-alert-stamp { background: #f8e5de; color: #2b0808; background-image: repeating-linear-gradient(transparent, transparent 3rem, rgba(193,56,48,0.08) 3rem, rgba(193,56,48,0.08) calc(3rem + 1px)); }
+  .arc-alert-stamp .stamp {
+    position: absolute; top: 8vh; right: 5vw;
+    transform: rotate(-14deg);
+    border: 6px solid #c13830;
+    padding: 1.2rem 2.5rem;
+    font-weight: 900;
+    font-size: clamp(2rem, 4vw, 3.5rem);
+    letter-spacing: 0.15em;
+    color: #c13830;
+    background: rgba(248,229,222,0.6);
+    text-transform: uppercase;
+  }
+  .arc-alert-stamp .numeral { font-family: 'Fraunces', serif; font-style: italic; font-weight: 900; font-size: clamp(6rem, 15vw, 12rem); line-height: 1; color: #c13830; margin: 0 0 1rem; }
+  .arc-alert-stamp .kicker { font-weight: 800; font-size: 1.2rem; letter-spacing: 0.3em; text-transform: uppercase; color: #c13830; margin-bottom: 1rem; }
+  .arc-alert-stamp h2 { font-family: 'Fraunces', serif; font-weight: 800; font-size: clamp(2.5rem, 6vw, 5.5rem); line-height: 1.02; letter-spacing: -0.025em; max-width: 75%; margin: 0 0 2rem; }
+  .arc-alert-stamp .lede { font-size: 1.4rem; line-height: 1.55; max-width: 700px; font-weight: 400; margin: 0; }
+  .arc-alert-stamp .story-meta { color: #c13830; margin-bottom: 1.5rem; }
+
+  /* ───── ACADEMIC DROP CAP ───── */
+  .arc-academic-drop-cap { background: #efe7d1; color: #1b1a14; padding: 8vh 8vw; }
+  .arc-academic-drop-cap .paper-head {
+    display: flex; justify-content: space-between; align-items: baseline;
+    border-bottom: 1.5px solid #1b1a14;
+    padding-bottom: 0.7rem; margin-bottom: 3rem;
+    font-weight: 500; font-size: 1rem; letter-spacing: 0.25em; text-transform: uppercase;
+  }
+  .arc-academic-drop-cap .numeral-roman { font-family: 'Fraunces', serif; font-weight: 700; font-size: clamp(2.5rem, 4vw, 4rem); font-style: italic; letter-spacing: 0.08em; }
+  .arc-academic-drop-cap h2 { font-family: 'Fraunces', serif; font-weight: 400; font-style: italic; font-size: clamp(2.5rem, 5.5vw, 5rem); line-height: 1.05; letter-spacing: -0.015em; margin: 0 0 1.5rem; max-width: 85%; }
+  .arc-academic-drop-cap .story-meta { margin-bottom: 2rem; }
+  .arc-academic-drop-cap .cols { display: grid; grid-template-columns: 1fr 1fr; gap: 3.5rem; }
+  .arc-academic-drop-cap .cols p { font-family: 'Fraunces', serif; font-size: 1.35rem; line-height: 1.55; text-align: justify; hyphens: auto; margin: 0 0 1.2rem; }
+  .arc-academic-drop-cap .cols > div:first-child p:first-child::first-letter {
+    font-family: 'Fraunces', serif;
+    font-weight: 900;
+    font-size: 7em;
+    float: left;
+    line-height: 0.82;
+    padding: 0.1em 0.15em 0 0;
+    color: #7a1e14;
+  }
+
+  /* ───── TERMINAL ───── */
+  .arc-terminal { background: #000; color: #8cff8c; font-family: 'JetBrains Mono', ui-monospace, monospace; padding: 8vh 6vw; }
+  .arc-terminal .prompt-row { font-size: 1.15rem; font-weight: 500; color: #4ac94a; margin-bottom: 3rem; }
+  .arc-terminal .numeral { font-size: clamp(6rem, 14vw, 13rem); font-weight: 700; line-height: 1; color: #8cff8c; margin: 0 0 1rem; }
+  .arc-terminal .numeral::before { content: "> "; color: #4ac94a; }
+  .arc-terminal h2 { font-weight: 700; font-size: clamp(2.2rem, 5vw, 4.5rem); line-height: 1.1; margin: 0 0 2rem; max-width: 90%; color: #d4ffd4; }
+  .arc-terminal .lede { font-size: 1.3rem; line-height: 1.6; max-width: 780px; color: #8cff8c; margin: 0; }
+  .arc-terminal .lede::before { content: "# "; color: #4ac94a; }
+  .arc-terminal .story-meta { color: #4ac94a; margin-bottom: 1.5rem; }
+  .arc-terminal .cursor { display: inline-block; width: 0.55em; height: 1.1em; background: #8cff8c; vertical-align: text-bottom; margin-left: 0.2em; animation: me-blink 1s steps(2, start) infinite; }
+  @keyframes me-blink { to { visibility: hidden; } }
+  .arc-terminal .read-more { color: #8cff8c; border-color: #4ac94a; }
+  .arc-terminal .dossier-link { color: #8cff8c; border-color: rgba(140,255,140,0.4); }
+
+  /* ───── EDITORIAL PULLQUOTE ───── */
+  .arc-editorial-pullquote {
+    background: #1a1a1a; color: #f5f1e8; padding: 8vh 6vw;
+    display: grid; grid-template-columns: 1fr 1.1fr; gap: 5rem; align-items: center;
+  }
+  .arc-editorial-pullquote .left { position: relative; }
+  .arc-editorial-pullquote .numeral { font-family: 'Fraunces', serif; font-weight: 900; font-style: italic; font-size: clamp(8rem, 18vw, 16rem); line-height: 0.9; color: #f5f1e8; margin: 0 0 1rem; letter-spacing: -0.05em; }
+  .arc-editorial-pullquote .kicker { font-weight: 700; font-size: 1.1rem; letter-spacing: 0.35em; text-transform: uppercase; color: #e8b84a; margin-bottom: 1.5rem; }
+  .arc-editorial-pullquote h2 { font-family: 'Fraunces', serif; font-weight: 700; font-size: clamp(2rem, 4vw, 3.5rem); line-height: 1.1; margin: 0 0 2rem; }
+  .arc-editorial-pullquote .pullquote {
+    font-family: 'Fraunces', serif; font-style: italic; font-weight: 400;
+    font-size: clamp(1.8rem, 3.5vw, 3rem); line-height: 1.15;
+    color: #f5f1e8; border-left: 4px solid #e8b84a; padding-left: 2rem; margin: 0;
+  }
+  .arc-editorial-pullquote .pullquote::before { content: "\201C"; font-size: 1.4em; line-height: 0; vertical-align: -0.4em; color: #e8b84a; margin-right: 0.1em; }
+  .arc-editorial-pullquote .pullquote::after { content: "\201D"; font-size: 1.4em; line-height: 0; vertical-align: -0.6em; color: #e8b84a; margin-left: 0.05em; }
+  .arc-editorial-pullquote .story-meta { color: #e8b84a; }
+
+  /* ───── CAUTION TAPE ───── */
+  .arc-caution-tape { background: #fff200; color: #0a0a0a; padding: 8vh 6vw; }
+  .arc-caution-tape::before { content: ""; position: absolute; inset: 0 0 auto 0; height: 2.5rem; background: repeating-linear-gradient(135deg, #0a0a0a 0 2rem, #fff200 2rem 4rem); }
+  .arc-caution-tape::after { content: ""; position: absolute; inset: auto 0 0 0; height: 2.5rem; background: repeating-linear-gradient(135deg, #0a0a0a 0 2rem, #fff200 2rem 4rem); }
+  .arc-caution-tape .tag {
+    position: absolute; top: 6vh; right: 6vw;
+    writing-mode: vertical-rl; transform: rotate(180deg);
+    font-weight: 900; font-size: 1.3rem; letter-spacing: 0.5em; text-transform: uppercase;
+    background: #0a0a0a; color: #fff200; padding: 1rem 0.6rem;
+  }
+  .arc-caution-tape .numeral { font-weight: 900; font-size: clamp(10rem, 28vw, 24rem); line-height: 0.85; letter-spacing: -0.06em; margin: 0 0 1rem; -webkit-text-stroke: 3px #0a0a0a; color: transparent; }
+  .arc-caution-tape .kicker { font-weight: 900; font-size: 1.3rem; letter-spacing: 0.35em; text-transform: uppercase; background: #0a0a0a; color: #fff200; padding: 0.5rem 1rem; display: inline-block; margin-bottom: 1.5rem; }
+  .arc-caution-tape h2 { font-weight: 900; font-size: clamp(2.5rem, 6vw, 5.5rem); line-height: 0.98; letter-spacing: -0.03em; margin: 0 0 2rem; max-width: 85%; text-transform: uppercase; }
+  .arc-caution-tape .lede { font-size: 1.35rem; line-height: 1.5; max-width: 680px; font-weight: 500; margin: 0; }
+  .arc-caution-tape .story-meta { margin-bottom: 1.5rem; }
+
+  /* ───── NOTEBOOK ───── */
+  .arc-notebook { background: repeating-linear-gradient(#fdfaf0 0 2.2rem, rgba(120,104,60,0.22) 2.2rem 2.25rem); color: #1f1a0d; padding: 8vh 8vw; }
+  .arc-notebook::before { content: ""; position: absolute; top: 0; bottom: 0; left: 8vw; width: 2px; background: #c13830; opacity: 0.5; }
+  .arc-notebook .numeral { font-family: 'Fraunces', serif; font-weight: 400; font-style: italic; font-size: clamp(7rem, 17vw, 15rem); line-height: 1; letter-spacing: -0.02em; color: #1f1a0d; margin: 0 0 0.5rem; }
+  .arc-notebook .kicker { font-weight: 600; font-size: 1.1rem; letter-spacing: 0.3em; text-transform: uppercase; color: #8a6b1f; margin-bottom: 1rem; }
+  .arc-notebook h2 { font-family: 'Fraunces', serif; font-weight: 400; font-style: italic; font-size: clamp(2.8rem, 6.5vw, 6rem); line-height: 1; letter-spacing: -0.02em; margin: 0 0 2rem; max-width: 85%; }
+  .arc-notebook .lede { font-family: 'Fraunces', serif; font-weight: 400; font-size: clamp(1.35rem, 2vw, 1.7rem); line-height: 2.2rem; max-width: 700px; margin: 0; }
+
+  /* ───── MINT PATTERN ───── */
+  .arc-mint-pattern { background: #a8e6cf; color: #0d2a1e; padding: 8vh 6vw; }
+  .arc-mint-pattern::before {
+    content: "XOR LISP AWK SED GREP CURL MAKE GIT VIM SSH";
+    position: absolute; top: 10vh; left: 0; right: 0;
+    font-family: 'JetBrains Mono', monospace;
+    font-weight: 700; font-size: 2.5rem; letter-spacing: 0.3em;
+    color: rgba(13,42,30,0.1); white-space: nowrap; overflow: hidden; pointer-events: none;
+  }
+  .arc-mint-pattern .numeral-block { position: relative; z-index: 2; }
+  .arc-mint-pattern .numeral { font-family: 'Fraunces', serif; font-weight: 900; font-size: clamp(10rem, 28vw, 24rem); line-height: 0.85; letter-spacing: -0.06em; color: #0d2a1e; margin: 0; font-style: italic; }
+  .arc-mint-pattern .kicker { font-family: 'JetBrains Mono', monospace; font-weight: 700; font-size: 1.1rem; letter-spacing: 0.2em; text-transform: uppercase; color: #0d2a1e; margin: 1.5rem 0; position: relative; z-index: 2; }
+  .arc-mint-pattern h2 { font-family: 'Fraunces', serif; font-weight: 800; font-size: clamp(2.5rem, 6vw, 5rem); line-height: 1; letter-spacing: -0.025em; margin: 0 0 2rem; max-width: 85%; position: relative; z-index: 2; }
+  .arc-mint-pattern .lede { font-family: 'Fraunces', serif; font-size: 1.4rem; line-height: 1.55; max-width: 680px; font-weight: 400; margin: 0; position: relative; z-index: 2; }
+  .arc-mint-pattern .story-meta { position: relative; z-index: 2; margin-bottom: 1.5rem; }
+  .arc-mint-pattern .spread-links { position: relative; z-index: 2; }
+
+  /* ───── PASTEL PLAYFUL ───── */
+  .arc-pastel-playful { background: #fde6f2; color: #2a0a2e; padding: 8vh 6vw 4vh; }
+  .arc-pastel-playful .alpha-grid {
+    position: absolute; top: 0; left: 0; right: 0;
+    display: grid; grid-template-columns: repeat(13, 1fr);
+    font-family: 'Fraunces', serif; font-style: italic;
+    font-size: clamp(1.2rem, 2.5vw, 2rem); font-weight: 700;
+    color: rgba(42,10,46,0.2); padding: 1rem 6vw; letter-spacing: 0.2em; pointer-events: none;
+  }
+  .arc-pastel-playful .alpha-grid span { text-align: center; }
+  .arc-pastel-playful .numeral { font-family: 'Fraunces', serif; font-weight: 900; font-style: italic; font-size: clamp(10rem, 26vw, 22rem); line-height: 0.85; letter-spacing: -0.05em; color: #c13871; margin: 2rem 0 0; }
+  .arc-pastel-playful .kicker { font-weight: 700; font-size: 1.1rem; letter-spacing: 0.35em; text-transform: uppercase; color: #c13871; margin-bottom: 1rem; }
+  .arc-pastel-playful h2 { font-family: 'Fraunces', serif; font-weight: 400; font-style: italic; font-size: clamp(2.8rem, 6.5vw, 5.5rem); line-height: 1; letter-spacing: -0.02em; margin: 0 0 2rem; max-width: 85%; }
+  .arc-pastel-playful .lede { font-size: 1.35rem; line-height: 1.5; max-width: 680px; margin: 0; }
+  .arc-pastel-playful .story-meta { color: #c13871; margin-bottom: 1.5rem; }
+
+  /* ───── PRODUCT PLATE ───── */
+  .arc-product-plate {
+    background: linear-gradient(135deg, #f5f5f3 0%, #e8e8e6 100%);
+    color: #121212; padding: 10vh 8vw; text-align: center; align-items: center; justify-content: center;
+  }
+  .arc-product-plate .product-chip {
+    font-weight: 700; font-size: 1rem; letter-spacing: 0.4em; text-transform: uppercase;
+    background: #121212; color: #f5f5f3; padding: 0.5rem 1.4rem; display: inline-block; margin-bottom: 3rem;
+  }
+  .arc-product-plate .kicker { font-weight: 700; font-size: 1.15rem; letter-spacing: 0.5em; text-transform: uppercase; color: #666; margin-bottom: 1.5rem; }
+  .arc-product-plate h2 {
+    font-family: 'Inter', sans-serif;
+    font-weight: 900;
+    font-size: clamp(3.2rem, 9vw, 8rem);
+    line-height: 0.95;
+    letter-spacing: -0.045em;
+    margin: 0 auto 2rem;
+    max-width: 14ch;
+  }
+  .arc-product-plate .product-rule { width: 6rem; height: 2px; background: #121212; margin: 1.5rem auto 2rem; }
+  .arc-product-plate .story-meta { color: #666; margin-bottom: 1.5rem; }
+  .arc-product-plate .lede { font-family: 'Fraunces', serif; font-weight: 400; font-size: clamp(1.4rem, 2.2vw, 1.9rem); line-height: 1.45; max-width: 720px; margin: 0 auto; }
+  .arc-product-plate .spread-links { justify-content: center; }
+
+  /* ───── ARCHIVE ───── */
+  .arc-archive {
+    background: #eadbb8;
+    background-image:
+      radial-gradient(rgba(80,40,10,0.05) 1px, transparent 1px),
+      radial-gradient(rgba(80,40,10,0.04) 1px, transparent 1px);
+    background-size: 4px 4px, 7px 7px;
+    background-position: 0 0, 2px 2px;
+    color: #2a1a08; padding: 8vh 8vw;
+  }
+  .arc-archive .archive-head {
+    display: flex; justify-content: space-between; align-items: baseline;
+    padding-bottom: 1rem; margin-bottom: 3rem;
+    border-top: 6px double #3a2a10; border-bottom: 6px double #3a2a10;
+    padding-top: 1rem;
+    font-family: 'Fraunces', serif; font-style: italic; font-weight: 500;
+    font-size: 1.1rem; letter-spacing: 0.15em; text-transform: uppercase; color: #3a2a10;
+  }
+  .arc-archive .kicker { font-family: 'Fraunces', serif; font-style: italic; font-weight: 600; font-size: 1.2rem; letter-spacing: 0.3em; text-transform: uppercase; color: #8a3a10; margin-bottom: 1.2rem; }
+  .arc-archive h2 {
+    font-family: 'Fraunces', serif; font-weight: 700; font-style: normal;
+    font-size: clamp(2.8rem, 6.5vw, 6rem); line-height: 1; letter-spacing: -0.02em;
+    margin: 0 0 2rem; max-width: 85%;
+  }
+  .arc-archive .lede {
+    font-family: 'Fraunces', serif; font-size: clamp(1.35rem, 2vw, 1.7rem);
+    line-height: 1.55; max-width: 760px; font-weight: 400; margin: 0;
+  }
+  .arc-archive .lede::first-letter {
+    font-family: 'Fraunces', serif; font-weight: 900; font-size: 5em;
+    float: left; line-height: 0.82; padding: 0.1em 0.15em 0 0; color: #8a3a10;
+  }
+  .arc-archive .story-meta { color: #8a3a10; margin-bottom: 1.5rem; }
+
+  /* ───── OBITUARY ───── */
+  .arc-obituary {
+    background: #f8f4ec; color: #121212;
+    padding: 10vh 6vw; align-items: center; justify-content: center;
+  }
+  .arc-obituary .obit-frame {
+    border: 3px solid #121212; padding: 6rem 5rem;
+    max-width: 780px; text-align: center; background: #f8f4ec;
+    position: relative; z-index: 2;
+  }
+  .arc-obituary .obit-frame::before,
+  .arc-obituary .obit-frame::after {
+    content: ""; position: absolute; left: -12px; right: -12px; height: 1px; background: #121212;
+  }
+  .arc-obituary .obit-frame::before { top: -12px; }
+  .arc-obituary .obit-frame::after { bottom: -12px; }
+  .arc-obituary .ornament { font-family: 'Fraunces', serif; font-size: 3.5rem; line-height: 1; margin-bottom: 2rem; color: #121212; }
+  .arc-obituary .kicker { font-family: 'Fraunces', serif; font-style: italic; font-weight: 500; font-size: 1.1rem; letter-spacing: 0.3em; text-transform: uppercase; margin-bottom: 2rem; opacity: 0.7; }
+  .arc-obituary h2 {
+    font-family: 'Fraunces', serif; font-weight: 400; font-style: italic;
+    font-size: clamp(2.4rem, 5vw, 4.5rem); line-height: 1.1; letter-spacing: -0.015em;
+    margin: 0 0 2.5rem;
+  }
+  .arc-obituary .story-meta { margin-bottom: 2rem; opacity: 0.6; }
+  .arc-obituary .lede { font-family: 'Fraunces', serif; font-size: clamp(1.3rem, 1.9vw, 1.6rem); line-height: 1.6; margin: 0 auto; max-width: 60ch; }
+  .arc-obituary .spread-links { justify-content: center; margin-top: 3rem; }
+
+  /* ───── BLUEPRINT ───── */
+  .arc-blueprint {
+    background: #0a3d62;
+    background-image:
+      linear-gradient(rgba(255,255,255,0.08) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255,255,255,0.08) 1px, transparent 1px);
+    background-size: 2.2rem 2.2rem;
+    color: #eaf4ff; padding: 8vh 6vw;
+  }
+  .arc-blueprint .corner {
+    position: absolute; font-family: 'JetBrains Mono', monospace;
+    font-size: 2.5rem; color: #eaf4ff; opacity: 0.7;
+  }
+  .arc-blueprint .corner.tl { top: 3vh; left: 3vw; }
+  .arc-blueprint .corner.tr { top: 3vh; right: 3vw; }
+  .arc-blueprint .corner.bl { bottom: 3vh; left: 3vw; }
+  .arc-blueprint .corner.br { bottom: 3vh; right: 3vw; }
+  .arc-blueprint .numeral {
+    font-family: 'JetBrains Mono', monospace;
+    font-weight: 700; font-size: clamp(4rem, 9vw, 7.5rem); line-height: 1;
+    letter-spacing: -0.01em; color: #eaf4ff;
+    margin: 0 0 1.5rem;
+    border-bottom: 2px dashed rgba(234,244,255,0.5);
+    padding-bottom: 1rem;
+    display: inline-block;
+  }
+  .arc-blueprint .kicker { font-family: 'JetBrains Mono', monospace; font-weight: 700; font-size: 1.15rem; letter-spacing: 0.3em; text-transform: uppercase; color: #9bd2ff; margin-bottom: 1.5rem; }
+  .arc-blueprint h2 { font-family: 'Fraunces', serif; font-weight: 700; font-size: clamp(2.8rem, 6.5vw, 5.5rem); line-height: 1; letter-spacing: -0.025em; margin: 0 0 2rem; max-width: 85%; }
+  .arc-blueprint .lede { font-family: 'JetBrains Mono', monospace; font-size: 1.2rem; line-height: 1.65; max-width: 720px; margin: 0; }
+  .arc-blueprint .story-meta { color: #9bd2ff; margin-bottom: 1.5rem; font-family: 'JetBrains Mono', monospace; }
+
+  /* ───── OBSERVATORY ───── */
+  .arc-observatory {
+    background: #070c2e; color: #e8ecff; padding: 8vh 6vw;
+  }
+  .arc-observatory .starfield {
+    position: absolute; inset: 0; pointer-events: none;
+    background-image:
+      radial-gradient(1px 1px at 10% 20%, rgba(255,255,255,0.9), transparent),
+      radial-gradient(1px 1px at 25% 70%, rgba(255,255,255,0.6), transparent),
+      radial-gradient(1.5px 1.5px at 40% 30%, rgba(255,255,255,0.8), transparent),
+      radial-gradient(1px 1px at 55% 85%, rgba(255,255,255,0.5), transparent),
+      radial-gradient(1px 1px at 70% 15%, rgba(255,255,255,0.9), transparent),
+      radial-gradient(1.5px 1.5px at 85% 55%, rgba(255,255,255,0.7), transparent),
+      radial-gradient(1px 1px at 92% 25%, rgba(255,255,255,0.5), transparent),
+      radial-gradient(1px 1px at 15% 90%, rgba(255,255,255,0.4), transparent),
+      radial-gradient(1px 1px at 48% 50%, rgba(255,255,255,0.6), transparent),
+      radial-gradient(1px 1px at 78% 78%, rgba(255,255,255,0.5), transparent);
+    background-repeat: no-repeat;
+  }
+  .arc-observatory > * { position: relative; z-index: 2; }
+  .arc-observatory .numeral {
+    font-family: 'Fraunces', serif; font-style: italic; font-weight: 400;
+    font-size: clamp(3rem, 7vw, 6rem); line-height: 1; letter-spacing: 0.04em;
+    color: #e8ecff; margin: 0 0 2rem;
+    border-bottom: 1px solid rgba(232,236,255,0.4);
+    padding-bottom: 1rem; display: inline-block;
+  }
+  .arc-observatory .kicker { font-family: 'Fraunces', serif; font-style: italic; font-weight: 500; font-size: 1.15rem; letter-spacing: 0.3em; text-transform: uppercase; color: #9ab3ff; margin-bottom: 1.5rem; }
+  .arc-observatory h2 { font-family: 'Fraunces', serif; font-weight: 400; font-style: italic; font-size: clamp(2.8rem, 6.5vw, 5.5rem); line-height: 1.05; letter-spacing: -0.015em; margin: 0 0 2rem; max-width: 85%; }
+  .arc-observatory .lede { font-family: 'Fraunces', serif; font-size: clamp(1.35rem, 2vw, 1.7rem); line-height: 1.55; max-width: 720px; font-weight: 400; margin: 0; }
+  .arc-observatory .story-meta { color: #9ab3ff; margin-bottom: 1.5rem; }
+
+  /* ───── DOSSIER ───── */
+  .dossier {
+    background: #f5f1e8; color: #1b1a14;
+    padding: 8rem 8vw 6rem;
+    border-top: 6px double #121212;
+  }
+  .dossier .dossier-head { text-align: center; margin-bottom: 4rem; }
+  .dossier .tagline { font-weight: 600; font-size: 1.1rem; letter-spacing: 0.4em; text-transform: uppercase; margin-bottom: 1rem; opacity: 0.7; }
+  .dossier h2 {
+    font-family: 'Fraunces', serif; font-style: italic; font-weight: 900;
+    font-size: clamp(4rem, 10vw, 9rem); line-height: 0.9; letter-spacing: -0.035em;
+    margin: 0 0 1.5rem;
+  }
+  .dossier .intro { font-family: 'Fraunces', serif; font-style: italic; font-size: 1.35rem; line-height: 1.5; max-width: 620px; margin: 0 auto; }
+  .dossier .intro a { font-style: normal; font-weight: 600; text-decoration: underline; }
+  .dossier-entry {
+    border-top: 1.5px solid #1b1a14;
+    padding: 3rem 0 2.5rem;
+    max-width: 820px; margin: 0 auto;
+  }
+  .dossier-entry:last-child { border-bottom: 1.5px solid #1b1a14; }
+  .dossier-meta { font-weight: 600; font-size: 1rem; letter-spacing: 0.28em; text-transform: uppercase; color: #7a1e14; margin-bottom: 1.2rem; }
+  .dossier-entry h3 {
+    font-family: 'Fraunces', serif; font-weight: 700;
+    font-size: clamp(1.8rem, 3.5vw, 2.6rem); line-height: 1.1; letter-spacing: -0.015em;
+    margin: 0 0 1.2rem;
+  }
+  .dossier-source { font-size: 1.05rem; font-weight: 500; letter-spacing: 0.08em; margin: 0 0 2rem; opacity: 0.75; }
+  .dossier-source a { text-decoration: underline; }
+  .dossier-entry h4 {
+    font-family: 'Inter', sans-serif; font-weight: 700; font-size: 1rem;
+    letter-spacing: 0.35em; text-transform: uppercase; margin: 2rem 0 1rem; color: #7a1e14;
+  }
+  .dossier-entry p {
+    font-family: 'Fraunces', serif; font-size: 1.25rem; line-height: 1.55; margin: 0 0 1rem;
+  }
+  .dossier-entry p.muted { opacity: 0.6; }
+
+  /* ───── COLOPHON ───── */
+  .colophon { background: #121212; color: #f5f1e8; padding: 5rem 6vw; text-align: center; }
+  .colophon .sig { font-family: 'Fraunces', serif; font-style: italic; font-weight: 400; font-size: clamp(2.5rem, 5vw, 4rem); line-height: 1.1; letter-spacing: -0.02em; margin: 0 0 1.5rem; }
+  .colophon .meta { font-weight: 500; font-size: 1rem; letter-spacing: 0.3em; text-transform: uppercase; opacity: 0.7; }
+  .colophon .classic-link { margin-top: 2rem; font-weight: 500; font-size: 1rem; letter-spacing: 0.2em; text-transform: uppercase; }
+  .colophon .classic-link a { text-decoration: underline; opacity: 0.85; }
+
+  /* ───── RESPONSIVE ───── */
+  @media (max-width: 800px) {
+    .masthead-nav { flex-wrap: wrap; gap: 0.8rem; }
+    .arc-stat-hero h2, .arc-stat-hero .lede { max-width: 100%; }
+    .arc-stat-hero .numeral { font-size: 14rem; opacity: 0.2; right: -2vw; top: 30vh; }
+    .arc-midnight .body { margin-top: 8rem; }
+    .arc-alert-stamp h2 { max-width: 100%; }
+    .arc-alert-stamp .stamp { top: 4vh; right: 4vw; font-size: 1.5rem; padding: 0.8rem 1.4rem; }
+    .arc-academic-drop-cap .cols { grid-template-columns: 1fr; gap: 2rem; }
+    .arc-editorial-pullquote { grid-template-columns: 1fr; gap: 3rem; }
+    .arc-caution-tape h2, .arc-notebook h2, .arc-pastel-playful h2, .arc-archive h2, .arc-obituary h2, .arc-blueprint h2, .arc-observatory h2 { max-width: 100%; }
+    .arc-caution-tape .tag { display: none; }
+    .arc-pastel-playful .alpha-grid { display: none; }
+    .arc-obituary .obit-frame { padding: 3rem 2rem; }
+    .arc-blueprint .corner { display: none; }
+  }
+
+</style>
 </head>
-<body>
-    <header>
-        <h1>Hacker News Digest - April 06, 2026</h1>
-        <nav>
-            <a href="../">&larr; Hacker News Calendar</a>
-            <a href="../../2026-04-06/">GitHub Trending</a>
-        </nav>
-    </header>
-    <main>
-        <div class="repo-controls">
-            <button id="collapse-seen-btn" type="button">Collapse Stories Not New Today</button>
-            <button id="expand-all-btn" type="button">Expand All</button>
-        </div>
-        <p class="seen-help">Stories marked "Not new today" appeared on one or more previous daily pages.</p>
-        <article>
-            <div class="repos">
+<body id="top">
 
-            <section class="repo" data-seen-before="0"
-                     data-share-title="Age Verification as Mass Surveillance Infrastructure"
-                     data-share-url="https://tboteproject.com/surveillancefindings/"
-                     data-share-points="20"
-                     data-share-comments="0">
-                <div class="repo-header-row">
-                    <h3>1. <a href="https://tboteproject.com/surveillancefindings/" target="_blank" rel="noopener noreferrer">Age Verification as Mass Surveillance Infrastructure</a> </h3>
-                    <div class="header-buttons">
-                        <button type="button" class="discuss-btn" aria-label="Discuss with AI" title="Discuss with AI">&#x1F4AC;</button>
-                        <button type="button" class="repo-toggle" aria-expanded="true">Hide details</button>
-                    </div>
-                </div>
-                <div class="repo-body">
-                    <p class="meta">
-                        <span class="language">tboteproject.com</span> |
-                        <span>rurban</span> |
-                        <span>20 points</span> |
-                        <span>0 comments</span> |
-                        <a href="https://news.ycombinator.com/item?id=47659109" target="_blank" rel="noopener noreferrer">discussion</a>
-                    </p>
-                    <p class="history">First seen: April 06, 2026 | Consecutive daily streak: 1 day</p>
-                    <div class="ai-summary">
-                        <h4>Analysis</h4>
-                        <p>The article details a comprehensive investigation into the identity verification company Persona, alleging that its services function as a broad mass surveillance infrastructure rather than simple age verification. By analyzing leaked source code and decompiling the company’s SDK, the author reveals that Persona collects granular biometric and behavioral data—including real-time facial streams and device fingerprints—which are then shared with various intelligence and financial reporting agencies. The report further highlights the business nexus between Persona’s lead investor, Peter Thiel’s Founders Fund, and Palantir, noting how coordinated lobbying efforts have successfully mandated these verification tools across multiple global jurisdictions.</p>
-<p>Hacker News readers will likely find this analysis significant due to its technical exposure of how third-party SDKs can quietly integrate deep surveillance capabilities into popular consumer applications like Roblox. The breakdown of specific security vulnerabilities, such as hardcoded encryption keys and the absence of certificate pinning, offers a sobering look at the privacy risks inherent in the modern identity verification ecosystem. Furthermore, the discussion regarding the convergence of government regulatory mandates with private corporate data-mining practices touches on core debates concerning digital autonomy and the erosion of user anonymity on the internet.</p>
-                    </div>
-                    
-                </div>
-            </section>
+  <header class="masthead">
+    <div class="masthead-nav">
+      <a href="../">HN Calendar</a>
+      <span>·</span>
+      <a href="../../2026-04-06/">GitHub Trending</a>
+      <span>·</span>
+      <a href="classic.html">Classic view</a>
+    </div>
+    <div class="tagline">The Morning Edition</div>
+    <h1 class="frnc">Ten stories, before your coffee.</h1>
+    <div class="issue-line">
+      <span>Vol. I</span>
+      <span>Monday, April 6, 2026</span>
+      <span>HN Front Page Digest</span>
+    </div>
+  </header>
 
-            <section class="repo" data-seen-before="0"
-                     data-share-title="Show HN: I built a tiny LLM to demystify how language models work"
-                     data-share-url="https://github.com/arman-bd/guppylm"
-                     data-share-points="913"
-                     data-share-comments="134">
-                <div class="repo-header-row">
-                    <h3>2. <a href="https://github.com/arman-bd/guppylm" target="_blank" rel="noopener noreferrer">Show HN: I built a tiny LLM to demystify how language models work</a> </h3>
-                    <div class="header-buttons">
-                        <button type="button" class="discuss-btn" aria-label="Discuss with AI" title="Discuss with AI">&#x1F4AC;</button>
-                        <button type="button" class="repo-toggle" aria-expanded="true">Hide details</button>
-                    </div>
-                </div>
-                <div class="repo-body">
-                    <p class="meta">
-                        <span class="language">github.com</span> |
-                        <span>armanified</span> |
-                        <span>913 points</span> |
-                        <span>134 comments</span> |
-                        <a href="https://news.ycombinator.com/item?id=47655408" target="_blank" rel="noopener noreferrer">discussion</a>
-                    </p>
-                    <p class="history">First seen: April 06, 2026 | Consecutive daily streak: 1 day</p>
-                    <div class="ai-summary">
-                        <h4>Analysis</h4>
-                        <p>&quot;GuppyLM&quot; is a project by developer armanified that provides a transparent, &quot;from-scratch&quot; implementation of a 9-million parameter language model. Built using a vanilla transformer architecture and roughly 130 lines of PyTorch code, the model is trained on 60,000 synthetic conversational examples to adopt the persona of a fish. The entire pipeline, from tokenizer creation to final inference, is designed to run in about five minutes on a free Google Colab T4 GPU instance.</p>
-<p>Hacker News readers likely find this project compelling because it demystifies the &quot;black box&quot; of modern AI through extreme simplification rather than adding complex, proprietary layers. By stripping away contemporary optimizations like RoPE or SwiGLU, the project allows developers to understand the foundational mechanics of how raw data translates into functional weights. It serves as an accessible educational resource that proves meaningful model building is achievable without massive computational resources or advanced research credentials.</p>
-                    </div>
-                    
-                <div class="ai-summary">
-                    <h4>Comment Analysis</h4>
-                    <p>The consensus is that the project serves as a fun, approachable educational exercise, though users are divided on whether it successfully &quot;demystifies&quot; LLM architecture compared to more comprehensive existing visualization tools.</p>
-<p>Critics argue the project is oversold, claiming that executing a few high-level script commands fails to demystify the underlying complexity and that the documentation lacks sufficient context for genuine technical learning.</p>
-<p>Users encountered practical hurdles, including broken dependencies and missing file errors, while noting that the model&#x27;s limited performance stems from its training data rather than true conversational intelligence or reasoning.</p>
-<p>This sample is limited by its focus on individual technical debugging and philosophical tangents, failing to represent the broader reception or common praise that likely exists among the total comment volume.</p>
-                </div>
+  <section class="spread arc-alert-stamp">
+    <div class="stamp">Alert</div>
+    <div class="numeral">01</div>
+    <div class="kicker">Privacy Watch</div>
+    <h2>Age Verification Tools Function as Global Surveillance Infrastructure</h2>
+    <p class="story-meta">tboteproject.com &nbsp;·&nbsp; 20 pts &nbsp;·&nbsp; 0 comments</p>
+    <p class="lede">Under the guise of protecting minors, identification SDKs are harvesting granular biometric and behavioral streams. These data pipelines feed directly into intelligence-adjacent financial networks.</p>
+    <div class="spread-links"><a class="read-more" href="https://tboteproject.com/surveillancefindings/" target="_blank" rel="noopener">Read →</a><a class="dossier-link" href="#dossier-1">Full analysis ↓</a></div>
+  </section>
 
-                </div>
-            </section>
+  <section class="spread arc-mint-pattern">
+    <div class="numeral-block">
+      <div class="numeral">02</div>
+    </div>
+    <p class="kicker">// Code Deep-Dive</p>
+    <h2>Demystifying Language Models with a Nine-Million Parameter Fish</h2>
+    <p class="story-meta">github.com &nbsp;·&nbsp; 913 pts &nbsp;·&nbsp; 134 comments</p>
+    <p class="lede">A minimalist implementation in 130 lines of PyTorch code strips away the industry abstraction. It offers a transparent look at how a model transforms synthetic text into a conversational persona.</p>
+    <div class="spread-links"><a class="read-more" href="https://github.com/arman-bd/guppylm" target="_blank" rel="noopener">Read →</a><a class="dossier-link" href="#dossier-2">Full analysis ↓</a></div>
+  </section>
 
-            <section class="repo" data-seen-before="0"
-                     data-share-title="Gemma 4 on iPhone"
-                     data-share-url="https://apps.apple.com/nl/app/google-ai-edge-gallery/id6749645337"
-                     data-share-points="862"
-                     data-share-comments="232">
-                <div class="repo-header-row">
-                    <h3>3. <a href="https://apps.apple.com/nl/app/google-ai-edge-gallery/id6749645337" target="_blank" rel="noopener noreferrer">Gemma 4 on iPhone</a> </h3>
-                    <div class="header-buttons">
-                        <button type="button" class="discuss-btn" aria-label="Discuss with AI" title="Discuss with AI">&#x1F4AC;</button>
-                        <button type="button" class="repo-toggle" aria-expanded="true">Hide details</button>
-                    </div>
-                </div>
-                <div class="repo-body">
-                    <p class="meta">
-                        <span class="language">apps.apple.com</span> |
-                        <span>janandonly</span> |
-                        <span>862 points</span> |
-                        <span>232 comments</span> |
-                        <a href="https://news.ycombinator.com/item?id=47652561" target="_blank" rel="noopener noreferrer">discussion</a>
-                    </p>
-                    <p class="history">First seen: April 06, 2026 | Consecutive daily streak: 1 day</p>
-                    <div class="ai-summary">
-                        <h4>Analysis</h4>
-                        <p>The Google AI Edge Gallery app has been updated to support the Gemma 4 model family, enabling users to run high-performance, open-source large language models entirely on their iPhones. This release emphasizes local processing, offering features such as &quot;Thinking Mode&quot; for transparency in reasoning, agent-based tools like Wikipedia integration, and multimodal capabilities for image and audio analysis. By prioritizing offline execution, the application ensures that all model inferences remain private, avoiding the need for server-side data transmission.</p>
-<p>Hacker News readers are likely interested in this story because it showcases the ongoing evolution of local LLM deployment on consumer hardware. The project, which is open-source and hosted on GitHub, provides a transparent sandbox for developers to experiment with model parameters, benchmarks, and custom agent skills. It also highlights the technical feasibility of running complex, high-reasoning models on mobile devices, fueling broader community discussions regarding the future of edge computing and on-device privacy.</p>
-                    </div>
-                    
-                <div class="ai-summary">
-                    <h4>Comment Analysis</h4>
-                    <p>Users generally express enthusiasm for running Gemma 4 locally on iPhones, praising the potential for improved privacy, offline functionality, and the ability to utilize personal agents without restrictive cloud-based content policing.</p>
-<p>Skeptics argue that local execution remains inferior to cloud-based alternatives, citing concerns regarding battery depletion, significant device storage bloating, and the inherent performance limitations of hardware-constrained mobile devices compared to server-scale clusters.</p>
-<p>Developers highlight the shift toward local tool use for automated tasks, though they emphasize the need for unified operating system frameworks to avoid redundancy and memory overhead when managing multiple model instances.</p>
-<p>This analysis is limited to a small sample of highly technical users, potentially overrepresenting those interested in model &quot;dealignment&quot; and home-lab experimentation rather than the perspectives of average mobile application users.</p>
-                </div>
+  <section class="spread arc-product-plate">
+    <div class="product-chip">Release &nbsp;·&nbsp; N<sup>o</sup> 03</div>
+    <div class="kicker">Mobile AI</div>
+    <h2>Gemma 4 Now Runs Locally on iPhone Hardware</h2>
+    <div class="product-rule"></div>
+    <p class="story-meta">apps.apple.com &nbsp;·&nbsp; 862 pts &nbsp;·&nbsp; 232 comments</p>
+    <p class="lede">The latest Google AI Edge Gallery release brings high-performance open-source models to local mobile silicon. By prioritizing offline inference, the app enables private reasoning and agentic tools without server-side dependencies.</p>
+    <div class="spread-links"><a class="read-more" href="https://apps.apple.com/nl/app/google-ai-edge-gallery/id6749645337" target="_blank" rel="noopener">Read →</a><a class="dossier-link" href="#dossier-3">Full analysis ↓</a></div>
+  </section>
 
-                </div>
-            </section>
+  <section class="spread arc-stat-hero">
+    <div class="numeral">$15B</div>
+    <div class="kicker">N<sup>o</sup> 04 · Financial Reserve</div>
+    <h2>Bank of France Repatriates Entire Gold Stock</h2>
+    <p class="story-meta">mining.com &nbsp;·&nbsp; 620 pts &nbsp;·&nbsp; 361 comments</p>
+    <p class="lede">The final 129 tonnes of bullion have returned to Paris, marking the end of a strategic liquidation and centralization effort. This movement effectively closes a decades-long chapter of storage in New York.</p>
+    <div class="spread-links"><a class="read-more" href="https://www.mining.com/france-pulls-last-gold-held-in-us-for-15b-gain/" target="_blank" rel="noopener">Read →</a><a class="dossier-link" href="#dossier-4">Full analysis ↓</a></div>
+  </section>
 
-            <section class="repo" data-seen-before="0"
-                     data-share-title="France pulls last gold held in US"
-                     data-share-url="https://www.mining.com/france-pulls-last-gold-held-in-us-for-15b-gain/"
-                     data-share-points="620"
-                     data-share-comments="361">
-                <div class="repo-header-row">
-                    <h3>4. <a href="https://www.mining.com/france-pulls-last-gold-held-in-us-for-15b-gain/" target="_blank" rel="noopener noreferrer">France pulls last gold held in US</a> </h3>
-                    <div class="header-buttons">
-                        <button type="button" class="discuss-btn" aria-label="Discuss with AI" title="Discuss with AI">&#x1F4AC;</button>
-                        <button type="button" class="repo-toggle" aria-expanded="true">Hide details</button>
-                    </div>
-                </div>
-                <div class="repo-body">
-                    <p class="meta">
-                        <span class="language">mining.com</span> |
-                        <span>teleforce</span> |
-                        <span>620 points</span> |
-                        <span>361 comments</span> |
-                        <a href="https://news.ycombinator.com/item?id=47658146" target="_blank" rel="noopener noreferrer">discussion</a>
-                    </p>
-                    <p class="history">First seen: April 06, 2026 | Consecutive daily streak: 1 day</p>
-                    <div class="ai-summary">
-                        <h4>Analysis</h4>
-                        <p>The Bank of France has completed the repatriation of its final 129 tonnes of gold bullion previously stored at the Federal Reserve Bank of New York. Rather than physically transporting the existing bars, the bank opted to sell the US-held assets and purchase new, international-standard bullion for storage within its underground vault in Paris. This strategic liquidation, executed between mid-2025 and early 2026, capitalized on rising gold prices to generate a $15 billion gain. Consequently, France’s total gold reserves of approximately 2,437 tonnes are now consolidated entirely within its domestic facilities.</p>
-<p>Hacker News readers are likely interested in this story due to its implications for international finance and the shifting dynamics of global gold reserves. The technical decision to sell and repurchase bullion rather than moving physical assets offers a pragmatic look at central bank logistics and market efficiency. Furthermore, the move provides a case study in how state institutions manage sovereign assets to recover from significant fiscal losses. The discussion around centralizing gold storage also touches upon broader themes of geopolitical risk and the evolution of the post-Bretton Woods monetary system.</p>
-                    </div>
-                    
-                <div class="ai-summary">
-                    <h4>Comment Analysis</h4>
-                    <p>Commenters generally agree that the reported $15 billion gain is a realized accounting adjustment stemming from selling &quot;non-standard&quot; legacy gold bars and replacing them with modern, tradable bullion held domestically.</p>
-<p>Several users strongly dispute the significance of this gain, arguing it is merely a paper profit reflecting the long-term appreciation of gold assets rather than a successful market-timing or arbitrage strategy.</p>
-<p>The technical consensus suggests the Banque de France modernized its reserves to meet current purity standards while centralizing custody, with the windfall gain serving as a byproduct of historical price appreciation.</p>
-<p>Discussion threads exhibit significant confusion and skepticism, often driven by ambiguous journalism and the complexity of central bank accounting practices, which makes verifying the precise nature of the financial event difficult.</p>
-                </div>
+  <section class="spread arc-editorial-pullquote">
+    <div class="left">
+      <div class="numeral">05</div>
+      <div class="kicker">Industry Analysis</div>
+      <h2>Microsoft’s Three-Decade Loss of Graphical Strategy</h2>
+      <p class="story-meta">jsnover.com &nbsp;·&nbsp; 830 pts &nbsp;·&nbsp; 579 comments</p>
+      <div class="spread-links"><a class="read-more" href="https://www.jsnover.com/blog/2026/03/13/microsoft-hasnt-had-a-coherent-gui-strategy-since-petzold/" target="_blank" rel="noopener">Read →</a><a class="dossier-link" href="#dossier-5">Full analysis ↓</a></div>
+    </div>
+    <blockquote class="pullquote">The fragmentation of Windows development is a direct casualty of internal power struggles that have persisted for over thirty years.</blockquote>
+  </section>
 
-                </div>
-            </section>
+  <section class="spread arc-observatory">
+    <div class="starfield"></div>
+    <div class="numeral">Obs.&nbsp;06</div>
+    <div class="kicker">Radio Astronomy</div>
+    <h2>Bouncing Radio Signals Off the Moon with Open Hardware</h2>
+    <p class="story-meta">moonrf.com &nbsp;·&nbsp; 260 pts &nbsp;·&nbsp; 70 comments</p>
+    <p class="lede">Engineers are utilizing a 240-antenna phased array to establish a high-latency link with our lunar neighbor. This C-band experiment pushes the boundaries of what is possible with consumer-grade software-defined radios.</p>
+    <div class="spread-links"><a class="read-more" href="https://moonrf.com/" target="_blank" rel="noopener">Read →</a><a class="dossier-link" href="#dossier-6">Full analysis ↓</a></div>
+  </section>
 
-            <section class="repo" data-seen-before="0"
-                     data-share-title="Microsoft hasn&#x27;t had a coherent GUI strategy since Petzold"
-                     data-share-url="https://www.jsnover.com/blog/2026/03/13/microsoft-hasnt-had-a-coherent-gui-strategy-since-petzold/"
-                     data-share-points="830"
-                     data-share-comments="579">
-                <div class="repo-header-row">
-                    <h3>5. <a href="https://www.jsnover.com/blog/2026/03/13/microsoft-hasnt-had-a-coherent-gui-strategy-since-petzold/" target="_blank" rel="noopener noreferrer">Microsoft hasn&#x27;t had a coherent GUI strategy since Petzold</a> </h3>
-                    <div class="header-buttons">
-                        <button type="button" class="discuss-btn" aria-label="Discuss with AI" title="Discuss with AI">&#x1F4AC;</button>
-                        <button type="button" class="repo-toggle" aria-expanded="true">Hide details</button>
-                    </div>
-                </div>
-                <div class="repo-body">
-                    <p class="meta">
-                        <span class="language">jsnover.com</span> |
-                        <span>naves</span> |
-                        <span>830 points</span> |
-                        <span>579 comments</span> |
-                        <a href="https://news.ycombinator.com/item?id=47651703" target="_blank" rel="noopener noreferrer">discussion</a>
-                    </p>
-                    <p class="history">First seen: April 06, 2026 | Consecutive daily streak: 1 day</p>
-                    <div class="ai-summary">
-                        <h4>Analysis</h4>
-                        <p>The article argues that Microsoft has lacked a coherent strategy for Windows desktop development for over three decades, contrasting the modern fragmentation with the clarity of the late 1980s when Charles Petzold’s *Programming Windows* provided a definitive guide to the platform. The author traces this decline through a series of organizational power struggles, premature pivots, and internal conflicts—most notably between the Windows and .NET teams—that led to an endless succession of abandoned frameworks like Silverlight, UWP, and WPF. Today, the Windows ecosystem is described as a &quot;boof-a-rama&quot; consisting of over a dozen competing technologies, leaving developers without a clear path for building native applications.</p>
-<p>Hacker News readers are likely drawn to this piece because it articulates a common source of developer frustration regarding corporate-driven platform instability. The discussion resonates with a community that values technical longevity and often observes how organizational silos and marketing-driven product roadmaps frequently undermine engineering excellence. By cataloging the historical failures of Microsoft’s GUI evolution, the post invites a broader conversation about why even well-funded companies struggle to maintain consistent developer experiences over the long term.</p>
-                    </div>
-                    
-                <div class="ai-summary">
-                    <h4>Comment Analysis</h4>
-                    <p>Developers largely agree that Microsoft lacks a cohesive GUI strategy, fueled by internal political friction, frequent platform abandonment, and a failure to provide clear guidance for creating modern, cross-platform desktop applications.</p>
-<p>Some developers argue that the demand for platform-specific frameworks is obsolete because the modern requirement for cross-platform support necessitates web-based or agnostic technologies regardless of what individual operating systems officially recommend.</p>
-<p>Technical contributors suggest that building for the web has become the pragmatic default, though native frameworks like WPF remain viable for specialized Windows software when performance and integration with legacy systems are prioritized.</p>
-<p>This analysis is limited by the sample size, which likely overrepresents power users and developers disillusioned with Microsoft&#x27;s current direction, potentially excluding the perspectives of enterprise administrators or general consumer-focused software teams.</p>
-                </div>
+  <section class="spread arc-midnight">
+    <div class="numeral">07</div>
+    <div class="body">
+      <div class="kicker">// Illicit Trade</div>
+      <h2>Global Networks Facilitate Smuggling of Giant African Harvester Ants</h2>
+      <p class="story-meta">bbc.com &nbsp;·&nbsp; 109 pts &nbsp;·&nbsp; 28 comments</p>
+      <p class="lede">A high-stakes black market has emerged for rare insect queens, transported in test tubes through international hubs. This trade remains shielded from legal oversight, driven by the niche demands of private formicarium collectors.</p>
+      <div class="spread-links"><a class="read-more" href="https://www.bbc.com/news/articles/cg4g44zv37qo" target="_blank" rel="noopener">Read →</a><a class="dossier-link" href="#dossier-7">Full analysis ↓</a></div>
+    </div>
+  </section>
 
-                </div>
-            </section>
+  <section class="spread arc-terminal">
+    <div class="prompt-row">user@morning-edition:~$ cat story_08.md</div>
+    <p class="numeral">08</p>
+    <p class="story-meta">github.com &nbsp;·&nbsp; 414 pts &nbsp;·&nbsp; 217 comments</p>
+    <h2>LÖVE: A Lightweight Lua-Based 2D Game Engine</h2>
+    <p class="lede">Standardize your 2D development environment with a framework that prioritizes simplicity and performance. LÖVE provides a batteries-included approach for developers targeting cross-platform deployment.<span class="cursor"></span></p>
+    <div class="spread-links"><a class="read-more" href="https://github.com/love2d/love" target="_blank" rel="noopener">Read →</a><a class="dossier-link" href="#dossier-8">Full analysis ↓</a></div>
+  </section>
 
-            <section class="repo" data-seen-before="0"
-                     data-share-title="An open-source 240-antenna array to bounce signals off the Moon"
-                     data-share-url="https://moonrf.com/"
-                     data-share-points="260"
-                     data-share-comments="70">
-                <div class="repo-header-row">
-                    <h3>6. <a href="https://moonrf.com/" target="_blank" rel="noopener noreferrer">An open-source 240-antenna array to bounce signals off the Moon</a> </h3>
-                    <div class="header-buttons">
-                        <button type="button" class="discuss-btn" aria-label="Discuss with AI" title="Discuss with AI">&#x1F4AC;</button>
-                        <button type="button" class="repo-toggle" aria-expanded="true">Hide details</button>
-                    </div>
-                </div>
-                <div class="repo-body">
-                    <p class="meta">
-                        <span class="language">moonrf.com</span> |
-                        <span>hillcrestenigma</span> |
-                        <span>260 points</span> |
-                        <span>70 comments</span> |
-                        <a href="https://news.ycombinator.com/item?id=47656622" target="_blank" rel="noopener noreferrer">discussion</a>
-                    </p>
-                    <p class="history">First seen: April 06, 2026 | Consecutive daily streak: 1 day</p>
-                    <div class="ai-summary">
-                        <h4>Analysis</h4>
-                        <p>The project, titled QuadRF, introduces an open-source, four-antenna software-defined radio (SDR) tile designed as a scalable building block for large phased arrays. Operating in the 4.9–6.0 GHz C-band, these tiles utilize Lattice ECP5 FPGAs to achieve full-duplex transmission with low latency. By combining multiple units, engineers can construct a massive 240-antenna array capable of bouncing signals off the Moon, reflecting an ambitious application of distributed RF hardware.</p>
-<p>Hacker News readers are likely drawn to this story because it democratizes access to sophisticated phased-array technology, which is traditionally restricted to high-budget aerospace or telecommunications industries. The project’s commitment to open-source hardware allows enthusiasts to experiment with complex signal processing, direction-of-arrival tracking, and long-range space communications. This type of engineering project resonates with the community&#x27;s interest in bridging the gap between hobbyist-level software-defined radio and professional-grade infrastructure.</p>
-                    </div>
-                    
-                <div class="ai-summary">
-                    <h4>Comment Analysis</h4>
-                    <p>The hardware design is widely praised as an impressive engineering achievement, particularly for its clever use of Raspberry Pi interfaces to facilitate high-speed data transmission within a low-cost production budget.</p>
-<p>Skepticism persists regarding the project&#x27;s marketing claims, specifically the feasibility of &quot;agentic&quot; AI coding features and the accuracy of the technical specifications regarding transmit power and array antenna gain.</p>
-<p>The system utilizes a novel signal architecture by mimicking camera and display hardware interfaces to bypass traditional bottlenecks, enabling complex real-time RF visualization and processing on a consumer-grade platform.</p>
-<p>The discussion is heavily skewed toward hardware enthusiasts and engineers, potentially overlooking broader regulatory concerns, accessibility, or the practical utility of the device for users outside of specialized research communities.</p>
-                </div>
+  <section class="spread arc-archive">
+    <div class="archive-head">
+      <span>Filed</span>
+      <span>Archival Desk · N<sup>o</sup> IX</span>
+      <span>From the Vault</span>
+    </div>
+    <div class="kicker">Retro Computing</div>
+    <h2>The 40-Kilobyte Engineering Feat of The Last Ninja</h2>
+    <p class="story-meta">twitter.com &nbsp;·&nbsp; 309 pts &nbsp;·&nbsp; 192 comments</p>
+    <p class="lede">In 1987, System 3 captured isometric detail and complex soundscapes within an impossibly small memory footprint. This remains a definitive study in resource constraints and precise machine-code optimization.</p>
+    <div class="spread-links"><a class="read-more" href="https://twitter.com/exQUIZitely/status/2040777977521398151" target="_blank" rel="noopener">Read →</a><a class="dossier-link" href="#dossier-9">Full analysis ↓</a></div>
+  </section>
 
-                </div>
-            </section>
+  <section class="spread arc-blueprint">
+    <div class="corner tl">┌</div><div class="corner tr">┐</div>
+    <div class="corner bl">└</div><div class="corner br">┘</div>
+    <div class="numeral">FIG.&nbsp;10</div>
+    <div class="kicker">Maker Build</div>
+    <h2>Real-Time Multimodal AI Interactions on Local M3 Hardware</h2>
+    <p class="story-meta">github.com &nbsp;·&nbsp; 294 pts &nbsp;·&nbsp; 36 comments</p>
+    <p class="lede">This project integrates visual input and voice synthesis into a self-hosted, offline pipeline for consumer Mac hardware. It serves as a blueprint for bypassing latency-heavy cloud assistants with specialized local models.</p>
+    <div class="spread-links"><a class="read-more" href="https://github.com/fikrikarim/parlor" target="_blank" rel="noopener">Read →</a><a class="dossier-link" href="#dossier-10">Full analysis ↓</a></div>
+  </section>
 
-            <section class="repo" data-seen-before="1"
-                     data-share-title="One ant for $220: The new frontier of wildlife trafficking"
-                     data-share-url="https://www.bbc.com/news/articles/cg4g44zv37qo"
-                     data-share-points="109"
-                     data-share-comments="28">
-                <div class="repo-header-row">
-                    <h3>7. <a href="https://www.bbc.com/news/articles/cg4g44zv37qo" target="_blank" rel="noopener noreferrer">One ant for $220: The new frontier of wildlife trafficking</a> <span class="seen-badge">Not new today</span></h3>
-                    <div class="header-buttons">
-                        <button type="button" class="discuss-btn" aria-label="Discuss with AI" title="Discuss with AI">&#x1F4AC;</button>
-                        <button type="button" class="repo-toggle" aria-expanded="true">Hide details</button>
-                    </div>
-                </div>
-                <div class="repo-body">
-                    <p class="meta">
-                        <span class="language">bbc.com</span> |
-                        <span>gmays</span> |
-                        <span>109 points</span> |
-                        <span>28 comments</span> |
-                        <a href="https://news.ycombinator.com/item?id=47613827" target="_blank" rel="noopener noreferrer">discussion</a>
-                    </p>
-                    <p class="history">First seen: April 04, 2026 | Consecutive daily streak: 3 days</p>
-                    <div class="ai-summary">
-                        <h4>Analysis</h4>
-                        <p>Kenya has become the epicenter of an illicit global trade in giant African harvester ant queens, which are highly sought after by international insect collectors. These ants, which can fetch up to $220 each on the black market, are smuggled in test tubes and syringes to bypass airport security and survive transport. While the trade is driven by the rising popularity of &quot;formicaria&quot; pet enclosures, it operates entirely outside of legal permitting frameworks and threatens both local Kenyan ecosystems and the environments where the ants are introduced.</p>
-<p>Hacker News readers may find this story compelling due to the intersection of niche hobbyist markets, international wildlife crime, and the unintended ecological consequences of globalized trade. The article highlights the limitations of current conservation policies like CITES, which currently offer no protection for insect species despite their roles as keystone ecosystem engineers. Additionally, the discussion touches on the debate between treating biological specimens as &quot;stolen assets&quot; versus developing sustainable, commercialized &quot;bio-farming&quot; models to generate local economic value.</p>
-                    </div>
-                    
-                </div>
-            </section>
+  <section id="dossier" class="dossier">
+    <div class="dossier-head">
+      <div class="tagline">Appendix</div>
+      <h2>The Dossier</h2>
+      <p class="intro">Full analysis and reader reactions for today's ten stories. <a href="#top">↑ Back to the edition</a></p>
+    </div>
+    <article id="dossier-1" class="dossier-entry">
+      <div class="dossier-meta">N<sup>o</sup> 01 &nbsp;·&nbsp; Rose Alert &nbsp;·&nbsp; Privacy Watch</div>
+      <h3>Age Verification as Mass Surveillance Infrastructure</h3>
+      <p class="dossier-source">
+        <a href="https://tboteproject.com/surveillancefindings/" target="_blank" rel="noopener">tboteproject.com</a>
+        &nbsp;·&nbsp; 20 pts &nbsp;·&nbsp; 0 comments
+        &nbsp;·&nbsp; <a href="https://news.ycombinator.com/item?id=47659109" target="_blank" rel="noopener">discussion</a>
+      </p>
+      <h4>Analysis</h4>
+      <p class="muted"><em>Analysis not available.</em></p>
+      
+    </article>
+    <article id="dossier-2" class="dossier-entry">
+      <div class="dossier-meta">N<sup>o</sup> 02 &nbsp;·&nbsp; Mint Pattern &nbsp;·&nbsp; Code Deep-Dive</div>
+      <h3>Show HN: I built a tiny LLM to demystify how language models work</h3>
+      <p class="dossier-source">
+        <a href="https://github.com/arman-bd/guppylm" target="_blank" rel="noopener">github.com</a>
+        &nbsp;·&nbsp; 913 pts &nbsp;·&nbsp; 134 comments
+        &nbsp;·&nbsp; <a href="https://news.ycombinator.com/item?id=47655408" target="_blank" rel="noopener">discussion</a>
+      </p>
+      <h4>Analysis</h4>
+      <p class="muted"><em>Analysis not available.</em></p>
+      
+    </article>
+    <article id="dossier-3" class="dossier-entry">
+      <div class="dossier-meta">N<sup>o</sup> 03 &nbsp;·&nbsp; Product Plate &nbsp;·&nbsp; Mobile AI</div>
+      <h3>Gemma 4 on iPhone</h3>
+      <p class="dossier-source">
+        <a href="https://apps.apple.com/nl/app/google-ai-edge-gallery/id6749645337" target="_blank" rel="noopener">apps.apple.com</a>
+        &nbsp;·&nbsp; 862 pts &nbsp;·&nbsp; 232 comments
+        &nbsp;·&nbsp; <a href="https://news.ycombinator.com/item?id=47652561" target="_blank" rel="noopener">discussion</a>
+      </p>
+      <h4>Analysis</h4>
+      <p class="muted"><em>Analysis not available.</em></p>
+      
+    </article>
+    <article id="dossier-4" class="dossier-entry">
+      <div class="dossier-meta">N<sup>o</sup> 04 &nbsp;·&nbsp; Stat Hero &nbsp;·&nbsp; Financial Reserve</div>
+      <h3>France pulls last gold held in US</h3>
+      <p class="dossier-source">
+        <a href="https://www.mining.com/france-pulls-last-gold-held-in-us-for-15b-gain/" target="_blank" rel="noopener">mining.com</a>
+        &nbsp;·&nbsp; 620 pts &nbsp;·&nbsp; 361 comments
+        &nbsp;·&nbsp; <a href="https://news.ycombinator.com/item?id=47658146" target="_blank" rel="noopener">discussion</a>
+      </p>
+      <h4>Analysis</h4>
+      <p class="muted"><em>Analysis not available.</em></p>
+      
+    </article>
+    <article id="dossier-5" class="dossier-entry">
+      <div class="dossier-meta">N<sup>o</sup> 05 &nbsp;·&nbsp; Editorial Op-Ed &nbsp;·&nbsp; Industry Analysis</div>
+      <h3>Microsoft hasn&#x27;t had a coherent GUI strategy since Petzold</h3>
+      <p class="dossier-source">
+        <a href="https://www.jsnover.com/blog/2026/03/13/microsoft-hasnt-had-a-coherent-gui-strategy-since-petzold/" target="_blank" rel="noopener">jsnover.com</a>
+        &nbsp;·&nbsp; 830 pts &nbsp;·&nbsp; 579 comments
+        &nbsp;·&nbsp; <a href="https://news.ycombinator.com/item?id=47651703" target="_blank" rel="noopener">discussion</a>
+      </p>
+      <h4>Analysis</h4>
+      <p class="muted"><em>Analysis not available.</em></p>
+      
+    </article>
+    <article id="dossier-6" class="dossier-entry">
+      <div class="dossier-meta">N<sup>o</sup> 06 &nbsp;·&nbsp; Observatory &nbsp;·&nbsp; Radio Astronomy</div>
+      <h3>An open-source 240-antenna array to bounce signals off the Moon</h3>
+      <p class="dossier-source">
+        <a href="https://moonrf.com/" target="_blank" rel="noopener">moonrf.com</a>
+        &nbsp;·&nbsp; 260 pts &nbsp;·&nbsp; 70 comments
+        &nbsp;·&nbsp; <a href="https://news.ycombinator.com/item?id=47656622" target="_blank" rel="noopener">discussion</a>
+      </p>
+      <h4>Analysis</h4>
+      <p class="muted"><em>Analysis not available.</em></p>
+      
+    </article>
+    <article id="dossier-7" class="dossier-entry">
+      <div class="dossier-meta">N<sup>o</sup> 07 &nbsp;·&nbsp; Midnight &nbsp;·&nbsp; Illicit Trade</div>
+      <h3>One ant for $220: The new frontier of wildlife trafficking</h3>
+      <p class="dossier-source">
+        <a href="https://www.bbc.com/news/articles/cg4g44zv37qo" target="_blank" rel="noopener">bbc.com</a>
+        &nbsp;·&nbsp; 109 pts &nbsp;·&nbsp; 28 comments
+        &nbsp;·&nbsp; <a href="https://news.ycombinator.com/item?id=47613827" target="_blank" rel="noopener">discussion</a>
+      </p>
+      <h4>Analysis</h4>
+      <p class="muted"><em>Analysis not available.</em></p>
+      
+    </article>
+    <article id="dossier-8" class="dossier-entry">
+      <div class="dossier-meta">N<sup>o</sup> 08 &nbsp;·&nbsp; Terminal &nbsp;·&nbsp; Game Framework</div>
+      <h3>LÖVE: 2D Game Framework for Lua</h3>
+      <p class="dossier-source">
+        <a href="https://github.com/love2d/love" target="_blank" rel="noopener">github.com</a>
+        &nbsp;·&nbsp; 414 pts &nbsp;·&nbsp; 217 comments
+        &nbsp;·&nbsp; <a href="https://news.ycombinator.com/item?id=47637377" target="_blank" rel="noopener">discussion</a>
+      </p>
+      <h4>Analysis</h4>
+      <p class="muted"><em>Analysis not available.</em></p>
+      
+    </article>
+    <article id="dossier-9" class="dossier-entry">
+      <div class="dossier-meta">N<sup>o</sup> 09 &nbsp;·&nbsp; Archive &nbsp;·&nbsp; Retro Computing</div>
+      <h3>The 1987 game “The Last Ninja” was 40 kilobytes</h3>
+      <p class="dossier-source">
+        <a href="https://twitter.com/exQUIZitely/status/2040777977521398151" target="_blank" rel="noopener">twitter.com</a>
+        &nbsp;·&nbsp; 309 pts &nbsp;·&nbsp; 192 comments
+        &nbsp;·&nbsp; <a href="https://news.ycombinator.com/item?id=47656501" target="_blank" rel="noopener">discussion</a>
+      </p>
+      <h4>Analysis</h4>
+      <p class="muted"><em>Analysis not available.</em></p>
+      
+    </article>
+    <article id="dossier-10" class="dossier-entry">
+      <div class="dossier-meta">N<sup>o</sup> 10 &nbsp;·&nbsp; Blueprint &nbsp;·&nbsp; Maker Build</div>
+      <h3>Show HN: Real-time AI (audio/video in, voice out) on an M3 Pro with Gemma E2B</h3>
+      <p class="dossier-source">
+        <a href="https://github.com/fikrikarim/parlor" target="_blank" rel="noopener">github.com</a>
+        &nbsp;·&nbsp; 294 pts &nbsp;·&nbsp; 36 comments
+        &nbsp;·&nbsp; <a href="https://news.ycombinator.com/item?id=47652007" target="_blank" rel="noopener">discussion</a>
+      </p>
+      <h4>Analysis</h4>
+      <p class="muted"><em>Analysis not available.</em></p>
+      
+    </article>
+  </section>
 
-            <section class="repo" data-seen-before="0"
-                     data-share-title="LÖVE: 2D Game Framework for Lua"
-                     data-share-url="https://github.com/love2d/love"
-                     data-share-points="414"
-                     data-share-comments="217">
-                <div class="repo-header-row">
-                    <h3>8. <a href="https://github.com/love2d/love" target="_blank" rel="noopener noreferrer">LÖVE: 2D Game Framework for Lua</a> </h3>
-                    <div class="header-buttons">
-                        <button type="button" class="discuss-btn" aria-label="Discuss with AI" title="Discuss with AI">&#x1F4AC;</button>
-                        <button type="button" class="repo-toggle" aria-expanded="true">Hide details</button>
-                    </div>
-                </div>
-                <div class="repo-body">
-                    <p class="meta">
-                        <span class="language">github.com</span> |
-                        <span>cl3misch</span> |
-                        <span>414 points</span> |
-                        <span>217 comments</span> |
-                        <a href="https://news.ycombinator.com/item?id=47637377" target="_blank" rel="noopener noreferrer">discussion</a>
-                    </p>
-                    <p class="history">First seen: April 06, 2026 | Consecutive daily streak: 1 day</p>
-                    <div class="ai-summary">
-                        <h4>Analysis</h4>
-                        <p>LÖVE is a free, open-source framework designed for developing 2D games using the Lua programming language. It supports cross-platform deployment across major desktop operating systems, including Windows, macOS, and Linux, as well as mobile support for Android and iOS. The project maintains a transparent development process through GitHub, offering detailed documentation, a comprehensive test suite, and community-driven support channels.</p>
-<p>Hacker News readers likely appreciate this framework for its simplicity, lightweight footprint, and long-standing stability in the game development ecosystem. The community often values its reliance on mature dependencies like SDL and LuaJIT, which facilitate high-performance scripting in a portable environment. Furthermore, the project&#x27;s explicit policy against accepting AI-generated contributions serves as a notable point of discussion regarding developer ethics and code quality control in open-source projects.</p>
-                    </div>
-                    
-                <div class="ai-summary">
-                    <h4>Comment Analysis</h4>
-                    <p>LÖVE is widely praised for its approachable API, developer-friendly workflow, and efficient performance, with users frequently citing the hit game Balatro as a testament to the framework&#x27;s capability and simplicity.</p>
-<p>Some developers argue that modern web-based solutions offer superior performance despite their bloat, while others express frustration regarding the project&#x27;s slow release cycle and the lack of a stable version 12.0 update.</p>
-<p>Users looking for a custom engine often choose LÖVE for its &quot;batteries-included&quot; approach to audio, physics, and networking, which provides significant advantages over manually integrating individual libraries like SDL or LuaJIT.</p>
-<p>The discussion sample heavily emphasizes game development, potentially overlooking users who might utilize LÖVE for non-gaming multimedia projects, and focuses primarily on hobbyists or solo indie developers rather than professional studio workflows.</p>
-                </div>
-
-                </div>
-            </section>
-
-            <section class="repo" data-seen-before="0"
-                     data-share-title="The 1987 game “The Last Ninja” was 40 kilobytes"
-                     data-share-url="https://twitter.com/exQUIZitely/status/2040777977521398151"
-                     data-share-points="309"
-                     data-share-comments="192">
-                <div class="repo-header-row">
-                    <h3>9. <a href="https://twitter.com/exQUIZitely/status/2040777977521398151" target="_blank" rel="noopener noreferrer">The 1987 game “The Last Ninja” was 40 kilobytes</a> </h3>
-                    <div class="header-buttons">
-                        <button type="button" class="discuss-btn" aria-label="Discuss with AI" title="Discuss with AI">&#x1F4AC;</button>
-                        <button type="button" class="repo-toggle" aria-expanded="true">Hide details</button>
-                    </div>
-                </div>
-                <div class="repo-body">
-                    <p class="meta">
-                        <span class="language">twitter.com</span> |
-                        <span>keepamovin</span> |
-                        <span>309 points</span> |
-                        <span>192 comments</span> |
-                        <a href="https://news.ycombinator.com/item?id=47656501" target="_blank" rel="noopener noreferrer">discussion</a>
-                    </p>
-                    <p class="history">First seen: April 06, 2026 | Consecutive daily streak: 1 day</p>
-                    <div class="ai-summary">
-                        <h4>Analysis</h4>
-                        <p>The story highlights the 1987 Commodore 64 game *The Last Ninja*, which achieved impressive technical feats within an incredibly small memory footprint of only 40 kilobytes. Developed by System 3, the title is noted for its detailed isometric graphics and iconic musical score composed by Ben Daglish and Anthony Lees. By comparing this size to a standard digital photograph, the author emphasizes the extreme constraints faced by early game developers.</p>
-<p>Hacker News readers are drawn to this story because it serves as a nostalgic case study in engineering efficiency and resource management. Many participants appreciate the craftsmanship required to build complex, immersive worlds using assembly language and limited hardware capabilities. Discussing such projects offers a stark contrast to modern software development, where memory usage and file sizes are often significantly less scrutinized.</p>
-                    </div>
-                    
-                <div class="ai-summary">
-                    <h4>Comment Analysis</h4>
-                    <p>Participants largely agree that modern software is significantly more bloated than 1980s titles, though they debate whether this growth is an inevitable byproduct of increased functionality or simply poor developer discipline.</p>
-<p>A primary point of contention is whether modern requirements like security, high-resolution media, and complex UI frameworks justify current memory usage or if engineers have abandoned essential optimization practices for convenience.</p>
-<p>Developers suggest that imposing artificial constraints, such as utilizing underpowered VMs or focusing on zero-allocation libraries, can reveal significant opportunities for performance gains and efficient resource management in production systems.</p>
-<p>The discussion sample primarily reflects a nostalgic enthusiast perspective, potentially oversimplifying the technical evolution from 8-bit systems to modern environments by minimizing the complex demands of contemporary hardware and user expectations.</p>
-                </div>
-
-                </div>
-            </section>
-
-            <section class="repo" data-seen-before="0"
-                     data-share-title="Show HN: Real-time AI (audio/video in, voice out) on an M3 Pro with Gemma E2B"
-                     data-share-url="https://github.com/fikrikarim/parlor"
-                     data-share-points="294"
-                     data-share-comments="36">
-                <div class="repo-header-row">
-                    <h3>10. <a href="https://github.com/fikrikarim/parlor" target="_blank" rel="noopener noreferrer">Show HN: Real-time AI (audio/video in, voice out) on an M3 Pro with Gemma E2B</a> </h3>
-                    <div class="header-buttons">
-                        <button type="button" class="discuss-btn" aria-label="Discuss with AI" title="Discuss with AI">&#x1F4AC;</button>
-                        <button type="button" class="repo-toggle" aria-expanded="true">Hide details</button>
-                    </div>
-                </div>
-                <div class="repo-body">
-                    <p class="meta">
-                        <span class="language">github.com</span> |
-                        <span>karimf</span> |
-                        <span>294 points</span> |
-                        <span>36 comments</span> |
-                        <a href="https://news.ycombinator.com/item?id=47652007" target="_blank" rel="noopener noreferrer">discussion</a>
-                    </p>
-                    <p class="history">First seen: April 06, 2026 | Consecutive daily streak: 1 day</p>
-                    <div class="ai-summary">
-                        <h4>Analysis</h4>
-                        <p>&quot;Parlor&quot; is a new open-source project that enables real-time, multimodal AI interactions directly on consumer hardware like the Apple M3 Pro. By utilizing Google’s Gemma 4 E2B model for vision and speech understanding alongside the Kokoro text-to-speech engine, the software allows users to conduct voice-based conversations while sharing live camera input. The project is designed to run entirely offline, replacing expensive cloud-based server dependencies with a local FastAPI-driven architecture that processes audio and video streams via WebSockets.</p>
-<p>Hacker News readers are likely interested in this project because it demonstrates a significant leap in the efficiency of local large language models. The author highlights the evolution of hardware requirements, noting that tasks previously needing high-end desktop GPUs can now run locally on modern laptops with reasonable latency. This project serves as a practical blueprint for developers looking to build privacy-focused, sustainable AI applications that are capable of real-time responsiveness without the ongoing costs of cloud infrastructure.</p>
-                    </div>
-                    
-                <div class="ai-summary">
-                    <h4>Comment Analysis</h4>
-                    <p>Users view this project as a compelling alternative to current proprietary voice assistants, which are criticized for being overly restrictive and failing to provide the hands-free utility consumers actually need.</p>
-<p>While the demo is praised for its responsiveness, there is disagreement regarding model efficiency, with some developers preferring smaller, lighter alternatives like Qwen 0.8B over the heavier Gemma 4 implementation.</p>
-<p>Real-time performance is heavily reliant on low-latency text-to-speech engines like Kokoro, which suggests that optimized local inference is currently more critical for user experience than model parameter size alone.</p>
-<p>This sample reflects the interests of technically proficient early adopters who prioritize self-hosting and functional autonomy, potentially misrepresenting the broader market&#x27;s focus on user interface convenience and ease of installation.</p>
-                </div>
-
-                </div>
-            </section>
-
-            </div>
-        </article>
-    </main>
-    <footer>
-        <p>Generated automatically. Data from <a href="https://news.ycombinator.com/">Hacker News</a>.</p>
-    </footer>
+  <footer class="colophon">
+    <p class="sig">— that's the edition.</p>
+    <p class="meta">Set in Fraunces &amp; Inter · Compiled April 6, 2026</p>
+    <p class="classic-link"><a href="classic.html">Prefer the classic card view? →</a></p>
+  </footer>
 
 <script>
 (() => {
-    const readKey = "gtd:read_days:hn:v1";
-    const dayStr = "2026-04-06";
-
-    let stored = [];
-    try {
-        stored = JSON.parse(localStorage.getItem(readKey) || "[]");
-        if (!Array.isArray(stored)) {
-            stored = [];
-        }
-    } catch (_err) {
-        stored = [];
-    }
-
-    if (!stored.includes(dayStr)) {
-        stored.push(dayStr);
-        stored.sort();
-        localStorage.setItem(readKey, JSON.stringify(stored));
-    }
-
-    const collapseParam = new URLSearchParams(window.location.search).get("collapse_seen");
-    const collapseSeen = collapseParam === "0" ? false : true;
-
-    function setCollapsed(repoEl, collapsed) {
-        repoEl.classList.toggle("collapsed", collapsed);
-        const button = repoEl.querySelector(".repo-toggle");
-        if (button) {
-            button.textContent = collapsed ? "Show details" : "Hide details";
-            button.setAttribute("aria-expanded", String(!collapsed));
-        }
-    }
-
-    const repos = Array.from(document.querySelectorAll("section.repo[data-seen-before]"));
-
-    repos.forEach((repoEl) => {
-        const toggle = repoEl.querySelector(".repo-toggle");
-        if (!toggle) {
-            return;
-        }
-
-        toggle.addEventListener("click", () => {
-            setCollapsed(repoEl, !repoEl.classList.contains("collapsed"));
-        });
-    });
-
-    const collapseBtn = document.getElementById("collapse-seen-btn");
-    const expandBtn = document.getElementById("expand-all-btn");
-
-    if (collapseBtn) {
-        collapseBtn.addEventListener("click", () => {
-            repos.forEach((repoEl) => {
-                if (repoEl.dataset.seenBefore === "1") {
-                    setCollapsed(repoEl, true);
-                }
-            });
-        });
-    }
-
-    if (expandBtn) {
-        expandBtn.addEventListener("click", () => {
-            repos.forEach((repoEl) => setCollapsed(repoEl, false));
-        });
-    }
-
-    if (collapseSeen) {
-        repos.forEach((repoEl) => {
-            if (repoEl.dataset.seenBefore === "1") {
-                setCollapsed(repoEl, true);
-            }
-        });
-    }
-
-    // Discuss with AI button
-    const toast = document.createElement("div");
-    toast.className = "discuss-toast";
-    document.body.appendChild(toast);
-
-    function showToast(msg) {
-        toast.textContent = msg;
-        toast.classList.add("show");
-        setTimeout(() => toast.classList.remove("show"), 2500);
-    }
-
-    function buildHNMarkdown(card) {
-        const title = card.dataset.shareTitle || "";
-        const url = card.dataset.shareUrl || "";
-        const points = card.dataset.sharePoints || "0";
-        const comments = card.dataset.shareComments || "0";
-        const summaries = card.querySelectorAll(".ai-summary");
-        let md = "# " + title + "\n";
-        md += "Source: " + url + " | " + points + " points | " + comments + " comments\n";
-        summaries.forEach((s) => {
-            const heading = s.querySelector("h4");
-            const label = heading ? heading.textContent.trim() : "Analysis";
-            const content = Array.from(s.querySelectorAll("p"))
-                .map((p) => p.textContent.trim())
-                .join("\n");
-            md += "\n## " + label + "\n" + content + "\n";
-        });
-        return md;
-    }
-
-    document.querySelectorAll(".discuss-btn").forEach((btn) => {
-        btn.addEventListener("click", () => {
-            const card = btn.closest("section.repo");
-            if (!card) return;
-            const md = buildHNMarkdown(card);
-            const text = "I'd like to discuss this article with you. Here's a summary:\n\n" + md;
-            const title = "Discuss: " + (card.dataset.shareTitle || "");
-            if (navigator.share) {
-                navigator.share({ title: title, text: text }).catch(() => {});
-            } else {
-                navigator.clipboard.writeText(text).then(
-                    () => showToast("Copied to clipboard \u2014 paste into your AI chat"),
-                    () => showToast("Failed to copy")
-                );
-            }
-        });
-    });
+  const key = "gtd:read_days:hn:v1";
+  const day = "2026-04-06";
+  let stored = [];
+  try {
+    stored = JSON.parse(localStorage.getItem(key) || "[]");
+    if (!Array.isArray(stored)) stored = [];
+  } catch (_) { stored = []; }
+  if (!stored.includes(day)) {
+    stored.push(day);
+    stored.sort();
+    localStorage.setItem(key, JSON.stringify(stored));
+  }
 })();
 </script>
 

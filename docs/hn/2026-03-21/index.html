@@ -1,535 +1,784 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Hacker News Digest - March 21, 2026</title>
-    <link rel="stylesheet" href="../../style.css">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Morning Edition — Saturday, March 21, 2026</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght,SOFT@0,9..144,300..900,0..100;1,9..144,300..900,0..100&family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+
+  :root { --ink: #121212; --paper: #f5f1e8; }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  body {
+    font-family: 'Inter', system-ui, sans-serif;
+    font-size: 20px;
+    line-height: 1.5;
+    color: var(--ink);
+    background: var(--paper);
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+  a { color: inherit; }
+  a:hover { opacity: 0.7; }
+  .frnc { font-family: 'Fraunces', Georgia, serif; }
+  .mono { font-family: 'JetBrains Mono', ui-monospace, monospace; }
+
+  /* ───── MASTHEAD ───── */
+  .masthead { padding: 2rem 6vw 2.5rem; border-bottom: 3px double #121212; background: #f5f1e8; text-align: center; }
+  .masthead-nav {
+    display: flex;
+    justify-content: center;
+    gap: 1.2rem;
+    align-items: baseline;
+    margin-bottom: 2rem;
+    font-weight: 600;
+    font-size: 1rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+  }
+  .masthead-nav a { text-decoration: none; border-bottom: 2px solid transparent; padding-bottom: 2px; }
+  .masthead-nav a:hover { border-bottom-color: #121212; opacity: 1; }
+  .masthead-nav span { opacity: 0.4; }
+  .masthead .tagline { font-weight: 600; font-size: 1.2rem; letter-spacing: 0.4em; text-transform: uppercase; margin-bottom: 1.2rem; }
+  .masthead h1 {
+    font-family: 'Fraunces', Georgia, serif;
+    font-weight: 900;
+    font-style: italic;
+    font-size: clamp(4rem, 13vw, 12rem);
+    line-height: 0.88;
+    letter-spacing: -0.035em;
+    margin: 0 0 1rem;
+    font-variation-settings: "SOFT" 50;
+  }
+  .masthead .issue-line {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    max-width: 1000px;
+    margin: 2rem auto 0;
+    padding-top: 1.25rem;
+    border-top: 1px solid #121212;
+    font-weight: 500;
+    font-size: 1.1rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+  }
+
+  /* ───── SPREAD BASE ───── */
+  .spread {
+    min-height: 100vh;
+    padding: 6vh 6vw;
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+  .spread .story-meta { font-weight: 600; font-size: 1rem; letter-spacing: 0.28em; text-transform: uppercase; }
+  .spread-links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 2rem 2.5rem;
+    align-items: baseline;
+    margin-top: 2.5rem;
+  }
+  .spread .read-more {
+    display: inline-block;
+    font-size: 1.1rem;
+    font-weight: 700;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    text-decoration: none;
+    padding-bottom: 0.4rem;
+    border-bottom: 3px solid currentColor;
+  }
+  .spread .dossier-link {
+    font-size: 1rem;
+    font-weight: 500;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    text-decoration: none;
+    opacity: 0.7;
+    padding-bottom: 0.3rem;
+    border-bottom: 1px solid currentColor;
+  }
+  .spread .dossier-link:hover { opacity: 1; }
+
+  /* ───── STAT HERO ───── */
+  .arc-stat-hero { background: #eee6d3; color: #0d1a2e; padding: 8vh 6vw; }
+  .arc-stat-hero .numeral {
+    font-family: 'Fraunces', serif;
+    font-weight: 900;
+    font-style: italic;
+    font-size: clamp(12rem, 36vw, 34rem);
+    line-height: 0.8;
+    letter-spacing: -0.06em;
+    color: #0d1a2e;
+    position: absolute;
+    right: -2vw;
+    top: 8vh;
+    opacity: 0.94;
+    pointer-events: none;
+    white-space: nowrap;
+  }
+  .arc-stat-hero .kicker { font-weight: 700; font-size: 1.15rem; letter-spacing: 0.4em; text-transform: uppercase; color: #c13830; position: relative; z-index: 2; margin-bottom: 1.5rem; }
+  .arc-stat-hero h2 { font-family: 'Fraunces', serif; font-weight: 800; font-size: clamp(3rem, 8vw, 7.5rem); line-height: 0.95; letter-spacing: -0.03em; max-width: 60%; margin: 0 0 2rem; position: relative; z-index: 2; }
+  .arc-stat-hero .lede { font-family: 'Fraunces', serif; font-size: clamp(1.4rem, 2.2vw, 2rem); line-height: 1.45; max-width: 55%; font-weight: 400; position: relative; z-index: 2; margin: 0; }
+  .arc-stat-hero .story-meta { color: #c13830; position: relative; z-index: 2; }
+  .arc-stat-hero .spread-links { position: relative; z-index: 2; }
+
+  /* ───── MIDNIGHT ───── */
+  .arc-midnight { background: radial-gradient(ellipse at 70% 30%, #1a1235 0%, #05050c 65%); color: #e9e4ff; }
+  .arc-midnight::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background-image:
+      radial-gradient(circle at 20% 80%, rgba(180,120,255,0.18), transparent 50%),
+      radial-gradient(circle at 80% 20%, rgba(120,200,255,0.12), transparent 55%);
+    pointer-events: none;
+  }
+  .arc-midnight .numeral {
+    font-family: 'Fraunces', serif;
+    font-size: clamp(8rem, 22vw, 20rem);
+    font-weight: 300;
+    font-style: italic;
+    color: transparent;
+    -webkit-text-stroke: 2px rgba(233,228,255,0.45);
+    line-height: 1;
+    position: absolute;
+    top: 6vh;
+    left: 5vw;
+    letter-spacing: -0.05em;
+  }
+  .arc-midnight .body { position: relative; z-index: 2; margin-top: 12rem; max-width: 90%; }
+  .arc-midnight .kicker { font-family: 'JetBrains Mono', monospace; font-size: 1.1rem; letter-spacing: 0.2em; text-transform: uppercase; color: #b48bff; margin-bottom: 2rem; }
+  .arc-midnight h2 { font-weight: 800; font-size: clamp(3rem, 7.5vw, 6.5rem); line-height: 1; letter-spacing: -0.035em; margin: 0 0 2.5rem; }
+  .arc-midnight .lede { font-size: 1.35rem; line-height: 1.55; color: #cdc6e8; max-width: 780px; margin: 0; }
+  .arc-midnight .story-meta { color: #8a7cc6; margin-bottom: 1.5rem; }
+
+  /* ───── ALERT STAMP ───── */
+  .arc-alert-stamp { background: #f8e5de; color: #2b0808; background-image: repeating-linear-gradient(transparent, transparent 3rem, rgba(193,56,48,0.08) 3rem, rgba(193,56,48,0.08) calc(3rem + 1px)); }
+  .arc-alert-stamp .stamp {
+    position: absolute; top: 8vh; right: 5vw;
+    transform: rotate(-14deg);
+    border: 6px solid #c13830;
+    padding: 1.2rem 2.5rem;
+    font-weight: 900;
+    font-size: clamp(2rem, 4vw, 3.5rem);
+    letter-spacing: 0.15em;
+    color: #c13830;
+    background: rgba(248,229,222,0.6);
+    text-transform: uppercase;
+  }
+  .arc-alert-stamp .numeral { font-family: 'Fraunces', serif; font-style: italic; font-weight: 900; font-size: clamp(6rem, 15vw, 12rem); line-height: 1; color: #c13830; margin: 0 0 1rem; }
+  .arc-alert-stamp .kicker { font-weight: 800; font-size: 1.2rem; letter-spacing: 0.3em; text-transform: uppercase; color: #c13830; margin-bottom: 1rem; }
+  .arc-alert-stamp h2 { font-family: 'Fraunces', serif; font-weight: 800; font-size: clamp(2.5rem, 6vw, 5.5rem); line-height: 1.02; letter-spacing: -0.025em; max-width: 75%; margin: 0 0 2rem; }
+  .arc-alert-stamp .lede { font-size: 1.4rem; line-height: 1.55; max-width: 700px; font-weight: 400; margin: 0; }
+  .arc-alert-stamp .story-meta { color: #c13830; margin-bottom: 1.5rem; }
+
+  /* ───── ACADEMIC DROP CAP ───── */
+  .arc-academic-drop-cap { background: #efe7d1; color: #1b1a14; padding: 8vh 8vw; }
+  .arc-academic-drop-cap .paper-head {
+    display: flex; justify-content: space-between; align-items: baseline;
+    border-bottom: 1.5px solid #1b1a14;
+    padding-bottom: 0.7rem; margin-bottom: 3rem;
+    font-weight: 500; font-size: 1rem; letter-spacing: 0.25em; text-transform: uppercase;
+  }
+  .arc-academic-drop-cap .numeral-roman { font-family: 'Fraunces', serif; font-weight: 700; font-size: clamp(2.5rem, 4vw, 4rem); font-style: italic; letter-spacing: 0.08em; }
+  .arc-academic-drop-cap h2 { font-family: 'Fraunces', serif; font-weight: 400; font-style: italic; font-size: clamp(2.5rem, 5.5vw, 5rem); line-height: 1.05; letter-spacing: -0.015em; margin: 0 0 1.5rem; max-width: 85%; }
+  .arc-academic-drop-cap .story-meta { margin-bottom: 2rem; }
+  .arc-academic-drop-cap .cols { display: grid; grid-template-columns: 1fr 1fr; gap: 3.5rem; }
+  .arc-academic-drop-cap .cols p { font-family: 'Fraunces', serif; font-size: 1.35rem; line-height: 1.55; text-align: justify; hyphens: auto; margin: 0 0 1.2rem; }
+  .arc-academic-drop-cap .cols > div:first-child p:first-child::first-letter {
+    font-family: 'Fraunces', serif;
+    font-weight: 900;
+    font-size: 7em;
+    float: left;
+    line-height: 0.82;
+    padding: 0.1em 0.15em 0 0;
+    color: #7a1e14;
+  }
+
+  /* ───── TERMINAL ───── */
+  .arc-terminal { background: #000; color: #8cff8c; font-family: 'JetBrains Mono', ui-monospace, monospace; padding: 8vh 6vw; }
+  .arc-terminal .prompt-row { font-size: 1.15rem; font-weight: 500; color: #4ac94a; margin-bottom: 3rem; }
+  .arc-terminal .numeral { font-size: clamp(6rem, 14vw, 13rem); font-weight: 700; line-height: 1; color: #8cff8c; margin: 0 0 1rem; }
+  .arc-terminal .numeral::before { content: "> "; color: #4ac94a; }
+  .arc-terminal h2 { font-weight: 700; font-size: clamp(2.2rem, 5vw, 4.5rem); line-height: 1.1; margin: 0 0 2rem; max-width: 90%; color: #d4ffd4; }
+  .arc-terminal .lede { font-size: 1.3rem; line-height: 1.6; max-width: 780px; color: #8cff8c; margin: 0; }
+  .arc-terminal .lede::before { content: "# "; color: #4ac94a; }
+  .arc-terminal .story-meta { color: #4ac94a; margin-bottom: 1.5rem; }
+  .arc-terminal .cursor { display: inline-block; width: 0.55em; height: 1.1em; background: #8cff8c; vertical-align: text-bottom; margin-left: 0.2em; animation: me-blink 1s steps(2, start) infinite; }
+  @keyframes me-blink { to { visibility: hidden; } }
+  .arc-terminal .read-more { color: #8cff8c; border-color: #4ac94a; }
+  .arc-terminal .dossier-link { color: #8cff8c; border-color: rgba(140,255,140,0.4); }
+
+  /* ───── EDITORIAL PULLQUOTE ───── */
+  .arc-editorial-pullquote {
+    background: #1a1a1a; color: #f5f1e8; padding: 8vh 6vw;
+    display: grid; grid-template-columns: 1fr 1.1fr; gap: 5rem; align-items: center;
+  }
+  .arc-editorial-pullquote .left { position: relative; }
+  .arc-editorial-pullquote .numeral { font-family: 'Fraunces', serif; font-weight: 900; font-style: italic; font-size: clamp(8rem, 18vw, 16rem); line-height: 0.9; color: #f5f1e8; margin: 0 0 1rem; letter-spacing: -0.05em; }
+  .arc-editorial-pullquote .kicker { font-weight: 700; font-size: 1.1rem; letter-spacing: 0.35em; text-transform: uppercase; color: #e8b84a; margin-bottom: 1.5rem; }
+  .arc-editorial-pullquote h2 { font-family: 'Fraunces', serif; font-weight: 700; font-size: clamp(2rem, 4vw, 3.5rem); line-height: 1.1; margin: 0 0 2rem; }
+  .arc-editorial-pullquote .pullquote {
+    font-family: 'Fraunces', serif; font-style: italic; font-weight: 400;
+    font-size: clamp(1.8rem, 3.5vw, 3rem); line-height: 1.15;
+    color: #f5f1e8; border-left: 4px solid #e8b84a; padding-left: 2rem; margin: 0;
+  }
+  .arc-editorial-pullquote .pullquote::before { content: "\201C"; font-size: 1.4em; line-height: 0; vertical-align: -0.4em; color: #e8b84a; margin-right: 0.1em; }
+  .arc-editorial-pullquote .pullquote::after { content: "\201D"; font-size: 1.4em; line-height: 0; vertical-align: -0.6em; color: #e8b84a; margin-left: 0.05em; }
+  .arc-editorial-pullquote .story-meta { color: #e8b84a; }
+
+  /* ───── CAUTION TAPE ───── */
+  .arc-caution-tape { background: #fff200; color: #0a0a0a; padding: 8vh 6vw; }
+  .arc-caution-tape::before { content: ""; position: absolute; inset: 0 0 auto 0; height: 2.5rem; background: repeating-linear-gradient(135deg, #0a0a0a 0 2rem, #fff200 2rem 4rem); }
+  .arc-caution-tape::after { content: ""; position: absolute; inset: auto 0 0 0; height: 2.5rem; background: repeating-linear-gradient(135deg, #0a0a0a 0 2rem, #fff200 2rem 4rem); }
+  .arc-caution-tape .tag {
+    position: absolute; top: 6vh; right: 6vw;
+    writing-mode: vertical-rl; transform: rotate(180deg);
+    font-weight: 900; font-size: 1.3rem; letter-spacing: 0.5em; text-transform: uppercase;
+    background: #0a0a0a; color: #fff200; padding: 1rem 0.6rem;
+  }
+  .arc-caution-tape .numeral { font-weight: 900; font-size: clamp(10rem, 28vw, 24rem); line-height: 0.85; letter-spacing: -0.06em; margin: 0 0 1rem; -webkit-text-stroke: 3px #0a0a0a; color: transparent; }
+  .arc-caution-tape .kicker { font-weight: 900; font-size: 1.3rem; letter-spacing: 0.35em; text-transform: uppercase; background: #0a0a0a; color: #fff200; padding: 0.5rem 1rem; display: inline-block; margin-bottom: 1.5rem; }
+  .arc-caution-tape h2 { font-weight: 900; font-size: clamp(2.5rem, 6vw, 5.5rem); line-height: 0.98; letter-spacing: -0.03em; margin: 0 0 2rem; max-width: 85%; text-transform: uppercase; }
+  .arc-caution-tape .lede { font-size: 1.35rem; line-height: 1.5; max-width: 680px; font-weight: 500; margin: 0; }
+  .arc-caution-tape .story-meta { margin-bottom: 1.5rem; }
+
+  /* ───── NOTEBOOK ───── */
+  .arc-notebook { background: repeating-linear-gradient(#fdfaf0 0 2.2rem, rgba(120,104,60,0.22) 2.2rem 2.25rem); color: #1f1a0d; padding: 8vh 8vw; }
+  .arc-notebook::before { content: ""; position: absolute; top: 0; bottom: 0; left: 8vw; width: 2px; background: #c13830; opacity: 0.5; }
+  .arc-notebook .numeral { font-family: 'Fraunces', serif; font-weight: 400; font-style: italic; font-size: clamp(7rem, 17vw, 15rem); line-height: 1; letter-spacing: -0.02em; color: #1f1a0d; margin: 0 0 0.5rem; }
+  .arc-notebook .kicker { font-weight: 600; font-size: 1.1rem; letter-spacing: 0.3em; text-transform: uppercase; color: #8a6b1f; margin-bottom: 1rem; }
+  .arc-notebook h2 { font-family: 'Fraunces', serif; font-weight: 400; font-style: italic; font-size: clamp(2.8rem, 6.5vw, 6rem); line-height: 1; letter-spacing: -0.02em; margin: 0 0 2rem; max-width: 85%; }
+  .arc-notebook .lede { font-family: 'Fraunces', serif; font-weight: 400; font-size: clamp(1.35rem, 2vw, 1.7rem); line-height: 2.2rem; max-width: 700px; margin: 0; }
+
+  /* ───── MINT PATTERN ───── */
+  .arc-mint-pattern { background: #a8e6cf; color: #0d2a1e; padding: 8vh 6vw; }
+  .arc-mint-pattern::before {
+    content: "XOR LISP AWK SED GREP CURL MAKE GIT VIM SSH";
+    position: absolute; top: 10vh; left: 0; right: 0;
+    font-family: 'JetBrains Mono', monospace;
+    font-weight: 700; font-size: 2.5rem; letter-spacing: 0.3em;
+    color: rgba(13,42,30,0.1); white-space: nowrap; overflow: hidden; pointer-events: none;
+  }
+  .arc-mint-pattern .numeral-block { position: relative; z-index: 2; }
+  .arc-mint-pattern .numeral { font-family: 'Fraunces', serif; font-weight: 900; font-size: clamp(10rem, 28vw, 24rem); line-height: 0.85; letter-spacing: -0.06em; color: #0d2a1e; margin: 0; font-style: italic; }
+  .arc-mint-pattern .kicker { font-family: 'JetBrains Mono', monospace; font-weight: 700; font-size: 1.1rem; letter-spacing: 0.2em; text-transform: uppercase; color: #0d2a1e; margin: 1.5rem 0; position: relative; z-index: 2; }
+  .arc-mint-pattern h2 { font-family: 'Fraunces', serif; font-weight: 800; font-size: clamp(2.5rem, 6vw, 5rem); line-height: 1; letter-spacing: -0.025em; margin: 0 0 2rem; max-width: 85%; position: relative; z-index: 2; }
+  .arc-mint-pattern .lede { font-family: 'Fraunces', serif; font-size: 1.4rem; line-height: 1.55; max-width: 680px; font-weight: 400; margin: 0; position: relative; z-index: 2; }
+  .arc-mint-pattern .story-meta { position: relative; z-index: 2; margin-bottom: 1.5rem; }
+  .arc-mint-pattern .spread-links { position: relative; z-index: 2; }
+
+  /* ───── PASTEL PLAYFUL ───── */
+  .arc-pastel-playful { background: #fde6f2; color: #2a0a2e; padding: 8vh 6vw 4vh; }
+  .arc-pastel-playful .alpha-grid {
+    position: absolute; top: 0; left: 0; right: 0;
+    display: grid; grid-template-columns: repeat(13, 1fr);
+    font-family: 'Fraunces', serif; font-style: italic;
+    font-size: clamp(1.2rem, 2.5vw, 2rem); font-weight: 700;
+    color: rgba(42,10,46,0.2); padding: 1rem 6vw; letter-spacing: 0.2em; pointer-events: none;
+  }
+  .arc-pastel-playful .alpha-grid span { text-align: center; }
+  .arc-pastel-playful .numeral { font-family: 'Fraunces', serif; font-weight: 900; font-style: italic; font-size: clamp(10rem, 26vw, 22rem); line-height: 0.85; letter-spacing: -0.05em; color: #c13871; margin: 2rem 0 0; }
+  .arc-pastel-playful .kicker { font-weight: 700; font-size: 1.1rem; letter-spacing: 0.35em; text-transform: uppercase; color: #c13871; margin-bottom: 1rem; }
+  .arc-pastel-playful h2 { font-family: 'Fraunces', serif; font-weight: 400; font-style: italic; font-size: clamp(2.8rem, 6.5vw, 5.5rem); line-height: 1; letter-spacing: -0.02em; margin: 0 0 2rem; max-width: 85%; }
+  .arc-pastel-playful .lede { font-size: 1.35rem; line-height: 1.5; max-width: 680px; margin: 0; }
+  .arc-pastel-playful .story-meta { color: #c13871; margin-bottom: 1.5rem; }
+
+  /* ───── PRODUCT PLATE ───── */
+  .arc-product-plate {
+    background: linear-gradient(135deg, #f5f5f3 0%, #e8e8e6 100%);
+    color: #121212; padding: 10vh 8vw; text-align: center; align-items: center; justify-content: center;
+  }
+  .arc-product-plate .product-chip {
+    font-weight: 700; font-size: 1rem; letter-spacing: 0.4em; text-transform: uppercase;
+    background: #121212; color: #f5f5f3; padding: 0.5rem 1.4rem; display: inline-block; margin-bottom: 3rem;
+  }
+  .arc-product-plate .kicker { font-weight: 700; font-size: 1.15rem; letter-spacing: 0.5em; text-transform: uppercase; color: #666; margin-bottom: 1.5rem; }
+  .arc-product-plate h2 {
+    font-family: 'Inter', sans-serif;
+    font-weight: 900;
+    font-size: clamp(3.2rem, 9vw, 8rem);
+    line-height: 0.95;
+    letter-spacing: -0.045em;
+    margin: 0 auto 2rem;
+    max-width: 14ch;
+  }
+  .arc-product-plate .product-rule { width: 6rem; height: 2px; background: #121212; margin: 1.5rem auto 2rem; }
+  .arc-product-plate .story-meta { color: #666; margin-bottom: 1.5rem; }
+  .arc-product-plate .lede { font-family: 'Fraunces', serif; font-weight: 400; font-size: clamp(1.4rem, 2.2vw, 1.9rem); line-height: 1.45; max-width: 720px; margin: 0 auto; }
+  .arc-product-plate .spread-links { justify-content: center; }
+
+  /* ───── ARCHIVE ───── */
+  .arc-archive {
+    background: #eadbb8;
+    background-image:
+      radial-gradient(rgba(80,40,10,0.05) 1px, transparent 1px),
+      radial-gradient(rgba(80,40,10,0.04) 1px, transparent 1px);
+    background-size: 4px 4px, 7px 7px;
+    background-position: 0 0, 2px 2px;
+    color: #2a1a08; padding: 8vh 8vw;
+  }
+  .arc-archive .archive-head {
+    display: flex; justify-content: space-between; align-items: baseline;
+    padding-bottom: 1rem; margin-bottom: 3rem;
+    border-top: 6px double #3a2a10; border-bottom: 6px double #3a2a10;
+    padding-top: 1rem;
+    font-family: 'Fraunces', serif; font-style: italic; font-weight: 500;
+    font-size: 1.1rem; letter-spacing: 0.15em; text-transform: uppercase; color: #3a2a10;
+  }
+  .arc-archive .kicker { font-family: 'Fraunces', serif; font-style: italic; font-weight: 600; font-size: 1.2rem; letter-spacing: 0.3em; text-transform: uppercase; color: #8a3a10; margin-bottom: 1.2rem; }
+  .arc-archive h2 {
+    font-family: 'Fraunces', serif; font-weight: 700; font-style: normal;
+    font-size: clamp(2.8rem, 6.5vw, 6rem); line-height: 1; letter-spacing: -0.02em;
+    margin: 0 0 2rem; max-width: 85%;
+  }
+  .arc-archive .lede {
+    font-family: 'Fraunces', serif; font-size: clamp(1.35rem, 2vw, 1.7rem);
+    line-height: 1.55; max-width: 760px; font-weight: 400; margin: 0;
+  }
+  .arc-archive .lede::first-letter {
+    font-family: 'Fraunces', serif; font-weight: 900; font-size: 5em;
+    float: left; line-height: 0.82; padding: 0.1em 0.15em 0 0; color: #8a3a10;
+  }
+  .arc-archive .story-meta { color: #8a3a10; margin-bottom: 1.5rem; }
+
+  /* ───── OBITUARY ───── */
+  .arc-obituary {
+    background: #f8f4ec; color: #121212;
+    padding: 10vh 6vw; align-items: center; justify-content: center;
+  }
+  .arc-obituary .obit-frame {
+    border: 3px solid #121212; padding: 6rem 5rem;
+    max-width: 780px; text-align: center; background: #f8f4ec;
+    position: relative; z-index: 2;
+  }
+  .arc-obituary .obit-frame::before,
+  .arc-obituary .obit-frame::after {
+    content: ""; position: absolute; left: -12px; right: -12px; height: 1px; background: #121212;
+  }
+  .arc-obituary .obit-frame::before { top: -12px; }
+  .arc-obituary .obit-frame::after { bottom: -12px; }
+  .arc-obituary .ornament { font-family: 'Fraunces', serif; font-size: 3.5rem; line-height: 1; margin-bottom: 2rem; color: #121212; }
+  .arc-obituary .kicker { font-family: 'Fraunces', serif; font-style: italic; font-weight: 500; font-size: 1.1rem; letter-spacing: 0.3em; text-transform: uppercase; margin-bottom: 2rem; opacity: 0.7; }
+  .arc-obituary h2 {
+    font-family: 'Fraunces', serif; font-weight: 400; font-style: italic;
+    font-size: clamp(2.4rem, 5vw, 4.5rem); line-height: 1.1; letter-spacing: -0.015em;
+    margin: 0 0 2.5rem;
+  }
+  .arc-obituary .story-meta { margin-bottom: 2rem; opacity: 0.6; }
+  .arc-obituary .lede { font-family: 'Fraunces', serif; font-size: clamp(1.3rem, 1.9vw, 1.6rem); line-height: 1.6; margin: 0 auto; max-width: 60ch; }
+  .arc-obituary .spread-links { justify-content: center; margin-top: 3rem; }
+
+  /* ───── BLUEPRINT ───── */
+  .arc-blueprint {
+    background: #0a3d62;
+    background-image:
+      linear-gradient(rgba(255,255,255,0.08) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255,255,255,0.08) 1px, transparent 1px);
+    background-size: 2.2rem 2.2rem;
+    color: #eaf4ff; padding: 8vh 6vw;
+  }
+  .arc-blueprint .corner {
+    position: absolute; font-family: 'JetBrains Mono', monospace;
+    font-size: 2.5rem; color: #eaf4ff; opacity: 0.7;
+  }
+  .arc-blueprint .corner.tl { top: 3vh; left: 3vw; }
+  .arc-blueprint .corner.tr { top: 3vh; right: 3vw; }
+  .arc-blueprint .corner.bl { bottom: 3vh; left: 3vw; }
+  .arc-blueprint .corner.br { bottom: 3vh; right: 3vw; }
+  .arc-blueprint .numeral {
+    font-family: 'JetBrains Mono', monospace;
+    font-weight: 700; font-size: clamp(4rem, 9vw, 7.5rem); line-height: 1;
+    letter-spacing: -0.01em; color: #eaf4ff;
+    margin: 0 0 1.5rem;
+    border-bottom: 2px dashed rgba(234,244,255,0.5);
+    padding-bottom: 1rem;
+    display: inline-block;
+  }
+  .arc-blueprint .kicker { font-family: 'JetBrains Mono', monospace; font-weight: 700; font-size: 1.15rem; letter-spacing: 0.3em; text-transform: uppercase; color: #9bd2ff; margin-bottom: 1.5rem; }
+  .arc-blueprint h2 { font-family: 'Fraunces', serif; font-weight: 700; font-size: clamp(2.8rem, 6.5vw, 5.5rem); line-height: 1; letter-spacing: -0.025em; margin: 0 0 2rem; max-width: 85%; }
+  .arc-blueprint .lede { font-family: 'JetBrains Mono', monospace; font-size: 1.2rem; line-height: 1.65; max-width: 720px; margin: 0; }
+  .arc-blueprint .story-meta { color: #9bd2ff; margin-bottom: 1.5rem; font-family: 'JetBrains Mono', monospace; }
+
+  /* ───── OBSERVATORY ───── */
+  .arc-observatory {
+    background: #070c2e; color: #e8ecff; padding: 8vh 6vw;
+  }
+  .arc-observatory .starfield {
+    position: absolute; inset: 0; pointer-events: none;
+    background-image:
+      radial-gradient(1px 1px at 10% 20%, rgba(255,255,255,0.9), transparent),
+      radial-gradient(1px 1px at 25% 70%, rgba(255,255,255,0.6), transparent),
+      radial-gradient(1.5px 1.5px at 40% 30%, rgba(255,255,255,0.8), transparent),
+      radial-gradient(1px 1px at 55% 85%, rgba(255,255,255,0.5), transparent),
+      radial-gradient(1px 1px at 70% 15%, rgba(255,255,255,0.9), transparent),
+      radial-gradient(1.5px 1.5px at 85% 55%, rgba(255,255,255,0.7), transparent),
+      radial-gradient(1px 1px at 92% 25%, rgba(255,255,255,0.5), transparent),
+      radial-gradient(1px 1px at 15% 90%, rgba(255,255,255,0.4), transparent),
+      radial-gradient(1px 1px at 48% 50%, rgba(255,255,255,0.6), transparent),
+      radial-gradient(1px 1px at 78% 78%, rgba(255,255,255,0.5), transparent);
+    background-repeat: no-repeat;
+  }
+  .arc-observatory > * { position: relative; z-index: 2; }
+  .arc-observatory .numeral {
+    font-family: 'Fraunces', serif; font-style: italic; font-weight: 400;
+    font-size: clamp(3rem, 7vw, 6rem); line-height: 1; letter-spacing: 0.04em;
+    color: #e8ecff; margin: 0 0 2rem;
+    border-bottom: 1px solid rgba(232,236,255,0.4);
+    padding-bottom: 1rem; display: inline-block;
+  }
+  .arc-observatory .kicker { font-family: 'Fraunces', serif; font-style: italic; font-weight: 500; font-size: 1.15rem; letter-spacing: 0.3em; text-transform: uppercase; color: #9ab3ff; margin-bottom: 1.5rem; }
+  .arc-observatory h2 { font-family: 'Fraunces', serif; font-weight: 400; font-style: italic; font-size: clamp(2.8rem, 6.5vw, 5.5rem); line-height: 1.05; letter-spacing: -0.015em; margin: 0 0 2rem; max-width: 85%; }
+  .arc-observatory .lede { font-family: 'Fraunces', serif; font-size: clamp(1.35rem, 2vw, 1.7rem); line-height: 1.55; max-width: 720px; font-weight: 400; margin: 0; }
+  .arc-observatory .story-meta { color: #9ab3ff; margin-bottom: 1.5rem; }
+
+  /* ───── DOSSIER ───── */
+  .dossier {
+    background: #f5f1e8; color: #1b1a14;
+    padding: 8rem 8vw 6rem;
+    border-top: 6px double #121212;
+  }
+  .dossier .dossier-head { text-align: center; margin-bottom: 4rem; }
+  .dossier .tagline { font-weight: 600; font-size: 1.1rem; letter-spacing: 0.4em; text-transform: uppercase; margin-bottom: 1rem; opacity: 0.7; }
+  .dossier h2 {
+    font-family: 'Fraunces', serif; font-style: italic; font-weight: 900;
+    font-size: clamp(4rem, 10vw, 9rem); line-height: 0.9; letter-spacing: -0.035em;
+    margin: 0 0 1.5rem;
+  }
+  .dossier .intro { font-family: 'Fraunces', serif; font-style: italic; font-size: 1.35rem; line-height: 1.5; max-width: 620px; margin: 0 auto; }
+  .dossier .intro a { font-style: normal; font-weight: 600; text-decoration: underline; }
+  .dossier-entry {
+    border-top: 1.5px solid #1b1a14;
+    padding: 3rem 0 2.5rem;
+    max-width: 820px; margin: 0 auto;
+  }
+  .dossier-entry:last-child { border-bottom: 1.5px solid #1b1a14; }
+  .dossier-meta { font-weight: 600; font-size: 1rem; letter-spacing: 0.28em; text-transform: uppercase; color: #7a1e14; margin-bottom: 1.2rem; }
+  .dossier-entry h3 {
+    font-family: 'Fraunces', serif; font-weight: 700;
+    font-size: clamp(1.8rem, 3.5vw, 2.6rem); line-height: 1.1; letter-spacing: -0.015em;
+    margin: 0 0 1.2rem;
+  }
+  .dossier-source { font-size: 1.05rem; font-weight: 500; letter-spacing: 0.08em; margin: 0 0 2rem; opacity: 0.75; }
+  .dossier-source a { text-decoration: underline; }
+  .dossier-entry h4 {
+    font-family: 'Inter', sans-serif; font-weight: 700; font-size: 1rem;
+    letter-spacing: 0.35em; text-transform: uppercase; margin: 2rem 0 1rem; color: #7a1e14;
+  }
+  .dossier-entry p {
+    font-family: 'Fraunces', serif; font-size: 1.25rem; line-height: 1.55; margin: 0 0 1rem;
+  }
+  .dossier-entry p.muted { opacity: 0.6; }
+
+  /* ───── COLOPHON ───── */
+  .colophon { background: #121212; color: #f5f1e8; padding: 5rem 6vw; text-align: center; }
+  .colophon .sig { font-family: 'Fraunces', serif; font-style: italic; font-weight: 400; font-size: clamp(2.5rem, 5vw, 4rem); line-height: 1.1; letter-spacing: -0.02em; margin: 0 0 1.5rem; }
+  .colophon .meta { font-weight: 500; font-size: 1rem; letter-spacing: 0.3em; text-transform: uppercase; opacity: 0.7; }
+  .colophon .classic-link { margin-top: 2rem; font-weight: 500; font-size: 1rem; letter-spacing: 0.2em; text-transform: uppercase; }
+  .colophon .classic-link a { text-decoration: underline; opacity: 0.85; }
+
+  /* ───── RESPONSIVE ───── */
+  @media (max-width: 800px) {
+    .masthead-nav { flex-wrap: wrap; gap: 0.8rem; }
+    .arc-stat-hero h2, .arc-stat-hero .lede { max-width: 100%; }
+    .arc-stat-hero .numeral { font-size: 14rem; opacity: 0.2; right: -2vw; top: 30vh; }
+    .arc-midnight .body { margin-top: 8rem; }
+    .arc-alert-stamp h2 { max-width: 100%; }
+    .arc-alert-stamp .stamp { top: 4vh; right: 4vw; font-size: 1.5rem; padding: 0.8rem 1.4rem; }
+    .arc-academic-drop-cap .cols { grid-template-columns: 1fr; gap: 2rem; }
+    .arc-editorial-pullquote { grid-template-columns: 1fr; gap: 3rem; }
+    .arc-caution-tape h2, .arc-notebook h2, .arc-pastel-playful h2, .arc-archive h2, .arc-obituary h2, .arc-blueprint h2, .arc-observatory h2 { max-width: 100%; }
+    .arc-caution-tape .tag { display: none; }
+    .arc-pastel-playful .alpha-grid { display: none; }
+    .arc-obituary .obit-frame { padding: 3rem 2rem; }
+    .arc-blueprint .corner { display: none; }
+  }
+
+</style>
 </head>
-<body>
-    <header>
-        <h1>Hacker News Digest - March 21, 2026</h1>
-        <nav>
-            <a href="../">&larr; Hacker News Calendar</a>
-            <a href="../../2026-03-21/">GitHub Trending</a>
-        </nav>
-    </header>
-    <main>
-        <div class="repo-controls">
-            <button id="collapse-seen-btn" type="button">Collapse Stories Not New Today</button>
-            <button id="expand-all-btn" type="button">Expand All</button>
-        </div>
-        <p class="seen-help">Stories marked "Not new today" appeared on one or more previous daily pages.</p>
-        <article>
-            <div class="repos">
+<body id="top">
 
-            <section class="repo" data-seen-before="0"
-                     data-share-title="OpenCode – Open source AI coding agent"
-                     data-share-url="https://opencode.ai/"
-                     data-share-points="1269"
-                     data-share-comments="620">
-                <div class="repo-header-row">
-                    <h3>1. <a href="https://opencode.ai/" target="_blank" rel="noopener noreferrer">OpenCode – Open source AI coding agent</a> </h3>
-                    <div class="header-buttons">
-                        <button type="button" class="discuss-btn" aria-label="Discuss with AI" title="Discuss with AI">&#x1F4AC;</button>
-                        <button type="button" class="repo-toggle" aria-expanded="true">Hide details</button>
-                    </div>
-                </div>
-                <div class="repo-body">
-                    <p class="meta">
-                        <span class="language">opencode.ai</span> |
-                        <span>rbanffy</span> |
-                        <span>1269 points</span> |
-                        <span>620 comments</span> |
-                        <a href="https://news.ycombinator.com/item?id=47460525" target="_blank" rel="noopener noreferrer">discussion</a>
-                    </p>
-                    <p class="history">First seen: March 21, 2026 | Consecutive daily streak: 1 day</p>
-                    <div class="ai-summary">
-                        <h4>Analysis</h4>
-                        <p>OpenCode is an open-source AI coding agent designed to assist developers within their terminal, IDE, or a dedicated desktop application. The platform is highly extensible, supporting over 75 LLM providers, including local models and integrations with existing subscriptions like GitHub Copilot and ChatGPT Plus. By utilizing Language Server Protocol (LSP) integration and allowing for multi-session parallel tasks, the tool aims to streamline complex programming workflows while prioritizing user privacy by not storing code or context data.</p>
-<p>Hacker News readers are likely interested in OpenCode due to its emphasis on open-source accessibility and its privacy-first architecture, which distinguishes it from closed-source alternatives. The project&#x27;s extensive integration capabilities and support for local model hosting offer a flexible solution for developers cautious about vendor lock-in and data security. Furthermore, the platform&#x27;s ability to consolidate various coding assistants into a unified interface provides a compelling utility for power users seeking to optimize their development environments.</p>
-                    </div>
-                    
-                <div class="ai-summary">
-                    <h4>Comment Analysis</h4>
-                    <p>While users appreciate the flexibility of OpenCode’s model-agnostic approach, there is a strong consensus that the software suffers from bloat, excessive resource consumption, and an unstable, feature-heavy development lifecycle.</p>
-<p>Critics argue that the project is marred by mandatory telemetry and quality control issues, whereas supporters counter that these claims are exaggerated and highlight the tool’s utility for remote agent orchestration.</p>
-<p>Developers report that using smaller, cheaper models for execution alongside specialized, high-performance models for planning and review provides a cost-effective and highly productive workflow for complex coding tasks.</p>
-<p>The sample shows significant polarization between those prioritizing vendor neutrality and those favoring the tighter, more stable integration found in purpose-built, closed-source tools like the official Claude Code implementation.</p>
-                </div>
+  <header class="masthead">
+    <div class="masthead-nav">
+      <a href="../">HN Calendar</a>
+      <span>·</span>
+      <a href="../../2026-03-21/">GitHub Trending</a>
+      <span>·</span>
+      <a href="classic.html">Classic view</a>
+    </div>
+    <div class="tagline">The Morning Edition</div>
+    <h1 class="frnc">Ten stories, before your coffee.</h1>
+    <div class="issue-line">
+      <span>Vol. I</span>
+      <span>Saturday, March 21, 2026</span>
+      <span>HN Front Page Digest</span>
+    </div>
+  </header>
 
-                </div>
-            </section>
+  <section class="spread arc-midnight">
+    <div class="numeral">01</div>
+    <div class="body">
+      <div class="kicker">// AI Tools</div>
+      <h2>OpenCode Brings Multi-Model Agent Orchestration to Your Desktop</h2>
+      <p class="story-meta">opencode.ai &nbsp;·&nbsp; 1269 pts &nbsp;·&nbsp; 620 comments</p>
+      <p class="lede">Developers are seeking modularity in their AI-assisted workflows. This new agent platform integrates with over 75 providers to manage complex coding tasks while keeping context local.</p>
+      <div class="spread-links"><a class="read-more" href="https://opencode.ai/" target="_blank" rel="noopener">Read →</a><a class="dossier-link" href="#dossier-1">Full analysis ↓</a></div>
+    </div>
+  </section>
 
-            <section class="repo" data-seen-before="1"
-                     data-share-title="Mamba-3"
-                     data-share-url="https://www.together.ai/blog/mamba-3"
-                     data-share-points="299"
-                     data-share-comments="55">
-                <div class="repo-header-row">
-                    <h3>2. <a href="https://www.together.ai/blog/mamba-3" target="_blank" rel="noopener noreferrer">Mamba-3</a> <span class="seen-badge">Not new today</span></h3>
-                    <div class="header-buttons">
-                        <button type="button" class="discuss-btn" aria-label="Discuss with AI" title="Discuss with AI">&#x1F4AC;</button>
-                        <button type="button" class="repo-toggle" aria-expanded="true">Hide details</button>
-                    </div>
-                </div>
-                <div class="repo-body">
-                    <p class="meta">
-                        <span class="language">together.ai</span> |
-                        <span>matt_d</span> |
-                        <span>299 points</span> |
-                        <span>55 comments</span> |
-                        <a href="https://news.ycombinator.com/item?id=47419391" target="_blank" rel="noopener noreferrer">discussion</a>
-                    </p>
-                    <p class="history">First seen: March 19, 2026 | Consecutive daily streak: 3 days</p>
-                    <div class="ai-summary">
-                        <h4>Analysis</h4>
-                        <p>Mamba-3 is a new state space model (SSM) architecture that shifts focus from training efficiency toward inference speed and quality, addressing a growing industry demand for faster model deployment. Unlike its predecessor Mamba-2, which prioritized training throughput through architectural simplification, Mamba-3 incorporates a more expressive recurrence formula, complex-valued state tracking, and a multi-input, multi-output (MIMO) variant. These changes are designed to improve performance at the 1.5B scale without increasing decoding latency, utilizing custom kernels built with Triton, TileLang, and CuTe DSL to maximize hardware utilization.</p>
-<p>Hacker News readers are likely interested in this development because it highlights a significant tactical pivot in the design of sub-quadratic sequence models as the LLM landscape shifts from pretraining to inference-heavy agentic workflows. The story provides a technical look at how the researchers balanced &quot;classical&quot; control theory concepts with modern hardware optimization to outperform current benchmarks, including Transformers. Furthermore, the open-sourcing of high-performance kernels offers practical value to engineers working on low-latency inference systems and hardware-efficient machine learning.</p>
-                    </div>
-                    
-                <div class="ai-summary">
-                    <h4>Comment Analysis</h4>
-                    <p>The discussion centers on whether Mamba-3’s focus on inference efficiency over training speed is genuinely beneficial, with some users questioning if the technical trade-offs actually improve performance for real-world production deployments.</p>
-<p>Debates persist regarding whether increased computational requirements per token inherently hurt throughput by reducing maximum batch sizes, despite arguments that modern GPU scheduling is specifically optimized to manage these memory-bound workloads.</p>
-<p>A key technical insight is that Mamba-3 is an architectural framework, making comparisons to non-exclusive objectives like diffusion or specific software applications logically flawed and technically inaccurate within an AI model context.</p>
-<p>The sample size reflects a highly technical discourse that highlights communication gaps, where participants struggle to interpret the marketing-heavy announcement language versus the underlying mathematical reality of state space model architectures.</p>
-                </div>
+  <section class="spread arc-product-plate">
+    <div class="product-chip">Release &nbsp;·&nbsp; N<sup>o</sup> 02</div>
+    <div class="kicker">Model Release</div>
+    <h2>Mamba-3 Refines State Space Architecture for High-Speed Inference</h2>
+    <div class="product-rule"></div>
+    <p class="story-meta">together.ai &nbsp;·&nbsp; 299 pts &nbsp;·&nbsp; 55 comments</p>
+    <p class="lede">The latest evolution of the Mamba architecture optimizes complex-valued state tracking for better real-world performance. By utilizing custom kernels for modern hardware, it shifts the focus toward sub-millisecond inference delivery.</p>
+    <div class="spread-links"><a class="read-more" href="https://www.together.ai/blog/mamba-3" target="_blank" rel="noopener">Read →</a><a class="dossier-link" href="#dossier-2">Full analysis ↓</a></div>
+  </section>
 
-                </div>
-            </section>
+  <section class="spread arc-academic-drop-cap">
+    <div class="paper-head">
+      <span>Engineering Guide</span>
+      <span class="numeral-roman">III</span>
+      <span>blogs.igalia.com</span>
+    </div>
+    <h2>A Foundational Primer on FFmpeg C Library Architecture</h2>
+    <p class="story-meta">blogs.igalia.com &nbsp;·&nbsp; 246 pts &nbsp;·&nbsp; 9 comments</p>
+    <div class="cols">
+      <div><p>F Multimedia processing often hides behind layers of abstraction, but direct interaction with libavcodec offers the ultimate granular control.</p></div>
+      <div><p>This study breaks down the lifecycle of a media stream from allocation to final frame rendering.</p><div class="spread-links"><a class="read-more" href="https://blogs.igalia.com/llepage/ffmpeg-101/" target="_blank" rel="noopener">Read →</a><a class="dossier-link" href="#dossier-3">Full analysis ↓</a></div></div>
+    </div>
+  </section>
 
-            <section class="repo" data-seen-before="0"
-                     data-share-title="FFmpeg 101 (2024)"
-                     data-share-url="https://blogs.igalia.com/llepage/ffmpeg-101/"
-                     data-share-points="246"
-                     data-share-comments="9">
-                <div class="repo-header-row">
-                    <h3>3. <a href="https://blogs.igalia.com/llepage/ffmpeg-101/" target="_blank" rel="noopener noreferrer">FFmpeg 101 (2024)</a> </h3>
-                    <div class="header-buttons">
-                        <button type="button" class="discuss-btn" aria-label="Discuss with AI" title="Discuss with AI">&#x1F4AC;</button>
-                        <button type="button" class="repo-toggle" aria-expanded="true">Hide details</button>
-                    </div>
-                </div>
-                <div class="repo-body">
-                    <p class="meta">
-                        <span class="language">blogs.igalia.com</span> |
-                        <span>vinhnx</span> |
-                        <span>246 points</span> |
-                        <span>9 comments</span> |
-                        <a href="https://news.ycombinator.com/item?id=47463547" target="_blank" rel="noopener noreferrer">discussion</a>
-                    </p>
-                    <p class="history">First seen: March 21, 2026 | Consecutive daily streak: 1 day</p>
-                    <div class="ai-summary">
-                        <h4>Analysis</h4>
-                        <p>This article provides a foundational guide to using the FFmpeg C libraries for multimedia processing, moving beyond simple command-line usage. It breaks down the architecture of the FFmpeg suite, explaining how components like `libavformat` and `libavcodec` work together to demux multimedia files and decode them into raw audio or video frames. The post includes practical code snippets that demonstrate the life cycle of a media stream, from allocating context structures to managing packets and frames.</p>
-<p>Hacker News readers will likely value this resource for its direct, educational approach to a complex and often poorly documented ecosystem. By offering a functional, buildable example using modern tools like Meson and Ninja, the author demystifies the low-level mechanics of media handling. It serves as an accessible entry point for developers interested in building custom multimedia applications or better understanding the underlying technology powering modern video streaming and playback.</p>
-                    </div>
-                    
-                <div class="ai-summary">
-                    <h4>Comment Analysis</h4>
-                    <p>Bullet 1: The community suggests that while introductory articles provide a helpful overview, more comprehensive tutorials are necessary for developers seeking a deep understanding of FFmpeg and its internal libav architecture.</p>
-<p>Bullet 2: There is no articulated disagreement or competing perspective in this single-comment thread, as the discussion currently focuses exclusively on recommending supplementary learning resources rather than critiquing the provided article.</p>
-<p>Bullet 3: Developers interested in mastering the complexities of multimedia processing should consult Leandro Moreira’s open-source tutorial, which is widely considered the industry standard for learning FFmpeg and libav internals.</p>
-<p>Bullet 4: With only one comment available for analysis, this sample cannot reflect the diverse range of opinions or potential criticisms that might emerge in a larger, more active Hacker News discussion.</p>
-                </div>
+  <section class="spread arc-notebook">
+    <div class="numeral">04</div>
+    <div class="kicker">Cultural Study</div>
+    <h2>Navigating the Social Taboos of Japanese Chopstick Etiquette</h2>
+    <p class="story-meta">nippon.com &nbsp;·&nbsp; 491 pts &nbsp;·&nbsp; 391 comments</p>
+    <p class="lede">Manners are rarely just arbitrary rules; they are reflections of a society’s deepest beliefs regarding life and transition. This guide catalogs the specific faux pas that separate simple dining errors from profound cultural insults.</p>
+    <div class="spread-links"><a class="read-more" href="https://www.nippon.com/en/japan-data/h01362/" target="_blank" rel="noopener">Read →</a><a class="dossier-link" href="#dossier-4">Full analysis ↓</a></div>
+  </section>
 
-                </div>
-            </section>
+  <section class="spread arc-alert-stamp">
+    <div class="stamp">Alert</div>
+    <div class="numeral">05</div>
+    <div class="kicker">Design Failure</div>
+    <h2>The Rise of Reverse Molly Guards in Automated Systems</h2>
+    <p class="story-meta">unsung.aresluna.org &nbsp;·&nbsp; 221 pts &nbsp;·&nbsp; 93 comments</p>
+    <p class="lede">Hard-coding barriers to prevent human error is a classic engineering defensive move. Now, the logic is flipping: what happens when systems are programmed to act because a human chose not to?</p>
+    <div class="spread-links"><a class="read-more" href="https://unsung.aresluna.org/molly-guard-in-reverse/" target="_blank" rel="noopener">Read →</a><a class="dossier-link" href="#dossier-5">Full analysis ↓</a></div>
+  </section>
 
-            <section class="repo" data-seen-before="0"
-                     data-share-title="A Japanese glossary of chopsticks faux pas (2022)"
-                     data-share-url="https://www.nippon.com/en/japan-data/h01362/"
-                     data-share-points="491"
-                     data-share-comments="391">
-                <div class="repo-header-row">
-                    <h3>4. <a href="https://www.nippon.com/en/japan-data/h01362/" target="_blank" rel="noopener noreferrer">A Japanese glossary of chopsticks faux pas (2022)</a> </h3>
-                    <div class="header-buttons">
-                        <button type="button" class="discuss-btn" aria-label="Discuss with AI" title="Discuss with AI">&#x1F4AC;</button>
-                        <button type="button" class="repo-toggle" aria-expanded="true">Hide details</button>
-                    </div>
-                </div>
-                <div class="repo-body">
-                    <p class="meta">
-                        <span class="language">nippon.com</span> |
-                        <span>cainxinth</span> |
-                        <span>491 points</span> |
-                        <span>391 comments</span> |
-                        <a href="https://news.ycombinator.com/item?id=47460452" target="_blank" rel="noopener noreferrer">discussion</a>
-                    </p>
-                    <p class="history">First seen: March 21, 2026 | Consecutive daily streak: 1 day</p>
-                    <div class="ai-summary">
-                        <h4>Analysis</h4>
-                        <p>This article from Nippon.com provides a comprehensive glossary of *kiraibashi*, a collection of behaviors considered improper or taboo when using chopsticks in Japan. The list categorizes various actions, ranging from minor etiquette breaches like licking one&#x27;s chopsticks to more culturally significant prohibitions. Notably, it highlights specific taboos—such as standing chopsticks upright in a bowl of rice or passing food directly between pairs—that are deeply linked to traditional Japanese funeral rites.</p>
-<p>Hacker News readers often appreciate detailed, anthropological insights into cultural practices and the technical nuances of etiquette that govern social interactions. The list serves as a useful reference for those interested in avoiding social faux pas while traveling or dining in Japan. Furthermore, the discussion likely resonates with the community&#x27;s interest in the functional, historical, and ritualistic aspects of everyday objects and traditions.</p>
-                    </div>
-                    
-                <div class="ai-summary">
-                    <h4>Comment Analysis</h4>
-                    <p>While many Japanese chopstick rules are rooted in tradition, most commenters agree that the strictness of these customs is fading and that social context often outweighs rigid adherence to formal etiquette.</p>
-<p>Some participants argue that these rules are not merely arbitrary aesthetic choices but essential components of manners that reflect a necessary level of dignity and mutual respect during shared meals.</p>
-<p>Travelers should prioritize avoiding major taboos, such as upright chopsticks in rice, while observing local behavior to navigate situations where explicit chopstick rests are missing or specific utensils are preferred.</p>
-<p>This sample reflects a Western-centric perspective from expatriates and visitors, potentially overlooking evolving domestic Japanese attitudes or variations in etiquette across different social classes and specific geographic regions.</p>
-                </div>
+  <section class="spread arc-stat-hero">
+    <div class="numeral">O(N)</div>
+    <div class="kicker">N<sup>o</sup> 06 · Performance Benchmarks</div>
+    <h2>Eliminating Serialization Bottlenecks Boosts Parser Throughput</h2>
+    <p class="story-meta">openui.com &nbsp;·&nbsp; 291 pts &nbsp;·&nbsp; 213 comments</p>
+    <p class="lede">The shift from WASM-based execution back to TypeScript revealed a surprising truth about data boundary costs. By flattening their architecture, the team saw a massive gain in algorithmic efficiency.</p>
+    <div class="spread-links"><a class="read-more" href="https://www.openui.com/blog/rust-wasm-parser" target="_blank" rel="noopener">Read →</a><a class="dossier-link" href="#dossier-6">Full analysis ↓</a></div>
+  </section>
 
-                </div>
-            </section>
+  <section class="spread arc-blueprint">
+    <div class="corner tl">┌</div><div class="corner tr">┐</div>
+    <div class="corner bl">└</div><div class="corner br">┘</div>
+    <div class="numeral">FIG.&nbsp;07</div>
+    <div class="kicker">Tooling Demo</div>
+    <h2>Ghostling: Integrating Native Terminal Emulation via Libghostty</h2>
+    <p class="story-meta">github.com &nbsp;·&nbsp; 332 pts &nbsp;·&nbsp; 70 comments</p>
+    <p class="lede">Building a terminal emulator from scratch is a formidable task. This project demonstrates how to offload the heavy lifting of VT sequence parsing and text reflow to a robust shared library.</p>
+    <div class="spread-links"><a class="read-more" href="https://github.com/ghostty-org/ghostling" target="_blank" rel="noopener">Read →</a><a class="dossier-link" href="#dossier-7">Full analysis ↓</a></div>
+  </section>
 
-            <section class="repo" data-seen-before="0"
-                     data-share-title="Molly guard in reverse"
-                     data-share-url="https://unsung.aresluna.org/molly-guard-in-reverse/"
-                     data-share-points="221"
-                     data-share-comments="93">
-                <div class="repo-header-row">
-                    <h3>5. <a href="https://unsung.aresluna.org/molly-guard-in-reverse/" target="_blank" rel="noopener noreferrer">Molly guard in reverse</a> </h3>
-                    <div class="header-buttons">
-                        <button type="button" class="discuss-btn" aria-label="Discuss with AI" title="Discuss with AI">&#x1F4AC;</button>
-                        <button type="button" class="repo-toggle" aria-expanded="true">Hide details</button>
-                    </div>
-                </div>
-                <div class="repo-body">
-                    <p class="meta">
-                        <span class="language">unsung.aresluna.org</span> |
-                        <span>surprisetalk</span> |
-                        <span>221 points</span> |
-                        <span>93 comments</span> |
-                        <a href="https://news.ycombinator.com/item?id=47455138" target="_blank" rel="noopener noreferrer">discussion</a>
-                    </p>
-                    <p class="history">First seen: March 21, 2026 | Consecutive daily streak: 1 day</p>
-                    <div class="ai-summary">
-                        <h4>Analysis</h4>
-                        <p>The term &quot;molly guard&quot; refers to a protective cover or physical barrier designed to prevent the accidental activation of significant buttons or switches. Originating from an anecdote about an engineer’s daughter who repeatedly triggered a critical datacenter button, the concept has since evolved to include various hardware designs and software confirmation prompts. Beyond physical guards, the article discusses &quot;reverse molly guards,&quot; which are automated systems programmed to proceed with tasks if a human user fails to respond to a prompt within a specific timeframe.</p>
-<p>Hacker News readers likely find this topic compelling because it bridges the gap between hardware history, user interface design, and practical system reliability. The discussion highlights the perennial tension between safety mechanisms and operational efficiency, especially regarding the frustration of stalled automated processes. By framing these guards as both physical objects and abstract software patterns, the story invites developers to consider the long-term impact of interruption-based design on long-running computational tasks.</p>
-                    </div>
-                    
-                <div class="ai-summary">
-                    <h4>Comment Analysis</h4>
-                    <p>Users generally agree that &quot;molly-guards&quot; serve as valuable defensive design patterns that prevent catastrophic human error in both physical environments and complex software systems by introducing friction for high-stakes, irreversible actions.</p>
-<p>Some participants argue that adding such guards to software is counterproductive, suggesting that developers should favor better system design or automated checks rather than relying on manual intervention mechanisms that frustrate experienced users.</p>
-<p>Practitioners recommend implementing &quot;pair maintenance&quot; and contextual validation, such as checking for active network connections before allowing reboots, to ensure that safety measures remain unobtrusive while effectively protecting against critical operational failures.</p>
-<p>This discussion sample is heavily skewed toward engineering perspectives, potentially overlooking user experience limitations or the psychological phenomenon of &quot;alert fatigue&quot; where excessive warnings lead users to habitually ignore critical safety prompts.</p>
-                </div>
+  <section class="spread arc-pastel-playful">
+    <div class="alpha-grid"><span>A</span><span>B</span><span>C</span><span>D</span><span>E</span><span>F</span><span>G</span><span>H</span><span>I</span><span>J</span><span>K</span><span>L</span><span>M</span></div>
+    <div class="numeral">08</div>
+    <div class="kicker">Hardware Hack</div>
+    <h2>FilmKit Brings Fujifilm Raw Processing to the Modern Browser</h2>
+    <p class="story-meta">github.com &nbsp;·&nbsp; 166 pts &nbsp;·&nbsp; 59 comments</p>
+    <p class="lede">Managing camera profiles shouldn&#x27;t require clunky desktop software. This browser-based utility uses WebUSB to turn your camera into an active processing engine directly from your laptop.</p>
+    <div class="spread-links"><a class="read-more" href="https://github.com/eggricesoy/filmkit" target="_blank" rel="noopener">Read →</a><a class="dossier-link" href="#dossier-8">Full analysis ↓</a></div>
+  </section>
 
-                </div>
-            </section>
+  <section class="spread arc-archive">
+    <div class="archive-head">
+      <span>Filed</span>
+      <span>Archival Desk · N<sup>o</sup> IX</span>
+      <span>From the Vault</span>
+    </div>
+    <div class="kicker">System Programming</div>
+    <h2>Revisiting The Fundamental APIs of Linux Application Development</h2>
+    <p class="story-meta">github.com &nbsp;·&nbsp; 169 pts &nbsp;·&nbsp; 19 comments</p>
+    <p class="lede">Classic texts remain the backbone of system knowledge, even as modern compilers change the landscape. This updated reference collection brings 2004-era systems wisdom into the current development cycle.</p>
+    <div class="spread-links"><a class="read-more" href="https://github.com/arnoldrobbins/LinuxByExample-2e" target="_blank" rel="noopener">Read →</a><a class="dossier-link" href="#dossier-9">Full analysis ↓</a></div>
+  </section>
 
-            <section class="repo" data-seen-before="0"
-                     data-share-title="We rewrote our Rust WASM parser in TypeScript and it got faster"
-                     data-share-url="https://www.openui.com/blog/rust-wasm-parser"
-                     data-share-points="291"
-                     data-share-comments="213">
-                <div class="repo-header-row">
-                    <h3>6. <a href="https://www.openui.com/blog/rust-wasm-parser" target="_blank" rel="noopener noreferrer">We rewrote our Rust WASM parser in TypeScript and it got faster</a> </h3>
-                    <div class="header-buttons">
-                        <button type="button" class="discuss-btn" aria-label="Discuss with AI" title="Discuss with AI">&#x1F4AC;</button>
-                        <button type="button" class="repo-toggle" aria-expanded="true">Hide details</button>
-                    </div>
-                </div>
-                <div class="repo-body">
-                    <p class="meta">
-                        <span class="language">openui.com</span> |
-                        <span>zahlekhan</span> |
-                        <span>291 points</span> |
-                        <span>213 comments</span> |
-                        <a href="https://news.ycombinator.com/item?id=47461094" target="_blank" rel="noopener noreferrer">discussion</a>
-                    </p>
-                    <p class="history">First seen: March 21, 2026 | Consecutive daily streak: 1 day</p>
-                    <div class="ai-summary">
-                        <h4>Analysis</h4>
-                        <p>The team behind OpenUI initially developed their LLM-driven DSL parser in Rust, compiling it to WebAssembly (WASM) for high performance. They discovered, however, that the overhead of passing data across the JS-WASM boundary—specifically the cost of serializing and deserializing data—consistently outweighed the computational efficiency of Rust. By porting the pipeline to TypeScript and implementing incremental, statement-level caching, the team successfully eliminated the boundary tax and improved their algorithmic complexity from O(N²) to O(N).</p>
-<p>Hacker News readers will likely find this story compelling because it challenges the common assumption that Rust-compiled WASM is always the faster solution for performance-critical web applications. It serves as a practical reminder that language choice often matters less than understanding runtime memory layouts and data transfer costs. Furthermore, the post provides nuanced guidance on when to reach for WASM versus native JavaScript, emphasizing that algorithmic optimizations frequently yield better real-world results than switching to a more performant language.</p>
-                    </div>
-                    
-                <div class="ai-summary">
-                    <h4>Comment Analysis</h4>
-                    <p>The primary consensus is that rewriting software often yields performance gains not because of the new language, but due to opportunities to fix algorithmic inefficiencies and remove legacy architectural bottlenecks.</p>
-<p>Some commenters argue that the move from Rust to TypeScript provided a tangible performance advantage by eliminating costly data serialization overheads that are inherently required at the JavaScript-WASM boundary.</p>
-<p>Developers should prioritize profiling code before making major architectural changes, as significant speed improvements frequently stem from fixing hidden bugs or optimizing data structures rather than switching programming languages.</p>
-<p>Skepticism persists regarding the article&#x27;s methodology, with several users suggesting the text and benchmarks were AI-generated, potentially obscuring the true technical reasons behind the reported performance improvements.</p>
-                </div>
+  <section class="spread arc-editorial-pullquote">
+    <div class="left">
+      <div class="numeral">10</div>
+      <div class="kicker">Infrastructure Analysis</div>
+      <h2>How the Los Angeles Aqueduct Masters Gravity-Fed Water Delivery</h2>
+      <p class="story-meta">practical.engineering &nbsp;·&nbsp; 410 pts &nbsp;·&nbsp; 207 comments</p>
+      <div class="spread-links"><a class="read-more" href="https://practical.engineering/blog/2026/3/17/the-los-angeles-aqueduct-is-wild" target="_blank" rel="noopener">Read →</a><a class="dossier-link" href="#dossier-10">Full analysis ↓</a></div>
+    </div>
+    <blockquote class="pullquote">Gravity remains the most reliable and efficient engine for sustaining modern urban infrastructure</blockquote>
+  </section>
 
-                </div>
-            </section>
+  <section id="dossier" class="dossier">
+    <div class="dossier-head">
+      <div class="tagline">Appendix</div>
+      <h2>The Dossier</h2>
+      <p class="intro">Full analysis and reader reactions for today's ten stories. <a href="#top">↑ Back to the edition</a></p>
+    </div>
+    <article id="dossier-1" class="dossier-entry">
+      <div class="dossier-meta">N<sup>o</sup> 01 &nbsp;·&nbsp; Midnight &nbsp;·&nbsp; AI Tools</div>
+      <h3>OpenCode – Open source AI coding agent</h3>
+      <p class="dossier-source">
+        <a href="https://opencode.ai/" target="_blank" rel="noopener">opencode.ai</a>
+        &nbsp;·&nbsp; 1269 pts &nbsp;·&nbsp; 620 comments
+        &nbsp;·&nbsp; <a href="https://news.ycombinator.com/item?id=47460525" target="_blank" rel="noopener">discussion</a>
+      </p>
+      <h4>Analysis</h4>
+      <p class="muted"><em>Analysis not available.</em></p>
+      
+    </article>
+    <article id="dossier-2" class="dossier-entry">
+      <div class="dossier-meta">N<sup>o</sup> 02 &nbsp;·&nbsp; Product Plate &nbsp;·&nbsp; Model Release</div>
+      <h3>Mamba-3</h3>
+      <p class="dossier-source">
+        <a href="https://www.together.ai/blog/mamba-3" target="_blank" rel="noopener">together.ai</a>
+        &nbsp;·&nbsp; 299 pts &nbsp;·&nbsp; 55 comments
+        &nbsp;·&nbsp; <a href="https://news.ycombinator.com/item?id=47419391" target="_blank" rel="noopener">discussion</a>
+      </p>
+      <h4>Analysis</h4>
+      <p class="muted"><em>Analysis not available.</em></p>
+      
+    </article>
+    <article id="dossier-3" class="dossier-entry">
+      <div class="dossier-meta">N<sup>o</sup> 03 &nbsp;·&nbsp; Academic &nbsp;·&nbsp; Engineering Guide</div>
+      <h3>FFmpeg 101 (2024)</h3>
+      <p class="dossier-source">
+        <a href="https://blogs.igalia.com/llepage/ffmpeg-101/" target="_blank" rel="noopener">blogs.igalia.com</a>
+        &nbsp;·&nbsp; 246 pts &nbsp;·&nbsp; 9 comments
+        &nbsp;·&nbsp; <a href="https://news.ycombinator.com/item?id=47463547" target="_blank" rel="noopener">discussion</a>
+      </p>
+      <h4>Analysis</h4>
+      <p class="muted"><em>Analysis not available.</em></p>
+      
+    </article>
+    <article id="dossier-4" class="dossier-entry">
+      <div class="dossier-meta">N<sup>o</sup> 04 &nbsp;·&nbsp; Notebook &nbsp;·&nbsp; Cultural Study</div>
+      <h3>A Japanese glossary of chopsticks faux pas (2022)</h3>
+      <p class="dossier-source">
+        <a href="https://www.nippon.com/en/japan-data/h01362/" target="_blank" rel="noopener">nippon.com</a>
+        &nbsp;·&nbsp; 491 pts &nbsp;·&nbsp; 391 comments
+        &nbsp;·&nbsp; <a href="https://news.ycombinator.com/item?id=47460452" target="_blank" rel="noopener">discussion</a>
+      </p>
+      <h4>Analysis</h4>
+      <p class="muted"><em>Analysis not available.</em></p>
+      
+    </article>
+    <article id="dossier-5" class="dossier-entry">
+      <div class="dossier-meta">N<sup>o</sup> 05 &nbsp;·&nbsp; Rose Alert &nbsp;·&nbsp; Design Failure</div>
+      <h3>Molly guard in reverse</h3>
+      <p class="dossier-source">
+        <a href="https://unsung.aresluna.org/molly-guard-in-reverse/" target="_blank" rel="noopener">unsung.aresluna.org</a>
+        &nbsp;·&nbsp; 221 pts &nbsp;·&nbsp; 93 comments
+        &nbsp;·&nbsp; <a href="https://news.ycombinator.com/item?id=47455138" target="_blank" rel="noopener">discussion</a>
+      </p>
+      <h4>Analysis</h4>
+      <p class="muted"><em>Analysis not available.</em></p>
+      
+    </article>
+    <article id="dossier-6" class="dossier-entry">
+      <div class="dossier-meta">N<sup>o</sup> 06 &nbsp;·&nbsp; Stat Hero &nbsp;·&nbsp; Performance Benchmarks</div>
+      <h3>We rewrote our Rust WASM parser in TypeScript and it got faster</h3>
+      <p class="dossier-source">
+        <a href="https://www.openui.com/blog/rust-wasm-parser" target="_blank" rel="noopener">openui.com</a>
+        &nbsp;·&nbsp; 291 pts &nbsp;·&nbsp; 213 comments
+        &nbsp;·&nbsp; <a href="https://news.ycombinator.com/item?id=47461094" target="_blank" rel="noopener">discussion</a>
+      </p>
+      <h4>Analysis</h4>
+      <p class="muted"><em>Analysis not available.</em></p>
+      
+    </article>
+    <article id="dossier-7" class="dossier-entry">
+      <div class="dossier-meta">N<sup>o</sup> 07 &nbsp;·&nbsp; Blueprint &nbsp;·&nbsp; Tooling Demo</div>
+      <h3>Ghostling</h3>
+      <p class="dossier-source">
+        <a href="https://github.com/ghostty-org/ghostling" target="_blank" rel="noopener">github.com</a>
+        &nbsp;·&nbsp; 332 pts &nbsp;·&nbsp; 70 comments
+        &nbsp;·&nbsp; <a href="https://news.ycombinator.com/item?id=47461378" target="_blank" rel="noopener">discussion</a>
+      </p>
+      <h4>Analysis</h4>
+      <p class="muted"><em>Analysis not available.</em></p>
+      
+    </article>
+    <article id="dossier-8" class="dossier-entry">
+      <div class="dossier-meta">N<sup>o</sup> 08 &nbsp;·&nbsp; Pastel Finale &nbsp;·&nbsp; Hardware Hack</div>
+      <h3>Fujifilm X RAW STUDIO webapp clone</h3>
+      <p class="dossier-source">
+        <a href="https://github.com/eggricesoy/filmkit" target="_blank" rel="noopener">github.com</a>
+        &nbsp;·&nbsp; 166 pts &nbsp;·&nbsp; 59 comments
+        &nbsp;·&nbsp; <a href="https://news.ycombinator.com/item?id=47435081" target="_blank" rel="noopener">discussion</a>
+      </p>
+      <h4>Analysis</h4>
+      <p class="muted"><em>Analysis not available.</em></p>
+      
+    </article>
+    <article id="dossier-9" class="dossier-entry">
+      <div class="dossier-meta">N<sup>o</sup> 09 &nbsp;·&nbsp; Archive &nbsp;·&nbsp; System Programming</div>
+      <h3>Linux Applications Programming by Example: The Fundamental APIs (2nd Edition)</h3>
+      <p class="dossier-source">
+        <a href="https://github.com/arnoldrobbins/LinuxByExample-2e" target="_blank" rel="noopener">github.com</a>
+        &nbsp;·&nbsp; 169 pts &nbsp;·&nbsp; 19 comments
+        &nbsp;·&nbsp; <a href="https://news.ycombinator.com/item?id=47462483" target="_blank" rel="noopener">discussion</a>
+      </p>
+      <h4>Analysis</h4>
+      <p class="muted"><em>Analysis not available.</em></p>
+      
+    </article>
+    <article id="dossier-10" class="dossier-entry">
+      <div class="dossier-meta">N<sup>o</sup> 10 &nbsp;·&nbsp; Editorial Op-Ed &nbsp;·&nbsp; Infrastructure Analysis</div>
+      <h3>The Los Angeles Aqueduct Is Wild</h3>
+      <p class="dossier-source">
+        <a href="https://practical.engineering/blog/2026/3/17/the-los-angeles-aqueduct-is-wild" target="_blank" rel="noopener">practical.engineering</a>
+        &nbsp;·&nbsp; 410 pts &nbsp;·&nbsp; 207 comments
+        &nbsp;·&nbsp; <a href="https://news.ycombinator.com/item?id=47416543" target="_blank" rel="noopener">discussion</a>
+      </p>
+      <h4>Analysis</h4>
+      <p class="muted"><em>Analysis not available.</em></p>
+      
+    </article>
+  </section>
 
-            <section class="repo" data-seen-before="0"
-                     data-share-title="Ghostling"
-                     data-share-url="https://github.com/ghostty-org/ghostling"
-                     data-share-points="332"
-                     data-share-comments="70">
-                <div class="repo-header-row">
-                    <h3>7. <a href="https://github.com/ghostty-org/ghostling" target="_blank" rel="noopener noreferrer">Ghostling</a> </h3>
-                    <div class="header-buttons">
-                        <button type="button" class="discuss-btn" aria-label="Discuss with AI" title="Discuss with AI">&#x1F4AC;</button>
-                        <button type="button" class="repo-toggle" aria-expanded="true">Hide details</button>
-                    </div>
-                </div>
-                <div class="repo-body">
-                    <p class="meta">
-                        <span class="language">github.com</span> |
-                        <span>bjornroberg</span> |
-                        <span>332 points</span> |
-                        <span>70 comments</span> |
-                        <a href="https://news.ycombinator.com/item?id=47461378" target="_blank" rel="noopener noreferrer">discussion</a>
-                    </p>
-                    <p class="history">First seen: March 21, 2026 | Consecutive daily streak: 1 day</p>
-                    <div class="ai-summary">
-                        <h4>Analysis</h4>
-                        <p>Ghostling is a minimal terminal emulator demo built to showcase the capabilities of `libghostty`, the core engine powering the Ghostty terminal. By utilizing the library&#x27;s C API alongside Raylib for windowing and rendering, the project provides a functional, single-threaded example of how developers can integrate robust terminal emulation into their own applications. The repository highlights that `libghostty` handles complex tasks like VT sequence parsing, Unicode support, and text reflow, while leaving GUI-specific features like tabs and configuration management to the consumer.</p>
-<p>Hacker News readers are likely interested in this project because it demonstrates the modularity of modern terminal design and the potential for broader language interoperability. By extracting the core emulation logic into a portable library, the project invites developers to build custom, high-performance terminal frontends without reinventing difficult parsing and state management. The transparency of the codebase and the library&#x27;s focus on a minimal, zero-dependency C API provide a practical template for those looking to embed terminal functionality into diverse software environments.</p>
-                    </div>
-                    
-                <div class="ai-summary">
-                    <h4>Comment Analysis</h4>
-                    <p>Users generally praise Ghostling as a valuable tool for packaging command-line interfaces as native desktop applications, noting that the underlying library offers significant performance benefits for modern terminal emulator development.</p>
-<p>A recurring debate persists regarding whether terminal applications should handle tabs and window management or if those functions are better off delegated entirely to dedicated window managers and multiplexing tools.</p>
-<p>Developers discussing binary resource embedding caution that while generating header files from byte arrays is common, it can cause compilation issues in larger projects, necessitating more robust, format-aware alternatives.</p>
-<p>This sample represents early-adopter enthusiasm and technical discourse surrounding a specific developer tool, but may not reflect the broader challenges or feature requirements faced by average, less-technical end users.</p>
-                </div>
-
-                </div>
-            </section>
-
-            <section class="repo" data-seen-before="0"
-                     data-share-title="Fujifilm X RAW STUDIO webapp clone"
-                     data-share-url="https://github.com/eggricesoy/filmkit"
-                     data-share-points="166"
-                     data-share-comments="59">
-                <div class="repo-header-row">
-                    <h3>8. <a href="https://github.com/eggricesoy/filmkit" target="_blank" rel="noopener noreferrer">Fujifilm X RAW STUDIO webapp clone</a> </h3>
-                    <div class="header-buttons">
-                        <button type="button" class="discuss-btn" aria-label="Discuss with AI" title="Discuss with AI">&#x1F4AC;</button>
-                        <button type="button" class="repo-toggle" aria-expanded="true">Hide details</button>
-                    </div>
-                </div>
-                <div class="repo-body">
-                    <p class="meta">
-                        <span class="language">github.com</span> |
-                        <span>notcodingtoday</span> |
-                        <span>166 points</span> |
-                        <span>59 comments</span> |
-                        <a href="https://news.ycombinator.com/item?id=47435081" target="_blank" rel="noopener noreferrer">discussion</a>
-                    </p>
-                    <p class="history">First seen: March 21, 2026 | Consecutive daily streak: 1 day</p>
-                    <div class="ai-summary">
-                        <h4>Analysis</h4>
-                        <p>FilmKit is a browser-based, open-source alternative to Fujifilm’s official X RAW STUDIO software, designed to manage camera profiles and process RAW images. By utilizing WebUSB, the tool allows users to connect their camera directly to a browser to perform tasks like preset management, live previewing, and JPEG conversion using the camera&#x27;s internal processor. The project currently focuses on the Fujifilm X100VI, using reverse-engineered PTP (Picture Transfer Protocol) communication to mimic the functionality of the official desktop application without requiring local software installation.</p>
-<p>Hacker News readers are likely to find this project interesting because it demonstrates a clean implementation of hardware interaction via modern browser APIs. The technical approach—using Wireshark to reverse-engineer proprietary USB protocols—highlights the community’s drive for interoperability and cross-platform support, specifically for Linux users who are often neglected by proprietary camera software. Furthermore, the project serves as an excellent case study in how static web applications can act as sophisticated interfaces for hardware, bypassing the need for heavy, platform-locked desktop binaries.</p>
-                    </div>
-                    
-                <div class="ai-summary">
-                    <h4>Comment Analysis</h4>
-                    <p>Users generally praise the webapp for improving the usability of Fujifilm’s official software, which is widely described as frustratingly slow and difficult to navigate for managing in-camera film simulations and profiles.</p>
-<p>There is a notable technical debate regarding whether third-party raw converters can ever truly replicate the proprietary, in-camera processing algorithms that give Fujifilm and Canon cameras their signature color and image quality.</p>
-<p>The application uses WebUSB to offload intensive image processing to the physical camera hardware, effectively functioning as a remote interface for the device&#x27;s internal engine rather than performing software emulation locally.</p>
-<p>The discussion sample includes a pedantic linguistic side-thread concerning the capitalization of the word &quot;raw,&quot; which detracts from the technical subject matter and likely does not reflect the broader user sentiment.</p>
-                </div>
-
-                </div>
-            </section>
-
-            <section class="repo" data-seen-before="0"
-                     data-share-title="Linux Applications Programming by Example: The Fundamental APIs (2nd Edition)"
-                     data-share-url="https://github.com/arnoldrobbins/LinuxByExample-2e"
-                     data-share-points="169"
-                     data-share-comments="19">
-                <div class="repo-header-row">
-                    <h3>9. <a href="https://github.com/arnoldrobbins/LinuxByExample-2e" target="_blank" rel="noopener noreferrer">Linux Applications Programming by Example: The Fundamental APIs (2nd Edition)</a> </h3>
-                    <div class="header-buttons">
-                        <button type="button" class="discuss-btn" aria-label="Discuss with AI" title="Discuss with AI">&#x1F4AC;</button>
-                        <button type="button" class="repo-toggle" aria-expanded="true">Hide details</button>
-                    </div>
-                </div>
-                <div class="repo-body">
-                    <p class="meta">
-                        <span class="language">github.com</span> |
-                        <span>teleforce</span> |
-                        <span>169 points</span> |
-                        <span>19 comments</span> |
-                        <a href="https://news.ycombinator.com/item?id=47462483" target="_blank" rel="noopener noreferrer">discussion</a>
-                    </p>
-                    <p class="history">First seen: March 21, 2026 | Consecutive daily streak: 1 day</p>
-                    <div class="ai-summary">
-                        <h4>Analysis</h4>
-                        <p>This GitHub repository provides the source code for the second edition of &quot;Linux Applications Programming by Example: The Fundamental APIs,&quot; a technical book authored by Arnold Robbins. The collection organizes example programs by chapter, following the structure of the 2004 text updated for a 2026 release. It serves as an official reference for developers looking to understand the core APIs that drive Linux application development.</p>
-<p>Hacker News readers are likely to find this resource valuable as a reliable, foundational guide to system-level programming. Many users appreciate the enduring relevance of Unix-like system APIs, and having access to updated, vetted code examples remains highly practical for both learning and troubleshooting. The repository also encourages community engagement by allowing users to report errata and issues directly through GitHub, bridging the gap between classic technical literature and modern collaborative development workflows.</p>
-                    </div>
-                    
-                <div class="ai-summary">
-                    <h4>Comment Analysis</h4>
-                    <p>The thread focuses on evaluating the second edition of the featured book, highlighting its value for developers who prefer structured explanations of Unix system programming over raw manual pages and documentation.</p>
-<p>Users sharply debate the utility of using OCaml for Unix programming, with critics citing steep syntax complexity while proponents argue it offers safer error handling than shell scripts or low-level C.</p>
-<p>Beyond the featured book, participants suggest using NetBSD’s source tree as a practical reference for high-quality, readable examples that are less complex to navigate than the standard GNU code base.</p>
-<p>This discussion sample is heavily skewed toward debating specific programming language choices for system tasks rather than analyzing the actual pedagogical content or technical merits of the Linux-focused book provided.</p>
-                </div>
-
-                </div>
-            </section>
-
-            <section class="repo" data-seen-before="1"
-                     data-share-title="The Los Angeles Aqueduct Is Wild"
-                     data-share-url="https://practical.engineering/blog/2026/3/17/the-los-angeles-aqueduct-is-wild"
-                     data-share-points="410"
-                     data-share-comments="207">
-                <div class="repo-header-row">
-                    <h3>10. <a href="https://practical.engineering/blog/2026/3/17/the-los-angeles-aqueduct-is-wild" target="_blank" rel="noopener noreferrer">The Los Angeles Aqueduct Is Wild</a> <span class="seen-badge">Not new today</span></h3>
-                    <div class="header-buttons">
-                        <button type="button" class="discuss-btn" aria-label="Discuss with AI" title="Discuss with AI">&#x1F4AC;</button>
-                        <button type="button" class="repo-toggle" aria-expanded="true">Hide details</button>
-                    </div>
-                </div>
-                <div class="repo-body">
-                    <p class="meta">
-                        <span class="language">practical.engineering</span> |
-                        <span>michaefe</span> |
-                        <span>410 points</span> |
-                        <span>207 comments</span> |
-                        <a href="https://news.ycombinator.com/item?id=47416543" target="_blank" rel="noopener noreferrer">discussion</a>
-                    </p>
-                    <p class="history">First seen: March 18, 2026 | Consecutive daily streak: 4 days</p>
-                    <div class="ai-summary">
-                        <h4>Analysis</h4>
-                        <p>The Los Angeles Aqueduct is a massive gravity-fed infrastructure system designed to transport water from the Eastern Sierra Nevada to the Los Angeles basin. Spanning over 300 miles, the project relies on a complex network of canals, tunnels, siphons, and reservoirs to move water without the use of mechanical pumps. Beyond water conveyance, the system integrates hydroelectric power generation and sophisticated flow-regulation mechanisms, serving as a critical pillar for the city&#x27;s water supply and energy production.</p>
-<p>Hacker News readers are likely to appreciate this story for its detailed breakdown of large-scale civil engineering, operational redundancy, and the historical intersection of technology and politics. The article provides a nuanced look at the unintended consequences of infrastructure, such as the environmental degradation of Owens Lake and the social fallout of the California Water Wars. By illustrating how early design decisions created lasting legal and ecological challenges, the narrative offers a technical and ethical case study in the complexities of managing long-term, resource-intensive systems.</p>
-                    </div>
-                    
-                <div class="ai-summary">
-                    <h4>Comment Analysis</h4>
-                    <p>Commenters broadly agree that California’s persistent water scarcity issues are driven more by inefficient allocation and political management decisions than by a genuine lack of physical water resources or environmental drought.</p>
-<p>A significant point of contention exists regarding whether agricultural exports, specifically alfalfa and almonds, are the primary culprit for water misuse or if they represent necessary components of sustainable, diversified farming.</p>
-<p>Unlike water systems in other regions that rely heavily on powered pumping, the Los Angeles water network utilizes gravity-fed infrastructure and elevated storage to maintain supply during frequent power grid interruptions.</p>
-<p>The discussion sample reflects a heavily skewed focus on Southern California urban perspectives, potentially overlooking the complex legal, contractual, and economic realities faced by rural farmers and specific municipal water districts.</p>
-                </div>
-
-                </div>
-            </section>
-
-            </div>
-        </article>
-    </main>
-    <footer>
-        <p>Generated automatically. Data from <a href="https://news.ycombinator.com/">Hacker News</a>.</p>
-    </footer>
+  <footer class="colophon">
+    <p class="sig">— that's the edition.</p>
+    <p class="meta">Set in Fraunces &amp; Inter · Compiled March 21, 2026</p>
+    <p class="classic-link"><a href="classic.html">Prefer the classic card view? →</a></p>
+  </footer>
 
 <script>
 (() => {
-    const readKey = "gtd:read_days:hn:v1";
-    const dayStr = "2026-03-21";
-
-    let stored = [];
-    try {
-        stored = JSON.parse(localStorage.getItem(readKey) || "[]");
-        if (!Array.isArray(stored)) {
-            stored = [];
-        }
-    } catch (_err) {
-        stored = [];
-    }
-
-    if (!stored.includes(dayStr)) {
-        stored.push(dayStr);
-        stored.sort();
-        localStorage.setItem(readKey, JSON.stringify(stored));
-    }
-
-    const collapseParam = new URLSearchParams(window.location.search).get("collapse_seen");
-    const collapseSeen = collapseParam === "0" ? false : true;
-
-    function setCollapsed(repoEl, collapsed) {
-        repoEl.classList.toggle("collapsed", collapsed);
-        const button = repoEl.querySelector(".repo-toggle");
-        if (button) {
-            button.textContent = collapsed ? "Show details" : "Hide details";
-            button.setAttribute("aria-expanded", String(!collapsed));
-        }
-    }
-
-    const repos = Array.from(document.querySelectorAll("section.repo[data-seen-before]"));
-
-    repos.forEach((repoEl) => {
-        const toggle = repoEl.querySelector(".repo-toggle");
-        if (!toggle) {
-            return;
-        }
-
-        toggle.addEventListener("click", () => {
-            setCollapsed(repoEl, !repoEl.classList.contains("collapsed"));
-        });
-    });
-
-    const collapseBtn = document.getElementById("collapse-seen-btn");
-    const expandBtn = document.getElementById("expand-all-btn");
-
-    if (collapseBtn) {
-        collapseBtn.addEventListener("click", () => {
-            repos.forEach((repoEl) => {
-                if (repoEl.dataset.seenBefore === "1") {
-                    setCollapsed(repoEl, true);
-                }
-            });
-        });
-    }
-
-    if (expandBtn) {
-        expandBtn.addEventListener("click", () => {
-            repos.forEach((repoEl) => setCollapsed(repoEl, false));
-        });
-    }
-
-    if (collapseSeen) {
-        repos.forEach((repoEl) => {
-            if (repoEl.dataset.seenBefore === "1") {
-                setCollapsed(repoEl, true);
-            }
-        });
-    }
-
-    // Discuss with AI button
-    const toast = document.createElement("div");
-    toast.className = "discuss-toast";
-    document.body.appendChild(toast);
-
-    function showToast(msg) {
-        toast.textContent = msg;
-        toast.classList.add("show");
-        setTimeout(() => toast.classList.remove("show"), 2500);
-    }
-
-    function buildHNMarkdown(card) {
-        const title = card.dataset.shareTitle || "";
-        const url = card.dataset.shareUrl || "";
-        const points = card.dataset.sharePoints || "0";
-        const comments = card.dataset.shareComments || "0";
-        const summaries = card.querySelectorAll(".ai-summary");
-        let md = "# " + title + "\n";
-        md += "Source: " + url + " | " + points + " points | " + comments + " comments\n";
-        summaries.forEach((s) => {
-            const heading = s.querySelector("h4");
-            const label = heading ? heading.textContent.trim() : "Analysis";
-            const content = Array.from(s.querySelectorAll("p"))
-                .map((p) => p.textContent.trim())
-                .join("\n");
-            md += "\n## " + label + "\n" + content + "\n";
-        });
-        return md;
-    }
-
-    document.querySelectorAll(".discuss-btn").forEach((btn) => {
-        btn.addEventListener("click", () => {
-            const card = btn.closest("section.repo");
-            if (!card) return;
-            const md = buildHNMarkdown(card);
-            const text = "I'd like to discuss this article with you. Here's a summary:\n\n" + md;
-            const title = "Discuss: " + (card.dataset.shareTitle || "");
-            if (navigator.share) {
-                navigator.share({ title: title, text: text }).catch(() => {});
-            } else {
-                navigator.clipboard.writeText(text).then(
-                    () => showToast("Copied to clipboard \u2014 paste into your AI chat"),
-                    () => showToast("Failed to copy")
-                );
-            }
-        });
-    });
+  const key = "gtd:read_days:hn:v1";
+  const day = "2026-03-21";
+  let stored = [];
+  try {
+    stored = JSON.parse(localStorage.getItem(key) || "[]");
+    if (!Array.isArray(stored)) stored = [];
+  } catch (_) { stored = []; }
+  if (!stored.includes(day)) {
+    stored.push(day);
+    stored.sort();
+    localStorage.setItem(key, JSON.stringify(stored));
+  }
 })();
 </script>
 

@@ -1,527 +1,781 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Hacker News Digest - March 23, 2026</title>
-    <link rel="stylesheet" href="../../style.css">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Morning Edition — Monday, March 23, 2026</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght,SOFT@0,9..144,300..900,0..100;1,9..144,300..900,0..100&family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+
+  :root { --ink: #121212; --paper: #f5f1e8; }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  body {
+    font-family: 'Inter', system-ui, sans-serif;
+    font-size: 20px;
+    line-height: 1.5;
+    color: var(--ink);
+    background: var(--paper);
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+  a { color: inherit; }
+  a:hover { opacity: 0.7; }
+  .frnc { font-family: 'Fraunces', Georgia, serif; }
+  .mono { font-family: 'JetBrains Mono', ui-monospace, monospace; }
+
+  /* ───── MASTHEAD ───── */
+  .masthead { padding: 2rem 6vw 2.5rem; border-bottom: 3px double #121212; background: #f5f1e8; text-align: center; }
+  .masthead-nav {
+    display: flex;
+    justify-content: center;
+    gap: 1.2rem;
+    align-items: baseline;
+    margin-bottom: 2rem;
+    font-weight: 600;
+    font-size: 1rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+  }
+  .masthead-nav a { text-decoration: none; border-bottom: 2px solid transparent; padding-bottom: 2px; }
+  .masthead-nav a:hover { border-bottom-color: #121212; opacity: 1; }
+  .masthead-nav span { opacity: 0.4; }
+  .masthead .tagline { font-weight: 600; font-size: 1.2rem; letter-spacing: 0.4em; text-transform: uppercase; margin-bottom: 1.2rem; }
+  .masthead h1 {
+    font-family: 'Fraunces', Georgia, serif;
+    font-weight: 900;
+    font-style: italic;
+    font-size: clamp(4rem, 13vw, 12rem);
+    line-height: 0.88;
+    letter-spacing: -0.035em;
+    margin: 0 0 1rem;
+    font-variation-settings: "SOFT" 50;
+  }
+  .masthead .issue-line {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    max-width: 1000px;
+    margin: 2rem auto 0;
+    padding-top: 1.25rem;
+    border-top: 1px solid #121212;
+    font-weight: 500;
+    font-size: 1.1rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+  }
+
+  /* ───── SPREAD BASE ───── */
+  .spread {
+    min-height: 100vh;
+    padding: 6vh 6vw;
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+  .spread .story-meta { font-weight: 600; font-size: 1rem; letter-spacing: 0.28em; text-transform: uppercase; }
+  .spread-links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 2rem 2.5rem;
+    align-items: baseline;
+    margin-top: 2.5rem;
+  }
+  .spread .read-more {
+    display: inline-block;
+    font-size: 1.1rem;
+    font-weight: 700;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    text-decoration: none;
+    padding-bottom: 0.4rem;
+    border-bottom: 3px solid currentColor;
+  }
+  .spread .dossier-link {
+    font-size: 1rem;
+    font-weight: 500;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    text-decoration: none;
+    opacity: 0.7;
+    padding-bottom: 0.3rem;
+    border-bottom: 1px solid currentColor;
+  }
+  .spread .dossier-link:hover { opacity: 1; }
+
+  /* ───── STAT HERO ───── */
+  .arc-stat-hero { background: #eee6d3; color: #0d1a2e; padding: 8vh 6vw; }
+  .arc-stat-hero .numeral {
+    font-family: 'Fraunces', serif;
+    font-weight: 900;
+    font-style: italic;
+    font-size: clamp(12rem, 36vw, 34rem);
+    line-height: 0.8;
+    letter-spacing: -0.06em;
+    color: #0d1a2e;
+    position: absolute;
+    right: -2vw;
+    top: 8vh;
+    opacity: 0.94;
+    pointer-events: none;
+    white-space: nowrap;
+  }
+  .arc-stat-hero .kicker { font-weight: 700; font-size: 1.15rem; letter-spacing: 0.4em; text-transform: uppercase; color: #c13830; position: relative; z-index: 2; margin-bottom: 1.5rem; }
+  .arc-stat-hero h2 { font-family: 'Fraunces', serif; font-weight: 800; font-size: clamp(3rem, 8vw, 7.5rem); line-height: 0.95; letter-spacing: -0.03em; max-width: 60%; margin: 0 0 2rem; position: relative; z-index: 2; }
+  .arc-stat-hero .lede { font-family: 'Fraunces', serif; font-size: clamp(1.4rem, 2.2vw, 2rem); line-height: 1.45; max-width: 55%; font-weight: 400; position: relative; z-index: 2; margin: 0; }
+  .arc-stat-hero .story-meta { color: #c13830; position: relative; z-index: 2; }
+  .arc-stat-hero .spread-links { position: relative; z-index: 2; }
+
+  /* ───── MIDNIGHT ───── */
+  .arc-midnight { background: radial-gradient(ellipse at 70% 30%, #1a1235 0%, #05050c 65%); color: #e9e4ff; }
+  .arc-midnight::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background-image:
+      radial-gradient(circle at 20% 80%, rgba(180,120,255,0.18), transparent 50%),
+      radial-gradient(circle at 80% 20%, rgba(120,200,255,0.12), transparent 55%);
+    pointer-events: none;
+  }
+  .arc-midnight .numeral {
+    font-family: 'Fraunces', serif;
+    font-size: clamp(8rem, 22vw, 20rem);
+    font-weight: 300;
+    font-style: italic;
+    color: transparent;
+    -webkit-text-stroke: 2px rgba(233,228,255,0.45);
+    line-height: 1;
+    position: absolute;
+    top: 6vh;
+    left: 5vw;
+    letter-spacing: -0.05em;
+  }
+  .arc-midnight .body { position: relative; z-index: 2; margin-top: 12rem; max-width: 90%; }
+  .arc-midnight .kicker { font-family: 'JetBrains Mono', monospace; font-size: 1.1rem; letter-spacing: 0.2em; text-transform: uppercase; color: #b48bff; margin-bottom: 2rem; }
+  .arc-midnight h2 { font-weight: 800; font-size: clamp(3rem, 7.5vw, 6.5rem); line-height: 1; letter-spacing: -0.035em; margin: 0 0 2.5rem; }
+  .arc-midnight .lede { font-size: 1.35rem; line-height: 1.55; color: #cdc6e8; max-width: 780px; margin: 0; }
+  .arc-midnight .story-meta { color: #8a7cc6; margin-bottom: 1.5rem; }
+
+  /* ───── ALERT STAMP ───── */
+  .arc-alert-stamp { background: #f8e5de; color: #2b0808; background-image: repeating-linear-gradient(transparent, transparent 3rem, rgba(193,56,48,0.08) 3rem, rgba(193,56,48,0.08) calc(3rem + 1px)); }
+  .arc-alert-stamp .stamp {
+    position: absolute; top: 8vh; right: 5vw;
+    transform: rotate(-14deg);
+    border: 6px solid #c13830;
+    padding: 1.2rem 2.5rem;
+    font-weight: 900;
+    font-size: clamp(2rem, 4vw, 3.5rem);
+    letter-spacing: 0.15em;
+    color: #c13830;
+    background: rgba(248,229,222,0.6);
+    text-transform: uppercase;
+  }
+  .arc-alert-stamp .numeral { font-family: 'Fraunces', serif; font-style: italic; font-weight: 900; font-size: clamp(6rem, 15vw, 12rem); line-height: 1; color: #c13830; margin: 0 0 1rem; }
+  .arc-alert-stamp .kicker { font-weight: 800; font-size: 1.2rem; letter-spacing: 0.3em; text-transform: uppercase; color: #c13830; margin-bottom: 1rem; }
+  .arc-alert-stamp h2 { font-family: 'Fraunces', serif; font-weight: 800; font-size: clamp(2.5rem, 6vw, 5.5rem); line-height: 1.02; letter-spacing: -0.025em; max-width: 75%; margin: 0 0 2rem; }
+  .arc-alert-stamp .lede { font-size: 1.4rem; line-height: 1.55; max-width: 700px; font-weight: 400; margin: 0; }
+  .arc-alert-stamp .story-meta { color: #c13830; margin-bottom: 1.5rem; }
+
+  /* ───── ACADEMIC DROP CAP ───── */
+  .arc-academic-drop-cap { background: #efe7d1; color: #1b1a14; padding: 8vh 8vw; }
+  .arc-academic-drop-cap .paper-head {
+    display: flex; justify-content: space-between; align-items: baseline;
+    border-bottom: 1.5px solid #1b1a14;
+    padding-bottom: 0.7rem; margin-bottom: 3rem;
+    font-weight: 500; font-size: 1rem; letter-spacing: 0.25em; text-transform: uppercase;
+  }
+  .arc-academic-drop-cap .numeral-roman { font-family: 'Fraunces', serif; font-weight: 700; font-size: clamp(2.5rem, 4vw, 4rem); font-style: italic; letter-spacing: 0.08em; }
+  .arc-academic-drop-cap h2 { font-family: 'Fraunces', serif; font-weight: 400; font-style: italic; font-size: clamp(2.5rem, 5.5vw, 5rem); line-height: 1.05; letter-spacing: -0.015em; margin: 0 0 1.5rem; max-width: 85%; }
+  .arc-academic-drop-cap .story-meta { margin-bottom: 2rem; }
+  .arc-academic-drop-cap .cols { display: grid; grid-template-columns: 1fr 1fr; gap: 3.5rem; }
+  .arc-academic-drop-cap .cols p { font-family: 'Fraunces', serif; font-size: 1.35rem; line-height: 1.55; text-align: justify; hyphens: auto; margin: 0 0 1.2rem; }
+  .arc-academic-drop-cap .cols > div:first-child p:first-child::first-letter {
+    font-family: 'Fraunces', serif;
+    font-weight: 900;
+    font-size: 7em;
+    float: left;
+    line-height: 0.82;
+    padding: 0.1em 0.15em 0 0;
+    color: #7a1e14;
+  }
+
+  /* ───── TERMINAL ───── */
+  .arc-terminal { background: #000; color: #8cff8c; font-family: 'JetBrains Mono', ui-monospace, monospace; padding: 8vh 6vw; }
+  .arc-terminal .prompt-row { font-size: 1.15rem; font-weight: 500; color: #4ac94a; margin-bottom: 3rem; }
+  .arc-terminal .numeral { font-size: clamp(6rem, 14vw, 13rem); font-weight: 700; line-height: 1; color: #8cff8c; margin: 0 0 1rem; }
+  .arc-terminal .numeral::before { content: "> "; color: #4ac94a; }
+  .arc-terminal h2 { font-weight: 700; font-size: clamp(2.2rem, 5vw, 4.5rem); line-height: 1.1; margin: 0 0 2rem; max-width: 90%; color: #d4ffd4; }
+  .arc-terminal .lede { font-size: 1.3rem; line-height: 1.6; max-width: 780px; color: #8cff8c; margin: 0; }
+  .arc-terminal .lede::before { content: "# "; color: #4ac94a; }
+  .arc-terminal .story-meta { color: #4ac94a; margin-bottom: 1.5rem; }
+  .arc-terminal .cursor { display: inline-block; width: 0.55em; height: 1.1em; background: #8cff8c; vertical-align: text-bottom; margin-left: 0.2em; animation: me-blink 1s steps(2, start) infinite; }
+  @keyframes me-blink { to { visibility: hidden; } }
+  .arc-terminal .read-more { color: #8cff8c; border-color: #4ac94a; }
+  .arc-terminal .dossier-link { color: #8cff8c; border-color: rgba(140,255,140,0.4); }
+
+  /* ───── EDITORIAL PULLQUOTE ───── */
+  .arc-editorial-pullquote {
+    background: #1a1a1a; color: #f5f1e8; padding: 8vh 6vw;
+    display: grid; grid-template-columns: 1fr 1.1fr; gap: 5rem; align-items: center;
+  }
+  .arc-editorial-pullquote .left { position: relative; }
+  .arc-editorial-pullquote .numeral { font-family: 'Fraunces', serif; font-weight: 900; font-style: italic; font-size: clamp(8rem, 18vw, 16rem); line-height: 0.9; color: #f5f1e8; margin: 0 0 1rem; letter-spacing: -0.05em; }
+  .arc-editorial-pullquote .kicker { font-weight: 700; font-size: 1.1rem; letter-spacing: 0.35em; text-transform: uppercase; color: #e8b84a; margin-bottom: 1.5rem; }
+  .arc-editorial-pullquote h2 { font-family: 'Fraunces', serif; font-weight: 700; font-size: clamp(2rem, 4vw, 3.5rem); line-height: 1.1; margin: 0 0 2rem; }
+  .arc-editorial-pullquote .pullquote {
+    font-family: 'Fraunces', serif; font-style: italic; font-weight: 400;
+    font-size: clamp(1.8rem, 3.5vw, 3rem); line-height: 1.15;
+    color: #f5f1e8; border-left: 4px solid #e8b84a; padding-left: 2rem; margin: 0;
+  }
+  .arc-editorial-pullquote .pullquote::before { content: "\201C"; font-size: 1.4em; line-height: 0; vertical-align: -0.4em; color: #e8b84a; margin-right: 0.1em; }
+  .arc-editorial-pullquote .pullquote::after { content: "\201D"; font-size: 1.4em; line-height: 0; vertical-align: -0.6em; color: #e8b84a; margin-left: 0.05em; }
+  .arc-editorial-pullquote .story-meta { color: #e8b84a; }
+
+  /* ───── CAUTION TAPE ───── */
+  .arc-caution-tape { background: #fff200; color: #0a0a0a; padding: 8vh 6vw; }
+  .arc-caution-tape::before { content: ""; position: absolute; inset: 0 0 auto 0; height: 2.5rem; background: repeating-linear-gradient(135deg, #0a0a0a 0 2rem, #fff200 2rem 4rem); }
+  .arc-caution-tape::after { content: ""; position: absolute; inset: auto 0 0 0; height: 2.5rem; background: repeating-linear-gradient(135deg, #0a0a0a 0 2rem, #fff200 2rem 4rem); }
+  .arc-caution-tape .tag {
+    position: absolute; top: 6vh; right: 6vw;
+    writing-mode: vertical-rl; transform: rotate(180deg);
+    font-weight: 900; font-size: 1.3rem; letter-spacing: 0.5em; text-transform: uppercase;
+    background: #0a0a0a; color: #fff200; padding: 1rem 0.6rem;
+  }
+  .arc-caution-tape .numeral { font-weight: 900; font-size: clamp(10rem, 28vw, 24rem); line-height: 0.85; letter-spacing: -0.06em; margin: 0 0 1rem; -webkit-text-stroke: 3px #0a0a0a; color: transparent; }
+  .arc-caution-tape .kicker { font-weight: 900; font-size: 1.3rem; letter-spacing: 0.35em; text-transform: uppercase; background: #0a0a0a; color: #fff200; padding: 0.5rem 1rem; display: inline-block; margin-bottom: 1.5rem; }
+  .arc-caution-tape h2 { font-weight: 900; font-size: clamp(2.5rem, 6vw, 5.5rem); line-height: 0.98; letter-spacing: -0.03em; margin: 0 0 2rem; max-width: 85%; text-transform: uppercase; }
+  .arc-caution-tape .lede { font-size: 1.35rem; line-height: 1.5; max-width: 680px; font-weight: 500; margin: 0; }
+  .arc-caution-tape .story-meta { margin-bottom: 1.5rem; }
+
+  /* ───── NOTEBOOK ───── */
+  .arc-notebook { background: repeating-linear-gradient(#fdfaf0 0 2.2rem, rgba(120,104,60,0.22) 2.2rem 2.25rem); color: #1f1a0d; padding: 8vh 8vw; }
+  .arc-notebook::before { content: ""; position: absolute; top: 0; bottom: 0; left: 8vw; width: 2px; background: #c13830; opacity: 0.5; }
+  .arc-notebook .numeral { font-family: 'Fraunces', serif; font-weight: 400; font-style: italic; font-size: clamp(7rem, 17vw, 15rem); line-height: 1; letter-spacing: -0.02em; color: #1f1a0d; margin: 0 0 0.5rem; }
+  .arc-notebook .kicker { font-weight: 600; font-size: 1.1rem; letter-spacing: 0.3em; text-transform: uppercase; color: #8a6b1f; margin-bottom: 1rem; }
+  .arc-notebook h2 { font-family: 'Fraunces', serif; font-weight: 400; font-style: italic; font-size: clamp(2.8rem, 6.5vw, 6rem); line-height: 1; letter-spacing: -0.02em; margin: 0 0 2rem; max-width: 85%; }
+  .arc-notebook .lede { font-family: 'Fraunces', serif; font-weight: 400; font-size: clamp(1.35rem, 2vw, 1.7rem); line-height: 2.2rem; max-width: 700px; margin: 0; }
+
+  /* ───── MINT PATTERN ───── */
+  .arc-mint-pattern { background: #a8e6cf; color: #0d2a1e; padding: 8vh 6vw; }
+  .arc-mint-pattern::before {
+    content: "XOR LISP AWK SED GREP CURL MAKE GIT VIM SSH";
+    position: absolute; top: 10vh; left: 0; right: 0;
+    font-family: 'JetBrains Mono', monospace;
+    font-weight: 700; font-size: 2.5rem; letter-spacing: 0.3em;
+    color: rgba(13,42,30,0.1); white-space: nowrap; overflow: hidden; pointer-events: none;
+  }
+  .arc-mint-pattern .numeral-block { position: relative; z-index: 2; }
+  .arc-mint-pattern .numeral { font-family: 'Fraunces', serif; font-weight: 900; font-size: clamp(10rem, 28vw, 24rem); line-height: 0.85; letter-spacing: -0.06em; color: #0d2a1e; margin: 0; font-style: italic; }
+  .arc-mint-pattern .kicker { font-family: 'JetBrains Mono', monospace; font-weight: 700; font-size: 1.1rem; letter-spacing: 0.2em; text-transform: uppercase; color: #0d2a1e; margin: 1.5rem 0; position: relative; z-index: 2; }
+  .arc-mint-pattern h2 { font-family: 'Fraunces', serif; font-weight: 800; font-size: clamp(2.5rem, 6vw, 5rem); line-height: 1; letter-spacing: -0.025em; margin: 0 0 2rem; max-width: 85%; position: relative; z-index: 2; }
+  .arc-mint-pattern .lede { font-family: 'Fraunces', serif; font-size: 1.4rem; line-height: 1.55; max-width: 680px; font-weight: 400; margin: 0; position: relative; z-index: 2; }
+  .arc-mint-pattern .story-meta { position: relative; z-index: 2; margin-bottom: 1.5rem; }
+  .arc-mint-pattern .spread-links { position: relative; z-index: 2; }
+
+  /* ───── PASTEL PLAYFUL ───── */
+  .arc-pastel-playful { background: #fde6f2; color: #2a0a2e; padding: 8vh 6vw 4vh; }
+  .arc-pastel-playful .alpha-grid {
+    position: absolute; top: 0; left: 0; right: 0;
+    display: grid; grid-template-columns: repeat(13, 1fr);
+    font-family: 'Fraunces', serif; font-style: italic;
+    font-size: clamp(1.2rem, 2.5vw, 2rem); font-weight: 700;
+    color: rgba(42,10,46,0.2); padding: 1rem 6vw; letter-spacing: 0.2em; pointer-events: none;
+  }
+  .arc-pastel-playful .alpha-grid span { text-align: center; }
+  .arc-pastel-playful .numeral { font-family: 'Fraunces', serif; font-weight: 900; font-style: italic; font-size: clamp(10rem, 26vw, 22rem); line-height: 0.85; letter-spacing: -0.05em; color: #c13871; margin: 2rem 0 0; }
+  .arc-pastel-playful .kicker { font-weight: 700; font-size: 1.1rem; letter-spacing: 0.35em; text-transform: uppercase; color: #c13871; margin-bottom: 1rem; }
+  .arc-pastel-playful h2 { font-family: 'Fraunces', serif; font-weight: 400; font-style: italic; font-size: clamp(2.8rem, 6.5vw, 5.5rem); line-height: 1; letter-spacing: -0.02em; margin: 0 0 2rem; max-width: 85%; }
+  .arc-pastel-playful .lede { font-size: 1.35rem; line-height: 1.5; max-width: 680px; margin: 0; }
+  .arc-pastel-playful .story-meta { color: #c13871; margin-bottom: 1.5rem; }
+
+  /* ───── PRODUCT PLATE ───── */
+  .arc-product-plate {
+    background: linear-gradient(135deg, #f5f5f3 0%, #e8e8e6 100%);
+    color: #121212; padding: 10vh 8vw; text-align: center; align-items: center; justify-content: center;
+  }
+  .arc-product-plate .product-chip {
+    font-weight: 700; font-size: 1rem; letter-spacing: 0.4em; text-transform: uppercase;
+    background: #121212; color: #f5f5f3; padding: 0.5rem 1.4rem; display: inline-block; margin-bottom: 3rem;
+  }
+  .arc-product-plate .kicker { font-weight: 700; font-size: 1.15rem; letter-spacing: 0.5em; text-transform: uppercase; color: #666; margin-bottom: 1.5rem; }
+  .arc-product-plate h2 {
+    font-family: 'Inter', sans-serif;
+    font-weight: 900;
+    font-size: clamp(3.2rem, 9vw, 8rem);
+    line-height: 0.95;
+    letter-spacing: -0.045em;
+    margin: 0 auto 2rem;
+    max-width: 14ch;
+  }
+  .arc-product-plate .product-rule { width: 6rem; height: 2px; background: #121212; margin: 1.5rem auto 2rem; }
+  .arc-product-plate .story-meta { color: #666; margin-bottom: 1.5rem; }
+  .arc-product-plate .lede { font-family: 'Fraunces', serif; font-weight: 400; font-size: clamp(1.4rem, 2.2vw, 1.9rem); line-height: 1.45; max-width: 720px; margin: 0 auto; }
+  .arc-product-plate .spread-links { justify-content: center; }
+
+  /* ───── ARCHIVE ───── */
+  .arc-archive {
+    background: #eadbb8;
+    background-image:
+      radial-gradient(rgba(80,40,10,0.05) 1px, transparent 1px),
+      radial-gradient(rgba(80,40,10,0.04) 1px, transparent 1px);
+    background-size: 4px 4px, 7px 7px;
+    background-position: 0 0, 2px 2px;
+    color: #2a1a08; padding: 8vh 8vw;
+  }
+  .arc-archive .archive-head {
+    display: flex; justify-content: space-between; align-items: baseline;
+    padding-bottom: 1rem; margin-bottom: 3rem;
+    border-top: 6px double #3a2a10; border-bottom: 6px double #3a2a10;
+    padding-top: 1rem;
+    font-family: 'Fraunces', serif; font-style: italic; font-weight: 500;
+    font-size: 1.1rem; letter-spacing: 0.15em; text-transform: uppercase; color: #3a2a10;
+  }
+  .arc-archive .kicker { font-family: 'Fraunces', serif; font-style: italic; font-weight: 600; font-size: 1.2rem; letter-spacing: 0.3em; text-transform: uppercase; color: #8a3a10; margin-bottom: 1.2rem; }
+  .arc-archive h2 {
+    font-family: 'Fraunces', serif; font-weight: 700; font-style: normal;
+    font-size: clamp(2.8rem, 6.5vw, 6rem); line-height: 1; letter-spacing: -0.02em;
+    margin: 0 0 2rem; max-width: 85%;
+  }
+  .arc-archive .lede {
+    font-family: 'Fraunces', serif; font-size: clamp(1.35rem, 2vw, 1.7rem);
+    line-height: 1.55; max-width: 760px; font-weight: 400; margin: 0;
+  }
+  .arc-archive .lede::first-letter {
+    font-family: 'Fraunces', serif; font-weight: 900; font-size: 5em;
+    float: left; line-height: 0.82; padding: 0.1em 0.15em 0 0; color: #8a3a10;
+  }
+  .arc-archive .story-meta { color: #8a3a10; margin-bottom: 1.5rem; }
+
+  /* ───── OBITUARY ───── */
+  .arc-obituary {
+    background: #f8f4ec; color: #121212;
+    padding: 10vh 6vw; align-items: center; justify-content: center;
+  }
+  .arc-obituary .obit-frame {
+    border: 3px solid #121212; padding: 6rem 5rem;
+    max-width: 780px; text-align: center; background: #f8f4ec;
+    position: relative; z-index: 2;
+  }
+  .arc-obituary .obit-frame::before,
+  .arc-obituary .obit-frame::after {
+    content: ""; position: absolute; left: -12px; right: -12px; height: 1px; background: #121212;
+  }
+  .arc-obituary .obit-frame::before { top: -12px; }
+  .arc-obituary .obit-frame::after { bottom: -12px; }
+  .arc-obituary .ornament { font-family: 'Fraunces', serif; font-size: 3.5rem; line-height: 1; margin-bottom: 2rem; color: #121212; }
+  .arc-obituary .kicker { font-family: 'Fraunces', serif; font-style: italic; font-weight: 500; font-size: 1.1rem; letter-spacing: 0.3em; text-transform: uppercase; margin-bottom: 2rem; opacity: 0.7; }
+  .arc-obituary h2 {
+    font-family: 'Fraunces', serif; font-weight: 400; font-style: italic;
+    font-size: clamp(2.4rem, 5vw, 4.5rem); line-height: 1.1; letter-spacing: -0.015em;
+    margin: 0 0 2.5rem;
+  }
+  .arc-obituary .story-meta { margin-bottom: 2rem; opacity: 0.6; }
+  .arc-obituary .lede { font-family: 'Fraunces', serif; font-size: clamp(1.3rem, 1.9vw, 1.6rem); line-height: 1.6; margin: 0 auto; max-width: 60ch; }
+  .arc-obituary .spread-links { justify-content: center; margin-top: 3rem; }
+
+  /* ───── BLUEPRINT ───── */
+  .arc-blueprint {
+    background: #0a3d62;
+    background-image:
+      linear-gradient(rgba(255,255,255,0.08) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255,255,255,0.08) 1px, transparent 1px);
+    background-size: 2.2rem 2.2rem;
+    color: #eaf4ff; padding: 8vh 6vw;
+  }
+  .arc-blueprint .corner {
+    position: absolute; font-family: 'JetBrains Mono', monospace;
+    font-size: 2.5rem; color: #eaf4ff; opacity: 0.7;
+  }
+  .arc-blueprint .corner.tl { top: 3vh; left: 3vw; }
+  .arc-blueprint .corner.tr { top: 3vh; right: 3vw; }
+  .arc-blueprint .corner.bl { bottom: 3vh; left: 3vw; }
+  .arc-blueprint .corner.br { bottom: 3vh; right: 3vw; }
+  .arc-blueprint .numeral {
+    font-family: 'JetBrains Mono', monospace;
+    font-weight: 700; font-size: clamp(4rem, 9vw, 7.5rem); line-height: 1;
+    letter-spacing: -0.01em; color: #eaf4ff;
+    margin: 0 0 1.5rem;
+    border-bottom: 2px dashed rgba(234,244,255,0.5);
+    padding-bottom: 1rem;
+    display: inline-block;
+  }
+  .arc-blueprint .kicker { font-family: 'JetBrains Mono', monospace; font-weight: 700; font-size: 1.15rem; letter-spacing: 0.3em; text-transform: uppercase; color: #9bd2ff; margin-bottom: 1.5rem; }
+  .arc-blueprint h2 { font-family: 'Fraunces', serif; font-weight: 700; font-size: clamp(2.8rem, 6.5vw, 5.5rem); line-height: 1; letter-spacing: -0.025em; margin: 0 0 2rem; max-width: 85%; }
+  .arc-blueprint .lede { font-family: 'JetBrains Mono', monospace; font-size: 1.2rem; line-height: 1.65; max-width: 720px; margin: 0; }
+  .arc-blueprint .story-meta { color: #9bd2ff; margin-bottom: 1.5rem; font-family: 'JetBrains Mono', monospace; }
+
+  /* ───── OBSERVATORY ───── */
+  .arc-observatory {
+    background: #070c2e; color: #e8ecff; padding: 8vh 6vw;
+  }
+  .arc-observatory .starfield {
+    position: absolute; inset: 0; pointer-events: none;
+    background-image:
+      radial-gradient(1px 1px at 10% 20%, rgba(255,255,255,0.9), transparent),
+      radial-gradient(1px 1px at 25% 70%, rgba(255,255,255,0.6), transparent),
+      radial-gradient(1.5px 1.5px at 40% 30%, rgba(255,255,255,0.8), transparent),
+      radial-gradient(1px 1px at 55% 85%, rgba(255,255,255,0.5), transparent),
+      radial-gradient(1px 1px at 70% 15%, rgba(255,255,255,0.9), transparent),
+      radial-gradient(1.5px 1.5px at 85% 55%, rgba(255,255,255,0.7), transparent),
+      radial-gradient(1px 1px at 92% 25%, rgba(255,255,255,0.5), transparent),
+      radial-gradient(1px 1px at 15% 90%, rgba(255,255,255,0.4), transparent),
+      radial-gradient(1px 1px at 48% 50%, rgba(255,255,255,0.6), transparent),
+      radial-gradient(1px 1px at 78% 78%, rgba(255,255,255,0.5), transparent);
+    background-repeat: no-repeat;
+  }
+  .arc-observatory > * { position: relative; z-index: 2; }
+  .arc-observatory .numeral {
+    font-family: 'Fraunces', serif; font-style: italic; font-weight: 400;
+    font-size: clamp(3rem, 7vw, 6rem); line-height: 1; letter-spacing: 0.04em;
+    color: #e8ecff; margin: 0 0 2rem;
+    border-bottom: 1px solid rgba(232,236,255,0.4);
+    padding-bottom: 1rem; display: inline-block;
+  }
+  .arc-observatory .kicker { font-family: 'Fraunces', serif; font-style: italic; font-weight: 500; font-size: 1.15rem; letter-spacing: 0.3em; text-transform: uppercase; color: #9ab3ff; margin-bottom: 1.5rem; }
+  .arc-observatory h2 { font-family: 'Fraunces', serif; font-weight: 400; font-style: italic; font-size: clamp(2.8rem, 6.5vw, 5.5rem); line-height: 1.05; letter-spacing: -0.015em; margin: 0 0 2rem; max-width: 85%; }
+  .arc-observatory .lede { font-family: 'Fraunces', serif; font-size: clamp(1.35rem, 2vw, 1.7rem); line-height: 1.55; max-width: 720px; font-weight: 400; margin: 0; }
+  .arc-observatory .story-meta { color: #9ab3ff; margin-bottom: 1.5rem; }
+
+  /* ───── DOSSIER ───── */
+  .dossier {
+    background: #f5f1e8; color: #1b1a14;
+    padding: 8rem 8vw 6rem;
+    border-top: 6px double #121212;
+  }
+  .dossier .dossier-head { text-align: center; margin-bottom: 4rem; }
+  .dossier .tagline { font-weight: 600; font-size: 1.1rem; letter-spacing: 0.4em; text-transform: uppercase; margin-bottom: 1rem; opacity: 0.7; }
+  .dossier h2 {
+    font-family: 'Fraunces', serif; font-style: italic; font-weight: 900;
+    font-size: clamp(4rem, 10vw, 9rem); line-height: 0.9; letter-spacing: -0.035em;
+    margin: 0 0 1.5rem;
+  }
+  .dossier .intro { font-family: 'Fraunces', serif; font-style: italic; font-size: 1.35rem; line-height: 1.5; max-width: 620px; margin: 0 auto; }
+  .dossier .intro a { font-style: normal; font-weight: 600; text-decoration: underline; }
+  .dossier-entry {
+    border-top: 1.5px solid #1b1a14;
+    padding: 3rem 0 2.5rem;
+    max-width: 820px; margin: 0 auto;
+  }
+  .dossier-entry:last-child { border-bottom: 1.5px solid #1b1a14; }
+  .dossier-meta { font-weight: 600; font-size: 1rem; letter-spacing: 0.28em; text-transform: uppercase; color: #7a1e14; margin-bottom: 1.2rem; }
+  .dossier-entry h3 {
+    font-family: 'Fraunces', serif; font-weight: 700;
+    font-size: clamp(1.8rem, 3.5vw, 2.6rem); line-height: 1.1; letter-spacing: -0.015em;
+    margin: 0 0 1.2rem;
+  }
+  .dossier-source { font-size: 1.05rem; font-weight: 500; letter-spacing: 0.08em; margin: 0 0 2rem; opacity: 0.75; }
+  .dossier-source a { text-decoration: underline; }
+  .dossier-entry h4 {
+    font-family: 'Inter', sans-serif; font-weight: 700; font-size: 1rem;
+    letter-spacing: 0.35em; text-transform: uppercase; margin: 2rem 0 1rem; color: #7a1e14;
+  }
+  .dossier-entry p {
+    font-family: 'Fraunces', serif; font-size: 1.25rem; line-height: 1.55; margin: 0 0 1rem;
+  }
+  .dossier-entry p.muted { opacity: 0.6; }
+
+  /* ───── COLOPHON ───── */
+  .colophon { background: #121212; color: #f5f1e8; padding: 5rem 6vw; text-align: center; }
+  .colophon .sig { font-family: 'Fraunces', serif; font-style: italic; font-weight: 400; font-size: clamp(2.5rem, 5vw, 4rem); line-height: 1.1; letter-spacing: -0.02em; margin: 0 0 1.5rem; }
+  .colophon .meta { font-weight: 500; font-size: 1rem; letter-spacing: 0.3em; text-transform: uppercase; opacity: 0.7; }
+  .colophon .classic-link { margin-top: 2rem; font-weight: 500; font-size: 1rem; letter-spacing: 0.2em; text-transform: uppercase; }
+  .colophon .classic-link a { text-decoration: underline; opacity: 0.85; }
+
+  /* ───── RESPONSIVE ───── */
+  @media (max-width: 800px) {
+    .masthead-nav { flex-wrap: wrap; gap: 0.8rem; }
+    .arc-stat-hero h2, .arc-stat-hero .lede { max-width: 100%; }
+    .arc-stat-hero .numeral { font-size: 14rem; opacity: 0.2; right: -2vw; top: 30vh; }
+    .arc-midnight .body { margin-top: 8rem; }
+    .arc-alert-stamp h2 { max-width: 100%; }
+    .arc-alert-stamp .stamp { top: 4vh; right: 4vw; font-size: 1.5rem; padding: 0.8rem 1.4rem; }
+    .arc-academic-drop-cap .cols { grid-template-columns: 1fr; gap: 2rem; }
+    .arc-editorial-pullquote { grid-template-columns: 1fr; gap: 3rem; }
+    .arc-caution-tape h2, .arc-notebook h2, .arc-pastel-playful h2, .arc-archive h2, .arc-obituary h2, .arc-blueprint h2, .arc-observatory h2 { max-width: 100%; }
+    .arc-caution-tape .tag { display: none; }
+    .arc-pastel-playful .alpha-grid { display: none; }
+    .arc-obituary .obit-frame { padding: 3rem 2rem; }
+    .arc-blueprint .corner { display: none; }
+  }
+
+</style>
 </head>
-<body>
-    <header>
-        <h1>Hacker News Digest - March 23, 2026</h1>
-        <nav>
-            <a href="../">&larr; Hacker News Calendar</a>
-            <a href="../../2026-03-23/">GitHub Trending</a>
-        </nav>
-    </header>
-    <main>
-        <div class="repo-controls">
-            <button id="collapse-seen-btn" type="button">Collapse Stories Not New Today</button>
-            <button id="expand-all-btn" type="button">Expand All</button>
-        </div>
-        <p class="seen-help">Stories marked "Not new today" appeared on one or more previous daily pages.</p>
-        <article>
-            <div class="repos">
+<body id="top">
 
-            <section class="repo" data-seen-before="0"
-                     data-share-title="I built an AI receptionist for a mechanic shop"
-                     data-share-url="https://www.itsthatlady.dev/blog/building-an-ai-receptionist-for-my-brother/"
-                     data-share-points="316"
-                     data-share-comments="320">
-                <div class="repo-header-row">
-                    <h3>1. <a href="https://www.itsthatlady.dev/blog/building-an-ai-receptionist-for-my-brother/" target="_blank" rel="noopener noreferrer">I built an AI receptionist for a mechanic shop</a> </h3>
-                    <div class="header-buttons">
-                        <button type="button" class="discuss-btn" aria-label="Discuss with AI" title="Discuss with AI">&#x1F4AC;</button>
-                        <button type="button" class="repo-toggle" aria-expanded="true">Hide details</button>
-                    </div>
-                </div>
-                <div class="repo-body">
-                    <p class="meta">
-                        <span class="language">itsthatlady.dev</span> |
-                        <span>mooreds</span> |
-                        <span>316 points</span> |
-                        <span>320 comments</span> |
-                        <a href="https://news.ycombinator.com/item?id=47487536" target="_blank" rel="noopener noreferrer">discussion</a>
-                    </p>
-                    <p class="history">First seen: March 23, 2026 | Consecutive daily streak: 1 day</p>
-                    <div class="ai-summary">
-                        <h4>Analysis</h4>
-                        <p>The author developed an AI voice agent named &quot;Axle&quot; to automate phone reception for a luxury mechanic shop, aiming to capture business currently lost when the owner is too busy to answer calls. The technical implementation utilizes a RAG (Retrieval-Augmented Generation) pipeline, combining MongoDB Atlas for vector storage and Claude for response generation to ensure the AI only answers based on verified shop policies and pricing. The system connects to a phone line via the Vapi platform, which handles speech-to-text and text-to-speech, while providing an escalation flow to record callback information when the AI lacks sufficient context.</p>
-<p>Hacker News readers likely find this project interesting because it demonstrates a practical, end-to-end application of LLMs to a tangible small-business problem. The discussion highlights the transition from generic chatbot development to specialized voice-based interfaces, emphasizing critical challenges like latency, tone, and the necessity of strict grounding to prevent hallucinations. Furthermore, the detailed breakdown of the stack—specifically the use of vector search and FastAPI—provides a useful blueprint for developers looking to build reliable, domain-specific AI tools.</p>
-                    </div>
-                    
-                <div class="ai-summary">
-                    <h4>Comment Analysis</h4>
-                    <p>Commenters overwhelmingly agree that replacing human interaction with an AI receptionist degrades the customer experience and contradicts the premium service standards typically associated with a &quot;luxury&quot; brand identity.</p>
-<p>Some participants suggest that average, non-luxury consumers might be indifferent to using AI, potentially making this a viable solution for standard service businesses that do not prioritize high-touch hospitality.</p>
-<p>From a technical perspective, users question the necessity of complex Retrieval-Augmented Generation architectures when the limited, static data required for a shop could simply fit within a standard LLM context window.</p>
-<p>The sample primarily reflects the perspectives of tech-savvy Hacker News readers who possess a high distaste for automated customer service, which may not accurately represent the broader, less-opinionated public demographic.</p>
-                </div>
+  <header class="masthead">
+    <div class="masthead-nav">
+      <a href="../">HN Calendar</a>
+      <span>·</span>
+      <a href="../../2026-03-23/">GitHub Trending</a>
+      <span>·</span>
+      <a href="classic.html">Classic view</a>
+    </div>
+    <div class="tagline">The Morning Edition</div>
+    <h1 class="frnc">Ten stories, before your coffee.</h1>
+    <div class="issue-line">
+      <span>Vol. I</span>
+      <span>Monday, March 23, 2026</span>
+      <span>HN Front Page Digest</span>
+    </div>
+  </header>
 
-                </div>
-            </section>
+  <section class="spread arc-pastel-playful">
+    <div class="alpha-grid"><span>A</span><span>B</span><span>C</span><span>D</span><span>E</span><span>F</span><span>G</span><span>H</span><span>I</span><span>J</span><span>K</span><span>L</span><span>M</span></div>
+    <div class="numeral">01</div>
+    <div class="kicker">New Media</div>
+    <h2>A Digital Receptionist for the Local Mechanic</h2>
+    <p class="story-meta">itsthatlady.dev &nbsp;·&nbsp; 316 pts &nbsp;·&nbsp; 320 comments</p>
+    <p class="lede">Axle is an AI voice agent built to handle service calls for a family-owned garage. While it excels at streamlining scheduling and policy queries, it invites a broader conversation about the future of automation in high-touch, human-centric trades.</p>
+    <div class="spread-links"><a class="read-more" href="https://www.itsthatlady.dev/blog/building-an-ai-receptionist-for-my-brother/" target="_blank" rel="noopener">Read →</a><a class="dossier-link" href="#dossier-1">Full analysis ↓</a></div>
+  </section>
 
-            <section class="repo" data-seen-before="0"
-                     data-share-title="POSSE – Publish on your Own Site, Syndicate Elsewhere"
-                     data-share-url="https://indieweb.org/POSSE"
-                     data-share-points="413"
-                     data-share-comments="82">
-                <div class="repo-header-row">
-                    <h3>2. <a href="https://indieweb.org/POSSE" target="_blank" rel="noopener noreferrer">POSSE – Publish on your Own Site, Syndicate Elsewhere</a> </h3>
-                    <div class="header-buttons">
-                        <button type="button" class="discuss-btn" aria-label="Discuss with AI" title="Discuss with AI">&#x1F4AC;</button>
-                        <button type="button" class="repo-toggle" aria-expanded="true">Hide details</button>
-                    </div>
-                </div>
-                <div class="repo-body">
-                    <p class="meta">
-                        <span class="language">indieweb.org</span> |
-                        <span>tosh</span> |
-                        <span>413 points</span> |
-                        <span>82 comments</span> |
-                        <a href="https://news.ycombinator.com/item?id=47486726" target="_blank" rel="noopener noreferrer">discussion</a>
-                    </p>
-                    <p class="history">First seen: March 23, 2026 | Consecutive daily streak: 1 day</p>
-                    <div class="ai-summary">
-                        <h4>Analysis</h4>
-                        <p>POSSE, which stands for &quot;Publish on your Own Site, Syndicate Elsewhere,&quot; is a core practice within the IndieWeb movement that advocates for users to host content on their own domains before sharing it to third-party social media silos. By establishing a canonical URL on a personal site, users maintain ownership and control over their data while still leveraging the reach and engagement tools of larger platforms. The technical implementation typically involves automatically or manually posting content to the user&#x27;s server, which then triggers syndication to external services while including permalinks that point back to the original source.</p>
-<p>Hacker News readers are likely to find this topic compelling because it addresses long-standing concerns regarding platform dependency, data portability, and the centralization of the internet. The model offers a technical solution to the risk of &quot;silo&quot; shutdowns or policy changes by ensuring that the primary copy of one&#x27;s digital output remains on infrastructure under their own jurisdiction. Furthermore, the discussion surrounding POSSE touches on broader architectural debates about federation and the future of an open, interoperable web that prioritizes user agency over platform lock-in.</p>
-                    </div>
-                    
-                <div class="ai-summary">
-                    <h4>Comment Analysis</h4>
-                    <p>Bullet 1: Users generally support the principle of owning their digital content, viewing the strategy as a meaningful way to maintain autonomy and archive personal work outside of proprietary walled gardens.</p>
-<p>Bullet 2: Critics argue that the approach is difficult to scale or automate because social platforms deliberately restrict API access and prioritize content that discourages users from clicking away to external websites.</p>
-<p>Bullet 3: To preserve SEO and signal authority, practitioners emphasize the importance of using canonical links or explicit references back to the original source when syndicating content across various third-party platforms.</p>
-<p>Bullet 4: The discussion sample exhibits a strong self-selection bias, as the participants are primarily tech-savvy individuals who prioritize decentralization and web standards over the mass-market convenience of consolidated social media ecosystems.</p>
-                </div>
+  <section class="spread arc-notebook">
+    <div class="numeral">02</div>
+    <div class="kicker">Digital Autonomy</div>
+    <h2>Reclaiming the Web Through Personal Ownership</h2>
+    <p class="story-meta">indieweb.org &nbsp;·&nbsp; 413 pts &nbsp;·&nbsp; 82 comments</p>
+    <p class="lede">The POSSE movement challenges the reliance on closed social silos by prioritizing your own domain as the primary source of truth. It is a reflective practice of stewardship, ensuring that your digital footprint remains yours long after a platform fades.</p>
+    <div class="spread-links"><a class="read-more" href="https://indieweb.org/POSSE" target="_blank" rel="noopener">Read →</a><a class="dossier-link" href="#dossier-2">Full analysis ↓</a></div>
+  </section>
 
-                </div>
-            </section>
+  <section class="spread arc-midnight">
+    <div class="numeral">03</div>
+    <div class="body">
+      <div class="kicker">// Privacy Ops</div>
+      <h2>Navigating the Shift to European Infrastructure</h2>
+      <p class="story-meta">rz01.org &nbsp;·&nbsp; 910 pts &nbsp;·&nbsp; 697 comments</p>
+      <p class="lede">As global data regulations fluctuate, a quiet exodus toward EU-based hosting providers is underway. This migration prioritizes sovereignty and security, trading the ease of established giants for the stability of localized, privacy-focused alternatives.</p>
+      <div class="spread-links"><a class="read-more" href="https://rz01.org/eu-migration/" target="_blank" rel="noopener">Read →</a><a class="dossier-link" href="#dossier-3">Full analysis ↓</a></div>
+    </div>
+  </section>
 
-            <section class="repo" data-seen-before="0"
-                     data-share-title="Migrating to the EU"
-                     data-share-url="https://rz01.org/eu-migration/"
-                     data-share-points="910"
-                     data-share-comments="697">
-                <div class="repo-header-row">
-                    <h3>3. <a href="https://rz01.org/eu-migration/" target="_blank" rel="noopener noreferrer">Migrating to the EU</a> </h3>
-                    <div class="header-buttons">
-                        <button type="button" class="discuss-btn" aria-label="Discuss with AI" title="Discuss with AI">&#x1F4AC;</button>
-                        <button type="button" class="repo-toggle" aria-expanded="true">Hide details</button>
-                    </div>
-                </div>
-                <div class="repo-body">
-                    <p class="meta">
-                        <span class="language">rz01.org</span> |
-                        <span>exitnode</span> |
-                        <span>910 points</span> |
-                        <span>697 comments</span> |
-                        <a href="https://news.ycombinator.com/item?id=47487436" target="_blank" rel="noopener noreferrer">discussion</a>
-                    </p>
-                    <p class="history">First seen: March 23, 2026 | Consecutive daily streak: 1 day</p>
-                    <div class="ai-summary">
-                        <h4>Analysis</h4>
-                        <p>The author details their initiative to migrate digital services and infrastructure from non-EU providers to European-based alternatives. Driven by concerns over global political instability and a preference for stringent EU data protection regulations, the project involves replacing tools like Fastmail, GitHub, and Namecheap with services such as Uberspace, Codeberg, and hosting.de. The post serves as an interim progress report, documenting the technical challenges—such as configuring NextCloud for calendaring or adapting web servers for SSI—encountered while maintaining service quality and affordability.</p>
-<p>Hacker News readers will likely find this account interesting because it provides a practical roadmap for digital sovereignty and data privacy. It offers a candid look at the trade-offs involved in moving away from ecosystem-dominant tech giants toward smaller, niche, or nonprofit European alternatives. By sharing specific workarounds for common infrastructure needs like email hosting, Git repositories, and OS-level privacy, the author contributes to the broader community discourse on self-hosting and mitigating reliance on non-EU centralized services.</p>
-                    </div>
-                    
-                </div>
-            </section>
+  <section class="spread arc-alert-stamp">
+    <div class="stamp">Alert</div>
+    <div class="numeral">04</div>
+    <div class="kicker">Web Integrity</div>
+    <h2>When a Simple Article Consumes Half a Gigabyte</h2>
+    <p class="story-meta">stuartbreckenridge.net &nbsp;·&nbsp; 837 pts &nbsp;·&nbsp; 394 comments</p>
+    <p class="lede">Modern web bloat has reached a breaking point where reading a guide on RSS readers triggers an inexcusable torrent of background data. This failure of performance highlights a fundamental conflict between user utility and aggressive ad-tracking dominance.</p>
+    <div class="spread-links"><a class="read-more" href="https://stuartbreckenridge.net/2026-03-19-pc-gamer-recommends-rss-readers-in-a-37mb-article/" target="_blank" rel="noopener">Read →</a><a class="dossier-link" href="#dossier-4">Full analysis ↓</a></div>
+  </section>
 
-            <section class="repo" data-seen-before="0"
-                     data-share-title="PC Gamer recommends RSS readers in a 37mb article that just keeps downloading"
-                     data-share-url="https://stuartbreckenridge.net/2026-03-19-pc-gamer-recommends-rss-readers-in-a-37mb-article/"
-                     data-share-points="837"
-                     data-share-comments="394">
-                <div class="repo-header-row">
-                    <h3>4. <a href="https://stuartbreckenridge.net/2026-03-19-pc-gamer-recommends-rss-readers-in-a-37mb-article/" target="_blank" rel="noopener noreferrer">PC Gamer recommends RSS readers in a 37mb article that just keeps downloading</a> </h3>
-                    <div class="header-buttons">
-                        <button type="button" class="discuss-btn" aria-label="Discuss with AI" title="Discuss with AI">&#x1F4AC;</button>
-                        <button type="button" class="repo-toggle" aria-expanded="true">Hide details</button>
-                    </div>
-                </div>
-                <div class="repo-body">
-                    <p class="meta">
-                        <span class="language">stuartbreckenridge.net</span> |
-                        <span>JumpCrisscross</span> |
-                        <span>837 points</span> |
-                        <span>394 comments</span> |
-                        <a href="https://news.ycombinator.com/item?id=47480507" target="_blank" rel="noopener noreferrer">discussion</a>
-                    </p>
-                    <p class="history">First seen: March 23, 2026 | Consecutive daily streak: 1 day</p>
-                    <div class="ai-summary">
-                        <h4>Analysis</h4>
-                        <p>Stuart Breckenridge critiques a PC Gamer article that ironically recommends RSS readers while simultaneously exemplifying the poor web practices that make such tools necessary. The webpage reaches an initial size of 37MB and continues to consume nearly 500MB of data in just five minutes due to aggressive background ad loading. This bloated experience is further exacerbated by intrusive newsletter popups, notification requests, and multiple overlapping advertisements that obscure the content.</p>
-<p>Hacker News readers find this story compelling because it highlights the degradation of the modern web and the increasingly hostile user experience on mainstream media sites. It serves as a practical case study for the necessity of RSS and ad-blocking technologies in reclaiming bandwidth and browser performance. By exposing the technical absurdity of a site consuming gigabytes of data simply to display a list of readers, the article reinforces a common community sentiment regarding the decline of the open web.</p>
-                    </div>
-                    
-                <div class="ai-summary">
-                    <h4>Comment Analysis</h4>
-                    <p>Participants express overwhelming frustration with modern web bloat, arguing that excessive page sizes and aggressive ad-tracking constitute a user-hostile environment that prioritizes revenue generation over basic usability and data efficiency.</p>
-<p>Some contributors argue that blaming publishers is naive, suggesting that users should focus on self-reliance through ad-blockers, custom host files, or switching to privacy-focused operating systems to mitigate these browsing issues.</p>
-<p>A recurring technical takeaway is the proposal for browser-level, crowdsourced rating systems that warn users about high-bloat or scam-prone sites before navigation, potentially forcing transparency through user-driven reputation management and filtering.</p>
-<p>The sample heavily skews toward power users and tech-literate developers who prioritize performance and control, potentially overlooking the needs or perspectives of average consumers who lack the expertise for advanced technical mitigations.</p>
-                </div>
+  <section class="spread arc-stat-hero">
+    <div class="numeral">3x</div>
+    <div class="kicker">N<sup>o</sup> 05 · Market Insight</div>
+    <h2>Walmart Finds Friction in Chat-Based Shopping</h2>
+    <p class="story-meta">searchengineland.com &nbsp;·&nbsp; 422 pts &nbsp;·&nbsp; 273 comments</p>
+    <p class="lede">The retailer’s ambitious experiment with AI checkout interfaces stalled as users opted for traditional e-commerce flows. Conversion data suggests that conversational agents may not yet offer the frictionless reliability required for large-scale retail transactions.</p>
+    <div class="spread-links"><a class="read-more" href="https://searchengineland.com/walmart-chatgpt-checkout-converted-worse-472071" target="_blank" rel="noopener">Read →</a><a class="dossier-link" href="#dossier-5">Full analysis ↓</a></div>
+  </section>
 
-                </div>
-            </section>
+  <section class="spread arc-product-plate">
+    <div class="product-chip">Release &nbsp;·&nbsp; N<sup>o</sup> 06</div>
+    <div class="kicker">Hardware Release</div>
+    <h2>Tin Can Offers a Screen-Free Voice Alternative</h2>
+    <div class="product-rule"></div>
+    <p class="story-meta">businessinsider.com &nbsp;·&nbsp; 307 pts &nbsp;·&nbsp; 252 comments</p>
+    <p class="lede">Designed as a modern landline for children, this WiFi-based hardware bypasses smartphone distractions entirely. It provides a structured communication bridge that allows parents to maintain safety without sacrificing social autonomy.</p>
+    <div class="spread-links"><a class="read-more" href="https://www.businessinsider.com/tin-can-landline-kids-cellphone-cell-alternative-how-2025-9" target="_blank" rel="noopener">Read →</a><a class="dossier-link" href="#dossier-6">Full analysis ↓</a></div>
+  </section>
 
-            <section class="repo" data-seen-before="1"
-                     data-share-title="Walmart: ChatGPT checkout converted 3x worse than website"
-                     data-share-url="https://searchengineland.com/walmart-chatgpt-checkout-converted-worse-472071"
-                     data-share-points="422"
-                     data-share-comments="273">
-                <div class="repo-header-row">
-                    <h3>5. <a href="https://searchengineland.com/walmart-chatgpt-checkout-converted-worse-472071" target="_blank" rel="noopener noreferrer">Walmart: ChatGPT checkout converted 3x worse than website</a> <span class="seen-badge">Not new today</span></h3>
-                    <div class="header-buttons">
-                        <button type="button" class="discuss-btn" aria-label="Discuss with AI" title="Discuss with AI">&#x1F4AC;</button>
-                        <button type="button" class="repo-toggle" aria-expanded="true">Hide details</button>
-                    </div>
-                </div>
-                <div class="repo-body">
-                    <p class="meta">
-                        <span class="language">searchengineland.com</span> |
-                        <span>speckx</span> |
-                        <span>422 points</span> |
-                        <span>273 comments</span> |
-                        <a href="https://news.ycombinator.com/item?id=47444812" target="_blank" rel="noopener noreferrer">discussion</a>
-                    </p>
-                    <p class="history">First seen: March 22, 2026 | Consecutive daily streak: 2 days</p>
-                    <div class="ai-summary">
-                        <h4>Analysis</h4>
-                        <p>Walmart recently announced that its experiment with OpenAI’s &quot;Instant Checkout&quot; feature failed to meet expectations, recording conversion rates three times lower than its own e-commerce website. The retailer tested this integrated shopping experience across 200,000 products, finding that keeping users within the ChatGPT interface resulted in an unsatisfying customer journey. Consequently, Walmart is abandoning the native chat-based checkout in favor of its proprietary &quot;Sparky&quot; chatbot, which will require users to authenticate through Walmart’s own systems to finalize transactions.</p>
-<p>Hacker News readers are likely interested in this development because it highlights the current limitations of &quot;agentic commerce&quot; and the friction inherent in third-party AI purchasing integrations. The story serves as a practical case study on why businesses prefer retaining control over the final conversion funnel rather than delegating it to AI platforms. Furthermore, it marks a significant shift in strategy for both Walmart and OpenAI, signaling a move toward more controlled, merchant-led AI shopping experiences rather than seamless, platform-embedded transactions.</p>
-                    </div>
-                    
-                <div class="ai-summary">
-                    <h4>Comment Analysis</h4>
-                    <p>Commenters generally agree that chat interfaces introduce unnecessary friction into a retail environment that has been aggressively optimized for direct, frictionless conversion over the last three decades of e-commerce development.</p>
-<p>Some users contend that current e-commerce is not truly optimized but rather distorted by deceptive search results, arguing that AI agents could theoretically offer more impartial, transparent, and superior shopping comparisons.</p>
-<p>The failure highlights that success requires mature infrastructure like real-time catalog normalization and trusted payment integration, which are complex &quot;hard tech&quot; problems that AI companies have not yet adequately solved.</p>
-<p>The discussion is significantly skewed by recurring high-frequency contributors who leverage the Walmart topic as a platform to debate broader, philosophical existential threats posed by general AI rather than retail mechanics.</p>
-                </div>
+  <section class="spread arc-mint-pattern">
+    <div class="numeral-block">
+      <div class="numeral">07</div>
+    </div>
+    <p class="kicker">// Engineering Lore</p>
+    <h2>Bit-Shifting Legacy: RollerCoaster Tycoon’s Optimization Secrets</h2>
+    <p class="story-meta">larstofus.com &nbsp;·&nbsp; 598 pts &nbsp;·&nbsp; 169 comments</p>
+    <p class="lede">Chris Sawyer’s 1999 simulation classic remains a masterclass in squeezing performance from restricted hardware. By choosing low-level assembly and clever memory management, the developer bridged the gap between complex crowds and constrained processing power.</p>
+    <div class="spread-links"><a class="read-more" href="https://larstofus.com/2026/03/22/the-gold-standard-of-optimization-a-look-under-the-hood-of-rollercoaster-tycoon/" target="_blank" rel="noopener">Read →</a><a class="dossier-link" href="#dossier-7">Full analysis ↓</a></div>
+  </section>
 
-                </div>
-            </section>
+  <section class="spread arc-caution-tape">
+    <div class="tag">Vulnerability</div>
+    <div class="numeral">08</div>
+    <div class="kicker">Security Breach</div>
+    <h2>Root Access via Electromagnetic Fault Injection</h2>
+    <p class="story-meta">da.vidbuchanan.co.uk &nbsp;·&nbsp; 202 pts &nbsp;·&nbsp; 41 comments</p>
+    <p class="lede">Security researchers demonstrate that a simple piezo-electric lighter can induce bitflips in DRAM, potentially bypassing system integrity. This vulnerability serves as a stark reminder that even physical environmental interference can compromise the highest levels of kernel security.</p>
+    <div class="spread-links"><a class="read-more" href="https://www.da.vidbuchanan.co.uk/blog/dram-emfi.html" target="_blank" rel="noopener">Read →</a><a class="dossier-link" href="#dossier-8">Full analysis ↓</a></div>
+  </section>
 
-            <section class="repo" data-seen-before="1"
-                     data-share-title="Tin Can, a &#x27;landline&#x27; for kids"
-                     data-share-url="https://www.businessinsider.com/tin-can-landline-kids-cellphone-cell-alternative-how-2025-9"
-                     data-share-points="307"
-                     data-share-comments="252">
-                <div class="repo-header-row">
-                    <h3>6. <a href="https://www.businessinsider.com/tin-can-landline-kids-cellphone-cell-alternative-how-2025-9" target="_blank" rel="noopener noreferrer">Tin Can, a &#x27;landline&#x27; for kids</a> <span class="seen-badge">Not new today</span></h3>
-                    <div class="header-buttons">
-                        <button type="button" class="discuss-btn" aria-label="Discuss with AI" title="Discuss with AI">&#x1F4AC;</button>
-                        <button type="button" class="repo-toggle" aria-expanded="true">Hide details</button>
-                    </div>
-                </div>
-                <div class="repo-body">
-                    <p class="meta">
-                        <span class="language">businessinsider.com</span> |
-                        <span>tejohnso</span> |
-                        <span>307 points</span> |
-                        <span>252 comments</span> |
-                        <a href="https://news.ycombinator.com/item?id=47454647" target="_blank" rel="noopener noreferrer">discussion</a>
-                    </p>
-                    <p class="history">First seen: March 22, 2026 | Consecutive daily streak: 2 days</p>
-                    <div class="ai-summary">
-                        <h4>Analysis</h4>
-                        <p>Tin Can is a WiFi-based &quot;landline&quot; phone designed to provide children with a communication tool that avoids the distractions and social media risks of traditional smartphones. Founded by three Seattle-area fathers, the company has raised $3.5 million in funding and is seeing high demand, with tens of thousands of units sold for households seeking to delay giving kids mobile devices. The hardware features strict parental controls, limiting incoming and outgoing calls to approved contacts and scheduled times to foster social autonomy while maintaining safety.</p>
-<p>Hacker News readers may find the story compelling as it touches on the growing &quot;smartphone-free&quot; movement and the engineering challenge of creating hardware that serves a specific, limited use case. The device represents a potential shift in consumer technology, where parents are actively seeking &quot;dumb&quot; alternatives to combat the mental health concerns associated with ubiquitous mobile connectivity. Furthermore, the product’s rapid growth and backordered status highlight a significant, underserved niche in the hardware market for devices that prioritize intentional communication over data-hungry ecosystems.</p>
-                    </div>
-                    
-                <div class="ai-summary">
-                    <h4>Comment Analysis</h4>
-                    <p>The core consensus is that a dedicated, restricted communication device for children can foster social autonomy and reduce the need for constant parental supervision compared to using standard smartphones.</p>
-<p>Many commenters argue that purchasing specialized hardware is unnecessary, suggesting that locked-down smartphones, legacy VOIP equipment, or simple dumb phones can achieve the same results with significantly more control.</p>
-<p>For those building custom solutions, using standard VOIP hardware and open protocols like SIP allows for greater long-term flexibility, cost-effectiveness, and independence from proprietary, data-collecting cloud services.</p>
-<p>The sample exhibits a bias toward tech-savvy parents who prioritize privacy and hardware tinkering, potentially overlooking the needs or technical capabilities of the broader, less technically inclined general population.</p>
-                </div>
+  <section class="spread arc-editorial-pullquote">
+    <div class="left">
+      <div class="numeral">09</div>
+      <div class="kicker">Systems Design</div>
+      <h2>The Next Evolution of Version Control</h2>
+      <p class="story-meta">bramcohen.com &nbsp;·&nbsp; 661 pts &nbsp;·&nbsp; 380 comments</p>
+      <div class="spread-links"><a class="read-more" href="https://bramcohen.com/p/manyana" target="_blank" rel="noopener">Read →</a><a class="dossier-link" href="#dossier-9">Full analysis ↓</a></div>
+    </div>
+    <blockquote class="pullquote">True versioning should prioritize the semantics of human intent over the limitations of algorithmic merge cycles</blockquote>
+  </section>
 
-                </div>
-            </section>
+  <section class="spread arc-academic-drop-cap">
+    <div class="paper-head">
+      <span>Mathematical History</span>
+      <span class="numeral-roman">X</span>
+      <span>gzw1987-bit.github.io</span>
+    </div>
+    <h2>Analyzing the I Ching Through Permutation Theory</h2>
+    <p class="story-meta">gzw1987-bit.github.io &nbsp;·&nbsp; 62 pts &nbsp;·&nbsp; 27 comments</p>
+    <div class="cols">
+      <div><p>A formal investigation into the 64 hexagrams of the King Wen sequence reveals unexpected structural properties when mapped against binary order.</p></div>
+      <div><p>By identifying a specific cycle decomposition within these ancient arrangements, this project opens a new dialogue between classical philosophy and computational set theory.</p><div class="spread-links"><a class="read-more" href="https://gzw1987-bit.github.io/iching-math/" target="_blank" rel="noopener">Read →</a><a class="dossier-link" href="#dossier-10">Full analysis ↓</a></div></div>
+    </div>
+  </section>
 
-            <section class="repo" data-seen-before="0"
-                     data-share-title="The gold standard of optimization: A look under the hood of RollerCoaster Tycoon"
-                     data-share-url="https://larstofus.com/2026/03/22/the-gold-standard-of-optimization-a-look-under-the-hood-of-rollercoaster-tycoon/"
-                     data-share-points="598"
-                     data-share-comments="169">
-                <div class="repo-header-row">
-                    <h3>7. <a href="https://larstofus.com/2026/03/22/the-gold-standard-of-optimization-a-look-under-the-hood-of-rollercoaster-tycoon/" target="_blank" rel="noopener noreferrer">The gold standard of optimization: A look under the hood of RollerCoaster Tycoon</a> </h3>
-                    <div class="header-buttons">
-                        <button type="button" class="discuss-btn" aria-label="Discuss with AI" title="Discuss with AI">&#x1F4AC;</button>
-                        <button type="button" class="repo-toggle" aria-expanded="true">Hide details</button>
-                    </div>
-                </div>
-                <div class="repo-body">
-                    <p class="meta">
-                        <span class="language">larstofus.com</span> |
-                        <span>mariuz</span> |
-                        <span>598 points</span> |
-                        <span>169 comments</span> |
-                        <a href="https://news.ycombinator.com/item?id=47480886" target="_blank" rel="noopener noreferrer">discussion</a>
-                    </p>
-                    <p class="history">First seen: March 23, 2026 | Consecutive daily streak: 1 day</p>
-                    <div class="ai-summary">
-                        <h4>Analysis</h4>
-                        <p>This article analyzes the technical architecture of *RollerCoaster Tycoon*, a 1999 simulation game celebrated for its extreme optimization. Developed primarily in Assembly by Chris Sawyer, the game manages to simulate thousands of agents on legacy hardware by utilizing low-level memory management and replacing expensive mathematical operations with bit-shifting. The author highlights how Sawyer&#x27;s unique position as both the sole programmer and game designer allowed him to architect gameplay features—such as simplified guest pathfinding and non-colliding crowds—specifically to accommodate the limitations of his engine.</p>
-<p>Hacker News readers likely find this story compelling because it offers a rare, deep-dive look at the intersection of creative game design and high-performance engineering. The case study serves as a masterclass in how aligning software architecture with game mechanics can solve complex performance bottlenecks more effectively than micro-optimizations alone. Furthermore, the discussion touches on the historical shift in development practices, contrasting Sawyer’s hands-on, monolithic approach with the modern industry’s reliance on high-level languages and separated roles.</p>
-                    </div>
-                    
-                <div class="ai-summary">
-                    <h4>Comment Analysis</h4>
-                    <p>The discussion highlights that while low-level bitwise tricks were essential in early games like RollerCoaster Tycoon, modern compilers now automatically handle many arithmetic optimizations once considered vital by programmers.</p>
-<p>Contributors argue that human developers still outperform compilers by making high-level architectural decisions, such as intentional data layout changes, which machines cannot identify or replicate through automated code-level optimization.</p>
-<p>Significant performance gains in modern development typically derive from cache-friendly data structures and memory management strategies rather than micro-optimizations like replacing integer division with bit shifts at the source level.</p>
-<p>This sample primarily reflects the perspectives of software engineers, potentially overlooking the design-focused challenges or the practical reality of collaboration between artists and developers in large-scale modern game production.</p>
-                </div>
+  <section id="dossier" class="dossier">
+    <div class="dossier-head">
+      <div class="tagline">Appendix</div>
+      <h2>The Dossier</h2>
+      <p class="intro">Full analysis and reader reactions for today's ten stories. <a href="#top">↑ Back to the edition</a></p>
+    </div>
+    <article id="dossier-1" class="dossier-entry">
+      <div class="dossier-meta">N<sup>o</sup> 01 &nbsp;·&nbsp; Pastel Finale &nbsp;·&nbsp; New Media</div>
+      <h3>I built an AI receptionist for a mechanic shop</h3>
+      <p class="dossier-source">
+        <a href="https://www.itsthatlady.dev/blog/building-an-ai-receptionist-for-my-brother/" target="_blank" rel="noopener">itsthatlady.dev</a>
+        &nbsp;·&nbsp; 316 pts &nbsp;·&nbsp; 320 comments
+        &nbsp;·&nbsp; <a href="https://news.ycombinator.com/item?id=47487536" target="_blank" rel="noopener">discussion</a>
+      </p>
+      <h4>Analysis</h4>
+      <p class="muted"><em>Analysis not available.</em></p>
+      
+    </article>
+    <article id="dossier-2" class="dossier-entry">
+      <div class="dossier-meta">N<sup>o</sup> 02 &nbsp;·&nbsp; Notebook &nbsp;·&nbsp; Digital Autonomy</div>
+      <h3>POSSE – Publish on your Own Site, Syndicate Elsewhere</h3>
+      <p class="dossier-source">
+        <a href="https://indieweb.org/POSSE" target="_blank" rel="noopener">indieweb.org</a>
+        &nbsp;·&nbsp; 413 pts &nbsp;·&nbsp; 82 comments
+        &nbsp;·&nbsp; <a href="https://news.ycombinator.com/item?id=47486726" target="_blank" rel="noopener">discussion</a>
+      </p>
+      <h4>Analysis</h4>
+      <p class="muted"><em>Analysis not available.</em></p>
+      
+    </article>
+    <article id="dossier-3" class="dossier-entry">
+      <div class="dossier-meta">N<sup>o</sup> 03 &nbsp;·&nbsp; Midnight &nbsp;·&nbsp; Privacy Ops</div>
+      <h3>Migrating to the EU</h3>
+      <p class="dossier-source">
+        <a href="https://rz01.org/eu-migration/" target="_blank" rel="noopener">rz01.org</a>
+        &nbsp;·&nbsp; 910 pts &nbsp;·&nbsp; 697 comments
+        &nbsp;·&nbsp; <a href="https://news.ycombinator.com/item?id=47487436" target="_blank" rel="noopener">discussion</a>
+      </p>
+      <h4>Analysis</h4>
+      <p class="muted"><em>Analysis not available.</em></p>
+      
+    </article>
+    <article id="dossier-4" class="dossier-entry">
+      <div class="dossier-meta">N<sup>o</sup> 04 &nbsp;·&nbsp; Rose Alert &nbsp;·&nbsp; Web Integrity</div>
+      <h3>PC Gamer recommends RSS readers in a 37mb article that just keeps downloading</h3>
+      <p class="dossier-source">
+        <a href="https://stuartbreckenridge.net/2026-03-19-pc-gamer-recommends-rss-readers-in-a-37mb-article/" target="_blank" rel="noopener">stuartbreckenridge.net</a>
+        &nbsp;·&nbsp; 837 pts &nbsp;·&nbsp; 394 comments
+        &nbsp;·&nbsp; <a href="https://news.ycombinator.com/item?id=47480507" target="_blank" rel="noopener">discussion</a>
+      </p>
+      <h4>Analysis</h4>
+      <p class="muted"><em>Analysis not available.</em></p>
+      
+    </article>
+    <article id="dossier-5" class="dossier-entry">
+      <div class="dossier-meta">N<sup>o</sup> 05 &nbsp;·&nbsp; Stat Hero &nbsp;·&nbsp; Market Insight</div>
+      <h3>Walmart: ChatGPT checkout converted 3x worse than website</h3>
+      <p class="dossier-source">
+        <a href="https://searchengineland.com/walmart-chatgpt-checkout-converted-worse-472071" target="_blank" rel="noopener">searchengineland.com</a>
+        &nbsp;·&nbsp; 422 pts &nbsp;·&nbsp; 273 comments
+        &nbsp;·&nbsp; <a href="https://news.ycombinator.com/item?id=47444812" target="_blank" rel="noopener">discussion</a>
+      </p>
+      <h4>Analysis</h4>
+      <p class="muted"><em>Analysis not available.</em></p>
+      
+    </article>
+    <article id="dossier-6" class="dossier-entry">
+      <div class="dossier-meta">N<sup>o</sup> 06 &nbsp;·&nbsp; Product Plate &nbsp;·&nbsp; Hardware Release</div>
+      <h3>Tin Can, a &#x27;landline&#x27; for kids</h3>
+      <p class="dossier-source">
+        <a href="https://www.businessinsider.com/tin-can-landline-kids-cellphone-cell-alternative-how-2025-9" target="_blank" rel="noopener">businessinsider.com</a>
+        &nbsp;·&nbsp; 307 pts &nbsp;·&nbsp; 252 comments
+        &nbsp;·&nbsp; <a href="https://news.ycombinator.com/item?id=47454647" target="_blank" rel="noopener">discussion</a>
+      </p>
+      <h4>Analysis</h4>
+      <p class="muted"><em>Analysis not available.</em></p>
+      
+    </article>
+    <article id="dossier-7" class="dossier-entry">
+      <div class="dossier-meta">N<sup>o</sup> 07 &nbsp;·&nbsp; Mint Pattern &nbsp;·&nbsp; Engineering Lore</div>
+      <h3>The gold standard of optimization: A look under the hood of RollerCoaster Tycoon</h3>
+      <p class="dossier-source">
+        <a href="https://larstofus.com/2026/03/22/the-gold-standard-of-optimization-a-look-under-the-hood-of-rollercoaster-tycoon/" target="_blank" rel="noopener">larstofus.com</a>
+        &nbsp;·&nbsp; 598 pts &nbsp;·&nbsp; 169 comments
+        &nbsp;·&nbsp; <a href="https://news.ycombinator.com/item?id=47480886" target="_blank" rel="noopener">discussion</a>
+      </p>
+      <h4>Analysis</h4>
+      <p class="muted"><em>Analysis not available.</em></p>
+      
+    </article>
+    <article id="dossier-8" class="dossier-entry">
+      <div class="dossier-meta">N<sup>o</sup> 08 &nbsp;·&nbsp; Caution Tape &nbsp;·&nbsp; Security Breach</div>
+      <h3>Can you get root with only a cigarette lighter? (2024)</h3>
+      <p class="dossier-source">
+        <a href="https://www.da.vidbuchanan.co.uk/blog/dram-emfi.html" target="_blank" rel="noopener">da.vidbuchanan.co.uk</a>
+        &nbsp;·&nbsp; 202 pts &nbsp;·&nbsp; 41 comments
+        &nbsp;·&nbsp; <a href="https://news.ycombinator.com/item?id=47453462" target="_blank" rel="noopener">discussion</a>
+      </p>
+      <h4>Analysis</h4>
+      <p class="muted"><em>Analysis not available.</em></p>
+      
+    </article>
+    <article id="dossier-9" class="dossier-entry">
+      <div class="dossier-meta">N<sup>o</sup> 09 &nbsp;·&nbsp; Editorial Op-Ed &nbsp;·&nbsp; Systems Design</div>
+      <h3>The future of version control</h3>
+      <p class="dossier-source">
+        <a href="https://bramcohen.com/p/manyana" target="_blank" rel="noopener">bramcohen.com</a>
+        &nbsp;·&nbsp; 661 pts &nbsp;·&nbsp; 380 comments
+        &nbsp;·&nbsp; <a href="https://news.ycombinator.com/item?id=47478401" target="_blank" rel="noopener">discussion</a>
+      </p>
+      <h4>Analysis</h4>
+      <p class="muted"><em>Analysis not available.</em></p>
+      
+    </article>
+    <article id="dossier-10" class="dossier-entry">
+      <div class="dossier-meta">N<sup>o</sup> 10 &nbsp;·&nbsp; Academic &nbsp;·&nbsp; Mathematical History</div>
+      <h3>Show HN: The King Wen Permutation: [52, 10, 2]</h3>
+      <p class="dossier-source">
+        <a href="https://gzw1987-bit.github.io/iching-math/" target="_blank" rel="noopener">gzw1987-bit.github.io</a>
+        &nbsp;·&nbsp; 62 pts &nbsp;·&nbsp; 27 comments
+        &nbsp;·&nbsp; <a href="https://news.ycombinator.com/item?id=47486680" target="_blank" rel="noopener">discussion</a>
+      </p>
+      <h4>Analysis</h4>
+      <p class="muted"><em>Analysis not available.</em></p>
+      
+    </article>
+  </section>
 
-                </div>
-            </section>
-
-            <section class="repo" data-seen-before="0"
-                     data-share-title="Can you get root with only a cigarette lighter? (2024)"
-                     data-share-url="https://www.da.vidbuchanan.co.uk/blog/dram-emfi.html"
-                     data-share-points="202"
-                     data-share-comments="41">
-                <div class="repo-header-row">
-                    <h3>8. <a href="https://www.da.vidbuchanan.co.uk/blog/dram-emfi.html" target="_blank" rel="noopener noreferrer">Can you get root with only a cigarette lighter? (2024)</a> </h3>
-                    <div class="header-buttons">
-                        <button type="button" class="discuss-btn" aria-label="Discuss with AI" title="Discuss with AI">&#x1F4AC;</button>
-                        <button type="button" class="repo-toggle" aria-expanded="true">Hide details</button>
-                    </div>
-                </div>
-                <div class="repo-body">
-                    <p class="meta">
-                        <span class="language">da.vidbuchanan.co.uk</span> |
-                        <span>HeliumHydride</span> |
-                        <span>202 points</span> |
-                        <span>41 comments</span> |
-                        <a href="https://news.ycombinator.com/item?id=47453462" target="_blank" rel="noopener noreferrer">discussion</a>
-                    </p>
-                    <p class="history">First seen: March 23, 2026 | Consecutive daily streak: 1 day</p>
-                    <div class="ai-summary">
-                        <h4>Analysis</h4>
-                        <p>The article details a successful attempt to achieve local privilege escalation on a Linux-based laptop using electromagnetic fault injection (EMFI). By soldering a small wire to the DRAM bus and inducing electrical interference with a common piezo-electric cigarette lighter, the author reliably flips specific bits in memory. This process allows the attacker to corrupt page table entries, enabling unauthorized read/write access to physical memory and ultimately allowing them to gain root access by poisoning the system’s page cache.</p>
-<p>Hacker News readers are likely to find this project compelling because it bridges the gap between high-level architectural theory and accessible, low-cost hardware hacking. The work provides a practical, hands-on demonstration of virtual memory, page tables, and Translation Lookaside Buffers that rarely see such creative application outside of academic or specialized security research contexts. Furthermore, the discussion invites speculation on the security implications of this technique for modern platforms, including DDR5 memory and hardened consumer devices, sparking interest in the fundamental physical vulnerabilities of ubiquitous computing hardware.</p>
-                    </div>
-                    
-                <div class="ai-summary">
-                    <h4>Comment Analysis</h4>
-                    <p>The consensus is that the article accurately describes a hardware fault injection attack using electromagnetic pulses generated by a piezo igniter to induce bitflips and compromise system security and memory integrity.</p>
-<p>Some participants expressed humorous frustration that the article focuses on advanced electromagnetic interference rather than thermal-based hardware destruction, while others jokingly conflate the term &quot;root access&quot; with local pub culture.</p>
-<p>The research confirms that such memory fault injections are effective across various RAM standards like LPDDR4 and LPDDR5, though modern hardware encryption significantly complicates or prevents successful exploitation of these vulnerabilities.</p>
-<p>This sample is heavily skewed toward casual humor, jokes about Australian slang, and off-topic banter, which minimizes the technical depth present in the original post and the author&#x27;s detailed supplemental explanations.</p>
-                </div>
-
-                </div>
-            </section>
-
-            <section class="repo" data-seen-before="0"
-                     data-share-title="The future of version control"
-                     data-share-url="https://bramcohen.com/p/manyana"
-                     data-share-points="661"
-                     data-share-comments="380">
-                <div class="repo-header-row">
-                    <h3>9. <a href="https://bramcohen.com/p/manyana" target="_blank" rel="noopener noreferrer">The future of version control</a> </h3>
-                    <div class="header-buttons">
-                        <button type="button" class="discuss-btn" aria-label="Discuss with AI" title="Discuss with AI">&#x1F4AC;</button>
-                        <button type="button" class="repo-toggle" aria-expanded="true">Hide details</button>
-                    </div>
-                </div>
-                <div class="repo-body">
-                    <p class="meta">
-                        <span class="language">bramcohen.com</span> |
-                        <span>c17r</span> |
-                        <span>661 points</span> |
-                        <span>380 comments</span> |
-                        <a href="https://news.ycombinator.com/item?id=47478401" target="_blank" rel="noopener noreferrer">discussion</a>
-                    </p>
-                    <p class="history">First seen: March 23, 2026 | Consecutive daily streak: 1 day</p>
-                    <div class="ai-summary">
-                        <h4>Analysis</h4>
-                        <p>Bram Cohen, the creator of BitTorrent, has released a project called Manyana to propose a new vision for version control systems based on Conflict-Free Replicated Data Types (CRDTs). Unlike traditional systems that rely on 3-way merges and can fail during complex conflicts, CRDTs ensure that merges always succeed by treating document history as a structured weave of additions and deletions. The project serves as a conceptual proof, demonstrating that CRDTs can offer superior conflict resolution by clearly labeling user actions rather than merely presenting opaque, conflicting code blocks.</p>
-<p>Hacker News readers are likely interested in this proposal because it addresses the persistent pain points of merge conflicts and history management in Git. The community often engages with discussions on alternative version control architectures that move beyond simple Directed Acyclic Graphs (DAGs) to solve fundamental developer workflow bottlenecks. By providing a concrete implementation that replaces destructive rebasing with more transparent history tracking, Manyana offers a compelling technical pivot that challenges the status quo of modern software development tooling.</p>
-                    </div>
-                    
-                <div class="ai-summary">
-                    <h4>Comment Analysis</h4>
-                    <p>Many commenters argue that version control systems should prioritize semantic intent over algorithmic conflict resolution, suggesting that CRDTs solve system-level data consistency but fail to address human logic and operational meaning.</p>
-<p>A minority of contributors contend that CRDTs offer a superior model for VCS by treating merge and rebase as interchangeable views, potentially enabling cleaner rollbacks and more flexible, non-blocking commit histories.</p>
-<p>Practical technical discussions emphasize that current tools like Git are sufficient if complemented by better merge workflows, external visualization tools, and a shift toward atomic, semantically meaningful, or patch-based commit strategies.</p>
-<p>This sample primarily reflects the perspectives of experienced engineers deeply entrenched in current Git-based workflows, likely underrepresenting users who find existing version control systems fundamentally inaccessible or overly complex for modern development.</p>
-                </div>
-
-                </div>
-            </section>
-
-            <section class="repo" data-seen-before="0"
-                     data-share-title="Show HN: The King Wen Permutation: [52, 10, 2]"
-                     data-share-url="https://gzw1987-bit.github.io/iching-math/"
-                     data-share-points="62"
-                     data-share-comments="27">
-                <div class="repo-header-row">
-                    <h3>10. <a href="https://gzw1987-bit.github.io/iching-math/" target="_blank" rel="noopener noreferrer">Show HN: The King Wen Permutation: [52, 10, 2]</a> </h3>
-                    <div class="header-buttons">
-                        <button type="button" class="discuss-btn" aria-label="Discuss with AI" title="Discuss with AI">&#x1F4AC;</button>
-                        <button type="button" class="repo-toggle" aria-expanded="true">Hide details</button>
-                    </div>
-                </div>
-                <div class="repo-body">
-                    <p class="meta">
-                        <span class="language">gzw1987-bit.github.io</span> |
-                        <span>gezhengwen</span> |
-                        <span>62 points</span> |
-                        <span>27 comments</span> |
-                        <a href="https://news.ycombinator.com/item?id=47486680" target="_blank" rel="noopener noreferrer">discussion</a>
-                    </p>
-                    <p class="history">First seen: March 23, 2026 | Consecutive daily streak: 1 day</p>
-                    <div class="ai-summary">
-                        <h4>Analysis</h4>
-                        <p>This project presents a mathematical analysis of the 64 hexagrams of the *I Ching* by comparing the ancient King Wen sequence with the binary natural order established by Shao Yong. By mapping these two systems as a permutation in $S_{64}$, the author identifies a unique cycle decomposition of [52, 10, 2] with zero fixed points. The research suggests that 81% of the hexagrams are locked into a single cycle, a structural property that has not been previously documented in historical or mathematical literature.</p>
-<p>Hacker News readers may find this interesting because it applies computational group theory to an ancient text, bridging the gap between classical philosophy and modern data analysis. The post invites technical scrutiny by providing a client-side tool to verify these findings and explore connections to fields like genome rearrangement and game theory. It appeals to the community&#x27;s interest in discovering underlying mathematical order within seemingly unstructured or historical systems.</p>
-                    </div>
-                    
-                <div class="ai-summary">
-                    <h4>Comment Analysis</h4>
-                    <p>The dominant consensus is that the project overstates the significance of its mathematical findings, with critics arguing that the presentation creates a sense of grandeur around a relatively minor statistical observation.</p>
-<p>A strong disagreement exists regarding the author&#x27;s interpretation of &quot;structural difference,&quot; as technical observers point out that having zero fixed points does not imply a total lack of underlying mathematical structure.</p>
-<p>The technical takeaway is that evaluating the cycle structure of a permutation, such as identifying a large orbit within the I Ching hexagrams, provides more meaningful insight than focusing on fixed points.</p>
-<p>The sample is heavily influenced by the author’s active participation, as they personally respond to almost every critique, which may artificially inflate the discussion&#x27;s perceived depth and focus on defense.</p>
-                </div>
-
-                </div>
-            </section>
-
-            </div>
-        </article>
-    </main>
-    <footer>
-        <p>Generated automatically. Data from <a href="https://news.ycombinator.com/">Hacker News</a>.</p>
-    </footer>
+  <footer class="colophon">
+    <p class="sig">— that's the edition.</p>
+    <p class="meta">Set in Fraunces &amp; Inter · Compiled March 23, 2026</p>
+    <p class="classic-link"><a href="classic.html">Prefer the classic card view? →</a></p>
+  </footer>
 
 <script>
 (() => {
-    const readKey = "gtd:read_days:hn:v1";
-    const dayStr = "2026-03-23";
-
-    let stored = [];
-    try {
-        stored = JSON.parse(localStorage.getItem(readKey) || "[]");
-        if (!Array.isArray(stored)) {
-            stored = [];
-        }
-    } catch (_err) {
-        stored = [];
-    }
-
-    if (!stored.includes(dayStr)) {
-        stored.push(dayStr);
-        stored.sort();
-        localStorage.setItem(readKey, JSON.stringify(stored));
-    }
-
-    const collapseParam = new URLSearchParams(window.location.search).get("collapse_seen");
-    const collapseSeen = collapseParam === "0" ? false : true;
-
-    function setCollapsed(repoEl, collapsed) {
-        repoEl.classList.toggle("collapsed", collapsed);
-        const button = repoEl.querySelector(".repo-toggle");
-        if (button) {
-            button.textContent = collapsed ? "Show details" : "Hide details";
-            button.setAttribute("aria-expanded", String(!collapsed));
-        }
-    }
-
-    const repos = Array.from(document.querySelectorAll("section.repo[data-seen-before]"));
-
-    repos.forEach((repoEl) => {
-        const toggle = repoEl.querySelector(".repo-toggle");
-        if (!toggle) {
-            return;
-        }
-
-        toggle.addEventListener("click", () => {
-            setCollapsed(repoEl, !repoEl.classList.contains("collapsed"));
-        });
-    });
-
-    const collapseBtn = document.getElementById("collapse-seen-btn");
-    const expandBtn = document.getElementById("expand-all-btn");
-
-    if (collapseBtn) {
-        collapseBtn.addEventListener("click", () => {
-            repos.forEach((repoEl) => {
-                if (repoEl.dataset.seenBefore === "1") {
-                    setCollapsed(repoEl, true);
-                }
-            });
-        });
-    }
-
-    if (expandBtn) {
-        expandBtn.addEventListener("click", () => {
-            repos.forEach((repoEl) => setCollapsed(repoEl, false));
-        });
-    }
-
-    if (collapseSeen) {
-        repos.forEach((repoEl) => {
-            if (repoEl.dataset.seenBefore === "1") {
-                setCollapsed(repoEl, true);
-            }
-        });
-    }
-
-    // Discuss with AI button
-    const toast = document.createElement("div");
-    toast.className = "discuss-toast";
-    document.body.appendChild(toast);
-
-    function showToast(msg) {
-        toast.textContent = msg;
-        toast.classList.add("show");
-        setTimeout(() => toast.classList.remove("show"), 2500);
-    }
-
-    function buildHNMarkdown(card) {
-        const title = card.dataset.shareTitle || "";
-        const url = card.dataset.shareUrl || "";
-        const points = card.dataset.sharePoints || "0";
-        const comments = card.dataset.shareComments || "0";
-        const summaries = card.querySelectorAll(".ai-summary");
-        let md = "# " + title + "\n";
-        md += "Source: " + url + " | " + points + " points | " + comments + " comments\n";
-        summaries.forEach((s) => {
-            const heading = s.querySelector("h4");
-            const label = heading ? heading.textContent.trim() : "Analysis";
-            const content = Array.from(s.querySelectorAll("p"))
-                .map((p) => p.textContent.trim())
-                .join("\n");
-            md += "\n## " + label + "\n" + content + "\n";
-        });
-        return md;
-    }
-
-    document.querySelectorAll(".discuss-btn").forEach((btn) => {
-        btn.addEventListener("click", () => {
-            const card = btn.closest("section.repo");
-            if (!card) return;
-            const md = buildHNMarkdown(card);
-            const text = "I'd like to discuss this article with you. Here's a summary:\n\n" + md;
-            const title = "Discuss: " + (card.dataset.shareTitle || "");
-            if (navigator.share) {
-                navigator.share({ title: title, text: text }).catch(() => {});
-            } else {
-                navigator.clipboard.writeText(text).then(
-                    () => showToast("Copied to clipboard \u2014 paste into your AI chat"),
-                    () => showToast("Failed to copy")
-                );
-            }
-        });
-    });
+  const key = "gtd:read_days:hn:v1";
+  const day = "2026-03-23";
+  let stored = [];
+  try {
+    stored = JSON.parse(localStorage.getItem(key) || "[]");
+    if (!Array.isArray(stored)) stored = [];
+  } catch (_) { stored = []; }
+  if (!stored.includes(day)) {
+    stored.push(day);
+    stored.sort();
+    localStorage.setItem(key, JSON.stringify(stored));
+  }
 })();
 </script>
 
