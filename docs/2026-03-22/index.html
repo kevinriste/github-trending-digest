@@ -1,415 +1,597 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>GitHub Trending - March 22, 2026</title>
-    <link rel="stylesheet" href="../style.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Open Source Edition — March 22, 2026</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,100..900;1,9..144,100..900&family=Inter:wght@100..900&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+  <style>
+  :root {
+    --bg-light: #f5f1e8; --bg-dark: #121212;
+    --text-dark: #121212; --text-light: #f5f1e8;
+    --accent-red: #d32f2f; --accent-blue: #1976d2;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; padding: 0;
+    background: var(--bg-light); color: var(--text-dark);
+    font-family: 'Inter', sans-serif;
+    -webkit-font-smoothing: antialiased;
+  }
+  .frnc { font-family: 'Fraunces', serif; font-variant-classic-ligatures: common-ligatures; }
+  
+  /* ───── LAYOUT ───── */
+  .spread {
+    position: relative; min-height: 100vh; width: 100%;
+    display: flex; align-items: center; justify-content: center;
+    padding: 10vh 8vw; overflow: hidden;
+    scroll-snap-align: start;
+  }
+  .body { position: relative; z-index: 10; width: 100%; max-width: 1200px; }
+  .kicker { font-weight: 700; font-size: 1.1rem; letter-spacing: 0.4em; text-transform: uppercase; margin-bottom: 2rem; opacity: 0.8; }
+  h2 { font-size: clamp(3rem, 8vw, 6.5rem); line-height: 0.95; font-weight: 400; margin: 0 0 3rem; letter-spacing: -0.03em; }
+  .lede { font-size: clamp(1.4rem, 2.5vw, 2.1rem); line-height: 1.35; max-width: 800px; margin: 0 0 4rem; font-weight: 450; }
+  
+  .ctas { display: flex; gap: 2rem; align-items: center; }
+  .ctas a {
+    text-decoration: none; font-weight: 600; font-size: 1.1rem; letter-spacing: 0.1em; text-transform: uppercase;
+    padding: 1.2rem 2.4rem; transition: all 0.2s;
+  }
+  .btn-read { background: var(--text-dark); color: var(--bg-light); }
+  .btn-dossier { border-bottom: 2px solid currentColor; padding: 0.5rem 0 !important; }
+  
+  /* ───── ARCHETYPE CSS ───── */
+  
+  /* Stat Hero */
+  .arc-stat-hero { background: #e8e4da; }
+  .arc-stat-hero .numeral {
+    position: absolute; right: 0; top: 10vh; font-family: 'Fraunces', serif;
+    font-size: clamp(20rem, 50vw, 45rem); font-weight: 900; line-height: 0.8;
+    color: #121212; opacity: 0.05; pointer-events: none;
+  }
+
+  /* Midnight */
+  .arc-midnight { background: #0a0a0c; color: #fff; }
+  .arc-midnight .glow {
+    position: absolute; top: 30%; left: 40%; width: 40vw; height: 40vw;
+    background: radial-gradient(circle, rgba(110,64,255,0.15) 0%, transparent 70%);
+    filter: blur(60px); pointer-events: none;
+  }
+  .arc-midnight .btn-read { background: #fff; color: #000; }
+
+  /* Alert Stamp */
+  .arc-alert-stamp { background: #f9ebeb; color: #7a1e14; }
+  .arc-alert-stamp .stamp {
+    position: absolute; top: 15vh; right: 10vw; border: 6px solid #d32f2f;
+    padding: 1rem 2rem; font-weight: 900; font-size: 3rem; transform: rotate(12deg);
+    opacity: 0.2; pointer-events: none;
+  }
+  .arc-alert-stamp .btn-read { background: #d32f2f; color: #fff; }
+
+  /* Academic */
+  .arc-academic-drop-cap { background: #fdfaf3; color: #2c2925; }
+  .arc-academic-drop-cap h2 { font-size: clamp(2.5rem, 5vw, 4rem); border-bottom: 1px solid #ddd; padding-bottom: 2rem; margin-bottom: 4rem; }
+  .arc-academic-drop-cap .cols { columns: 2; column-gap: 4rem; }
+  .arc-academic-drop-cap .drop {
+    float: left; font-family: 'Fraunces', serif; font-size: 6.5rem; line-height: 0.75;
+    margin: 0.8rem 1rem 0 0; font-weight: 600; color: #121212;
+  }
+  .arc-academic-drop-cap .btn-read { background: #2c2925; color: #fff; }
+
+  /* Terminal */
+  .arc-terminal { background: #000; color: #20c20e; font-family: 'JetBrains Mono', monospace; }
+  .arc-terminal .window { border: 1px solid #20c20e; padding: 4rem; background: #050505; }
+  .arc-terminal .frnc { font-family: 'JetBrains Mono', monospace; font-weight: 700; letter-spacing: -0.05em; }
+  .arc-terminal .btn-read { background: #20c20e; color: #000; border-radius: 0; }
+  .arc-terminal .btn-dossier { border-color: #20c20e; }
+
+  /* Editorial Pullquote */
+  .arc-editorial-pullquote { display: grid; grid-template-columns: 1.2fr 1fr; gap: 5vw; background: #1a1a1a; color: #f5f1e8; align-items: stretch; }
+  .arc-editorial-pullquote .quote-side { background: #d4af37; color: #1a1a1a; display: flex; align-items: center; padding: 6vw; position: relative; }
+  .arc-editorial-pullquote blockquote { font-family: 'Fraunces', serif; font-size: 3rem; line-height: 1.1; font-style: italic; font-weight: 400; margin: 0; }
+  .arc-editorial-pullquote blockquote::before { content: '“'; position: absolute; top: 2vw; left: 2vw; font-size: 8rem; opacity: 0.3; }
+  .arc-editorial-pullquote .btn-read { background: #f5f1e8; color: #1a1a1a; }
+
+  /* Caution Tape */
+  .arc-caution-tape { background: #fcd116; color: #000; }
+  .arc-caution-tape .tape {
+    position: absolute; left: -10vw; width: 120vw; background: #000; color: #fcd116;
+    font-weight: 900; font-size: 1.5rem; padding: 1rem; transform: rotate(-3deg); z-index: 5;
+  }
+  .arc-caution-tape .tape.top { top: 5vh; transform: rotate(2deg); }
+  .arc-caution-tape .tape.bottom { bottom: 5vh; transform: rotate(-1.5deg); }
+  .arc-caution-tape .tag { background: #000; color: #fff; padding: 0.5rem 1rem; display: inline-block; font-weight: 800; margin-bottom: 2rem; }
+  .arc-caution-tape .btn-read { background: #000; color: #fcd116; }
+
+  /* Notebook */
+  .arc-notebook { background: #fcfcf4; }
+  .arc-notebook .lines {
+    position: absolute; inset: 0;
+    background: repeating-linear-gradient(transparent, transparent 1.6rem, #e0e0d0 1.6rem, #e0e0d0 1.7rem);
+    opacity: 0.5;
+  }
+  .arc-notebook .btn-read { background: #333; color: #fff; }
+
+  /* Mint Pattern */
+  .arc-mint-pattern { background: #d0f0e4; color: #1b4d3e; }
+  .arc-mint-pattern::before {
+    content: var(--bg-word); position: absolute; inset: 0;
+    font-weight: 900; font-size: 14vw; line-height: 0.7; opacity: 0.04;
+    display: flex; flex-wrap: wrap; word-break: break-all; overflow: hidden;
+  }
+  .arc-mint-pattern .btn-read { background: #1b4d3e; color: #d0f0e4; }
+
+  /* Pastel Playful */
+  .arc-pastel-playful { background: #fbe6e6; color: #8a4b4b; }
+  .arc-pastel-playful .alpha-grid {
+    position: absolute; right: 4vw; top: 10vh; bottom: 10vh; width: 40vw;
+    display: grid; grid-template-columns: repeat(5, 1fr); gap: 1rem;
+    font-weight: 900; font-size: 2rem; opacity: 0.08; pointer-events: none;
+  }
+  .arc-pastel-playful .btn-read { background: #8a4b4b; color: #fbe6e6; }
+
+  /* Product Plate */
+  .arc-product-plate { background: #eee; }
+  .arc-product-plate .plate {
+    background: linear-gradient(145deg, #ffffff, #dcdcdc);
+    padding: 6vw; box-shadow: 20px 20px 60px #cbcbcb, -20px -20px 60px #ffffff;
+    border-radius: 20px;
+  }
+  .arc-product-plate .btn-read { background: #121212; color: #eee; border-radius: 50px; }
+
+  /* Archive */
+  .arc-archive { background: #f4ece1; color: #4e3620; }
+  .arc-archive .mast {
+    position: absolute; top: 4vh; width: 100%; text-align: center;
+    font-family: 'Fraunces', serif; font-weight: 700; font-size: 1.2rem;
+    letter-spacing: 0.5em; opacity: 0.5; border-bottom: 1px double #ccc;
+    padding-bottom: 2vh;
+  }
+  .arc-archive .btn-read { background: #4e3620; color: #f4ece1; }
+
+  /* Obituary */
+  .arc-obituary { background: #fff; color: #000; }
+  .arc-obituary .obit-frame { border: 20px solid #000; padding: 6vw; text-align: center; }
+  .arc-obituary .lede { margin-left: auto; margin-right: auto; }
+  .arc-obituary .ornament { font-size: 4rem; margin: 3rem 0; opacity: 0.2; }
+  .arc-obituary .ctas { justify-content: center; }
+  .arc-obituary .btn-read { background: #000; color: #fff; }
+
+  /* Blueprint */
+  .arc-blueprint { background: #0047ab; color: #fff; }
+  .arc-blueprint .grid {
+    position: absolute; inset: 0; opacity: 0.2;
+    background-image: linear-gradient(#fff 1px, transparent 1px), linear-gradient(90deg, #fff 1px, transparent 1px);
+    background-size: 40px 40px;
+  }
+  .arc-blueprint .btn-read { background: #fff; color: #0047ab; }
+
+  /* Observatory */
+  .arc-observatory { background: #050510; color: #e0e0ff; }
+  .arc-observatory .stars {
+    position: absolute; inset: 0; opacity: 0.4;
+    background: radial-gradient(white, rgba(255,255,255,.2) 2px, transparent 40px);
+    background-size: 100px 100px;
+  }
+  .arc-observatory .btn-read { background: #e0e0ff; color: #050510; border-radius: 100px; }
+
+  /* GH Specific: Agent Foundry */
+  .arc-agent-foundry { background: #f0f4f8; color: #1a365d; }
+  .arc-agent-foundry .blueprint-bg {
+    position: absolute; inset: 0; opacity: 0.1;
+    background-image: radial-gradient(#1a365d 1px, transparent 1px);
+    background-size: 20px 20px;
+  }
+  .arc-agent-foundry .btn-read { background: #1a365d; color: #fff; }
+
+  /* GH Specific: System Core */
+  .arc-system-core { background: #2d3748; color: #edf2f7; }
+  .arc-system-core .concrete {
+    position: absolute; inset: 0; opacity: 0.05;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  }
+  .arc-system-core .frnc { font-family: 'Inter', sans-serif; font-weight: 800; text-transform: uppercase; letter-spacing: -0.05em; }
+  .arc-system-core .btn-read { background: #edf2f7; color: #2d3748; }
+
+  /* GH Specific: UI Lab */
+  .arc-ui-lab { background: #fff; color: #4c51bf; }
+  .arc-ui-lab .lab-gradient {
+    position: absolute; inset: 0; opacity: 0.1;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  }
+  .arc-ui-lab .btn-read { background: #4c51bf; color: #fff; border-radius: 12px; }
+
+  /* GH Specific: Data Pipeline */
+  .arc-data-pipeline { background: #1a202c; color: #a3bffa; }
+  .arc-data-pipeline .pipeline-streams {
+    position: absolute; inset: 0; opacity: 0.15;
+    background: repeating-linear-gradient(45deg, #a3bffa, #a3bffa 2px, transparent 2px, transparent 20px);
+  }
+  .arc-data-pipeline .btn-read { background: #a3bffa; color: #1a202c; }
+
+  /* GH Specific: Model Bench */
+  .arc-model-bench { background: #f7fafc; color: #2d3748; }
+  .arc-model-bench .bench-silver {
+    position: absolute; right: 0; top: 0; width: 40%; height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(0,0,0,0.03));
+  }
+  .arc-model-bench .btn-read { border: 1px solid #2d3748; background: transparent; color: #2d3748; }
+
+  /* GH Specific: Privacy Shield */
+  .arc-privacy-shield { background: #000; color: #00ff41; }
+  .arc-privacy-shield .shield-glitch {
+    position: absolute; inset: 0; opacity: 0.1;
+    background-image: repeating-linear-gradient(0deg, rgba(0,255,65,0.1) 0, rgba(0,255,65,0.1) 1px, transparent 1px, transparent 2px);
+  }
+  .arc-privacy-shield .btn-read { background: #00ff41; color: #000; }
+
+  /* GH Specific: Enterprise Engine */
+  .arc-enterprise-engine { background: #f0f7ff; color: #0056b3; }
+  .arc-enterprise-engine .engine-blue {
+    position: absolute; right: -5vw; bottom: -5vw; width: 30vw; height: 30vw;
+    background: radial-gradient(circle, rgba(0,86,179,0.05) 0%, transparent 70%);
+  }
+  .arc-enterprise-engine .btn-read { background: #0056b3; color: #fff; }
+
+  /* GH Specific: Terminal Utility */
+  .arc-terminal-utility { background: #1a1a1a; color: #ffb000; font-family: 'JetBrains Mono', monospace; }
+  .arc-terminal-utility .crt-lines {
+    position: absolute; inset: 0; pointer-events: none;
+    background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.06), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.06));
+    background-size: 100% 2px, 3px 100%;
+  }
+  .arc-terminal-utility .btn-read { background: #ffb000; color: #1a1a1a; }
+
+  /* GH Specific: Experimental Workshop */
+  .arc-experimental-workshop { background: #fffde7; color: #5d4037; }
+  .arc-experimental-workshop .pad-lines {
+    position: absolute; left: 4vw; top: 0; bottom: 0; width: 2px; background: #ff5252; opacity: 0.3;
+  }
+  .arc-experimental-workshop .btn-read { border: 2px dashed #5d4037; background: transparent; color: #5d4037; }
+
+  /* GH Specific: Library Archive */
+  .arc-library-archive { background: #fdfaf3; color: #3e2723; }
+  .arc-library-archive .parchment {
+    position: absolute; inset: 0; opacity: 0.03;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='f'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.02' numOctaves='5'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23f)'/%3E%3C/svg%3E");
+  }
+  .arc-library-archive .btn-read { background: #3e2723; color: #fdfaf3; }
+
+  /* ───── MASTHEAD ───── */
+  .masthead { padding: 4vh 8vw 10vh; text-align: center; border-bottom: 1px solid #ddd; }
+  .masthead-nav { display: flex; justify-content: center; gap: 2rem; margin-bottom: 6vh; font-weight: 600; font-size: 0.9rem; text-transform: uppercase; letter-spacing: 0.2em; }
+  .masthead-nav a { color: inherit; text-decoration: none; opacity: 0.6; }
+  .masthead-nav a:hover { opacity: 1; }
+  .masthead h1 { font-size: clamp(3rem, 10vw, 9rem); font-weight: 400; margin: 0 0 2rem; letter-spacing: -0.04em; }
+  .issue-line { display: flex; justify-content: center; gap: 4rem; font-weight: 700; font-size: 1rem; letter-spacing: 0.3em; text-transform: uppercase; opacity: 0.8; }
+  
+  /* ───── DOSSIER ───── */
+  .dossier { background: #f5f1e8; padding: 10vh 8vw; color: #121212; }
+  .dossier-head { margin-bottom: 8vh; }
+  .dossier-head h2 { font-size: clamp(4rem, 12vw, 12rem); margin-bottom: 2rem; }
+  .tagline { font-weight: 700; font-size: 1.2rem; letter-spacing: 0.5em; text-transform: uppercase; margin-bottom: 1rem; opacity: 0.5; }
+  .intro { font-size: 1.5rem; max-width: 600px; line-height: 1.4; opacity: 0.7; }
+  .intro a { color: inherit; }
+  
+  .dossier-entry { margin-bottom: 12vh; max-width: 900px; }
+  .dossier-meta { font-weight: 700; font-size: 0.9rem; letter-spacing: 0.2em; text-transform: uppercase; margin-bottom: 1.5rem; opacity: 0.5; }
+  .dossier-entry h3 { font-family: 'Fraunces', serif; font-size: clamp(2.5rem, 5vw, 4.5rem); line-height: 1.1; margin: 0 0 1.5rem; font-weight: 400; }
+  .dossier-source { font-size: 1.1rem; font-weight: 500; letter-spacing: 0.05em; margin: 0 0 3rem; opacity: 0.7; }
+  .dossier-source a { color: inherit; text-decoration: underline; }
+  .dossier-entry h4 { font-weight: 700; font-size: 1rem; letter-spacing: 0.3em; text-transform: uppercase; margin: 3rem 0 1.5rem; }
+  .dossier-entry p { font-family: 'Fraunces', serif; font-size: 1.3rem; line-height: 1.6; margin: 0 0 1.5rem; }
+  
+  /* ───── COLOPHON ───── */
+  .colophon { background: #121212; color: #f5f1e8; padding: 8vh 8vw; text-align: center; }
+  .colophon .sig { font-family: 'Fraunces', serif; font-style: italic; font-size: clamp(2rem, 5vw, 4rem); margin-bottom: 2rem; }
+  .colophon .meta { font-weight: 500; font-size: 0.9rem; letter-spacing: 0.3em; text-transform: uppercase; opacity: 0.6; }
+  .classic-link { margin-top: 3rem; font-size: 0.9rem; letter-spacing: 0.2em; text-transform: uppercase; }
+  .classic-link a { color: inherit; text-decoration: underline; }
+
+  @media (max-width: 800px) {
+    .spread { padding: 12vh 6vw; }
+    .issue-line { flex-direction: column; gap: 1rem; align-items: center; }
+    .arc-stat-hero .numeral { font-size: 15rem; top: auto; bottom: 5vh; }
+    .arc-editorial-pullquote { grid-template-columns: 1fr; }
+    .arc-editorial-pullquote .quote-side { padding: 12vw; }
+    .ctas { flex-direction: column; align-items: stretch; gap: 1rem; }
+    .arc-academic-drop-cap .cols { columns: 1; }
+  }
+</style>
 </head>
-<body>
-    <header>
-        <h1>GitHub Trending Digest - March 22, 2026</h1>
-        <nav>
-            <a href="../">&larr; GitHub Calendar</a>
-            <a href="../hn/2026-03-22/">Hacker News</a>
-        </nav>
-    </header>
-    <main>
-
-        <h2 class="section-heading">Today's Daily Trending</h2>
-        <div class="repo-controls">
-            <button id="collapse-seen-btn" type="button">Collapse Repos Not New Today</button>
-            <button id="expand-all-btn" type="button">Expand All</button>
-        </div>
-        <p class="seen-help">Repos marked "Not new today" appeared on one or more previous daily pages.</p>
-        <article>
-            <div class="repos">
-
-            <section class="repo" data-seen-before="1"
-                     data-share-title="FujiwaraChoki/MoneyPrinterV2"
-                     data-share-url="https://github.com/FujiwaraChoki/MoneyPrinterV2">
-                <div class="repo-header-row">
-                    <h3>1. <a href="https://github.com/FujiwaraChoki/MoneyPrinterV2" target="_blank" rel="noopener noreferrer">FujiwaraChoki/MoneyPrinterV2</a> <span class="seen-badge">Not new today</span></h3>
-                    <div class="header-buttons">
-                        <button type="button" class="discuss-btn" aria-label="Discuss with AI" title="Discuss with AI">&#x1F4AC;</button>
-                        <button type="button" class="repo-toggle" aria-expanded="true">Hide details</button>
-                    </div>
-                </div>
-                <div class="repo-body">
-                    <p class="description">Automate the process of making money online.</p>
-                    <p class="meta">
-                        <span class="language">Python</span> |
-                        <span class="stars">18,434</span>
-                        | <span class="today">283 stars today</span>
-                    </p>
-                    <p class="history">First seen: March 05, 2026 | Streak: 3d</p>
-                    <div class="ai-summary">
-                        <h4>Analysis</h4>
-                        <p>MoneyPrinterV2 is an automated application designed to streamline various online income-generating tasks through a modular Python-based architecture. Key features include automated social media management for Twitter and YouTube Shorts, affiliate marketing integration for Amazon, and tools for conducting cold outreach to local businesses. Technically, the project leverages cron jobs for scheduling tasks, requires Python 3.12, and utilizes external libraries for functions like text-to-speech and AI-driven content generation to minimize manual intervention.</p>
+<body id="top">
+  <header class="masthead">
+    <div class="masthead-nav">
+      <a href="../../">Index</a>
+      <a href="../">Calendar</a>
+      <a href="classic.html">Classic view</a>
+    </div>
+    <h1 class="frnc">Ten stories, before your coffee.</h1>
+    <div class="issue-line">
+      <span>Vol. I</span>
+      <span>March 22, 2026</span>
+      <span>GitHub Daily Trending</span>
+    </div>
+  </header>
+  <section id="story-1" class="spread arc-experimental-workshop">
+    <div class="pad-lines"></div>
+    <div class="body">
+      <div class="kicker">Growth Hack</div>
+      <h2 class="frnc">Automate Digital Income Streams With Modular Python Architectures</h2>
+      <p class="lede">Forget manual lead generation and repetitive content tasks. This framework plugs directly into your business logic, using cron-driven automation to handle everything from social media publishing to cold outreach. It is a raw, iterative toolbox for those who prefer to write their own path to scaling revenue.</p>
+      <div class="ctas">
+        <a href="https://github.com/FujiwaraChoki/MoneyPrinterV2" class="btn-read" target="_blank">Iterate →</a>
+        <a href="#dossier-1" class="btn-dossier">Analysis ↓</a>
+      </div>
+    </div>
+  </section>
+  <section id="story-2" class="spread arc-agent-foundry">
+    <div class="blueprint-bg"></div>
+    <div class="body">
+      <div class="kicker">Orchestration Layer</div>
+      <h2 class="frnc">Simulate Institutional Trading Logic Using Multi-Agent Debates</h2>
+      <p class="lede">Market analysis is rarely a singular task; it requires the synthesis of sentiment, technical data, and risk oversight. This multi-agent framework orchestrates specialized AI nodes to debate market conditions, providing a structured blueprint for algorithmic decision-making. We are moving beyond simple scripts into the territory of coordinated, agentic financial research.</p>
+      <div class="ctas">
+        <a href="https://github.com/TauricResearch/TradingAgents" class="btn-read" target="_blank">Deploy →</a>
+        <a href="#dossier-2" class="btn-dossier">Analysis ↓</a>
+      </div>
+    </div>
+  </section>
+  <section id="story-3" class="spread arc-privacy-shield">
+    <div class="shield-glitch"></div>
+    <div class="body">
+      <div class="kicker">Security Ops</div>
+      <h2 class="frnc">PentAGI Automates Complex Vulnerability Discovery Within Isolated Sandboxes</h2>
+      <p class="lede">Security assessment is moving from static scanning to autonomous exploration. By leveraging persistent knowledge graphs and professional toolsets, this platform mimics an ethical hacker&#x27;s intuition while remaining locked within a secure Docker environment. It is a necessary hardening of the modern, agentic security perimeter.</p>
+      <div class="ctas">
+        <a href="https://github.com/vxcontrol/pentagi" class="btn-read" target="_blank">Secure →</a>
+        <a href="#dossier-3" class="btn-dossier">Analysis ↓</a>
+      </div>
+    </div>
+  </section>
+  <section id="story-4" class="spread arc-library-archive">
+    <div class="parchment"></div>
+    <div class="body">
+      <div class="kicker">Education</div>
+      <h2 class="frnc">Master Production-Grade Agentic RAG Systems With Comprehensive Field Studies</h2>
+      <p class="lede">Transitioning from local prototypes to production infrastructure requires a mastery of data pipelines and observability. This course curates the essential patterns of modern retrieval, from Apache Airflow orchestration to hybrid search logic. It is a scholarly map for engineers ready to move past basic vector search.</p>
+      <div class="ctas">
+        <a href="https://github.com/jamwithai/production-agentic-rag-course" class="btn-read" target="_blank">Study →</a>
+        <a href="#dossier-4" class="btn-dossier">Analysis ↓</a>
+      </div>
+    </div>
+  </section>
+  <section id="story-5" class="spread arc-stat-hero">
+    <div class="numeral">95K</div>
+    <div class="body">
+      <div class="kicker">Momentum</div>
+      <h2 class="frnc">Optimize AI Agent Behavior With Advanced Skill Manifests</h2>
+      <p class="lede">When standard agent harnesses fall short, this modular system fills the void with deterministic hooks and persistent memory management. It scales with your codebase, ensuring that AI development assistants remain accurate and operationally sound. The adoption rate speaks for itself.</p>
+      <div class="ctas">
+        <a href="https://github.com/affaan-m/everything-claude-code" class="btn-read" target="_blank">Read →</a>
+        <a href="#dossier-5" class="btn-dossier">Full analysis ↓</a>
+      </div>
+    </div>
+  </section>
+  <section id="story-6" class="spread arc-terminal-utility">
+    <div class="crt-lines"></div>
+    <div class="body">
+      <div class="kicker">Console Tools</div>
+      <h2 class="frnc">Monitor Claude Code Sessions With Real-Time Terminal Metrics</h2>
+      <p class="lede">Stop treating your agentic workflows as an opaque black box. This plugin hooks into the statusline API to stream progress, context usage, and tool execution directly into your terminal. It is a lean, rugged utility designed for developers who demand complete oversight of their compute cycles.</p>
+      <div class="ctas">
+        <a href="https://github.com/jarrodwatts/claude-hud" class="btn-read" target="_blank">Execute →</a>
+        <a href="#dossier-6" class="btn-dossier">Analysis ↓</a>
+      </div>
+    </div>
+  </section>
+  <section id="story-7" class="spread arc-midnight">
+    <div class="glow"></div>
+    <div class="body">
+      <div class="kicker">Off-Grid Ops</div>
+      <h2 class="frnc">Deploy Portable Server Hubs For Offline Knowledge Access</h2>
+      <p class="lede">When the connection drops, your infrastructure should remain standing. This project packages essential educational and AI services into a single, offline-first containerized server for those building digital sovereignty. It is a quiet, powerful glow in the dark for remote environments.</p>
+      <div class="ctas">
+        <a href="https://github.com/Crosstalk-Solutions/project-nomad" class="btn-read" target="_blank">Read →</a>
+        <a href="#dossier-7" class="btn-dossier">Full analysis ↓</a>
+      </div>
+    </div>
+  </section>
+  <section id="story-8" class="spread arc-system-core">
+    <div class="concrete"></div>
+    <div class="body">
+      <div class="kicker">Kernel Internals</div>
+      <h2 class="frnc">Standardize Linux Service Management With Robust Systemd Implementation</h2>
+      <p class="lede">The integrity of your boot process and process management depends on the stability of the init system. By leveraging resource isolation through cgroups and high-performance parallelization, this tool remains the bedrock of modern Linux distributions. Performance is not a feature; it is the fundamental requirement.</p>
+      <div class="ctas">
+        <a href="https://github.com/systemd/systemd" class="btn-read" target="_blank">Inspect →</a>
+        <a href="#dossier-8" class="btn-dossier">Analysis ↓</a>
+      </div>
+    </div>
+  </section>
+  <section id="story-9" class="spread arc-data-pipeline">
+    <div class="pipeline-streams"></div>
+    <div class="body">
+      <div class="kicker">Automation Flow</div>
+      <h2 class="frnc">Enable Autonomous Browser Interaction For Complex AI Workflows</h2>
+      <p class="lede">The web was built for humans, but these agents are learning to navigate its structure with precision. By interpreting page states and handling authentication automatically, this framework flows data from live websites directly into your LLM pipelines. It is the connective tissue for high-throughput, agent-driven web automation.</p>
+      <div class="ctas">
+        <a href="https://github.com/browser-use/browser-use" class="btn-read" target="_blank">Trace →</a>
+        <a href="#dossier-9" class="btn-dossier">Analysis ↓</a>
+      </div>
+    </div>
+  </section>
+  <section id="story-10" class="spread arc-enterprise-engine">
+    <div class="engine-blue"></div>
+    <div class="body">
+      <div class="kicker">Infrastructure</div>
+      <h2 class="frnc">Enhance Retrieval Accuracy Using Graph-Structured Knowledge Mapping</h2>
+      <p class="lede">Reliable enterprise search requires more than just semantic similarity; it requires understanding the conceptual links between entities. This framework bridges the gap between raw data and structured knowledge graphs, ensuring that RAG systems retrieve accurate, context-aware information at scale. It is built for the complexity of the modern knowledge enterprise.</p>
+      <div class="ctas">
+        <a href="https://github.com/HKUDS/LightRAG" class="btn-read" target="_blank">Scale →</a>
+        <a href="#dossier-10" class="btn-dossier">Analysis ↓</a>
+      </div>
+    </div>
+  </section>
+  <section id="dossier" class="dossier">
+    <div class="dossier-head">
+      <div class="tagline">Appendix</div>
+      <h2>The Dossier</h2>
+      <p class="intro">Full analysis and reactions for today's ten stories. <a href="#top">↑ Back to the edition</a></p>
+    </div>
+    <article id="dossier-1" class="dossier-entry">
+      <div class="dossier-meta">N<sup>o</sup> 01 &nbsp;·&nbsp; The Workshop &nbsp;·&nbsp; Growth Hack</div>
+      <h3>Untitled</h3>
+      <p class="dossier-source">
+        <a href="https://github.com/FujiwaraChoki/MoneyPrinterV2" target="_blank" rel="noopener">github.com</a>
+        &nbsp;·&nbsp; 18,434 stars &nbsp;·&nbsp; 0 stars today
+        
+      </p>
+      <h4>Analysis</h4>
+      <p>MoneyPrinterV2 is an automated application designed to streamline various online income-generating tasks through a modular Python-based architecture. Key features include automated social media management for Twitter and YouTube Shorts, affiliate marketing integration for Amazon, and tools for conducting cold outreach to local businesses. Technically, the project leverages cron jobs for scheduling tasks, requires Python 3.12, and utilizes external libraries for functions like text-to-speech and AI-driven content generation to minimize manual intervention.</p>
 <p>This project is primarily intended for developers, digital marketers, and entrepreneurs looking to scale their online presence or affiliate revenue through automation. It is trending because it offers a centralized, &quot;do-it-yourself&quot; framework for passive income strategies that would otherwise require significant time and manual labor. By providing an open-source, extensible platform, it empowers users to experiment with automated content creation and business lead generation, reflecting a broader market interest in AI-assisted productivity tools.</p>
-                    </div>
-                </div>
-            </section>
-
-            <section class="repo" data-seen-before="0"
-                     data-share-title="TauricResearch/TradingAgents"
-                     data-share-url="https://github.com/TauricResearch/TradingAgents">
-                <div class="repo-header-row">
-                    <h3>2. <a href="https://github.com/TauricResearch/TradingAgents" target="_blank" rel="noopener noreferrer">TauricResearch/TradingAgents</a> </h3>
-                    <div class="header-buttons">
-                        <button type="button" class="discuss-btn" aria-label="Discuss with AI" title="Discuss with AI">&#x1F4AC;</button>
-                        <button type="button" class="repo-toggle" aria-expanded="true">Hide details</button>
-                    </div>
-                </div>
-                <div class="repo-body">
-                    <p class="description">TradingAgents: Multi-Agents LLM Financial Trading Framework</p>
-                    <p class="meta">
-                        <span class="language">Python</span> |
-                        <span class="stars">35,866</span>
-                        | <span class="today">1,503 stars today</span>
-                    </p>
-                    <p class="history">First seen: March 22, 2026 | Streak: 1d</p>
-                    <div class="ai-summary">
-                        <h4>Analysis</h4>
-                        <p>TradingAgents is an open-source multi-agent framework designed to simulate the decision-making processes of institutional trading firms by leveraging various large language models (LLMs). Technically, the system utilizes LangGraph to coordinate specialized agents—including fundamental, sentiment, news, and technical analysts—who conduct structured debates to refine market insights. This collaborative intelligence is then synthesized by a trader agent and reviewed by risk management and portfolio managers to execute simulated financial trades.</p>
+      
+    </article>
+    <article id="dossier-2" class="dossier-entry">
+      <div class="dossier-meta">N<sup>o</sup> 02 &nbsp;·&nbsp; Agent Foundry &nbsp;·&nbsp; Orchestration Layer</div>
+      <h3>Untitled</h3>
+      <p class="dossier-source">
+        <a href="https://github.com/TauricResearch/TradingAgents" target="_blank" rel="noopener">github.com</a>
+        &nbsp;·&nbsp; 35,866 stars &nbsp;·&nbsp; 0 stars today
+        
+      </p>
+      <h4>Analysis</h4>
+      <p>TradingAgents is an open-source multi-agent framework designed to simulate the decision-making processes of institutional trading firms by leveraging various large language models (LLMs). Technically, the system utilizes LangGraph to coordinate specialized agents—including fundamental, sentiment, news, and technical analysts—who conduct structured debates to refine market insights. This collaborative intelligence is then synthesized by a trader agent and reviewed by risk management and portfolio managers to execute simulated financial trades.</p>
 <p>This project is highly beneficial for quantitative researchers and financial technology developers who seek to explore the intersection of autonomous agents and algorithmic trading strategy development. It is currently trending due to its robust, modular architecture that integrates cutting-edge models like GPT-5.x, Claude 4.x, and Grok 4.x, offering users a sophisticated environment to test complex investment logic. By providing a scalable, research-oriented platform for multi-agent interaction, TradingAgents has garnered significant community interest as a powerful tool for advancing AI-driven financial analysis.</p>
-                    </div>
-                </div>
-            </section>
-
-            <section class="repo" data-seen-before="1"
-                     data-share-title="vxcontrol/pentagi"
-                     data-share-url="https://github.com/vxcontrol/pentagi">
-                <div class="repo-header-row">
-                    <h3>3. <a href="https://github.com/vxcontrol/pentagi" target="_blank" rel="noopener noreferrer">vxcontrol/pentagi</a> <span class="seen-badge">Not new today</span></h3>
-                    <div class="header-buttons">
-                        <button type="button" class="discuss-btn" aria-label="Discuss with AI" title="Discuss with AI">&#x1F4AC;</button>
-                        <button type="button" class="repo-toggle" aria-expanded="true">Hide details</button>
-                    </div>
-                </div>
-                <div class="repo-body">
-                    <p class="description">Fully autonomous AI Agents system capable of performing complex penetration testing tasks</p>
-                    <p class="meta">
-                        <span class="language">Go</span> |
-                        <span class="stars">11,256</span>
-                        | <span class="today">1,015 stars today</span>
-                    </p>
-                    <p class="history">First seen: February 21, 2026 | Streak: 1d</p>
-                    <div class="ai-summary">
-                        <h4>Analysis</h4>
-                        <p>PentAGI is an autonomous, AI-driven penetration testing platform designed to automate complex security assessments within isolated, sandboxed Docker environments. The system utilizes a multi-agent architecture—delegating tasks among specialized researchers, developers, and executors—while integrating over 20 professional security tools like Nmap, Metasploit, and SQLmap. To enhance decision-making and reliability, the platform leverages a smart memory system, Neo4j-based knowledge graphs, and persistent vector storage, all managed through a scalable, microservices-oriented backend.</p>
+      
+    </article>
+    <article id="dossier-3" class="dossier-entry">
+      <div class="dossier-meta">N<sup>o</sup> 03 &nbsp;·&nbsp; Privacy Shield &nbsp;·&nbsp; Security Ops</div>
+      <h3>Untitled</h3>
+      <p class="dossier-source">
+        <a href="https://github.com/vxcontrol/pentagi" target="_blank" rel="noopener">github.com</a>
+        &nbsp;·&nbsp; 11,256 stars &nbsp;·&nbsp; 0 stars today
+        
+      </p>
+      <h4>Analysis</h4>
+      <p>PentAGI is an autonomous, AI-driven penetration testing platform designed to automate complex security assessments within isolated, sandboxed Docker environments. The system utilizes a multi-agent architecture—delegating tasks among specialized researchers, developers, and executors—while integrating over 20 professional security tools like Nmap, Metasploit, and SQLmap. To enhance decision-making and reliability, the platform leverages a smart memory system, Neo4j-based knowledge graphs, and persistent vector storage, all managed through a scalable, microservices-oriented backend.</p>
 <p>This project is highly beneficial for information security professionals, ethical hackers, and security researchers who require a sophisticated, self-hosted solution to streamline and scale vulnerability discovery. It is currently trending because it represents the cutting edge of &quot;Agentic AI,&quot; moving beyond simple chatbots to perform complex, multi-step real-world actions. By providing comprehensive reporting, real-time observability through Grafana and Langfuse, and support for a wide array of LLM providers, PentAGI offers a powerful framework for those seeking to modernize their security testing workflows.</p>
-                    </div>
-                </div>
-            </section>
-
-            <section class="repo" data-seen-before="0"
-                     data-share-title="jamwithai/production-agentic-rag-course"
-                     data-share-url="https://github.com/jamwithai/production-agentic-rag-course">
-                <div class="repo-header-row">
-                    <h3>4. <a href="https://github.com/jamwithai/production-agentic-rag-course" target="_blank" rel="noopener noreferrer">jamwithai/production-agentic-rag-course</a> </h3>
-                    <div class="header-buttons">
-                        <button type="button" class="discuss-btn" aria-label="Discuss with AI" title="Discuss with AI">&#x1F4AC;</button>
-                        <button type="button" class="repo-toggle" aria-expanded="true">Hide details</button>
-                    </div>
-                </div>
-                <div class="repo-body">
-                    <p class="description">No description</p>
-                    <p class="meta">
-                        <span class="language">Python</span> |
-                        <span class="stars">4,519</span>
-                        | <span class="today">235 stars today</span>
-                    </p>
-                    <p class="history">First seen: March 22, 2026 | Streak: 1d</p>
-                    <div class="ai-summary">
-                        <h4>Analysis</h4>
-                        <p>The &quot;arXiv Paper Curator&quot; is a comprehensive, production-grade project designed to teach developers how to build an end-to-end Agentic RAG system for academic research. Technically, the architecture integrates a robust stack including FastAPI, PostgreSQL, OpenSearch, Apache Airflow, and Ollama to handle everything from automated document ingestion and parsing to advanced hybrid search and LLM-powered reasoning. By leveraging LangGraph for agentic workflows and Langfuse for observability, the system provides a sophisticated, scalable framework that mirrors real-world enterprise RAG deployments.</p>
+      
+    </article>
+    <article id="dossier-4" class="dossier-entry">
+      <div class="dossier-meta">N<sup>o</sup> 04 &nbsp;·&nbsp; The Library &nbsp;·&nbsp; Education</div>
+      <h3>Untitled</h3>
+      <p class="dossier-source">
+        <a href="https://github.com/jamwithai/production-agentic-rag-course" target="_blank" rel="noopener">github.com</a>
+        &nbsp;·&nbsp; 4,519 stars &nbsp;·&nbsp; 0 stars today
+        
+      </p>
+      <h4>Analysis</h4>
+      <p>The &quot;arXiv Paper Curator&quot; is a comprehensive, production-grade project designed to teach developers how to build an end-to-end Agentic RAG system for academic research. Technically, the architecture integrates a robust stack including FastAPI, PostgreSQL, OpenSearch, Apache Airflow, and Ollama to handle everything from automated document ingestion and parsing to advanced hybrid search and LLM-powered reasoning. By leveraging LangGraph for agentic workflows and Langfuse for observability, the system provides a sophisticated, scalable framework that mirrors real-world enterprise RAG deployments.</p>
 <p>This project is highly beneficial for software engineers and data scientists looking to transition from basic RAG tutorials to professional-level AI systems that prioritize search fundamentals and system reliability. It is currently trending because it addresses the growing industry demand for &quot;Agentic RAG,&quot; moving beyond simple vector search to incorporate intelligent decision-making, document grading, and mobile accessibility via Telegram. The course’s modular, seven-week structure provides a clear roadmap for mastering the infrastructure, data pipelines, and monitoring tools necessary for production AI engineering.</p>
-                    </div>
-                </div>
-            </section>
-
-            <section class="repo" data-seen-before="0"
-                     data-share-title="affaan-m/everything-claude-code"
-                     data-share-url="https://github.com/affaan-m/everything-claude-code">
-                <div class="repo-header-row">
-                    <h3>5. <a href="https://github.com/affaan-m/everything-claude-code" target="_blank" rel="noopener noreferrer">affaan-m/everything-claude-code</a> </h3>
-                    <div class="header-buttons">
-                        <button type="button" class="discuss-btn" aria-label="Discuss with AI" title="Discuss with AI">&#x1F4AC;</button>
-                        <button type="button" class="repo-toggle" aria-expanded="true">Hide details</button>
-                    </div>
-                </div>
-                <div class="repo-body">
-                    <p class="description">The agent harness performance optimization system. Skills, instincts, memory, security, and research-first development for Claude Code, Codex, Opencode, Cursor and beyond.</p>
-                    <p class="meta">
-                        <span class="language">JavaScript</span> |
-                        <span class="stars">95,756</span>
-                        | <span class="today">3,370 stars today</span>
-                    </p>
-                    <p class="history">First seen: March 22, 2026 | Streak: 1d</p>
-                    <div class="ai-summary">
-                        <h4>Analysis</h4>
-                        <p>Everything Claude Code (ECC) is a comprehensive performance optimization system designed to enhance the capabilities of AI agent harnesses like Claude Code, Cursor, and Codex. Technically, it functions as a modular framework that provides advanced skills, persistent memory management, security scanning, and continuous learning loops through a manifest-driven installation pipeline. By utilizing a SQLite-backed state store and a sophisticated hook architecture, the project allows developers to orchestrate complex multi-agent workflows and refine agent behavior via deterministic verification loops.</p>
+      
+    </article>
+    <article id="dossier-5" class="dossier-entry">
+      <div class="dossier-meta">N<sup>o</sup> 05 &nbsp;·&nbsp; Growth Stat &nbsp;·&nbsp; Momentum</div>
+      <h3>Untitled</h3>
+      <p class="dossier-source">
+        <a href="https://github.com/affaan-m/everything-claude-code" target="_blank" rel="noopener">github.com</a>
+        &nbsp;·&nbsp; 95,756 stars &nbsp;·&nbsp; 0 stars today
+        
+      </p>
+      <h4>Analysis</h4>
+      <p>Everything Claude Code (ECC) is a comprehensive performance optimization system designed to enhance the capabilities of AI agent harnesses like Claude Code, Cursor, and Codex. Technically, it functions as a modular framework that provides advanced skills, persistent memory management, security scanning, and continuous learning loops through a manifest-driven installation pipeline. By utilizing a SQLite-backed state store and a sophisticated hook architecture, the project allows developers to orchestrate complex multi-agent workflows and refine agent behavior via deterministic verification loops.</p>
 <p>This project is highly beneficial for professional software engineers and AI researchers who seek to transition from using basic AI tools to building production-ready, autonomous development systems. It is trending because it addresses the core limitations of existing agent harnesses—such as context loss and inefficient reasoning—by providing a structured, battle-tested library of rules and operational skills. With its massive community adoption and cross-platform support, ECC has become an essential toolkit for anyone looking to scale their AI-driven development lifecycle effectively.</p>
-                    </div>
-                </div>
-            </section>
-
-            <section class="repo" data-seen-before="1"
-                     data-share-title="jarrodwatts/claude-hud"
-                     data-share-url="https://github.com/jarrodwatts/claude-hud">
-                <div class="repo-header-row">
-                    <h3>6. <a href="https://github.com/jarrodwatts/claude-hud" target="_blank" rel="noopener noreferrer">jarrodwatts/claude-hud</a> <span class="seen-badge">Not new today</span></h3>
-                    <div class="header-buttons">
-                        <button type="button" class="discuss-btn" aria-label="Discuss with AI" title="Discuss with AI">&#x1F4AC;</button>
-                        <button type="button" class="repo-toggle" aria-expanded="true">Hide details</button>
-                    </div>
-                </div>
-                <div class="repo-body">
-                    <p class="description">A Claude Code plugin that shows what&#x27;s happening - context usage, active tools, running agents, and todo progress</p>
-                    <p class="meta">
-                        <span class="language">JavaScript</span> |
-                        <span class="stars">10,812</span>
-                        | <span class="today">970 stars today</span>
-                    </p>
-                    <p class="history">First seen: March 18, 2026 | Streak: 5d</p>
-                    <div class="ai-summary">
-                        <h4>Analysis</h4>
-                        <p>Claude HUD is a terminal-based plugin for Claude Code that provides real-time visibility into the status of an active development session. By utilizing Claude Code’s native statusline API, it displays essential metrics such as context window usage, active tool execution, subagent progress, and task completion directly beneath the user&#x27;s input. Technically, the tool functions by parsing transcript JSONL data and processing stdin/stdout updates every 300 milliseconds, allowing it to integrate seamlessly into any terminal environment without requiring extra windows or multiplexers.</p>
+      
+    </article>
+    <article id="dossier-6" class="dossier-entry">
+      <div class="dossier-meta">N<sup>o</sup> 06 &nbsp;·&nbsp; Terminal Utility &nbsp;·&nbsp; Console Tools</div>
+      <h3>Untitled</h3>
+      <p class="dossier-source">
+        <a href="https://github.com/jarrodwatts/claude-hud" target="_blank" rel="noopener">github.com</a>
+        &nbsp;·&nbsp; 10,812 stars &nbsp;·&nbsp; 0 stars today
+        
+      </p>
+      <h4>Analysis</h4>
+      <p>Claude HUD is a terminal-based plugin for Claude Code that provides real-time visibility into the status of an active development session. By utilizing Claude Code’s native statusline API, it displays essential metrics such as context window usage, active tool execution, subagent progress, and task completion directly beneath the user&#x27;s input. Technically, the tool functions by parsing transcript JSONL data and processing stdin/stdout updates every 300 milliseconds, allowing it to integrate seamlessly into any terminal environment without requiring extra windows or multiplexers.</p>
 <p>This project is highly beneficial for power users and professional developers who rely on Claude Code for complex, multi-step engineering tasks and need to monitor resource consumption closely. It is gaining traction because it transforms the &quot;black box&quot; nature of LLM-based coding agents into a transparent process, allowing developers to track token limits and agent activity in real-time. By providing highly customizable presets and detailed configuration options, Claude HUD helps users maintain better oversight of their project health and prevents unexpected interruptions caused by exceeding context or usage limits.</p>
-                    </div>
-                </div>
-            </section>
-
-            <section class="repo" data-seen-before="1"
-                     data-share-title="Crosstalk-Solutions/project-nomad"
-                     data-share-url="https://github.com/Crosstalk-Solutions/project-nomad">
-                <div class="repo-header-row">
-                    <h3>7. <a href="https://github.com/Crosstalk-Solutions/project-nomad" target="_blank" rel="noopener noreferrer">Crosstalk-Solutions/project-nomad</a> <span class="seen-badge">Not new today</span></h3>
-                    <div class="header-buttons">
-                        <button type="button" class="discuss-btn" aria-label="Discuss with AI" title="Discuss with AI">&#x1F4AC;</button>
-                        <button type="button" class="repo-toggle" aria-expanded="true">Hide details</button>
-                    </div>
-                </div>
-                <div class="repo-body">
-                    <p class="description">Project N.O.M.A.D, is a self-contained, offline survival computer packed with critical tools, knowledge, and AI to keep you informed and empowered—anytime, anywhere.</p>
-                    <p class="meta">
-                        <span class="language">TypeScript</span> |
-                        <span class="stars">7,626</span>
-                        | <span class="today">2,032 stars today</span>
-                    </p>
-                    <p class="history">First seen: March 16, 2026 | Streak: 2d</p>
-                    <div class="ai-summary">
-                        <h4>Analysis</h4>
-                        <p>Project N.O.M.A.D. is a self-contained, offline-first server designed to provide users with critical tools, knowledge, and AI capabilities without requiring an active internet connection. It functions as a management UI that orchestrates various containerized applications—including Kiwix for archives, Kolibri for education, and Ollama for local AI—using Docker on Debian-based operating systems. By streamlining the installation and configuration of these services, it effectively transforms hardware into a robust, portable &quot;command center&quot; for information and utility.</p>
+      
+    </article>
+    <article id="dossier-7" class="dossier-entry">
+      <div class="dossier-meta">N<sup>o</sup> 07 &nbsp;·&nbsp; Night Shift &nbsp;·&nbsp; Off-Grid Ops</div>
+      <h3>Untitled</h3>
+      <p class="dossier-source">
+        <a href="https://github.com/Crosstalk-Solutions/project-nomad" target="_blank" rel="noopener">github.com</a>
+        &nbsp;·&nbsp; 7,626 stars &nbsp;·&nbsp; 0 stars today
+        
+      </p>
+      <h4>Analysis</h4>
+      <p>Project N.O.M.A.D. is a self-contained, offline-first server designed to provide users with critical tools, knowledge, and AI capabilities without requiring an active internet connection. It functions as a management UI that orchestrates various containerized applications—including Kiwix for archives, Kolibri for education, and Ollama for local AI—using Docker on Debian-based operating systems. By streamlining the installation and configuration of these services, it effectively transforms hardware into a robust, portable &quot;command center&quot; for information and utility.</p>
 <p>This project is ideal for preppers, educators in remote regions, researchers, or anyone seeking to build a digital contingency plan that remains functional during infrastructure outages. It is gaining traction because it democratizes access to sophisticated AI and vast educational datasets, offering a practical solution for maintaining information sovereignty in an increasingly digital world. As the reliance on cloud services grows, N.O.M.A.D. provides a compelling, privacy-focused alternative that empowers individuals to maintain control over their data and resources regardless of external connectivity.</p>
-                    </div>
-                </div>
-            </section>
-
-            <section class="repo" data-seen-before="1"
-                     data-share-title="systemd/systemd"
-                     data-share-url="https://github.com/systemd/systemd">
-                <div class="repo-header-row">
-                    <h3>8. <a href="https://github.com/systemd/systemd" target="_blank" rel="noopener noreferrer">systemd/systemd</a> <span class="seen-badge">Not new today</span></h3>
-                    <div class="header-buttons">
-                        <button type="button" class="discuss-btn" aria-label="Discuss with AI" title="Discuss with AI">&#x1F4AC;</button>
-                        <button type="button" class="repo-toggle" aria-expanded="true">Hide details</button>
-                    </div>
-                </div>
-                <div class="repo-body">
-                    <p class="description">The systemd System and Service Manager</p>
-                    <p class="meta">
-                        <span class="language">C</span> |
-                        <span class="stars">15,846</span>
-                        | <span class="today">58 stars today</span>
-                    </p>
-                    <p class="history">First seen: March 21, 2026 | Streak: 2d</p>
-                    <div class="ai-summary">
-                        <h4>Analysis</h4>
-                        <p>Systemd is the primary system and service manager for most modern Linux distributions, functioning as the foundational init system that initializes the user space and manages system processes after the kernel boots. It provides a comprehensive suite of tools, including a powerful service management daemon, logging infrastructure, network configuration, and device management capabilities. By utilizing cgroups for resource isolation and parallelizing service startup, it effectively optimizes system performance and reduces boot times across diverse computing environments.</p>
+      
+    </article>
+    <article id="dossier-8" class="dossier-entry">
+      <div class="dossier-meta">N<sup>o</sup> 08 &nbsp;·&nbsp; System Core &nbsp;·&nbsp; Kernel Internals</div>
+      <h3>Untitled</h3>
+      <p class="dossier-source">
+        <a href="https://github.com/systemd/systemd" target="_blank" rel="noopener">github.com</a>
+        &nbsp;·&nbsp; 15,846 stars &nbsp;·&nbsp; 0 stars today
+        
+      </p>
+      <h4>Analysis</h4>
+      <p>Systemd is the primary system and service manager for most modern Linux distributions, functioning as the foundational init system that initializes the user space and manages system processes after the kernel boots. It provides a comprehensive suite of tools, including a powerful service management daemon, logging infrastructure, network configuration, and device management capabilities. By utilizing cgroups for resource isolation and parallelizing service startup, it effectively optimizes system performance and reduces boot times across diverse computing environments.</p>
 <p>System administrators, DevOps engineers, and Linux distribution maintainers benefit most from systemd due to its robust standardization and unified interface for managing complex system configurations. It remains a trending and highly influential project because it serves as the backbone for the vast majority of enterprise and consumer Linux distributions, including Debian, Ubuntu, Red Hat, and Fedora. As the ecosystem continues to prioritize stability and streamlined orchestration, systemd’s deep integration and ongoing development ensure it remains an essential component of modern infrastructure.</p>
-                    </div>
-                </div>
-            </section>
-
-            <section class="repo" data-seen-before="0"
-                     data-share-title="browser-use/browser-use"
-                     data-share-url="https://github.com/browser-use/browser-use">
-                <div class="repo-header-row">
-                    <h3>9. <a href="https://github.com/browser-use/browser-use" target="_blank" rel="noopener noreferrer">browser-use/browser-use</a> </h3>
-                    <div class="header-buttons">
-                        <button type="button" class="discuss-btn" aria-label="Discuss with AI" title="Discuss with AI">&#x1F4AC;</button>
-                        <button type="button" class="repo-toggle" aria-expanded="true">Hide details</button>
-                    </div>
-                </div>
-                <div class="repo-body">
-                    <p class="description">🌐 Make websites accessible for AI agents. Automate tasks online with ease.</p>
-                    <p class="meta">
-                        <span class="language">Python</span> |
-                        <span class="stars">82,015</span>
-                        | <span class="today">405 stars today</span>
-                    </p>
-                    <p class="history">First seen: March 22, 2026 | Streak: 1d</p>
-                    <div class="ai-summary">
-                        <h4>Analysis</h4>
-                        <p>Browser-use is an open-source framework designed to make websites fully accessible to AI agents, enabling the automation of complex browser-based tasks. By leveraging large language models (LLMs) to interpret page states, the library allows agents to navigate, click, type, and extract data autonomously. It offers high flexibility through a Python API, a dedicated command-line interface for manual control, and a cloud-hosted infrastructure that manages advanced requirements like stealth browser fingerprinting, proxy rotation, and parallel execution.</p>
+      
+    </article>
+    <article id="dossier-9" class="dossier-entry">
+      <div class="dossier-meta">N<sup>o</sup> 09 &nbsp;·&nbsp; Data Pipeline &nbsp;·&nbsp; Automation Flow</div>
+      <h3>Untitled</h3>
+      <p class="dossier-source">
+        <a href="https://github.com/browser-use/browser-use" target="_blank" rel="noopener">github.com</a>
+        &nbsp;·&nbsp; 82,015 stars &nbsp;·&nbsp; 0 stars today
+        
+      </p>
+      <h4>Analysis</h4>
+      <p>Browser-use is an open-source framework designed to make websites fully accessible to AI agents, enabling the automation of complex browser-based tasks. By leveraging large language models (LLMs) to interpret page states, the library allows agents to navigate, click, type, and extract data autonomously. It offers high flexibility through a Python API, a dedicated command-line interface for manual control, and a cloud-hosted infrastructure that manages advanced requirements like stealth browser fingerprinting, proxy rotation, and parallel execution.</p>
 <p>This project is ideal for developers, power users, and enterprise teams looking to automate repetitive web workflows, such as form-filling, data collection, or e-commerce purchases. It is trending because it significantly lowers the barrier for building reliable autonomous agents by handling the technical complexities of browser interaction and authentication. By providing both a self-hosted open-source version and a scalable, production-ready cloud service, it offers an accessible yet robust solution for integrating AI-driven web navigation into modern software stacks.</p>
-                    </div>
-                </div>
-            </section>
-
-            <section class="repo" data-seen-before="0"
-                     data-share-title="HKUDS/LightRAG"
-                     data-share-url="https://github.com/HKUDS/LightRAG">
-                <div class="repo-header-row">
-                    <h3>10. <a href="https://github.com/HKUDS/LightRAG" target="_blank" rel="noopener noreferrer">HKUDS/LightRAG</a> </h3>
-                    <div class="header-buttons">
-                        <button type="button" class="discuss-btn" aria-label="Discuss with AI" title="Discuss with AI">&#x1F4AC;</button>
-                        <button type="button" class="repo-toggle" aria-expanded="true">Hide details</button>
-                    </div>
-                </div>
-                <div class="repo-body">
-                    <p class="description">[EMNLP2025] &quot;LightRAG: Simple and Fast Retrieval-Augmented Generation&quot;</p>
-                    <p class="meta">
-                        <span class="language">Python</span> |
-                        <span class="stars">29,881</span>
-                        | <span class="today">203 stars today</span>
-                    </p>
-                    <p class="history">First seen: March 22, 2026 | Streak: 1d</p>
-                    <div class="ai-summary">
-                        <h4>Analysis</h4>
-                        <p>LightRAG is an advanced Retrieval-Augmented Generation (RAG) framework designed to enhance information retrieval by leveraging knowledge graph extraction to map complex entity relationships within documents. Technically, it functions by indexing data through a process that identifies and stores conceptual links, which are then combined with vector-based retrieval and reranking models to produce highly relevant, context-aware answers. The system is architected for versatility, supporting a wide range of storage backends like MongoDB, PostgreSQL, and Neo4j, while offering robust multimodal capabilities to process text, images, and tables seamlessly.</p>
+      
+    </article>
+    <article id="dossier-10" class="dossier-entry">
+      <div class="dossier-meta">N<sup>o</sup> 10 &nbsp;·&nbsp; Enterprise Engine &nbsp;·&nbsp; Infrastructure</div>
+      <h3>Untitled</h3>
+      <p class="dossier-source">
+        <a href="https://github.com/HKUDS/LightRAG" target="_blank" rel="noopener">github.com</a>
+        &nbsp;·&nbsp; 29,881 stars &nbsp;·&nbsp; 0 stars today
+        
+      </p>
+      <h4>Analysis</h4>
+      <p>LightRAG is an advanced Retrieval-Augmented Generation (RAG) framework designed to enhance information retrieval by leveraging knowledge graph extraction to map complex entity relationships within documents. Technically, it functions by indexing data through a process that identifies and stores conceptual links, which are then combined with vector-based retrieval and reranking models to produce highly relevant, context-aware answers. The system is architected for versatility, supporting a wide range of storage backends like MongoDB, PostgreSQL, and Neo4j, while offering robust multimodal capabilities to process text, images, and tables seamlessly.</p>
 <p>Researchers, AI engineers, and organizations looking to build high-performance, enterprise-grade RAG systems will benefit most from this repository&#x27;s scalability and comprehensive feature set. The project is trending because it significantly improves upon traditional, purely semantic search methods by providing deeper, graph-structured insights into large-scale datasets. Furthermore, its user-friendly tools—such as the interactive setup wizard, WebUI, and Docker support—streamline the deployment process, making sophisticated, graph-enhanced AI accessible for both production-ready applications and rapid experimentation.</p>
-                    </div>
-                </div>
-            </section>
-
-            </div>
-        </article>
-    </main>
-    <footer>
-        <p>Generated automatically. Data from <a href="https://github.com/trending">GitHub Trending</a>.</p>
-    </footer>
-
+      
+    </article>
+  </section>
+  <footer class="colophon">
+    <p class="sig">— that's the edition.</p>
+    <p class="meta">Set in Fraunces &amp; Inter · Compiled March 22, 2026</p>
+    <p class="classic-link"><a href="classic.html">Prefer the classic card view? →</a></p>
+  </footer>
 <script>
 (() => {
-    const readKey = "gtd:read_days:gh:v1";
-    const dayStr = "2026-03-22";
-
-    let stored = [];
-    try {
-        stored = JSON.parse(localStorage.getItem(readKey) || "[]");
-        if (!Array.isArray(stored)) {
-            stored = [];
-        }
-    } catch (_err) {
-        stored = [];
-    }
-
-    if (!stored.includes(dayStr)) {
-        stored.push(dayStr);
-        stored.sort();
-        localStorage.setItem(readKey, JSON.stringify(stored));
-    }
-
-    const collapseParam = new URLSearchParams(window.location.search).get("collapse_seen");
-    const collapseSeen = collapseParam === "0" ? false : true;
-
-    function setCollapsed(repoEl, collapsed) {
-        repoEl.classList.toggle("collapsed", collapsed);
-        const button = repoEl.querySelector(".repo-toggle");
-        if (button) {
-            button.textContent = collapsed ? "Show details" : "Hide details";
-            button.setAttribute("aria-expanded", String(!collapsed));
-        }
-    }
-
-    const repos = Array.from(document.querySelectorAll("section.repo[data-seen-before]"));
-
-    repos.forEach((repoEl) => {
-        const toggle = repoEl.querySelector(".repo-toggle");
-        if (!toggle) {
-            return;
-        }
-
-        toggle.addEventListener("click", () => {
-            setCollapsed(repoEl, !repoEl.classList.contains("collapsed"));
-        });
-    });
-
-    const collapseBtn = document.getElementById("collapse-seen-btn");
-    const expandBtn = document.getElementById("expand-all-btn");
-
-    if (collapseBtn) {
-        collapseBtn.addEventListener("click", () => {
-            repos.forEach((repoEl) => {
-                if (repoEl.dataset.seenBefore === "1") {
-                    setCollapsed(repoEl, true);
-                }
-            });
-        });
-    }
-
-    if (expandBtn) {
-        expandBtn.addEventListener("click", () => {
-            repos.forEach((repoEl) => setCollapsed(repoEl, false));
-        });
-    }
-
-    if (collapseSeen) {
-        repos.forEach((repoEl) => {
-            if (repoEl.dataset.seenBefore === "1") {
-                setCollapsed(repoEl, true);
-            }
-        });
-    }
-
-    // Discuss with AI button
-    const toast = document.createElement("div");
-    toast.className = "discuss-toast";
-    document.body.appendChild(toast);
-
-    function showToast(msg) {
-        toast.textContent = msg;
-        toast.classList.add("show");
-        setTimeout(() => toast.classList.remove("show"), 2500);
-    }
-
-    function buildGHMarkdown(card) {
-        const title = card.dataset.shareTitle || "";
-        const url = card.dataset.shareUrl || "";
-        const desc = card.querySelector(".description");
-        const meta = card.querySelector(".meta");
-        const analysis = card.querySelector(".ai-summary");
-        let md = "# " + title + "\n";
-        md += "Source: " + url;
-        if (meta) md += " | " + meta.textContent.trim();
-        md += "\n";
-        if (desc) md += "\n" + desc.textContent.trim() + "\n";
-        if (analysis) md += "\n## Analysis\n" + analysis.textContent.replace("Analysis", "").trim() + "\n";
-        return md;
-    }
-
-    document.querySelectorAll(".discuss-btn").forEach((btn) => {
-        btn.addEventListener("click", () => {
-            const card = btn.closest("section.repo");
-            if (!card) return;
-            const md = buildGHMarkdown(card);
-            const text = "I'd like to discuss this repo with you. Here's a summary:\n\n" + md;
-            const title = "Discuss: " + (card.dataset.shareTitle || "");
-            if (navigator.share) {
-                navigator.share({ title: title, text: text }).catch(() => {});
-            } else {
-                navigator.clipboard.writeText(text).then(
-                    () => showToast("Copied to clipboard \u2014 paste into your AI chat"),
-                    () => showToast("Failed to copy")
-                );
-            }
-        });
-    });
+  const key = "gtd:read_days:gh:v1";
+  const day = "2026-03-22";
+  let stored = [];
+  try {
+    stored = JSON.parse(localStorage.getItem(key) || "[]");
+    if (!Array.isArray(stored)) stored = [];
+  } catch (e) {}
+  if (!stored.includes(day)) {
+    stored.push(day);
+    stored.sort();
+    localStorage.setItem(key, JSON.stringify(stored));
+  }
 })();
 </script>
-
 </body>
 </html>

@@ -1,410 +1,592 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>GitHub Trending - February 21, 2026</title>
-    <link rel="stylesheet" href="../style.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Open Source Edition — February 21, 2026</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,100..900;1,9..144,100..900&family=Inter:wght@100..900&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+  <style>
+  :root {
+    --bg-light: #f5f1e8; --bg-dark: #121212;
+    --text-dark: #121212; --text-light: #f5f1e8;
+    --accent-red: #d32f2f; --accent-blue: #1976d2;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; padding: 0;
+    background: var(--bg-light); color: var(--text-dark);
+    font-family: 'Inter', sans-serif;
+    -webkit-font-smoothing: antialiased;
+  }
+  .frnc { font-family: 'Fraunces', serif; font-variant-classic-ligatures: common-ligatures; }
+  
+  /* ───── LAYOUT ───── */
+  .spread {
+    position: relative; min-height: 100vh; width: 100%;
+    display: flex; align-items: center; justify-content: center;
+    padding: 10vh 8vw; overflow: hidden;
+    scroll-snap-align: start;
+  }
+  .body { position: relative; z-index: 10; width: 100%; max-width: 1200px; }
+  .kicker { font-weight: 700; font-size: 1.1rem; letter-spacing: 0.4em; text-transform: uppercase; margin-bottom: 2rem; opacity: 0.8; }
+  h2 { font-size: clamp(3rem, 8vw, 6.5rem); line-height: 0.95; font-weight: 400; margin: 0 0 3rem; letter-spacing: -0.03em; }
+  .lede { font-size: clamp(1.4rem, 2.5vw, 2.1rem); line-height: 1.35; max-width: 800px; margin: 0 0 4rem; font-weight: 450; }
+  
+  .ctas { display: flex; gap: 2rem; align-items: center; }
+  .ctas a {
+    text-decoration: none; font-weight: 600; font-size: 1.1rem; letter-spacing: 0.1em; text-transform: uppercase;
+    padding: 1.2rem 2.4rem; transition: all 0.2s;
+  }
+  .btn-read { background: var(--text-dark); color: var(--bg-light); }
+  .btn-dossier { border-bottom: 2px solid currentColor; padding: 0.5rem 0 !important; }
+  
+  /* ───── ARCHETYPE CSS ───── */
+  
+  /* Stat Hero */
+  .arc-stat-hero { background: #e8e4da; }
+  .arc-stat-hero .numeral {
+    position: absolute; right: 0; top: 10vh; font-family: 'Fraunces', serif;
+    font-size: clamp(20rem, 50vw, 45rem); font-weight: 900; line-height: 0.8;
+    color: #121212; opacity: 0.05; pointer-events: none;
+  }
+
+  /* Midnight */
+  .arc-midnight { background: #0a0a0c; color: #fff; }
+  .arc-midnight .glow {
+    position: absolute; top: 30%; left: 40%; width: 40vw; height: 40vw;
+    background: radial-gradient(circle, rgba(110,64,255,0.15) 0%, transparent 70%);
+    filter: blur(60px); pointer-events: none;
+  }
+  .arc-midnight .btn-read { background: #fff; color: #000; }
+
+  /* Alert Stamp */
+  .arc-alert-stamp { background: #f9ebeb; color: #7a1e14; }
+  .arc-alert-stamp .stamp {
+    position: absolute; top: 15vh; right: 10vw; border: 6px solid #d32f2f;
+    padding: 1rem 2rem; font-weight: 900; font-size: 3rem; transform: rotate(12deg);
+    opacity: 0.2; pointer-events: none;
+  }
+  .arc-alert-stamp .btn-read { background: #d32f2f; color: #fff; }
+
+  /* Academic */
+  .arc-academic-drop-cap { background: #fdfaf3; color: #2c2925; }
+  .arc-academic-drop-cap h2 { font-size: clamp(2.5rem, 5vw, 4rem); border-bottom: 1px solid #ddd; padding-bottom: 2rem; margin-bottom: 4rem; }
+  .arc-academic-drop-cap .cols { columns: 2; column-gap: 4rem; }
+  .arc-academic-drop-cap .drop {
+    float: left; font-family: 'Fraunces', serif; font-size: 6.5rem; line-height: 0.75;
+    margin: 0.8rem 1rem 0 0; font-weight: 600; color: #121212;
+  }
+  .arc-academic-drop-cap .btn-read { background: #2c2925; color: #fff; }
+
+  /* Terminal */
+  .arc-terminal { background: #000; color: #20c20e; font-family: 'JetBrains Mono', monospace; }
+  .arc-terminal .window { border: 1px solid #20c20e; padding: 4rem; background: #050505; }
+  .arc-terminal .frnc { font-family: 'JetBrains Mono', monospace; font-weight: 700; letter-spacing: -0.05em; }
+  .arc-terminal .btn-read { background: #20c20e; color: #000; border-radius: 0; }
+  .arc-terminal .btn-dossier { border-color: #20c20e; }
+
+  /* Editorial Pullquote */
+  .arc-editorial-pullquote { display: grid; grid-template-columns: 1.2fr 1fr; gap: 5vw; background: #1a1a1a; color: #f5f1e8; align-items: stretch; }
+  .arc-editorial-pullquote .quote-side { background: #d4af37; color: #1a1a1a; display: flex; align-items: center; padding: 6vw; position: relative; }
+  .arc-editorial-pullquote blockquote { font-family: 'Fraunces', serif; font-size: 3rem; line-height: 1.1; font-style: italic; font-weight: 400; margin: 0; }
+  .arc-editorial-pullquote blockquote::before { content: '“'; position: absolute; top: 2vw; left: 2vw; font-size: 8rem; opacity: 0.3; }
+  .arc-editorial-pullquote .btn-read { background: #f5f1e8; color: #1a1a1a; }
+
+  /* Caution Tape */
+  .arc-caution-tape { background: #fcd116; color: #000; }
+  .arc-caution-tape .tape {
+    position: absolute; left: -10vw; width: 120vw; background: #000; color: #fcd116;
+    font-weight: 900; font-size: 1.5rem; padding: 1rem; transform: rotate(-3deg); z-index: 5;
+  }
+  .arc-caution-tape .tape.top { top: 5vh; transform: rotate(2deg); }
+  .arc-caution-tape .tape.bottom { bottom: 5vh; transform: rotate(-1.5deg); }
+  .arc-caution-tape .tag { background: #000; color: #fff; padding: 0.5rem 1rem; display: inline-block; font-weight: 800; margin-bottom: 2rem; }
+  .arc-caution-tape .btn-read { background: #000; color: #fcd116; }
+
+  /* Notebook */
+  .arc-notebook { background: #fcfcf4; }
+  .arc-notebook .lines {
+    position: absolute; inset: 0;
+    background: repeating-linear-gradient(transparent, transparent 1.6rem, #e0e0d0 1.6rem, #e0e0d0 1.7rem);
+    opacity: 0.5;
+  }
+  .arc-notebook .btn-read { background: #333; color: #fff; }
+
+  /* Mint Pattern */
+  .arc-mint-pattern { background: #d0f0e4; color: #1b4d3e; }
+  .arc-mint-pattern::before {
+    content: var(--bg-word); position: absolute; inset: 0;
+    font-weight: 900; font-size: 14vw; line-height: 0.7; opacity: 0.04;
+    display: flex; flex-wrap: wrap; word-break: break-all; overflow: hidden;
+  }
+  .arc-mint-pattern .btn-read { background: #1b4d3e; color: #d0f0e4; }
+
+  /* Pastel Playful */
+  .arc-pastel-playful { background: #fbe6e6; color: #8a4b4b; }
+  .arc-pastel-playful .alpha-grid {
+    position: absolute; right: 4vw; top: 10vh; bottom: 10vh; width: 40vw;
+    display: grid; grid-template-columns: repeat(5, 1fr); gap: 1rem;
+    font-weight: 900; font-size: 2rem; opacity: 0.08; pointer-events: none;
+  }
+  .arc-pastel-playful .btn-read { background: #8a4b4b; color: #fbe6e6; }
+
+  /* Product Plate */
+  .arc-product-plate { background: #eee; }
+  .arc-product-plate .plate {
+    background: linear-gradient(145deg, #ffffff, #dcdcdc);
+    padding: 6vw; box-shadow: 20px 20px 60px #cbcbcb, -20px -20px 60px #ffffff;
+    border-radius: 20px;
+  }
+  .arc-product-plate .btn-read { background: #121212; color: #eee; border-radius: 50px; }
+
+  /* Archive */
+  .arc-archive { background: #f4ece1; color: #4e3620; }
+  .arc-archive .mast {
+    position: absolute; top: 4vh; width: 100%; text-align: center;
+    font-family: 'Fraunces', serif; font-weight: 700; font-size: 1.2rem;
+    letter-spacing: 0.5em; opacity: 0.5; border-bottom: 1px double #ccc;
+    padding-bottom: 2vh;
+  }
+  .arc-archive .btn-read { background: #4e3620; color: #f4ece1; }
+
+  /* Obituary */
+  .arc-obituary { background: #fff; color: #000; }
+  .arc-obituary .obit-frame { border: 20px solid #000; padding: 6vw; text-align: center; }
+  .arc-obituary .lede { margin-left: auto; margin-right: auto; }
+  .arc-obituary .ornament { font-size: 4rem; margin: 3rem 0; opacity: 0.2; }
+  .arc-obituary .ctas { justify-content: center; }
+  .arc-obituary .btn-read { background: #000; color: #fff; }
+
+  /* Blueprint */
+  .arc-blueprint { background: #0047ab; color: #fff; }
+  .arc-blueprint .grid {
+    position: absolute; inset: 0; opacity: 0.2;
+    background-image: linear-gradient(#fff 1px, transparent 1px), linear-gradient(90deg, #fff 1px, transparent 1px);
+    background-size: 40px 40px;
+  }
+  .arc-blueprint .btn-read { background: #fff; color: #0047ab; }
+
+  /* Observatory */
+  .arc-observatory { background: #050510; color: #e0e0ff; }
+  .arc-observatory .stars {
+    position: absolute; inset: 0; opacity: 0.4;
+    background: radial-gradient(white, rgba(255,255,255,.2) 2px, transparent 40px);
+    background-size: 100px 100px;
+  }
+  .arc-observatory .btn-read { background: #e0e0ff; color: #050510; border-radius: 100px; }
+
+  /* GH Specific: Agent Foundry */
+  .arc-agent-foundry { background: #f0f4f8; color: #1a365d; }
+  .arc-agent-foundry .blueprint-bg {
+    position: absolute; inset: 0; opacity: 0.1;
+    background-image: radial-gradient(#1a365d 1px, transparent 1px);
+    background-size: 20px 20px;
+  }
+  .arc-agent-foundry .btn-read { background: #1a365d; color: #fff; }
+
+  /* GH Specific: System Core */
+  .arc-system-core { background: #2d3748; color: #edf2f7; }
+  .arc-system-core .concrete {
+    position: absolute; inset: 0; opacity: 0.05;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  }
+  .arc-system-core .frnc { font-family: 'Inter', sans-serif; font-weight: 800; text-transform: uppercase; letter-spacing: -0.05em; }
+  .arc-system-core .btn-read { background: #edf2f7; color: #2d3748; }
+
+  /* GH Specific: UI Lab */
+  .arc-ui-lab { background: #fff; color: #4c51bf; }
+  .arc-ui-lab .lab-gradient {
+    position: absolute; inset: 0; opacity: 0.1;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  }
+  .arc-ui-lab .btn-read { background: #4c51bf; color: #fff; border-radius: 12px; }
+
+  /* GH Specific: Data Pipeline */
+  .arc-data-pipeline { background: #1a202c; color: #a3bffa; }
+  .arc-data-pipeline .pipeline-streams {
+    position: absolute; inset: 0; opacity: 0.15;
+    background: repeating-linear-gradient(45deg, #a3bffa, #a3bffa 2px, transparent 2px, transparent 20px);
+  }
+  .arc-data-pipeline .btn-read { background: #a3bffa; color: #1a202c; }
+
+  /* GH Specific: Model Bench */
+  .arc-model-bench { background: #f7fafc; color: #2d3748; }
+  .arc-model-bench .bench-silver {
+    position: absolute; right: 0; top: 0; width: 40%; height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(0,0,0,0.03));
+  }
+  .arc-model-bench .btn-read { border: 1px solid #2d3748; background: transparent; color: #2d3748; }
+
+  /* GH Specific: Privacy Shield */
+  .arc-privacy-shield { background: #000; color: #00ff41; }
+  .arc-privacy-shield .shield-glitch {
+    position: absolute; inset: 0; opacity: 0.1;
+    background-image: repeating-linear-gradient(0deg, rgba(0,255,65,0.1) 0, rgba(0,255,65,0.1) 1px, transparent 1px, transparent 2px);
+  }
+  .arc-privacy-shield .btn-read { background: #00ff41; color: #000; }
+
+  /* GH Specific: Enterprise Engine */
+  .arc-enterprise-engine { background: #f0f7ff; color: #0056b3; }
+  .arc-enterprise-engine .engine-blue {
+    position: absolute; right: -5vw; bottom: -5vw; width: 30vw; height: 30vw;
+    background: radial-gradient(circle, rgba(0,86,179,0.05) 0%, transparent 70%);
+  }
+  .arc-enterprise-engine .btn-read { background: #0056b3; color: #fff; }
+
+  /* GH Specific: Terminal Utility */
+  .arc-terminal-utility { background: #1a1a1a; color: #ffb000; font-family: 'JetBrains Mono', monospace; }
+  .arc-terminal-utility .crt-lines {
+    position: absolute; inset: 0; pointer-events: none;
+    background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.06), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.06));
+    background-size: 100% 2px, 3px 100%;
+  }
+  .arc-terminal-utility .btn-read { background: #ffb000; color: #1a1a1a; }
+
+  /* GH Specific: Experimental Workshop */
+  .arc-experimental-workshop { background: #fffde7; color: #5d4037; }
+  .arc-experimental-workshop .pad-lines {
+    position: absolute; left: 4vw; top: 0; bottom: 0; width: 2px; background: #ff5252; opacity: 0.3;
+  }
+  .arc-experimental-workshop .btn-read { border: 2px dashed #5d4037; background: transparent; color: #5d4037; }
+
+  /* GH Specific: Library Archive */
+  .arc-library-archive { background: #fdfaf3; color: #3e2723; }
+  .arc-library-archive .parchment {
+    position: absolute; inset: 0; opacity: 0.03;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='f'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.02' numOctaves='5'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23f)'/%3E%3C/svg%3E");
+  }
+  .arc-library-archive .btn-read { background: #3e2723; color: #fdfaf3; }
+
+  /* ───── MASTHEAD ───── */
+  .masthead { padding: 4vh 8vw 10vh; text-align: center; border-bottom: 1px solid #ddd; }
+  .masthead-nav { display: flex; justify-content: center; gap: 2rem; margin-bottom: 6vh; font-weight: 600; font-size: 0.9rem; text-transform: uppercase; letter-spacing: 0.2em; }
+  .masthead-nav a { color: inherit; text-decoration: none; opacity: 0.6; }
+  .masthead-nav a:hover { opacity: 1; }
+  .masthead h1 { font-size: clamp(3rem, 10vw, 9rem); font-weight: 400; margin: 0 0 2rem; letter-spacing: -0.04em; }
+  .issue-line { display: flex; justify-content: center; gap: 4rem; font-weight: 700; font-size: 1rem; letter-spacing: 0.3em; text-transform: uppercase; opacity: 0.8; }
+  
+  /* ───── DOSSIER ───── */
+  .dossier { background: #f5f1e8; padding: 10vh 8vw; color: #121212; }
+  .dossier-head { margin-bottom: 8vh; }
+  .dossier-head h2 { font-size: clamp(4rem, 12vw, 12rem); margin-bottom: 2rem; }
+  .tagline { font-weight: 700; font-size: 1.2rem; letter-spacing: 0.5em; text-transform: uppercase; margin-bottom: 1rem; opacity: 0.5; }
+  .intro { font-size: 1.5rem; max-width: 600px; line-height: 1.4; opacity: 0.7; }
+  .intro a { color: inherit; }
+  
+  .dossier-entry { margin-bottom: 12vh; max-width: 900px; }
+  .dossier-meta { font-weight: 700; font-size: 0.9rem; letter-spacing: 0.2em; text-transform: uppercase; margin-bottom: 1.5rem; opacity: 0.5; }
+  .dossier-entry h3 { font-family: 'Fraunces', serif; font-size: clamp(2.5rem, 5vw, 4.5rem); line-height: 1.1; margin: 0 0 1.5rem; font-weight: 400; }
+  .dossier-source { font-size: 1.1rem; font-weight: 500; letter-spacing: 0.05em; margin: 0 0 3rem; opacity: 0.7; }
+  .dossier-source a { color: inherit; text-decoration: underline; }
+  .dossier-entry h4 { font-weight: 700; font-size: 1rem; letter-spacing: 0.3em; text-transform: uppercase; margin: 3rem 0 1.5rem; }
+  .dossier-entry p { font-family: 'Fraunces', serif; font-size: 1.3rem; line-height: 1.6; margin: 0 0 1.5rem; }
+  
+  /* ───── COLOPHON ───── */
+  .colophon { background: #121212; color: #f5f1e8; padding: 8vh 8vw; text-align: center; }
+  .colophon .sig { font-family: 'Fraunces', serif; font-style: italic; font-size: clamp(2rem, 5vw, 4rem); margin-bottom: 2rem; }
+  .colophon .meta { font-weight: 500; font-size: 0.9rem; letter-spacing: 0.3em; text-transform: uppercase; opacity: 0.6; }
+  .classic-link { margin-top: 3rem; font-size: 0.9rem; letter-spacing: 0.2em; text-transform: uppercase; }
+  .classic-link a { color: inherit; text-decoration: underline; }
+
+  @media (max-width: 800px) {
+    .spread { padding: 12vh 6vw; }
+    .issue-line { flex-direction: column; gap: 1rem; align-items: center; }
+    .arc-stat-hero .numeral { font-size: 15rem; top: auto; bottom: 5vh; }
+    .arc-editorial-pullquote { grid-template-columns: 1fr; }
+    .arc-editorial-pullquote .quote-side { padding: 12vw; }
+    .ctas { flex-direction: column; align-items: stretch; gap: 1rem; }
+    .arc-academic-drop-cap .cols { columns: 1; }
+  }
+</style>
 </head>
-<body>
-    <header>
-        <h1>GitHub Trending Digest - February 21, 2026</h1>
-        <nav>
-            <a href="../">&larr; GitHub Calendar</a>
-            <a href="../hn/2026-02-21/">Hacker News</a>
-        </nav>
-    </header>
-    <main>
-
-        <h2 class="section-heading">Today's Daily Trending</h2>
-        <div class="repo-controls">
-            <button id="collapse-seen-btn" type="button">Collapse Repos Not New Today</button>
-            <button id="expand-all-btn" type="button">Expand All</button>
-        </div>
-        <p class="seen-help">Repos marked "Not new today" appeared on one or more previous daily pages.</p>
-        <article>
-            <div class="repos">
-
-            <section class="repo" data-seen-before="0"
-                     data-share-title="vxcontrol/pentagi"
-                     data-share-url="https://github.com/vxcontrol/pentagi">
-                <div class="repo-header-row">
-                    <h3>1. <a href="https://github.com/vxcontrol/pentagi" target="_blank" rel="noopener noreferrer">vxcontrol/pentagi</a> </h3>
-                    <div class="header-buttons">
-                        <button type="button" class="discuss-btn" aria-label="Discuss with AI" title="Discuss with AI">&#x1F4AC;</button>
-                        <button type="button" class="repo-toggle" aria-expanded="true">Hide details</button>
-                    </div>
-                </div>
-                <div class="repo-body">
-                    <p class="description">✨ Fully autonomous AI Agents system capable of performing complex penetration testing tasks</p>
-                    <p class="meta">
-                        <span class="language">Go</span> |
-                        <span class="stars">4,235</span>
-                        | <span class="today">875 stars today</span>
-                    </p>
-                    <p class="history">First seen: February 21, 2026 | Streak: 1d</p>
-                    <div class="ai-summary">
-                        <h4>Analysis</h4>
-                        <p>PentAGI is an autonomous, AI-driven penetration testing platform designed to automate complex security assessments within isolated, sandboxed Docker environments. The system utilizes a multi-agent architecture—delegating tasks among specialized researchers, developers, and executors—while integrating over 20 professional security tools like Nmap, Metasploit, and SQLmap. To enhance decision-making and reliability, the platform leverages a smart memory system, Neo4j-based knowledge graphs, and persistent vector storage, all managed through a scalable, microservices-oriented backend.</p>
+<body id="top">
+  <header class="masthead">
+    <div class="masthead-nav">
+      <a href="../../">Index</a>
+      <a href="../">Calendar</a>
+      <a href="classic.html">Classic view</a>
+    </div>
+    <h1 class="frnc">Ten stories, before your coffee.</h1>
+    <div class="issue-line">
+      <span>Vol. I</span>
+      <span>February 21, 2026</span>
+      <span>GitHub Daily Trending</span>
+    </div>
+  </header>
+  <section id="story-1" class="spread arc-agent-foundry">
+    <div class="blueprint-bg"></div>
+    <div class="body">
+      <div class="kicker">Autonomous Security</div>
+      <h2 class="frnc">PentAGI Orchestrates Multi-Agent Vulnerability Research</h2>
+      <p class="lede">This platform deploys a tiered architecture of autonomous agents to execute complex penetration testing routines within sandboxed Docker environments. By integrating knowledge graphs with professional-grade security toolkits, it formalizes the path from reconnaissance to exploit verification.</p>
+      <div class="ctas">
+        <a href="https://github.com/vxcontrol/pentagi" class="btn-read" target="_blank">Deploy →</a>
+        <a href="#dossier-1" class="btn-dossier">Analysis ↓</a>
+      </div>
+    </div>
+  </section>
+  <section id="story-2" class="spread arc-ui-lab">
+    <div class="lab-gradient"></div>
+    <div class="body">
+      <div class="kicker">Frontend Tools</div>
+      <h2 class="frnc">Electrobun Streamlines Modern Web Application Development</h2>
+      <p class="lede">With a focus on developer ergonomics, Electrobun provides a refined interface for building cross-platform web experiences. Its modular architecture simplifies the overhead of managing complex application lifecycles through intuitive, streamlined components.</p>
+      <div class="ctas">
+        <a href="https://github.com/blackboardsh/electrobun" class="btn-read" target="_blank">Explore →</a>
+        <a href="#dossier-2" class="btn-dossier">Analysis ↓</a>
+      </div>
+    </div>
+  </section>
+  <section id="story-3" class="spread arc-experimental-workshop">
+    <div class="pad-lines"></div>
+    <div class="body">
+      <div class="kicker">Hardware Research</div>
+      <h2 class="frnc">Pyrite64 Explores N64 Hardware Emulation Boundaries</h2>
+      <p class="lede">This prototype offers a gritty, hands-on look at console architecture, stripping back layers to examine how legacy systems handle low-level memory operations. It serves as a playground for those curious about the interplay between hardware constraints and software interpretation.</p>
+      <div class="ctas">
+        <a href="https://github.com/HailToDodongo/pyrite64" class="btn-read" target="_blank">Iterate →</a>
+        <a href="#dossier-3" class="btn-dossier">Analysis ↓</a>
+      </div>
+    </div>
+  </section>
+  <section id="story-4" class="spread arc-blueprint">
+    <div class="grid"></div>
+    <div class="body">
+      <div class="kicker">Workflow Design</div>
+      <h2 class="frnc">Superpowers Standardizes AI-Driven Software Engineering Cycles</h2>
+      <p class="lede">Moving beyond mere code generation, this framework mandates a structured Socratic workflow for every development task. It enforces engineering rigor through automated subagent planning, ensuring that every line of code aligns with established development protocols.</p>
+      <div class="ctas">
+        <a href="https://github.com/obra/superpowers" class="btn-read" target="_blank">Read →</a>
+        <a href="#dossier-4" class="btn-dossier">Full analysis ↓</a>
+      </div>
+    </div>
+  </section>
+  <section id="story-5" class="spread arc-privacy-shield">
+    <div class="shield-glitch"></div>
+    <div class="body">
+      <div class="kicker">Security Audit</div>
+      <h2 class="frnc">Trivy Unifies Cloud-Native Vulnerability Scanning</h2>
+      <p class="lede">Trivy acts as a bulwark against misconfigurations by auditing container images and infrastructure-as-code files in real-time. It provides the visibility required to maintain integrity within modern, ephemeral deployment environments.</p>
+      <div class="ctas">
+        <a href="https://github.com/aquasecurity/trivy" class="btn-read" target="_blank">Secure →</a>
+        <a href="#dossier-5" class="btn-dossier">Analysis ↓</a>
+      </div>
+    </div>
+  </section>
+  <section id="story-6" class="spread arc-stat-hero">
+    <div class="numeral">31K</div>
+    <div class="body">
+      <div class="kicker">Growth Milestones</div>
+      <h2 class="frnc">PostHog Scales User Behavioral Analytics Globally</h2>
+      <p class="lede">As the platform matures, it continues to command significant adoption across the engineering landscape. The scale of its integration suggests a fundamental shift in how teams track product engagement metrics.</p>
+      <div class="ctas">
+        <a href="https://github.com/PostHog/posthog" class="btn-read" target="_blank">Read →</a>
+        <a href="#dossier-6" class="btn-dossier">Full analysis ↓</a>
+      </div>
+    </div>
+  </section>
+  <section id="story-7" class="spread arc-library-archive">
+    <div class="parchment"></div>
+    <div class="body">
+      <div class="kicker">Code Standards</div>
+      <h2 class="frnc">ESLint Maintains Rigorous JavaScript Quality Control</h2>
+      <p class="lede">Serving as the definitive authority on code consistency, this project defines the syntactic norms for the modern web. Its extensive library of rules remains the cornerstone of professional JavaScript development.</p>
+      <div class="ctas">
+        <a href="https://github.com/eslint/eslint" class="btn-read" target="_blank">Study →</a>
+        <a href="#dossier-7" class="btn-dossier">Analysis ↓</a>
+      </div>
+    </div>
+  </section>
+  <section id="story-8" class="spread arc-terminal-utility">
+    <div class="crt-lines"></div>
+    <div class="body">
+      <div class="kicker">Command Line</div>
+      <h2 class="frnc">Anthropic Official Plugins Extend Claude CLI Capabilities</h2>
+      <p class="lede">This repository provides the essential command-line extensions required to customize AI agent interactions. It offers a standardized interface for developers to inject specialized skills directly into their local coding environment.</p>
+      <div class="ctas">
+        <a href="https://github.com/anthropics/claude-plugins-official" class="btn-read" target="_blank">Execute →</a>
+        <a href="#dossier-8" class="btn-dossier">Analysis ↓</a>
+      </div>
+    </div>
+  </section>
+  <section id="story-9" class="spread arc-midnight">
+    <div class="glow"></div>
+    <div class="body">
+      <div class="kicker">Effect Systems</div>
+      <h2 class="frnc">Effect-Smol Minimizes Complexity in Functional Programming</h2>
+      <p class="lede">Designed for those working through the night, this lightweight toolkit provides the core functional primitives needed to stabilize asynchronous operations. It brings quiet efficiency to heavy-duty state management tasks.</p>
+      <div class="ctas">
+        <a href="https://github.com/Effect-TS/effect-smol" class="btn-read" target="_blank">Read →</a>
+        <a href="#dossier-9" class="btn-dossier">Full analysis ↓</a>
+      </div>
+    </div>
+  </section>
+  <section id="story-10" class="spread arc-model-bench">
+    <div class="bench-silver"></div>
+    <div class="body">
+      <div class="kicker">Forecasting AI</div>
+      <h2 class="frnc">TimesFM 2.5 Brings Foundation Modeling to Time-Series</h2>
+      <p class="lede">This model pushes the limits of predictive accuracy by utilizing a decoder-only architecture across massive, diverse datasets. Its streamlined 200M parameter count ensures high-throughput performance for complex forecasting benchmarks.</p>
+      <div class="ctas">
+        <a href="https://github.com/google-research/timesfm" class="btn-read" target="_blank">Infer →</a>
+        <a href="#dossier-10" class="btn-dossier">Analysis ↓</a>
+      </div>
+    </div>
+  </section>
+  <section id="dossier" class="dossier">
+    <div class="dossier-head">
+      <div class="tagline">Appendix</div>
+      <h2>The Dossier</h2>
+      <p class="intro">Full analysis and reactions for today's ten stories. <a href="#top">↑ Back to the edition</a></p>
+    </div>
+    <article id="dossier-1" class="dossier-entry">
+      <div class="dossier-meta">N<sup>o</sup> 01 &nbsp;·&nbsp; Agent Foundry &nbsp;·&nbsp; Autonomous Security</div>
+      <h3>Untitled</h3>
+      <p class="dossier-source">
+        <a href="https://github.com/vxcontrol/pentagi" target="_blank" rel="noopener">github.com</a>
+        &nbsp;·&nbsp; 4,235 stars &nbsp;·&nbsp; 0 stars today
+        
+      </p>
+      <h4>Analysis</h4>
+      <p>PentAGI is an autonomous, AI-driven penetration testing platform designed to automate complex security assessments within isolated, sandboxed Docker environments. The system utilizes a multi-agent architecture—delegating tasks among specialized researchers, developers, and executors—while integrating over 20 professional security tools like Nmap, Metasploit, and SQLmap. To enhance decision-making and reliability, the platform leverages a smart memory system, Neo4j-based knowledge graphs, and persistent vector storage, all managed through a scalable, microservices-oriented backend.</p>
 <p>This project is highly beneficial for information security professionals, ethical hackers, and security researchers who require a sophisticated, self-hosted solution to streamline and scale vulnerability discovery. It is currently trending because it represents the cutting edge of &quot;Agentic AI,&quot; moving beyond simple chatbots to perform complex, multi-step real-world actions. By providing comprehensive reporting, real-time observability through Grafana and Langfuse, and support for a wide array of LLM providers, PentAGI offers a powerful framework for those seeking to modernize their security testing workflows.</p>
-                    </div>
-                </div>
-            </section>
-
-            <section class="repo" data-seen-before="0"
-                     data-share-title="blackboardsh/electrobun"
-                     data-share-url="https://github.com/blackboardsh/electrobun">
-                <div class="repo-header-row">
-                    <h3>2. <a href="https://github.com/blackboardsh/electrobun" target="_blank" rel="noopener noreferrer">blackboardsh/electrobun</a> </h3>
-                    <div class="header-buttons">
-                        <button type="button" class="discuss-btn" aria-label="Discuss with AI" title="Discuss with AI">&#x1F4AC;</button>
-                        <button type="button" class="repo-toggle" aria-expanded="true">Hide details</button>
-                    </div>
-                </div>
-                <div class="repo-body">
-                    <p class="description">Build ultra fast, tiny, and cross-platform desktop apps with Typescript.</p>
-                    <p class="meta">
-                        <span class="language">C++</span> |
-                        <span class="stars">6,145</span>
-                        | <span class="today">419 stars today</span>
-                    </p>
-                    <p class="history">First seen: February 21, 2026 | Streak: 1d</p>
-                    <div class="ai-summary">
-                        <h4>Analysis</h4>
-                        <p><em>Summary not available.</em></p>
-                    </div>
-                </div>
-            </section>
-
-            <section class="repo" data-seen-before="1"
-                     data-share-title="HailToDodongo/pyrite64"
-                     data-share-url="https://github.com/HailToDodongo/pyrite64">
-                <div class="repo-header-row">
-                    <h3>3. <a href="https://github.com/HailToDodongo/pyrite64" target="_blank" rel="noopener noreferrer">HailToDodongo/pyrite64</a> <span class="seen-badge">Not new today</span></h3>
-                    <div class="header-buttons">
-                        <button type="button" class="discuss-btn" aria-label="Discuss with AI" title="Discuss with AI">&#x1F4AC;</button>
-                        <button type="button" class="repo-toggle" aria-expanded="true">Hide details</button>
-                    </div>
-                </div>
-                <div class="repo-body">
-                    <p class="description">N64 Game-Engine and Editor using libdragon &amp; tiny3d</p>
-                    <p class="meta">
-                        <span class="language">C++</span> |
-                        <span class="stars">2,171</span>
-                        | <span class="today">425 stars today</span>
-                    </p>
-                    <p class="history">First seen: February 19, 2026 | Streak: 3d</p>
-                    <div class="ai-summary">
-                        <h4>Analysis</h4>
-                        <p><em>Summary not available.</em></p>
-                    </div>
-                </div>
-            </section>
-
-            <section class="repo" data-seen-before="1"
-                     data-share-title="obra/superpowers"
-                     data-share-url="https://github.com/obra/superpowers">
-                <div class="repo-header-row">
-                    <h3>4. <a href="https://github.com/obra/superpowers" target="_blank" rel="noopener noreferrer">obra/superpowers</a> <span class="seen-badge">Not new today</span></h3>
-                    <div class="header-buttons">
-                        <button type="button" class="discuss-btn" aria-label="Discuss with AI" title="Discuss with AI">&#x1F4AC;</button>
-                        <button type="button" class="repo-toggle" aria-expanded="true">Hide details</button>
-                    </div>
-                </div>
-                <div class="repo-body">
-                    <p class="description">An agentic skills framework &amp; software development methodology that works.</p>
-                    <p class="meta">
-                        <span class="language">Shell</span> |
-                        <span class="stars">56,382</span>
-                        | <span class="today">980 stars today</span>
-                    </p>
-                    <p class="history">First seen: February 04, 2026 | Streak: 5d</p>
-                    <div class="ai-summary">
-                        <h4>Analysis</h4>
-                        <p>Superpowers is an agentic framework designed to standardize the software development lifecycle by integrating a library of composable, automated &quot;skills&quot; directly into coding agents like Claude Code and Cursor. Instead of jumping straight to code, the system enforces a structured workflow that begins with Socratic brainstorming, proceeds to detailed implementation planning, and culminates in a rigorous subagent-driven development cycle. Technically, it functions as a plugin that triggers mandatory engineering protocols—such as strict test-driven development (TDD), git worktree management, and iterative code reviews—ensuring that agents maintain high-quality standards and consistent progress without requiring manual intervention.</p>
+      
+    </article>
+    <article id="dossier-2" class="dossier-entry">
+      <div class="dossier-meta">N<sup>o</sup> 02 &nbsp;·&nbsp; UI Lab &nbsp;·&nbsp; Frontend Tools</div>
+      <h3>Untitled</h3>
+      <p class="dossier-source">
+        <a href="https://github.com/blackboardsh/electrobun" target="_blank" rel="noopener">github.com</a>
+        &nbsp;·&nbsp; 6,145 stars &nbsp;·&nbsp; 0 stars today
+        
+      </p>
+      <h4>Analysis</h4>
+      <p class="muted"><em>Analysis not available.</em></p>
+      
+    </article>
+    <article id="dossier-3" class="dossier-entry">
+      <div class="dossier-meta">N<sup>o</sup> 03 &nbsp;·&nbsp; The Workshop &nbsp;·&nbsp; Hardware Research</div>
+      <h3>Untitled</h3>
+      <p class="dossier-source">
+        <a href="https://github.com/HailToDodongo/pyrite64" target="_blank" rel="noopener">github.com</a>
+        &nbsp;·&nbsp; 2,171 stars &nbsp;·&nbsp; 0 stars today
+        
+      </p>
+      <h4>Analysis</h4>
+      <p class="muted"><em>Analysis not available.</em></p>
+      
+    </article>
+    <article id="dossier-4" class="dossier-entry">
+      <div class="dossier-meta">N<sup>o</sup> 04 &nbsp;·&nbsp; Build Log &nbsp;·&nbsp; Workflow Design</div>
+      <h3>Untitled</h3>
+      <p class="dossier-source">
+        <a href="https://github.com/obra/superpowers" target="_blank" rel="noopener">github.com</a>
+        &nbsp;·&nbsp; 56,382 stars &nbsp;·&nbsp; 0 stars today
+        
+      </p>
+      <h4>Analysis</h4>
+      <p>Superpowers is an agentic framework designed to standardize the software development lifecycle by integrating a library of composable, automated &quot;skills&quot; directly into coding agents like Claude Code and Cursor. Instead of jumping straight to code, the system enforces a structured workflow that begins with Socratic brainstorming, proceeds to detailed implementation planning, and culminates in a rigorous subagent-driven development cycle. Technically, it functions as a plugin that triggers mandatory engineering protocols—such as strict test-driven development (TDD), git worktree management, and iterative code reviews—ensuring that agents maintain high-quality standards and consistent progress without requiring manual intervention.</p>
 <p>This project is highly beneficial for developers and software teams looking to minimize the &quot;hallucination&quot; and ad-hoc coding patterns often associated with AI-assisted programming. It is trending because it addresses a critical gap in the current AI developer tool ecosystem: the transition from simple code generation to reliable, autonomous project execution that mirrors professional engineering discipline. By embedding best practices like YAGNI and DRY into the agent&#x27;s core decision-making loop, Superpowers provides a repeatable, scalable methodology for building robust software applications.</p>
-                    </div>
-                </div>
-            </section>
-
-            <section class="repo" data-seen-before="1"
-                     data-share-title="aquasecurity/trivy"
-                     data-share-url="https://github.com/aquasecurity/trivy">
-                <div class="repo-header-row">
-                    <h3>5. <a href="https://github.com/aquasecurity/trivy" target="_blank" rel="noopener noreferrer">aquasecurity/trivy</a> <span class="seen-badge">Not new today</span></h3>
-                    <div class="header-buttons">
-                        <button type="button" class="discuss-btn" aria-label="Discuss with AI" title="Discuss with AI">&#x1F4AC;</button>
-                        <button type="button" class="repo-toggle" aria-expanded="true">Hide details</button>
-                    </div>
-                </div>
-                <div class="repo-body">
-                    <p class="description">Find vulnerabilities, misconfigurations, secrets, SBOM in containers, Kubernetes, code repositories, clouds and more</p>
-                    <p class="meta">
-                        <span class="language">Go</span> |
-                        <span class="stars">32,128</span>
-                        | <span class="today">31 stars today</span>
-                    </p>
-                    <p class="history">First seen: February 06, 2026 | Streak: 1d</p>
-                    <div class="ai-summary">
-                        <h4>Analysis</h4>
-                        <p>Trivy is a comprehensive, open-source security scanner designed to identify vulnerabilities, misconfigurations, and sensitive data across diverse environments, including container images, filesystems, and Kubernetes clusters. By leveraging a variety of scanners, it can generate software bills of materials (SBOMs), detect exposed secrets, and identify infrastructure-as-code (IaC) issues or software license violations. Technically, it functions as a highly versatile CLI tool that supports a wide range of platforms and programming languages, providing actionable security insights through automated scanning processes.</p>
+      
+    </article>
+    <article id="dossier-5" class="dossier-entry">
+      <div class="dossier-meta">N<sup>o</sup> 05 &nbsp;·&nbsp; Privacy Shield &nbsp;·&nbsp; Security Audit</div>
+      <h3>Untitled</h3>
+      <p class="dossier-source">
+        <a href="https://github.com/aquasecurity/trivy" target="_blank" rel="noopener">github.com</a>
+        &nbsp;·&nbsp; 32,128 stars &nbsp;·&nbsp; 0 stars today
+        
+      </p>
+      <h4>Analysis</h4>
+      <p>Trivy is a comprehensive, open-source security scanner designed to identify vulnerabilities, misconfigurations, and sensitive data across diverse environments, including container images, filesystems, and Kubernetes clusters. By leveraging a variety of scanners, it can generate software bills of materials (SBOMs), detect exposed secrets, and identify infrastructure-as-code (IaC) issues or software license violations. Technically, it functions as a highly versatile CLI tool that supports a wide range of platforms and programming languages, providing actionable security insights through automated scanning processes.</p>
 <p>Development teams, DevOps engineers, and security professionals benefit from Trivy’s ability to integrate seamlessly into existing CI/CD pipelines, IDEs, and Kubernetes workflows. The project is trending because it simplifies the complex task of securing modern cloud-native applications, offering a unified solution that replaces multiple fragmented security tools. Its widespread adoption is further driven by its ease of use, extensive ecosystem support, and its status as a robust, community-backed project from Aqua Security.</p>
-                    </div>
-                </div>
-            </section>
-
-            <section class="repo" data-seen-before="0"
-                     data-share-title="PostHog/posthog"
-                     data-share-url="https://github.com/PostHog/posthog">
-                <div class="repo-header-row">
-                    <h3>6. <a href="https://github.com/PostHog/posthog" target="_blank" rel="noopener noreferrer">PostHog/posthog</a> </h3>
-                    <div class="header-buttons">
-                        <button type="button" class="discuss-btn" aria-label="Discuss with AI" title="Discuss with AI">&#x1F4AC;</button>
-                        <button type="button" class="repo-toggle" aria-expanded="true">Hide details</button>
-                    </div>
-                </div>
-                <div class="repo-body">
-                    <p class="description">🦔 PostHog is an all-in-one developer platform for building successful products. We offer product analytics, web analytics, session replay, error tracking, feature flags, experimentation, surveys, data warehouse, a CDP, and an AI product assistant to help debug your code, ship features faster, and keep all your usage and customer data in one stack.</p>
-                    <p class="meta">
-                        <span class="language">Python</span> |
-                        <span class="stars">31,614</span>
-                        | <span class="today">46 stars today</span>
-                    </p>
-                    <p class="history">First seen: February 21, 2026 | Streak: 1d</p>
-                    <div class="ai-summary">
-                        <h4>Analysis</h4>
-                        <p><em>Summary not available.</em></p>
-                    </div>
-                </div>
-            </section>
-
-            <section class="repo" data-seen-before="0"
-                     data-share-title="eslint/eslint"
-                     data-share-url="https://github.com/eslint/eslint">
-                <div class="repo-header-row">
-                    <h3>7. <a href="https://github.com/eslint/eslint" target="_blank" rel="noopener noreferrer">eslint/eslint</a> </h3>
-                    <div class="header-buttons">
-                        <button type="button" class="discuss-btn" aria-label="Discuss with AI" title="Discuss with AI">&#x1F4AC;</button>
-                        <button type="button" class="repo-toggle" aria-expanded="true">Hide details</button>
-                    </div>
-                </div>
-                <div class="repo-body">
-                    <p class="description">Find and fix problems in your JavaScript code.</p>
-                    <p class="meta">
-                        <span class="language">JavaScript</span> |
-                        <span class="stars">27,073</span>
-                        | <span class="today">30 stars today</span>
-                    </p>
-                    <p class="history">First seen: February 21, 2026 | Streak: 1d</p>
-                    <div class="ai-summary">
-                        <h4>Analysis</h4>
-                        <p><em>Summary not available.</em></p>
-                    </div>
-                </div>
-            </section>
-
-            <section class="repo" data-seen-before="0"
-                     data-share-title="anthropics/claude-plugins-official"
-                     data-share-url="https://github.com/anthropics/claude-plugins-official">
-                <div class="repo-header-row">
-                    <h3>8. <a href="https://github.com/anthropics/claude-plugins-official" target="_blank" rel="noopener noreferrer">anthropics/claude-plugins-official</a> </h3>
-                    <div class="header-buttons">
-                        <button type="button" class="discuss-btn" aria-label="Discuss with AI" title="Discuss with AI">&#x1F4AC;</button>
-                        <button type="button" class="repo-toggle" aria-expanded="true">Hide details</button>
-                    </div>
-                </div>
-                <div class="repo-body">
-                    <p class="description">Official, Anthropic-managed directory of high quality Claude Code Plugins.</p>
-                    <p class="meta">
-                        <span class="language">Python</span> |
-                        <span class="stars">7,934</span>
-                        | <span class="today">75 stars today</span>
-                    </p>
-                    <p class="history">First seen: February 21, 2026 | Streak: 1d</p>
-                    <div class="ai-summary">
-                        <h4>Analysis</h4>
-                        <p>The `anthropics/claude-plugins-official` repository serves as the central, curated marketplace for high-quality extensions designed for Claude Code. It categorizes tools into internal Anthropic-maintained plugins and verified third-party community submissions, providing a standardized framework for integrating new capabilities like custom commands, agents, and skills. Technically, the repository enforces a specific directory structure and metadata requirement via `plugin.json` and `mcp.json` files, allowing users to seamlessly install and manage these enhancements directly through the Claude Code CLI.</p>
+      
+    </article>
+    <article id="dossier-6" class="dossier-entry">
+      <div class="dossier-meta">N<sup>o</sup> 06 &nbsp;·&nbsp; Growth Stat &nbsp;·&nbsp; Growth Milestones</div>
+      <h3>Untitled</h3>
+      <p class="dossier-source">
+        <a href="https://github.com/PostHog/posthog" target="_blank" rel="noopener">github.com</a>
+        &nbsp;·&nbsp; 31,614 stars &nbsp;·&nbsp; 0 stars today
+        
+      </p>
+      <h4>Analysis</h4>
+      <p class="muted"><em>Analysis not available.</em></p>
+      
+    </article>
+    <article id="dossier-7" class="dossier-entry">
+      <div class="dossier-meta">N<sup>o</sup> 07 &nbsp;·&nbsp; The Library &nbsp;·&nbsp; Code Standards</div>
+      <h3>Untitled</h3>
+      <p class="dossier-source">
+        <a href="https://github.com/eslint/eslint" target="_blank" rel="noopener">github.com</a>
+        &nbsp;·&nbsp; 27,073 stars &nbsp;·&nbsp; 0 stars today
+        
+      </p>
+      <h4>Analysis</h4>
+      <p class="muted"><em>Analysis not available.</em></p>
+      
+    </article>
+    <article id="dossier-8" class="dossier-entry">
+      <div class="dossier-meta">N<sup>o</sup> 08 &nbsp;·&nbsp; Terminal Utility &nbsp;·&nbsp; Command Line</div>
+      <h3>Untitled</h3>
+      <p class="dossier-source">
+        <a href="https://github.com/anthropics/claude-plugins-official" target="_blank" rel="noopener">github.com</a>
+        &nbsp;·&nbsp; 7,934 stars &nbsp;·&nbsp; 0 stars today
+        
+      </p>
+      <h4>Analysis</h4>
+      <p>The `anthropics/claude-plugins-official` repository serves as the central, curated marketplace for high-quality extensions designed for Claude Code. It categorizes tools into internal Anthropic-maintained plugins and verified third-party community submissions, providing a standardized framework for integrating new capabilities like custom commands, agents, and skills. Technically, the repository enforces a specific directory structure and metadata requirement via `plugin.json` and `mcp.json` files, allowing users to seamlessly install and manage these enhancements directly through the Claude Code CLI.</p>
 <p>Developers and power users who utilize Claude Code for complex automation tasks will benefit most from this centralized hub of verified functionality. The project is trending because it creates a unified ecosystem for extending AI agent capabilities, directly addressing the growing demand for customized, task-specific workflows. By vetting external contributions while providing clear development standards, Anthropic is successfully fostering an extensible platform that enhances Claude&#x27;s utility in specialized technical environments.</p>
-                    </div>
-                </div>
-            </section>
-
-            <section class="repo" data-seen-before="0"
-                     data-share-title="Effect-TS/effect-smol"
-                     data-share-url="https://github.com/Effect-TS/effect-smol">
-                <div class="repo-header-row">
-                    <h3>9. <a href="https://github.com/Effect-TS/effect-smol" target="_blank" rel="noopener noreferrer">Effect-TS/effect-smol</a> </h3>
-                    <div class="header-buttons">
-                        <button type="button" class="discuss-btn" aria-label="Discuss with AI" title="Discuss with AI">&#x1F4AC;</button>
-                        <button type="button" class="repo-toggle" aria-expanded="true">Hide details</button>
-                    </div>
-                </div>
-                <div class="repo-body">
-                    <p class="description">Core libraries and experimental work for Effect v4</p>
-                    <p class="meta">
-                        <span class="language">TypeScript</span> |
-                        <span class="stars">383</span>
-                        | <span class="today">14 stars today</span>
-                    </p>
-                    <p class="history">First seen: February 21, 2026 | Streak: 1d</p>
-                    <div class="ai-summary">
-                        <h4>Analysis</h4>
-                        <p><em>Summary not available.</em></p>
-                    </div>
-                </div>
-            </section>
-
-            <section class="repo" data-seen-before="0"
-                     data-share-title="google-research/timesfm"
-                     data-share-url="https://github.com/google-research/timesfm">
-                <div class="repo-header-row">
-                    <h3>10. <a href="https://github.com/google-research/timesfm" target="_blank" rel="noopener noreferrer">google-research/timesfm</a> </h3>
-                    <div class="header-buttons">
-                        <button type="button" class="discuss-btn" aria-label="Discuss with AI" title="Discuss with AI">&#x1F4AC;</button>
-                        <button type="button" class="repo-toggle" aria-expanded="true">Hide details</button>
-                    </div>
-                </div>
-                <div class="repo-body">
-                    <p class="description">TimesFM (Time Series Foundation Model) is a pretrained time-series foundation model developed by Google Research for time-series forecasting.</p>
-                    <p class="meta">
-                        <span class="language">Python</span> |
-                        <span class="stars">8,900</span>
-                        | <span class="today">404 stars today</span>
-                    </p>
-                    <p class="history">First seen: February 21, 2026 | Streak: 1d</p>
-                    <div class="ai-summary">
-                        <h4>Analysis</h4>
-                        <p>TimesFM is a decoder-only foundation model developed by Google Research designed to perform robust time-series forecasting across diverse datasets. The latest 2.5 version utilizes a streamlined 200M parameter architecture that significantly increases context length support to 16k while introducing optional continuous quantile forecasting via a dedicated head. Technically, the model processes time-series input sequences to generate point and probabilistic forecasts, offering compatibility with both PyTorch and Flax backends for flexible deployment across various hardware accelerators.</p>
+      
+    </article>
+    <article id="dossier-9" class="dossier-entry">
+      <div class="dossier-meta">N<sup>o</sup> 09 &nbsp;·&nbsp; Night Shift &nbsp;·&nbsp; Effect Systems</div>
+      <h3>Untitled</h3>
+      <p class="dossier-source">
+        <a href="https://github.com/Effect-TS/effect-smol" target="_blank" rel="noopener">github.com</a>
+        &nbsp;·&nbsp; 383 stars &nbsp;·&nbsp; 0 stars today
+        
+      </p>
+      <h4>Analysis</h4>
+      <p class="muted"><em>Analysis not available.</em></p>
+      
+    </article>
+    <article id="dossier-10" class="dossier-entry">
+      <div class="dossier-meta">N<sup>o</sup> 10 &nbsp;·&nbsp; Model Bench &nbsp;·&nbsp; Forecasting AI</div>
+      <h3>Untitled</h3>
+      <p class="dossier-source">
+        <a href="https://github.com/google-research/timesfm" target="_blank" rel="noopener">github.com</a>
+        &nbsp;·&nbsp; 8,900 stars &nbsp;·&nbsp; 0 stars today
+        
+      </p>
+      <h4>Analysis</h4>
+      <p>TimesFM is a decoder-only foundation model developed by Google Research designed to perform robust time-series forecasting across diverse datasets. The latest 2.5 version utilizes a streamlined 200M parameter architecture that significantly increases context length support to 16k while introducing optional continuous quantile forecasting via a dedicated head. Technically, the model processes time-series input sequences to generate point and probabilistic forecasts, offering compatibility with both PyTorch and Flax backends for flexible deployment across various hardware accelerators.</p>
 <p>Data scientists and machine learning engineers working on predictive analytics will find this project highly beneficial due to its ability to generalize across unknown domains without requiring extensive task-specific retraining. The repository is currently trending because it represents a major advancement in moving time-series analysis toward a generative foundation model paradigm, reducing the complexity of building custom forecasting pipelines. By providing an open-access implementation of state-of-the-art research, Google enables practitioners to integrate sophisticated, large-scale forecasting capabilities directly into their own applications.</p>
-                    </div>
-                </div>
-            </section>
-
-            </div>
-        </article>
-    </main>
-    <footer>
-        <p>Generated automatically. Data from <a href="https://github.com/trending">GitHub Trending</a>.</p>
-    </footer>
-
+      
+    </article>
+  </section>
+  <footer class="colophon">
+    <p class="sig">— that's the edition.</p>
+    <p class="meta">Set in Fraunces &amp; Inter · Compiled February 21, 2026</p>
+    <p class="classic-link"><a href="classic.html">Prefer the classic card view? →</a></p>
+  </footer>
 <script>
 (() => {
-    const readKey = "gtd:read_days:gh:v1";
-    const dayStr = "2026-02-21";
-
-    let stored = [];
-    try {
-        stored = JSON.parse(localStorage.getItem(readKey) || "[]");
-        if (!Array.isArray(stored)) {
-            stored = [];
-        }
-    } catch (_err) {
-        stored = [];
-    }
-
-    if (!stored.includes(dayStr)) {
-        stored.push(dayStr);
-        stored.sort();
-        localStorage.setItem(readKey, JSON.stringify(stored));
-    }
-
-    const collapseParam = new URLSearchParams(window.location.search).get("collapse_seen");
-    const collapseSeen = collapseParam === "0" ? false : true;
-
-    function setCollapsed(repoEl, collapsed) {
-        repoEl.classList.toggle("collapsed", collapsed);
-        const button = repoEl.querySelector(".repo-toggle");
-        if (button) {
-            button.textContent = collapsed ? "Show details" : "Hide details";
-            button.setAttribute("aria-expanded", String(!collapsed));
-        }
-    }
-
-    const repos = Array.from(document.querySelectorAll("section.repo[data-seen-before]"));
-
-    repos.forEach((repoEl) => {
-        const toggle = repoEl.querySelector(".repo-toggle");
-        if (!toggle) {
-            return;
-        }
-
-        toggle.addEventListener("click", () => {
-            setCollapsed(repoEl, !repoEl.classList.contains("collapsed"));
-        });
-    });
-
-    const collapseBtn = document.getElementById("collapse-seen-btn");
-    const expandBtn = document.getElementById("expand-all-btn");
-
-    if (collapseBtn) {
-        collapseBtn.addEventListener("click", () => {
-            repos.forEach((repoEl) => {
-                if (repoEl.dataset.seenBefore === "1") {
-                    setCollapsed(repoEl, true);
-                }
-            });
-        });
-    }
-
-    if (expandBtn) {
-        expandBtn.addEventListener("click", () => {
-            repos.forEach((repoEl) => setCollapsed(repoEl, false));
-        });
-    }
-
-    if (collapseSeen) {
-        repos.forEach((repoEl) => {
-            if (repoEl.dataset.seenBefore === "1") {
-                setCollapsed(repoEl, true);
-            }
-        });
-    }
-
-    // Discuss with AI button
-    const toast = document.createElement("div");
-    toast.className = "discuss-toast";
-    document.body.appendChild(toast);
-
-    function showToast(msg) {
-        toast.textContent = msg;
-        toast.classList.add("show");
-        setTimeout(() => toast.classList.remove("show"), 2500);
-    }
-
-    function buildGHMarkdown(card) {
-        const title = card.dataset.shareTitle || "";
-        const url = card.dataset.shareUrl || "";
-        const desc = card.querySelector(".description");
-        const meta = card.querySelector(".meta");
-        const analysis = card.querySelector(".ai-summary");
-        let md = "# " + title + "\n";
-        md += "Source: " + url;
-        if (meta) md += " | " + meta.textContent.trim();
-        md += "\n";
-        if (desc) md += "\n" + desc.textContent.trim() + "\n";
-        if (analysis) md += "\n## Analysis\n" + analysis.textContent.replace("Analysis", "").trim() + "\n";
-        return md;
-    }
-
-    document.querySelectorAll(".discuss-btn").forEach((btn) => {
-        btn.addEventListener("click", () => {
-            const card = btn.closest("section.repo");
-            if (!card) return;
-            const md = buildGHMarkdown(card);
-            const text = "I'd like to discuss this repo with you. Here's a summary:\n\n" + md;
-            const title = "Discuss: " + (card.dataset.shareTitle || "");
-            if (navigator.share) {
-                navigator.share({ title: title, text: text }).catch(() => {});
-            } else {
-                navigator.clipboard.writeText(text).then(
-                    () => showToast("Copied to clipboard \u2014 paste into your AI chat"),
-                    () => showToast("Failed to copy")
-                );
-            }
-        });
-    });
+  const key = "gtd:read_days:gh:v1";
+  const day = "2026-02-21";
+  let stored = [];
+  try {
+    stored = JSON.parse(localStorage.getItem(key) || "[]");
+    if (!Array.isArray(stored)) stored = [];
+  } catch (e) {}
+  if (!stored.includes(day)) {
+    stored.push(day);
+    stored.sort();
+    localStorage.setItem(key, JSON.stringify(stored));
+  }
 })();
 </script>
-
 </body>
 </html>

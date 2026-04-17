@@ -1,641 +1,447 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Morning Edition — Saturday, March 14, 2026</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght,SOFT@0,9..144,300..900,0..100;1,9..144,300..900,0..100&family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
-<style>
-
-  :root { --ink: #121212; --paper: #f5f1e8; }
-  * { box-sizing: border-box; }
-  html, body { margin: 0; padding: 0; }
-  body {
-    font-family: 'Inter', system-ui, sans-serif;
-    font-size: 20px;
-    line-height: 1.5;
-    color: var(--ink);
-    background: var(--paper);
-    -webkit-font-smoothing: antialiased;
-    text-rendering: optimizeLegibility;
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Morning Edition — March 14, 2026</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,100..900;1,9..144,100..900&family=Inter:wght@100..900&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+  <style>
+  :root {
+    --bg-light: #f5f1e8; --bg-dark: #121212;
+    --text-dark: #121212; --text-light: #f5f1e8;
+    --accent-red: #d32f2f; --accent-blue: #1976d2;
   }
-  a { color: inherit; }
-  a:hover { opacity: 0.7; }
-  .frnc { font-family: 'Fraunces', Georgia, serif; }
-  .mono { font-family: 'JetBrains Mono', ui-monospace, monospace; }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; padding: 0;
+    background: var(--bg-light); color: var(--text-dark);
+    font-family: 'Inter', sans-serif;
+    -webkit-font-smoothing: antialiased;
+  }
+  .frnc { font-family: 'Fraunces', serif; font-variant-classic-ligatures: common-ligatures; }
+  
+  /* ───── LAYOUT ───── */
+  .spread {
+    position: relative; min-height: 100vh; width: 100%;
+    display: flex; align-items: center; justify-content: center;
+    padding: 10vh 8vw; overflow: hidden;
+    scroll-snap-align: start;
+  }
+  .body { position: relative; z-index: 10; width: 100%; max-width: 1200px; }
+  .kicker { font-weight: 700; font-size: 1.1rem; letter-spacing: 0.4em; text-transform: uppercase; margin-bottom: 2rem; opacity: 0.8; }
+  h2 { font-size: clamp(3rem, 8vw, 6.5rem); line-height: 0.95; font-weight: 400; margin: 0 0 3rem; letter-spacing: -0.03em; }
+  .lede { font-size: clamp(1.4rem, 2.5vw, 2.1rem); line-height: 1.35; max-width: 800px; margin: 0 0 4rem; font-weight: 450; }
+  
+  .ctas { display: flex; gap: 2rem; align-items: center; }
+  .ctas a {
+    text-decoration: none; font-weight: 600; font-size: 1.1rem; letter-spacing: 0.1em; text-transform: uppercase;
+    padding: 1.2rem 2.4rem; transition: all 0.2s;
+  }
+  .btn-read { background: var(--text-dark); color: var(--bg-light); }
+  .btn-dossier { border-bottom: 2px solid currentColor; padding: 0.5rem 0 !important; }
+  
+  /* ───── ARCHETYPE CSS ───── */
+  
+  /* Stat Hero */
+  .arc-stat-hero { background: #e8e4da; }
+  .arc-stat-hero .numeral {
+    position: absolute; right: 0; top: 10vh; font-family: 'Fraunces', serif;
+    font-size: clamp(20rem, 50vw, 45rem); font-weight: 900; line-height: 0.8;
+    color: #121212; opacity: 0.05; pointer-events: none;
+  }
+
+  /* Midnight */
+  .arc-midnight { background: #0a0a0c; color: #fff; }
+  .arc-midnight .glow {
+    position: absolute; top: 30%; left: 40%; width: 40vw; height: 40vw;
+    background: radial-gradient(circle, rgba(110,64,255,0.15) 0%, transparent 70%);
+    filter: blur(60px); pointer-events: none;
+  }
+  .arc-midnight .btn-read { background: #fff; color: #000; }
+
+  /* Alert Stamp */
+  .arc-alert-stamp { background: #f9ebeb; color: #7a1e14; }
+  .arc-alert-stamp .stamp {
+    position: absolute; top: 15vh; right: 10vw; border: 6px solid #d32f2f;
+    padding: 1rem 2rem; font-weight: 900; font-size: 3rem; transform: rotate(12deg);
+    opacity: 0.2; pointer-events: none;
+  }
+  .arc-alert-stamp .btn-read { background: #d32f2f; color: #fff; }
+
+  /* Academic */
+  .arc-academic-drop-cap { background: #fdfaf3; color: #2c2925; }
+  .arc-academic-drop-cap h2 { font-size: clamp(2.5rem, 5vw, 4rem); border-bottom: 1px solid #ddd; padding-bottom: 2rem; margin-bottom: 4rem; }
+  .arc-academic-drop-cap .cols { columns: 2; column-gap: 4rem; }
+  .arc-academic-drop-cap .drop {
+    float: left; font-family: 'Fraunces', serif; font-size: 6.5rem; line-height: 0.75;
+    margin: 0.8rem 1rem 0 0; font-weight: 600; color: #121212;
+  }
+  .arc-academic-drop-cap .btn-read { background: #2c2925; color: #fff; }
+
+  /* Terminal */
+  .arc-terminal { background: #000; color: #20c20e; font-family: 'JetBrains Mono', monospace; }
+  .arc-terminal .window { border: 1px solid #20c20e; padding: 4rem; background: #050505; }
+  .arc-terminal .frnc { font-family: 'JetBrains Mono', monospace; font-weight: 700; letter-spacing: -0.05em; }
+  .arc-terminal .btn-read { background: #20c20e; color: #000; border-radius: 0; }
+  .arc-terminal .btn-dossier { border-color: #20c20e; }
+
+  /* Editorial Pullquote */
+  .arc-editorial-pullquote { display: grid; grid-template-columns: 1.2fr 1fr; gap: 5vw; background: #1a1a1a; color: #f5f1e8; align-items: stretch; }
+  .arc-editorial-pullquote .quote-side { background: #d4af37; color: #1a1a1a; display: flex; align-items: center; padding: 6vw; position: relative; }
+  .arc-editorial-pullquote blockquote { font-family: 'Fraunces', serif; font-size: 3rem; line-height: 1.1; font-style: italic; font-weight: 400; margin: 0; }
+  .arc-editorial-pullquote blockquote::before { content: '“'; position: absolute; top: 2vw; left: 2vw; font-size: 8rem; opacity: 0.3; }
+  .arc-editorial-pullquote .btn-read { background: #f5f1e8; color: #1a1a1a; }
+
+  /* Caution Tape */
+  .arc-caution-tape { background: #fcd116; color: #000; }
+  .arc-caution-tape .tape {
+    position: absolute; left: -10vw; width: 120vw; background: #000; color: #fcd116;
+    font-weight: 900; font-size: 1.5rem; padding: 1rem; transform: rotate(-3deg); z-index: 5;
+  }
+  .arc-caution-tape .tape.top { top: 5vh; transform: rotate(2deg); }
+  .arc-caution-tape .tape.bottom { bottom: 5vh; transform: rotate(-1.5deg); }
+  .arc-caution-tape .tag { background: #000; color: #fff; padding: 0.5rem 1rem; display: inline-block; font-weight: 800; margin-bottom: 2rem; }
+  .arc-caution-tape .btn-read { background: #000; color: #fcd116; }
+
+  /* Notebook */
+  .arc-notebook { background: #fcfcf4; }
+  .arc-notebook .lines {
+    position: absolute; inset: 0;
+    background: repeating-linear-gradient(transparent, transparent 1.6rem, #e0e0d0 1.6rem, #e0e0d0 1.7rem);
+    opacity: 0.5;
+  }
+  .arc-notebook .btn-read { background: #333; color: #fff; }
+
+  /* Mint Pattern */
+  .arc-mint-pattern { background: #d0f0e4; color: #1b4d3e; }
+  .arc-mint-pattern::before {
+    content: var(--bg-word); position: absolute; inset: 0;
+    font-weight: 900; font-size: 14vw; line-height: 0.7; opacity: 0.04;
+    display: flex; flex-wrap: wrap; word-break: break-all; overflow: hidden;
+  }
+  .arc-mint-pattern .btn-read { background: #1b4d3e; color: #d0f0e4; }
+
+  /* Pastel Playful */
+  .arc-pastel-playful { background: #fbe6e6; color: #8a4b4b; }
+  .arc-pastel-playful .alpha-grid {
+    position: absolute; right: 4vw; top: 10vh; bottom: 10vh; width: 40vw;
+    display: grid; grid-template-columns: repeat(5, 1fr); gap: 1rem;
+    font-weight: 900; font-size: 2rem; opacity: 0.08; pointer-events: none;
+  }
+  .arc-pastel-playful .btn-read { background: #8a4b4b; color: #fbe6e6; }
+
+  /* Product Plate */
+  .arc-product-plate { background: #eee; }
+  .arc-product-plate .plate {
+    background: linear-gradient(145deg, #ffffff, #dcdcdc);
+    padding: 6vw; box-shadow: 20px 20px 60px #cbcbcb, -20px -20px 60px #ffffff;
+    border-radius: 20px;
+  }
+  .arc-product-plate .btn-read { background: #121212; color: #eee; border-radius: 50px; }
+
+  /* Archive */
+  .arc-archive { background: #f4ece1; color: #4e3620; }
+  .arc-archive .mast {
+    position: absolute; top: 4vh; width: 100%; text-align: center;
+    font-family: 'Fraunces', serif; font-weight: 700; font-size: 1.2rem;
+    letter-spacing: 0.5em; opacity: 0.5; border-bottom: 1px double #ccc;
+    padding-bottom: 2vh;
+  }
+  .arc-archive .btn-read { background: #4e3620; color: #f4ece1; }
+
+  /* Obituary */
+  .arc-obituary { background: #fff; color: #000; }
+  .arc-obituary .obit-frame { border: 20px solid #000; padding: 6vw; text-align: center; }
+  .arc-obituary .lede { margin-left: auto; margin-right: auto; }
+  .arc-obituary .ornament { font-size: 4rem; margin: 3rem 0; opacity: 0.2; }
+  .arc-obituary .ctas { justify-content: center; }
+  .arc-obituary .btn-read { background: #000; color: #fff; }
+
+  /* Blueprint */
+  .arc-blueprint { background: #0047ab; color: #fff; }
+  .arc-blueprint .grid {
+    position: absolute; inset: 0; opacity: 0.2;
+    background-image: linear-gradient(#fff 1px, transparent 1px), linear-gradient(90deg, #fff 1px, transparent 1px);
+    background-size: 40px 40px;
+  }
+  .arc-blueprint .btn-read { background: #fff; color: #0047ab; }
+
+  /* Observatory */
+  .arc-observatory { background: #050510; color: #e0e0ff; }
+  .arc-observatory .stars {
+    position: absolute; inset: 0; opacity: 0.4;
+    background: radial-gradient(white, rgba(255,255,255,.2) 2px, transparent 40px);
+    background-size: 100px 100px;
+  }
+  .arc-observatory .btn-read { background: #e0e0ff; color: #050510; border-radius: 100px; }
+
+  /* GH Specific: Agent Foundry */
+  .arc-agent-foundry { background: #f0f4f8; color: #1a365d; }
+  .arc-agent-foundry .blueprint-bg {
+    position: absolute; inset: 0; opacity: 0.1;
+    background-image: radial-gradient(#1a365d 1px, transparent 1px);
+    background-size: 20px 20px;
+  }
+  .arc-agent-foundry .btn-read { background: #1a365d; color: #fff; }
+
+  /* GH Specific: System Core */
+  .arc-system-core { background: #2d3748; color: #edf2f7; }
+  .arc-system-core .concrete {
+    position: absolute; inset: 0; opacity: 0.05;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  }
+  .arc-system-core .frnc { font-family: 'Inter', sans-serif; font-weight: 800; text-transform: uppercase; letter-spacing: -0.05em; }
+  .arc-system-core .btn-read { background: #edf2f7; color: #2d3748; }
+
+  /* GH Specific: UI Lab */
+  .arc-ui-lab { background: #fff; color: #4c51bf; }
+  .arc-ui-lab .lab-gradient {
+    position: absolute; inset: 0; opacity: 0.1;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  }
+  .arc-ui-lab .btn-read { background: #4c51bf; color: #fff; border-radius: 12px; }
+
+  /* GH Specific: Data Pipeline */
+  .arc-data-pipeline { background: #1a202c; color: #a3bffa; }
+  .arc-data-pipeline .pipeline-streams {
+    position: absolute; inset: 0; opacity: 0.15;
+    background: repeating-linear-gradient(45deg, #a3bffa, #a3bffa 2px, transparent 2px, transparent 20px);
+  }
+  .arc-data-pipeline .btn-read { background: #a3bffa; color: #1a202c; }
+
+  /* GH Specific: Model Bench */
+  .arc-model-bench { background: #f7fafc; color: #2d3748; }
+  .arc-model-bench .bench-silver {
+    position: absolute; right: 0; top: 0; width: 40%; height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(0,0,0,0.03));
+  }
+  .arc-model-bench .btn-read { border: 1px solid #2d3748; background: transparent; color: #2d3748; }
+
+  /* GH Specific: Privacy Shield */
+  .arc-privacy-shield { background: #000; color: #00ff41; }
+  .arc-privacy-shield .shield-glitch {
+    position: absolute; inset: 0; opacity: 0.1;
+    background-image: repeating-linear-gradient(0deg, rgba(0,255,65,0.1) 0, rgba(0,255,65,0.1) 1px, transparent 1px, transparent 2px);
+  }
+  .arc-privacy-shield .btn-read { background: #00ff41; color: #000; }
+
+  /* GH Specific: Enterprise Engine */
+  .arc-enterprise-engine { background: #f0f7ff; color: #0056b3; }
+  .arc-enterprise-engine .engine-blue {
+    position: absolute; right: -5vw; bottom: -5vw; width: 30vw; height: 30vw;
+    background: radial-gradient(circle, rgba(0,86,179,0.05) 0%, transparent 70%);
+  }
+  .arc-enterprise-engine .btn-read { background: #0056b3; color: #fff; }
+
+  /* GH Specific: Terminal Utility */
+  .arc-terminal-utility { background: #1a1a1a; color: #ffb000; font-family: 'JetBrains Mono', monospace; }
+  .arc-terminal-utility .crt-lines {
+    position: absolute; inset: 0; pointer-events: none;
+    background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.06), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.06));
+    background-size: 100% 2px, 3px 100%;
+  }
+  .arc-terminal-utility .btn-read { background: #ffb000; color: #1a1a1a; }
+
+  /* GH Specific: Experimental Workshop */
+  .arc-experimental-workshop { background: #fffde7; color: #5d4037; }
+  .arc-experimental-workshop .pad-lines {
+    position: absolute; left: 4vw; top: 0; bottom: 0; width: 2px; background: #ff5252; opacity: 0.3;
+  }
+  .arc-experimental-workshop .btn-read { border: 2px dashed #5d4037; background: transparent; color: #5d4037; }
+
+  /* GH Specific: Library Archive */
+  .arc-library-archive { background: #fdfaf3; color: #3e2723; }
+  .arc-library-archive .parchment {
+    position: absolute; inset: 0; opacity: 0.03;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='f'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.02' numOctaves='5'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23f)'/%3E%3C/svg%3E");
+  }
+  .arc-library-archive .btn-read { background: #3e2723; color: #fdfaf3; }
 
   /* ───── MASTHEAD ───── */
-  .masthead { padding: 2rem 6vw 2.5rem; border-bottom: 3px double #121212; background: #f5f1e8; text-align: center; }
-  .masthead-nav {
-    display: flex;
-    justify-content: center;
-    gap: 1.2rem;
-    align-items: baseline;
-    margin-bottom: 2rem;
-    font-weight: 600;
-    font-size: 1rem;
-    letter-spacing: 0.2em;
-    text-transform: uppercase;
-  }
-  .masthead-nav a { text-decoration: none; border-bottom: 2px solid transparent; padding-bottom: 2px; }
-  .masthead-nav a:hover { border-bottom-color: #121212; opacity: 1; }
-  .masthead-nav span { opacity: 0.4; }
-  .masthead .tagline { font-weight: 600; font-size: 1.2rem; letter-spacing: 0.4em; text-transform: uppercase; margin-bottom: 1.2rem; }
-  .masthead h1 {
-    font-family: 'Fraunces', Georgia, serif;
-    font-weight: 900;
-    font-style: italic;
-    font-size: clamp(4rem, 13vw, 12rem);
-    line-height: 0.88;
-    letter-spacing: -0.035em;
-    margin: 0 0 1rem;
-    font-variation-settings: "SOFT" 50;
-  }
-  .masthead .issue-line {
-    display: flex;
-    justify-content: space-between;
-    align-items: baseline;
-    max-width: 1000px;
-    margin: 2rem auto 0;
-    padding-top: 1.25rem;
-    border-top: 1px solid #121212;
-    font-weight: 500;
-    font-size: 1.1rem;
-    letter-spacing: 0.15em;
-    text-transform: uppercase;
-  }
-
-  /* ───── SPREAD BASE ───── */
-  .spread {
-    min-height: 100vh;
-    padding: 6vh 6vw;
-    position: relative;
-    overflow: hidden;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-  }
-  .spread .story-meta { font-weight: 600; font-size: 1rem; letter-spacing: 0.28em; text-transform: uppercase; }
-  .spread-links {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 2rem 2.5rem;
-    align-items: baseline;
-    margin-top: 2.5rem;
-  }
-  .spread .read-more {
-    display: inline-block;
-    font-size: 1.1rem;
-    font-weight: 700;
-    letter-spacing: 0.15em;
-    text-transform: uppercase;
-    text-decoration: none;
-    padding-bottom: 0.4rem;
-    border-bottom: 3px solid currentColor;
-  }
-  .spread .dossier-link {
-    font-size: 1rem;
-    font-weight: 500;
-    letter-spacing: 0.18em;
-    text-transform: uppercase;
-    text-decoration: none;
-    opacity: 0.7;
-    padding-bottom: 0.3rem;
-    border-bottom: 1px solid currentColor;
-  }
-  .spread .dossier-link:hover { opacity: 1; }
-
-  /* ───── STAT HERO ───── */
-  .arc-stat-hero { background: #eee6d3; color: #0d1a2e; padding: 8vh 6vw; }
-  .arc-stat-hero .numeral {
-    font-family: 'Fraunces', serif;
-    font-weight: 900;
-    font-style: italic;
-    font-size: clamp(12rem, 36vw, 34rem);
-    line-height: 0.8;
-    letter-spacing: -0.06em;
-    color: #0d1a2e;
-    position: absolute;
-    right: -2vw;
-    top: 8vh;
-    opacity: 0.94;
-    pointer-events: none;
-    white-space: nowrap;
-  }
-  .arc-stat-hero .kicker { font-weight: 700; font-size: 1.15rem; letter-spacing: 0.4em; text-transform: uppercase; color: #c13830; position: relative; z-index: 2; margin-bottom: 1.5rem; }
-  .arc-stat-hero h2 { font-family: 'Fraunces', serif; font-weight: 800; font-size: clamp(3rem, 8vw, 7.5rem); line-height: 0.95; letter-spacing: -0.03em; max-width: 60%; margin: 0 0 2rem; position: relative; z-index: 2; }
-  .arc-stat-hero .lede { font-family: 'Fraunces', serif; font-size: clamp(1.4rem, 2.2vw, 2rem); line-height: 1.45; max-width: 55%; font-weight: 400; position: relative; z-index: 2; margin: 0; }
-  .arc-stat-hero .story-meta { color: #c13830; position: relative; z-index: 2; }
-  .arc-stat-hero .spread-links { position: relative; z-index: 2; }
-
-  /* ───── MIDNIGHT ───── */
-  .arc-midnight { background: radial-gradient(ellipse at 70% 30%, #1a1235 0%, #05050c 65%); color: #e9e4ff; }
-  .arc-midnight::before {
-    content: "";
-    position: absolute;
-    inset: 0;
-    background-image:
-      radial-gradient(circle at 20% 80%, rgba(180,120,255,0.18), transparent 50%),
-      radial-gradient(circle at 80% 20%, rgba(120,200,255,0.12), transparent 55%);
-    pointer-events: none;
-  }
-  .arc-midnight .numeral {
-    font-family: 'Fraunces', serif;
-    font-size: clamp(8rem, 22vw, 20rem);
-    font-weight: 300;
-    font-style: italic;
-    color: transparent;
-    -webkit-text-stroke: 2px rgba(233,228,255,0.45);
-    line-height: 1;
-    position: absolute;
-    top: 6vh;
-    left: 5vw;
-    letter-spacing: -0.05em;
-  }
-  .arc-midnight .body { position: relative; z-index: 2; margin-top: 12rem; max-width: 90%; }
-  .arc-midnight .kicker { font-family: 'JetBrains Mono', monospace; font-size: 1.1rem; letter-spacing: 0.2em; text-transform: uppercase; color: #b48bff; margin-bottom: 2rem; }
-  .arc-midnight h2 { font-weight: 800; font-size: clamp(3rem, 7.5vw, 6.5rem); line-height: 1; letter-spacing: -0.035em; margin: 0 0 2.5rem; }
-  .arc-midnight .lede { font-size: 1.35rem; line-height: 1.55; color: #cdc6e8; max-width: 780px; margin: 0; }
-  .arc-midnight .story-meta { color: #8a7cc6; margin-bottom: 1.5rem; }
-
-  /* ───── ALERT STAMP ───── */
-  .arc-alert-stamp { background: #f8e5de; color: #2b0808; background-image: repeating-linear-gradient(transparent, transparent 3rem, rgba(193,56,48,0.08) 3rem, rgba(193,56,48,0.08) calc(3rem + 1px)); }
-  .arc-alert-stamp .stamp {
-    position: absolute; top: 8vh; right: 5vw;
-    transform: rotate(-14deg);
-    border: 6px solid #c13830;
-    padding: 1.2rem 2.5rem;
-    font-weight: 900;
-    font-size: clamp(2rem, 4vw, 3.5rem);
-    letter-spacing: 0.15em;
-    color: #c13830;
-    background: rgba(248,229,222,0.6);
-    text-transform: uppercase;
-  }
-  .arc-alert-stamp .numeral { font-family: 'Fraunces', serif; font-style: italic; font-weight: 900; font-size: clamp(6rem, 15vw, 12rem); line-height: 1; color: #c13830; margin: 0 0 1rem; }
-  .arc-alert-stamp .kicker { font-weight: 800; font-size: 1.2rem; letter-spacing: 0.3em; text-transform: uppercase; color: #c13830; margin-bottom: 1rem; }
-  .arc-alert-stamp h2 { font-family: 'Fraunces', serif; font-weight: 800; font-size: clamp(2.5rem, 6vw, 5.5rem); line-height: 1.02; letter-spacing: -0.025em; max-width: 75%; margin: 0 0 2rem; }
-  .arc-alert-stamp .lede { font-size: 1.4rem; line-height: 1.55; max-width: 700px; font-weight: 400; margin: 0; }
-  .arc-alert-stamp .story-meta { color: #c13830; margin-bottom: 1.5rem; }
-
-  /* ───── ACADEMIC DROP CAP ───── */
-  .arc-academic-drop-cap { background: #efe7d1; color: #1b1a14; padding: 8vh 8vw; }
-  .arc-academic-drop-cap .paper-head {
-    display: flex; justify-content: space-between; align-items: baseline;
-    border-bottom: 1.5px solid #1b1a14;
-    padding-bottom: 0.7rem; margin-bottom: 3rem;
-    font-weight: 500; font-size: 1rem; letter-spacing: 0.25em; text-transform: uppercase;
-  }
-  .arc-academic-drop-cap .numeral-roman { font-family: 'Fraunces', serif; font-weight: 700; font-size: clamp(2.5rem, 4vw, 4rem); font-style: italic; letter-spacing: 0.08em; }
-  .arc-academic-drop-cap h2 { font-family: 'Fraunces', serif; font-weight: 400; font-style: italic; font-size: clamp(2.5rem, 5.5vw, 5rem); line-height: 1.05; letter-spacing: -0.015em; margin: 0 0 1.5rem; max-width: 85%; }
-  .arc-academic-drop-cap .story-meta { margin-bottom: 2rem; }
-  .arc-academic-drop-cap .cols { display: grid; grid-template-columns: 1fr 1fr; gap: 3.5rem; }
-  .arc-academic-drop-cap .cols p { font-family: 'Fraunces', serif; font-size: 1.35rem; line-height: 1.55; text-align: justify; hyphens: auto; margin: 0 0 1.2rem; }
-  .arc-academic-drop-cap .cols > div:first-child p:first-child::first-letter {
-    font-family: 'Fraunces', serif;
-    font-weight: 900;
-    font-size: 7em;
-    float: left;
-    line-height: 0.82;
-    padding: 0.1em 0.15em 0 0;
-    color: #7a1e14;
-  }
-
-  /* ───── TERMINAL ───── */
-  .arc-terminal { background: #000; color: #8cff8c; font-family: 'JetBrains Mono', ui-monospace, monospace; padding: 8vh 6vw; }
-  .arc-terminal .prompt-row { font-size: 1.15rem; font-weight: 500; color: #4ac94a; margin-bottom: 3rem; }
-  .arc-terminal .numeral { font-size: clamp(6rem, 14vw, 13rem); font-weight: 700; line-height: 1; color: #8cff8c; margin: 0 0 1rem; }
-  .arc-terminal .numeral::before { content: "> "; color: #4ac94a; }
-  .arc-terminal h2 { font-weight: 700; font-size: clamp(2.2rem, 5vw, 4.5rem); line-height: 1.1; margin: 0 0 2rem; max-width: 90%; color: #d4ffd4; }
-  .arc-terminal .lede { font-size: 1.3rem; line-height: 1.6; max-width: 780px; color: #8cff8c; margin: 0; }
-  .arc-terminal .lede::before { content: "# "; color: #4ac94a; }
-  .arc-terminal .story-meta { color: #4ac94a; margin-bottom: 1.5rem; }
-  .arc-terminal .cursor { display: inline-block; width: 0.55em; height: 1.1em; background: #8cff8c; vertical-align: text-bottom; margin-left: 0.2em; animation: me-blink 1s steps(2, start) infinite; }
-  @keyframes me-blink { to { visibility: hidden; } }
-  .arc-terminal .read-more { color: #8cff8c; border-color: #4ac94a; }
-  .arc-terminal .dossier-link { color: #8cff8c; border-color: rgba(140,255,140,0.4); }
-
-  /* ───── EDITORIAL PULLQUOTE ───── */
-  .arc-editorial-pullquote {
-    background: #1a1a1a; color: #f5f1e8; padding: 8vh 6vw;
-    display: grid; grid-template-columns: 1fr 1.1fr; gap: 5rem; align-items: center;
-  }
-  .arc-editorial-pullquote .left { position: relative; }
-  .arc-editorial-pullquote .numeral { font-family: 'Fraunces', serif; font-weight: 900; font-style: italic; font-size: clamp(8rem, 18vw, 16rem); line-height: 0.9; color: #f5f1e8; margin: 0 0 1rem; letter-spacing: -0.05em; }
-  .arc-editorial-pullquote .kicker { font-weight: 700; font-size: 1.1rem; letter-spacing: 0.35em; text-transform: uppercase; color: #e8b84a; margin-bottom: 1.5rem; }
-  .arc-editorial-pullquote h2 { font-family: 'Fraunces', serif; font-weight: 700; font-size: clamp(2rem, 4vw, 3.5rem); line-height: 1.1; margin: 0 0 2rem; }
-  .arc-editorial-pullquote .pullquote {
-    font-family: 'Fraunces', serif; font-style: italic; font-weight: 400;
-    font-size: clamp(1.8rem, 3.5vw, 3rem); line-height: 1.15;
-    color: #f5f1e8; border-left: 4px solid #e8b84a; padding-left: 2rem; margin: 0;
-  }
-  .arc-editorial-pullquote .pullquote::before { content: "\201C"; font-size: 1.4em; line-height: 0; vertical-align: -0.4em; color: #e8b84a; margin-right: 0.1em; }
-  .arc-editorial-pullquote .pullquote::after { content: "\201D"; font-size: 1.4em; line-height: 0; vertical-align: -0.6em; color: #e8b84a; margin-left: 0.05em; }
-  .arc-editorial-pullquote .story-meta { color: #e8b84a; }
-
-  /* ───── CAUTION TAPE ───── */
-  .arc-caution-tape { background: #fff200; color: #0a0a0a; padding: 8vh 6vw; }
-  .arc-caution-tape::before { content: ""; position: absolute; inset: 0 0 auto 0; height: 2.5rem; background: repeating-linear-gradient(135deg, #0a0a0a 0 2rem, #fff200 2rem 4rem); }
-  .arc-caution-tape::after { content: ""; position: absolute; inset: auto 0 0 0; height: 2.5rem; background: repeating-linear-gradient(135deg, #0a0a0a 0 2rem, #fff200 2rem 4rem); }
-  .arc-caution-tape .tag {
-    position: absolute; top: 6vh; right: 6vw;
-    writing-mode: vertical-rl; transform: rotate(180deg);
-    font-weight: 900; font-size: 1.3rem; letter-spacing: 0.5em; text-transform: uppercase;
-    background: #0a0a0a; color: #fff200; padding: 1rem 0.6rem;
-  }
-  .arc-caution-tape .numeral { font-weight: 900; font-size: clamp(10rem, 28vw, 24rem); line-height: 0.85; letter-spacing: -0.06em; margin: 0 0 1rem; -webkit-text-stroke: 3px #0a0a0a; color: transparent; }
-  .arc-caution-tape .kicker { font-weight: 900; font-size: 1.3rem; letter-spacing: 0.35em; text-transform: uppercase; background: #0a0a0a; color: #fff200; padding: 0.5rem 1rem; display: inline-block; margin-bottom: 1.5rem; }
-  .arc-caution-tape h2 { font-weight: 900; font-size: clamp(2.5rem, 6vw, 5.5rem); line-height: 0.98; letter-spacing: -0.03em; margin: 0 0 2rem; max-width: 85%; text-transform: uppercase; }
-  .arc-caution-tape .lede { font-size: 1.35rem; line-height: 1.5; max-width: 680px; font-weight: 500; margin: 0; }
-  .arc-caution-tape .story-meta { margin-bottom: 1.5rem; }
-
-  /* ───── NOTEBOOK ───── */
-  .arc-notebook { background: repeating-linear-gradient(#fdfaf0 0 2.2rem, rgba(120,104,60,0.22) 2.2rem 2.25rem); color: #1f1a0d; padding: 8vh 8vw; }
-  .arc-notebook::before { content: ""; position: absolute; top: 0; bottom: 0; left: 8vw; width: 2px; background: #c13830; opacity: 0.5; }
-  .arc-notebook .numeral { font-family: 'Fraunces', serif; font-weight: 400; font-style: italic; font-size: clamp(7rem, 17vw, 15rem); line-height: 1; letter-spacing: -0.02em; color: #1f1a0d; margin: 0 0 0.5rem; }
-  .arc-notebook .kicker { font-weight: 600; font-size: 1.1rem; letter-spacing: 0.3em; text-transform: uppercase; color: #8a6b1f; margin-bottom: 1rem; }
-  .arc-notebook h2 { font-family: 'Fraunces', serif; font-weight: 400; font-style: italic; font-size: clamp(2.8rem, 6.5vw, 6rem); line-height: 1; letter-spacing: -0.02em; margin: 0 0 2rem; max-width: 85%; }
-  .arc-notebook .lede { font-family: 'Fraunces', serif; font-weight: 400; font-size: clamp(1.35rem, 2vw, 1.7rem); line-height: 2.2rem; max-width: 700px; margin: 0; }
-
-  /* ───── MINT PATTERN ───── */
-  .arc-mint-pattern { background: #a8e6cf; color: #0d2a1e; padding: 8vh 6vw; }
-  .arc-mint-pattern::before {
-    content: "XOR LISP AWK SED GREP CURL MAKE GIT VIM SSH";
-    position: absolute; top: 10vh; left: 0; right: 0;
-    font-family: 'JetBrains Mono', monospace;
-    font-weight: 700; font-size: 2.5rem; letter-spacing: 0.3em;
-    color: rgba(13,42,30,0.1); white-space: nowrap; overflow: hidden; pointer-events: none;
-  }
-  .arc-mint-pattern .numeral-block { position: relative; z-index: 2; }
-  .arc-mint-pattern .numeral { font-family: 'Fraunces', serif; font-weight: 900; font-size: clamp(10rem, 28vw, 24rem); line-height: 0.85; letter-spacing: -0.06em; color: #0d2a1e; margin: 0; font-style: italic; }
-  .arc-mint-pattern .kicker { font-family: 'JetBrains Mono', monospace; font-weight: 700; font-size: 1.1rem; letter-spacing: 0.2em; text-transform: uppercase; color: #0d2a1e; margin: 1.5rem 0; position: relative; z-index: 2; }
-  .arc-mint-pattern h2 { font-family: 'Fraunces', serif; font-weight: 800; font-size: clamp(2.5rem, 6vw, 5rem); line-height: 1; letter-spacing: -0.025em; margin: 0 0 2rem; max-width: 85%; position: relative; z-index: 2; }
-  .arc-mint-pattern .lede { font-family: 'Fraunces', serif; font-size: 1.4rem; line-height: 1.55; max-width: 680px; font-weight: 400; margin: 0; position: relative; z-index: 2; }
-  .arc-mint-pattern .story-meta { position: relative; z-index: 2; margin-bottom: 1.5rem; }
-  .arc-mint-pattern .spread-links { position: relative; z-index: 2; }
-
-  /* ───── PASTEL PLAYFUL ───── */
-  .arc-pastel-playful { background: #fde6f2; color: #2a0a2e; padding: 8vh 6vw 4vh; }
-  .arc-pastel-playful .alpha-grid {
-    position: absolute; top: 0; left: 0; right: 0;
-    display: grid; grid-template-columns: repeat(13, 1fr);
-    font-family: 'Fraunces', serif; font-style: italic;
-    font-size: clamp(1.2rem, 2.5vw, 2rem); font-weight: 700;
-    color: rgba(42,10,46,0.2); padding: 1rem 6vw; letter-spacing: 0.2em; pointer-events: none;
-  }
-  .arc-pastel-playful .alpha-grid span { text-align: center; }
-  .arc-pastel-playful .numeral { font-family: 'Fraunces', serif; font-weight: 900; font-style: italic; font-size: clamp(10rem, 26vw, 22rem); line-height: 0.85; letter-spacing: -0.05em; color: #c13871; margin: 2rem 0 0; }
-  .arc-pastel-playful .kicker { font-weight: 700; font-size: 1.1rem; letter-spacing: 0.35em; text-transform: uppercase; color: #c13871; margin-bottom: 1rem; }
-  .arc-pastel-playful h2 { font-family: 'Fraunces', serif; font-weight: 400; font-style: italic; font-size: clamp(2.8rem, 6.5vw, 5.5rem); line-height: 1; letter-spacing: -0.02em; margin: 0 0 2rem; max-width: 85%; }
-  .arc-pastel-playful .lede { font-size: 1.35rem; line-height: 1.5; max-width: 680px; margin: 0; }
-  .arc-pastel-playful .story-meta { color: #c13871; margin-bottom: 1.5rem; }
-
-  /* ───── PRODUCT PLATE ───── */
-  .arc-product-plate {
-    background: linear-gradient(135deg, #f5f5f3 0%, #e8e8e6 100%);
-    color: #121212; padding: 10vh 8vw; text-align: center; align-items: center; justify-content: center;
-  }
-  .arc-product-plate .product-chip {
-    font-weight: 700; font-size: 1rem; letter-spacing: 0.4em; text-transform: uppercase;
-    background: #121212; color: #f5f5f3; padding: 0.5rem 1.4rem; display: inline-block; margin-bottom: 3rem;
-  }
-  .arc-product-plate .kicker { font-weight: 700; font-size: 1.15rem; letter-spacing: 0.5em; text-transform: uppercase; color: #666; margin-bottom: 1.5rem; }
-  .arc-product-plate h2 {
-    font-family: 'Inter', sans-serif;
-    font-weight: 900;
-    font-size: clamp(3.2rem, 9vw, 8rem);
-    line-height: 0.95;
-    letter-spacing: -0.045em;
-    margin: 0 auto 2rem;
-    max-width: 14ch;
-  }
-  .arc-product-plate .product-rule { width: 6rem; height: 2px; background: #121212; margin: 1.5rem auto 2rem; }
-  .arc-product-plate .story-meta { color: #666; margin-bottom: 1.5rem; }
-  .arc-product-plate .lede { font-family: 'Fraunces', serif; font-weight: 400; font-size: clamp(1.4rem, 2.2vw, 1.9rem); line-height: 1.45; max-width: 720px; margin: 0 auto; }
-  .arc-product-plate .spread-links { justify-content: center; }
-
-  /* ───── ARCHIVE ───── */
-  .arc-archive {
-    background: #eadbb8;
-    background-image:
-      radial-gradient(rgba(80,40,10,0.05) 1px, transparent 1px),
-      radial-gradient(rgba(80,40,10,0.04) 1px, transparent 1px);
-    background-size: 4px 4px, 7px 7px;
-    background-position: 0 0, 2px 2px;
-    color: #2a1a08; padding: 8vh 8vw;
-  }
-  .arc-archive .archive-head {
-    display: flex; justify-content: space-between; align-items: baseline;
-    padding-bottom: 1rem; margin-bottom: 3rem;
-    border-top: 6px double #3a2a10; border-bottom: 6px double #3a2a10;
-    padding-top: 1rem;
-    font-family: 'Fraunces', serif; font-style: italic; font-weight: 500;
-    font-size: 1.1rem; letter-spacing: 0.15em; text-transform: uppercase; color: #3a2a10;
-  }
-  .arc-archive .kicker { font-family: 'Fraunces', serif; font-style: italic; font-weight: 600; font-size: 1.2rem; letter-spacing: 0.3em; text-transform: uppercase; color: #8a3a10; margin-bottom: 1.2rem; }
-  .arc-archive h2 {
-    font-family: 'Fraunces', serif; font-weight: 700; font-style: normal;
-    font-size: clamp(2.8rem, 6.5vw, 6rem); line-height: 1; letter-spacing: -0.02em;
-    margin: 0 0 2rem; max-width: 85%;
-  }
-  .arc-archive .lede {
-    font-family: 'Fraunces', serif; font-size: clamp(1.35rem, 2vw, 1.7rem);
-    line-height: 1.55; max-width: 760px; font-weight: 400; margin: 0;
-  }
-  .arc-archive .lede::first-letter {
-    font-family: 'Fraunces', serif; font-weight: 900; font-size: 5em;
-    float: left; line-height: 0.82; padding: 0.1em 0.15em 0 0; color: #8a3a10;
-  }
-  .arc-archive .story-meta { color: #8a3a10; margin-bottom: 1.5rem; }
-
-  /* ───── OBITUARY ───── */
-  .arc-obituary {
-    background: #f8f4ec; color: #121212;
-    padding: 10vh 6vw; align-items: center; justify-content: center;
-  }
-  .arc-obituary .obit-frame {
-    border: 3px solid #121212; padding: 6rem 5rem;
-    max-width: 780px; text-align: center; background: #f8f4ec;
-    position: relative; z-index: 2;
-  }
-  .arc-obituary .obit-frame::before,
-  .arc-obituary .obit-frame::after {
-    content: ""; position: absolute; left: -12px; right: -12px; height: 1px; background: #121212;
-  }
-  .arc-obituary .obit-frame::before { top: -12px; }
-  .arc-obituary .obit-frame::after { bottom: -12px; }
-  .arc-obituary .ornament { font-family: 'Fraunces', serif; font-size: 3.5rem; line-height: 1; margin-bottom: 2rem; color: #121212; }
-  .arc-obituary .kicker { font-family: 'Fraunces', serif; font-style: italic; font-weight: 500; font-size: 1.1rem; letter-spacing: 0.3em; text-transform: uppercase; margin-bottom: 2rem; opacity: 0.7; }
-  .arc-obituary h2 {
-    font-family: 'Fraunces', serif; font-weight: 400; font-style: italic;
-    font-size: clamp(2.4rem, 5vw, 4.5rem); line-height: 1.1; letter-spacing: -0.015em;
-    margin: 0 0 2.5rem;
-  }
-  .arc-obituary .story-meta { margin-bottom: 2rem; opacity: 0.6; }
-  .arc-obituary .lede { font-family: 'Fraunces', serif; font-size: clamp(1.3rem, 1.9vw, 1.6rem); line-height: 1.6; margin: 0 auto; max-width: 60ch; }
-  .arc-obituary .spread-links { justify-content: center; margin-top: 3rem; }
-
-  /* ───── BLUEPRINT ───── */
-  .arc-blueprint {
-    background: #0a3d62;
-    background-image:
-      linear-gradient(rgba(255,255,255,0.08) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(255,255,255,0.08) 1px, transparent 1px);
-    background-size: 2.2rem 2.2rem;
-    color: #eaf4ff; padding: 8vh 6vw;
-  }
-  .arc-blueprint .corner {
-    position: absolute; font-family: 'JetBrains Mono', monospace;
-    font-size: 2.5rem; color: #eaf4ff; opacity: 0.7;
-  }
-  .arc-blueprint .corner.tl { top: 3vh; left: 3vw; }
-  .arc-blueprint .corner.tr { top: 3vh; right: 3vw; }
-  .arc-blueprint .corner.bl { bottom: 3vh; left: 3vw; }
-  .arc-blueprint .corner.br { bottom: 3vh; right: 3vw; }
-  .arc-blueprint .numeral {
-    font-family: 'JetBrains Mono', monospace;
-    font-weight: 700; font-size: clamp(4rem, 9vw, 7.5rem); line-height: 1;
-    letter-spacing: -0.01em; color: #eaf4ff;
-    margin: 0 0 1.5rem;
-    border-bottom: 2px dashed rgba(234,244,255,0.5);
-    padding-bottom: 1rem;
-    display: inline-block;
-  }
-  .arc-blueprint .kicker { font-family: 'JetBrains Mono', monospace; font-weight: 700; font-size: 1.15rem; letter-spacing: 0.3em; text-transform: uppercase; color: #9bd2ff; margin-bottom: 1.5rem; }
-  .arc-blueprint h2 { font-family: 'Fraunces', serif; font-weight: 700; font-size: clamp(2.8rem, 6.5vw, 5.5rem); line-height: 1; letter-spacing: -0.025em; margin: 0 0 2rem; max-width: 85%; }
-  .arc-blueprint .lede { font-family: 'JetBrains Mono', monospace; font-size: 1.2rem; line-height: 1.65; max-width: 720px; margin: 0; }
-  .arc-blueprint .story-meta { color: #9bd2ff; margin-bottom: 1.5rem; font-family: 'JetBrains Mono', monospace; }
-
-  /* ───── OBSERVATORY ───── */
-  .arc-observatory {
-    background: #070c2e; color: #e8ecff; padding: 8vh 6vw;
-  }
-  .arc-observatory .starfield {
-    position: absolute; inset: 0; pointer-events: none;
-    background-image:
-      radial-gradient(1px 1px at 10% 20%, rgba(255,255,255,0.9), transparent),
-      radial-gradient(1px 1px at 25% 70%, rgba(255,255,255,0.6), transparent),
-      radial-gradient(1.5px 1.5px at 40% 30%, rgba(255,255,255,0.8), transparent),
-      radial-gradient(1px 1px at 55% 85%, rgba(255,255,255,0.5), transparent),
-      radial-gradient(1px 1px at 70% 15%, rgba(255,255,255,0.9), transparent),
-      radial-gradient(1.5px 1.5px at 85% 55%, rgba(255,255,255,0.7), transparent),
-      radial-gradient(1px 1px at 92% 25%, rgba(255,255,255,0.5), transparent),
-      radial-gradient(1px 1px at 15% 90%, rgba(255,255,255,0.4), transparent),
-      radial-gradient(1px 1px at 48% 50%, rgba(255,255,255,0.6), transparent),
-      radial-gradient(1px 1px at 78% 78%, rgba(255,255,255,0.5), transparent);
-    background-repeat: no-repeat;
-  }
-  .arc-observatory > * { position: relative; z-index: 2; }
-  .arc-observatory .numeral {
-    font-family: 'Fraunces', serif; font-style: italic; font-weight: 400;
-    font-size: clamp(3rem, 7vw, 6rem); line-height: 1; letter-spacing: 0.04em;
-    color: #e8ecff; margin: 0 0 2rem;
-    border-bottom: 1px solid rgba(232,236,255,0.4);
-    padding-bottom: 1rem; display: inline-block;
-  }
-  .arc-observatory .kicker { font-family: 'Fraunces', serif; font-style: italic; font-weight: 500; font-size: 1.15rem; letter-spacing: 0.3em; text-transform: uppercase; color: #9ab3ff; margin-bottom: 1.5rem; }
-  .arc-observatory h2 { font-family: 'Fraunces', serif; font-weight: 400; font-style: italic; font-size: clamp(2.8rem, 6.5vw, 5.5rem); line-height: 1.05; letter-spacing: -0.015em; margin: 0 0 2rem; max-width: 85%; }
-  .arc-observatory .lede { font-family: 'Fraunces', serif; font-size: clamp(1.35rem, 2vw, 1.7rem); line-height: 1.55; max-width: 720px; font-weight: 400; margin: 0; }
-  .arc-observatory .story-meta { color: #9ab3ff; margin-bottom: 1.5rem; }
-
+  .masthead { padding: 4vh 8vw 10vh; text-align: center; border-bottom: 1px solid #ddd; }
+  .masthead-nav { display: flex; justify-content: center; gap: 2rem; margin-bottom: 6vh; font-weight: 600; font-size: 0.9rem; text-transform: uppercase; letter-spacing: 0.2em; }
+  .masthead-nav a { color: inherit; text-decoration: none; opacity: 0.6; }
+  .masthead-nav a:hover { opacity: 1; }
+  .masthead h1 { font-size: clamp(3rem, 10vw, 9rem); font-weight: 400; margin: 0 0 2rem; letter-spacing: -0.04em; }
+  .issue-line { display: flex; justify-content: center; gap: 4rem; font-weight: 700; font-size: 1rem; letter-spacing: 0.3em; text-transform: uppercase; opacity: 0.8; }
+  
   /* ───── DOSSIER ───── */
-  .dossier {
-    background: #f5f1e8; color: #1b1a14;
-    padding: 8rem 8vw 6rem;
-    border-top: 6px double #121212;
-  }
-  .dossier .dossier-head { text-align: center; margin-bottom: 4rem; }
-  .dossier .tagline { font-weight: 600; font-size: 1.1rem; letter-spacing: 0.4em; text-transform: uppercase; margin-bottom: 1rem; opacity: 0.7; }
-  .dossier h2 {
-    font-family: 'Fraunces', serif; font-style: italic; font-weight: 900;
-    font-size: clamp(4rem, 10vw, 9rem); line-height: 0.9; letter-spacing: -0.035em;
-    margin: 0 0 1.5rem;
-  }
-  .dossier .intro { font-family: 'Fraunces', serif; font-style: italic; font-size: 1.35rem; line-height: 1.5; max-width: 620px; margin: 0 auto; }
-  .dossier .intro a { font-style: normal; font-weight: 600; text-decoration: underline; }
-  .dossier-entry {
-    border-top: 1.5px solid #1b1a14;
-    padding: 3rem 0 2.5rem;
-    max-width: 820px; margin: 0 auto;
-  }
-  .dossier-entry:last-child { border-bottom: 1.5px solid #1b1a14; }
-  .dossier-meta { font-weight: 600; font-size: 1rem; letter-spacing: 0.28em; text-transform: uppercase; color: #7a1e14; margin-bottom: 1.2rem; }
-  .dossier-entry h3 {
-    font-family: 'Fraunces', serif; font-weight: 700;
-    font-size: clamp(1.8rem, 3.5vw, 2.6rem); line-height: 1.1; letter-spacing: -0.015em;
-    margin: 0 0 1.2rem;
-  }
-  .dossier-source { font-size: 1.05rem; font-weight: 500; letter-spacing: 0.08em; margin: 0 0 2rem; opacity: 0.75; }
-  .dossier-source a { text-decoration: underline; }
-  .dossier-entry h4 {
-    font-family: 'Inter', sans-serif; font-weight: 700; font-size: 1rem;
-    letter-spacing: 0.35em; text-transform: uppercase; margin: 2rem 0 1rem; color: #7a1e14;
-  }
-  .dossier-entry p {
-    font-family: 'Fraunces', serif; font-size: 1.25rem; line-height: 1.55; margin: 0 0 1rem;
-  }
-  .dossier-entry p.muted { opacity: 0.6; }
-
+  .dossier { background: #f5f1e8; padding: 10vh 8vw; color: #121212; }
+  .dossier-head { margin-bottom: 8vh; }
+  .dossier-head h2 { font-size: clamp(4rem, 12vw, 12rem); margin-bottom: 2rem; }
+  .tagline { font-weight: 700; font-size: 1.2rem; letter-spacing: 0.5em; text-transform: uppercase; margin-bottom: 1rem; opacity: 0.5; }
+  .intro { font-size: 1.5rem; max-width: 600px; line-height: 1.4; opacity: 0.7; }
+  .intro a { color: inherit; }
+  
+  .dossier-entry { margin-bottom: 12vh; max-width: 900px; }
+  .dossier-meta { font-weight: 700; font-size: 0.9rem; letter-spacing: 0.2em; text-transform: uppercase; margin-bottom: 1.5rem; opacity: 0.5; }
+  .dossier-entry h3 { font-family: 'Fraunces', serif; font-size: clamp(2.5rem, 5vw, 4.5rem); line-height: 1.1; margin: 0 0 1.5rem; font-weight: 400; }
+  .dossier-source { font-size: 1.1rem; font-weight: 500; letter-spacing: 0.05em; margin: 0 0 3rem; opacity: 0.7; }
+  .dossier-source a { color: inherit; text-decoration: underline; }
+  .dossier-entry h4 { font-weight: 700; font-size: 1rem; letter-spacing: 0.3em; text-transform: uppercase; margin: 3rem 0 1.5rem; }
+  .dossier-entry p { font-family: 'Fraunces', serif; font-size: 1.3rem; line-height: 1.6; margin: 0 0 1.5rem; }
+  
   /* ───── COLOPHON ───── */
-  .colophon { background: #121212; color: #f5f1e8; padding: 5rem 6vw; text-align: center; }
-  .colophon .sig { font-family: 'Fraunces', serif; font-style: italic; font-weight: 400; font-size: clamp(2.5rem, 5vw, 4rem); line-height: 1.1; letter-spacing: -0.02em; margin: 0 0 1.5rem; }
-  .colophon .meta { font-weight: 500; font-size: 1rem; letter-spacing: 0.3em; text-transform: uppercase; opacity: 0.7; }
-  .colophon .classic-link { margin-top: 2rem; font-weight: 500; font-size: 1rem; letter-spacing: 0.2em; text-transform: uppercase; }
-  .colophon .classic-link a { text-decoration: underline; opacity: 0.85; }
+  .colophon { background: #121212; color: #f5f1e8; padding: 8vh 8vw; text-align: center; }
+  .colophon .sig { font-family: 'Fraunces', serif; font-style: italic; font-size: clamp(2rem, 5vw, 4rem); margin-bottom: 2rem; }
+  .colophon .meta { font-weight: 500; font-size: 0.9rem; letter-spacing: 0.3em; text-transform: uppercase; opacity: 0.6; }
+  .classic-link { margin-top: 3rem; font-size: 0.9rem; letter-spacing: 0.2em; text-transform: uppercase; }
+  .classic-link a { color: inherit; text-decoration: underline; }
 
-  /* ───── RESPONSIVE ───── */
   @media (max-width: 800px) {
-    .masthead-nav { flex-wrap: wrap; gap: 0.8rem; }
-    .arc-stat-hero h2, .arc-stat-hero .lede { max-width: 100%; }
-    .arc-stat-hero .numeral { font-size: 14rem; opacity: 0.2; right: -2vw; top: 30vh; }
-    .arc-midnight .body { margin-top: 8rem; }
-    .arc-alert-stamp h2 { max-width: 100%; }
-    .arc-alert-stamp .stamp { top: 4vh; right: 4vw; font-size: 1.5rem; padding: 0.8rem 1.4rem; }
-    .arc-academic-drop-cap .cols { grid-template-columns: 1fr; gap: 2rem; }
-    .arc-editorial-pullquote { grid-template-columns: 1fr; gap: 3rem; }
-    .arc-caution-tape h2, .arc-notebook h2, .arc-pastel-playful h2, .arc-archive h2, .arc-obituary h2, .arc-blueprint h2, .arc-observatory h2 { max-width: 100%; }
-    .arc-caution-tape .tag { display: none; }
-    .arc-pastel-playful .alpha-grid { display: none; }
-    .arc-obituary .obit-frame { padding: 3rem 2rem; }
-    .arc-blueprint .corner { display: none; }
+    .spread { padding: 12vh 6vw; }
+    .issue-line { flex-direction: column; gap: 1rem; align-items: center; }
+    .arc-stat-hero .numeral { font-size: 15rem; top: auto; bottom: 5vh; }
+    .arc-editorial-pullquote { grid-template-columns: 1fr; }
+    .arc-editorial-pullquote .quote-side { padding: 12vw; }
+    .ctas { flex-direction: column; align-items: stretch; gap: 1rem; }
+    .arc-academic-drop-cap .cols { columns: 1; }
   }
-
 </style>
 </head>
 <body id="top">
-
   <header class="masthead">
     <div class="masthead-nav">
-      <a href="../">HN Calendar</a>
-      <span>·</span>
-      <a href="../../2026-03-14/">GitHub Trending</a>
-      <span>·</span>
+      <a href="../../">Index</a>
+      <a href="../">Calendar</a>
       <a href="classic.html">Classic view</a>
     </div>
-    <div class="tagline">The Morning Edition</div>
     <h1 class="frnc">Ten stories, before your coffee.</h1>
     <div class="issue-line">
       <span>Vol. I</span>
-      <span>Saturday, March 14, 2026</span>
+      <span>March 14, 2026</span>
       <span>HN Front Page Digest</span>
     </div>
   </header>
-
-  <section class="spread arc-stat-hero">
+  <section id="story-1" class="spread arc-stat-hero">
     <div class="numeral">1M</div>
-    <div class="kicker">N<sup>o</sup> 01 · Model Capacity</div>
-    <h2>Claude expands to one million tokens for standard workloads</h2>
-    <p class="story-meta">claude.com &nbsp;·&nbsp; 1214 pts &nbsp;·&nbsp; 518 comments</p>
-    <p class="lede">Anthropic has officially moved its largest context windows into general availability, removing previous surcharges. The platform now supports massive document sets and media inputs, streamlining integration for enterprise users.</p>
-    <div class="spread-links"><a class="read-more" href="https://claude.com/blog/1m-context-ga" target="_blank" rel="noopener">Read →</a><a class="dossier-link" href="#dossier-1">Full analysis ↓</a></div>
-  </section>
-
-  <section class="spread arc-midnight">
-    <div class="numeral">02</div>
     <div class="body">
-      <div class="kicker">// Local Compute</div>
-      <h2>Assessing local hardware for generative model deployment</h2>
-      <p class="story-meta">canirun.ai &nbsp;·&nbsp; 1490 pts &nbsp;·&nbsp; 350 comments</p>
+      <div class="kicker">Model Capacity</div>
+      <h2 class="frnc">Claude expands to one million tokens for standard workloads</h2>
+      <p class="lede">Anthropic has officially moved its largest context windows into general availability, removing previous surcharges. The platform now supports massive document sets and media inputs, streamlining integration for enterprise users.</p>
+      <div class="ctas">
+        <a href="https://claude.com/blog/1m-context-ga" class="btn-read" target="_blank">Read →</a>
+        <a href="#dossier-1" class="btn-dossier">Full analysis ↓</a>
+      </div>
+    </div>
+  </section>
+  <section id="story-2" class="spread arc-midnight">
+    <div class="glow"></div>
+    <div class="body">
+      <div class="kicker">Local Compute</div>
+      <h2 class="frnc">Assessing local hardware for generative model deployment</h2>
       <p class="lede">As privacy concerns drive interest in on-device AI, new browser-based tools are demystifying hardware requirements. Users can now check if their local VRAM and compute capacity meet the threshold for specific open-source architectures.</p>
-      <div class="spread-links"><a class="read-more" href="https://www.canirun.ai/" target="_blank" rel="noopener">Read →</a><a class="dossier-link" href="#dossier-2">Full analysis ↓</a></div>
+      <div class="ctas">
+        <a href="https://www.canirun.ai/" class="btn-read" target="_blank">Read →</a>
+        <a href="#dossier-2" class="btn-dossier">Full analysis ↓</a>
+      </div>
     </div>
   </section>
-
-  <section class="spread arc-editorial-pullquote">
-    <div class="left">
-      <div class="numeral">03</div>
+  <section id="story-3" class="spread arc-editorial-pullquote">
+    <div class="body">
       <div class="kicker">Industry Analysis</div>
-      <h2>Reevaluating the role of legacy text editors in an AI-assisted era</h2>
-      <p class="story-meta">batsov.com &nbsp;·&nbsp; 56 pts &nbsp;·&nbsp; 8 comments</p>
-      <div class="spread-links"><a class="read-more" href="https://batsov.com/articles/2026/03/09/emacs-and-vim-in-the-age-of-ai/" target="_blank" rel="noopener">Read →</a><a class="dossier-link" href="#dossier-3">Full analysis ↓</a></div>
+      <h2 class="frnc">Reevaluating the role of legacy text editors in an AI-assisted era</h2>
+      <p class="lede">The rise of purpose-built AI coding environments forces a confrontation with the future of Vim and Emacs. Rather than obsolescence, these classic platforms are evolving into programmable hubs for human-centric architectural judgment.</p>
+      <div class="ctas">
+        <a href="https://batsov.com/articles/2026/03/09/emacs-and-vim-in-the-age-of-ai/" class="btn-read" target="_blank">Read →</a>
+        <a href="#dossier-3" class="btn-dossier">Full analysis ↓</a>
+      </div>
     </div>
-    <blockquote class="pullquote">The value of legacy editors is shifting from mechanical efficiency to high-level system integration.</blockquote>
-  </section>
-
-  <section class="spread arc-archive">
-    <div class="archive-head">
-      <span>Filed</span>
-      <span>Archival Desk · N<sup>o</sup> IV</span>
-      <span>From the Vault</span>
-    </div>
-    <div class="kicker">Academic Perspectives</div>
-    <h2>Reflecting on the realities of doctoral research journeys</h2>
-    <p class="story-meta">karpathy.github.io &nbsp;·&nbsp; 20 pts &nbsp;·&nbsp; 2 comments</p>
-    <p class="lede">A 2016 retrospective on the challenges of computer science PhD programs remains a poignant guide for today&#x27;s researchers. It balances the pursuit of high-impact discovery against the pragmatics of finding the right mentorship.</p>
-    <div class="spread-links"><a class="read-more" href="http://karpathy.github.io/2016/09/07/phd/" target="_blank" rel="noopener">Read →</a><a class="dossier-link" href="#dossier-4">Full analysis ↓</a></div>
-  </section>
-
-  <section class="spread arc-alert-stamp">
-    <div class="stamp">Alert</div>
-    <div class="numeral">05</div>
-    <div class="kicker">Security Oversight</div>
-    <h2>Exposed administrative keys persist across open-source documentation</h2>
-    <p class="story-meta">benzimmermann.dev &nbsp;·&nbsp; 158 pts &nbsp;·&nbsp; 47 comments</p>
-    <p class="lede">Researchers have identified dozens of active Algolia keys mistakenly deployed within public-facing documentation. Despite reports of these credentials granting unauthorized index modification, many remain live and accessible to the public.</p>
-    <div class="spread-links"><a class="read-more" href="https://benzimmermann.dev/blog/algolia-docsearch-admin-keys" target="_blank" rel="noopener">Read →</a><a class="dossier-link" href="#dossier-5">Full analysis ↓</a></div>
-  </section>
-
-  <section class="spread arc-pastel-playful">
-    <div class="alpha-grid"><span>A</span><span>B</span><span>C</span><span>D</span><span>E</span><span>F</span><span>G</span><span>H</span><span>I</span><span>J</span><span>K</span><span>L</span><span>M</span></div>
-    <div class="numeral">06</div>
-    <div class="kicker">Digital Curiosities</div>
-    <h2>Channel Surfer brings the static joy of cable to streaming</h2>
-    <p class="story-meta">channelsurfer.tv &nbsp;·&nbsp; 596 pts &nbsp;·&nbsp; 174 comments</p>
-    <p class="lede">Sometimes the choice paralysis of modern content is better solved with a random channel guide. This project turns your YouTube subscriptions into a curated, browser-based television broadcast.</p>
-    <div class="spread-links"><a class="read-more" href="https://channelsurfer.tv" target="_blank" rel="noopener">Read →</a><a class="dossier-link" href="#dossier-6">Full analysis ↓</a></div>
-  </section>
-
-  <section class="spread arc-observatory">
-    <div class="starfield"></div>
-    <div class="numeral">Obs.&nbsp;07</div>
-    <div class="kicker">Global Logistics</div>
-    <h2>Helium supply constraints threaten critical semiconductor fabrication schedules</h2>
-    <p class="story-meta">tomshardware.com &nbsp;·&nbsp; 699 pts &nbsp;·&nbsp; 631 comments</p>
-    <p class="lede">A geopolitical disruption at a major production complex has abruptly tightened the global supply of ultra-pure helium. Because chip manufacturing requires specific cooling standards, fabs are now navigating a precarious two-week availability window.</p>
-    <div class="spread-links"><a class="read-more" href="https://www.tomshardware.com/tech-industry/qatar-helium-shutdown-puts-chip-supply-chain-on-a-two-week-clock" target="_blank" rel="noopener">Read →</a><a class="dossier-link" href="#dossier-7">Full analysis ↓</a></div>
-  </section>
-
-  <section class="spread arc-terminal">
-    <div class="prompt-row">user@morning-edition:~$ cat story_08.md</div>
-    <p class="numeral">08</p>
-    <p class="story-meta">github.com &nbsp;·&nbsp; 439 pts &nbsp;·&nbsp; 152 comments</p>
-    <h2>Mouser replaces proprietary mouse drivers with local controls</h2>
-    <p class="lede">Logitech users seeking to bypass telemetry and account requirements are turning to this lightweight HID++ implementation. It provides granular remapping of hardware buttons without the overhead of cloud-dependent suites.<span class="cursor"></span></p>
-    <div class="spread-links"><a class="read-more" href="https://github.com/TomBadash/MouseControl" target="_blank" rel="noopener">Read →</a><a class="dossier-link" href="#dossier-8">Full analysis ↓</a></div>
-  </section>
-
-  <section class="spread arc-academic-drop-cap">
-    <div class="paper-head">
-      <span>Technical Standards</span>
-      <span class="numeral-roman">IX</span>
-      <span>cra.mr</span>
-    </div>
-    <h2>Standardizing web content for automated agent ingestion</h2>
-    <p class="story-meta">cra.mr &nbsp;·&nbsp; 76 pts &nbsp;·&nbsp; 24 comments</p>
-    <div class="cols">
-      <div><p>I—as the web evolves to serve autonomous agents, designers are moving toward dynamic content negotiation.</p></div>
-      <div><p>By leveraging standard headers, servers can prioritize machine-readable Markdown to improve retrieval accuracy and computational efficiency.</p><div class="spread-links"><a class="read-more" href="https://cra.mr/optimizing-content-for-agents/" target="_blank" rel="noopener">Read →</a><a class="dossier-link" href="#dossier-9">Full analysis ↓</a></div></div>
+    <div class="quote-side">
+      <blockquote>The value of legacy editors is shifting from mechanical efficiency to high-level system integration.</blockquote>
     </div>
   </section>
-
-  <section class="spread arc-blueprint">
-    <div class="corner tl">┌</div><div class="corner tr">┐</div>
-    <div class="corner bl">└</div><div class="corner br">┘</div>
-    <div class="numeral">FIG.&nbsp;10</div>
-    <div class="kicker">System Automation</div>
-    <h2>Hammerspoon bridges Lua scripting and macOS system events</h2>
-    <p class="story-meta">github.com &nbsp;·&nbsp; 353 pts &nbsp;·&nbsp; 147 comments</p>
-    <p class="lede">Automating the desktop environment often requires deep hooks into operating system APIs. Hammerspoon serves as a robust framework, allowing users to script complex window management and event-driven workflows directly in Lua.</p>
-    <div class="spread-links"><a class="read-more" href="https://github.com/Hammerspoon/hammerspoon" target="_blank" rel="noopener">Read →</a><a class="dossier-link" href="#dossier-10">Full analysis ↓</a></div>
+  <section id="story-4" class="spread arc-archive">
+    <div class="mast">ARCHIVE N<sup>o</sup> 04</div>
+    <div class="body">
+      <div class="kicker">Academic Perspectives</div>
+      <h2 class="frnc">Reflecting on the realities of doctoral research journeys</h2>
+      <p class="lede">A 2016 retrospective on the challenges of computer science PhD programs remains a poignant guide for today&#x27;s researchers. It balances the pursuit of high-impact discovery against the pragmatics of finding the right mentorship.</p>
+      <div class="ctas">
+        <a href="http://karpathy.github.io/2016/09/07/phd/" class="btn-read" target="_blank">Read →</a>
+        <a href="#dossier-4" class="btn-dossier">Full analysis ↓</a>
+      </div>
+    </div>
   </section>
-
+  <section id="story-5" class="spread arc-alert-stamp">
+    <div class="stamp">ALERT</div>
+    <div class="body">
+      <div class="kicker">Security Oversight</div>
+      <h2 class="frnc">Exposed administrative keys persist across open-source documentation</h2>
+      <p class="lede">Researchers have identified dozens of active Algolia keys mistakenly deployed within public-facing documentation. Despite reports of these credentials granting unauthorized index modification, many remain live and accessible to the public.</p>
+      <div class="ctas">
+        <a href="https://benzimmermann.dev/blog/algolia-docsearch-admin-keys" class="btn-read" target="_blank">Read →</a>
+        <a href="#dossier-5" class="btn-dossier">Full analysis ↓</a>
+      </div>
+    </div>
+  </section>
+  <section id="story-6" class="spread arc-pastel-playful">
+    <div class="alpha-grid">A B C D E F G H I J K L M N O P Q R S T U V W X Y Z</div>
+    <div class="body">
+      <div class="kicker">Digital Curiosities</div>
+      <h2 class="frnc">Channel Surfer brings the static joy of cable to streaming</h2>
+      <p class="lede">Sometimes the choice paralysis of modern content is better solved with a random channel guide. This project turns your YouTube subscriptions into a curated, browser-based television broadcast.</p>
+      <div class="ctas">
+        <a href="https://channelsurfer.tv" class="btn-read" target="_blank">Read →</a>
+        <a href="#dossier-6" class="btn-dossier">Full analysis ↓</a>
+      </div>
+    </div>
+  </section>
+  <section id="story-7" class="spread arc-observatory">
+    <div class="stars"></div>
+    <div class="body">
+      <div class="kicker">Global Logistics</div>
+      <h2 class="frnc">Helium supply constraints threaten critical semiconductor fabrication schedules</h2>
+      <p class="lede">A geopolitical disruption at a major production complex has abruptly tightened the global supply of ultra-pure helium. Because chip manufacturing requires specific cooling standards, fabs are now navigating a precarious two-week availability window.</p>
+      <div class="ctas">
+        <a href="https://www.tomshardware.com/tech-industry/qatar-helium-shutdown-puts-chip-supply-chain-on-a-two-week-clock" class="btn-read" target="_blank">Read →</a>
+        <a href="#dossier-7" class="btn-dossier">Full analysis ↓</a>
+      </div>
+    </div>
+  </section>
+  <section id="story-8" class="spread arc-terminal">
+    <div class="window">
+      <div class="kicker"># Open Source</div>
+      <h2 class="frnc">> Mouser replaces proprietary mouse drivers with local controls</h2>
+      <p class="lede">Logitech users seeking to bypass telemetry and account requirements are turning to this lightweight HID++ implementation. It provides granular remapping of hardware buttons without the overhead of cloud-dependent suites.</p>
+      <div class="ctas">
+        <a href="https://github.com/TomBadash/MouseControl" class="btn-read" target="_blank">RUN_PROCESS →</a>
+        <a href="#dossier-8" class="btn-dossier">VIEW_ANALYSIS ↓</a>
+      </div>
+    </div>
+  </section>
+  <section id="story-9" class="spread arc-academic-drop-cap">
+    <div class="body">
+      <div class="kicker">Technical Standards</div>
+      <h2 class="frnc">Standardizing web content for automated agent ingestion</h2>
+      <div class="cols">
+        <p class="lede"><span class="drop">I</span>—as the web evolves to serve autonomous agents, designers are moving toward dynamic content negotiation. By leveraging standard headers, servers can prioritize machine-readable Markdown to improve retrieval accuracy and computational efficiency.</p>
+      </div>
+      <div class="ctas">
+        <a href="https://cra.mr/optimizing-content-for-agents/" class="btn-read" target="_blank">Read →</a>
+        <a href="#dossier-9" class="btn-dossier">Full analysis ↓</a>
+      </div>
+    </div>
+  </section>
+  <section id="story-10" class="spread arc-blueprint">
+    <div class="grid"></div>
+    <div class="body">
+      <div class="kicker">System Automation</div>
+      <h2 class="frnc">Hammerspoon bridges Lua scripting and macOS system events</h2>
+      <p class="lede">Automating the desktop environment often requires deep hooks into operating system APIs. Hammerspoon serves as a robust framework, allowing users to script complex window management and event-driven workflows directly in Lua.</p>
+      <div class="ctas">
+        <a href="https://github.com/Hammerspoon/hammerspoon" class="btn-read" target="_blank">Read →</a>
+        <a href="#dossier-10" class="btn-dossier">Full analysis ↓</a>
+      </div>
+    </div>
+  </section>
   <section id="dossier" class="dossier">
     <div class="dossier-head">
       <div class="tagline">Appendix</div>
       <h2>The Dossier</h2>
-      <p class="intro">Full analysis and reader reactions for today's ten stories. <a href="#top">↑ Back to the edition</a></p>
+      <p class="intro">Full analysis and reactions for today's ten stories. <a href="#top">↑ Back to the edition</a></p>
     </div>
     <article id="dossier-1" class="dossier-entry">
       <div class="dossier-meta">N<sup>o</sup> 01 &nbsp;·&nbsp; Stat Hero &nbsp;·&nbsp; Model Capacity</div>
@@ -643,11 +449,15 @@
       <p class="dossier-source">
         <a href="https://claude.com/blog/1m-context-ga" target="_blank" rel="noopener">claude.com</a>
         &nbsp;·&nbsp; 1214 pts &nbsp;·&nbsp; 518 comments
-        &nbsp;·&nbsp; <a href="https://news.ycombinator.com/item?id=47367129" target="_blank" rel="noopener">discussion</a>
+         &nbsp;·&nbsp; <a href='https://news.ycombinator.com/item?id=47367129' target='_blank' rel='noopener'>discussion</a>
       </p>
       <h4>Analysis</h4>
-      <p class="muted"><em>Analysis not available.</em></p>
-      
+      <p>Anthropic has announced the general availability of a 1-million-token context window for its Claude 3.5 Opus and Sonnet models. This update removes previous long-context premiums, ensuring that users pay the same standard per-token rates regardless of the request length. Additionally, the update increases media support to 600 images or PDF pages and eliminates the need for beta headers, streamlining integration across the Claude Platform, Microsoft Azure, Amazon Bedrock, and Google Vertex AI.</p>
+      <h4>Reader Reactions</h4>
+      <p>Users express significant enthusiasm for the model&#x27;s coding capabilities, often finding it capable of handling complex, multi-step engineering tasks that previously required more manual effort and intervention from human developers.</p>
+      <p>Several experienced engineers argue that the model struggles with long-term coherence, frequently losing focus in extended sessions and requiring constant human oversight to fix errors in complex, real-world codebases.</p>
+      <p>Managing large context windows effectively requires treating conversations like linear, non-recursive memory allocations, where starting fresh sessions prevents the &quot;dumb zone&quot; performance degradation often encountered during long, complex agentic workflows.</p>
+      <p>The provided sample disproportionately represents power users and professional software engineers, potentially skewing the discussion toward highly technical, specialized workflows rather than typical or casual use cases for the model.</p>
     </article>
     <article id="dossier-2" class="dossier-entry">
       <div class="dossier-meta">N<sup>o</sup> 02 &nbsp;·&nbsp; Midnight &nbsp;·&nbsp; Local Compute</div>
@@ -655,11 +465,15 @@
       <p class="dossier-source">
         <a href="https://www.canirun.ai/" target="_blank" rel="noopener">canirun.ai</a>
         &nbsp;·&nbsp; 1490 pts &nbsp;·&nbsp; 350 comments
-        &nbsp;·&nbsp; <a href="https://news.ycombinator.com/item?id=47363754" target="_blank" rel="noopener">discussion</a>
+         &nbsp;·&nbsp; <a href='https://news.ycombinator.com/item?id=47363754' target='_blank' rel='noopener'>discussion</a>
       </p>
       <h4>Analysis</h4>
-      <p class="muted"><em>Analysis not available.</em></p>
-      
+      <p>CanIRun.ai is a browser-based utility that estimates whether a user&#x27;s machine can locally execute specific open-source AI models. The site utilizes browser APIs to assess hardware capabilities and cross-references them against the resource requirements—such as VRAM usage and parameter size—of popular models from providers like Meta, Google, and Alibaba. By categorizing models based on their expected performance on the user&#x27;s current hardware, it offers a practical, automated way to determine local compatibility.</p>
+      <h4>Reader Reactions</h4>
+      <p>Users generally agree that running local AI is a rewarding exercise for privacy, engineering curiosity, and offline utility, though they acknowledge that hosted models often outperform local alternatives for complex tasks.</p>
+      <p>A significant disagreement exists regarding whether online tools should provide simplified recommendations or if the inherent complexity of hardware, quantization, and model architecture makes such simplified guidance inherently misleading.</p>
+      <p>Effectively running local models requires balancing memory constraints, specifically VRAM and KV cache capacity, with the performance trade-offs of using Mixture of Experts models versus dense architectures for specific hardware configurations.</p>
+      <p>The sample shows a heavy bias toward users with high technical proficiency who prioritize granular control over &quot;black box&quot; solutions, potentially overlooking the needs of casual users seeking simple installation paths.</p>
     </article>
     <article id="dossier-3" class="dossier-entry">
       <div class="dossier-meta">N<sup>o</sup> 03 &nbsp;·&nbsp; Editorial Op-Ed &nbsp;·&nbsp; Industry Analysis</div>
@@ -667,11 +481,15 @@
       <p class="dossier-source">
         <a href="https://batsov.com/articles/2026/03/09/emacs-and-vim-in-the-age-of-ai/" target="_blank" rel="noopener">batsov.com</a>
         &nbsp;·&nbsp; 56 pts &nbsp;·&nbsp; 8 comments
-        &nbsp;·&nbsp; <a href="https://news.ycombinator.com/item?id=47319071" target="_blank" rel="noopener">discussion</a>
+         &nbsp;·&nbsp; <a href='https://news.ycombinator.com/item?id=47319071' target='_blank' rel='noopener'>discussion</a>
       </p>
       <h4>Analysis</h4>
-      <p class="muted"><em>Analysis not available.</em></p>
-      
+      <p>The article explores the future of traditional text editors like Emacs and Vim amidst the rapid advancement of AI-integrated development environments like Cursor and VS Code. The author evaluates the risks posed by well-funded, purpose-built AI tools that threaten to marginalize legacy editors, while highlighting how AI could paradoxically lower the barrier to entry by simplifying complex configuration and plugin development. Ultimately, the piece posits that the value of these editors is shifting from mechanical typing speed to human-centric architectural judgment and deep system integration.</p>
+      <h4>Reader Reactions</h4>
+      <p>Bullet 1: Contributors generally agree that the text-oriented nature of Vim and Emacs makes them uniquely compatible with AI tools, viewing these editors as programmable platforms that AI can effectively extend and manage.</p>
+      <p>Bullet 2: A primary concern is whether AI-assisted coding will reduce the incentive for new users to learn complex custom editors, potentially stifling community growth and jeopardizing the long-term maintenance of these projects.</p>
+      <p>Bullet 3: Developers are successfully integrating LLMs by leveraging REPL-friendly workflows and MCPs, allowing AI agents to manipulate code, test functions, and sculpt editor configurations directly through stdin/stdout or live environment evaluation.</p>
+      <p>Bullet 4: The sample reflects an enthusiast-heavy perspective from long-term power users of Vim and Emacs, likely underrepresenting the views of developers who have already migrated to modern, out-of-the-box integrated development environments.</p>
     </article>
     <article id="dossier-4" class="dossier-entry">
       <div class="dossier-meta">N<sup>o</sup> 04 &nbsp;·&nbsp; Archive &nbsp;·&nbsp; Academic Perspectives</div>
@@ -679,11 +497,15 @@
       <p class="dossier-source">
         <a href="http://karpathy.github.io/2016/09/07/phd/" target="_blank" rel="noopener">karpathy.github.io</a>
         &nbsp;·&nbsp; 20 pts &nbsp;·&nbsp; 2 comments
-        &nbsp;·&nbsp; <a href="https://news.ycombinator.com/item?id=47318386" target="_blank" rel="noopener">discussion</a>
+         &nbsp;·&nbsp; <a href='https://news.ycombinator.com/item?id=47318386' target='_blank' rel='noopener'>discussion</a>
       </p>
       <h4>Analysis</h4>
-      <p class="muted"><em>Analysis not available.</em></p>
-      
+      <p>This article is a comprehensive, retrospective guide to navigating a PhD program, specifically within the fields of computer science and machine learning. The author details the decision-making process of pursuing a doctorate, the importance of selecting the right adviser, and the strategies required to identify high-impact research topics. By reflecting on his own academic journey, the author provides a practical framework for managing the personal and professional challenges inherent in long-term, self-directed research.</p>
+      <h4>Reader Reactions</h4>
+      <p>Bullet 1: There is no consensus, as the discussion splits between skepticism regarding the long-term utility of traditional doctoral degrees and individual accounts of successfully completing a PhD under challenging circumstances.</p>
+      <p>Bullet 2: One perspective argues that powerful AI tools will soon render in-depth formal education obsolete, while the other emphasizes the personal persistence and effort required to earn a degree regardless of environment.</p>
+      <p>Bullet 3: Prospective students should critically evaluate whether the traditional multi-year PhD structure remains a worthwhile investment of time given the rapid advancements in AI models that automate complex technical problem-solving tasks.</p>
+      <p>Bullet 4: With only two data points, this sample fails to represent the broader community discourse and captures only an isolated contrast between abstract career skepticism and one anecdotal report of personal achievement.</p>
     </article>
     <article id="dossier-5" class="dossier-entry">
       <div class="dossier-meta">N<sup>o</sup> 05 &nbsp;·&nbsp; Rose Alert &nbsp;·&nbsp; Security Oversight</div>
@@ -691,11 +513,15 @@
       <p class="dossier-source">
         <a href="https://benzimmermann.dev/blog/algolia-docsearch-admin-keys" target="_blank" rel="noopener">benzimmermann.dev</a>
         &nbsp;·&nbsp; 158 pts &nbsp;·&nbsp; 47 comments
-        &nbsp;·&nbsp; <a href="https://news.ycombinator.com/item?id=47371064" target="_blank" rel="noopener">discussion</a>
+         &nbsp;·&nbsp; <a href='https://news.ycombinator.com/item?id=47371064' target='_blank' rel='noopener'>discussion</a>
       </p>
       <h4>Analysis</h4>
-      <p class="muted"><em>Analysis not available.</em></p>
-      
+      <p>Researcher Ben Zimmermann discovered 39 active Algolia admin API keys exposed across various open-source documentation websites. By scraping thousands of sites and analyzing GitHub repositories, he found that many projects accidentally deployed administrative credentials—which allow for full index deletion and modification—instead of the intended search-only keys. While Zimmermann successfully disclosed the vulnerability to some project maintainers, Algolia itself has not responded to his direct reports, leaving many of the keys still active.</p>
+      <h4>Reader Reactions</h4>
+      <p>Users express significant frustration over Algolia&#x27;s apparent lack of responsiveness to security reports, characterizing their failure to address widespread admin key exposure in documentation as a severe and negligent oversight.</p>
+      <p>Commenters sharply disagree on the quality of the author’s presentation, with some critiquing the inclusion of unnecessary data visualizations while others argue these elements are essential for reader engagement and accessibility.</p>
+      <p>Experienced developers argue that finding leaked API keys is better accomplished through simple, optimized shell scripts or regex tools rather than expensive, over-engineered LLM agent workflows that lack meaningful technical advantages.</p>
+      <p>The provided sample disproportionately focuses on metadata like communication styles, writing critique, and tool selection, potentially obscuring more substantive discussions regarding the actual security implications of the leaked admin keys.</p>
     </article>
     <article id="dossier-6" class="dossier-entry">
       <div class="dossier-meta">N<sup>o</sup> 06 &nbsp;·&nbsp; Pastel Finale &nbsp;·&nbsp; Digital Curiosities</div>
@@ -703,11 +529,15 @@
       <p class="dossier-source">
         <a href="https://channelsurfer.tv" target="_blank" rel="noopener">channelsurfer.tv</a>
         &nbsp;·&nbsp; 596 pts &nbsp;·&nbsp; 174 comments
-        &nbsp;·&nbsp; <a href="https://news.ycombinator.com/item?id=47336100" target="_blank" rel="noopener">discussion</a>
+         &nbsp;·&nbsp; <a href='https://news.ycombinator.com/item?id=47336100' target='_blank' rel='noopener'>discussion</a>
       </p>
       <h4>Analysis</h4>
-      <p class="muted"><em>Analysis not available.</em></p>
-      
+      <p>Channel Surfer is a web-based tool designed to emulate the traditional cable television viewing experience using YouTube content. To maintain user privacy, the platform operates entirely in the browser without requiring accounts or sign-ins. Users can quickly populate their personalized feed by importing their existing YouTube subscriptions via a local bookmarklet.</p>
+      <h4>Reader Reactions</h4>
+      <p>Users widely praise the app for solving decision fatigue and YouTube’s overwhelming recommendation algorithm by providing a &quot;bounded,&quot; passive viewing experience that mimics the simplicity and nostalgia of traditional cable television.</p>
+      <p>Some participants argue against the &quot;live TV&quot; model, asserting that the primary benefit of modern streaming is the ability to specifically search for and control exactly what they consume on-demand.</p>
+      <p>Developers suggest that local RSS syndication, specialized feed readers like elfeed-tube, and blocking UI elements via uBlock Origin are effective, highly customizable alternatives for regaining control over YouTube content consumption habits.</p>
+      <p>The sample primarily reflects a cohort of technically inclined power users interested in building or customizing their media interfaces, which may not represent the preferences of the general, non-technical viewing public.</p>
     </article>
     <article id="dossier-7" class="dossier-entry">
       <div class="dossier-meta">N<sup>o</sup> 07 &nbsp;·&nbsp; Observatory &nbsp;·&nbsp; Global Logistics</div>
@@ -715,11 +545,15 @@
       <p class="dossier-source">
         <a href="https://www.tomshardware.com/tech-industry/qatar-helium-shutdown-puts-chip-supply-chain-on-a-two-week-clock" target="_blank" rel="noopener">tomshardware.com</a>
         &nbsp;·&nbsp; 699 pts &nbsp;·&nbsp; 631 comments
-        &nbsp;·&nbsp; <a href="https://news.ycombinator.com/item?id=47363584" target="_blank" rel="noopener">discussion</a>
+         &nbsp;·&nbsp; <a href='https://news.ycombinator.com/item?id=47363584' target='_blank' rel='noopener'>discussion</a>
       </p>
       <h4>Analysis</h4>
-      <p class="muted"><em>Analysis not available.</em></p>
-      
+      <p>The recent shutdown of Qatar’s Ras Laffan complex, one of the world&#x27;s largest helium production facilities, has sparked concerns over the semiconductor supply chain. Following Iranian drone strikes that forced the site to go offline, 30% of the global helium supply has been removed from the market, creating a critical two-week window before industrial gas distribution logistics become significantly more complex. South Korea, which relies on Qatar for nearly 65% of its helium imports, is particularly vulnerable, as the gas is essential for cooling silicon wafers during the chip fabrication process.</p>
+      <h4>Reader Reactions</h4>
+      <p>Participants generally agree that semiconductor manufacturing is extremely vulnerable to supply chain disruptions because the industry requires exceptionally high-purity helium and maintains zero tolerance for even minor chemical contaminants or defects.</p>
+      <p>While some users attribute recent price hikes to geopolitical instability and supply chain fragility, others argue that inflation metrics are fundamentally flawed because they fail to capture the reality of consumer costs.</p>
+      <p>Semiconductor fabs require &quot;Grade 6&quot; helium at 99.9999% purity because any contamination significantly damages optics or creates thermal inconsistencies that can render expensive, precisely manufactured wafers unusable during the fabrication process.</p>
+      <p>This sample is heavily skewed toward political tangents and personal anecdotes, which may overshadow the technical nuances of industrial helium infrastructure and the specific economic realities currently affecting the global chip market.</p>
     </article>
     <article id="dossier-8" class="dossier-entry">
       <div class="dossier-meta">N<sup>o</sup> 08 &nbsp;·&nbsp; Terminal &nbsp;·&nbsp; Open Source</div>
@@ -727,11 +561,15 @@
       <p class="dossier-source">
         <a href="https://github.com/TomBadash/MouseControl" target="_blank" rel="noopener">github.com</a>
         &nbsp;·&nbsp; 439 pts &nbsp;·&nbsp; 152 comments
-        &nbsp;·&nbsp; <a href="https://news.ycombinator.com/item?id=47368033" target="_blank" rel="noopener">discussion</a>
+         &nbsp;·&nbsp; <a href='https://news.ycombinator.com/item?id=47368033' target='_blank' rel='noopener'>discussion</a>
       </p>
       <h4>Analysis</h4>
-      <p class="muted"><em>Analysis not available.</em></p>
-      
+      <p>Mouser is an open-source, lightweight alternative to Logitech’s proprietary Options+ software, designed specifically for remapping buttons on the MX Master 3S mouse. By utilizing HID++ protocols, the application allows users to customize button actions, adjust DPI, and configure per-application profiles without relying on cloud services or Logitech accounts. The project operates locally, eliminating the telemetry and background resource consumption often associated with the manufacturer&#x27;s official software.</p>
+      <h4>Reader Reactions</h4>
+      <p>Users overwhelmingly reject Logitech’s official software, citing high system resource consumption, intrusive telemetry, forced AI features, and frequent update failures as primary reasons to seek lightweight, open-source alternatives like Mouser or MacMousefix.</p>
+      <p>While many criticize Logitech for poor software and sticky rubberized hardware coatings, some users maintain that the hardware remains functional and durable over many years, suggesting these negative experiences are not universal.</p>
+      <p>For users unwilling to switch software, there are alternative workarounds, such as using the official &quot;offline&quot; or &quot;air-gapped&quot; versions of Logitech software to minimize telemetry, bloatware, and non-functional update loops.</p>
+      <p>The discussion is heavily skewed toward macOS and Linux users, potentially overlooking the unique challenges or specific software requirements that Windows users might face when replacing proprietary hardware drivers with community-developed utilities.</p>
     </article>
     <article id="dossier-9" class="dossier-entry">
       <div class="dossier-meta">N<sup>o</sup> 09 &nbsp;·&nbsp; Academic &nbsp;·&nbsp; Technical Standards</div>
@@ -739,11 +577,15 @@
       <p class="dossier-source">
         <a href="https://cra.mr/optimizing-content-for-agents/" target="_blank" rel="noopener">cra.mr</a>
         &nbsp;·&nbsp; 76 pts &nbsp;·&nbsp; 24 comments
-        &nbsp;·&nbsp; <a href="https://news.ycombinator.com/item?id=47372672" target="_blank" rel="noopener">discussion</a>
+         &nbsp;·&nbsp; <a href='https://news.ycombinator.com/item?id=47372672' target='_blank' rel='noopener'>discussion</a>
       </p>
       <h4>Analysis</h4>
-      <p class="muted"><em>Analysis not available.</em></p>
-      
+      <p>The article argues that websites should be explicitly optimized for AI agents, moving beyond the flawed &quot;LLMs.txt&quot; concept toward dynamic content negotiation. The author explains that by using the `Accept: text/markdown` header, servers can detect agent traffic and provide streamlined, machine-readable responses that strip out browser-specific bloat. Practical examples from Sentry demonstrate how this approach improves agent accuracy by prioritizing structured documentation, simplifying link hierarchies, and offering direct entry points like MCP servers or CLI tools instead of forcing AI to parse complex HTML.</p>
+      <h4>Reader Reactions</h4>
+      <p>Bullet 1: Commenters widely agree that structuring web content for AI agents is becoming essential, suggesting that principles like clear heading hierarchies benefit both automated systems and human accessibility tools.</p>
+      <p>Bullet 2: While the original article reportedly deems `llms.txt` useless, several users strongly disagree, arguing that it serves as an effective convention for providing agents with a map of site documentation.</p>
+      <p>Bullet 3: Developers are exploring ways to improve agent-readable documentation by utilizing standard markdown files and implementing structured link hierarchies to minimize context retrieval while optimizing for computational efficiency.</p>
+      <p>Bullet 4: The discussion highlights significant security concerns regarding malicious content injection, where sites could display benign versions to humans while serving weaponized instructions specifically designed to exploit AI agent behaviors.</p>
     </article>
     <article id="dossier-10" class="dossier-entry">
       <div class="dossier-meta">N<sup>o</sup> 10 &nbsp;·&nbsp; Blueprint &nbsp;·&nbsp; System Automation</div>
@@ -751,20 +593,22 @@
       <p class="dossier-source">
         <a href="https://github.com/Hammerspoon/hammerspoon" target="_blank" rel="noopener">github.com</a>
         &nbsp;·&nbsp; 353 pts &nbsp;·&nbsp; 147 comments
-        &nbsp;·&nbsp; <a href="https://news.ycombinator.com/item?id=47367932" target="_blank" rel="noopener">discussion</a>
+         &nbsp;·&nbsp; <a href='https://news.ycombinator.com/item?id=47367932' target='_blank' rel='noopener'>discussion</a>
       </p>
       <h4>Analysis</h4>
-      <p class="muted"><em>Analysis not available.</em></p>
-      
+      <p>Hammerspoon is a desktop automation framework for macOS that functions as a bridge between the operating system and the Lua scripting engine. By utilizing a collection of system-level extensions, users can write custom Lua scripts to control various aspects of their macOS environment. Originally a fork of the Mjolnir project, the software emphasizes a more integrated experience with broader API coverage and improved user-facing documentation.</p>
+      <h4>Reader Reactions</h4>
+      <p>Users view Hammerspoon as an essential automation tool for macOS, highly valuing its extreme customizability for window management, hotkey remapping, and system-level event handling that native OS features lack.</p>
+      <p>While most users praise the tool&#x27;s flexibility, some contributors highlight the inherent technical frustration of managing macOS &quot;spaces,&quot; which frequently forces developers to implement brittle hacks or rely on third-party alternatives.</p>
+      <p>Developers leverage Lua-based scripting to build sophisticated workflows, such as programmatically controlling smart home devices via webhooks or automating complex window layouts based on specific connected hardware or network states.</p>
+      <p>This sample primarily reflects the perspectives of power users and developers, potentially overlooking the steep learning curve and maintenance burden that might deter casual Mac users from adopting such programmable solutions.</p>
     </article>
   </section>
-
   <footer class="colophon">
     <p class="sig">— that's the edition.</p>
     <p class="meta">Set in Fraunces &amp; Inter · Compiled March 14, 2026</p>
     <p class="classic-link"><a href="classic.html">Prefer the classic card view? →</a></p>
   </footer>
-
 <script>
 (() => {
   const key = "gtd:read_days:hn:v1";
@@ -773,7 +617,7 @@
   try {
     stored = JSON.parse(localStorage.getItem(key) || "[]");
     if (!Array.isArray(stored)) stored = [];
-  } catch (_) { stored = []; }
+  } catch (e) {}
   if (!stored.includes(day)) {
     stored.push(day);
     stored.sort();
@@ -781,6 +625,5 @@
   }
 })();
 </script>
-
 </body>
 </html>

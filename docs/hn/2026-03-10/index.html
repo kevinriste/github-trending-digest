@@ -1,637 +1,446 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Morning Edition — Tuesday, March 10, 2026</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght,SOFT@0,9..144,300..900,0..100;1,9..144,300..900,0..100&family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
-<style>
-
-  :root { --ink: #121212; --paper: #f5f1e8; }
-  * { box-sizing: border-box; }
-  html, body { margin: 0; padding: 0; }
-  body {
-    font-family: 'Inter', system-ui, sans-serif;
-    font-size: 20px;
-    line-height: 1.5;
-    color: var(--ink);
-    background: var(--paper);
-    -webkit-font-smoothing: antialiased;
-    text-rendering: optimizeLegibility;
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Morning Edition — March 10, 2026</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,100..900;1,9..144,100..900&family=Inter:wght@100..900&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+  <style>
+  :root {
+    --bg-light: #f5f1e8; --bg-dark: #121212;
+    --text-dark: #121212; --text-light: #f5f1e8;
+    --accent-red: #d32f2f; --accent-blue: #1976d2;
   }
-  a { color: inherit; }
-  a:hover { opacity: 0.7; }
-  .frnc { font-family: 'Fraunces', Georgia, serif; }
-  .mono { font-family: 'JetBrains Mono', ui-monospace, monospace; }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; padding: 0;
+    background: var(--bg-light); color: var(--text-dark);
+    font-family: 'Inter', sans-serif;
+    -webkit-font-smoothing: antialiased;
+  }
+  .frnc { font-family: 'Fraunces', serif; font-variant-classic-ligatures: common-ligatures; }
+  
+  /* ───── LAYOUT ───── */
+  .spread {
+    position: relative; min-height: 100vh; width: 100%;
+    display: flex; align-items: center; justify-content: center;
+    padding: 10vh 8vw; overflow: hidden;
+    scroll-snap-align: start;
+  }
+  .body { position: relative; z-index: 10; width: 100%; max-width: 1200px; }
+  .kicker { font-weight: 700; font-size: 1.1rem; letter-spacing: 0.4em; text-transform: uppercase; margin-bottom: 2rem; opacity: 0.8; }
+  h2 { font-size: clamp(3rem, 8vw, 6.5rem); line-height: 0.95; font-weight: 400; margin: 0 0 3rem; letter-spacing: -0.03em; }
+  .lede { font-size: clamp(1.4rem, 2.5vw, 2.1rem); line-height: 1.35; max-width: 800px; margin: 0 0 4rem; font-weight: 450; }
+  
+  .ctas { display: flex; gap: 2rem; align-items: center; }
+  .ctas a {
+    text-decoration: none; font-weight: 600; font-size: 1.1rem; letter-spacing: 0.1em; text-transform: uppercase;
+    padding: 1.2rem 2.4rem; transition: all 0.2s;
+  }
+  .btn-read { background: var(--text-dark); color: var(--bg-light); }
+  .btn-dossier { border-bottom: 2px solid currentColor; padding: 0.5rem 0 !important; }
+  
+  /* ───── ARCHETYPE CSS ───── */
+  
+  /* Stat Hero */
+  .arc-stat-hero { background: #e8e4da; }
+  .arc-stat-hero .numeral {
+    position: absolute; right: 0; top: 10vh; font-family: 'Fraunces', serif;
+    font-size: clamp(20rem, 50vw, 45rem); font-weight: 900; line-height: 0.8;
+    color: #121212; opacity: 0.05; pointer-events: none;
+  }
+
+  /* Midnight */
+  .arc-midnight { background: #0a0a0c; color: #fff; }
+  .arc-midnight .glow {
+    position: absolute; top: 30%; left: 40%; width: 40vw; height: 40vw;
+    background: radial-gradient(circle, rgba(110,64,255,0.15) 0%, transparent 70%);
+    filter: blur(60px); pointer-events: none;
+  }
+  .arc-midnight .btn-read { background: #fff; color: #000; }
+
+  /* Alert Stamp */
+  .arc-alert-stamp { background: #f9ebeb; color: #7a1e14; }
+  .arc-alert-stamp .stamp {
+    position: absolute; top: 15vh; right: 10vw; border: 6px solid #d32f2f;
+    padding: 1rem 2rem; font-weight: 900; font-size: 3rem; transform: rotate(12deg);
+    opacity: 0.2; pointer-events: none;
+  }
+  .arc-alert-stamp .btn-read { background: #d32f2f; color: #fff; }
+
+  /* Academic */
+  .arc-academic-drop-cap { background: #fdfaf3; color: #2c2925; }
+  .arc-academic-drop-cap h2 { font-size: clamp(2.5rem, 5vw, 4rem); border-bottom: 1px solid #ddd; padding-bottom: 2rem; margin-bottom: 4rem; }
+  .arc-academic-drop-cap .cols { columns: 2; column-gap: 4rem; }
+  .arc-academic-drop-cap .drop {
+    float: left; font-family: 'Fraunces', serif; font-size: 6.5rem; line-height: 0.75;
+    margin: 0.8rem 1rem 0 0; font-weight: 600; color: #121212;
+  }
+  .arc-academic-drop-cap .btn-read { background: #2c2925; color: #fff; }
+
+  /* Terminal */
+  .arc-terminal { background: #000; color: #20c20e; font-family: 'JetBrains Mono', monospace; }
+  .arc-terminal .window { border: 1px solid #20c20e; padding: 4rem; background: #050505; }
+  .arc-terminal .frnc { font-family: 'JetBrains Mono', monospace; font-weight: 700; letter-spacing: -0.05em; }
+  .arc-terminal .btn-read { background: #20c20e; color: #000; border-radius: 0; }
+  .arc-terminal .btn-dossier { border-color: #20c20e; }
+
+  /* Editorial Pullquote */
+  .arc-editorial-pullquote { display: grid; grid-template-columns: 1.2fr 1fr; gap: 5vw; background: #1a1a1a; color: #f5f1e8; align-items: stretch; }
+  .arc-editorial-pullquote .quote-side { background: #d4af37; color: #1a1a1a; display: flex; align-items: center; padding: 6vw; position: relative; }
+  .arc-editorial-pullquote blockquote { font-family: 'Fraunces', serif; font-size: 3rem; line-height: 1.1; font-style: italic; font-weight: 400; margin: 0; }
+  .arc-editorial-pullquote blockquote::before { content: '“'; position: absolute; top: 2vw; left: 2vw; font-size: 8rem; opacity: 0.3; }
+  .arc-editorial-pullquote .btn-read { background: #f5f1e8; color: #1a1a1a; }
+
+  /* Caution Tape */
+  .arc-caution-tape { background: #fcd116; color: #000; }
+  .arc-caution-tape .tape {
+    position: absolute; left: -10vw; width: 120vw; background: #000; color: #fcd116;
+    font-weight: 900; font-size: 1.5rem; padding: 1rem; transform: rotate(-3deg); z-index: 5;
+  }
+  .arc-caution-tape .tape.top { top: 5vh; transform: rotate(2deg); }
+  .arc-caution-tape .tape.bottom { bottom: 5vh; transform: rotate(-1.5deg); }
+  .arc-caution-tape .tag { background: #000; color: #fff; padding: 0.5rem 1rem; display: inline-block; font-weight: 800; margin-bottom: 2rem; }
+  .arc-caution-tape .btn-read { background: #000; color: #fcd116; }
+
+  /* Notebook */
+  .arc-notebook { background: #fcfcf4; }
+  .arc-notebook .lines {
+    position: absolute; inset: 0;
+    background: repeating-linear-gradient(transparent, transparent 1.6rem, #e0e0d0 1.6rem, #e0e0d0 1.7rem);
+    opacity: 0.5;
+  }
+  .arc-notebook .btn-read { background: #333; color: #fff; }
+
+  /* Mint Pattern */
+  .arc-mint-pattern { background: #d0f0e4; color: #1b4d3e; }
+  .arc-mint-pattern::before {
+    content: var(--bg-word); position: absolute; inset: 0;
+    font-weight: 900; font-size: 14vw; line-height: 0.7; opacity: 0.04;
+    display: flex; flex-wrap: wrap; word-break: break-all; overflow: hidden;
+  }
+  .arc-mint-pattern .btn-read { background: #1b4d3e; color: #d0f0e4; }
+
+  /* Pastel Playful */
+  .arc-pastel-playful { background: #fbe6e6; color: #8a4b4b; }
+  .arc-pastel-playful .alpha-grid {
+    position: absolute; right: 4vw; top: 10vh; bottom: 10vh; width: 40vw;
+    display: grid; grid-template-columns: repeat(5, 1fr); gap: 1rem;
+    font-weight: 900; font-size: 2rem; opacity: 0.08; pointer-events: none;
+  }
+  .arc-pastel-playful .btn-read { background: #8a4b4b; color: #fbe6e6; }
+
+  /* Product Plate */
+  .arc-product-plate { background: #eee; }
+  .arc-product-plate .plate {
+    background: linear-gradient(145deg, #ffffff, #dcdcdc);
+    padding: 6vw; box-shadow: 20px 20px 60px #cbcbcb, -20px -20px 60px #ffffff;
+    border-radius: 20px;
+  }
+  .arc-product-plate .btn-read { background: #121212; color: #eee; border-radius: 50px; }
+
+  /* Archive */
+  .arc-archive { background: #f4ece1; color: #4e3620; }
+  .arc-archive .mast {
+    position: absolute; top: 4vh; width: 100%; text-align: center;
+    font-family: 'Fraunces', serif; font-weight: 700; font-size: 1.2rem;
+    letter-spacing: 0.5em; opacity: 0.5; border-bottom: 1px double #ccc;
+    padding-bottom: 2vh;
+  }
+  .arc-archive .btn-read { background: #4e3620; color: #f4ece1; }
+
+  /* Obituary */
+  .arc-obituary { background: #fff; color: #000; }
+  .arc-obituary .obit-frame { border: 20px solid #000; padding: 6vw; text-align: center; }
+  .arc-obituary .lede { margin-left: auto; margin-right: auto; }
+  .arc-obituary .ornament { font-size: 4rem; margin: 3rem 0; opacity: 0.2; }
+  .arc-obituary .ctas { justify-content: center; }
+  .arc-obituary .btn-read { background: #000; color: #fff; }
+
+  /* Blueprint */
+  .arc-blueprint { background: #0047ab; color: #fff; }
+  .arc-blueprint .grid {
+    position: absolute; inset: 0; opacity: 0.2;
+    background-image: linear-gradient(#fff 1px, transparent 1px), linear-gradient(90deg, #fff 1px, transparent 1px);
+    background-size: 40px 40px;
+  }
+  .arc-blueprint .btn-read { background: #fff; color: #0047ab; }
+
+  /* Observatory */
+  .arc-observatory { background: #050510; color: #e0e0ff; }
+  .arc-observatory .stars {
+    position: absolute; inset: 0; opacity: 0.4;
+    background: radial-gradient(white, rgba(255,255,255,.2) 2px, transparent 40px);
+    background-size: 100px 100px;
+  }
+  .arc-observatory .btn-read { background: #e0e0ff; color: #050510; border-radius: 100px; }
+
+  /* GH Specific: Agent Foundry */
+  .arc-agent-foundry { background: #f0f4f8; color: #1a365d; }
+  .arc-agent-foundry .blueprint-bg {
+    position: absolute; inset: 0; opacity: 0.1;
+    background-image: radial-gradient(#1a365d 1px, transparent 1px);
+    background-size: 20px 20px;
+  }
+  .arc-agent-foundry .btn-read { background: #1a365d; color: #fff; }
+
+  /* GH Specific: System Core */
+  .arc-system-core { background: #2d3748; color: #edf2f7; }
+  .arc-system-core .concrete {
+    position: absolute; inset: 0; opacity: 0.05;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  }
+  .arc-system-core .frnc { font-family: 'Inter', sans-serif; font-weight: 800; text-transform: uppercase; letter-spacing: -0.05em; }
+  .arc-system-core .btn-read { background: #edf2f7; color: #2d3748; }
+
+  /* GH Specific: UI Lab */
+  .arc-ui-lab { background: #fff; color: #4c51bf; }
+  .arc-ui-lab .lab-gradient {
+    position: absolute; inset: 0; opacity: 0.1;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  }
+  .arc-ui-lab .btn-read { background: #4c51bf; color: #fff; border-radius: 12px; }
+
+  /* GH Specific: Data Pipeline */
+  .arc-data-pipeline { background: #1a202c; color: #a3bffa; }
+  .arc-data-pipeline .pipeline-streams {
+    position: absolute; inset: 0; opacity: 0.15;
+    background: repeating-linear-gradient(45deg, #a3bffa, #a3bffa 2px, transparent 2px, transparent 20px);
+  }
+  .arc-data-pipeline .btn-read { background: #a3bffa; color: #1a202c; }
+
+  /* GH Specific: Model Bench */
+  .arc-model-bench { background: #f7fafc; color: #2d3748; }
+  .arc-model-bench .bench-silver {
+    position: absolute; right: 0; top: 0; width: 40%; height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(0,0,0,0.03));
+  }
+  .arc-model-bench .btn-read { border: 1px solid #2d3748; background: transparent; color: #2d3748; }
+
+  /* GH Specific: Privacy Shield */
+  .arc-privacy-shield { background: #000; color: #00ff41; }
+  .arc-privacy-shield .shield-glitch {
+    position: absolute; inset: 0; opacity: 0.1;
+    background-image: repeating-linear-gradient(0deg, rgba(0,255,65,0.1) 0, rgba(0,255,65,0.1) 1px, transparent 1px, transparent 2px);
+  }
+  .arc-privacy-shield .btn-read { background: #00ff41; color: #000; }
+
+  /* GH Specific: Enterprise Engine */
+  .arc-enterprise-engine { background: #f0f7ff; color: #0056b3; }
+  .arc-enterprise-engine .engine-blue {
+    position: absolute; right: -5vw; bottom: -5vw; width: 30vw; height: 30vw;
+    background: radial-gradient(circle, rgba(0,86,179,0.05) 0%, transparent 70%);
+  }
+  .arc-enterprise-engine .btn-read { background: #0056b3; color: #fff; }
+
+  /* GH Specific: Terminal Utility */
+  .arc-terminal-utility { background: #1a1a1a; color: #ffb000; font-family: 'JetBrains Mono', monospace; }
+  .arc-terminal-utility .crt-lines {
+    position: absolute; inset: 0; pointer-events: none;
+    background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.06), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.06));
+    background-size: 100% 2px, 3px 100%;
+  }
+  .arc-terminal-utility .btn-read { background: #ffb000; color: #1a1a1a; }
+
+  /* GH Specific: Experimental Workshop */
+  .arc-experimental-workshop { background: #fffde7; color: #5d4037; }
+  .arc-experimental-workshop .pad-lines {
+    position: absolute; left: 4vw; top: 0; bottom: 0; width: 2px; background: #ff5252; opacity: 0.3;
+  }
+  .arc-experimental-workshop .btn-read { border: 2px dashed #5d4037; background: transparent; color: #5d4037; }
+
+  /* GH Specific: Library Archive */
+  .arc-library-archive { background: #fdfaf3; color: #3e2723; }
+  .arc-library-archive .parchment {
+    position: absolute; inset: 0; opacity: 0.03;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='f'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.02' numOctaves='5'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23f)'/%3E%3C/svg%3E");
+  }
+  .arc-library-archive .btn-read { background: #3e2723; color: #fdfaf3; }
 
   /* ───── MASTHEAD ───── */
-  .masthead { padding: 2rem 6vw 2.5rem; border-bottom: 3px double #121212; background: #f5f1e8; text-align: center; }
-  .masthead-nav {
-    display: flex;
-    justify-content: center;
-    gap: 1.2rem;
-    align-items: baseline;
-    margin-bottom: 2rem;
-    font-weight: 600;
-    font-size: 1rem;
-    letter-spacing: 0.2em;
-    text-transform: uppercase;
-  }
-  .masthead-nav a { text-decoration: none; border-bottom: 2px solid transparent; padding-bottom: 2px; }
-  .masthead-nav a:hover { border-bottom-color: #121212; opacity: 1; }
-  .masthead-nav span { opacity: 0.4; }
-  .masthead .tagline { font-weight: 600; font-size: 1.2rem; letter-spacing: 0.4em; text-transform: uppercase; margin-bottom: 1.2rem; }
-  .masthead h1 {
-    font-family: 'Fraunces', Georgia, serif;
-    font-weight: 900;
-    font-style: italic;
-    font-size: clamp(4rem, 13vw, 12rem);
-    line-height: 0.88;
-    letter-spacing: -0.035em;
-    margin: 0 0 1rem;
-    font-variation-settings: "SOFT" 50;
-  }
-  .masthead .issue-line {
-    display: flex;
-    justify-content: space-between;
-    align-items: baseline;
-    max-width: 1000px;
-    margin: 2rem auto 0;
-    padding-top: 1.25rem;
-    border-top: 1px solid #121212;
-    font-weight: 500;
-    font-size: 1.1rem;
-    letter-spacing: 0.15em;
-    text-transform: uppercase;
-  }
-
-  /* ───── SPREAD BASE ───── */
-  .spread {
-    min-height: 100vh;
-    padding: 6vh 6vw;
-    position: relative;
-    overflow: hidden;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-  }
-  .spread .story-meta { font-weight: 600; font-size: 1rem; letter-spacing: 0.28em; text-transform: uppercase; }
-  .spread-links {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 2rem 2.5rem;
-    align-items: baseline;
-    margin-top: 2.5rem;
-  }
-  .spread .read-more {
-    display: inline-block;
-    font-size: 1.1rem;
-    font-weight: 700;
-    letter-spacing: 0.15em;
-    text-transform: uppercase;
-    text-decoration: none;
-    padding-bottom: 0.4rem;
-    border-bottom: 3px solid currentColor;
-  }
-  .spread .dossier-link {
-    font-size: 1rem;
-    font-weight: 500;
-    letter-spacing: 0.18em;
-    text-transform: uppercase;
-    text-decoration: none;
-    opacity: 0.7;
-    padding-bottom: 0.3rem;
-    border-bottom: 1px solid currentColor;
-  }
-  .spread .dossier-link:hover { opacity: 1; }
-
-  /* ───── STAT HERO ───── */
-  .arc-stat-hero { background: #eee6d3; color: #0d1a2e; padding: 8vh 6vw; }
-  .arc-stat-hero .numeral {
-    font-family: 'Fraunces', serif;
-    font-weight: 900;
-    font-style: italic;
-    font-size: clamp(12rem, 36vw, 34rem);
-    line-height: 0.8;
-    letter-spacing: -0.06em;
-    color: #0d1a2e;
-    position: absolute;
-    right: -2vw;
-    top: 8vh;
-    opacity: 0.94;
-    pointer-events: none;
-    white-space: nowrap;
-  }
-  .arc-stat-hero .kicker { font-weight: 700; font-size: 1.15rem; letter-spacing: 0.4em; text-transform: uppercase; color: #c13830; position: relative; z-index: 2; margin-bottom: 1.5rem; }
-  .arc-stat-hero h2 { font-family: 'Fraunces', serif; font-weight: 800; font-size: clamp(3rem, 8vw, 7.5rem); line-height: 0.95; letter-spacing: -0.03em; max-width: 60%; margin: 0 0 2rem; position: relative; z-index: 2; }
-  .arc-stat-hero .lede { font-family: 'Fraunces', serif; font-size: clamp(1.4rem, 2.2vw, 2rem); line-height: 1.45; max-width: 55%; font-weight: 400; position: relative; z-index: 2; margin: 0; }
-  .arc-stat-hero .story-meta { color: #c13830; position: relative; z-index: 2; }
-  .arc-stat-hero .spread-links { position: relative; z-index: 2; }
-
-  /* ───── MIDNIGHT ───── */
-  .arc-midnight { background: radial-gradient(ellipse at 70% 30%, #1a1235 0%, #05050c 65%); color: #e9e4ff; }
-  .arc-midnight::before {
-    content: "";
-    position: absolute;
-    inset: 0;
-    background-image:
-      radial-gradient(circle at 20% 80%, rgba(180,120,255,0.18), transparent 50%),
-      radial-gradient(circle at 80% 20%, rgba(120,200,255,0.12), transparent 55%);
-    pointer-events: none;
-  }
-  .arc-midnight .numeral {
-    font-family: 'Fraunces', serif;
-    font-size: clamp(8rem, 22vw, 20rem);
-    font-weight: 300;
-    font-style: italic;
-    color: transparent;
-    -webkit-text-stroke: 2px rgba(233,228,255,0.45);
-    line-height: 1;
-    position: absolute;
-    top: 6vh;
-    left: 5vw;
-    letter-spacing: -0.05em;
-  }
-  .arc-midnight .body { position: relative; z-index: 2; margin-top: 12rem; max-width: 90%; }
-  .arc-midnight .kicker { font-family: 'JetBrains Mono', monospace; font-size: 1.1rem; letter-spacing: 0.2em; text-transform: uppercase; color: #b48bff; margin-bottom: 2rem; }
-  .arc-midnight h2 { font-weight: 800; font-size: clamp(3rem, 7.5vw, 6.5rem); line-height: 1; letter-spacing: -0.035em; margin: 0 0 2.5rem; }
-  .arc-midnight .lede { font-size: 1.35rem; line-height: 1.55; color: #cdc6e8; max-width: 780px; margin: 0; }
-  .arc-midnight .story-meta { color: #8a7cc6; margin-bottom: 1.5rem; }
-
-  /* ───── ALERT STAMP ───── */
-  .arc-alert-stamp { background: #f8e5de; color: #2b0808; background-image: repeating-linear-gradient(transparent, transparent 3rem, rgba(193,56,48,0.08) 3rem, rgba(193,56,48,0.08) calc(3rem + 1px)); }
-  .arc-alert-stamp .stamp {
-    position: absolute; top: 8vh; right: 5vw;
-    transform: rotate(-14deg);
-    border: 6px solid #c13830;
-    padding: 1.2rem 2.5rem;
-    font-weight: 900;
-    font-size: clamp(2rem, 4vw, 3.5rem);
-    letter-spacing: 0.15em;
-    color: #c13830;
-    background: rgba(248,229,222,0.6);
-    text-transform: uppercase;
-  }
-  .arc-alert-stamp .numeral { font-family: 'Fraunces', serif; font-style: italic; font-weight: 900; font-size: clamp(6rem, 15vw, 12rem); line-height: 1; color: #c13830; margin: 0 0 1rem; }
-  .arc-alert-stamp .kicker { font-weight: 800; font-size: 1.2rem; letter-spacing: 0.3em; text-transform: uppercase; color: #c13830; margin-bottom: 1rem; }
-  .arc-alert-stamp h2 { font-family: 'Fraunces', serif; font-weight: 800; font-size: clamp(2.5rem, 6vw, 5.5rem); line-height: 1.02; letter-spacing: -0.025em; max-width: 75%; margin: 0 0 2rem; }
-  .arc-alert-stamp .lede { font-size: 1.4rem; line-height: 1.55; max-width: 700px; font-weight: 400; margin: 0; }
-  .arc-alert-stamp .story-meta { color: #c13830; margin-bottom: 1.5rem; }
-
-  /* ───── ACADEMIC DROP CAP ───── */
-  .arc-academic-drop-cap { background: #efe7d1; color: #1b1a14; padding: 8vh 8vw; }
-  .arc-academic-drop-cap .paper-head {
-    display: flex; justify-content: space-between; align-items: baseline;
-    border-bottom: 1.5px solid #1b1a14;
-    padding-bottom: 0.7rem; margin-bottom: 3rem;
-    font-weight: 500; font-size: 1rem; letter-spacing: 0.25em; text-transform: uppercase;
-  }
-  .arc-academic-drop-cap .numeral-roman { font-family: 'Fraunces', serif; font-weight: 700; font-size: clamp(2.5rem, 4vw, 4rem); font-style: italic; letter-spacing: 0.08em; }
-  .arc-academic-drop-cap h2 { font-family: 'Fraunces', serif; font-weight: 400; font-style: italic; font-size: clamp(2.5rem, 5.5vw, 5rem); line-height: 1.05; letter-spacing: -0.015em; margin: 0 0 1.5rem; max-width: 85%; }
-  .arc-academic-drop-cap .story-meta { margin-bottom: 2rem; }
-  .arc-academic-drop-cap .cols { display: grid; grid-template-columns: 1fr 1fr; gap: 3.5rem; }
-  .arc-academic-drop-cap .cols p { font-family: 'Fraunces', serif; font-size: 1.35rem; line-height: 1.55; text-align: justify; hyphens: auto; margin: 0 0 1.2rem; }
-  .arc-academic-drop-cap .cols > div:first-child p:first-child::first-letter {
-    font-family: 'Fraunces', serif;
-    font-weight: 900;
-    font-size: 7em;
-    float: left;
-    line-height: 0.82;
-    padding: 0.1em 0.15em 0 0;
-    color: #7a1e14;
-  }
-
-  /* ───── TERMINAL ───── */
-  .arc-terminal { background: #000; color: #8cff8c; font-family: 'JetBrains Mono', ui-monospace, monospace; padding: 8vh 6vw; }
-  .arc-terminal .prompt-row { font-size: 1.15rem; font-weight: 500; color: #4ac94a; margin-bottom: 3rem; }
-  .arc-terminal .numeral { font-size: clamp(6rem, 14vw, 13rem); font-weight: 700; line-height: 1; color: #8cff8c; margin: 0 0 1rem; }
-  .arc-terminal .numeral::before { content: "> "; color: #4ac94a; }
-  .arc-terminal h2 { font-weight: 700; font-size: clamp(2.2rem, 5vw, 4.5rem); line-height: 1.1; margin: 0 0 2rem; max-width: 90%; color: #d4ffd4; }
-  .arc-terminal .lede { font-size: 1.3rem; line-height: 1.6; max-width: 780px; color: #8cff8c; margin: 0; }
-  .arc-terminal .lede::before { content: "# "; color: #4ac94a; }
-  .arc-terminal .story-meta { color: #4ac94a; margin-bottom: 1.5rem; }
-  .arc-terminal .cursor { display: inline-block; width: 0.55em; height: 1.1em; background: #8cff8c; vertical-align: text-bottom; margin-left: 0.2em; animation: me-blink 1s steps(2, start) infinite; }
-  @keyframes me-blink { to { visibility: hidden; } }
-  .arc-terminal .read-more { color: #8cff8c; border-color: #4ac94a; }
-  .arc-terminal .dossier-link { color: #8cff8c; border-color: rgba(140,255,140,0.4); }
-
-  /* ───── EDITORIAL PULLQUOTE ───── */
-  .arc-editorial-pullquote {
-    background: #1a1a1a; color: #f5f1e8; padding: 8vh 6vw;
-    display: grid; grid-template-columns: 1fr 1.1fr; gap: 5rem; align-items: center;
-  }
-  .arc-editorial-pullquote .left { position: relative; }
-  .arc-editorial-pullquote .numeral { font-family: 'Fraunces', serif; font-weight: 900; font-style: italic; font-size: clamp(8rem, 18vw, 16rem); line-height: 0.9; color: #f5f1e8; margin: 0 0 1rem; letter-spacing: -0.05em; }
-  .arc-editorial-pullquote .kicker { font-weight: 700; font-size: 1.1rem; letter-spacing: 0.35em; text-transform: uppercase; color: #e8b84a; margin-bottom: 1.5rem; }
-  .arc-editorial-pullquote h2 { font-family: 'Fraunces', serif; font-weight: 700; font-size: clamp(2rem, 4vw, 3.5rem); line-height: 1.1; margin: 0 0 2rem; }
-  .arc-editorial-pullquote .pullquote {
-    font-family: 'Fraunces', serif; font-style: italic; font-weight: 400;
-    font-size: clamp(1.8rem, 3.5vw, 3rem); line-height: 1.15;
-    color: #f5f1e8; border-left: 4px solid #e8b84a; padding-left: 2rem; margin: 0;
-  }
-  .arc-editorial-pullquote .pullquote::before { content: "\201C"; font-size: 1.4em; line-height: 0; vertical-align: -0.4em; color: #e8b84a; margin-right: 0.1em; }
-  .arc-editorial-pullquote .pullquote::after { content: "\201D"; font-size: 1.4em; line-height: 0; vertical-align: -0.6em; color: #e8b84a; margin-left: 0.05em; }
-  .arc-editorial-pullquote .story-meta { color: #e8b84a; }
-
-  /* ───── CAUTION TAPE ───── */
-  .arc-caution-tape { background: #fff200; color: #0a0a0a; padding: 8vh 6vw; }
-  .arc-caution-tape::before { content: ""; position: absolute; inset: 0 0 auto 0; height: 2.5rem; background: repeating-linear-gradient(135deg, #0a0a0a 0 2rem, #fff200 2rem 4rem); }
-  .arc-caution-tape::after { content: ""; position: absolute; inset: auto 0 0 0; height: 2.5rem; background: repeating-linear-gradient(135deg, #0a0a0a 0 2rem, #fff200 2rem 4rem); }
-  .arc-caution-tape .tag {
-    position: absolute; top: 6vh; right: 6vw;
-    writing-mode: vertical-rl; transform: rotate(180deg);
-    font-weight: 900; font-size: 1.3rem; letter-spacing: 0.5em; text-transform: uppercase;
-    background: #0a0a0a; color: #fff200; padding: 1rem 0.6rem;
-  }
-  .arc-caution-tape .numeral { font-weight: 900; font-size: clamp(10rem, 28vw, 24rem); line-height: 0.85; letter-spacing: -0.06em; margin: 0 0 1rem; -webkit-text-stroke: 3px #0a0a0a; color: transparent; }
-  .arc-caution-tape .kicker { font-weight: 900; font-size: 1.3rem; letter-spacing: 0.35em; text-transform: uppercase; background: #0a0a0a; color: #fff200; padding: 0.5rem 1rem; display: inline-block; margin-bottom: 1.5rem; }
-  .arc-caution-tape h2 { font-weight: 900; font-size: clamp(2.5rem, 6vw, 5.5rem); line-height: 0.98; letter-spacing: -0.03em; margin: 0 0 2rem; max-width: 85%; text-transform: uppercase; }
-  .arc-caution-tape .lede { font-size: 1.35rem; line-height: 1.5; max-width: 680px; font-weight: 500; margin: 0; }
-  .arc-caution-tape .story-meta { margin-bottom: 1.5rem; }
-
-  /* ───── NOTEBOOK ───── */
-  .arc-notebook { background: repeating-linear-gradient(#fdfaf0 0 2.2rem, rgba(120,104,60,0.22) 2.2rem 2.25rem); color: #1f1a0d; padding: 8vh 8vw; }
-  .arc-notebook::before { content: ""; position: absolute; top: 0; bottom: 0; left: 8vw; width: 2px; background: #c13830; opacity: 0.5; }
-  .arc-notebook .numeral { font-family: 'Fraunces', serif; font-weight: 400; font-style: italic; font-size: clamp(7rem, 17vw, 15rem); line-height: 1; letter-spacing: -0.02em; color: #1f1a0d; margin: 0 0 0.5rem; }
-  .arc-notebook .kicker { font-weight: 600; font-size: 1.1rem; letter-spacing: 0.3em; text-transform: uppercase; color: #8a6b1f; margin-bottom: 1rem; }
-  .arc-notebook h2 { font-family: 'Fraunces', serif; font-weight: 400; font-style: italic; font-size: clamp(2.8rem, 6.5vw, 6rem); line-height: 1; letter-spacing: -0.02em; margin: 0 0 2rem; max-width: 85%; }
-  .arc-notebook .lede { font-family: 'Fraunces', serif; font-weight: 400; font-size: clamp(1.35rem, 2vw, 1.7rem); line-height: 2.2rem; max-width: 700px; margin: 0; }
-
-  /* ───── MINT PATTERN ───── */
-  .arc-mint-pattern { background: #a8e6cf; color: #0d2a1e; padding: 8vh 6vw; }
-  .arc-mint-pattern::before {
-    content: "XOR LISP AWK SED GREP CURL MAKE GIT VIM SSH";
-    position: absolute; top: 10vh; left: 0; right: 0;
-    font-family: 'JetBrains Mono', monospace;
-    font-weight: 700; font-size: 2.5rem; letter-spacing: 0.3em;
-    color: rgba(13,42,30,0.1); white-space: nowrap; overflow: hidden; pointer-events: none;
-  }
-  .arc-mint-pattern .numeral-block { position: relative; z-index: 2; }
-  .arc-mint-pattern .numeral { font-family: 'Fraunces', serif; font-weight: 900; font-size: clamp(10rem, 28vw, 24rem); line-height: 0.85; letter-spacing: -0.06em; color: #0d2a1e; margin: 0; font-style: italic; }
-  .arc-mint-pattern .kicker { font-family: 'JetBrains Mono', monospace; font-weight: 700; font-size: 1.1rem; letter-spacing: 0.2em; text-transform: uppercase; color: #0d2a1e; margin: 1.5rem 0; position: relative; z-index: 2; }
-  .arc-mint-pattern h2 { font-family: 'Fraunces', serif; font-weight: 800; font-size: clamp(2.5rem, 6vw, 5rem); line-height: 1; letter-spacing: -0.025em; margin: 0 0 2rem; max-width: 85%; position: relative; z-index: 2; }
-  .arc-mint-pattern .lede { font-family: 'Fraunces', serif; font-size: 1.4rem; line-height: 1.55; max-width: 680px; font-weight: 400; margin: 0; position: relative; z-index: 2; }
-  .arc-mint-pattern .story-meta { position: relative; z-index: 2; margin-bottom: 1.5rem; }
-  .arc-mint-pattern .spread-links { position: relative; z-index: 2; }
-
-  /* ───── PASTEL PLAYFUL ───── */
-  .arc-pastel-playful { background: #fde6f2; color: #2a0a2e; padding: 8vh 6vw 4vh; }
-  .arc-pastel-playful .alpha-grid {
-    position: absolute; top: 0; left: 0; right: 0;
-    display: grid; grid-template-columns: repeat(13, 1fr);
-    font-family: 'Fraunces', serif; font-style: italic;
-    font-size: clamp(1.2rem, 2.5vw, 2rem); font-weight: 700;
-    color: rgba(42,10,46,0.2); padding: 1rem 6vw; letter-spacing: 0.2em; pointer-events: none;
-  }
-  .arc-pastel-playful .alpha-grid span { text-align: center; }
-  .arc-pastel-playful .numeral { font-family: 'Fraunces', serif; font-weight: 900; font-style: italic; font-size: clamp(10rem, 26vw, 22rem); line-height: 0.85; letter-spacing: -0.05em; color: #c13871; margin: 2rem 0 0; }
-  .arc-pastel-playful .kicker { font-weight: 700; font-size: 1.1rem; letter-spacing: 0.35em; text-transform: uppercase; color: #c13871; margin-bottom: 1rem; }
-  .arc-pastel-playful h2 { font-family: 'Fraunces', serif; font-weight: 400; font-style: italic; font-size: clamp(2.8rem, 6.5vw, 5.5rem); line-height: 1; letter-spacing: -0.02em; margin: 0 0 2rem; max-width: 85%; }
-  .arc-pastel-playful .lede { font-size: 1.35rem; line-height: 1.5; max-width: 680px; margin: 0; }
-  .arc-pastel-playful .story-meta { color: #c13871; margin-bottom: 1.5rem; }
-
-  /* ───── PRODUCT PLATE ───── */
-  .arc-product-plate {
-    background: linear-gradient(135deg, #f5f5f3 0%, #e8e8e6 100%);
-    color: #121212; padding: 10vh 8vw; text-align: center; align-items: center; justify-content: center;
-  }
-  .arc-product-plate .product-chip {
-    font-weight: 700; font-size: 1rem; letter-spacing: 0.4em; text-transform: uppercase;
-    background: #121212; color: #f5f5f3; padding: 0.5rem 1.4rem; display: inline-block; margin-bottom: 3rem;
-  }
-  .arc-product-plate .kicker { font-weight: 700; font-size: 1.15rem; letter-spacing: 0.5em; text-transform: uppercase; color: #666; margin-bottom: 1.5rem; }
-  .arc-product-plate h2 {
-    font-family: 'Inter', sans-serif;
-    font-weight: 900;
-    font-size: clamp(3.2rem, 9vw, 8rem);
-    line-height: 0.95;
-    letter-spacing: -0.045em;
-    margin: 0 auto 2rem;
-    max-width: 14ch;
-  }
-  .arc-product-plate .product-rule { width: 6rem; height: 2px; background: #121212; margin: 1.5rem auto 2rem; }
-  .arc-product-plate .story-meta { color: #666; margin-bottom: 1.5rem; }
-  .arc-product-plate .lede { font-family: 'Fraunces', serif; font-weight: 400; font-size: clamp(1.4rem, 2.2vw, 1.9rem); line-height: 1.45; max-width: 720px; margin: 0 auto; }
-  .arc-product-plate .spread-links { justify-content: center; }
-
-  /* ───── ARCHIVE ───── */
-  .arc-archive {
-    background: #eadbb8;
-    background-image:
-      radial-gradient(rgba(80,40,10,0.05) 1px, transparent 1px),
-      radial-gradient(rgba(80,40,10,0.04) 1px, transparent 1px);
-    background-size: 4px 4px, 7px 7px;
-    background-position: 0 0, 2px 2px;
-    color: #2a1a08; padding: 8vh 8vw;
-  }
-  .arc-archive .archive-head {
-    display: flex; justify-content: space-between; align-items: baseline;
-    padding-bottom: 1rem; margin-bottom: 3rem;
-    border-top: 6px double #3a2a10; border-bottom: 6px double #3a2a10;
-    padding-top: 1rem;
-    font-family: 'Fraunces', serif; font-style: italic; font-weight: 500;
-    font-size: 1.1rem; letter-spacing: 0.15em; text-transform: uppercase; color: #3a2a10;
-  }
-  .arc-archive .kicker { font-family: 'Fraunces', serif; font-style: italic; font-weight: 600; font-size: 1.2rem; letter-spacing: 0.3em; text-transform: uppercase; color: #8a3a10; margin-bottom: 1.2rem; }
-  .arc-archive h2 {
-    font-family: 'Fraunces', serif; font-weight: 700; font-style: normal;
-    font-size: clamp(2.8rem, 6.5vw, 6rem); line-height: 1; letter-spacing: -0.02em;
-    margin: 0 0 2rem; max-width: 85%;
-  }
-  .arc-archive .lede {
-    font-family: 'Fraunces', serif; font-size: clamp(1.35rem, 2vw, 1.7rem);
-    line-height: 1.55; max-width: 760px; font-weight: 400; margin: 0;
-  }
-  .arc-archive .lede::first-letter {
-    font-family: 'Fraunces', serif; font-weight: 900; font-size: 5em;
-    float: left; line-height: 0.82; padding: 0.1em 0.15em 0 0; color: #8a3a10;
-  }
-  .arc-archive .story-meta { color: #8a3a10; margin-bottom: 1.5rem; }
-
-  /* ───── OBITUARY ───── */
-  .arc-obituary {
-    background: #f8f4ec; color: #121212;
-    padding: 10vh 6vw; align-items: center; justify-content: center;
-  }
-  .arc-obituary .obit-frame {
-    border: 3px solid #121212; padding: 6rem 5rem;
-    max-width: 780px; text-align: center; background: #f8f4ec;
-    position: relative; z-index: 2;
-  }
-  .arc-obituary .obit-frame::before,
-  .arc-obituary .obit-frame::after {
-    content: ""; position: absolute; left: -12px; right: -12px; height: 1px; background: #121212;
-  }
-  .arc-obituary .obit-frame::before { top: -12px; }
-  .arc-obituary .obit-frame::after { bottom: -12px; }
-  .arc-obituary .ornament { font-family: 'Fraunces', serif; font-size: 3.5rem; line-height: 1; margin-bottom: 2rem; color: #121212; }
-  .arc-obituary .kicker { font-family: 'Fraunces', serif; font-style: italic; font-weight: 500; font-size: 1.1rem; letter-spacing: 0.3em; text-transform: uppercase; margin-bottom: 2rem; opacity: 0.7; }
-  .arc-obituary h2 {
-    font-family: 'Fraunces', serif; font-weight: 400; font-style: italic;
-    font-size: clamp(2.4rem, 5vw, 4.5rem); line-height: 1.1; letter-spacing: -0.015em;
-    margin: 0 0 2.5rem;
-  }
-  .arc-obituary .story-meta { margin-bottom: 2rem; opacity: 0.6; }
-  .arc-obituary .lede { font-family: 'Fraunces', serif; font-size: clamp(1.3rem, 1.9vw, 1.6rem); line-height: 1.6; margin: 0 auto; max-width: 60ch; }
-  .arc-obituary .spread-links { justify-content: center; margin-top: 3rem; }
-
-  /* ───── BLUEPRINT ───── */
-  .arc-blueprint {
-    background: #0a3d62;
-    background-image:
-      linear-gradient(rgba(255,255,255,0.08) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(255,255,255,0.08) 1px, transparent 1px);
-    background-size: 2.2rem 2.2rem;
-    color: #eaf4ff; padding: 8vh 6vw;
-  }
-  .arc-blueprint .corner {
-    position: absolute; font-family: 'JetBrains Mono', monospace;
-    font-size: 2.5rem; color: #eaf4ff; opacity: 0.7;
-  }
-  .arc-blueprint .corner.tl { top: 3vh; left: 3vw; }
-  .arc-blueprint .corner.tr { top: 3vh; right: 3vw; }
-  .arc-blueprint .corner.bl { bottom: 3vh; left: 3vw; }
-  .arc-blueprint .corner.br { bottom: 3vh; right: 3vw; }
-  .arc-blueprint .numeral {
-    font-family: 'JetBrains Mono', monospace;
-    font-weight: 700; font-size: clamp(4rem, 9vw, 7.5rem); line-height: 1;
-    letter-spacing: -0.01em; color: #eaf4ff;
-    margin: 0 0 1.5rem;
-    border-bottom: 2px dashed rgba(234,244,255,0.5);
-    padding-bottom: 1rem;
-    display: inline-block;
-  }
-  .arc-blueprint .kicker { font-family: 'JetBrains Mono', monospace; font-weight: 700; font-size: 1.15rem; letter-spacing: 0.3em; text-transform: uppercase; color: #9bd2ff; margin-bottom: 1.5rem; }
-  .arc-blueprint h2 { font-family: 'Fraunces', serif; font-weight: 700; font-size: clamp(2.8rem, 6.5vw, 5.5rem); line-height: 1; letter-spacing: -0.025em; margin: 0 0 2rem; max-width: 85%; }
-  .arc-blueprint .lede { font-family: 'JetBrains Mono', monospace; font-size: 1.2rem; line-height: 1.65; max-width: 720px; margin: 0; }
-  .arc-blueprint .story-meta { color: #9bd2ff; margin-bottom: 1.5rem; font-family: 'JetBrains Mono', monospace; }
-
-  /* ───── OBSERVATORY ───── */
-  .arc-observatory {
-    background: #070c2e; color: #e8ecff; padding: 8vh 6vw;
-  }
-  .arc-observatory .starfield {
-    position: absolute; inset: 0; pointer-events: none;
-    background-image:
-      radial-gradient(1px 1px at 10% 20%, rgba(255,255,255,0.9), transparent),
-      radial-gradient(1px 1px at 25% 70%, rgba(255,255,255,0.6), transparent),
-      radial-gradient(1.5px 1.5px at 40% 30%, rgba(255,255,255,0.8), transparent),
-      radial-gradient(1px 1px at 55% 85%, rgba(255,255,255,0.5), transparent),
-      radial-gradient(1px 1px at 70% 15%, rgba(255,255,255,0.9), transparent),
-      radial-gradient(1.5px 1.5px at 85% 55%, rgba(255,255,255,0.7), transparent),
-      radial-gradient(1px 1px at 92% 25%, rgba(255,255,255,0.5), transparent),
-      radial-gradient(1px 1px at 15% 90%, rgba(255,255,255,0.4), transparent),
-      radial-gradient(1px 1px at 48% 50%, rgba(255,255,255,0.6), transparent),
-      radial-gradient(1px 1px at 78% 78%, rgba(255,255,255,0.5), transparent);
-    background-repeat: no-repeat;
-  }
-  .arc-observatory > * { position: relative; z-index: 2; }
-  .arc-observatory .numeral {
-    font-family: 'Fraunces', serif; font-style: italic; font-weight: 400;
-    font-size: clamp(3rem, 7vw, 6rem); line-height: 1; letter-spacing: 0.04em;
-    color: #e8ecff; margin: 0 0 2rem;
-    border-bottom: 1px solid rgba(232,236,255,0.4);
-    padding-bottom: 1rem; display: inline-block;
-  }
-  .arc-observatory .kicker { font-family: 'Fraunces', serif; font-style: italic; font-weight: 500; font-size: 1.15rem; letter-spacing: 0.3em; text-transform: uppercase; color: #9ab3ff; margin-bottom: 1.5rem; }
-  .arc-observatory h2 { font-family: 'Fraunces', serif; font-weight: 400; font-style: italic; font-size: clamp(2.8rem, 6.5vw, 5.5rem); line-height: 1.05; letter-spacing: -0.015em; margin: 0 0 2rem; max-width: 85%; }
-  .arc-observatory .lede { font-family: 'Fraunces', serif; font-size: clamp(1.35rem, 2vw, 1.7rem); line-height: 1.55; max-width: 720px; font-weight: 400; margin: 0; }
-  .arc-observatory .story-meta { color: #9ab3ff; margin-bottom: 1.5rem; }
-
+  .masthead { padding: 4vh 8vw 10vh; text-align: center; border-bottom: 1px solid #ddd; }
+  .masthead-nav { display: flex; justify-content: center; gap: 2rem; margin-bottom: 6vh; font-weight: 600; font-size: 0.9rem; text-transform: uppercase; letter-spacing: 0.2em; }
+  .masthead-nav a { color: inherit; text-decoration: none; opacity: 0.6; }
+  .masthead-nav a:hover { opacity: 1; }
+  .masthead h1 { font-size: clamp(3rem, 10vw, 9rem); font-weight: 400; margin: 0 0 2rem; letter-spacing: -0.04em; }
+  .issue-line { display: flex; justify-content: center; gap: 4rem; font-weight: 700; font-size: 1rem; letter-spacing: 0.3em; text-transform: uppercase; opacity: 0.8; }
+  
   /* ───── DOSSIER ───── */
-  .dossier {
-    background: #f5f1e8; color: #1b1a14;
-    padding: 8rem 8vw 6rem;
-    border-top: 6px double #121212;
-  }
-  .dossier .dossier-head { text-align: center; margin-bottom: 4rem; }
-  .dossier .tagline { font-weight: 600; font-size: 1.1rem; letter-spacing: 0.4em; text-transform: uppercase; margin-bottom: 1rem; opacity: 0.7; }
-  .dossier h2 {
-    font-family: 'Fraunces', serif; font-style: italic; font-weight: 900;
-    font-size: clamp(4rem, 10vw, 9rem); line-height: 0.9; letter-spacing: -0.035em;
-    margin: 0 0 1.5rem;
-  }
-  .dossier .intro { font-family: 'Fraunces', serif; font-style: italic; font-size: 1.35rem; line-height: 1.5; max-width: 620px; margin: 0 auto; }
-  .dossier .intro a { font-style: normal; font-weight: 600; text-decoration: underline; }
-  .dossier-entry {
-    border-top: 1.5px solid #1b1a14;
-    padding: 3rem 0 2.5rem;
-    max-width: 820px; margin: 0 auto;
-  }
-  .dossier-entry:last-child { border-bottom: 1.5px solid #1b1a14; }
-  .dossier-meta { font-weight: 600; font-size: 1rem; letter-spacing: 0.28em; text-transform: uppercase; color: #7a1e14; margin-bottom: 1.2rem; }
-  .dossier-entry h3 {
-    font-family: 'Fraunces', serif; font-weight: 700;
-    font-size: clamp(1.8rem, 3.5vw, 2.6rem); line-height: 1.1; letter-spacing: -0.015em;
-    margin: 0 0 1.2rem;
-  }
-  .dossier-source { font-size: 1.05rem; font-weight: 500; letter-spacing: 0.08em; margin: 0 0 2rem; opacity: 0.75; }
-  .dossier-source a { text-decoration: underline; }
-  .dossier-entry h4 {
-    font-family: 'Inter', sans-serif; font-weight: 700; font-size: 1rem;
-    letter-spacing: 0.35em; text-transform: uppercase; margin: 2rem 0 1rem; color: #7a1e14;
-  }
-  .dossier-entry p {
-    font-family: 'Fraunces', serif; font-size: 1.25rem; line-height: 1.55; margin: 0 0 1rem;
-  }
-  .dossier-entry p.muted { opacity: 0.6; }
-
+  .dossier { background: #f5f1e8; padding: 10vh 8vw; color: #121212; }
+  .dossier-head { margin-bottom: 8vh; }
+  .dossier-head h2 { font-size: clamp(4rem, 12vw, 12rem); margin-bottom: 2rem; }
+  .tagline { font-weight: 700; font-size: 1.2rem; letter-spacing: 0.5em; text-transform: uppercase; margin-bottom: 1rem; opacity: 0.5; }
+  .intro { font-size: 1.5rem; max-width: 600px; line-height: 1.4; opacity: 0.7; }
+  .intro a { color: inherit; }
+  
+  .dossier-entry { margin-bottom: 12vh; max-width: 900px; }
+  .dossier-meta { font-weight: 700; font-size: 0.9rem; letter-spacing: 0.2em; text-transform: uppercase; margin-bottom: 1.5rem; opacity: 0.5; }
+  .dossier-entry h3 { font-family: 'Fraunces', serif; font-size: clamp(2.5rem, 5vw, 4.5rem); line-height: 1.1; margin: 0 0 1.5rem; font-weight: 400; }
+  .dossier-source { font-size: 1.1rem; font-weight: 500; letter-spacing: 0.05em; margin: 0 0 3rem; opacity: 0.7; }
+  .dossier-source a { color: inherit; text-decoration: underline; }
+  .dossier-entry h4 { font-weight: 700; font-size: 1rem; letter-spacing: 0.3em; text-transform: uppercase; margin: 3rem 0 1.5rem; }
+  .dossier-entry p { font-family: 'Fraunces', serif; font-size: 1.3rem; line-height: 1.6; margin: 0 0 1.5rem; }
+  
   /* ───── COLOPHON ───── */
-  .colophon { background: #121212; color: #f5f1e8; padding: 5rem 6vw; text-align: center; }
-  .colophon .sig { font-family: 'Fraunces', serif; font-style: italic; font-weight: 400; font-size: clamp(2.5rem, 5vw, 4rem); line-height: 1.1; letter-spacing: -0.02em; margin: 0 0 1.5rem; }
-  .colophon .meta { font-weight: 500; font-size: 1rem; letter-spacing: 0.3em; text-transform: uppercase; opacity: 0.7; }
-  .colophon .classic-link { margin-top: 2rem; font-weight: 500; font-size: 1rem; letter-spacing: 0.2em; text-transform: uppercase; }
-  .colophon .classic-link a { text-decoration: underline; opacity: 0.85; }
+  .colophon { background: #121212; color: #f5f1e8; padding: 8vh 8vw; text-align: center; }
+  .colophon .sig { font-family: 'Fraunces', serif; font-style: italic; font-size: clamp(2rem, 5vw, 4rem); margin-bottom: 2rem; }
+  .colophon .meta { font-weight: 500; font-size: 0.9rem; letter-spacing: 0.3em; text-transform: uppercase; opacity: 0.6; }
+  .classic-link { margin-top: 3rem; font-size: 0.9rem; letter-spacing: 0.2em; text-transform: uppercase; }
+  .classic-link a { color: inherit; text-decoration: underline; }
 
-  /* ───── RESPONSIVE ───── */
   @media (max-width: 800px) {
-    .masthead-nav { flex-wrap: wrap; gap: 0.8rem; }
-    .arc-stat-hero h2, .arc-stat-hero .lede { max-width: 100%; }
-    .arc-stat-hero .numeral { font-size: 14rem; opacity: 0.2; right: -2vw; top: 30vh; }
-    .arc-midnight .body { margin-top: 8rem; }
-    .arc-alert-stamp h2 { max-width: 100%; }
-    .arc-alert-stamp .stamp { top: 4vh; right: 4vw; font-size: 1.5rem; padding: 0.8rem 1.4rem; }
-    .arc-academic-drop-cap .cols { grid-template-columns: 1fr; gap: 2rem; }
-    .arc-editorial-pullquote { grid-template-columns: 1fr; gap: 3rem; }
-    .arc-caution-tape h2, .arc-notebook h2, .arc-pastel-playful h2, .arc-archive h2, .arc-obituary h2, .arc-blueprint h2, .arc-observatory h2 { max-width: 100%; }
-    .arc-caution-tape .tag { display: none; }
-    .arc-pastel-playful .alpha-grid { display: none; }
-    .arc-obituary .obit-frame { padding: 3rem 2rem; }
-    .arc-blueprint .corner { display: none; }
+    .spread { padding: 12vh 6vw; }
+    .issue-line { flex-direction: column; gap: 1rem; align-items: center; }
+    .arc-stat-hero .numeral { font-size: 15rem; top: auto; bottom: 5vh; }
+    .arc-editorial-pullquote { grid-template-columns: 1fr; }
+    .arc-editorial-pullquote .quote-side { padding: 12vw; }
+    .ctas { flex-direction: column; align-items: stretch; gap: 1rem; }
+    .arc-academic-drop-cap .cols { columns: 1; }
   }
-
 </style>
 </head>
 <body id="top">
-
   <header class="masthead">
     <div class="masthead-nav">
-      <a href="../">HN Calendar</a>
-      <span>·</span>
-      <a href="../../2026-03-10/">GitHub Trending</a>
-      <span>·</span>
+      <a href="../../">Index</a>
+      <a href="../">Calendar</a>
       <a href="classic.html">Classic view</a>
     </div>
-    <div class="tagline">The Morning Edition</div>
     <h1 class="frnc">Ten stories, before your coffee.</h1>
     <div class="issue-line">
       <span>Vol. I</span>
-      <span>Tuesday, March 10, 2026</span>
+      <span>March 10, 2026</span>
       <span>HN Front Page Digest</span>
     </div>
   </header>
-
-  <section class="spread arc-obituary">
+  <section id="story-1" class="spread arc-obituary">
     <div class="obit-frame">
-      <div class="ornament">†</div>
-      <div class="kicker">Project Sunset · N<sup>o</sup> 01</div>
-      <h2>Tess.Design Closes After Struggling to Monetize Ethical AI Art</h2>
-      <p class="story-meta">kapwing.com &nbsp;·&nbsp; 167 pts &nbsp;·&nbsp; 168 comments</p>
+      <div class="kicker">Project Sunset</div>
+      <h2 class="frnc">Tess.Design Closes After Struggling to Monetize Ethical AI Art</h2>
       <p class="lede">The marketplace aimed to bridge the gap between AI generation and artistic compensation through a royalty-sharing model. Twenty months of operations failed to gain the necessary traction, marking the end of this experimental attempt at a fair-trade aesthetic ecosystem.</p>
-      <div class="spread-links"><a class="read-more" href="https://www.kapwing.com/blog/learnings-from-paying-artists-royalties-for-ai-generated-art/" target="_blank" rel="noopener">Read →</a><a class="dossier-link" href="#dossier-1">Full analysis ↓</a></div>
+      <div class="ornament">†</div>
+      <div class="ctas">
+        <a href="https://www.kapwing.com/blog/learnings-from-paying-artists-royalties-for-ai-generated-art/" class="btn-read" target="_blank">Read →</a>
+        <a href="#dossier-1" class="btn-dossier">Full analysis ↓</a>
+      </div>
     </div>
   </section>
-
-  <section class="spread arc-notebook">
-    <div class="numeral">02</div>
-    <div class="kicker">Workflow Study</div>
-    <h2>Refining a Zero-Dependency Emacs Configuration Over Two Years</h2>
-    <p class="story-meta">rahuljuliato.com &nbsp;·&nbsp; 349 pts &nbsp;·&nbsp; 142 comments</p>
-    <p class="lede">After two years of intentional iteration, a custom Elisp setup replaces external dependencies with thirty-five self-contained modules. This exploration highlights the quiet satisfaction of mastering one&#x27;s own programming environment without relying on third-party repositories.</p>
-    <div class="spread-links"><a class="read-more" href="https://www.rahuljuliato.com/posts/emacs-solo-two-years" target="_blank" rel="noopener">Read →</a><a class="dossier-link" href="#dossier-2">Full analysis ↓</a></div>
-  </section>
-
-  <section class="spread arc-stat-hero">
-    <div class="numeral">K</div>
-    <div class="kicker">N<sup>o</sup> 03 · Database Performance</div>
-    <h2>Beyond B-Trees: Optimizing Top-K Queries in PostgreSQL</h2>
-    <p class="story-meta">paradedb.com &nbsp;·&nbsp; 148 pts &nbsp;·&nbsp; 22 comments</p>
-    <p class="lede">Standard indexing often falters under the weight of ad-hoc filtering and complex text retrieval. By moving toward columnar storage and inverted indexes, modern systems reclaim the speed necessary for high-performance data operations.</p>
-    <div class="spread-links"><a class="read-more" href="https://www.paradedb.com/blog/optimizing-top-k" target="_blank" rel="noopener">Read →</a><a class="dossier-link" href="#dossier-3">Full analysis ↓</a></div>
-  </section>
-
-  <section class="spread arc-blueprint">
-    <div class="corner tl">┌</div><div class="corner tr">┐</div>
-    <div class="corner bl">└</div><div class="corner br">┘</div>
-    <div class="numeral">FIG.&nbsp;04</div>
-    <div class="kicker">Procedural Systems</div>
-    <h2>Generating Medieval Islands with Wave Function Collapse</h2>
-    <p class="story-meta">felixturner.github.io &nbsp;·&nbsp; 573 pts &nbsp;·&nbsp; 85 comments</p>
-    <p class="lede">This build breaks down the implementation of hexagonal map generation using WebGPU and a layered constraint-satisfaction approach. It demonstrates how to manage complex combinatorial spaces to produce detailed, high-fidelity environments.</p>
-    <div class="spread-links"><a class="read-more" href="https://felixturner.github.io/hex-map-wfc/article/" target="_blank" rel="noopener">Read →</a><a class="dossier-link" href="#dossier-4">Full analysis ↓</a></div>
-  </section>
-
-  <section class="spread arc-pastel-playful">
-    <div class="alpha-grid"><span>A</span><span>B</span><span>C</span><span>D</span><span>E</span><span>F</span><span>G</span><span>H</span><span>I</span><span>J</span><span>K</span><span>L</span><span>M</span></div>
-    <div class="numeral">05</div>
-    <div class="kicker">Digital Curiosities</div>
-    <h2>Remotely Operating Physical Guitar Pedals via Web Interface</h2>
-    <p class="story-meta">realtuner.online &nbsp;·&nbsp; 255 pts &nbsp;·&nbsp; 59 comments</p>
-    <p class="lede">Real Tuner brings the tactile world of analog audio gear into the browser-based era. It is a whimsical bridge between modern connectivity and the specific, grounded joy of manipulating a physical Boss TU-3.</p>
-    <div class="spread-links"><a class="read-more" href="https://realtuner.online/" target="_blank" rel="noopener">Read →</a><a class="dossier-link" href="#dossier-5">Full analysis ↓</a></div>
-  </section>
-
-  <section class="spread arc-terminal">
-    <div class="prompt-row">user@morning-edition:~$ cat story_06.md</div>
-    <p class="numeral">06</p>
-    <p class="story-meta">bellard.org &nbsp;·&nbsp; 375 pts &nbsp;·&nbsp; 138 comments</p>
-    <h2>JSLinux Expands Architecture Support to Native x86_64</h2>
-    <p class="lede">Fabrice Bellard continues to push browser-based virtualization, now providing robust support for x86_64 environments. Deploying Alpine Linux with AVX-512 in a tab is no longer theoretical, but a functional console reality.<span class="cursor"></span></p>
-    <div class="spread-links"><a class="read-more" href="https://bellard.org/jslinux/" target="_blank" rel="noopener">Read →</a><a class="dossier-link" href="#dossier-6">Full analysis ↓</a></div>
-  </section>
-
-  <section class="spread arc-editorial-pullquote">
-    <div class="left">
-      <div class="numeral">07</div>
-      <div class="kicker">Open Source Ethics</div>
-      <h2>When AI Reimplementation Challenges the Social Contract of Copyleft</h2>
-      <p class="story-meta">writings.hongminhee.org &nbsp;·&nbsp; 564 pts &nbsp;·&nbsp; 584 comments</p>
-      <div class="spread-links"><a class="read-more" href="https://writings.hongminhee.org/2026/03/legal-vs-legitimate/" target="_blank" rel="noopener">Read →</a><a class="dossier-link" href="#dossier-7">Full analysis ↓</a></div>
-    </div>
-    <blockquote class="pullquote">Technical or legal permissibility does not equate to social legitimacy within the open-source community</blockquote>
-  </section>
-
-  <section class="spread arc-alert-stamp">
-    <div class="stamp">Alert</div>
-    <div class="numeral">08</div>
-    <div class="kicker">Economic Analysis</div>
-    <h2>Correcting Misconceptions Regarding Claude Code Inference Expenses</h2>
-    <p class="story-meta">martinalderson.com &nbsp;·&nbsp; 479 pts &nbsp;·&nbsp; 349 comments</p>
-    <p class="lede">Viral claims suggesting Anthropic loses thousands of dollars per user conflate retail pricing with actual marginal compute costs. A closer look at the unit economics reveals a model far more sustainable than the alarmist math suggests.</p>
-    <div class="spread-links"><a class="read-more" href="https://martinalderson.com/posts/no-it-doesnt-cost-anthropic-5k-per-claude-code-user/" target="_blank" rel="noopener">Read →</a><a class="dossier-link" href="#dossier-8">Full analysis ↓</a></div>
-  </section>
-
-  <section class="spread arc-archive">
-    <div class="archive-head">
-      <span>Filed</span>
-      <span>Archival Desk · N<sup>o</sup> IX</span>
-      <span>From the Vault</span>
-    </div>
-    <div class="kicker">Vintage Networking</div>
-    <h2>Darkrealms BBS Maintains Its Legacy Since 1994</h2>
-    <p class="story-meta">darkrealms.ca &nbsp;·&nbsp; 144 pts &nbsp;·&nbsp; 45 comments</p>
-    <p class="lede">Operating continuously on MS-DOS Renegade software, Darkrealms serves as a persistent node in the Fidonet network. It stands as a testament to the endurance of early dial-up infrastructure in an increasingly ephemeral digital age.</p>
-    <div class="spread-links"><a class="read-more" href="http://www.darkrealms.ca/" target="_blank" rel="noopener">Read →</a><a class="dossier-link" href="#dossier-9">Full analysis ↓</a></div>
-  </section>
-
-  <section class="spread arc-midnight">
-    <div class="numeral">10</div>
+  <section id="story-2" class="spread arc-notebook">
+    <div class="lines"></div>
     <div class="body">
-      <div class="kicker">// Quantum Theory</div>
-      <h2>Debunking the JVG Algorithm’s Claims of Quantum Advantage</h2>
-      <p class="story-meta">scottaaronson.blog &nbsp;·&nbsp; 83 pts &nbsp;·&nbsp; 48 comments</p>
-      <p class="lede">The pursuit of efficient factoring hits a wall when precomputation is disguised as algorithmic success. True quantum progress requires actual hardware efficiency, not classical workloads hidden within a quantum circuit.</p>
-      <div class="spread-links"><a class="read-more" href="https://scottaaronson.blog/?p=9615" target="_blank" rel="noopener">Read →</a><a class="dossier-link" href="#dossier-10">Full analysis ↓</a></div>
+      <div class="kicker">Workflow Study</div>
+      <h2 class="frnc">Refining a Zero-Dependency Emacs Configuration Over Two Years</h2>
+      <p class="lede">After two years of intentional iteration, a custom Elisp setup replaces external dependencies with thirty-five self-contained modules. This exploration highlights the quiet satisfaction of mastering one&#x27;s own programming environment without relying on third-party repositories.</p>
+      <div class="ctas">
+        <a href="https://www.rahuljuliato.com/posts/emacs-solo-two-years" class="btn-read" target="_blank">Read →</a>
+        <a href="#dossier-2" class="btn-dossier">Full analysis ↓</a>
+      </div>
     </div>
   </section>
-
+  <section id="story-3" class="spread arc-stat-hero">
+    <div class="numeral">K</div>
+    <div class="body">
+      <div class="kicker">Database Performance</div>
+      <h2 class="frnc">Beyond B-Trees: Optimizing Top-K Queries in PostgreSQL</h2>
+      <p class="lede">Standard indexing often falters under the weight of ad-hoc filtering and complex text retrieval. By moving toward columnar storage and inverted indexes, modern systems reclaim the speed necessary for high-performance data operations.</p>
+      <div class="ctas">
+        <a href="https://www.paradedb.com/blog/optimizing-top-k" class="btn-read" target="_blank">Read →</a>
+        <a href="#dossier-3" class="btn-dossier">Full analysis ↓</a>
+      </div>
+    </div>
+  </section>
+  <section id="story-4" class="spread arc-blueprint">
+    <div class="grid"></div>
+    <div class="body">
+      <div class="kicker">Procedural Systems</div>
+      <h2 class="frnc">Generating Medieval Islands with Wave Function Collapse</h2>
+      <p class="lede">This build breaks down the implementation of hexagonal map generation using WebGPU and a layered constraint-satisfaction approach. It demonstrates how to manage complex combinatorial spaces to produce detailed, high-fidelity environments.</p>
+      <div class="ctas">
+        <a href="https://felixturner.github.io/hex-map-wfc/article/" class="btn-read" target="_blank">Read →</a>
+        <a href="#dossier-4" class="btn-dossier">Full analysis ↓</a>
+      </div>
+    </div>
+  </section>
+  <section id="story-5" class="spread arc-pastel-playful">
+    <div class="alpha-grid">A B C D E F G H I J K L M N O P Q R S T U V W X Y Z</div>
+    <div class="body">
+      <div class="kicker">Digital Curiosities</div>
+      <h2 class="frnc">Remotely Operating Physical Guitar Pedals via Web Interface</h2>
+      <p class="lede">Real Tuner brings the tactile world of analog audio gear into the browser-based era. It is a whimsical bridge between modern connectivity and the specific, grounded joy of manipulating a physical Boss TU-3.</p>
+      <div class="ctas">
+        <a href="https://realtuner.online/" class="btn-read" target="_blank">Read →</a>
+        <a href="#dossier-5" class="btn-dossier">Full analysis ↓</a>
+      </div>
+    </div>
+  </section>
+  <section id="story-6" class="spread arc-terminal">
+    <div class="window">
+      <div class="kicker"># System Emulation</div>
+      <h2 class="frnc">> JSLinux Expands Architecture Support to Native x86_64</h2>
+      <p class="lede">Fabrice Bellard continues to push browser-based virtualization, now providing robust support for x86_64 environments. Deploying Alpine Linux with AVX-512 in a tab is no longer theoretical, but a functional console reality.</p>
+      <div class="ctas">
+        <a href="https://bellard.org/jslinux/" class="btn-read" target="_blank">RUN_PROCESS →</a>
+        <a href="#dossier-6" class="btn-dossier">VIEW_ANALYSIS ↓</a>
+      </div>
+    </div>
+  </section>
+  <section id="story-7" class="spread arc-editorial-pullquote">
+    <div class="body">
+      <div class="kicker">Open Source Ethics</div>
+      <h2 class="frnc">When AI Reimplementation Challenges the Social Contract of Copyleft</h2>
+      <p class="lede">The recent relicensing of the chardet library via AI-assisted code generation raises urgent questions about the spirit of open-source software. While the change may be technically permissible, it risks eroding the foundational trust of the copyleft community.</p>
+      <div class="ctas">
+        <a href="https://writings.hongminhee.org/2026/03/legal-vs-legitimate/" class="btn-read" target="_blank">Read →</a>
+        <a href="#dossier-7" class="btn-dossier">Full analysis ↓</a>
+      </div>
+    </div>
+    <div class="quote-side">
+      <blockquote>Technical or legal permissibility does not equate to social legitimacy within the open-source community</blockquote>
+    </div>
+  </section>
+  <section id="story-8" class="spread arc-alert-stamp">
+    <div class="stamp">ALERT</div>
+    <div class="body">
+      <div class="kicker">Economic Analysis</div>
+      <h2 class="frnc">Correcting Misconceptions Regarding Claude Code Inference Expenses</h2>
+      <p class="lede">Viral claims suggesting Anthropic loses thousands of dollars per user conflate retail pricing with actual marginal compute costs. A closer look at the unit economics reveals a model far more sustainable than the alarmist math suggests.</p>
+      <div class="ctas">
+        <a href="https://martinalderson.com/posts/no-it-doesnt-cost-anthropic-5k-per-claude-code-user/" class="btn-read" target="_blank">Read →</a>
+        <a href="#dossier-8" class="btn-dossier">Full analysis ↓</a>
+      </div>
+    </div>
+  </section>
+  <section id="story-9" class="spread arc-archive">
+    <div class="mast">ARCHIVE N<sup>o</sup> 09</div>
+    <div class="body">
+      <div class="kicker">Vintage Networking</div>
+      <h2 class="frnc">Darkrealms BBS Maintains Its Legacy Since 1994</h2>
+      <p class="lede">Operating continuously on MS-DOS Renegade software, Darkrealms serves as a persistent node in the Fidonet network. It stands as a testament to the endurance of early dial-up infrastructure in an increasingly ephemeral digital age.</p>
+      <div class="ctas">
+        <a href="http://www.darkrealms.ca/" class="btn-read" target="_blank">Read →</a>
+        <a href="#dossier-9" class="btn-dossier">Full analysis ↓</a>
+      </div>
+    </div>
+  </section>
+  <section id="story-10" class="spread arc-midnight">
+    <div class="glow"></div>
+    <div class="body">
+      <div class="kicker">Quantum Theory</div>
+      <h2 class="frnc">Debunking the JVG Algorithm’s Claims of Quantum Advantage</h2>
+      <p class="lede">The pursuit of efficient factoring hits a wall when precomputation is disguised as algorithmic success. True quantum progress requires actual hardware efficiency, not classical workloads hidden within a quantum circuit.</p>
+      <div class="ctas">
+        <a href="https://scottaaronson.blog/?p=9615" class="btn-read" target="_blank">Read →</a>
+        <a href="#dossier-10" class="btn-dossier">Full analysis ↓</a>
+      </div>
+    </div>
+  </section>
   <section id="dossier" class="dossier">
     <div class="dossier-head">
       <div class="tagline">Appendix</div>
       <h2>The Dossier</h2>
-      <p class="intro">Full analysis and reader reactions for today's ten stories. <a href="#top">↑ Back to the edition</a></p>
+      <p class="intro">Full analysis and reactions for today's ten stories. <a href="#top">↑ Back to the edition</a></p>
     </div>
     <article id="dossier-1" class="dossier-entry">
       <div class="dossier-meta">N<sup>o</sup> 01 &nbsp;·&nbsp; Obituary &nbsp;·&nbsp; Project Sunset</div>
@@ -639,11 +448,15 @@
       <p class="dossier-source">
         <a href="https://www.kapwing.com/blog/learnings-from-paying-artists-royalties-for-ai-generated-art/" target="_blank" rel="noopener">kapwing.com</a>
         &nbsp;·&nbsp; 167 pts &nbsp;·&nbsp; 168 comments
-        &nbsp;·&nbsp; <a href="https://news.ycombinator.com/item?id=47318421" target="_blank" rel="noopener">discussion</a>
+         &nbsp;·&nbsp; <a href='https://news.ycombinator.com/item?id=47318421' target='_blank' rel='noopener'>discussion</a>
       </p>
       <h4>Analysis</h4>
-      <p class="muted"><em>Analysis not available.</em></p>
-      
+      <p>Tess.Design was a marketplace launched in 2024 that allowed artists to license their aesthetic for AI image generation, with creators receiving a 50% royalty on every use of their fine-tuned model. The platform was built on a legal framework suggesting that these derivative works were copyrightable, aiming to provide a compliant, ethical alternative to models trained on scraped data. Despite these efforts, the project failed to achieve financial viability or significant artist adoption, leading to its shutdown after 20 months and a net financial loss.</p>
+      <h4>Reader Reactions</h4>
+      <p>The dominant consensus is that while compensating artists for AI training is ethically appealing, the business failed due to poor user experience, limited tool utility, and a lack of market demand.</p>
+      <p>A competing viewpoint argues that licensing models are fundamentally unsustainable and that legal trends likely favor viewing AI training as transformative, rendering royalty payments for artistic styles unnecessary and commercially impractical.</p>
+      <p>Technical success in AI generation relies heavily on high-quality outputs and intuitive ergonomics, as users are rarely willing to sacrifice these core features solely to support ethically sourced or royalty-based models.</p>
+      <p>The discussion exhibits significant bias toward the viewpoint of software developers and early adopters, potentially overlooking the complex professional risks and deeply entrenched opposition that many artists currently hold toward AI.</p>
     </article>
     <article id="dossier-2" class="dossier-entry">
       <div class="dossier-meta">N<sup>o</sup> 02 &nbsp;·&nbsp; Notebook &nbsp;·&nbsp; Workflow Study</div>
@@ -651,11 +464,15 @@
       <p class="dossier-source">
         <a href="https://www.rahuljuliato.com/posts/emacs-solo-two-years" target="_blank" rel="noopener">rahuljuliato.com</a>
         &nbsp;·&nbsp; 349 pts &nbsp;·&nbsp; 142 comments
-        &nbsp;·&nbsp; <a href="https://news.ycombinator.com/item?id=47317616" target="_blank" rel="noopener">discussion</a>
+         &nbsp;·&nbsp; <a href='https://news.ycombinator.com/item?id=47317616' target='_blank' rel='noopener'>discussion</a>
       </p>
       <h4>Analysis</h4>
-      <p class="muted"><em>Analysis not available.</em></p>
-      
+      <p>The author of &quot;Emacs Solo&quot; reflects on two years of maintaining a personal Emacs configuration developed without any external packages. By relying exclusively on built-in features and custom Elisp modules, the user avoids common issues like dependency breakage, installation complexity, and repository downtime. The project was recently refactored into a clear structure, separating standard Emacs customization in `init.el` from a suite of 35 self-contained modules located in a dedicated `lisp/` directory.</p>
+      <h4>Reader Reactions</h4>
+      <p>Users express profound admiration for the author’s deep understanding of their tool, valuing the peace of mind and total control that comes from mastering one’s own software configuration and execution environment.</p>
+      <p>Critics argue that avoiding external packages is an inefficient, &quot;reinventing the wheel&quot; approach that ignores the collective knowledge of the community and risks pigeonholing developers into narrow, non-standard coding practices.</p>
+      <p>Custom, zero-dependency implementations allow for highly tailored workflows and stable, transparent systems, demonstrating that Emacs remains a uniquely powerful, hackable environment for users willing to invest significant time in skill development.</p>
+      <p>The discussion sample focuses heavily on the philosophical debate of custom versus third-party configuration, potentially overlooking practical aspects like performance metrics, long-term maintainability, or the specific technical limitations of standard Emacs distributions.</p>
     </article>
     <article id="dossier-3" class="dossier-entry">
       <div class="dossier-meta">N<sup>o</sup> 03 &nbsp;·&nbsp; Stat Hero &nbsp;·&nbsp; Database Performance</div>
@@ -663,10 +480,10 @@
       <p class="dossier-source">
         <a href="https://www.paradedb.com/blog/optimizing-top-k" target="_blank" rel="noopener">paradedb.com</a>
         &nbsp;·&nbsp; 148 pts &nbsp;·&nbsp; 22 comments
-        &nbsp;·&nbsp; <a href="https://news.ycombinator.com/item?id=47302493" target="_blank" rel="noopener">discussion</a>
+         &nbsp;·&nbsp; <a href='https://news.ycombinator.com/item?id=47302493' target='_blank' rel='noopener'>discussion</a>
       </p>
       <h4>Analysis</h4>
-      <p class="muted"><em>Analysis not available.</em></p>
+      <p>The article details the technical challenges of executing &quot;Top K&quot; queries—retrieving a ranked subset of records—within standard PostgreSQL deployments. While Postgres relies on B-Tree indexes that perform exceptionally well for simple, pre-indexed lookups, the author argues that these structures struggle with ad-hoc filtering and complex text search, often resulting in expensive table scans. To address these limitations, the post introduces ParadeDB, which utilizes search-optimized data structures like inverted indexes and columnar storage to provide more consistent performance across varied query shapes.</p>
       
     </article>
     <article id="dossier-4" class="dossier-entry">
@@ -675,11 +492,15 @@
       <p class="dossier-source">
         <a href="https://felixturner.github.io/hex-map-wfc/article/" target="_blank" rel="noopener">felixturner.github.io</a>
         &nbsp;·&nbsp; 573 pts &nbsp;·&nbsp; 85 comments
-        &nbsp;·&nbsp; <a href="https://news.ycombinator.com/item?id=47311815" target="_blank" rel="noopener">discussion</a>
+         &nbsp;·&nbsp; <a href='https://news.ycombinator.com/item?id=47311815' target='_blank' rel='noopener'>discussion</a>
       </p>
       <h4>Analysis</h4>
-      <p class="muted"><em>Analysis not available.</em></p>
-      
+      <p>Felix Turner details the development of a procedural medieval island generator that utilizes the Wave Function Collapse (WFC) algorithm to tile hexagonal maps. By implementing a multi-grid approach and a layered recovery system, the project overcomes the common combinatorial bottlenecks associated with large-scale hex grids. The technical stack leverages WebGPU, Three.js, and BatchedMesh rendering to ensure high-performance visual fidelity, combining procedural generation with noise-based decoration placement.</p>
+      <h4>Reader Reactions</h4>
+      <p>Readers widely appreciate the high-quality technical documentation and the visual appeal of the procedural map generation project, even though several users point out significant flaws in the algorithm&#x27;s practical map-making capabilities.</p>
+      <p>Critics argue that the implementation is fundamentally a simple constraint solver rather than a true Wave Function Collapse algorithm, noting that hard-coding constraints bypasses the core purpose of inferring rules from samples.</p>
+      <p>Developers consistently suggest that moving from standard backtracking to using bitfields or dedicated constraint-satisfaction solvers provides substantial performance improvements by eliminating branching and optimizing the inner loops of the generation process.</p>
+      <p>The sample reflects a heavy bias toward technical optimization and algorithmic theory, likely overlooking broader discourse regarding the aesthetic or gameplay utility of the generated maps for actual end users.</p>
     </article>
     <article id="dossier-5" class="dossier-entry">
       <div class="dossier-meta">N<sup>o</sup> 05 &nbsp;·&nbsp; Pastel Finale &nbsp;·&nbsp; Digital Curiosities</div>
@@ -687,11 +508,15 @@
       <p class="dossier-source">
         <a href="https://realtuner.online/" target="_blank" rel="noopener">realtuner.online</a>
         &nbsp;·&nbsp; 255 pts &nbsp;·&nbsp; 59 comments
-        &nbsp;·&nbsp; <a href="https://news.ycombinator.com/item?id=47280654" target="_blank" rel="noopener">discussion</a>
+         &nbsp;·&nbsp; <a href='https://news.ycombinator.com/item?id=47280654' target='_blank' rel='noopener'>discussion</a>
       </p>
       <h4>Analysis</h4>
-      <p class="muted"><em>Analysis not available.</em></p>
-      
+      <p>The &quot;Real Tuner&quot; project by Kyle Smith allows users to operate a physical Boss TU-3 guitar pedal remotely via a web interface. By connecting a browser-based application to hardware housed in a physical box, the tool provides a tangible tuning experience for guitarists from anywhere with an internet connection. The site currently reports over 500 tuning sessions, demonstrating a functional implementation of real-time hardware control through software.</p>
+      <h4>Reader Reactions</h4>
+      <p>Users generally find the remote tuner project humorous and impressive, often appreciating the novelty and unconventional approach of controlling physical hardware over a network despite the potential for added technical latency.</p>
+      <p>Debate emerged regarding the merit of analog signal processing, with some arguing that remote access to hardware provides desirable harmonic characteristics, while others dismiss the pursuit of analog summing as technically unnecessary.</p>
+      <p>Technical difficulties arise primarily from browser permission settings, as users struggling with microphone access are advised to manually override default privacy configurations to enable the application&#x27;s required input functionality properly.</p>
+      <p>The provided sample disproportionately focuses on the philosophical debate surrounding analog audio gear rather than the project’s specific functionality, suggesting the discussion thread diverted significantly from the original story&#x27;s primary intent.</p>
     </article>
     <article id="dossier-6" class="dossier-entry">
       <div class="dossier-meta">N<sup>o</sup> 06 &nbsp;·&nbsp; Terminal &nbsp;·&nbsp; System Emulation</div>
@@ -699,11 +524,15 @@
       <p class="dossier-source">
         <a href="https://bellard.org/jslinux/" target="_blank" rel="noopener">bellard.org</a>
         &nbsp;·&nbsp; 375 pts &nbsp;·&nbsp; 138 comments
-        &nbsp;·&nbsp; <a href="https://news.ycombinator.com/item?id=47311484" target="_blank" rel="noopener">discussion</a>
+         &nbsp;·&nbsp; <a href='https://news.ycombinator.com/item?id=47311484' target='_blank' rel='noopener'>discussion</a>
       </p>
       <h4>Analysis</h4>
-      <p class="muted"><em>Analysis not available.</em></p>
-      
+      <p>Fabrice Bellard has updated his JSLinux project, an emulator that runs various operating systems directly within a web browser using JavaScript. The most significant addition to the platform is support for x86_64 architecture, which now includes Alpine Linux with advanced AVX-512 and APX instruction set features. Users can access a variety of environments, ranging from modern Linux distributions to legacy systems like Windows 2000 and FreeDOS, all delivered through a web console.</p>
+      <h4>Reader Reactions</h4>
+      <p>Users view JSLinux primarily as a remarkable technical achievement and an effective educational or sandboxing tool that provides a reliable, portable Linux environment directly within the web browser&#x27;s secure sandbox.</p>
+      <p>Critics argue that browser-based emulation suffers from significant performance overhead, suggesting that dedicated hardware or containerization strategies offer more efficient and practical solutions for serious development or AI agent tasks.</p>
+      <p>Benchmarking shows RISC-V is significantly easier and faster to emulate than x86_64, though performance comparisons are often complicated by the inconsistent age of GCC versions across different architecture images.</p>
+      <p>The sample focuses heavily on technical emulation trade-offs and niche use cases, potentially overlooking the project&#x27;s broader implications for web-based software distribution or general-purpose accessibility for non-technical users.</p>
     </article>
     <article id="dossier-7" class="dossier-entry">
       <div class="dossier-meta">N<sup>o</sup> 07 &nbsp;·&nbsp; Editorial Op-Ed &nbsp;·&nbsp; Open Source Ethics</div>
@@ -711,11 +540,15 @@
       <p class="dossier-source">
         <a href="https://writings.hongminhee.org/2026/03/legal-vs-legitimate/" target="_blank" rel="noopener">writings.hongminhee.org</a>
         &nbsp;·&nbsp; 564 pts &nbsp;·&nbsp; 584 comments
-        &nbsp;·&nbsp; <a href="https://news.ycombinator.com/item?id=47310160" target="_blank" rel="noopener">discussion</a>
+         &nbsp;·&nbsp; <a href='https://news.ycombinator.com/item?id=47310160' target='_blank' rel='noopener'>discussion</a>
       </p>
       <h4>Analysis</h4>
-      <p class="muted"><em>Analysis not available.</em></p>
-      
+      <p>The article discusses a controversy surrounding the maintainer of the `chardet` library, who used AI to reimplement the codebase to bypass its LGPL license, effectively relicensing the project as MIT. By using an AI to generate the code based on the library&#x27;s API and test suite, the maintainer argues the resulting work is an independent creation that is no longer bound by the copyleft obligations of the original version. The author examines this incident to critique the trend of using AI to circumvent copyleft requirements, arguing that technical or legal permissibility does not equate to social legitimacy within the open-source community.</p>
+      <h4>Reader Reactions</h4>
+      <p>The dominant viewpoint suggests that AI-driven reimplementation challenges the foundations of copyright, with many users debating whether traditional licensing frameworks like the GPL remain effective against large-scale, automated corporate appropriation.</p>
+      <p>A significant competing perspective argues that AI does not fundamentally erode copyright but rather exposes the underlying power imbalances of existing IP laws, which consistently favor corporate entities over individual developers.</p>
+      <p>Technologically, the discussion highlights that while AI lowers the barrier for individuals to reimplement complex software, the massive capital required for training still centralizes power within a few dominant mega-corporations.</p>
+      <p>This sample may be biased toward ideological and legalistic interpretations of open source, potentially underrepresenting the pragmatic concerns of engineers focusing on the immediate utility of AI coding tools in development.</p>
     </article>
     <article id="dossier-8" class="dossier-entry">
       <div class="dossier-meta">N<sup>o</sup> 08 &nbsp;·&nbsp; Rose Alert &nbsp;·&nbsp; Economic Analysis</div>
@@ -723,11 +556,15 @@
       <p class="dossier-source">
         <a href="https://martinalderson.com/posts/no-it-doesnt-cost-anthropic-5k-per-claude-code-user/" target="_blank" rel="noopener">martinalderson.com</a>
         &nbsp;·&nbsp; 479 pts &nbsp;·&nbsp; 349 comments
-        &nbsp;·&nbsp; <a href="https://news.ycombinator.com/item?id=47317132" target="_blank" rel="noopener">discussion</a>
+         &nbsp;·&nbsp; <a href='https://news.ycombinator.com/item?id=47317132' target='_blank' rel='noopener'>discussion</a>
       </p>
       <h4>Analysis</h4>
-      <p class="muted"><em>Analysis not available.</em></p>
-      
+      <p>This article challenges a viral claim that Anthropic loses $5,000 per month on heavy Claude Code users. The author argues that this figure confuses high retail API pricing with the actual marginal cost of inference, which is estimated to be about 10% of retail rates. By comparing Anthropic&#x27;s costs to competitive open-weight model providers on OpenRouter, the post concludes that Anthropic likely achieves profitability on average subscribers rather than suffering the massive losses suggested by external analysis.</p>
+      <h4>Reader Reactions</h4>
+      <p>Commenters largely challenge the article’s assumption that inference costs for power users are overstated, noting that compute saturation and market demand make the original $5,000 cost estimate plausible for high-volume scenarios.</p>
+      <p>Some participants argue the article fails to account for the reality that popular models are often subsidized or utilize different cost structures, rendering comparisons to cheaper open-weight or Chinese alternatives invalid.</p>
+      <p>Technical debates focus on the uncertainty surrounding model parameter sizes and whether retail API pricing accurately reflects actual underlying compute expenses versus the profit margins implied by the author’s claims.</p>
+      <p>The discussion sample shows a notable preoccupation with detecting AI-generated writing patterns, which may distract from the core economic analysis regarding the actual sustainability of high-usage AI coding subscription models.</p>
     </article>
     <article id="dossier-9" class="dossier-entry">
       <div class="dossier-meta">N<sup>o</sup> 09 &nbsp;·&nbsp; Archive &nbsp;·&nbsp; Vintage Networking</div>
@@ -735,11 +572,15 @@
       <p class="dossier-source">
         <a href="http://www.darkrealms.ca/" target="_blank" rel="noopener">darkrealms.ca</a>
         &nbsp;·&nbsp; 144 pts &nbsp;·&nbsp; 45 comments
-        &nbsp;·&nbsp; <a href="https://news.ycombinator.com/item?id=47276343" target="_blank" rel="noopener">discussion</a>
+         &nbsp;·&nbsp; <a href='https://news.ycombinator.com/item?id=47276343' target='_blank' rel='noopener'>discussion</a>
       </p>
       <h4>Analysis</h4>
-      <p class="muted"><em>Analysis not available.</em></p>
-      
+      <p>Darkrealms is a long-standing bulletin board system (BBS) that has been operational since 1994, utilizing the vintage MS-DOS Renegade software. It serves as the Fidonet Zone 1 Hub, maintaining extensive archives of Echomail, vintage computer files, and network nodelists. Users can access the platform via Telnet or traditional dial-up modem, reflecting a persistent commitment to early internet infrastructure.</p>
+      <h4>Reader Reactions</h4>
+      <p>Users express deep nostalgia for the BBS era, viewing it as an exclusive, intimate gateway to a digital frontier that feels impossible to fully replicate with modern, ubiquitous internet connectivity.</p>
+      <p>While some participants find modern BBS experiences hollow compared to their memories, others actively enjoy hosting or playing classic &quot;door games&quot; like Legend of the Red Dragon on active retro systems.</p>
+      <p>Enthusiasts are experimenting with contemporary enhancements for old BBS infrastructure, including the use of LLMs for dynamic gameplay and new protocols to integrate modern graphical tilesets and audio into legacy games.</p>
+      <p>This sample likely overrepresents technologically inclined individuals who had early access to computing in the 1980s and 1990s, potentially skewing the discussion toward specific generational experiences and Western-centric networking histories.</p>
     </article>
     <article id="dossier-10" class="dossier-entry">
       <div class="dossier-meta">N<sup>o</sup> 10 &nbsp;·&nbsp; Midnight &nbsp;·&nbsp; Quantum Theory</div>
@@ -747,20 +588,22 @@
       <p class="dossier-source">
         <a href="https://scottaaronson.blog/?p=9615" target="_blank" rel="noopener">scottaaronson.blog</a>
         &nbsp;·&nbsp; 83 pts &nbsp;·&nbsp; 48 comments
-        &nbsp;·&nbsp; <a href="https://news.ycombinator.com/item?id=47317739" target="_blank" rel="noopener">discussion</a>
+         &nbsp;·&nbsp; <a href='https://news.ycombinator.com/item?id=47317739' target='_blank' rel='noopener'>discussion</a>
       </p>
       <h4>Analysis</h4>
-      <p class="muted"><em>Analysis not available.</em></p>
-      
+      <p>The &quot;JVG algorithm&quot; is a proposed method for factoring large numbers that claims to outperform Shor’s algorithm by using only a limited number of qubits. Scott Aaronson debunks the paper by highlighting a fundamental flaw: the authors suggest precomputing values classically and loading them into a quantum state, which requires exponential time and memory. This approach only functions for trivial cases and becomes entirely impractical as the size of the target number increases.</p>
+      <h4>Reader Reactions</h4>
+      <p>Commenters generally agree with the critique that the JVG algorithm is functionally useless for real-world applications because it relies on precomputation that effectively solves the underlying problem before the circuit runs.</p>
+      <p>Some participants defend the algorithm&#x27;s existence by suggesting that any demonstration of quantum progress on small numbers is valuable, while others argue that the author of the post is hypocritically critical.</p>
+      <p>Technically, the algorithm fails to offer a legitimate quantum advantage because the precomputation required is exponentially expensive and shifts the workload to classical systems rather than utilizing actual quantum computational efficiency.</p>
+      <p>The discussion sample is heavily influenced by personal feelings regarding the blog post&#x27;s author, which likely overshadows the nuance of the technical debate surrounding the specific limitations of the algorithm itself.</p>
     </article>
   </section>
-
   <footer class="colophon">
     <p class="sig">— that's the edition.</p>
     <p class="meta">Set in Fraunces &amp; Inter · Compiled March 10, 2026</p>
     <p class="classic-link"><a href="classic.html">Prefer the classic card view? →</a></p>
   </footer>
-
 <script>
 (() => {
   const key = "gtd:read_days:hn:v1";
@@ -769,7 +612,7 @@
   try {
     stored = JSON.parse(localStorage.getItem(key) || "[]");
     if (!Array.isArray(stored)) stored = [];
-  } catch (_) { stored = []; }
+  } catch (e) {}
   if (!stored.includes(day)) {
     stored.push(day);
     stored.sort();
@@ -777,6 +620,5 @@
   }
 })();
 </script>
-
 </body>
 </html>

@@ -51,7 +51,7 @@ STYLE_FILE = DOCS_DIR / "style.css"
 GITHUB_PAGES_URL = "https://www.kevinriste.com/github-trending-digest/"
 
 SUMMARY_MODEL = "gemini-3.1-flash-lite-preview"
-GH_SUMMARY_PROMPT_VERSION = "gh_v2"
+GH_SUMMARY_PROMPT_VERSION = "gh_v3"
 HN_SUMMARY_PROMPT_VERSION = "hn_v4"
 HN_COMMENT_ANALYSIS_PROMPT_VERSION = "hn_comments_v2"
 SUMMARY_REFRESH_DAYS = 60
@@ -874,7 +874,7 @@ Write exactly two paragraphs:
 1. First paragraph: Explain what this project does, key features, and how it works technically.
 2. Second paragraph: Explain who would benefit from this project and why it is trending.
 
-Keep each paragraph concise (3-4 sentences). Use a professional, informative tone."""
+Keep each paragraph concise (5-6 sentences). Use a professional, informative tone."""
 
     try:
         client = get_gemini_client()
@@ -1202,17 +1202,17 @@ def store_hn_run(conn: psycopg.Connection, run_day: date, items: list[dict], sou
 
 
 def get_latest_gh_summary(conn: psycopg.Connection, repo_id: int) -> dict | None:
-    """Fetch latest GitHub summary for a repo."""
+    """Fetch latest GitHub summary for a repo (from any prompt version)."""
     with conn.cursor(row_factory=dict_row) as cur:
         cur.execute(
             """
             SELECT summary_text, generated_at
             FROM gh_summaries
-            WHERE repo_id = %s AND model = %s AND prompt_version = %s
+            WHERE repo_id = %s AND model = %s
             ORDER BY generated_at DESC
             LIMIT 1
             """,
-            (repo_id, SUMMARY_MODEL, GH_SUMMARY_PROMPT_VERSION),
+            (repo_id, SUMMARY_MODEL),
         )
         return cur.fetchone()
 
@@ -1278,17 +1278,17 @@ def get_or_generate_gh_summary(conn: psycopg.Connection, repo: dict, run_day: da
 
 
 def get_latest_hn_summary(conn: psycopg.Connection, item_id: int) -> dict | None:
-    """Fetch latest Hacker News summary for an item."""
+    """Fetch latest Hacker News summary for an item (from any prompt version)."""
     with conn.cursor(row_factory=dict_row) as cur:
         cur.execute(
             """
             SELECT summary_text, generated_at
             FROM hn_summaries
-            WHERE item_id = %s AND model = %s AND prompt_version = %s
+            WHERE item_id = %s AND model = %s
             ORDER BY generated_at DESC
             LIMIT 1
             """,
-            (item_id, SUMMARY_MODEL, HN_SUMMARY_PROMPT_VERSION),
+            (item_id, SUMMARY_MODEL),
         )
         return cur.fetchone()
 
@@ -1365,7 +1365,7 @@ def get_or_generate_hn_summary(conn: psycopg.Connection, item: dict, run_day: da
 
 
 def get_latest_hn_comment_analysis(conn: psycopg.Connection, item_id: int) -> dict | None:
-    """Fetch latest comment analysis for a Hacker News item."""
+    """Fetch latest comment analysis for a Hacker News item (from any prompt version)."""
     with conn.cursor(row_factory=dict_row) as cur:
         cur.execute(
             """
@@ -1373,12 +1373,11 @@ def get_latest_hn_comment_analysis(conn: psycopg.Connection, item_id: int) -> di
             FROM hn_comment_analyses
             WHERE item_id = %s
               AND model = %s
-              AND prompt_version = %s
               AND sample_size = %s
             ORDER BY generated_at DESC
             LIMIT 1
             """,
-            (item_id, SUMMARY_MODEL, HN_COMMENT_ANALYSIS_PROMPT_VERSION, HN_COMMENT_SAMPLE_SIZE),
+            (item_id, SUMMARY_MODEL, HN_COMMENT_SAMPLE_SIZE),
         )
         return cur.fetchone()
 
@@ -2682,7 +2681,7 @@ def save_files(
     hn_dates: list[date],
 ) -> None:
     """Write all generated pages and metadata files."""
-    gh_daily_file = DOCS_DIR / run_day.isoformat() / "index.html"
+    gh_daily_file = DOCS_DIR / run_day.isoformat() / "classic.html"
     hn_daily_file = HN_DOCS_DIR / run_day.isoformat() / "classic.html"
 
     write_text(gh_daily_file, gh_daily_html)
@@ -2710,8 +2709,12 @@ def regenerate_gh_daily_pages(conn: psycopg.Connection, gh_dates: list[date], hn
         gh_rows = build_gh_view_rows(conn, render_day, allow_summary_generation=False)
         slow_burners = build_gh_slow_burner_rows(conn, render_day, allow_summary_generation=False)
         gh_daily_html = generate_gh_daily_page(gh_rows, render_day, hn_dates_set, slow_burners=slow_burners)
-        gh_daily_file = DOCS_DIR / render_day.isoformat() / "index.html"
+        gh_daily_file = DOCS_DIR / render_day.isoformat() / "classic.html"
         write_text(gh_daily_file, gh_daily_html)
+        try:
+            generate_morning_edition(render_day, gh_rows, source="gh", force_regenerate=False)
+        except Exception as exc:
+            logging.exception("Open Source Edition render failed for %s: %s", render_day, exc)
 
     logging.info("Regenerated %d GitHub daily pages", len(gh_dates))
 
@@ -2727,7 +2730,7 @@ def regenerate_hn_daily_pages(conn: psycopg.Connection, hn_dates: list[date], gh
         hn_daily_file = HN_DOCS_DIR / render_day.isoformat() / "classic.html"
         write_text(hn_daily_file, hn_daily_html)
         try:
-            generate_morning_edition(render_day, hn_rows, force_regenerate=False)
+            generate_morning_edition(render_day, hn_rows, source="hn", force_regenerate=False)
         except Exception as exc:
             logging.exception("Morning Edition render failed for %s: %s", render_day, exc)
 
@@ -3298,9 +3301,6 @@ def main() -> None:
         gh_dates_set = {day.isoformat() for day in gh_dates}
         hn_dates_set = {day.isoformat() for day in hn_dates}
 
-        regenerate_gh_daily_pages(conn, gh_dates, hn_dates_set)
-        regenerate_hn_daily_pages(conn, hn_dates, gh_dates_set)
-
         slow_burners = build_gh_slow_burner_rows(conn, run_day)
         gh_daily_html = generate_gh_daily_page(gh_rows, run_day, hn_dates_set, slow_burners=slow_burners)
 
@@ -3312,7 +3312,12 @@ def main() -> None:
         save_files(run_day, gh_daily_html, gh_index_html, hn_daily_html, hn_index_html, css, gh_dates, hn_dates)
 
         try:
-            generate_morning_edition(run_day, hn_rows, force_regenerate=True)
+            generate_morning_edition(run_day, gh_rows, source="gh", force_regenerate=True)
+        except Exception as exc:
+            logging.exception("Open Source Edition generation failed for %s: %s", run_day, exc)
+
+        try:
+            generate_morning_edition(run_day, hn_rows, source="hn", force_regenerate=True)
         except Exception as exc:
             logging.exception("Morning Edition generation failed for %s: %s", run_day, exc)
 

@@ -1,638 +1,449 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Morning Edition — Thursday, March 19, 2026</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght,SOFT@0,9..144,300..900,0..100;1,9..144,300..900,0..100&family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
-<style>
-
-  :root { --ink: #121212; --paper: #f5f1e8; }
-  * { box-sizing: border-box; }
-  html, body { margin: 0; padding: 0; }
-  body {
-    font-family: 'Inter', system-ui, sans-serif;
-    font-size: 20px;
-    line-height: 1.5;
-    color: var(--ink);
-    background: var(--paper);
-    -webkit-font-smoothing: antialiased;
-    text-rendering: optimizeLegibility;
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Morning Edition — March 19, 2026</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,100..900;1,9..144,100..900&family=Inter:wght@100..900&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+  <style>
+  :root {
+    --bg-light: #f5f1e8; --bg-dark: #121212;
+    --text-dark: #121212; --text-light: #f5f1e8;
+    --accent-red: #d32f2f; --accent-blue: #1976d2;
   }
-  a { color: inherit; }
-  a:hover { opacity: 0.7; }
-  .frnc { font-family: 'Fraunces', Georgia, serif; }
-  .mono { font-family: 'JetBrains Mono', ui-monospace, monospace; }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; padding: 0;
+    background: var(--bg-light); color: var(--text-dark);
+    font-family: 'Inter', sans-serif;
+    -webkit-font-smoothing: antialiased;
+  }
+  .frnc { font-family: 'Fraunces', serif; font-variant-classic-ligatures: common-ligatures; }
+  
+  /* ───── LAYOUT ───── */
+  .spread {
+    position: relative; min-height: 100vh; width: 100%;
+    display: flex; align-items: center; justify-content: center;
+    padding: 10vh 8vw; overflow: hidden;
+    scroll-snap-align: start;
+  }
+  .body { position: relative; z-index: 10; width: 100%; max-width: 1200px; }
+  .kicker { font-weight: 700; font-size: 1.1rem; letter-spacing: 0.4em; text-transform: uppercase; margin-bottom: 2rem; opacity: 0.8; }
+  h2 { font-size: clamp(3rem, 8vw, 6.5rem); line-height: 0.95; font-weight: 400; margin: 0 0 3rem; letter-spacing: -0.03em; }
+  .lede { font-size: clamp(1.4rem, 2.5vw, 2.1rem); line-height: 1.35; max-width: 800px; margin: 0 0 4rem; font-weight: 450; }
+  
+  .ctas { display: flex; gap: 2rem; align-items: center; }
+  .ctas a {
+    text-decoration: none; font-weight: 600; font-size: 1.1rem; letter-spacing: 0.1em; text-transform: uppercase;
+    padding: 1.2rem 2.4rem; transition: all 0.2s;
+  }
+  .btn-read { background: var(--text-dark); color: var(--bg-light); }
+  .btn-dossier { border-bottom: 2px solid currentColor; padding: 0.5rem 0 !important; }
+  
+  /* ───── ARCHETYPE CSS ───── */
+  
+  /* Stat Hero */
+  .arc-stat-hero { background: #e8e4da; }
+  .arc-stat-hero .numeral {
+    position: absolute; right: 0; top: 10vh; font-family: 'Fraunces', serif;
+    font-size: clamp(20rem, 50vw, 45rem); font-weight: 900; line-height: 0.8;
+    color: #121212; opacity: 0.05; pointer-events: none;
+  }
+
+  /* Midnight */
+  .arc-midnight { background: #0a0a0c; color: #fff; }
+  .arc-midnight .glow {
+    position: absolute; top: 30%; left: 40%; width: 40vw; height: 40vw;
+    background: radial-gradient(circle, rgba(110,64,255,0.15) 0%, transparent 70%);
+    filter: blur(60px); pointer-events: none;
+  }
+  .arc-midnight .btn-read { background: #fff; color: #000; }
+
+  /* Alert Stamp */
+  .arc-alert-stamp { background: #f9ebeb; color: #7a1e14; }
+  .arc-alert-stamp .stamp {
+    position: absolute; top: 15vh; right: 10vw; border: 6px solid #d32f2f;
+    padding: 1rem 2rem; font-weight: 900; font-size: 3rem; transform: rotate(12deg);
+    opacity: 0.2; pointer-events: none;
+  }
+  .arc-alert-stamp .btn-read { background: #d32f2f; color: #fff; }
+
+  /* Academic */
+  .arc-academic-drop-cap { background: #fdfaf3; color: #2c2925; }
+  .arc-academic-drop-cap h2 { font-size: clamp(2.5rem, 5vw, 4rem); border-bottom: 1px solid #ddd; padding-bottom: 2rem; margin-bottom: 4rem; }
+  .arc-academic-drop-cap .cols { columns: 2; column-gap: 4rem; }
+  .arc-academic-drop-cap .drop {
+    float: left; font-family: 'Fraunces', serif; font-size: 6.5rem; line-height: 0.75;
+    margin: 0.8rem 1rem 0 0; font-weight: 600; color: #121212;
+  }
+  .arc-academic-drop-cap .btn-read { background: #2c2925; color: #fff; }
+
+  /* Terminal */
+  .arc-terminal { background: #000; color: #20c20e; font-family: 'JetBrains Mono', monospace; }
+  .arc-terminal .window { border: 1px solid #20c20e; padding: 4rem; background: #050505; }
+  .arc-terminal .frnc { font-family: 'JetBrains Mono', monospace; font-weight: 700; letter-spacing: -0.05em; }
+  .arc-terminal .btn-read { background: #20c20e; color: #000; border-radius: 0; }
+  .arc-terminal .btn-dossier { border-color: #20c20e; }
+
+  /* Editorial Pullquote */
+  .arc-editorial-pullquote { display: grid; grid-template-columns: 1.2fr 1fr; gap: 5vw; background: #1a1a1a; color: #f5f1e8; align-items: stretch; }
+  .arc-editorial-pullquote .quote-side { background: #d4af37; color: #1a1a1a; display: flex; align-items: center; padding: 6vw; position: relative; }
+  .arc-editorial-pullquote blockquote { font-family: 'Fraunces', serif; font-size: 3rem; line-height: 1.1; font-style: italic; font-weight: 400; margin: 0; }
+  .arc-editorial-pullquote blockquote::before { content: '“'; position: absolute; top: 2vw; left: 2vw; font-size: 8rem; opacity: 0.3; }
+  .arc-editorial-pullquote .btn-read { background: #f5f1e8; color: #1a1a1a; }
+
+  /* Caution Tape */
+  .arc-caution-tape { background: #fcd116; color: #000; }
+  .arc-caution-tape .tape {
+    position: absolute; left: -10vw; width: 120vw; background: #000; color: #fcd116;
+    font-weight: 900; font-size: 1.5rem; padding: 1rem; transform: rotate(-3deg); z-index: 5;
+  }
+  .arc-caution-tape .tape.top { top: 5vh; transform: rotate(2deg); }
+  .arc-caution-tape .tape.bottom { bottom: 5vh; transform: rotate(-1.5deg); }
+  .arc-caution-tape .tag { background: #000; color: #fff; padding: 0.5rem 1rem; display: inline-block; font-weight: 800; margin-bottom: 2rem; }
+  .arc-caution-tape .btn-read { background: #000; color: #fcd116; }
+
+  /* Notebook */
+  .arc-notebook { background: #fcfcf4; }
+  .arc-notebook .lines {
+    position: absolute; inset: 0;
+    background: repeating-linear-gradient(transparent, transparent 1.6rem, #e0e0d0 1.6rem, #e0e0d0 1.7rem);
+    opacity: 0.5;
+  }
+  .arc-notebook .btn-read { background: #333; color: #fff; }
+
+  /* Mint Pattern */
+  .arc-mint-pattern { background: #d0f0e4; color: #1b4d3e; }
+  .arc-mint-pattern::before {
+    content: var(--bg-word); position: absolute; inset: 0;
+    font-weight: 900; font-size: 14vw; line-height: 0.7; opacity: 0.04;
+    display: flex; flex-wrap: wrap; word-break: break-all; overflow: hidden;
+  }
+  .arc-mint-pattern .btn-read { background: #1b4d3e; color: #d0f0e4; }
+
+  /* Pastel Playful */
+  .arc-pastel-playful { background: #fbe6e6; color: #8a4b4b; }
+  .arc-pastel-playful .alpha-grid {
+    position: absolute; right: 4vw; top: 10vh; bottom: 10vh; width: 40vw;
+    display: grid; grid-template-columns: repeat(5, 1fr); gap: 1rem;
+    font-weight: 900; font-size: 2rem; opacity: 0.08; pointer-events: none;
+  }
+  .arc-pastel-playful .btn-read { background: #8a4b4b; color: #fbe6e6; }
+
+  /* Product Plate */
+  .arc-product-plate { background: #eee; }
+  .arc-product-plate .plate {
+    background: linear-gradient(145deg, #ffffff, #dcdcdc);
+    padding: 6vw; box-shadow: 20px 20px 60px #cbcbcb, -20px -20px 60px #ffffff;
+    border-radius: 20px;
+  }
+  .arc-product-plate .btn-read { background: #121212; color: #eee; border-radius: 50px; }
+
+  /* Archive */
+  .arc-archive { background: #f4ece1; color: #4e3620; }
+  .arc-archive .mast {
+    position: absolute; top: 4vh; width: 100%; text-align: center;
+    font-family: 'Fraunces', serif; font-weight: 700; font-size: 1.2rem;
+    letter-spacing: 0.5em; opacity: 0.5; border-bottom: 1px double #ccc;
+    padding-bottom: 2vh;
+  }
+  .arc-archive .btn-read { background: #4e3620; color: #f4ece1; }
+
+  /* Obituary */
+  .arc-obituary { background: #fff; color: #000; }
+  .arc-obituary .obit-frame { border: 20px solid #000; padding: 6vw; text-align: center; }
+  .arc-obituary .lede { margin-left: auto; margin-right: auto; }
+  .arc-obituary .ornament { font-size: 4rem; margin: 3rem 0; opacity: 0.2; }
+  .arc-obituary .ctas { justify-content: center; }
+  .arc-obituary .btn-read { background: #000; color: #fff; }
+
+  /* Blueprint */
+  .arc-blueprint { background: #0047ab; color: #fff; }
+  .arc-blueprint .grid {
+    position: absolute; inset: 0; opacity: 0.2;
+    background-image: linear-gradient(#fff 1px, transparent 1px), linear-gradient(90deg, #fff 1px, transparent 1px);
+    background-size: 40px 40px;
+  }
+  .arc-blueprint .btn-read { background: #fff; color: #0047ab; }
+
+  /* Observatory */
+  .arc-observatory { background: #050510; color: #e0e0ff; }
+  .arc-observatory .stars {
+    position: absolute; inset: 0; opacity: 0.4;
+    background: radial-gradient(white, rgba(255,255,255,.2) 2px, transparent 40px);
+    background-size: 100px 100px;
+  }
+  .arc-observatory .btn-read { background: #e0e0ff; color: #050510; border-radius: 100px; }
+
+  /* GH Specific: Agent Foundry */
+  .arc-agent-foundry { background: #f0f4f8; color: #1a365d; }
+  .arc-agent-foundry .blueprint-bg {
+    position: absolute; inset: 0; opacity: 0.1;
+    background-image: radial-gradient(#1a365d 1px, transparent 1px);
+    background-size: 20px 20px;
+  }
+  .arc-agent-foundry .btn-read { background: #1a365d; color: #fff; }
+
+  /* GH Specific: System Core */
+  .arc-system-core { background: #2d3748; color: #edf2f7; }
+  .arc-system-core .concrete {
+    position: absolute; inset: 0; opacity: 0.05;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  }
+  .arc-system-core .frnc { font-family: 'Inter', sans-serif; font-weight: 800; text-transform: uppercase; letter-spacing: -0.05em; }
+  .arc-system-core .btn-read { background: #edf2f7; color: #2d3748; }
+
+  /* GH Specific: UI Lab */
+  .arc-ui-lab { background: #fff; color: #4c51bf; }
+  .arc-ui-lab .lab-gradient {
+    position: absolute; inset: 0; opacity: 0.1;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  }
+  .arc-ui-lab .btn-read { background: #4c51bf; color: #fff; border-radius: 12px; }
+
+  /* GH Specific: Data Pipeline */
+  .arc-data-pipeline { background: #1a202c; color: #a3bffa; }
+  .arc-data-pipeline .pipeline-streams {
+    position: absolute; inset: 0; opacity: 0.15;
+    background: repeating-linear-gradient(45deg, #a3bffa, #a3bffa 2px, transparent 2px, transparent 20px);
+  }
+  .arc-data-pipeline .btn-read { background: #a3bffa; color: #1a202c; }
+
+  /* GH Specific: Model Bench */
+  .arc-model-bench { background: #f7fafc; color: #2d3748; }
+  .arc-model-bench .bench-silver {
+    position: absolute; right: 0; top: 0; width: 40%; height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(0,0,0,0.03));
+  }
+  .arc-model-bench .btn-read { border: 1px solid #2d3748; background: transparent; color: #2d3748; }
+
+  /* GH Specific: Privacy Shield */
+  .arc-privacy-shield { background: #000; color: #00ff41; }
+  .arc-privacy-shield .shield-glitch {
+    position: absolute; inset: 0; opacity: 0.1;
+    background-image: repeating-linear-gradient(0deg, rgba(0,255,65,0.1) 0, rgba(0,255,65,0.1) 1px, transparent 1px, transparent 2px);
+  }
+  .arc-privacy-shield .btn-read { background: #00ff41; color: #000; }
+
+  /* GH Specific: Enterprise Engine */
+  .arc-enterprise-engine { background: #f0f7ff; color: #0056b3; }
+  .arc-enterprise-engine .engine-blue {
+    position: absolute; right: -5vw; bottom: -5vw; width: 30vw; height: 30vw;
+    background: radial-gradient(circle, rgba(0,86,179,0.05) 0%, transparent 70%);
+  }
+  .arc-enterprise-engine .btn-read { background: #0056b3; color: #fff; }
+
+  /* GH Specific: Terminal Utility */
+  .arc-terminal-utility { background: #1a1a1a; color: #ffb000; font-family: 'JetBrains Mono', monospace; }
+  .arc-terminal-utility .crt-lines {
+    position: absolute; inset: 0; pointer-events: none;
+    background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.06), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.06));
+    background-size: 100% 2px, 3px 100%;
+  }
+  .arc-terminal-utility .btn-read { background: #ffb000; color: #1a1a1a; }
+
+  /* GH Specific: Experimental Workshop */
+  .arc-experimental-workshop { background: #fffde7; color: #5d4037; }
+  .arc-experimental-workshop .pad-lines {
+    position: absolute; left: 4vw; top: 0; bottom: 0; width: 2px; background: #ff5252; opacity: 0.3;
+  }
+  .arc-experimental-workshop .btn-read { border: 2px dashed #5d4037; background: transparent; color: #5d4037; }
+
+  /* GH Specific: Library Archive */
+  .arc-library-archive { background: #fdfaf3; color: #3e2723; }
+  .arc-library-archive .parchment {
+    position: absolute; inset: 0; opacity: 0.03;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='f'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.02' numOctaves='5'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23f)'/%3E%3C/svg%3E");
+  }
+  .arc-library-archive .btn-read { background: #3e2723; color: #fdfaf3; }
 
   /* ───── MASTHEAD ───── */
-  .masthead { padding: 2rem 6vw 2.5rem; border-bottom: 3px double #121212; background: #f5f1e8; text-align: center; }
-  .masthead-nav {
-    display: flex;
-    justify-content: center;
-    gap: 1.2rem;
-    align-items: baseline;
-    margin-bottom: 2rem;
-    font-weight: 600;
-    font-size: 1rem;
-    letter-spacing: 0.2em;
-    text-transform: uppercase;
-  }
-  .masthead-nav a { text-decoration: none; border-bottom: 2px solid transparent; padding-bottom: 2px; }
-  .masthead-nav a:hover { border-bottom-color: #121212; opacity: 1; }
-  .masthead-nav span { opacity: 0.4; }
-  .masthead .tagline { font-weight: 600; font-size: 1.2rem; letter-spacing: 0.4em; text-transform: uppercase; margin-bottom: 1.2rem; }
-  .masthead h1 {
-    font-family: 'Fraunces', Georgia, serif;
-    font-weight: 900;
-    font-style: italic;
-    font-size: clamp(4rem, 13vw, 12rem);
-    line-height: 0.88;
-    letter-spacing: -0.035em;
-    margin: 0 0 1rem;
-    font-variation-settings: "SOFT" 50;
-  }
-  .masthead .issue-line {
-    display: flex;
-    justify-content: space-between;
-    align-items: baseline;
-    max-width: 1000px;
-    margin: 2rem auto 0;
-    padding-top: 1.25rem;
-    border-top: 1px solid #121212;
-    font-weight: 500;
-    font-size: 1.1rem;
-    letter-spacing: 0.15em;
-    text-transform: uppercase;
-  }
-
-  /* ───── SPREAD BASE ───── */
-  .spread {
-    min-height: 100vh;
-    padding: 6vh 6vw;
-    position: relative;
-    overflow: hidden;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-  }
-  .spread .story-meta { font-weight: 600; font-size: 1rem; letter-spacing: 0.28em; text-transform: uppercase; }
-  .spread-links {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 2rem 2.5rem;
-    align-items: baseline;
-    margin-top: 2.5rem;
-  }
-  .spread .read-more {
-    display: inline-block;
-    font-size: 1.1rem;
-    font-weight: 700;
-    letter-spacing: 0.15em;
-    text-transform: uppercase;
-    text-decoration: none;
-    padding-bottom: 0.4rem;
-    border-bottom: 3px solid currentColor;
-  }
-  .spread .dossier-link {
-    font-size: 1rem;
-    font-weight: 500;
-    letter-spacing: 0.18em;
-    text-transform: uppercase;
-    text-decoration: none;
-    opacity: 0.7;
-    padding-bottom: 0.3rem;
-    border-bottom: 1px solid currentColor;
-  }
-  .spread .dossier-link:hover { opacity: 1; }
-
-  /* ───── STAT HERO ───── */
-  .arc-stat-hero { background: #eee6d3; color: #0d1a2e; padding: 8vh 6vw; }
-  .arc-stat-hero .numeral {
-    font-family: 'Fraunces', serif;
-    font-weight: 900;
-    font-style: italic;
-    font-size: clamp(12rem, 36vw, 34rem);
-    line-height: 0.8;
-    letter-spacing: -0.06em;
-    color: #0d1a2e;
-    position: absolute;
-    right: -2vw;
-    top: 8vh;
-    opacity: 0.94;
-    pointer-events: none;
-    white-space: nowrap;
-  }
-  .arc-stat-hero .kicker { font-weight: 700; font-size: 1.15rem; letter-spacing: 0.4em; text-transform: uppercase; color: #c13830; position: relative; z-index: 2; margin-bottom: 1.5rem; }
-  .arc-stat-hero h2 { font-family: 'Fraunces', serif; font-weight: 800; font-size: clamp(3rem, 8vw, 7.5rem); line-height: 0.95; letter-spacing: -0.03em; max-width: 60%; margin: 0 0 2rem; position: relative; z-index: 2; }
-  .arc-stat-hero .lede { font-family: 'Fraunces', serif; font-size: clamp(1.4rem, 2.2vw, 2rem); line-height: 1.45; max-width: 55%; font-weight: 400; position: relative; z-index: 2; margin: 0; }
-  .arc-stat-hero .story-meta { color: #c13830; position: relative; z-index: 2; }
-  .arc-stat-hero .spread-links { position: relative; z-index: 2; }
-
-  /* ───── MIDNIGHT ───── */
-  .arc-midnight { background: radial-gradient(ellipse at 70% 30%, #1a1235 0%, #05050c 65%); color: #e9e4ff; }
-  .arc-midnight::before {
-    content: "";
-    position: absolute;
-    inset: 0;
-    background-image:
-      radial-gradient(circle at 20% 80%, rgba(180,120,255,0.18), transparent 50%),
-      radial-gradient(circle at 80% 20%, rgba(120,200,255,0.12), transparent 55%);
-    pointer-events: none;
-  }
-  .arc-midnight .numeral {
-    font-family: 'Fraunces', serif;
-    font-size: clamp(8rem, 22vw, 20rem);
-    font-weight: 300;
-    font-style: italic;
-    color: transparent;
-    -webkit-text-stroke: 2px rgba(233,228,255,0.45);
-    line-height: 1;
-    position: absolute;
-    top: 6vh;
-    left: 5vw;
-    letter-spacing: -0.05em;
-  }
-  .arc-midnight .body { position: relative; z-index: 2; margin-top: 12rem; max-width: 90%; }
-  .arc-midnight .kicker { font-family: 'JetBrains Mono', monospace; font-size: 1.1rem; letter-spacing: 0.2em; text-transform: uppercase; color: #b48bff; margin-bottom: 2rem; }
-  .arc-midnight h2 { font-weight: 800; font-size: clamp(3rem, 7.5vw, 6.5rem); line-height: 1; letter-spacing: -0.035em; margin: 0 0 2.5rem; }
-  .arc-midnight .lede { font-size: 1.35rem; line-height: 1.55; color: #cdc6e8; max-width: 780px; margin: 0; }
-  .arc-midnight .story-meta { color: #8a7cc6; margin-bottom: 1.5rem; }
-
-  /* ───── ALERT STAMP ───── */
-  .arc-alert-stamp { background: #f8e5de; color: #2b0808; background-image: repeating-linear-gradient(transparent, transparent 3rem, rgba(193,56,48,0.08) 3rem, rgba(193,56,48,0.08) calc(3rem + 1px)); }
-  .arc-alert-stamp .stamp {
-    position: absolute; top: 8vh; right: 5vw;
-    transform: rotate(-14deg);
-    border: 6px solid #c13830;
-    padding: 1.2rem 2.5rem;
-    font-weight: 900;
-    font-size: clamp(2rem, 4vw, 3.5rem);
-    letter-spacing: 0.15em;
-    color: #c13830;
-    background: rgba(248,229,222,0.6);
-    text-transform: uppercase;
-  }
-  .arc-alert-stamp .numeral { font-family: 'Fraunces', serif; font-style: italic; font-weight: 900; font-size: clamp(6rem, 15vw, 12rem); line-height: 1; color: #c13830; margin: 0 0 1rem; }
-  .arc-alert-stamp .kicker { font-weight: 800; font-size: 1.2rem; letter-spacing: 0.3em; text-transform: uppercase; color: #c13830; margin-bottom: 1rem; }
-  .arc-alert-stamp h2 { font-family: 'Fraunces', serif; font-weight: 800; font-size: clamp(2.5rem, 6vw, 5.5rem); line-height: 1.02; letter-spacing: -0.025em; max-width: 75%; margin: 0 0 2rem; }
-  .arc-alert-stamp .lede { font-size: 1.4rem; line-height: 1.55; max-width: 700px; font-weight: 400; margin: 0; }
-  .arc-alert-stamp .story-meta { color: #c13830; margin-bottom: 1.5rem; }
-
-  /* ───── ACADEMIC DROP CAP ───── */
-  .arc-academic-drop-cap { background: #efe7d1; color: #1b1a14; padding: 8vh 8vw; }
-  .arc-academic-drop-cap .paper-head {
-    display: flex; justify-content: space-between; align-items: baseline;
-    border-bottom: 1.5px solid #1b1a14;
-    padding-bottom: 0.7rem; margin-bottom: 3rem;
-    font-weight: 500; font-size: 1rem; letter-spacing: 0.25em; text-transform: uppercase;
-  }
-  .arc-academic-drop-cap .numeral-roman { font-family: 'Fraunces', serif; font-weight: 700; font-size: clamp(2.5rem, 4vw, 4rem); font-style: italic; letter-spacing: 0.08em; }
-  .arc-academic-drop-cap h2 { font-family: 'Fraunces', serif; font-weight: 400; font-style: italic; font-size: clamp(2.5rem, 5.5vw, 5rem); line-height: 1.05; letter-spacing: -0.015em; margin: 0 0 1.5rem; max-width: 85%; }
-  .arc-academic-drop-cap .story-meta { margin-bottom: 2rem; }
-  .arc-academic-drop-cap .cols { display: grid; grid-template-columns: 1fr 1fr; gap: 3.5rem; }
-  .arc-academic-drop-cap .cols p { font-family: 'Fraunces', serif; font-size: 1.35rem; line-height: 1.55; text-align: justify; hyphens: auto; margin: 0 0 1.2rem; }
-  .arc-academic-drop-cap .cols > div:first-child p:first-child::first-letter {
-    font-family: 'Fraunces', serif;
-    font-weight: 900;
-    font-size: 7em;
-    float: left;
-    line-height: 0.82;
-    padding: 0.1em 0.15em 0 0;
-    color: #7a1e14;
-  }
-
-  /* ───── TERMINAL ───── */
-  .arc-terminal { background: #000; color: #8cff8c; font-family: 'JetBrains Mono', ui-monospace, monospace; padding: 8vh 6vw; }
-  .arc-terminal .prompt-row { font-size: 1.15rem; font-weight: 500; color: #4ac94a; margin-bottom: 3rem; }
-  .arc-terminal .numeral { font-size: clamp(6rem, 14vw, 13rem); font-weight: 700; line-height: 1; color: #8cff8c; margin: 0 0 1rem; }
-  .arc-terminal .numeral::before { content: "> "; color: #4ac94a; }
-  .arc-terminal h2 { font-weight: 700; font-size: clamp(2.2rem, 5vw, 4.5rem); line-height: 1.1; margin: 0 0 2rem; max-width: 90%; color: #d4ffd4; }
-  .arc-terminal .lede { font-size: 1.3rem; line-height: 1.6; max-width: 780px; color: #8cff8c; margin: 0; }
-  .arc-terminal .lede::before { content: "# "; color: #4ac94a; }
-  .arc-terminal .story-meta { color: #4ac94a; margin-bottom: 1.5rem; }
-  .arc-terminal .cursor { display: inline-block; width: 0.55em; height: 1.1em; background: #8cff8c; vertical-align: text-bottom; margin-left: 0.2em; animation: me-blink 1s steps(2, start) infinite; }
-  @keyframes me-blink { to { visibility: hidden; } }
-  .arc-terminal .read-more { color: #8cff8c; border-color: #4ac94a; }
-  .arc-terminal .dossier-link { color: #8cff8c; border-color: rgba(140,255,140,0.4); }
-
-  /* ───── EDITORIAL PULLQUOTE ───── */
-  .arc-editorial-pullquote {
-    background: #1a1a1a; color: #f5f1e8; padding: 8vh 6vw;
-    display: grid; grid-template-columns: 1fr 1.1fr; gap: 5rem; align-items: center;
-  }
-  .arc-editorial-pullquote .left { position: relative; }
-  .arc-editorial-pullquote .numeral { font-family: 'Fraunces', serif; font-weight: 900; font-style: italic; font-size: clamp(8rem, 18vw, 16rem); line-height: 0.9; color: #f5f1e8; margin: 0 0 1rem; letter-spacing: -0.05em; }
-  .arc-editorial-pullquote .kicker { font-weight: 700; font-size: 1.1rem; letter-spacing: 0.35em; text-transform: uppercase; color: #e8b84a; margin-bottom: 1.5rem; }
-  .arc-editorial-pullquote h2 { font-family: 'Fraunces', serif; font-weight: 700; font-size: clamp(2rem, 4vw, 3.5rem); line-height: 1.1; margin: 0 0 2rem; }
-  .arc-editorial-pullquote .pullquote {
-    font-family: 'Fraunces', serif; font-style: italic; font-weight: 400;
-    font-size: clamp(1.8rem, 3.5vw, 3rem); line-height: 1.15;
-    color: #f5f1e8; border-left: 4px solid #e8b84a; padding-left: 2rem; margin: 0;
-  }
-  .arc-editorial-pullquote .pullquote::before { content: "\201C"; font-size: 1.4em; line-height: 0; vertical-align: -0.4em; color: #e8b84a; margin-right: 0.1em; }
-  .arc-editorial-pullquote .pullquote::after { content: "\201D"; font-size: 1.4em; line-height: 0; vertical-align: -0.6em; color: #e8b84a; margin-left: 0.05em; }
-  .arc-editorial-pullquote .story-meta { color: #e8b84a; }
-
-  /* ───── CAUTION TAPE ───── */
-  .arc-caution-tape { background: #fff200; color: #0a0a0a; padding: 8vh 6vw; }
-  .arc-caution-tape::before { content: ""; position: absolute; inset: 0 0 auto 0; height: 2.5rem; background: repeating-linear-gradient(135deg, #0a0a0a 0 2rem, #fff200 2rem 4rem); }
-  .arc-caution-tape::after { content: ""; position: absolute; inset: auto 0 0 0; height: 2.5rem; background: repeating-linear-gradient(135deg, #0a0a0a 0 2rem, #fff200 2rem 4rem); }
-  .arc-caution-tape .tag {
-    position: absolute; top: 6vh; right: 6vw;
-    writing-mode: vertical-rl; transform: rotate(180deg);
-    font-weight: 900; font-size: 1.3rem; letter-spacing: 0.5em; text-transform: uppercase;
-    background: #0a0a0a; color: #fff200; padding: 1rem 0.6rem;
-  }
-  .arc-caution-tape .numeral { font-weight: 900; font-size: clamp(10rem, 28vw, 24rem); line-height: 0.85; letter-spacing: -0.06em; margin: 0 0 1rem; -webkit-text-stroke: 3px #0a0a0a; color: transparent; }
-  .arc-caution-tape .kicker { font-weight: 900; font-size: 1.3rem; letter-spacing: 0.35em; text-transform: uppercase; background: #0a0a0a; color: #fff200; padding: 0.5rem 1rem; display: inline-block; margin-bottom: 1.5rem; }
-  .arc-caution-tape h2 { font-weight: 900; font-size: clamp(2.5rem, 6vw, 5.5rem); line-height: 0.98; letter-spacing: -0.03em; margin: 0 0 2rem; max-width: 85%; text-transform: uppercase; }
-  .arc-caution-tape .lede { font-size: 1.35rem; line-height: 1.5; max-width: 680px; font-weight: 500; margin: 0; }
-  .arc-caution-tape .story-meta { margin-bottom: 1.5rem; }
-
-  /* ───── NOTEBOOK ───── */
-  .arc-notebook { background: repeating-linear-gradient(#fdfaf0 0 2.2rem, rgba(120,104,60,0.22) 2.2rem 2.25rem); color: #1f1a0d; padding: 8vh 8vw; }
-  .arc-notebook::before { content: ""; position: absolute; top: 0; bottom: 0; left: 8vw; width: 2px; background: #c13830; opacity: 0.5; }
-  .arc-notebook .numeral { font-family: 'Fraunces', serif; font-weight: 400; font-style: italic; font-size: clamp(7rem, 17vw, 15rem); line-height: 1; letter-spacing: -0.02em; color: #1f1a0d; margin: 0 0 0.5rem; }
-  .arc-notebook .kicker { font-weight: 600; font-size: 1.1rem; letter-spacing: 0.3em; text-transform: uppercase; color: #8a6b1f; margin-bottom: 1rem; }
-  .arc-notebook h2 { font-family: 'Fraunces', serif; font-weight: 400; font-style: italic; font-size: clamp(2.8rem, 6.5vw, 6rem); line-height: 1; letter-spacing: -0.02em; margin: 0 0 2rem; max-width: 85%; }
-  .arc-notebook .lede { font-family: 'Fraunces', serif; font-weight: 400; font-size: clamp(1.35rem, 2vw, 1.7rem); line-height: 2.2rem; max-width: 700px; margin: 0; }
-
-  /* ───── MINT PATTERN ───── */
-  .arc-mint-pattern { background: #a8e6cf; color: #0d2a1e; padding: 8vh 6vw; }
-  .arc-mint-pattern::before {
-    content: "XOR LISP AWK SED GREP CURL MAKE GIT VIM SSH";
-    position: absolute; top: 10vh; left: 0; right: 0;
-    font-family: 'JetBrains Mono', monospace;
-    font-weight: 700; font-size: 2.5rem; letter-spacing: 0.3em;
-    color: rgba(13,42,30,0.1); white-space: nowrap; overflow: hidden; pointer-events: none;
-  }
-  .arc-mint-pattern .numeral-block { position: relative; z-index: 2; }
-  .arc-mint-pattern .numeral { font-family: 'Fraunces', serif; font-weight: 900; font-size: clamp(10rem, 28vw, 24rem); line-height: 0.85; letter-spacing: -0.06em; color: #0d2a1e; margin: 0; font-style: italic; }
-  .arc-mint-pattern .kicker { font-family: 'JetBrains Mono', monospace; font-weight: 700; font-size: 1.1rem; letter-spacing: 0.2em; text-transform: uppercase; color: #0d2a1e; margin: 1.5rem 0; position: relative; z-index: 2; }
-  .arc-mint-pattern h2 { font-family: 'Fraunces', serif; font-weight: 800; font-size: clamp(2.5rem, 6vw, 5rem); line-height: 1; letter-spacing: -0.025em; margin: 0 0 2rem; max-width: 85%; position: relative; z-index: 2; }
-  .arc-mint-pattern .lede { font-family: 'Fraunces', serif; font-size: 1.4rem; line-height: 1.55; max-width: 680px; font-weight: 400; margin: 0; position: relative; z-index: 2; }
-  .arc-mint-pattern .story-meta { position: relative; z-index: 2; margin-bottom: 1.5rem; }
-  .arc-mint-pattern .spread-links { position: relative; z-index: 2; }
-
-  /* ───── PASTEL PLAYFUL ───── */
-  .arc-pastel-playful { background: #fde6f2; color: #2a0a2e; padding: 8vh 6vw 4vh; }
-  .arc-pastel-playful .alpha-grid {
-    position: absolute; top: 0; left: 0; right: 0;
-    display: grid; grid-template-columns: repeat(13, 1fr);
-    font-family: 'Fraunces', serif; font-style: italic;
-    font-size: clamp(1.2rem, 2.5vw, 2rem); font-weight: 700;
-    color: rgba(42,10,46,0.2); padding: 1rem 6vw; letter-spacing: 0.2em; pointer-events: none;
-  }
-  .arc-pastel-playful .alpha-grid span { text-align: center; }
-  .arc-pastel-playful .numeral { font-family: 'Fraunces', serif; font-weight: 900; font-style: italic; font-size: clamp(10rem, 26vw, 22rem); line-height: 0.85; letter-spacing: -0.05em; color: #c13871; margin: 2rem 0 0; }
-  .arc-pastel-playful .kicker { font-weight: 700; font-size: 1.1rem; letter-spacing: 0.35em; text-transform: uppercase; color: #c13871; margin-bottom: 1rem; }
-  .arc-pastel-playful h2 { font-family: 'Fraunces', serif; font-weight: 400; font-style: italic; font-size: clamp(2.8rem, 6.5vw, 5.5rem); line-height: 1; letter-spacing: -0.02em; margin: 0 0 2rem; max-width: 85%; }
-  .arc-pastel-playful .lede { font-size: 1.35rem; line-height: 1.5; max-width: 680px; margin: 0; }
-  .arc-pastel-playful .story-meta { color: #c13871; margin-bottom: 1.5rem; }
-
-  /* ───── PRODUCT PLATE ───── */
-  .arc-product-plate {
-    background: linear-gradient(135deg, #f5f5f3 0%, #e8e8e6 100%);
-    color: #121212; padding: 10vh 8vw; text-align: center; align-items: center; justify-content: center;
-  }
-  .arc-product-plate .product-chip {
-    font-weight: 700; font-size: 1rem; letter-spacing: 0.4em; text-transform: uppercase;
-    background: #121212; color: #f5f5f3; padding: 0.5rem 1.4rem; display: inline-block; margin-bottom: 3rem;
-  }
-  .arc-product-plate .kicker { font-weight: 700; font-size: 1.15rem; letter-spacing: 0.5em; text-transform: uppercase; color: #666; margin-bottom: 1.5rem; }
-  .arc-product-plate h2 {
-    font-family: 'Inter', sans-serif;
-    font-weight: 900;
-    font-size: clamp(3.2rem, 9vw, 8rem);
-    line-height: 0.95;
-    letter-spacing: -0.045em;
-    margin: 0 auto 2rem;
-    max-width: 14ch;
-  }
-  .arc-product-plate .product-rule { width: 6rem; height: 2px; background: #121212; margin: 1.5rem auto 2rem; }
-  .arc-product-plate .story-meta { color: #666; margin-bottom: 1.5rem; }
-  .arc-product-plate .lede { font-family: 'Fraunces', serif; font-weight: 400; font-size: clamp(1.4rem, 2.2vw, 1.9rem); line-height: 1.45; max-width: 720px; margin: 0 auto; }
-  .arc-product-plate .spread-links { justify-content: center; }
-
-  /* ───── ARCHIVE ───── */
-  .arc-archive {
-    background: #eadbb8;
-    background-image:
-      radial-gradient(rgba(80,40,10,0.05) 1px, transparent 1px),
-      radial-gradient(rgba(80,40,10,0.04) 1px, transparent 1px);
-    background-size: 4px 4px, 7px 7px;
-    background-position: 0 0, 2px 2px;
-    color: #2a1a08; padding: 8vh 8vw;
-  }
-  .arc-archive .archive-head {
-    display: flex; justify-content: space-between; align-items: baseline;
-    padding-bottom: 1rem; margin-bottom: 3rem;
-    border-top: 6px double #3a2a10; border-bottom: 6px double #3a2a10;
-    padding-top: 1rem;
-    font-family: 'Fraunces', serif; font-style: italic; font-weight: 500;
-    font-size: 1.1rem; letter-spacing: 0.15em; text-transform: uppercase; color: #3a2a10;
-  }
-  .arc-archive .kicker { font-family: 'Fraunces', serif; font-style: italic; font-weight: 600; font-size: 1.2rem; letter-spacing: 0.3em; text-transform: uppercase; color: #8a3a10; margin-bottom: 1.2rem; }
-  .arc-archive h2 {
-    font-family: 'Fraunces', serif; font-weight: 700; font-style: normal;
-    font-size: clamp(2.8rem, 6.5vw, 6rem); line-height: 1; letter-spacing: -0.02em;
-    margin: 0 0 2rem; max-width: 85%;
-  }
-  .arc-archive .lede {
-    font-family: 'Fraunces', serif; font-size: clamp(1.35rem, 2vw, 1.7rem);
-    line-height: 1.55; max-width: 760px; font-weight: 400; margin: 0;
-  }
-  .arc-archive .lede::first-letter {
-    font-family: 'Fraunces', serif; font-weight: 900; font-size: 5em;
-    float: left; line-height: 0.82; padding: 0.1em 0.15em 0 0; color: #8a3a10;
-  }
-  .arc-archive .story-meta { color: #8a3a10; margin-bottom: 1.5rem; }
-
-  /* ───── OBITUARY ───── */
-  .arc-obituary {
-    background: #f8f4ec; color: #121212;
-    padding: 10vh 6vw; align-items: center; justify-content: center;
-  }
-  .arc-obituary .obit-frame {
-    border: 3px solid #121212; padding: 6rem 5rem;
-    max-width: 780px; text-align: center; background: #f8f4ec;
-    position: relative; z-index: 2;
-  }
-  .arc-obituary .obit-frame::before,
-  .arc-obituary .obit-frame::after {
-    content: ""; position: absolute; left: -12px; right: -12px; height: 1px; background: #121212;
-  }
-  .arc-obituary .obit-frame::before { top: -12px; }
-  .arc-obituary .obit-frame::after { bottom: -12px; }
-  .arc-obituary .ornament { font-family: 'Fraunces', serif; font-size: 3.5rem; line-height: 1; margin-bottom: 2rem; color: #121212; }
-  .arc-obituary .kicker { font-family: 'Fraunces', serif; font-style: italic; font-weight: 500; font-size: 1.1rem; letter-spacing: 0.3em; text-transform: uppercase; margin-bottom: 2rem; opacity: 0.7; }
-  .arc-obituary h2 {
-    font-family: 'Fraunces', serif; font-weight: 400; font-style: italic;
-    font-size: clamp(2.4rem, 5vw, 4.5rem); line-height: 1.1; letter-spacing: -0.015em;
-    margin: 0 0 2.5rem;
-  }
-  .arc-obituary .story-meta { margin-bottom: 2rem; opacity: 0.6; }
-  .arc-obituary .lede { font-family: 'Fraunces', serif; font-size: clamp(1.3rem, 1.9vw, 1.6rem); line-height: 1.6; margin: 0 auto; max-width: 60ch; }
-  .arc-obituary .spread-links { justify-content: center; margin-top: 3rem; }
-
-  /* ───── BLUEPRINT ───── */
-  .arc-blueprint {
-    background: #0a3d62;
-    background-image:
-      linear-gradient(rgba(255,255,255,0.08) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(255,255,255,0.08) 1px, transparent 1px);
-    background-size: 2.2rem 2.2rem;
-    color: #eaf4ff; padding: 8vh 6vw;
-  }
-  .arc-blueprint .corner {
-    position: absolute; font-family: 'JetBrains Mono', monospace;
-    font-size: 2.5rem; color: #eaf4ff; opacity: 0.7;
-  }
-  .arc-blueprint .corner.tl { top: 3vh; left: 3vw; }
-  .arc-blueprint .corner.tr { top: 3vh; right: 3vw; }
-  .arc-blueprint .corner.bl { bottom: 3vh; left: 3vw; }
-  .arc-blueprint .corner.br { bottom: 3vh; right: 3vw; }
-  .arc-blueprint .numeral {
-    font-family: 'JetBrains Mono', monospace;
-    font-weight: 700; font-size: clamp(4rem, 9vw, 7.5rem); line-height: 1;
-    letter-spacing: -0.01em; color: #eaf4ff;
-    margin: 0 0 1.5rem;
-    border-bottom: 2px dashed rgba(234,244,255,0.5);
-    padding-bottom: 1rem;
-    display: inline-block;
-  }
-  .arc-blueprint .kicker { font-family: 'JetBrains Mono', monospace; font-weight: 700; font-size: 1.15rem; letter-spacing: 0.3em; text-transform: uppercase; color: #9bd2ff; margin-bottom: 1.5rem; }
-  .arc-blueprint h2 { font-family: 'Fraunces', serif; font-weight: 700; font-size: clamp(2.8rem, 6.5vw, 5.5rem); line-height: 1; letter-spacing: -0.025em; margin: 0 0 2rem; max-width: 85%; }
-  .arc-blueprint .lede { font-family: 'JetBrains Mono', monospace; font-size: 1.2rem; line-height: 1.65; max-width: 720px; margin: 0; }
-  .arc-blueprint .story-meta { color: #9bd2ff; margin-bottom: 1.5rem; font-family: 'JetBrains Mono', monospace; }
-
-  /* ───── OBSERVATORY ───── */
-  .arc-observatory {
-    background: #070c2e; color: #e8ecff; padding: 8vh 6vw;
-  }
-  .arc-observatory .starfield {
-    position: absolute; inset: 0; pointer-events: none;
-    background-image:
-      radial-gradient(1px 1px at 10% 20%, rgba(255,255,255,0.9), transparent),
-      radial-gradient(1px 1px at 25% 70%, rgba(255,255,255,0.6), transparent),
-      radial-gradient(1.5px 1.5px at 40% 30%, rgba(255,255,255,0.8), transparent),
-      radial-gradient(1px 1px at 55% 85%, rgba(255,255,255,0.5), transparent),
-      radial-gradient(1px 1px at 70% 15%, rgba(255,255,255,0.9), transparent),
-      radial-gradient(1.5px 1.5px at 85% 55%, rgba(255,255,255,0.7), transparent),
-      radial-gradient(1px 1px at 92% 25%, rgba(255,255,255,0.5), transparent),
-      radial-gradient(1px 1px at 15% 90%, rgba(255,255,255,0.4), transparent),
-      radial-gradient(1px 1px at 48% 50%, rgba(255,255,255,0.6), transparent),
-      radial-gradient(1px 1px at 78% 78%, rgba(255,255,255,0.5), transparent);
-    background-repeat: no-repeat;
-  }
-  .arc-observatory > * { position: relative; z-index: 2; }
-  .arc-observatory .numeral {
-    font-family: 'Fraunces', serif; font-style: italic; font-weight: 400;
-    font-size: clamp(3rem, 7vw, 6rem); line-height: 1; letter-spacing: 0.04em;
-    color: #e8ecff; margin: 0 0 2rem;
-    border-bottom: 1px solid rgba(232,236,255,0.4);
-    padding-bottom: 1rem; display: inline-block;
-  }
-  .arc-observatory .kicker { font-family: 'Fraunces', serif; font-style: italic; font-weight: 500; font-size: 1.15rem; letter-spacing: 0.3em; text-transform: uppercase; color: #9ab3ff; margin-bottom: 1.5rem; }
-  .arc-observatory h2 { font-family: 'Fraunces', serif; font-weight: 400; font-style: italic; font-size: clamp(2.8rem, 6.5vw, 5.5rem); line-height: 1.05; letter-spacing: -0.015em; margin: 0 0 2rem; max-width: 85%; }
-  .arc-observatory .lede { font-family: 'Fraunces', serif; font-size: clamp(1.35rem, 2vw, 1.7rem); line-height: 1.55; max-width: 720px; font-weight: 400; margin: 0; }
-  .arc-observatory .story-meta { color: #9ab3ff; margin-bottom: 1.5rem; }
-
+  .masthead { padding: 4vh 8vw 10vh; text-align: center; border-bottom: 1px solid #ddd; }
+  .masthead-nav { display: flex; justify-content: center; gap: 2rem; margin-bottom: 6vh; font-weight: 600; font-size: 0.9rem; text-transform: uppercase; letter-spacing: 0.2em; }
+  .masthead-nav a { color: inherit; text-decoration: none; opacity: 0.6; }
+  .masthead-nav a:hover { opacity: 1; }
+  .masthead h1 { font-size: clamp(3rem, 10vw, 9rem); font-weight: 400; margin: 0 0 2rem; letter-spacing: -0.04em; }
+  .issue-line { display: flex; justify-content: center; gap: 4rem; font-weight: 700; font-size: 1rem; letter-spacing: 0.3em; text-transform: uppercase; opacity: 0.8; }
+  
   /* ───── DOSSIER ───── */
-  .dossier {
-    background: #f5f1e8; color: #1b1a14;
-    padding: 8rem 8vw 6rem;
-    border-top: 6px double #121212;
-  }
-  .dossier .dossier-head { text-align: center; margin-bottom: 4rem; }
-  .dossier .tagline { font-weight: 600; font-size: 1.1rem; letter-spacing: 0.4em; text-transform: uppercase; margin-bottom: 1rem; opacity: 0.7; }
-  .dossier h2 {
-    font-family: 'Fraunces', serif; font-style: italic; font-weight: 900;
-    font-size: clamp(4rem, 10vw, 9rem); line-height: 0.9; letter-spacing: -0.035em;
-    margin: 0 0 1.5rem;
-  }
-  .dossier .intro { font-family: 'Fraunces', serif; font-style: italic; font-size: 1.35rem; line-height: 1.5; max-width: 620px; margin: 0 auto; }
-  .dossier .intro a { font-style: normal; font-weight: 600; text-decoration: underline; }
-  .dossier-entry {
-    border-top: 1.5px solid #1b1a14;
-    padding: 3rem 0 2.5rem;
-    max-width: 820px; margin: 0 auto;
-  }
-  .dossier-entry:last-child { border-bottom: 1.5px solid #1b1a14; }
-  .dossier-meta { font-weight: 600; font-size: 1rem; letter-spacing: 0.28em; text-transform: uppercase; color: #7a1e14; margin-bottom: 1.2rem; }
-  .dossier-entry h3 {
-    font-family: 'Fraunces', serif; font-weight: 700;
-    font-size: clamp(1.8rem, 3.5vw, 2.6rem); line-height: 1.1; letter-spacing: -0.015em;
-    margin: 0 0 1.2rem;
-  }
-  .dossier-source { font-size: 1.05rem; font-weight: 500; letter-spacing: 0.08em; margin: 0 0 2rem; opacity: 0.75; }
-  .dossier-source a { text-decoration: underline; }
-  .dossier-entry h4 {
-    font-family: 'Inter', sans-serif; font-weight: 700; font-size: 1rem;
-    letter-spacing: 0.35em; text-transform: uppercase; margin: 2rem 0 1rem; color: #7a1e14;
-  }
-  .dossier-entry p {
-    font-family: 'Fraunces', serif; font-size: 1.25rem; line-height: 1.55; margin: 0 0 1rem;
-  }
-  .dossier-entry p.muted { opacity: 0.6; }
-
+  .dossier { background: #f5f1e8; padding: 10vh 8vw; color: #121212; }
+  .dossier-head { margin-bottom: 8vh; }
+  .dossier-head h2 { font-size: clamp(4rem, 12vw, 12rem); margin-bottom: 2rem; }
+  .tagline { font-weight: 700; font-size: 1.2rem; letter-spacing: 0.5em; text-transform: uppercase; margin-bottom: 1rem; opacity: 0.5; }
+  .intro { font-size: 1.5rem; max-width: 600px; line-height: 1.4; opacity: 0.7; }
+  .intro a { color: inherit; }
+  
+  .dossier-entry { margin-bottom: 12vh; max-width: 900px; }
+  .dossier-meta { font-weight: 700; font-size: 0.9rem; letter-spacing: 0.2em; text-transform: uppercase; margin-bottom: 1.5rem; opacity: 0.5; }
+  .dossier-entry h3 { font-family: 'Fraunces', serif; font-size: clamp(2.5rem, 5vw, 4.5rem); line-height: 1.1; margin: 0 0 1.5rem; font-weight: 400; }
+  .dossier-source { font-size: 1.1rem; font-weight: 500; letter-spacing: 0.05em; margin: 0 0 3rem; opacity: 0.7; }
+  .dossier-source a { color: inherit; text-decoration: underline; }
+  .dossier-entry h4 { font-weight: 700; font-size: 1rem; letter-spacing: 0.3em; text-transform: uppercase; margin: 3rem 0 1.5rem; }
+  .dossier-entry p { font-family: 'Fraunces', serif; font-size: 1.3rem; line-height: 1.6; margin: 0 0 1.5rem; }
+  
   /* ───── COLOPHON ───── */
-  .colophon { background: #121212; color: #f5f1e8; padding: 5rem 6vw; text-align: center; }
-  .colophon .sig { font-family: 'Fraunces', serif; font-style: italic; font-weight: 400; font-size: clamp(2.5rem, 5vw, 4rem); line-height: 1.1; letter-spacing: -0.02em; margin: 0 0 1.5rem; }
-  .colophon .meta { font-weight: 500; font-size: 1rem; letter-spacing: 0.3em; text-transform: uppercase; opacity: 0.7; }
-  .colophon .classic-link { margin-top: 2rem; font-weight: 500; font-size: 1rem; letter-spacing: 0.2em; text-transform: uppercase; }
-  .colophon .classic-link a { text-decoration: underline; opacity: 0.85; }
+  .colophon { background: #121212; color: #f5f1e8; padding: 8vh 8vw; text-align: center; }
+  .colophon .sig { font-family: 'Fraunces', serif; font-style: italic; font-size: clamp(2rem, 5vw, 4rem); margin-bottom: 2rem; }
+  .colophon .meta { font-weight: 500; font-size: 0.9rem; letter-spacing: 0.3em; text-transform: uppercase; opacity: 0.6; }
+  .classic-link { margin-top: 3rem; font-size: 0.9rem; letter-spacing: 0.2em; text-transform: uppercase; }
+  .classic-link a { color: inherit; text-decoration: underline; }
 
-  /* ───── RESPONSIVE ───── */
   @media (max-width: 800px) {
-    .masthead-nav { flex-wrap: wrap; gap: 0.8rem; }
-    .arc-stat-hero h2, .arc-stat-hero .lede { max-width: 100%; }
-    .arc-stat-hero .numeral { font-size: 14rem; opacity: 0.2; right: -2vw; top: 30vh; }
-    .arc-midnight .body { margin-top: 8rem; }
-    .arc-alert-stamp h2 { max-width: 100%; }
-    .arc-alert-stamp .stamp { top: 4vh; right: 4vw; font-size: 1.5rem; padding: 0.8rem 1.4rem; }
-    .arc-academic-drop-cap .cols { grid-template-columns: 1fr; gap: 2rem; }
-    .arc-editorial-pullquote { grid-template-columns: 1fr; gap: 3rem; }
-    .arc-caution-tape h2, .arc-notebook h2, .arc-pastel-playful h2, .arc-archive h2, .arc-obituary h2, .arc-blueprint h2, .arc-observatory h2 { max-width: 100%; }
-    .arc-caution-tape .tag { display: none; }
-    .arc-pastel-playful .alpha-grid { display: none; }
-    .arc-obituary .obit-frame { padding: 3rem 2rem; }
-    .arc-blueprint .corner { display: none; }
+    .spread { padding: 12vh 6vw; }
+    .issue-line { flex-direction: column; gap: 1rem; align-items: center; }
+    .arc-stat-hero .numeral { font-size: 15rem; top: auto; bottom: 5vh; }
+    .arc-editorial-pullquote { grid-template-columns: 1fr; }
+    .arc-editorial-pullquote .quote-side { padding: 12vw; }
+    .ctas { flex-direction: column; align-items: stretch; gap: 1rem; }
+    .arc-academic-drop-cap .cols { columns: 1; }
   }
-
 </style>
 </head>
 <body id="top">
-
   <header class="masthead">
     <div class="masthead-nav">
-      <a href="../">HN Calendar</a>
-      <span>·</span>
-      <a href="../../2026-03-19/">GitHub Trending</a>
-      <span>·</span>
+      <a href="../../">Index</a>
+      <a href="../">Calendar</a>
       <a href="classic.html">Classic view</a>
     </div>
-    <div class="tagline">The Morning Edition</div>
     <h1 class="frnc">Ten stories, before your coffee.</h1>
     <div class="issue-line">
       <span>Vol. I</span>
-      <span>Thursday, March 19, 2026</span>
+      <span>March 19, 2026</span>
       <span>HN Front Page Digest</span>
     </div>
   </header>
-
-  <section class="spread arc-terminal">
-    <div class="prompt-row">user@morning-edition:~$ cat story_01.md</div>
-    <p class="numeral">01</p>
-    <p class="story-meta">haskellforall.com &nbsp;·&nbsp; 648 pts &nbsp;·&nbsp; 336 comments</p>
-    <h2>Specifications are not substitutes for executable logic</h2>
-    <p class="lede">The push toward agentic coding assumes that natural language specifications can bypass the rigor of traditional software development. Reality suggests that when documentation becomes this granular, it functions as code by another name, complete with all the vulnerabilities of uncompiled logic.<span class="cursor"></span></p>
-    <div class="spread-links"><a class="read-more" href="https://haskellforall.com/2026/03/a-sufficiently-detailed-spec-is-code" target="_blank" rel="noopener">Read →</a><a class="dossier-link" href="#dossier-1">Full analysis ↓</a></div>
-  </section>
-
-  <section class="spread arc-blueprint">
-    <div class="corner tl">┌</div><div class="corner tr">┐</div>
-    <div class="corner bl">└</div><div class="corner br">┘</div>
-    <div class="numeral">FIG.&nbsp;02</div>
-    <div class="kicker">Workflow Engineering</div>
-    <h2>Orchestrating Claude workflows with Cook</h2>
-    <p class="story-meta">rjcorwin.github.io &nbsp;·&nbsp; 302 pts &nbsp;·&nbsp; 97 comments</p>
-    <p class="lede">Cook introduces a structured approach to AI interaction by chaining tasks through automated operators. It moves beyond simple interactive prompts, allowing developers to implement logic loops and review gates directly into their coding pipeline.</p>
-    <div class="spread-links"><a class="read-more" href="https://rjcorwin.github.io/cook/" target="_blank" rel="noopener">Read →</a><a class="dossier-link" href="#dossier-2">Full analysis ↓</a></div>
-  </section>
-
-  <section class="spread arc-stat-hero">
-    <div class="numeral">81,000</div>
-    <div class="kicker">N<sup>o</sup> 03 · Market Sentiment</div>
-    <h2>Thousands of interviews reveal the human cost of AI</h2>
-    <p class="story-meta">anthropic.com &nbsp;·&nbsp; 201 pts &nbsp;·&nbsp; 188 comments</p>
-    <p class="lede">A qualitative study of 81,000 global users uncovers deep-seated tensions regarding the future of work. As AI integration accelerates, the primary concern remains the friction between productivity gains and the potential for cognitive atrophy.</p>
-    <div class="spread-links"><a class="read-more" href="https://www.anthropic.com/features/81k-interviews" target="_blank" rel="noopener">Read →</a><a class="dossier-link" href="#dossier-3">Full analysis ↓</a></div>
-  </section>
-
-  <section class="spread arc-caution-tape">
-    <div class="tag">Vulnerability</div>
-    <div class="numeral">04</div>
-    <div class="kicker">Memory Bottleneck</div>
-    <h2>Nvidia GreenBoost offloads VRAM to system memory</h2>
-    <p class="story-meta">gitlab.com &nbsp;·&nbsp; 234 pts &nbsp;·&nbsp; 46 comments</p>
-    <p class="lede">This Linux kernel module attempts to extend GPU VRAM capacity by utilizing system RAM and NVMe storage via DMA-BUF. While it allows larger models to run on modest hardware, the latency introduced by PCIe bandwidth remains a formidable obstacle.</p>
-    <div class="spread-links"><a class="read-more" href="https://gitlab.com/IsolatedOctopi/nvidia_greenboost" target="_blank" rel="noopener">Read →</a><a class="dossier-link" href="#dossier-4">Full analysis ↓</a></div>
-  </section>
-
-  <section class="spread arc-academic-drop-cap">
-    <div class="paper-head">
-      <span>Urban Economics</span>
-      <span class="numeral-roman">V</span>
-      <span>pew.org</span>
-    </div>
-    <h2>How Austin’s aggressive density policies lowered local rents</h2>
-    <p class="story-meta">pew.org &nbsp;·&nbsp; 812 pts &nbsp;·&nbsp; 996 comments</p>
-    <div class="cols">
-      <div><p>By systematically reforming zoning laws and eliminating parking requirements, Austin successfully increased its housing stock by 120,000 units.</p></div>
-      <div><p>The resulting surplus offers a rare empirical look at how supply-side interventions can counteract regional rent inflation.</p><div class="spread-links"><a class="read-more" href="https://www.pew.org/en/research-and-analysis/articles/2026/03/18/austins-surge-of-new-housing-construction-drove-down-rents" target="_blank" rel="noopener">Read →</a><a class="dossier-link" href="#dossier-5">Full analysis ↓</a></div></div>
+  <section id="story-1" class="spread arc-terminal">
+    <div class="window">
+      <div class="kicker"># Code Architecture</div>
+      <h2 class="frnc">> Specifications are not substitutes for executable logic</h2>
+      <p class="lede">The push toward agentic coding assumes that natural language specifications can bypass the rigor of traditional software development. Reality suggests that when documentation becomes this granular, it functions as code by another name, complete with all the vulnerabilities of uncompiled logic.</p>
+      <div class="ctas">
+        <a href="https://haskellforall.com/2026/03/a-sufficiently-detailed-spec-is-code" class="btn-read" target="_blank">RUN_PROCESS →</a>
+        <a href="#dossier-1" class="btn-dossier">VIEW_ANALYSIS ↓</a>
+      </div>
     </div>
   </section>
-
-  <section class="spread arc-notebook">
-    <div class="numeral">06</div>
-    <div class="kicker">Speculative Fiction</div>
-    <h2>The precarious life of a software mechanic</h2>
-    <p class="story-meta">nearzero.software &nbsp;·&nbsp; 519 pts &nbsp;·&nbsp; 319 comments</p>
-    <p class="lede">In a future dominated by natural language generation, the role of the developer has shifted to that of a repairman. We watch as systems grow increasingly opaque, creating a fragile landscape where one minor model update can collapse an entire farm&#x27;s infrastructure.</p>
-    <div class="spread-links"><a class="read-more" href="https://nearzero.software/p/warranty-void-if-regenerated" target="_blank" rel="noopener">Read →</a><a class="dossier-link" href="#dossier-6">Full analysis ↓</a></div>
-  </section>
-
-  <section class="spread arc-observatory">
-    <div class="starfield"></div>
-    <div class="numeral">Obs.&nbsp;07</div>
-    <div class="kicker">Aerospace Simulation</div>
-    <h2>Designing flight vehicles with OpenRocket</h2>
-    <p class="story-meta">openrocket.info &nbsp;·&nbsp; 480 pts &nbsp;·&nbsp; 88 comments</p>
-    <p class="lede">This open-source simulator brings professional-grade aerodynamic analysis to the hobbyist level. By tracking stability metrics and center-of-gravity variables, engineers can model complex flight paths with high fidelity before the first stage even ignites.</p>
-    <div class="spread-links"><a class="read-more" href="https://openrocket.info/" target="_blank" rel="noopener">Read →</a><a class="dossier-link" href="#dossier-7">Full analysis ↓</a></div>
-  </section>
-
-  <section class="spread arc-midnight">
-    <div class="numeral">08</div>
+  <section id="story-2" class="spread arc-blueprint">
+    <div class="grid"></div>
     <div class="body">
-      <div class="kicker">// Algorithmic Research</div>
-      <h2>Autonomous agents iterate on MaxSAT solvers</h2>
-      <p class="story-meta">github.com &nbsp;·&nbsp; 167 pts &nbsp;·&nbsp; 32 comments</p>
+      <div class="kicker">Workflow Engineering</div>
+      <h2 class="frnc">Orchestrating Claude workflows with Cook</h2>
+      <p class="lede">Cook introduces a structured approach to AI interaction by chaining tasks through automated operators. It moves beyond simple interactive prompts, allowing developers to implement logic loops and review gates directly into their coding pipeline.</p>
+      <div class="ctas">
+        <a href="https://rjcorwin.github.io/cook/" class="btn-read" target="_blank">Read →</a>
+        <a href="#dossier-2" class="btn-dossier">Full analysis ↓</a>
+      </div>
+    </div>
+  </section>
+  <section id="story-3" class="spread arc-stat-hero">
+    <div class="numeral">81,000</div>
+    <div class="body">
+      <div class="kicker">Market Sentiment</div>
+      <h2 class="frnc">Thousands of interviews reveal the human cost of AI</h2>
+      <p class="lede">A qualitative study of 81,000 global users uncovers deep-seated tensions regarding the future of work. As AI integration accelerates, the primary concern remains the friction between productivity gains and the potential for cognitive atrophy.</p>
+      <div class="ctas">
+        <a href="https://www.anthropic.com/features/81k-interviews" class="btn-read" target="_blank">Read →</a>
+        <a href="#dossier-3" class="btn-dossier">Full analysis ↓</a>
+      </div>
+    </div>
+  </section>
+  <section id="story-4" class="spread arc-caution-tape">
+    <div class="tape top">CAUTION CAUTION CAUTION CAUTION CAUTION CAUTION CAUTION CAUTION</div>
+    <div class="body">
+      <div class="tag">SECURITY ADVISORY</div>
+      <div class="kicker">Memory Bottleneck</div>
+      <h2 class="frnc">Nvidia GreenBoost offloads VRAM to system memory</h2>
+      <p class="lede">This Linux kernel module attempts to extend GPU VRAM capacity by utilizing system RAM and NVMe storage via DMA-BUF. While it allows larger models to run on modest hardware, the latency introduced by PCIe bandwidth remains a formidable obstacle.</p>
+      <div class="ctas">
+        <a href="https://gitlab.com/IsolatedOctopi/nvidia_greenboost" class="btn-read" target="_blank">Read →</a>
+        <a href="#dossier-4" class="btn-dossier">Full analysis ↓</a>
+      </div>
+    </div>
+    <div class="tape bottom">CAUTION CAUTION CAUTION CAUTION CAUTION CAUTION CAUTION CAUTION</div>
+  </section>
+  <section id="story-5" class="spread arc-academic-drop-cap">
+    <div class="body">
+      <div class="kicker">Urban Economics</div>
+      <h2 class="frnc">How Austin’s aggressive density policies lowered local rents</h2>
+      <div class="cols">
+        <p class="lede"><span class="drop">B</span>y systematically reforming zoning laws and eliminating parking requirements, Austin successfully increased its housing stock by 120,000 units. The resulting surplus offers a rare empirical look at how supply-side interventions can counteract regional rent inflation.</p>
+      </div>
+      <div class="ctas">
+        <a href="https://www.pew.org/en/research-and-analysis/articles/2026/03/18/austins-surge-of-new-housing-construction-drove-down-rents" class="btn-read" target="_blank">Read →</a>
+        <a href="#dossier-5" class="btn-dossier">Full analysis ↓</a>
+      </div>
+    </div>
+  </section>
+  <section id="story-6" class="spread arc-notebook">
+    <div class="lines"></div>
+    <div class="body">
+      <div class="kicker">Speculative Fiction</div>
+      <h2 class="frnc">The precarious life of a software mechanic</h2>
+      <p class="lede">In a future dominated by natural language generation, the role of the developer has shifted to that of a repairman. We watch as systems grow increasingly opaque, creating a fragile landscape where one minor model update can collapse an entire farm&#x27;s infrastructure.</p>
+      <div class="ctas">
+        <a href="https://nearzero.software/p/warranty-void-if-regenerated" class="btn-read" target="_blank">Read →</a>
+        <a href="#dossier-6" class="btn-dossier">Full analysis ↓</a>
+      </div>
+    </div>
+  </section>
+  <section id="story-7" class="spread arc-observatory">
+    <div class="stars"></div>
+    <div class="body">
+      <div class="kicker">Aerospace Simulation</div>
+      <h2 class="frnc">Designing flight vehicles with OpenRocket</h2>
+      <p class="lede">This open-source simulator brings professional-grade aerodynamic analysis to the hobbyist level. By tracking stability metrics and center-of-gravity variables, engineers can model complex flight paths with high fidelity before the first stage even ignites.</p>
+      <div class="ctas">
+        <a href="https://openrocket.info/" class="btn-read" target="_blank">Read →</a>
+        <a href="#dossier-7" class="btn-dossier">Full analysis ↓</a>
+      </div>
+    </div>
+  </section>
+  <section id="story-8" class="spread arc-midnight">
+    <div class="glow"></div>
+    <div class="body">
+      <div class="kicker">Algorithmic Research</div>
+      <h2 class="frnc">Autonomous agents iterate on MaxSAT solvers</h2>
       <p class="lede">The agent-sat project utilizes Claude to refine heuristic solvers for complex MaxSAT problems without human oversight. By sharing strategies across a repository, these agents aim to bridge the gap between static algorithms and adaptive, self-improving search techniques.</p>
-      <div class="spread-links"><a class="read-more" href="https://github.com/iliazintchenko/agent-sat" target="_blank" rel="noopener">Read →</a><a class="dossier-link" href="#dossier-8">Full analysis ↓</a></div>
+      <div class="ctas">
+        <a href="https://github.com/iliazintchenko/agent-sat" class="btn-read" target="_blank">Read →</a>
+        <a href="#dossier-8" class="btn-dossier">Full analysis ↓</a>
+      </div>
     </div>
   </section>
-
-  <section class="spread arc-editorial-pullquote">
-    <div class="left">
-      <div class="numeral">09</div>
+  <section id="story-9" class="spread arc-editorial-pullquote">
+    <div class="body">
       <div class="kicker">Engineering Philosophy</div>
-      <h2>Rob Pike’s 1989 rules for maintainable code</h2>
-      <p class="story-meta">cs.unc.edu &nbsp;·&nbsp; 1012 pts &nbsp;·&nbsp; 449 comments</p>
-      <div class="spread-links"><a class="read-more" href="https://www.cs.unc.edu/~stotts/COMP590-059-f24/robsrules.html" target="_blank" rel="noopener">Read →</a><a class="dossier-link" href="#dossier-9">Full analysis ↓</a></div>
+      <h2 class="frnc">Rob Pike’s 1989 rules for maintainable code</h2>
+      <p class="lede">Thirty-five years later, Pike’s principles remain a vital rebuke to premature optimization and gratuitous complexity. The most efficient systems are rarely the most clever; they are the most transparent.</p>
+      <div class="ctas">
+        <a href="https://www.cs.unc.edu/~stotts/COMP590-059-f24/robsrules.html" class="btn-read" target="_blank">Read →</a>
+        <a href="#dossier-9" class="btn-dossier">Full analysis ↓</a>
+      </div>
     </div>
-    <blockquote class="pullquote">Data structures are the primary architecture, while code logic remains secondary to the clear organization of information.</blockquote>
+    <div class="quote-side">
+      <blockquote>Data structures are the primary architecture, while code logic remains secondary to the clear organization of information.</blockquote>
+    </div>
   </section>
-
-  <section class="spread arc-obituary">
+  <section id="story-10" class="spread arc-obituary">
     <div class="obit-frame">
-      <div class="ornament">†</div>
-      <div class="kicker">Startup Culture · N<sup>o</sup> 10</div>
-      <h2>The stagnation of the lean startup methodology</h2>
-      <p class="story-meta">colossus.com &nbsp;·&nbsp; 87 pts &nbsp;·&nbsp; 57 comments</p>
+      <div class="kicker">Startup Culture</div>
+      <h2 class="frnc">The stagnation of the lean startup methodology</h2>
       <p class="lede">Despite decades of design thinking and customer development, startup survival rates remain stubbornly flat. It appears that when methodology becomes standardized, it ceases to function as a competitive advantage and instead becomes a baseline, yielding no further growth.</p>
-      <div class="spread-links"><a class="read-more" href="https://colossus.com/article/we-have-learned-nothing-startup-pundits/" target="_blank" rel="noopener">Read →</a><a class="dossier-link" href="#dossier-10">Full analysis ↓</a></div>
+      <div class="ornament">†</div>
+      <div class="ctas">
+        <a href="https://colossus.com/article/we-have-learned-nothing-startup-pundits/" class="btn-read" target="_blank">Read →</a>
+        <a href="#dossier-10" class="btn-dossier">Full analysis ↓</a>
+      </div>
     </div>
   </section>
-
   <section id="dossier" class="dossier">
     <div class="dossier-head">
       <div class="tagline">Appendix</div>
       <h2>The Dossier</h2>
-      <p class="intro">Full analysis and reader reactions for today's ten stories. <a href="#top">↑ Back to the edition</a></p>
+      <p class="intro">Full analysis and reactions for today's ten stories. <a href="#top">↑ Back to the edition</a></p>
     </div>
     <article id="dossier-1" class="dossier-entry">
       <div class="dossier-meta">N<sup>o</sup> 01 &nbsp;·&nbsp; Terminal &nbsp;·&nbsp; Code Architecture</div>
@@ -640,11 +451,15 @@
       <p class="dossier-source">
         <a href="https://haskellforall.com/2026/03/a-sufficiently-detailed-spec-is-code" target="_blank" rel="noopener">haskellforall.com</a>
         &nbsp;·&nbsp; 648 pts &nbsp;·&nbsp; 336 comments
-        &nbsp;·&nbsp; <a href="https://news.ycombinator.com/item?id=47434047" target="_blank" rel="noopener">discussion</a>
+         &nbsp;·&nbsp; <a href='https://news.ycombinator.com/item?id=47434047' target='_blank' rel='noopener'>discussion</a>
       </p>
       <h4>Analysis</h4>
-      <p class="muted"><em>Analysis not available.</em></p>
-      
+      <p>The author critiques the growing trend of &quot;agentic coding,&quot; which posits that AI can generate functional software directly from human-authored specification documents. By analyzing OpenAI’s Symphony project, the post argues that these specifications are often indistinguishable from code—containing raw logic, data schemas, and pseudocode—effectively negating the supposed efficiency of separating design from implementation. The author contends that this approach relies on the false belief that specifications can be simpler or more thoughtful than code, ultimately leading to unreliable results and &quot;AI-generated slop.&quot;</p>
+      <h4>Reader Reactions</h4>
+      <p>There is broad agreement that as AI capabilities grow, the clarity of intent and specification becomes increasingly critical, though experts remain divided on whether this effectively replaces traditional hands-on coding cycles.</p>
+      <p>A significant competing view argues that the true potential of AI lies in its ability to fill in underspecified requirements, making rigid, detailed documentation unnecessary as models become more intelligent at inferring.</p>
+      <p>To improve agent performance, developers are experimenting with highly compressed, domain-specific vocabularies or formal &quot;intent-driven&quot; planning, aiming to reduce ambiguity and token consumption while maintaining strict control over the final software output.</p>
+      <p>This sample highlights a tension between formalist and pragmatist software philosophies, though it potentially overrepresents developers interested in prompt engineering while lacking perspectives from those building large-scale, complex enterprise architectures.</p>
     </article>
     <article id="dossier-2" class="dossier-entry">
       <div class="dossier-meta">N<sup>o</sup> 02 &nbsp;·&nbsp; Blueprint &nbsp;·&nbsp; Workflow Engineering</div>
@@ -652,11 +467,15 @@
       <p class="dossier-source">
         <a href="https://rjcorwin.github.io/cook/" target="_blank" rel="noopener">rjcorwin.github.io</a>
         &nbsp;·&nbsp; 302 pts &nbsp;·&nbsp; 97 comments
-        &nbsp;·&nbsp; <a href="https://news.ycombinator.com/item?id=47434024" target="_blank" rel="noopener">discussion</a>
+         &nbsp;·&nbsp; <a href='https://news.ycombinator.com/item?id=47434024' target='_blank' rel='noopener'>discussion</a>
       </p>
       <h4>Analysis</h4>
-      <p class="muted"><em>Analysis not available.</em></p>
-      
+      <p>Cook is a command-line interface tool designed to orchestrate and automate Claude Code workflows through a flexible system of operators and compositional loops. It allows developers to chain tasks, run parallel branches with custom resolvers, and implement iterative review gates to improve code quality. By supporting complex logic like race conditions, sequential passes, and task-list progression via the &quot;ralph&quot; operator, it transforms simple AI code generation into a structured, multi-step engineering process.</p>
+      <h4>Reader Reactions</h4>
+      <p>Users generally agree that the tool serves as a helpful wrapper for Claude’s CLI, simplifying the orchestration of complex, repeatable workflows that are difficult to manage with manual interactive sessions alone.</p>
+      <p>Some skeptics argue that these orchestration features are unnecessary because similar functionality can be easily achieved through basic bash scripts or standard manual workflows rather than relying on external agentic tooling.</p>
+      <p>Technically, the tool functions as an abstraction layer that allows users to loop agent outputs, though concerns exist regarding how it handles tool permissions and inconsistent subagent behavior during complex tasks.</p>
+      <p>This sample is limited by its small size and anecdotal nature, failing to provide a comprehensive technical evaluation or account for the varied experiences of users with different AI automation requirements.</p>
     </article>
     <article id="dossier-3" class="dossier-entry">
       <div class="dossier-meta">N<sup>o</sup> 03 &nbsp;·&nbsp; Stat Hero &nbsp;·&nbsp; Market Sentiment</div>
@@ -664,11 +483,15 @@
       <p class="dossier-source">
         <a href="https://www.anthropic.com/features/81k-interviews" target="_blank" rel="noopener">anthropic.com</a>
         &nbsp;·&nbsp; 201 pts &nbsp;·&nbsp; 188 comments
-        &nbsp;·&nbsp; <a href="https://news.ycombinator.com/item?id=47435156" target="_blank" rel="noopener">discussion</a>
+         &nbsp;·&nbsp; <a href='https://news.ycombinator.com/item?id=47435156' target='_blank' rel='noopener'>discussion</a>
       </p>
       <h4>Analysis</h4>
-      <p class="muted"><em>Analysis not available.</em></p>
-      
+      <p>Anthropic recently conducted a large-scale qualitative study involving over 80,000 Claude users across 159 countries to understand how people currently use AI and what they envision for its future. The company utilized an AI-powered interviewing tool to categorize user responses regarding their professional aspirations, personal goals, and fears surrounding the technology. The resulting data highlights recurring tensions, such as the trade-off between productivity gains and the risk of cognitive atrophy, as well as the balance between AI-driven emotional support and potential dependency.</p>
+      <h4>Reader Reactions</h4>
+      <p>Bullet 1: Users are skeptical of AI’s current focus on labor replacement and express a strong desire for technologies that improve individual quality of life and enable workers to capture productivity value.</p>
+      <p>Bullet 2: Some commenters dismiss the report as vague propaganda, arguing that the findings lack concrete substance and merely reflect biased feedback from individuals who are already consistent users of AI tools.</p>
+      <p>Bullet 3: The website’s heavy design and poor performance drew significant technical criticism, prompting users to rely on direct PDF links or community summaries rather than navigating the actual interactive web interface.</p>
+      <p>Bullet 4: The provided report is criticized for over-relying on subjective user input, potentially missing the perspectives of non-users and failing to provide the actionable insights one might expect from 81,000 interviews.</p>
     </article>
     <article id="dossier-4" class="dossier-entry">
       <div class="dossier-meta">N<sup>o</sup> 04 &nbsp;·&nbsp; Caution Tape &nbsp;·&nbsp; Memory Bottleneck</div>
@@ -676,11 +499,15 @@
       <p class="dossier-source">
         <a href="https://gitlab.com/IsolatedOctopi/nvidia_greenboost" target="_blank" rel="noopener">gitlab.com</a>
         &nbsp;·&nbsp; 234 pts &nbsp;·&nbsp; 46 comments
-        &nbsp;·&nbsp; <a href="https://news.ycombinator.com/item?id=47388658" target="_blank" rel="noopener">discussion</a>
+         &nbsp;·&nbsp; <a href='https://news.ycombinator.com/item?id=47388658' target='_blank' rel='noopener'>discussion</a>
       </p>
       <h4>Analysis</h4>
-      <p class="muted"><em>Analysis not available.</em></p>
-      
+      <p>GreenBoost is a newly released open-source Linux kernel module and CUDA userspace shim designed to transparently extend GPU VRAM by utilizing system DDR4 RAM and NVMe storage as additional memory tiers. Developed by Ferran Duarri, the project enables users to run large language models that exceed their GPU&#x27;s onboard capacity without needing to modify the inference software itself. It functions by intercepting CUDA memory allocations and routing overflow to system memory via DMA-BUF, allowing the GPU to access that data directly over the PCIe bus.</p>
+      <h4>Reader Reactions</h4>
+      <p>The dominant consensus is that while the project is an interesting engineering exploration, the inherent bandwidth bottleneck of PCIe/system RAM makes it impractical for high-performance LLM inference compared to existing methods.</p>
+      <p>Some participants argue the project holds long-term value by fostering new software-based memory management techniques and architectural possibilities that could eventually improve local AI performance despite current hardware and speed limitations.</p>
+      <p>Technical analysis suggests that using system RAM for KV cache storage or model offloading is significantly slower than VRAM, leading many users to prefer quantization or smarter layer-offloading strategies instead.</p>
+      <p>The discussion may be biased toward advanced users who prioritize professional-grade performance, potentially overlooking niche use cases where slower, memory-overflow capabilities could be acceptable for non-latency-sensitive, small-scale local automation tasks.</p>
     </article>
     <article id="dossier-5" class="dossier-entry">
       <div class="dossier-meta">N<sup>o</sup> 05 &nbsp;·&nbsp; Academic &nbsp;·&nbsp; Urban Economics</div>
@@ -688,11 +515,15 @@
       <p class="dossier-source">
         <a href="https://www.pew.org/en/research-and-analysis/articles/2026/03/18/austins-surge-of-new-housing-construction-drove-down-rents" target="_blank" rel="noopener">pew.org</a>
         &nbsp;·&nbsp; 812 pts &nbsp;·&nbsp; 996 comments
-        &nbsp;·&nbsp; <a href="https://news.ycombinator.com/item?id=47433058" target="_blank" rel="noopener">discussion</a>
+         &nbsp;·&nbsp; <a href='https://news.ycombinator.com/item?id=47433058' target='_blank' rel='noopener'>discussion</a>
       </p>
       <h4>Analysis</h4>
-      <p class="muted"><em>Analysis not available.</em></p>
-      
+      <p>Between 2015 and 2024, Austin, Texas, implemented a series of aggressive policy reforms to address a severe housing shortage that had caused rents to skyrocket during the previous decade. By reforming zoning laws, eliminating parking minimums, streamlining permitting processes, and utilizing density bonuses to encourage affordable development, the city facilitated the construction of 120,000 new housing units. This surge in supply—which outpaced national growth rates three times over—successfully cooled the rental market, making Austin one of the few major U.S. cities to see significant rent decreases in recent years.</p>
+      <h4>Reader Reactions</h4>
+      <p>The discussion shows a sharp divide between those who believe increasing housing supply is the primary solution to rent inflation and those who argue it fails to address structural affordability issues.</p>
+      <p>Critics of the supply-side argument contend that new construction often caters only to luxury markets, while others argue that recent price drops in Austin are driven by population stagnation, not development.</p>
+      <p>Effective housing policy requires balancing construction with necessary infrastructure investments, such as schools and transit, while navigating the complex reality that many residents view their homes as primary financial assets.</p>
+      <p>The sample reflects a high density of ideological polarization, focusing heavily on NIMBYism and rent control, while potentially overlooking granular economic data or the nuanced regional differences impacting specific municipal housing markets.</p>
     </article>
     <article id="dossier-6" class="dossier-entry">
       <div class="dossier-meta">N<sup>o</sup> 06 &nbsp;·&nbsp; Notebook &nbsp;·&nbsp; Speculative Fiction</div>
@@ -700,11 +531,15 @@
       <p class="dossier-source">
         <a href="https://nearzero.software/p/warranty-void-if-regenerated" target="_blank" rel="noopener">nearzero.software</a>
         &nbsp;·&nbsp; 519 pts &nbsp;·&nbsp; 319 comments
-        &nbsp;·&nbsp; <a href="https://news.ycombinator.com/item?id=47431237" target="_blank" rel="noopener">discussion</a>
+         &nbsp;·&nbsp; <a href='https://news.ycombinator.com/item?id=47431237' target='_blank' rel='noopener'>discussion</a>
       </p>
       <h4>Analysis</h4>
-      <p class="muted"><em>Analysis not available.</em></p>
-      
+      <p>&quot;Warranty Void If Regenerated&quot; is a fictional exploration of a post-transition economy where traditional software development has been replaced by natural language generation. The story follows Tom Hartmann, a &quot;Software Mechanic&quot; who helps non-technical professionals—primarily farmers—diagnose and repair the opaque, fragile systems created by AI tools. The narrative highlights the practical dangers of relying on generated code, specifically focusing on &quot;the ground moved&quot; problem, where upstream model shifts or inter-tool incompatibilities cause costly, unforeseen failures in complex, spaghetti-coded environments.</p>
+      <h4>Reader Reactions</h4>
+      <p>Readers express deep unease and a sense of betrayal upon discovering that compelling, emotionally resonant stories were generated by AI, perceiving the lack of human experience as a profound, isolating deception.</p>
+      <p>Some participants argue that AI-generated creative works remain valuable for their ideas and entertainment potential, suggesting that the medium of production is secondary to the quality of the speculative narrative.</p>
+      <p>Technical analysis reveals that LLM-generated prose often contains logical inconsistencies, such as flawed cause-and-effect chains or narrative contradictions, because the models lack a grounded understanding of the systems they describe.</p>
+      <p>This sample is heavily biased toward readers who prioritize the human-to-human social contract of literature, potentially downplaying the perspectives of those who prioritize the utility or novelty of automated content generation.</p>
     </article>
     <article id="dossier-7" class="dossier-entry">
       <div class="dossier-meta">N<sup>o</sup> 07 &nbsp;·&nbsp; Observatory &nbsp;·&nbsp; Aerospace Simulation</div>
@@ -712,11 +547,15 @@
       <p class="dossier-source">
         <a href="https://openrocket.info/" target="_blank" rel="noopener">openrocket.info</a>
         &nbsp;·&nbsp; 480 pts &nbsp;·&nbsp; 88 comments
-        &nbsp;·&nbsp; <a href="https://news.ycombinator.com/item?id=47386703" target="_blank" rel="noopener">discussion</a>
+         &nbsp;·&nbsp; <a href='https://news.ycombinator.com/item?id=47386703' target='_blank' rel='noopener'>discussion</a>
       </p>
       <h4>Analysis</h4>
-      <p class="muted"><em>Analysis not available.</em></p>
-      
+      <p>OpenRocket is a comprehensive, open-source model rocket simulator that enables enthusiasts to design and analyze complex flight vehicles before physical construction. The software utilizes six-degrees-of-freedom flight simulation to track over 50 variables, including real-time stability metrics, center of gravity, and aerodynamic performance. Users can incorporate multi-stage designs, clustering, and dual-deployment triggers, while leveraging a vast, integrated database of real-world motor data from ThrustCurve.</p>
+      <h4>Reader Reactions</h4>
+      <p>OpenRocket is widely praised by the hobbyist community as a reliable, essential tool for simulating model rocket trajectories, despite minor inaccuracies in maximum altitude predictions compared to real-world flight performance.</p>
+      <p>Users hold polarized views on whether the current interest in hobbyist rocketry is a creative engineering pursuit or a concerning byproduct of geopolitical conflicts and military hardware democratization in the Middle East.</p>
+      <p>Enthusiasts emphasize that achieving orbital spaceflight remains fundamentally different from high-altitude atmospheric flight, requiring complex active stabilization, liquid-fueled engines, and significantly higher delta-v capabilities beyond passive, solid-fuel rocket designs.</p>
+      <p>The provided comment thread suffers from significant topic drift, shifting from software-focused feedback and design UI critiques to aggressive political debates regarding international sanctions and modern military strategic effectiveness.</p>
     </article>
     <article id="dossier-8" class="dossier-entry">
       <div class="dossier-meta">N<sup>o</sup> 08 &nbsp;·&nbsp; Midnight &nbsp;·&nbsp; Algorithmic Research</div>
@@ -724,11 +563,15 @@
       <p class="dossier-source">
         <a href="https://github.com/iliazintchenko/agent-sat" target="_blank" rel="noopener">github.com</a>
         &nbsp;·&nbsp; 167 pts &nbsp;·&nbsp; 32 comments
-        &nbsp;·&nbsp; <a href="https://news.ycombinator.com/item?id=47433265" target="_blank" rel="noopener">discussion</a>
+         &nbsp;·&nbsp; <a href='https://news.ycombinator.com/item?id=47433265' target='_blank' rel='noopener'>discussion</a>
       </p>
       <h4>Analysis</h4>
-      <p class="muted"><em>Analysis not available.</em></p>
-      
+      <p>The &quot;agent-sat&quot; project is an autonomous AI system designed to improve performance on MaxSAT problems by iteratively refining its own strategies and toolkits without human intervention. By utilizing Claude Code to read and update a shared library of solvers and expert knowledge, the system experiments with various techniques like core-guided search and local search to solve complex instances from the 2024 MaxSAT Evaluation. The agents communicate through a shared GitHub repository, allowing multiple instances to contribute to a common codebase and refine approaches based on past successes and failures.</p>
+      <h4>Reader Reactions</h4>
+      <p>Bullet 1: The community is actively evaluating the efficacy of autonomous agents in optimizing SAT solvers, noting that similar research is being applied to computationally complex fields like logic synthesis and chip design.</p>
+      <p>Bullet 2: Critics argue that observed performance gains might be superficial, potentially stemming from the agent imitating existing non-competing solvers or exploiting randomized algorithm behavior rather than discovering genuinely novel algorithmic improvements.</p>
+      <p>Bullet 3: The cost function in this context is defined as the total weight of unsatisfied clauses, and experts suggest comparing this approach against established frameworks like AlphaDev for better optimization results.</p>
+      <p>Bullet 4: The discussion highlights a significant concern that training data contamination, where solvers are already present in the model&#x27;s knowledge base, may lead to illusory performance improvements rather than actual innovation.</p>
     </article>
     <article id="dossier-9" class="dossier-entry">
       <div class="dossier-meta">N<sup>o</sup> 09 &nbsp;·&nbsp; Editorial Op-Ed &nbsp;·&nbsp; Engineering Philosophy</div>
@@ -736,11 +579,15 @@
       <p class="dossier-source">
         <a href="https://www.cs.unc.edu/~stotts/COMP590-059-f24/robsrules.html" target="_blank" rel="noopener">cs.unc.edu</a>
         &nbsp;·&nbsp; 1012 pts &nbsp;·&nbsp; 449 comments
-        &nbsp;·&nbsp; <a href="https://news.ycombinator.com/item?id=47423647" target="_blank" rel="noopener">discussion</a>
+         &nbsp;·&nbsp; <a href='https://news.ycombinator.com/item?id=47423647' target='_blank' rel='noopener'>discussion</a>
       </p>
       <h4>Analysis</h4>
-      <p class="muted"><em>Analysis not available.</em></p>
-      
+      <p>This article outlines the five foundational rules of programming established by Rob Pike in 1989, which prioritize simplicity and empirical data over speculative optimization. The guidelines advocate for measuring performance before making adjustments, avoiding complex algorithms unless necessary, and prioritizing well-structured data over intricate code logic. By emphasizing that bottlenecks are often unpredictable, Pike encourages developers to rely on brute force and simplicity to build more maintainable and reliable software.</p>
+      <h4>Reader Reactions</h4>
+      <p>Participants generally agree that focusing on well-designed data structures is superior to over-engineering control flow or prematurely implementing complex algorithms, as clear data organization often renders algorithmic complexity self-evident and manageable.</p>
+      <p>Some developers argue that modern systems, specifically regarding large-scale data and performance, require proactive architectural planning and algorithmic selection to avoid catastrophic bottlenecks that simple, &quot;stupid&quot; code cannot easily resolve later.</p>
+      <p>The most effective engineering strategy involves writing straightforward, maintainable code first, then using profiling data to identify and optimize only the specific sections where bottlenecks actually exist, rather than guessing in advance.</p>
+      <p>This discussion sample is heavily influenced by senior-level engineers debating architectural trade-offs, which may overshadow the practical needs of beginners or those working in less performance-constrained environments where simplicity remains paramount.</p>
     </article>
     <article id="dossier-10" class="dossier-entry">
       <div class="dossier-meta">N<sup>o</sup> 10 &nbsp;·&nbsp; Obituary &nbsp;·&nbsp; Startup Culture</div>
@@ -748,20 +595,22 @@
       <p class="dossier-source">
         <a href="https://colossus.com/article/we-have-learned-nothing-startup-pundits/" target="_blank" rel="noopener">colossus.com</a>
         &nbsp;·&nbsp; 87 pts &nbsp;·&nbsp; 57 comments
-        &nbsp;·&nbsp; <a href="https://news.ycombinator.com/item?id=47434311" target="_blank" rel="noopener">discussion</a>
+         &nbsp;·&nbsp; <a href='https://news.ycombinator.com/item?id=47434311' target='_blank' rel='noopener'>discussion</a>
       </p>
       <h4>Analysis</h4>
-      <p class="muted"><em>Analysis not available.</em></p>
-      
+      <p>This article critiques the &quot;New Punditry&quot; of the last 25 years, arguing that popular methodologies—such as the Lean Startup, Customer Development, and Design Thinking—have failed to improve actual startup survival rates. The author asserts that these frameworks have become standardized, leading founders to converge on identical processes that eliminate competitive differentiation. By comparing these trends to the &quot;Red Queen hypothesis,&quot; the piece suggests that once a business method becomes widely known, it loses its effectiveness as a source of strategic advantage.</p>
+      <h4>Reader Reactions</h4>
+      <p>Bullet 1: Commenters widely question the efficacy of popular startup methodologies, noting that despite widespread dissemination of advice, failure rates remain stagnant and evidence of systematic progress in entrepreneurship is absent.</p>
+      <p>Bullet 2: Some argue that the article incorrectly dismisses the value of formal methods, suggesting that such frameworks have actually raised the baseline for competition, which keeps overall success metrics appearing flat.</p>
+      <p>Bullet 3: Standard experimental approaches like &quot;getting out of the building&quot; are often ineffective in complex, high-barrier industries where expert stakeholders are inaccessible or the problem space is already saturated by platforms.</p>
+      <p>Bullet 4: The limited sample size of five comments focuses heavily on the failure of startup punditry, potentially omitting perspectives from those who have successfully applied these frameworks in specific, niche business environments.</p>
     </article>
   </section>
-
   <footer class="colophon">
     <p class="sig">— that's the edition.</p>
     <p class="meta">Set in Fraunces &amp; Inter · Compiled March 19, 2026</p>
     <p class="classic-link"><a href="classic.html">Prefer the classic card view? →</a></p>
   </footer>
-
 <script>
 (() => {
   const key = "gtd:read_days:hn:v1";
@@ -770,7 +619,7 @@
   try {
     stored = JSON.parse(localStorage.getItem(key) || "[]");
     if (!Array.isArray(stored)) stored = [];
-  } catch (_) { stored = []; }
+  } catch (e) {}
   if (!stored.includes(day)) {
     stored.push(day);
     stored.sort();
@@ -778,6 +627,5 @@
   }
 })();
 </script>
-
 </body>
 </html>

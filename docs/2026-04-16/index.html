@@ -1,415 +1,597 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>GitHub Trending - April 16, 2026</title>
-    <link rel="stylesheet" href="../style.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Open Source Edition — April 16, 2026</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,100..900;1,9..144,100..900&family=Inter:wght@100..900&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+  <style>
+  :root {
+    --bg-light: #f5f1e8; --bg-dark: #121212;
+    --text-dark: #121212; --text-light: #f5f1e8;
+    --accent-red: #d32f2f; --accent-blue: #1976d2;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; padding: 0;
+    background: var(--bg-light); color: var(--text-dark);
+    font-family: 'Inter', sans-serif;
+    -webkit-font-smoothing: antialiased;
+  }
+  .frnc { font-family: 'Fraunces', serif; font-variant-classic-ligatures: common-ligatures; }
+  
+  /* ───── LAYOUT ───── */
+  .spread {
+    position: relative; min-height: 100vh; width: 100%;
+    display: flex; align-items: center; justify-content: center;
+    padding: 10vh 8vw; overflow: hidden;
+    scroll-snap-align: start;
+  }
+  .body { position: relative; z-index: 10; width: 100%; max-width: 1200px; }
+  .kicker { font-weight: 700; font-size: 1.1rem; letter-spacing: 0.4em; text-transform: uppercase; margin-bottom: 2rem; opacity: 0.8; }
+  h2 { font-size: clamp(3rem, 8vw, 6.5rem); line-height: 0.95; font-weight: 400; margin: 0 0 3rem; letter-spacing: -0.03em; }
+  .lede { font-size: clamp(1.4rem, 2.5vw, 2.1rem); line-height: 1.35; max-width: 800px; margin: 0 0 4rem; font-weight: 450; }
+  
+  .ctas { display: flex; gap: 2rem; align-items: center; }
+  .ctas a {
+    text-decoration: none; font-weight: 600; font-size: 1.1rem; letter-spacing: 0.1em; text-transform: uppercase;
+    padding: 1.2rem 2.4rem; transition: all 0.2s;
+  }
+  .btn-read { background: var(--text-dark); color: var(--bg-light); }
+  .btn-dossier { border-bottom: 2px solid currentColor; padding: 0.5rem 0 !important; }
+  
+  /* ───── ARCHETYPE CSS ───── */
+  
+  /* Stat Hero */
+  .arc-stat-hero { background: #e8e4da; }
+  .arc-stat-hero .numeral {
+    position: absolute; right: 0; top: 10vh; font-family: 'Fraunces', serif;
+    font-size: clamp(20rem, 50vw, 45rem); font-weight: 900; line-height: 0.8;
+    color: #121212; opacity: 0.05; pointer-events: none;
+  }
+
+  /* Midnight */
+  .arc-midnight { background: #0a0a0c; color: #fff; }
+  .arc-midnight .glow {
+    position: absolute; top: 30%; left: 40%; width: 40vw; height: 40vw;
+    background: radial-gradient(circle, rgba(110,64,255,0.15) 0%, transparent 70%);
+    filter: blur(60px); pointer-events: none;
+  }
+  .arc-midnight .btn-read { background: #fff; color: #000; }
+
+  /* Alert Stamp */
+  .arc-alert-stamp { background: #f9ebeb; color: #7a1e14; }
+  .arc-alert-stamp .stamp {
+    position: absolute; top: 15vh; right: 10vw; border: 6px solid #d32f2f;
+    padding: 1rem 2rem; font-weight: 900; font-size: 3rem; transform: rotate(12deg);
+    opacity: 0.2; pointer-events: none;
+  }
+  .arc-alert-stamp .btn-read { background: #d32f2f; color: #fff; }
+
+  /* Academic */
+  .arc-academic-drop-cap { background: #fdfaf3; color: #2c2925; }
+  .arc-academic-drop-cap h2 { font-size: clamp(2.5rem, 5vw, 4rem); border-bottom: 1px solid #ddd; padding-bottom: 2rem; margin-bottom: 4rem; }
+  .arc-academic-drop-cap .cols { columns: 2; column-gap: 4rem; }
+  .arc-academic-drop-cap .drop {
+    float: left; font-family: 'Fraunces', serif; font-size: 6.5rem; line-height: 0.75;
+    margin: 0.8rem 1rem 0 0; font-weight: 600; color: #121212;
+  }
+  .arc-academic-drop-cap .btn-read { background: #2c2925; color: #fff; }
+
+  /* Terminal */
+  .arc-terminal { background: #000; color: #20c20e; font-family: 'JetBrains Mono', monospace; }
+  .arc-terminal .window { border: 1px solid #20c20e; padding: 4rem; background: #050505; }
+  .arc-terminal .frnc { font-family: 'JetBrains Mono', monospace; font-weight: 700; letter-spacing: -0.05em; }
+  .arc-terminal .btn-read { background: #20c20e; color: #000; border-radius: 0; }
+  .arc-terminal .btn-dossier { border-color: #20c20e; }
+
+  /* Editorial Pullquote */
+  .arc-editorial-pullquote { display: grid; grid-template-columns: 1.2fr 1fr; gap: 5vw; background: #1a1a1a; color: #f5f1e8; align-items: stretch; }
+  .arc-editorial-pullquote .quote-side { background: #d4af37; color: #1a1a1a; display: flex; align-items: center; padding: 6vw; position: relative; }
+  .arc-editorial-pullquote blockquote { font-family: 'Fraunces', serif; font-size: 3rem; line-height: 1.1; font-style: italic; font-weight: 400; margin: 0; }
+  .arc-editorial-pullquote blockquote::before { content: '“'; position: absolute; top: 2vw; left: 2vw; font-size: 8rem; opacity: 0.3; }
+  .arc-editorial-pullquote .btn-read { background: #f5f1e8; color: #1a1a1a; }
+
+  /* Caution Tape */
+  .arc-caution-tape { background: #fcd116; color: #000; }
+  .arc-caution-tape .tape {
+    position: absolute; left: -10vw; width: 120vw; background: #000; color: #fcd116;
+    font-weight: 900; font-size: 1.5rem; padding: 1rem; transform: rotate(-3deg); z-index: 5;
+  }
+  .arc-caution-tape .tape.top { top: 5vh; transform: rotate(2deg); }
+  .arc-caution-tape .tape.bottom { bottom: 5vh; transform: rotate(-1.5deg); }
+  .arc-caution-tape .tag { background: #000; color: #fff; padding: 0.5rem 1rem; display: inline-block; font-weight: 800; margin-bottom: 2rem; }
+  .arc-caution-tape .btn-read { background: #000; color: #fcd116; }
+
+  /* Notebook */
+  .arc-notebook { background: #fcfcf4; }
+  .arc-notebook .lines {
+    position: absolute; inset: 0;
+    background: repeating-linear-gradient(transparent, transparent 1.6rem, #e0e0d0 1.6rem, #e0e0d0 1.7rem);
+    opacity: 0.5;
+  }
+  .arc-notebook .btn-read { background: #333; color: #fff; }
+
+  /* Mint Pattern */
+  .arc-mint-pattern { background: #d0f0e4; color: #1b4d3e; }
+  .arc-mint-pattern::before {
+    content: var(--bg-word); position: absolute; inset: 0;
+    font-weight: 900; font-size: 14vw; line-height: 0.7; opacity: 0.04;
+    display: flex; flex-wrap: wrap; word-break: break-all; overflow: hidden;
+  }
+  .arc-mint-pattern .btn-read { background: #1b4d3e; color: #d0f0e4; }
+
+  /* Pastel Playful */
+  .arc-pastel-playful { background: #fbe6e6; color: #8a4b4b; }
+  .arc-pastel-playful .alpha-grid {
+    position: absolute; right: 4vw; top: 10vh; bottom: 10vh; width: 40vw;
+    display: grid; grid-template-columns: repeat(5, 1fr); gap: 1rem;
+    font-weight: 900; font-size: 2rem; opacity: 0.08; pointer-events: none;
+  }
+  .arc-pastel-playful .btn-read { background: #8a4b4b; color: #fbe6e6; }
+
+  /* Product Plate */
+  .arc-product-plate { background: #eee; }
+  .arc-product-plate .plate {
+    background: linear-gradient(145deg, #ffffff, #dcdcdc);
+    padding: 6vw; box-shadow: 20px 20px 60px #cbcbcb, -20px -20px 60px #ffffff;
+    border-radius: 20px;
+  }
+  .arc-product-plate .btn-read { background: #121212; color: #eee; border-radius: 50px; }
+
+  /* Archive */
+  .arc-archive { background: #f4ece1; color: #4e3620; }
+  .arc-archive .mast {
+    position: absolute; top: 4vh; width: 100%; text-align: center;
+    font-family: 'Fraunces', serif; font-weight: 700; font-size: 1.2rem;
+    letter-spacing: 0.5em; opacity: 0.5; border-bottom: 1px double #ccc;
+    padding-bottom: 2vh;
+  }
+  .arc-archive .btn-read { background: #4e3620; color: #f4ece1; }
+
+  /* Obituary */
+  .arc-obituary { background: #fff; color: #000; }
+  .arc-obituary .obit-frame { border: 20px solid #000; padding: 6vw; text-align: center; }
+  .arc-obituary .lede { margin-left: auto; margin-right: auto; }
+  .arc-obituary .ornament { font-size: 4rem; margin: 3rem 0; opacity: 0.2; }
+  .arc-obituary .ctas { justify-content: center; }
+  .arc-obituary .btn-read { background: #000; color: #fff; }
+
+  /* Blueprint */
+  .arc-blueprint { background: #0047ab; color: #fff; }
+  .arc-blueprint .grid {
+    position: absolute; inset: 0; opacity: 0.2;
+    background-image: linear-gradient(#fff 1px, transparent 1px), linear-gradient(90deg, #fff 1px, transparent 1px);
+    background-size: 40px 40px;
+  }
+  .arc-blueprint .btn-read { background: #fff; color: #0047ab; }
+
+  /* Observatory */
+  .arc-observatory { background: #050510; color: #e0e0ff; }
+  .arc-observatory .stars {
+    position: absolute; inset: 0; opacity: 0.4;
+    background: radial-gradient(white, rgba(255,255,255,.2) 2px, transparent 40px);
+    background-size: 100px 100px;
+  }
+  .arc-observatory .btn-read { background: #e0e0ff; color: #050510; border-radius: 100px; }
+
+  /* GH Specific: Agent Foundry */
+  .arc-agent-foundry { background: #f0f4f8; color: #1a365d; }
+  .arc-agent-foundry .blueprint-bg {
+    position: absolute; inset: 0; opacity: 0.1;
+    background-image: radial-gradient(#1a365d 1px, transparent 1px);
+    background-size: 20px 20px;
+  }
+  .arc-agent-foundry .btn-read { background: #1a365d; color: #fff; }
+
+  /* GH Specific: System Core */
+  .arc-system-core { background: #2d3748; color: #edf2f7; }
+  .arc-system-core .concrete {
+    position: absolute; inset: 0; opacity: 0.05;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  }
+  .arc-system-core .frnc { font-family: 'Inter', sans-serif; font-weight: 800; text-transform: uppercase; letter-spacing: -0.05em; }
+  .arc-system-core .btn-read { background: #edf2f7; color: #2d3748; }
+
+  /* GH Specific: UI Lab */
+  .arc-ui-lab { background: #fff; color: #4c51bf; }
+  .arc-ui-lab .lab-gradient {
+    position: absolute; inset: 0; opacity: 0.1;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  }
+  .arc-ui-lab .btn-read { background: #4c51bf; color: #fff; border-radius: 12px; }
+
+  /* GH Specific: Data Pipeline */
+  .arc-data-pipeline { background: #1a202c; color: #a3bffa; }
+  .arc-data-pipeline .pipeline-streams {
+    position: absolute; inset: 0; opacity: 0.15;
+    background: repeating-linear-gradient(45deg, #a3bffa, #a3bffa 2px, transparent 2px, transparent 20px);
+  }
+  .arc-data-pipeline .btn-read { background: #a3bffa; color: #1a202c; }
+
+  /* GH Specific: Model Bench */
+  .arc-model-bench { background: #f7fafc; color: #2d3748; }
+  .arc-model-bench .bench-silver {
+    position: absolute; right: 0; top: 0; width: 40%; height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(0,0,0,0.03));
+  }
+  .arc-model-bench .btn-read { border: 1px solid #2d3748; background: transparent; color: #2d3748; }
+
+  /* GH Specific: Privacy Shield */
+  .arc-privacy-shield { background: #000; color: #00ff41; }
+  .arc-privacy-shield .shield-glitch {
+    position: absolute; inset: 0; opacity: 0.1;
+    background-image: repeating-linear-gradient(0deg, rgba(0,255,65,0.1) 0, rgba(0,255,65,0.1) 1px, transparent 1px, transparent 2px);
+  }
+  .arc-privacy-shield .btn-read { background: #00ff41; color: #000; }
+
+  /* GH Specific: Enterprise Engine */
+  .arc-enterprise-engine { background: #f0f7ff; color: #0056b3; }
+  .arc-enterprise-engine .engine-blue {
+    position: absolute; right: -5vw; bottom: -5vw; width: 30vw; height: 30vw;
+    background: radial-gradient(circle, rgba(0,86,179,0.05) 0%, transparent 70%);
+  }
+  .arc-enterprise-engine .btn-read { background: #0056b3; color: #fff; }
+
+  /* GH Specific: Terminal Utility */
+  .arc-terminal-utility { background: #1a1a1a; color: #ffb000; font-family: 'JetBrains Mono', monospace; }
+  .arc-terminal-utility .crt-lines {
+    position: absolute; inset: 0; pointer-events: none;
+    background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.06), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.06));
+    background-size: 100% 2px, 3px 100%;
+  }
+  .arc-terminal-utility .btn-read { background: #ffb000; color: #1a1a1a; }
+
+  /* GH Specific: Experimental Workshop */
+  .arc-experimental-workshop { background: #fffde7; color: #5d4037; }
+  .arc-experimental-workshop .pad-lines {
+    position: absolute; left: 4vw; top: 0; bottom: 0; width: 2px; background: #ff5252; opacity: 0.3;
+  }
+  .arc-experimental-workshop .btn-read { border: 2px dashed #5d4037; background: transparent; color: #5d4037; }
+
+  /* GH Specific: Library Archive */
+  .arc-library-archive { background: #fdfaf3; color: #3e2723; }
+  .arc-library-archive .parchment {
+    position: absolute; inset: 0; opacity: 0.03;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='f'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.02' numOctaves='5'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23f)'/%3E%3C/svg%3E");
+  }
+  .arc-library-archive .btn-read { background: #3e2723; color: #fdfaf3; }
+
+  /* ───── MASTHEAD ───── */
+  .masthead { padding: 4vh 8vw 10vh; text-align: center; border-bottom: 1px solid #ddd; }
+  .masthead-nav { display: flex; justify-content: center; gap: 2rem; margin-bottom: 6vh; font-weight: 600; font-size: 0.9rem; text-transform: uppercase; letter-spacing: 0.2em; }
+  .masthead-nav a { color: inherit; text-decoration: none; opacity: 0.6; }
+  .masthead-nav a:hover { opacity: 1; }
+  .masthead h1 { font-size: clamp(3rem, 10vw, 9rem); font-weight: 400; margin: 0 0 2rem; letter-spacing: -0.04em; }
+  .issue-line { display: flex; justify-content: center; gap: 4rem; font-weight: 700; font-size: 1rem; letter-spacing: 0.3em; text-transform: uppercase; opacity: 0.8; }
+  
+  /* ───── DOSSIER ───── */
+  .dossier { background: #f5f1e8; padding: 10vh 8vw; color: #121212; }
+  .dossier-head { margin-bottom: 8vh; }
+  .dossier-head h2 { font-size: clamp(4rem, 12vw, 12rem); margin-bottom: 2rem; }
+  .tagline { font-weight: 700; font-size: 1.2rem; letter-spacing: 0.5em; text-transform: uppercase; margin-bottom: 1rem; opacity: 0.5; }
+  .intro { font-size: 1.5rem; max-width: 600px; line-height: 1.4; opacity: 0.7; }
+  .intro a { color: inherit; }
+  
+  .dossier-entry { margin-bottom: 12vh; max-width: 900px; }
+  .dossier-meta { font-weight: 700; font-size: 0.9rem; letter-spacing: 0.2em; text-transform: uppercase; margin-bottom: 1.5rem; opacity: 0.5; }
+  .dossier-entry h3 { font-family: 'Fraunces', serif; font-size: clamp(2.5rem, 5vw, 4.5rem); line-height: 1.1; margin: 0 0 1.5rem; font-weight: 400; }
+  .dossier-source { font-size: 1.1rem; font-weight: 500; letter-spacing: 0.05em; margin: 0 0 3rem; opacity: 0.7; }
+  .dossier-source a { color: inherit; text-decoration: underline; }
+  .dossier-entry h4 { font-weight: 700; font-size: 1rem; letter-spacing: 0.3em; text-transform: uppercase; margin: 3rem 0 1.5rem; }
+  .dossier-entry p { font-family: 'Fraunces', serif; font-size: 1.3rem; line-height: 1.6; margin: 0 0 1.5rem; }
+  
+  /* ───── COLOPHON ───── */
+  .colophon { background: #121212; color: #f5f1e8; padding: 8vh 8vw; text-align: center; }
+  .colophon .sig { font-family: 'Fraunces', serif; font-style: italic; font-size: clamp(2rem, 5vw, 4rem); margin-bottom: 2rem; }
+  .colophon .meta { font-weight: 500; font-size: 0.9rem; letter-spacing: 0.3em; text-transform: uppercase; opacity: 0.6; }
+  .classic-link { margin-top: 3rem; font-size: 0.9rem; letter-spacing: 0.2em; text-transform: uppercase; }
+  .classic-link a { color: inherit; text-decoration: underline; }
+
+  @media (max-width: 800px) {
+    .spread { padding: 12vh 6vw; }
+    .issue-line { flex-direction: column; gap: 1rem; align-items: center; }
+    .arc-stat-hero .numeral { font-size: 15rem; top: auto; bottom: 5vh; }
+    .arc-editorial-pullquote { grid-template-columns: 1fr; }
+    .arc-editorial-pullquote .quote-side { padding: 12vw; }
+    .ctas { flex-direction: column; align-items: stretch; gap: 1rem; }
+    .arc-academic-drop-cap .cols { columns: 1; }
+  }
+</style>
 </head>
-<body>
-    <header>
-        <h1>GitHub Trending Digest - April 16, 2026</h1>
-        <nav>
-            <a href="../">&larr; GitHub Calendar</a>
-            <a href="../hn/2026-04-16/">Hacker News</a>
-        </nav>
-    </header>
-    <main>
-
-        <h2 class="section-heading">Today's Daily Trending</h2>
-        <div class="repo-controls">
-            <button id="collapse-seen-btn" type="button">Collapse Repos Not New Today</button>
-            <button id="expand-all-btn" type="button">Expand All</button>
-        </div>
-        <p class="seen-help">Repos marked "Not new today" appeared on one or more previous daily pages.</p>
-        <article>
-            <div class="repos">
-
-            <section class="repo" data-seen-before="1"
-                     data-share-title="forrestchang/andrej-karpathy-skills"
-                     data-share-url="https://github.com/forrestchang/andrej-karpathy-skills">
-                <div class="repo-header-row">
-                    <h3>1. <a href="https://github.com/forrestchang/andrej-karpathy-skills" target="_blank" rel="noopener noreferrer">forrestchang/andrej-karpathy-skills</a> <span class="seen-badge">Not new today</span></h3>
-                    <div class="header-buttons">
-                        <button type="button" class="discuss-btn" aria-label="Discuss with AI" title="Discuss with AI">&#x1F4AC;</button>
-                        <button type="button" class="repo-toggle" aria-expanded="true">Hide details</button>
-                    </div>
-                </div>
-                <div class="repo-body">
-                    <p class="description">A single CLAUDE.md file to improve Claude Code behavior, derived from Andrej Karpathy&#x27;s observations on LLM coding pitfalls.</p>
-                    <p class="meta">
-                        <span class="language">Unknown</span> |
-                        <span class="stars">46,522</span>
-                        | <span class="today">9,646 stars today</span>
-                    </p>
-                    <p class="history">First seen: April 07, 2026 | Streak: 10d</p>
-                    <div class="ai-summary">
-                        <h4>Analysis</h4>
-                        <p>The `forrestchang/andrej-karpathy-skills` repository provides a set of rigorous, principle-based instructions designed to refine the behavior of Claude Code by addressing common AI coding pitfalls. By implementing a `CLAUDE.md` file centered on four key pillars—&quot;Think Before Coding,&quot; &quot;Simplicity First,&quot; &quot;Surgical Changes,&quot; and &quot;Goal-Driven Execution&quot;—the project forces the LLM to verify its assumptions, avoid unnecessary code bloat, and maintain strict focus on user intent. Technically, these guidelines are deployed either as a project-specific configuration file or as an installable Claude Code plugin, ensuring the AI maintains a consistent, high-quality development workflow across various tasks.</p>
+<body id="top">
+  <header class="masthead">
+    <div class="masthead-nav">
+      <a href="../../">Index</a>
+      <a href="../">Calendar</a>
+      <a href="classic.html">Classic view</a>
+    </div>
+    <h1 class="frnc">Ten stories, before your coffee.</h1>
+    <div class="issue-line">
+      <span>Vol. I</span>
+      <span>April 16, 2026</span>
+      <span>GitHub Daily Trending</span>
+    </div>
+  </header>
+  <section id="story-1" class="spread arc-agent-foundry">
+    <div class="blueprint-bg"></div>
+    <div class="body">
+      <div class="kicker">Blueprint</div>
+      <h2 class="frnc">Enforcing Claude’s Workflow via Rigorous Configuration</h2>
+      <p class="lede">To mitigate hallucination and drift, this structural framework implements a mandatory CLAUDE.md directive for your coding agents. By defining four cardinal pillars of execution, the system forces a disciplined, goal-driven interaction model.</p>
+      <div class="ctas">
+        <a href="https://github.com/forrestchang/andrej-karpathy-skills" class="btn-read" target="_blank">Deploy →</a>
+        <a href="#dossier-1" class="btn-dossier">Analysis ↓</a>
+      </div>
+    </div>
+  </section>
+  <section id="story-2" class="spread arc-blueprint">
+    <div class="grid"></div>
+    <div class="body">
+      <div class="kicker">Build Log</div>
+      <h2 class="frnc">Building Persistent Memory Layers for Claude Code</h2>
+      <p class="lede">The ephemeral nature of LLM sessions often leads to repetitive errors and context loss. This project constructs a secondary memory layer using a Bun-managed worker, allowing your agent to recall architecture, bugs, and history with precision.</p>
+      <div class="ctas">
+        <a href="https://github.com/thedotmack/claude-mem" class="btn-read" target="_blank">Read →</a>
+        <a href="#dossier-2" class="btn-dossier">Full analysis ↓</a>
+      </div>
+    </div>
+  </section>
+  <section id="story-3" class="spread arc-experimental-workshop">
+    <div class="pad-lines"></div>
+    <div class="body">
+      <div class="kicker">Prototyping</div>
+      <h2 class="frnc">Developing Self-Evolving Local Agent Loops</h2>
+      <p class="lede">A lean 3,000-line framework that turns your local machine into an adaptive sandbox. It learns from successful task execution, building a personal skill tree that grows more efficient with every iterative command.</p>
+      <div class="ctas">
+        <a href="https://github.com/lsdefine/GenericAgent" class="btn-read" target="_blank">Iterate →</a>
+        <a href="#dossier-3" class="btn-dossier">Analysis ↓</a>
+      </div>
+    </div>
+  </section>
+  <section id="story-4" class="spread arc-ui-lab">
+    <div class="lab-gradient"></div>
+    <div class="body">
+      <div class="kicker">Design Studio</div>
+      <h2 class="frnc">Orchestrating High-Fidelity Voice Synthesis Locally</h2>
+      <p class="lede">Voicebox brings professional-grade audio production to your desktop without the privacy trade-offs of cloud-locked services. Featuring a modern, multi-track interface built on Rust and Tauri, this tool manages complex generation queues with ease.</p>
+      <div class="ctas">
+        <a href="https://github.com/jamiepine/voicebox" class="btn-read" target="_blank">Explore →</a>
+        <a href="#dossier-4" class="btn-dossier">Analysis ↓</a>
+      </div>
+    </div>
+  </section>
+  <section id="story-5" class="spread arc-enterprise-engine">
+    <div class="engine-blue"></div>
+    <div class="body">
+      <div class="kicker">Cloud Infrastructure</div>
+      <h2 class="frnc">Standardizing Agentic Workflows on Vercel</h2>
+      <p class="lede">Reliable automation requires robust sandboxing and persistent state management. This reference architecture separates the interface from the execution environment, ensuring your agents remain stable across long-running development tasks.</p>
+      <div class="ctas">
+        <a href="https://github.com/vercel-labs/open-agents" class="btn-read" target="_blank">Scale →</a>
+        <a href="#dossier-5" class="btn-dossier">Analysis ↓</a>
+      </div>
+    </div>
+  </section>
+  <section id="story-6" class="spread arc-system-core">
+    <div class="concrete"></div>
+    <div class="body">
+      <div class="kicker">Kernel Tools</div>
+      <h2 class="frnc">Google’s High-Performance File Classification Engine</h2>
+      <p class="lede">Precision in data processing requires absolute reliability at the lowest possible latency. Magika identifies hundreds of binary and text formats in five milliseconds, providing an essential safety barrier for any security-conscious infrastructure.</p>
+      <div class="ctas">
+        <a href="https://github.com/google/magika" class="btn-read" target="_blank">Inspect →</a>
+        <a href="#dossier-6" class="btn-dossier">Analysis ↓</a>
+      </div>
+    </div>
+  </section>
+  <section id="story-7" class="spread arc-terminal-utility">
+    <div class="crt-lines"></div>
+    <div class="body">
+      <div class="kicker">CLI Suite</div>
+      <h2 class="frnc">Managing WhatsApp Message Archives From the Terminal</h2>
+      <p class="lede">For those who operate exclusively in the shell, syncing communication history shouldn&#x27;t require a browser. This utility provides a rugged, keyboard-centric interface for querying and exporting your message archives locally.</p>
+      <div class="ctas">
+        <a href="https://github.com/steipete/wacli" class="btn-read" target="_blank">Execute →</a>
+        <a href="#dossier-7" class="btn-dossier">Analysis ↓</a>
+      </div>
+    </div>
+  </section>
+  <section id="story-8" class="spread arc-data-pipeline">
+    <div class="pipeline-streams"></div>
+    <div class="body">
+      <div class="kicker">Knowledge Flow</div>
+      <h2 class="frnc">Grounding Agent Memory in Graph Databases</h2>
+      <p class="lede">Modern AI agents struggle with contextual grounding when relying on vector search alone. Cognee resolves this by mapping multimodal data into a dynamic graph structure, ensuring your models maintain consistent, traceable long-term knowledge.</p>
+      <div class="ctas">
+        <a href="https://github.com/topoteretes/cognee" class="btn-read" target="_blank">Trace →</a>
+        <a href="#dossier-8" class="btn-dossier">Analysis ↓</a>
+      </div>
+    </div>
+  </section>
+  <section id="story-9" class="spread arc-model-bench">
+    <div class="bench-silver"></div>
+    <div class="body">
+      <div class="kicker">Inference Labs</div>
+      <h2 class="frnc">Accelerating LLM Inference Through Block Diffusion</h2>
+      <p class="lede">Drafting multi-token sequences in parallel is the key to breaking current speed bottlenecks. DFlash offers a plug-and-play solution for speculative decoding, drastically reducing latency across the most popular inference frameworks.</p>
+      <div class="ctas">
+        <a href="https://github.com/z-lab/dflash" class="btn-read" target="_blank">Infer →</a>
+        <a href="#dossier-9" class="btn-dossier">Analysis ↓</a>
+      </div>
+    </div>
+  </section>
+  <section id="story-10" class="spread arc-library-archive">
+    <div class="parchment"></div>
+    <div class="body">
+      <div class="kicker">Scholarly Review</div>
+      <h2 class="frnc">Mastering LLM Development Through Academic Tutorials</h2>
+      <p class="lede">A curated, comprehensive guide for those transitioning from theoretical curiosity to practical model engineering. From fine-tuning to advanced safety watermarking, this repository serves as the definitive syllabus for modern language model development.</p>
+      <div class="ctas">
+        <a href="https://github.com/Lordog/dive-into-llms" class="btn-read" target="_blank">Study →</a>
+        <a href="#dossier-10" class="btn-dossier">Analysis ↓</a>
+      </div>
+    </div>
+  </section>
+  <section id="dossier" class="dossier">
+    <div class="dossier-head">
+      <div class="tagline">Appendix</div>
+      <h2>The Dossier</h2>
+      <p class="intro">Full analysis and reactions for today's ten stories. <a href="#top">↑ Back to the edition</a></p>
+    </div>
+    <article id="dossier-1" class="dossier-entry">
+      <div class="dossier-meta">N<sup>o</sup> 01 &nbsp;·&nbsp; Agent Foundry &nbsp;·&nbsp; Blueprint</div>
+      <h3>Untitled</h3>
+      <p class="dossier-source">
+        <a href="https://github.com/forrestchang/andrej-karpathy-skills" target="_blank" rel="noopener">github.com</a>
+        &nbsp;·&nbsp; 46,522 stars &nbsp;·&nbsp; 0 stars today
+        
+      </p>
+      <h4>Analysis</h4>
+      <p>The `forrestchang/andrej-karpathy-skills` repository provides a set of rigorous, principle-based instructions designed to refine the behavior of Claude Code by addressing common AI coding pitfalls. By implementing a `CLAUDE.md` file centered on four key pillars—&quot;Think Before Coding,&quot; &quot;Simplicity First,&quot; &quot;Surgical Changes,&quot; and &quot;Goal-Driven Execution&quot;—the project forces the LLM to verify its assumptions, avoid unnecessary code bloat, and maintain strict focus on user intent. Technically, these guidelines are deployed either as a project-specific configuration file or as an installable Claude Code plugin, ensuring the AI maintains a consistent, high-quality development workflow across various tasks.</p>
 <p>This project is highly beneficial for developers who utilize AI coding agents and find themselves frequently correcting hallucinations, over-engineered abstractions, or intrusive, unrequested refactoring. It is trending because it operationalizes Andrej Karpathy’s widely circulated critiques of LLM coding behavior, offering a practical solution to the &quot;silent failure&quot; and &quot;bloated code&quot; problems inherent in current generative models. By adopting these constraints, users can significantly reduce the time spent on manual code reviews and cleanup, shifting the AI’s role from an error-prone &quot;doer&quot; to a disciplined, goal-oriented partner.</p>
-                    </div>
-                </div>
-            </section>
-
-            <section class="repo" data-seen-before="1"
-                     data-share-title="thedotmack/claude-mem"
-                     data-share-url="https://github.com/thedotmack/claude-mem">
-                <div class="repo-header-row">
-                    <h3>2. <a href="https://github.com/thedotmack/claude-mem" target="_blank" rel="noopener noreferrer">thedotmack/claude-mem</a> <span class="seen-badge">Not new today</span></h3>
-                    <div class="header-buttons">
-                        <button type="button" class="discuss-btn" aria-label="Discuss with AI" title="Discuss with AI">&#x1F4AC;</button>
-                        <button type="button" class="repo-toggle" aria-expanded="true">Hide details</button>
-                    </div>
-                </div>
-                <div class="repo-body">
-                    <p class="description">A Claude Code plugin that automatically captures everything Claude does during your coding sessions, compresses it with AI (using Claude&#x27;s agent-sdk), and injects relevant context back into future sessions.</p>
-                    <p class="meta">
-                        <span class="language">TypeScript</span> |
-                        <span class="stars">58,607</span>
-                        | <span class="today">2,305 stars today</span>
-                    </p>
-                    <p class="history">First seen: February 02, 2026 | Streak: 5d</p>
-                    <div class="ai-summary">
-                        <h4>Analysis</h4>
-                        <p>Claude-Mem is a sophisticated plugin for Claude Code designed to provide persistent, long-term memory for coding sessions by capturing and summarizing tool interactions and project context. It operates through a robust architecture featuring lifecycle hooks, a Bun-managed worker service, and a hybrid search engine that combines SQLite for relational data with Chroma for semantic vector search. By utilizing a &quot;progressive disclosure&quot; retrieval pattern, the system intelligently fetches context in layers to minimize token consumption while maintaining deep project continuity across disconnected sessions.</p>
+      
+    </article>
+    <article id="dossier-2" class="dossier-entry">
+      <div class="dossier-meta">N<sup>o</sup> 02 &nbsp;·&nbsp; Build Log &nbsp;·&nbsp; Build Log</div>
+      <h3>Untitled</h3>
+      <p class="dossier-source">
+        <a href="https://github.com/thedotmack/claude-mem" target="_blank" rel="noopener">github.com</a>
+        &nbsp;·&nbsp; 58,607 stars &nbsp;·&nbsp; 0 stars today
+        
+      </p>
+      <h4>Analysis</h4>
+      <p>Claude-Mem is a sophisticated plugin for Claude Code designed to provide persistent, long-term memory for coding sessions by capturing and summarizing tool interactions and project context. It operates through a robust architecture featuring lifecycle hooks, a Bun-managed worker service, and a hybrid search engine that combines SQLite for relational data with Chroma for semantic vector search. By utilizing a &quot;progressive disclosure&quot; retrieval pattern, the system intelligently fetches context in layers to minimize token consumption while maintaining deep project continuity across disconnected sessions.</p>
 <p>This tool is highly beneficial for professional software engineers and heavy users of Claude Code who struggle with context loss during long-term development projects. It is trending because it addresses a critical pain point in AI-assisted coding—the ephemeral nature of LLM sessions—by enabling the agent to &quot;remember&quot; past bugs, architectural decisions, and previous code iterations. The combination of automated background operation, privacy controls, and a dedicated web UI makes it an essential utility for developers looking to scale their AI-driven productivity.</p>
-                    </div>
-                </div>
-            </section>
-
-            <section class="repo" data-seen-before="0"
-                     data-share-title="lsdefine/GenericAgent"
-                     data-share-url="https://github.com/lsdefine/GenericAgent">
-                <div class="repo-header-row">
-                    <h3>3. <a href="https://github.com/lsdefine/GenericAgent" target="_blank" rel="noopener noreferrer">lsdefine/GenericAgent</a> </h3>
-                    <div class="header-buttons">
-                        <button type="button" class="discuss-btn" aria-label="Discuss with AI" title="Discuss with AI">&#x1F4AC;</button>
-                        <button type="button" class="repo-toggle" aria-expanded="true">Hide details</button>
-                    </div>
-                </div>
-                <div class="repo-body">
-                    <p class="description">Self-evolving agent: grows skill tree from 3.3K-line seed, achieving full system control with 6x less token consumption</p>
-                    <p class="meta">
-                        <span class="language">Python</span> |
-                        <span class="stars">2,368</span>
-                        | <span class="today">446 stars today</span>
-                    </p>
-                    <p class="history">First seen: April 16, 2026 | Streak: 1d</p>
-                    <div class="ai-summary">
-                        <h4>Analysis</h4>
-                        <p>GenericAgent is a minimalist autonomous agent framework that empowers LLMs to achieve system-level control over a local computer through a compact 3,000-line codebase. By utilizing a core loop of only 100 lines and nine atomic tools, it enables agents to interact with web browsers, file systems, and hardware inputs without pre-loading static capabilities. Its standout feature is an &quot;evolutionary&quot; memory system that crystallizes successful task-execution paths into reusable skills, building a personalized, growing skill tree that minimizes token consumption while increasing long-term task efficiency.</p>
+      
+    </article>
+    <article id="dossier-3" class="dossier-entry">
+      <div class="dossier-meta">N<sup>o</sup> 03 &nbsp;·&nbsp; The Workshop &nbsp;·&nbsp; Prototyping</div>
+      <h3>Untitled</h3>
+      <p class="dossier-source">
+        <a href="https://github.com/lsdefine/GenericAgent" target="_blank" rel="noopener">github.com</a>
+        &nbsp;·&nbsp; 2,368 stars &nbsp;·&nbsp; 0 stars today
+        
+      </p>
+      <h4>Analysis</h4>
+      <p>GenericAgent is a minimalist autonomous agent framework that empowers LLMs to achieve system-level control over a local computer through a compact 3,000-line codebase. By utilizing a core loop of only 100 lines and nine atomic tools, it enables agents to interact with web browsers, file systems, and hardware inputs without pre-loading static capabilities. Its standout feature is an &quot;evolutionary&quot; memory system that crystallizes successful task-execution paths into reusable skills, building a personalized, growing skill tree that minimizes token consumption while increasing long-term task efficiency.</p>
 <p>This project is highly beneficial for power users and developers who seek a cost-effective, high-autonomy alternative to resource-heavy, cloud-reliant agent frameworks. It is currently trending because it addresses the industry&#x27;s struggle with high costs and &quot;stateless&quot; AI by offering a solution that grows smarter and more specialized the longer it is used. By delivering local, persistent, and self-improving automation, GenericAgent appeals to those looking for a practical, low-overhead way to delegate complex, multi-step digital workflows to an intelligent assistant.</p>
-                    </div>
-                </div>
-            </section>
-
-            <section class="repo" data-seen-before="1"
-                     data-share-title="jamiepine/voicebox"
-                     data-share-url="https://github.com/jamiepine/voicebox">
-                <div class="repo-header-row">
-                    <h3>4. <a href="https://github.com/jamiepine/voicebox" target="_blank" rel="noopener noreferrer">jamiepine/voicebox</a> <span class="seen-badge">Not new today</span></h3>
-                    <div class="header-buttons">
-                        <button type="button" class="discuss-btn" aria-label="Discuss with AI" title="Discuss with AI">&#x1F4AC;</button>
-                        <button type="button" class="repo-toggle" aria-expanded="true">Hide details</button>
-                    </div>
-                </div>
-                <div class="repo-body">
-                    <p class="description">The open-source voice synthesis studio</p>
-                    <p class="meta">
-                        <span class="language">TypeScript</span> |
-                        <span class="stars">18,667</span>
-                        | <span class="today">1,062 stars today</span>
-                    </p>
-                    <p class="history">First seen: April 14, 2026 | Streak: 3d</p>
-                    <div class="ai-summary">
-                        <h4>Analysis</h4>
-                        <p>Voicebox is an open-source, local-first voice synthesis studio that serves as a private, high-performance alternative to cloud-based services like ElevenLabs. Built using a robust tech stack—featuring a Tauri (Rust) desktop interface, a Python/FastAPI backend, and multi-engine support including Qwen3-TTS and HumeAI’s TADA—the application enables users to clone voices, generate speech in 23 languages, and apply professional audio effects. The software excels in workflow management by offering a multi-track timeline editor, an asynchronous generation queue, and comprehensive REST API access for seamless integration into external development projects.</p>
+      
+    </article>
+    <article id="dossier-4" class="dossier-entry">
+      <div class="dossier-meta">N<sup>o</sup> 04 &nbsp;·&nbsp; UI Lab &nbsp;·&nbsp; Design Studio</div>
+      <h3>Untitled</h3>
+      <p class="dossier-source">
+        <a href="https://github.com/jamiepine/voicebox" target="_blank" rel="noopener">github.com</a>
+        &nbsp;·&nbsp; 18,667 stars &nbsp;·&nbsp; 0 stars today
+        
+      </p>
+      <h4>Analysis</h4>
+      <p>Voicebox is an open-source, local-first voice synthesis studio that serves as a private, high-performance alternative to cloud-based services like ElevenLabs. Built using a robust tech stack—featuring a Tauri (Rust) desktop interface, a Python/FastAPI backend, and multi-engine support including Qwen3-TTS and HumeAI’s TADA—the application enables users to clone voices, generate speech in 23 languages, and apply professional audio effects. The software excels in workflow management by offering a multi-track timeline editor, an asynchronous generation queue, and comprehensive REST API access for seamless integration into external development projects.</p>
 <p>This project is highly beneficial for developers, content creators, and accessibility advocates who require enterprise-grade voice synthesis without sacrificing data privacy or incurring recurring subscription costs. It is currently trending because it democratizes access to sophisticated AI audio tools, allowing users to run complex models locally on various hardware, including Apple Silicon, NVIDIA GPUs, and AMD/Intel systems. By combining a user-friendly interface with advanced features like paralinguistic emotion tagging and unlimited-length audio chunking, Voicebox provides a flexible, powerful solution for professional-quality media production.</p>
-                    </div>
-                </div>
-            </section>
-
-            <section class="repo" data-seen-before="1"
-                     data-share-title="vercel-labs/open-agents"
-                     data-share-url="https://github.com/vercel-labs/open-agents">
-                <div class="repo-header-row">
-                    <h3>5. <a href="https://github.com/vercel-labs/open-agents" target="_blank" rel="noopener noreferrer">vercel-labs/open-agents</a> <span class="seen-badge">Not new today</span></h3>
-                    <div class="header-buttons">
-                        <button type="button" class="discuss-btn" aria-label="Discuss with AI" title="Discuss with AI">&#x1F4AC;</button>
-                        <button type="button" class="repo-toggle" aria-expanded="true">Hide details</button>
-                    </div>
-                </div>
-                <div class="repo-body">
-                    <p class="description">An open source template for building cloud agents.</p>
-                    <p class="meta">
-                        <span class="language">TypeScript</span> |
-                        <span class="stars">2,928</span>
-                        | <span class="today">915 stars today</span>
-                    </p>
-                    <p class="history">First seen: April 15, 2026 | Streak: 2d</p>
-                    <div class="ai-summary">
-                        <h4>Analysis</h4>
-                        <p>Open Agents is an open-source reference template designed for building and deploying autonomous, cloud-based coding agents on the Vercel platform. The system employs a three-layer architecture that separates the web interface and durable agent workflow from an isolated, snapshot-based sandbox environment. By running the agent outside the sandbox and interacting with it via specific tools like file manipulation and shell commands, the project ensures persistent, reliable execution that can survive request lifecycles and hibernate between tasks.</p>
+      
+    </article>
+    <article id="dossier-5" class="dossier-entry">
+      <div class="dossier-meta">N<sup>o</sup> 05 &nbsp;·&nbsp; Enterprise Engine &nbsp;·&nbsp; Cloud Infrastructure</div>
+      <h3>Untitled</h3>
+      <p class="dossier-source">
+        <a href="https://github.com/vercel-labs/open-agents" target="_blank" rel="noopener">github.com</a>
+        &nbsp;·&nbsp; 2,928 stars &nbsp;·&nbsp; 0 stars today
+        
+      </p>
+      <h4>Analysis</h4>
+      <p>Open Agents is an open-source reference template designed for building and deploying autonomous, cloud-based coding agents on the Vercel platform. The system employs a three-layer architecture that separates the web interface and durable agent workflow from an isolated, snapshot-based sandbox environment. By running the agent outside the sandbox and interacting with it via specific tools like file manipulation and shell commands, the project ensures persistent, reliable execution that can survive request lifecycles and hibernate between tasks.</p>
 <p>This repository is ideal for developers and engineering teams looking to create custom, AI-driven automation tools that can autonomously manage GitHub repositories, execute code, and perform complex development tasks. It is gaining traction because it provides a transparent, modular blueprint for production-grade agentic workflows, moving beyond simple chat interfaces into persistent, long-running agent logic. By offering a robust framework for secure sandboxing and GitHub integration, the project empowers builders to experiment with their own agent architectures without the overhead of starting from scratch.</p>
-                    </div>
-                </div>
-            </section>
-
-            <section class="repo" data-seen-before="0"
-                     data-share-title="google/magika"
-                     data-share-url="https://github.com/google/magika">
-                <div class="repo-header-row">
-                    <h3>6. <a href="https://github.com/google/magika" target="_blank" rel="noopener noreferrer">google/magika</a> </h3>
-                    <div class="header-buttons">
-                        <button type="button" class="discuss-btn" aria-label="Discuss with AI" title="Discuss with AI">&#x1F4AC;</button>
-                        <button type="button" class="repo-toggle" aria-expanded="true">Hide details</button>
-                    </div>
-                </div>
-                <div class="repo-body">
-                    <p class="description">Fast and accurate AI powered file content types detection</p>
-                    <p class="meta">
-                        <span class="language">Python</span> |
-                        <span class="stars">14,150</span>
-                        | <span class="today">768 stars today</span>
-                    </p>
-                    <p class="history">First seen: April 16, 2026 | Streak: 1d</p>
-                    <div class="ai-summary">
-                        <h4>Analysis</h4>
-                        <p>Magika is an AI-powered tool developed by Google designed to perform fast and highly accurate file type identification across hundreds of binary and textual formats. By leveraging a custom, lightweight deep learning model trained on approximately 100 million samples, it achieves roughly 99% precision and recall while maintaining an inference time of only five milliseconds per file. The system utilizes a specialized per-content-type thresholding mechanism to ensure reliable predictions, providing a versatile interface through a Rust-based command-line tool, a Python API, and bindings for JavaScript and Go.</p>
+      
+    </article>
+    <article id="dossier-6" class="dossier-entry">
+      <div class="dossier-meta">N<sup>o</sup> 06 &nbsp;·&nbsp; System Core &nbsp;·&nbsp; Kernel Tools</div>
+      <h3>Untitled</h3>
+      <p class="dossier-source">
+        <a href="https://github.com/google/magika" target="_blank" rel="noopener">github.com</a>
+        &nbsp;·&nbsp; 14,150 stars &nbsp;·&nbsp; 0 stars today
+        
+      </p>
+      <h4>Analysis</h4>
+      <p>Magika is an AI-powered tool developed by Google designed to perform fast and highly accurate file type identification across hundreds of binary and textual formats. By leveraging a custom, lightweight deep learning model trained on approximately 100 million samples, it achieves roughly 99% precision and recall while maintaining an inference time of only five milliseconds per file. The system utilizes a specialized per-content-type thresholding mechanism to ensure reliable predictions, providing a versatile interface through a Rust-based command-line tool, a Python API, and bindings for JavaScript and Go.</p>
 <p>This project is particularly beneficial for security professionals, developers, and platform administrators who require robust, automated file validation to prevent malicious content from bypassing safety protocols. It is trending because it significantly outperforms traditional heuristic-based approaches, offering an efficient solution for high-scale environments like Google’s own Gmail and Drive infrastructure. As organizations increasingly prioritize automated threat detection, Magika’s ability to provide near-instant, high-confidence classification makes it an essential utility for modern data safety and content policy enforcement.</p>
-                    </div>
-                </div>
-            </section>
-
-            <section class="repo" data-seen-before="0"
-                     data-share-title="steipete/wacli"
-                     data-share-url="https://github.com/steipete/wacli">
-                <div class="repo-header-row">
-                    <h3>7. <a href="https://github.com/steipete/wacli" target="_blank" rel="noopener noreferrer">steipete/wacli</a> </h3>
-                    <div class="header-buttons">
-                        <button type="button" class="discuss-btn" aria-label="Discuss with AI" title="Discuss with AI">&#x1F4AC;</button>
-                        <button type="button" class="repo-toggle" aria-expanded="true">Hide details</button>
-                    </div>
-                </div>
-                <div class="repo-body">
-                    <p class="description">WhatsApp CLI</p>
-                    <p class="meta">
-                        <span class="language">Go</span> |
-                        <span class="stars">1,493</span>
-                        | <span class="today">354 stars today</span>
-                    </p>
-                    <p class="history">First seen: April 16, 2026 | Streak: 1d</p>
-                    <div class="ai-summary">
-                        <h4>Analysis</h4>
-                        <p>`wacli` is a command-line interface for WhatsApp built upon the `whatsmeow` library, designed to provide efficient local synchronization and management of message history. Key features include fast offline searching, support for sending text and media files, and tools for contact and group management. Technically, the project interfaces with the WhatsApp Web protocol to perform a best-effort local sync and allows users to trigger on-demand history backfilling, outputting data in either human-readable or machine-parsable JSON formats.</p>
+      
+    </article>
+    <article id="dossier-7" class="dossier-entry">
+      <div class="dossier-meta">N<sup>o</sup> 07 &nbsp;·&nbsp; Terminal Utility &nbsp;·&nbsp; CLI Suite</div>
+      <h3>Untitled</h3>
+      <p class="dossier-source">
+        <a href="https://github.com/steipete/wacli" target="_blank" rel="noopener">github.com</a>
+        &nbsp;·&nbsp; 1,493 stars &nbsp;·&nbsp; 0 stars today
+        
+      </p>
+      <h4>Analysis</h4>
+      <p>`wacli` is a command-line interface for WhatsApp built upon the `whatsmeow` library, designed to provide efficient local synchronization and management of message history. Key features include fast offline searching, support for sending text and media files, and tools for contact and group management. Technically, the project interfaces with the WhatsApp Web protocol to perform a best-effort local sync and allows users to trigger on-demand history backfilling, outputting data in either human-readable or machine-parsable JSON formats.</p>
 <p>Developers and power users who prefer keyboard-centric workflows will benefit most from this tool, as it enables them to interact with WhatsApp directly from the terminal. It is particularly valuable for those who require a local, searchable archive of their communications or need to automate message handling via scripts. The project is gaining attention because it offers a lightweight, high-performance alternative to the official desktop application, bridging the gap between platform-native messaging and terminal-based productivity.</p>
-                    </div>
-                </div>
-            </section>
-
-            <section class="repo" data-seen-before="1"
-                     data-share-title="topoteretes/cognee"
-                     data-share-url="https://github.com/topoteretes/cognee">
-                <div class="repo-header-row">
-                    <h3>8. <a href="https://github.com/topoteretes/cognee" target="_blank" rel="noopener noreferrer">topoteretes/cognee</a> <span class="seen-badge">Not new today</span></h3>
-                    <div class="header-buttons">
-                        <button type="button" class="discuss-btn" aria-label="Discuss with AI" title="Discuss with AI">&#x1F4AC;</button>
-                        <button type="button" class="repo-toggle" aria-expanded="true">Hide details</button>
-                    </div>
-                </div>
-                <div class="repo-body">
-                    <p class="description">Knowledge Engine for AI Agent Memory in 6 lines of code</p>
-                    <p class="meta">
-                        <span class="language">Python</span> |
-                        <span class="stars">15,568</span>
-                        | <span class="today">156 stars today</span>
-                    </p>
-                    <p class="history">First seen: February 06, 2026 | Streak: 1d</p>
-                    <div class="ai-summary">
-                        <h4>Analysis</h4>
-                        <p>Cognee is an open-source knowledge engine designed to provide AI agents with persistent, dynamic, and structured memory. By integrating vector search with graph databases, the framework allows developers to ingest multimodal data and ground it within a relational knowledge structure that evolves over time. Its technical architecture prioritizes reliable agentic workflows by offering tenant isolation, traceability, and observability through OpenTelemetry integration.</p>
+      
+    </article>
+    <article id="dossier-8" class="dossier-entry">
+      <div class="dossier-meta">N<sup>o</sup> 08 &nbsp;·&nbsp; Data Pipeline &nbsp;·&nbsp; Knowledge Flow</div>
+      <h3>Untitled</h3>
+      <p class="dossier-source">
+        <a href="https://github.com/topoteretes/cognee" target="_blank" rel="noopener">github.com</a>
+        &nbsp;·&nbsp; 15,568 stars &nbsp;·&nbsp; 0 stars today
+        
+      </p>
+      <h4>Analysis</h4>
+      <p>Cognee is an open-source knowledge engine designed to provide AI agents with persistent, dynamic, and structured memory. By integrating vector search with graph databases, the framework allows developers to ingest multimodal data and ground it within a relational knowledge structure that evolves over time. Its technical architecture prioritizes reliable agentic workflows by offering tenant isolation, traceability, and observability through OpenTelemetry integration.</p>
 <p>Developers building autonomous AI agents will benefit significantly from Cognee, as it eliminates the complexity of managing context and long-term memory for intelligent systems. The project is currently trending because it addresses the critical &quot;memory&quot; gap in LLM applications, allowing agents to learn from user feedback and share knowledge across platforms. By offering a unified infrastructure that simplifies sophisticated RAG (Retrieval-Augmented Generation) pipelines into just a few lines of code, Cognee enables faster development of reliable and context-aware AI solutions.</p>
-                    </div>
-                </div>
-            </section>
-
-            <section class="repo" data-seen-before="0"
-                     data-share-title="z-lab/dflash"
-                     data-share-url="https://github.com/z-lab/dflash">
-                <div class="repo-header-row">
-                    <h3>9. <a href="https://github.com/z-lab/dflash" target="_blank" rel="noopener noreferrer">z-lab/dflash</a> </h3>
-                    <div class="header-buttons">
-                        <button type="button" class="discuss-btn" aria-label="Discuss with AI" title="Discuss with AI">&#x1F4AC;</button>
-                        <button type="button" class="repo-toggle" aria-expanded="true">Hide details</button>
-                    </div>
-                </div>
-                <div class="repo-body">
-                    <p class="description">DFlash: Block Diffusion for Flash Speculative Decoding</p>
-                    <p class="meta">
-                        <span class="language">Python</span> |
-                        <span class="stars">1,427</span>
-                        | <span class="today">183 stars today</span>
-                    </p>
-                    <p class="history">First seen: April 16, 2026 | Streak: 1d</p>
-                    <div class="ai-summary">
-                        <h4>Analysis</h4>
-                        <p>DFlash is a lightweight block diffusion model designed to accelerate Large Language Model (LLM) inference through high-quality parallel drafting for speculative decoding. By utilizing block diffusion techniques, the system enables efficient token generation, allowing draft models to propose multi-token sequences that are then validated by a target model. This technical approach is integrated into popular inference frameworks such as vLLM, SGLang, Transformers, and MLX, providing a versatile solution for reducing latency in autoregressive text generation.</p>
+      
+    </article>
+    <article id="dossier-9" class="dossier-entry">
+      <div class="dossier-meta">N<sup>o</sup> 09 &nbsp;·&nbsp; Model Bench &nbsp;·&nbsp; Inference Labs</div>
+      <h3>Untitled</h3>
+      <p class="dossier-source">
+        <a href="https://github.com/z-lab/dflash" target="_blank" rel="noopener">github.com</a>
+        &nbsp;·&nbsp; 1,427 stars &nbsp;·&nbsp; 0 stars today
+        
+      </p>
+      <h4>Analysis</h4>
+      <p>DFlash is a lightweight block diffusion model designed to accelerate Large Language Model (LLM) inference through high-quality parallel drafting for speculative decoding. By utilizing block diffusion techniques, the system enables efficient token generation, allowing draft models to propose multi-token sequences that are then validated by a target model. This technical approach is integrated into popular inference frameworks such as vLLM, SGLang, Transformers, and MLX, providing a versatile solution for reducing latency in autoregressive text generation.</p>
 <p>Developers and organizations looking to optimize inference throughput for large-scale production deployments would benefit significantly from integrating DFlash. The project is trending because it bridges the performance gap between model size and generation speed, allowing users to serve high-performance models like Qwen3.5 and Llama-3.1 with drastically improved latency. With broad backend support and pre-trained draft models readily available for various architectures, it provides a highly practical, plug-and-play solution for the AI engineering community.</p>
-                    </div>
-                </div>
-            </section>
-
-            <section class="repo" data-seen-before="1"
-                     data-share-title="Lordog/dive-into-llms"
-                     data-share-url="https://github.com/Lordog/dive-into-llms">
-                <div class="repo-header-row">
-                    <h3>10. <a href="https://github.com/Lordog/dive-into-llms" target="_blank" rel="noopener noreferrer">Lordog/dive-into-llms</a> <span class="seen-badge">Not new today</span></h3>
-                    <div class="header-buttons">
-                        <button type="button" class="discuss-btn" aria-label="Discuss with AI" title="Discuss with AI">&#x1F4AC;</button>
-                        <button type="button" class="repo-toggle" aria-expanded="true">Hide details</button>
-                    </div>
-                </div>
-                <div class="repo-body">
-                    <p class="description">《动手学大模型Dive into LLMs》系列编程实践教程</p>
-                    <p class="meta">
-                        <span class="language">Jupyter Notebook</span> |
-                        <span class="stars">30,275</span>
-                        | <span class="today">941 stars today</span>
-                    </p>
-                    <p class="history">First seen: April 15, 2026 | Streak: 2d</p>
-                    <div class="ai-summary">
-                        <h4>Analysis</h4>
-                        <p>The &quot;Dive into LLMs&quot; repository is an open-source, educational project developed by the Shanghai Jiao Tong University team that provides comprehensive programming tutorials on Large Language Models (LLMs). The project covers a wide array of technical subjects, including fine-tuning, prompt engineering, knowledge editing, mathematical reasoning, and advanced topics like model security, watermarking, and GUI agents. By offering practical scripts, slides, and tutorials, it enables users to apply cutting-edge AI techniques through hands-on experimentation, now further bolstered by a collaborative series with Huawei Ascend focused on full-stack model development.</p>
+      
+    </article>
+    <article id="dossier-10" class="dossier-entry">
+      <div class="dossier-meta">N<sup>o</sup> 10 &nbsp;·&nbsp; The Library &nbsp;·&nbsp; Scholarly Review</div>
+      <h3>Untitled</h3>
+      <p class="dossier-source">
+        <a href="https://github.com/Lordog/dive-into-llms" target="_blank" rel="noopener">github.com</a>
+        &nbsp;·&nbsp; 30,275 stars &nbsp;·&nbsp; 0 stars today
+        
+      </p>
+      <h4>Analysis</h4>
+      <p>The &quot;Dive into LLMs&quot; repository is an open-source, educational project developed by the Shanghai Jiao Tong University team that provides comprehensive programming tutorials on Large Language Models (LLMs). The project covers a wide array of technical subjects, including fine-tuning, prompt engineering, knowledge editing, mathematical reasoning, and advanced topics like model security, watermarking, and GUI agents. By offering practical scripts, slides, and tutorials, it enables users to apply cutting-edge AI techniques through hands-on experimentation, now further bolstered by a collaborative series with Huawei Ascend focused on full-stack model development.</p>
 <p>This project is an essential resource for students, academic researchers, and developers who seek a low-barrier, high-quality entry point into the rapidly evolving field of LLM development and security. It is trending because it bridges the gap between theoretical knowledge and practical application, providing a community-driven repository that is both free and regularly updated with industry-relevant trends. The project&#x27;s academic credibility and recent partnership with the Huawei Ascend ecosystem make it a highly reliable and authoritative guide for those looking to master AI skills in both domestic and global frameworks.</p>
-                    </div>
-                </div>
-            </section>
-
-            </div>
-        </article>
-    </main>
-    <footer>
-        <p>Generated automatically. Data from <a href="https://github.com/trending">GitHub Trending</a>.</p>
-    </footer>
-
+      
+    </article>
+  </section>
+  <footer class="colophon">
+    <p class="sig">— that's the edition.</p>
+    <p class="meta">Set in Fraunces &amp; Inter · Compiled April 16, 2026</p>
+    <p class="classic-link"><a href="classic.html">Prefer the classic card view? →</a></p>
+  </footer>
 <script>
 (() => {
-    const readKey = "gtd:read_days:gh:v1";
-    const dayStr = "2026-04-16";
-
-    let stored = [];
-    try {
-        stored = JSON.parse(localStorage.getItem(readKey) || "[]");
-        if (!Array.isArray(stored)) {
-            stored = [];
-        }
-    } catch (_err) {
-        stored = [];
-    }
-
-    if (!stored.includes(dayStr)) {
-        stored.push(dayStr);
-        stored.sort();
-        localStorage.setItem(readKey, JSON.stringify(stored));
-    }
-
-    const collapseParam = new URLSearchParams(window.location.search).get("collapse_seen");
-    const collapseSeen = collapseParam === "0" ? false : true;
-
-    function setCollapsed(repoEl, collapsed) {
-        repoEl.classList.toggle("collapsed", collapsed);
-        const button = repoEl.querySelector(".repo-toggle");
-        if (button) {
-            button.textContent = collapsed ? "Show details" : "Hide details";
-            button.setAttribute("aria-expanded", String(!collapsed));
-        }
-    }
-
-    const repos = Array.from(document.querySelectorAll("section.repo[data-seen-before]"));
-
-    repos.forEach((repoEl) => {
-        const toggle = repoEl.querySelector(".repo-toggle");
-        if (!toggle) {
-            return;
-        }
-
-        toggle.addEventListener("click", () => {
-            setCollapsed(repoEl, !repoEl.classList.contains("collapsed"));
-        });
-    });
-
-    const collapseBtn = document.getElementById("collapse-seen-btn");
-    const expandBtn = document.getElementById("expand-all-btn");
-
-    if (collapseBtn) {
-        collapseBtn.addEventListener("click", () => {
-            repos.forEach((repoEl) => {
-                if (repoEl.dataset.seenBefore === "1") {
-                    setCollapsed(repoEl, true);
-                }
-            });
-        });
-    }
-
-    if (expandBtn) {
-        expandBtn.addEventListener("click", () => {
-            repos.forEach((repoEl) => setCollapsed(repoEl, false));
-        });
-    }
-
-    if (collapseSeen) {
-        repos.forEach((repoEl) => {
-            if (repoEl.dataset.seenBefore === "1") {
-                setCollapsed(repoEl, true);
-            }
-        });
-    }
-
-    // Discuss with AI button
-    const toast = document.createElement("div");
-    toast.className = "discuss-toast";
-    document.body.appendChild(toast);
-
-    function showToast(msg) {
-        toast.textContent = msg;
-        toast.classList.add("show");
-        setTimeout(() => toast.classList.remove("show"), 2500);
-    }
-
-    function buildGHMarkdown(card) {
-        const title = card.dataset.shareTitle || "";
-        const url = card.dataset.shareUrl || "";
-        const desc = card.querySelector(".description");
-        const meta = card.querySelector(".meta");
-        const analysis = card.querySelector(".ai-summary");
-        let md = "# " + title + "\n";
-        md += "Source: " + url;
-        if (meta) md += " | " + meta.textContent.trim();
-        md += "\n";
-        if (desc) md += "\n" + desc.textContent.trim() + "\n";
-        if (analysis) md += "\n## Analysis\n" + analysis.textContent.replace("Analysis", "").trim() + "\n";
-        return md;
-    }
-
-    document.querySelectorAll(".discuss-btn").forEach((btn) => {
-        btn.addEventListener("click", () => {
-            const card = btn.closest("section.repo");
-            if (!card) return;
-            const md = buildGHMarkdown(card);
-            const text = "I'd like to discuss this repo with you. Here's a summary:\n\n" + md;
-            const title = "Discuss: " + (card.dataset.shareTitle || "");
-            if (navigator.share) {
-                navigator.share({ title: title, text: text }).catch(() => {});
-            } else {
-                navigator.clipboard.writeText(text).then(
-                    () => showToast("Copied to clipboard \u2014 paste into your AI chat"),
-                    () => showToast("Failed to copy")
-                );
-            }
-        });
-    });
+  const key = "gtd:read_days:gh:v1";
+  const day = "2026-04-16";
+  let stored = [];
+  try {
+    stored = JSON.parse(localStorage.getItem(key) || "[]");
+    if (!Array.isArray(stored)) stored = [];
+  } catch (e) {}
+  if (!stored.includes(day)) {
+    stored.push(day);
+    stored.sort();
+    localStorage.setItem(key, JSON.stringify(stored));
+  }
 })();
 </script>
-
 </body>
 </html>

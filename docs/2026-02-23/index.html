@@ -1,386 +1,569 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>GitHub Trending - February 23, 2026</title>
-    <link rel="stylesheet" href="../style.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Open Source Edition — February 23, 2026</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,100..900;1,9..144,100..900&family=Inter:wght@100..900&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+  <style>
+  :root {
+    --bg-light: #f5f1e8; --bg-dark: #121212;
+    --text-dark: #121212; --text-light: #f5f1e8;
+    --accent-red: #d32f2f; --accent-blue: #1976d2;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; padding: 0;
+    background: var(--bg-light); color: var(--text-dark);
+    font-family: 'Inter', sans-serif;
+    -webkit-font-smoothing: antialiased;
+  }
+  .frnc { font-family: 'Fraunces', serif; font-variant-classic-ligatures: common-ligatures; }
+  
+  /* ───── LAYOUT ───── */
+  .spread {
+    position: relative; min-height: 100vh; width: 100%;
+    display: flex; align-items: center; justify-content: center;
+    padding: 10vh 8vw; overflow: hidden;
+    scroll-snap-align: start;
+  }
+  .body { position: relative; z-index: 10; width: 100%; max-width: 1200px; }
+  .kicker { font-weight: 700; font-size: 1.1rem; letter-spacing: 0.4em; text-transform: uppercase; margin-bottom: 2rem; opacity: 0.8; }
+  h2 { font-size: clamp(3rem, 8vw, 6.5rem); line-height: 0.95; font-weight: 400; margin: 0 0 3rem; letter-spacing: -0.03em; }
+  .lede { font-size: clamp(1.4rem, 2.5vw, 2.1rem); line-height: 1.35; max-width: 800px; margin: 0 0 4rem; font-weight: 450; }
+  
+  .ctas { display: flex; gap: 2rem; align-items: center; }
+  .ctas a {
+    text-decoration: none; font-weight: 600; font-size: 1.1rem; letter-spacing: 0.1em; text-transform: uppercase;
+    padding: 1.2rem 2.4rem; transition: all 0.2s;
+  }
+  .btn-read { background: var(--text-dark); color: var(--bg-light); }
+  .btn-dossier { border-bottom: 2px solid currentColor; padding: 0.5rem 0 !important; }
+  
+  /* ───── ARCHETYPE CSS ───── */
+  
+  /* Stat Hero */
+  .arc-stat-hero { background: #e8e4da; }
+  .arc-stat-hero .numeral {
+    position: absolute; right: 0; top: 10vh; font-family: 'Fraunces', serif;
+    font-size: clamp(20rem, 50vw, 45rem); font-weight: 900; line-height: 0.8;
+    color: #121212; opacity: 0.05; pointer-events: none;
+  }
+
+  /* Midnight */
+  .arc-midnight { background: #0a0a0c; color: #fff; }
+  .arc-midnight .glow {
+    position: absolute; top: 30%; left: 40%; width: 40vw; height: 40vw;
+    background: radial-gradient(circle, rgba(110,64,255,0.15) 0%, transparent 70%);
+    filter: blur(60px); pointer-events: none;
+  }
+  .arc-midnight .btn-read { background: #fff; color: #000; }
+
+  /* Alert Stamp */
+  .arc-alert-stamp { background: #f9ebeb; color: #7a1e14; }
+  .arc-alert-stamp .stamp {
+    position: absolute; top: 15vh; right: 10vw; border: 6px solid #d32f2f;
+    padding: 1rem 2rem; font-weight: 900; font-size: 3rem; transform: rotate(12deg);
+    opacity: 0.2; pointer-events: none;
+  }
+  .arc-alert-stamp .btn-read { background: #d32f2f; color: #fff; }
+
+  /* Academic */
+  .arc-academic-drop-cap { background: #fdfaf3; color: #2c2925; }
+  .arc-academic-drop-cap h2 { font-size: clamp(2.5rem, 5vw, 4rem); border-bottom: 1px solid #ddd; padding-bottom: 2rem; margin-bottom: 4rem; }
+  .arc-academic-drop-cap .cols { columns: 2; column-gap: 4rem; }
+  .arc-academic-drop-cap .drop {
+    float: left; font-family: 'Fraunces', serif; font-size: 6.5rem; line-height: 0.75;
+    margin: 0.8rem 1rem 0 0; font-weight: 600; color: #121212;
+  }
+  .arc-academic-drop-cap .btn-read { background: #2c2925; color: #fff; }
+
+  /* Terminal */
+  .arc-terminal { background: #000; color: #20c20e; font-family: 'JetBrains Mono', monospace; }
+  .arc-terminal .window { border: 1px solid #20c20e; padding: 4rem; background: #050505; }
+  .arc-terminal .frnc { font-family: 'JetBrains Mono', monospace; font-weight: 700; letter-spacing: -0.05em; }
+  .arc-terminal .btn-read { background: #20c20e; color: #000; border-radius: 0; }
+  .arc-terminal .btn-dossier { border-color: #20c20e; }
+
+  /* Editorial Pullquote */
+  .arc-editorial-pullquote { display: grid; grid-template-columns: 1.2fr 1fr; gap: 5vw; background: #1a1a1a; color: #f5f1e8; align-items: stretch; }
+  .arc-editorial-pullquote .quote-side { background: #d4af37; color: #1a1a1a; display: flex; align-items: center; padding: 6vw; position: relative; }
+  .arc-editorial-pullquote blockquote { font-family: 'Fraunces', serif; font-size: 3rem; line-height: 1.1; font-style: italic; font-weight: 400; margin: 0; }
+  .arc-editorial-pullquote blockquote::before { content: '“'; position: absolute; top: 2vw; left: 2vw; font-size: 8rem; opacity: 0.3; }
+  .arc-editorial-pullquote .btn-read { background: #f5f1e8; color: #1a1a1a; }
+
+  /* Caution Tape */
+  .arc-caution-tape { background: #fcd116; color: #000; }
+  .arc-caution-tape .tape {
+    position: absolute; left: -10vw; width: 120vw; background: #000; color: #fcd116;
+    font-weight: 900; font-size: 1.5rem; padding: 1rem; transform: rotate(-3deg); z-index: 5;
+  }
+  .arc-caution-tape .tape.top { top: 5vh; transform: rotate(2deg); }
+  .arc-caution-tape .tape.bottom { bottom: 5vh; transform: rotate(-1.5deg); }
+  .arc-caution-tape .tag { background: #000; color: #fff; padding: 0.5rem 1rem; display: inline-block; font-weight: 800; margin-bottom: 2rem; }
+  .arc-caution-tape .btn-read { background: #000; color: #fcd116; }
+
+  /* Notebook */
+  .arc-notebook { background: #fcfcf4; }
+  .arc-notebook .lines {
+    position: absolute; inset: 0;
+    background: repeating-linear-gradient(transparent, transparent 1.6rem, #e0e0d0 1.6rem, #e0e0d0 1.7rem);
+    opacity: 0.5;
+  }
+  .arc-notebook .btn-read { background: #333; color: #fff; }
+
+  /* Mint Pattern */
+  .arc-mint-pattern { background: #d0f0e4; color: #1b4d3e; }
+  .arc-mint-pattern::before {
+    content: var(--bg-word); position: absolute; inset: 0;
+    font-weight: 900; font-size: 14vw; line-height: 0.7; opacity: 0.04;
+    display: flex; flex-wrap: wrap; word-break: break-all; overflow: hidden;
+  }
+  .arc-mint-pattern .btn-read { background: #1b4d3e; color: #d0f0e4; }
+
+  /* Pastel Playful */
+  .arc-pastel-playful { background: #fbe6e6; color: #8a4b4b; }
+  .arc-pastel-playful .alpha-grid {
+    position: absolute; right: 4vw; top: 10vh; bottom: 10vh; width: 40vw;
+    display: grid; grid-template-columns: repeat(5, 1fr); gap: 1rem;
+    font-weight: 900; font-size: 2rem; opacity: 0.08; pointer-events: none;
+  }
+  .arc-pastel-playful .btn-read { background: #8a4b4b; color: #fbe6e6; }
+
+  /* Product Plate */
+  .arc-product-plate { background: #eee; }
+  .arc-product-plate .plate {
+    background: linear-gradient(145deg, #ffffff, #dcdcdc);
+    padding: 6vw; box-shadow: 20px 20px 60px #cbcbcb, -20px -20px 60px #ffffff;
+    border-radius: 20px;
+  }
+  .arc-product-plate .btn-read { background: #121212; color: #eee; border-radius: 50px; }
+
+  /* Archive */
+  .arc-archive { background: #f4ece1; color: #4e3620; }
+  .arc-archive .mast {
+    position: absolute; top: 4vh; width: 100%; text-align: center;
+    font-family: 'Fraunces', serif; font-weight: 700; font-size: 1.2rem;
+    letter-spacing: 0.5em; opacity: 0.5; border-bottom: 1px double #ccc;
+    padding-bottom: 2vh;
+  }
+  .arc-archive .btn-read { background: #4e3620; color: #f4ece1; }
+
+  /* Obituary */
+  .arc-obituary { background: #fff; color: #000; }
+  .arc-obituary .obit-frame { border: 20px solid #000; padding: 6vw; text-align: center; }
+  .arc-obituary .lede { margin-left: auto; margin-right: auto; }
+  .arc-obituary .ornament { font-size: 4rem; margin: 3rem 0; opacity: 0.2; }
+  .arc-obituary .ctas { justify-content: center; }
+  .arc-obituary .btn-read { background: #000; color: #fff; }
+
+  /* Blueprint */
+  .arc-blueprint { background: #0047ab; color: #fff; }
+  .arc-blueprint .grid {
+    position: absolute; inset: 0; opacity: 0.2;
+    background-image: linear-gradient(#fff 1px, transparent 1px), linear-gradient(90deg, #fff 1px, transparent 1px);
+    background-size: 40px 40px;
+  }
+  .arc-blueprint .btn-read { background: #fff; color: #0047ab; }
+
+  /* Observatory */
+  .arc-observatory { background: #050510; color: #e0e0ff; }
+  .arc-observatory .stars {
+    position: absolute; inset: 0; opacity: 0.4;
+    background: radial-gradient(white, rgba(255,255,255,.2) 2px, transparent 40px);
+    background-size: 100px 100px;
+  }
+  .arc-observatory .btn-read { background: #e0e0ff; color: #050510; border-radius: 100px; }
+
+  /* GH Specific: Agent Foundry */
+  .arc-agent-foundry { background: #f0f4f8; color: #1a365d; }
+  .arc-agent-foundry .blueprint-bg {
+    position: absolute; inset: 0; opacity: 0.1;
+    background-image: radial-gradient(#1a365d 1px, transparent 1px);
+    background-size: 20px 20px;
+  }
+  .arc-agent-foundry .btn-read { background: #1a365d; color: #fff; }
+
+  /* GH Specific: System Core */
+  .arc-system-core { background: #2d3748; color: #edf2f7; }
+  .arc-system-core .concrete {
+    position: absolute; inset: 0; opacity: 0.05;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  }
+  .arc-system-core .frnc { font-family: 'Inter', sans-serif; font-weight: 800; text-transform: uppercase; letter-spacing: -0.05em; }
+  .arc-system-core .btn-read { background: #edf2f7; color: #2d3748; }
+
+  /* GH Specific: UI Lab */
+  .arc-ui-lab { background: #fff; color: #4c51bf; }
+  .arc-ui-lab .lab-gradient {
+    position: absolute; inset: 0; opacity: 0.1;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  }
+  .arc-ui-lab .btn-read { background: #4c51bf; color: #fff; border-radius: 12px; }
+
+  /* GH Specific: Data Pipeline */
+  .arc-data-pipeline { background: #1a202c; color: #a3bffa; }
+  .arc-data-pipeline .pipeline-streams {
+    position: absolute; inset: 0; opacity: 0.15;
+    background: repeating-linear-gradient(45deg, #a3bffa, #a3bffa 2px, transparent 2px, transparent 20px);
+  }
+  .arc-data-pipeline .btn-read { background: #a3bffa; color: #1a202c; }
+
+  /* GH Specific: Model Bench */
+  .arc-model-bench { background: #f7fafc; color: #2d3748; }
+  .arc-model-bench .bench-silver {
+    position: absolute; right: 0; top: 0; width: 40%; height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(0,0,0,0.03));
+  }
+  .arc-model-bench .btn-read { border: 1px solid #2d3748; background: transparent; color: #2d3748; }
+
+  /* GH Specific: Privacy Shield */
+  .arc-privacy-shield { background: #000; color: #00ff41; }
+  .arc-privacy-shield .shield-glitch {
+    position: absolute; inset: 0; opacity: 0.1;
+    background-image: repeating-linear-gradient(0deg, rgba(0,255,65,0.1) 0, rgba(0,255,65,0.1) 1px, transparent 1px, transparent 2px);
+  }
+  .arc-privacy-shield .btn-read { background: #00ff41; color: #000; }
+
+  /* GH Specific: Enterprise Engine */
+  .arc-enterprise-engine { background: #f0f7ff; color: #0056b3; }
+  .arc-enterprise-engine .engine-blue {
+    position: absolute; right: -5vw; bottom: -5vw; width: 30vw; height: 30vw;
+    background: radial-gradient(circle, rgba(0,86,179,0.05) 0%, transparent 70%);
+  }
+  .arc-enterprise-engine .btn-read { background: #0056b3; color: #fff; }
+
+  /* GH Specific: Terminal Utility */
+  .arc-terminal-utility { background: #1a1a1a; color: #ffb000; font-family: 'JetBrains Mono', monospace; }
+  .arc-terminal-utility .crt-lines {
+    position: absolute; inset: 0; pointer-events: none;
+    background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.06), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.06));
+    background-size: 100% 2px, 3px 100%;
+  }
+  .arc-terminal-utility .btn-read { background: #ffb000; color: #1a1a1a; }
+
+  /* GH Specific: Experimental Workshop */
+  .arc-experimental-workshop { background: #fffde7; color: #5d4037; }
+  .arc-experimental-workshop .pad-lines {
+    position: absolute; left: 4vw; top: 0; bottom: 0; width: 2px; background: #ff5252; opacity: 0.3;
+  }
+  .arc-experimental-workshop .btn-read { border: 2px dashed #5d4037; background: transparent; color: #5d4037; }
+
+  /* GH Specific: Library Archive */
+  .arc-library-archive { background: #fdfaf3; color: #3e2723; }
+  .arc-library-archive .parchment {
+    position: absolute; inset: 0; opacity: 0.03;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='f'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.02' numOctaves='5'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23f)'/%3E%3C/svg%3E");
+  }
+  .arc-library-archive .btn-read { background: #3e2723; color: #fdfaf3; }
+
+  /* ───── MASTHEAD ───── */
+  .masthead { padding: 4vh 8vw 10vh; text-align: center; border-bottom: 1px solid #ddd; }
+  .masthead-nav { display: flex; justify-content: center; gap: 2rem; margin-bottom: 6vh; font-weight: 600; font-size: 0.9rem; text-transform: uppercase; letter-spacing: 0.2em; }
+  .masthead-nav a { color: inherit; text-decoration: none; opacity: 0.6; }
+  .masthead-nav a:hover { opacity: 1; }
+  .masthead h1 { font-size: clamp(3rem, 10vw, 9rem); font-weight: 400; margin: 0 0 2rem; letter-spacing: -0.04em; }
+  .issue-line { display: flex; justify-content: center; gap: 4rem; font-weight: 700; font-size: 1rem; letter-spacing: 0.3em; text-transform: uppercase; opacity: 0.8; }
+  
+  /* ───── DOSSIER ───── */
+  .dossier { background: #f5f1e8; padding: 10vh 8vw; color: #121212; }
+  .dossier-head { margin-bottom: 8vh; }
+  .dossier-head h2 { font-size: clamp(4rem, 12vw, 12rem); margin-bottom: 2rem; }
+  .tagline { font-weight: 700; font-size: 1.2rem; letter-spacing: 0.5em; text-transform: uppercase; margin-bottom: 1rem; opacity: 0.5; }
+  .intro { font-size: 1.5rem; max-width: 600px; line-height: 1.4; opacity: 0.7; }
+  .intro a { color: inherit; }
+  
+  .dossier-entry { margin-bottom: 12vh; max-width: 900px; }
+  .dossier-meta { font-weight: 700; font-size: 0.9rem; letter-spacing: 0.2em; text-transform: uppercase; margin-bottom: 1.5rem; opacity: 0.5; }
+  .dossier-entry h3 { font-family: 'Fraunces', serif; font-size: clamp(2.5rem, 5vw, 4.5rem); line-height: 1.1; margin: 0 0 1.5rem; font-weight: 400; }
+  .dossier-source { font-size: 1.1rem; font-weight: 500; letter-spacing: 0.05em; margin: 0 0 3rem; opacity: 0.7; }
+  .dossier-source a { color: inherit; text-decoration: underline; }
+  .dossier-entry h4 { font-weight: 700; font-size: 1rem; letter-spacing: 0.3em; text-transform: uppercase; margin: 3rem 0 1.5rem; }
+  .dossier-entry p { font-family: 'Fraunces', serif; font-size: 1.3rem; line-height: 1.6; margin: 0 0 1.5rem; }
+  
+  /* ───── COLOPHON ───── */
+  .colophon { background: #121212; color: #f5f1e8; padding: 8vh 8vw; text-align: center; }
+  .colophon .sig { font-family: 'Fraunces', serif; font-style: italic; font-size: clamp(2rem, 5vw, 4rem); margin-bottom: 2rem; }
+  .colophon .meta { font-weight: 500; font-size: 0.9rem; letter-spacing: 0.3em; text-transform: uppercase; opacity: 0.6; }
+  .classic-link { margin-top: 3rem; font-size: 0.9rem; letter-spacing: 0.2em; text-transform: uppercase; }
+  .classic-link a { color: inherit; text-decoration: underline; }
+
+  @media (max-width: 800px) {
+    .spread { padding: 12vh 6vw; }
+    .issue-line { flex-direction: column; gap: 1rem; align-items: center; }
+    .arc-stat-hero .numeral { font-size: 15rem; top: auto; bottom: 5vh; }
+    .arc-editorial-pullquote { grid-template-columns: 1fr; }
+    .arc-editorial-pullquote .quote-side { padding: 12vw; }
+    .ctas { flex-direction: column; align-items: stretch; gap: 1rem; }
+    .arc-academic-drop-cap .cols { columns: 1; }
+  }
+</style>
 </head>
-<body>
-    <header>
-        <h1>GitHub Trending Digest - February 23, 2026</h1>
-        <nav>
-            <a href="../">&larr; GitHub Calendar</a>
-            <a href="../hn/2026-02-23/">Hacker News</a>
-        </nav>
-    </header>
-    <main>
-
-        <h2 class="section-heading">Today's Daily Trending</h2>
-        <div class="repo-controls">
-            <button id="collapse-seen-btn" type="button">Collapse Repos Not New Today</button>
-            <button id="expand-all-btn" type="button">Expand All</button>
-        </div>
-        <p class="seen-help">Repos marked "Not new today" appeared on one or more previous daily pages.</p>
-        <article>
-            <div class="repos">
-
-            <section class="repo" data-seen-before="1"
-                     data-share-title="huggingface/skills"
-                     data-share-url="https://github.com/huggingface/skills">
-                <div class="repo-header-row">
-                    <h3>1. <a href="https://github.com/huggingface/skills" target="_blank" rel="noopener noreferrer">huggingface/skills</a> <span class="seen-badge">Not new today</span></h3>
-                    <div class="header-buttons">
-                        <button type="button" class="discuss-btn" aria-label="Discuss with AI" title="Discuss with AI">&#x1F4AC;</button>
-                        <button type="button" class="repo-toggle" aria-expanded="true">Hide details</button>
-                    </div>
-                </div>
-                <div class="repo-body">
-                    <p class="description">No description</p>
-                    <p class="meta">
-                        <span class="language">Python</span> |
-                        <span class="stars">2,930</span>
-                        | <span class="today">364 stars today</span>
-                    </p>
-                    <p class="history">First seen: February 22, 2026 | Streak: 2d</p>
-                    <div class="ai-summary">
-                        <h4>Analysis</h4>
-                        <p>The `huggingface/skills` repository provides a standardized collection of modular instruction sets, scripts, and resources designed to empower AI coding agents to perform specific machine learning and Hugging Face Hub tasks. By utilizing a &quot;Skill&quot; architecture—where each directory contains a `SKILL.md` file with YAML-based guidance—the project ensures interoperability across major development tools like Claude Code, Cursor, the Gemini CLI, and OpenAI Codex. This modular design allows agents to dynamically load relevant operational instructions for tasks ranging from dataset management and model training to infrastructure orchestration and research publication.</p>
+<body id="top">
+  <header class="masthead">
+    <div class="masthead-nav">
+      <a href="../../">Index</a>
+      <a href="../">Calendar</a>
+      <a href="classic.html">Classic view</a>
+    </div>
+    <h1 class="frnc">Ten stories, before your coffee.</h1>
+    <div class="issue-line">
+      <span>Vol. I</span>
+      <span>February 23, 2026</span>
+      <span>GitHub Daily Trending</span>
+    </div>
+  </header>
+  <section id="story-1" class="spread arc-agent-foundry">
+    <div class="blueprint-bg"></div>
+    <div class="body">
+      <div class="kicker">Blueprint Series</div>
+      <h2 class="frnc">Standardizing Skills for Autonomous AI Agents</h2>
+      <p class="lede">Hugging Face Skills introduces a modular YAML-based architecture to bridge the gap between AI agents and machine learning infrastructure. By defining specific operation sets, it enables seamless orchestration across tools like Claude Code and Cursor.</p>
+      <div class="ctas">
+        <a href="https://github.com/huggingface/skills" class="btn-read" target="_blank">Deploy →</a>
+        <a href="#dossier-1" class="btn-dossier">Analysis ↓</a>
+      </div>
+    </div>
+  </section>
+  <section id="story-2" class="spread arc-privacy-shield">
+    <div class="shield-glitch"></div>
+    <div class="body">
+      <div class="kicker">Security Audit</div>
+      <h2 class="frnc">PentAGI Automates Offensive Security Operations</h2>
+      <p class="lede">This platform deploys multi-agent intelligence into isolated Docker sandboxes to execute professional-grade penetration testing. It secures the vulnerability discovery process by anchoring automated actions in a high-performance, persistent knowledge graph.</p>
+      <div class="ctas">
+        <a href="https://github.com/vxcontrol/pentagi" class="btn-read" target="_blank">Secure →</a>
+        <a href="#dossier-2" class="btn-dossier">Analysis ↓</a>
+      </div>
+    </div>
+  </section>
+  <section id="story-3" class="spread arc-terminal-utility">
+    <div class="crt-lines"></div>
+    <div class="body">
+      <div class="kicker">Developer Tools</div>
+      <h2 class="frnc">Claude Code Brings Natural Language to the CLI</h2>
+      <p class="lede">Forget context switching; this interface embeds advanced reasoning directly into your terminal environment. It handles complex Git operations and codebase analysis, keeping your focus where the code lives.</p>
+      <div class="ctas">
+        <a href="https://github.com/anthropics/claude-code" class="btn-read" target="_blank">Execute →</a>
+        <a href="#dossier-3" class="btn-dossier">Analysis ↓</a>
+      </div>
+    </div>
+  </section>
+  <section id="story-4" class="spread arc-library-archive">
+    <div class="parchment"></div>
+    <div class="body">
+      <div class="kicker">Research Vault</div>
+      <h2 class="frnc">Cataloging the System Prompts of Modern AI</h2>
+      <p class="lede">This extensive repository archives over 30,000 lines of proprietary configuration data from leading AI coding assistants. It provides a scholarly look into the behavioral frameworks and logic that govern today&#x27;s top-tier development agents.</p>
+      <div class="ctas">
+        <a href="https://github.com/x1xhlol/system-prompts-and-models-of-ai-tools" class="btn-read" target="_blank">Study →</a>
+        <a href="#dossier-4" class="btn-dossier">Analysis ↓</a>
+      </div>
+    </div>
+  </section>
+  <section id="story-5" class="spread arc-ui-lab">
+    <div class="lab-gradient"></div>
+    <div class="body">
+      <div class="kicker">Frontend Focus</div>
+      <h2 class="frnc">Streaming Web Experiences with Stremio</h2>
+      <p class="lede">Stremio-web brings high-performance media consumption to the browser with a clean, component-driven architecture. Its focus on fluid user interfaces keeps the experience vibrant and responsive for modern web users.</p>
+      <div class="ctas">
+        <a href="https://github.com/Stremio/stremio-web" class="btn-read" target="_blank">Explore →</a>
+        <a href="#dossier-5" class="btn-dossier">Analysis ↓</a>
+      </div>
+    </div>
+  </section>
+  <section id="story-6" class="spread arc-data-pipeline">
+    <div class="pipeline-streams"></div>
+    <div class="body">
+      <div class="kicker">Data Streams</div>
+      <h2 class="frnc">OpenBB Unified Infrastructure for Financial Intelligence</h2>
+      <p class="lede">Connect once and consume financial data anywhere through this robust, modular backend designed for high-throughput analysis. It pipes raw market information directly into AI agents and custom dashboards, simplifying complex data integration workflows.</p>
+      <div class="ctas">
+        <a href="https://github.com/OpenBB-finance/OpenBB" class="btn-read" target="_blank">Trace →</a>
+        <a href="#dossier-6" class="btn-dossier">Analysis ↓</a>
+      </div>
+    </div>
+  </section>
+  <section id="story-7" class="spread arc-stat-hero">
+    <div class="numeral">3.8K</div>
+    <div class="body">
+      <div class="kicker">Milestones</div>
+      <h2 class="frnc">Cloudflare Agents Push the Limits of Connectivity</h2>
+      <p class="lede">Cloudflare is expanding its edge infrastructure to support the next generation of distributed AI agents. The scale of this initiative highlights a significant shift toward low-latency, globally distributed intelligence.</p>
+      <div class="ctas">
+        <a href="https://github.com/cloudflare/agents" class="btn-read" target="_blank">Read →</a>
+        <a href="#dossier-7" class="btn-dossier">Full analysis ↓</a>
+      </div>
+    </div>
+  </section>
+  <section id="story-8" class="spread arc-system-core">
+    <div class="concrete"></div>
+    <div class="body">
+      <div class="kicker">Core Logic</div>
+      <h2 class="frnc">GitNexus Maps Local Codebases for AI Awareness</h2>
+      <p class="lede">GitNexus optimizes code intelligence by parsing dependencies into a high-performance local database. It avoids the latency of external cloud processing, maintaining raw speed and total visibility within the developer&#x27;s machine.</p>
+      <div class="ctas">
+        <a href="https://github.com/abhigyanpatwari/GitNexus" class="btn-read" target="_blank">Inspect →</a>
+        <a href="#dossier-8" class="btn-dossier">Analysis ↓</a>
+      </div>
+    </div>
+  </section>
+  <section id="story-9" class="spread arc-enterprise-engine">
+    <div class="engine-blue"></div>
+    <div class="body">
+      <div class="kicker">Scalable Systems</div>
+      <h2 class="frnc">FossFLOW Orchestrates Complex Open Source Workflows</h2>
+      <p class="lede">Designed for reliability, FossFLOW provides the structural foundation necessary for scaling modern open-source initiatives. It delivers a modern, airy architecture that keeps backend services consistent and dependable under high load.</p>
+      <div class="ctas">
+        <a href="https://github.com/stan-smith/FossFLOW" class="btn-read" target="_blank">Scale →</a>
+        <a href="#dossier-9" class="btn-dossier">Analysis ↓</a>
+      </div>
+    </div>
+  </section>
+  <section id="dossier" class="dossier">
+    <div class="dossier-head">
+      <div class="tagline">Appendix</div>
+      <h2>The Dossier</h2>
+      <p class="intro">Full analysis and reactions for today's ten stories. <a href="#top">↑ Back to the edition</a></p>
+    </div>
+    <article id="dossier-1" class="dossier-entry">
+      <div class="dossier-meta">N<sup>o</sup> 01 &nbsp;·&nbsp; Agent Foundry &nbsp;·&nbsp; Blueprint Series</div>
+      <h3>Untitled</h3>
+      <p class="dossier-source">
+        <a href="https://github.com/huggingface/skills" target="_blank" rel="noopener">github.com</a>
+        &nbsp;·&nbsp; 2,930 stars &nbsp;·&nbsp; 0 stars today
+        
+      </p>
+      <h4>Analysis</h4>
+      <p>The `huggingface/skills` repository provides a standardized collection of modular instruction sets, scripts, and resources designed to empower AI coding agents to perform specific machine learning and Hugging Face Hub tasks. By utilizing a &quot;Skill&quot; architecture—where each directory contains a `SKILL.md` file with YAML-based guidance—the project ensures interoperability across major development tools like Claude Code, Cursor, the Gemini CLI, and OpenAI Codex. This modular design allows agents to dynamically load relevant operational instructions for tasks ranging from dataset management and model training to infrastructure orchestration and research publication.</p>
 <p>This project is highly valuable for AI engineers, ML researchers, and developers who rely on automated coding agents to streamline their Hugging Face workflows. By reducing the need for manual prompt engineering, it enables users to seamlessly delegate complex operations, such as fine-tuning models or managing dataset pipelines, to their preferred coding environment. The repository is trending because it addresses the growing demand for &quot;agentic&quot; workflows, offering a standardized, extensible framework that bridges the gap between sophisticated AI tools and the Hugging Face ecosystem.</p>
-                    </div>
-                </div>
-            </section>
-
-            <section class="repo" data-seen-before="1"
-                     data-share-title="vxcontrol/pentagi"
-                     data-share-url="https://github.com/vxcontrol/pentagi">
-                <div class="repo-header-row">
-                    <h3>2. <a href="https://github.com/vxcontrol/pentagi" target="_blank" rel="noopener noreferrer">vxcontrol/pentagi</a> <span class="seen-badge">Not new today</span></h3>
-                    <div class="header-buttons">
-                        <button type="button" class="discuss-btn" aria-label="Discuss with AI" title="Discuss with AI">&#x1F4AC;</button>
-                        <button type="button" class="repo-toggle" aria-expanded="true">Hide details</button>
-                    </div>
-                </div>
-                <div class="repo-body">
-                    <p class="description">✨ Fully autonomous AI Agents system capable of performing complex penetration testing tasks</p>
-                    <p class="meta">
-                        <span class="language">Go</span> |
-                        <span class="stars">7,289</span>
-                        | <span class="today">1,579 stars today</span>
-                    </p>
-                    <p class="history">First seen: February 21, 2026 | Streak: 3d</p>
-                    <div class="ai-summary">
-                        <h4>Analysis</h4>
-                        <p>PentAGI is an autonomous, AI-driven penetration testing platform designed to automate complex security assessments within isolated, sandboxed Docker environments. The system utilizes a multi-agent architecture—delegating tasks among specialized researchers, developers, and executors—while integrating over 20 professional security tools like Nmap, Metasploit, and SQLmap. To enhance decision-making and reliability, the platform leverages a smart memory system, Neo4j-based knowledge graphs, and persistent vector storage, all managed through a scalable, microservices-oriented backend.</p>
+      
+    </article>
+    <article id="dossier-2" class="dossier-entry">
+      <div class="dossier-meta">N<sup>o</sup> 02 &nbsp;·&nbsp; Privacy Shield &nbsp;·&nbsp; Security Audit</div>
+      <h3>Untitled</h3>
+      <p class="dossier-source">
+        <a href="https://github.com/vxcontrol/pentagi" target="_blank" rel="noopener">github.com</a>
+        &nbsp;·&nbsp; 7,289 stars &nbsp;·&nbsp; 0 stars today
+        
+      </p>
+      <h4>Analysis</h4>
+      <p>PentAGI is an autonomous, AI-driven penetration testing platform designed to automate complex security assessments within isolated, sandboxed Docker environments. The system utilizes a multi-agent architecture—delegating tasks among specialized researchers, developers, and executors—while integrating over 20 professional security tools like Nmap, Metasploit, and SQLmap. To enhance decision-making and reliability, the platform leverages a smart memory system, Neo4j-based knowledge graphs, and persistent vector storage, all managed through a scalable, microservices-oriented backend.</p>
 <p>This project is highly beneficial for information security professionals, ethical hackers, and security researchers who require a sophisticated, self-hosted solution to streamline and scale vulnerability discovery. It is currently trending because it represents the cutting edge of &quot;Agentic AI,&quot; moving beyond simple chatbots to perform complex, multi-step real-world actions. By providing comprehensive reporting, real-time observability through Grafana and Langfuse, and support for a wide array of LLM providers, PentAGI offers a powerful framework for those seeking to modernize their security testing workflows.</p>
-                    </div>
-                </div>
-            </section>
-
-            <section class="repo" data-seen-before="1"
-                     data-share-title="anthropics/claude-code"
-                     data-share-url="https://github.com/anthropics/claude-code">
-                <div class="repo-header-row">
-                    <h3>3. <a href="https://github.com/anthropics/claude-code" target="_blank" rel="noopener noreferrer">anthropics/claude-code</a> <span class="seen-badge">Not new today</span></h3>
-                    <div class="header-buttons">
-                        <button type="button" class="discuss-btn" aria-label="Discuss with AI" title="Discuss with AI">&#x1F4AC;</button>
-                        <button type="button" class="repo-toggle" aria-expanded="true">Hide details</button>
-                    </div>
-                </div>
-                <div class="repo-body">
-                    <p class="description">Claude Code is an agentic coding tool that lives in your terminal, understands your codebase, and helps you code faster by executing routine tasks, explaining complex code, and handling git workflows - all through natural language commands.</p>
-                    <p class="meta">
-                        <span class="language">Shell</span> |
-                        <span class="stars">69,081</span>
-                        | <span class="today">503 stars today</span>
-                    </p>
-                    <p class="history">First seen: February 22, 2026 | Streak: 2d</p>
-                    <div class="ai-summary">
-                        <h4>Analysis</h4>
-                        <p>Claude Code is an agentic command-line interface designed to accelerate software development by allowing users to interact with their local codebase using natural language. It performs a variety of complex technical tasks, including explaining existing code, executing routine programming workflows, and managing Git operations directly from the terminal. Technically, the tool functions as an intelligent assistant that processes user intent to perform file-level operations and codebase analysis, and it supports extensibility through a dedicated plugin architecture for custom commands.</p>
+      
+    </article>
+    <article id="dossier-3" class="dossier-entry">
+      <div class="dossier-meta">N<sup>o</sup> 03 &nbsp;·&nbsp; Terminal Utility &nbsp;·&nbsp; Developer Tools</div>
+      <h3>Untitled</h3>
+      <p class="dossier-source">
+        <a href="https://github.com/anthropics/claude-code" target="_blank" rel="noopener">github.com</a>
+        &nbsp;·&nbsp; 69,081 stars &nbsp;·&nbsp; 0 stars today
+        
+      </p>
+      <h4>Analysis</h4>
+      <p>Claude Code is an agentic command-line interface designed to accelerate software development by allowing users to interact with their local codebase using natural language. It performs a variety of complex technical tasks, including explaining existing code, executing routine programming workflows, and managing Git operations directly from the terminal. Technically, the tool functions as an intelligent assistant that processes user intent to perform file-level operations and codebase analysis, and it supports extensibility through a dedicated plugin architecture for custom commands.</p>
 <p>This project is primarily intended for professional developers and engineers seeking to streamline their daily workflows and reduce the cognitive load associated with repetitive coding tasks. It is currently trending because it integrates Anthropic&#x27;s advanced AI models directly into the developer&#x27;s native environment, effectively bridging the gap between high-level reasoning and low-level code execution. By automating tedious processes and offering a seamless, terminal-first experience, Claude Code empowers teams to maintain higher velocity and focus on architectural challenges rather than boilerplate maintenance.</p>
-                    </div>
-                </div>
-            </section>
-
-            <section class="repo" data-seen-before="0"
-                     data-share-title="x1xhlol/system-prompts-and-models-of-ai-tools"
-                     data-share-url="https://github.com/x1xhlol/system-prompts-and-models-of-ai-tools">
-                <div class="repo-header-row">
-                    <h3>4. <a href="https://github.com/x1xhlol/system-prompts-and-models-of-ai-tools" target="_blank" rel="noopener noreferrer">x1xhlol/system-prompts-and-models-of-ai-tools</a> </h3>
-                    <div class="header-buttons">
-                        <button type="button" class="discuss-btn" aria-label="Discuss with AI" title="Discuss with AI">&#x1F4AC;</button>
-                        <button type="button" class="repo-toggle" aria-expanded="true">Hide details</button>
-                    </div>
-                </div>
-                <div class="repo-body">
-                    <p class="description">FULL Augment Code, Claude Code, Cluely, CodeBuddy, Comet, Cursor, Devin AI, Junie, Kiro, Leap.new, Lovable, Manus, NotionAI, Orchids.app, Perplexity, Poke, Qoder, Replit, Same.dev, Trae, Traycer AI, VSCode Agent, Warp.dev, Windsurf, Xcode, Z.ai Code, Dia &amp; v0. (And other Open Sourced) System Prompts, Internal Tools &amp; AI Models</p>
-                    <p class="meta">
-                        <span class="language">Unknown</span> |
-                        <span class="stars">118,195</span>
-                        | <span class="today">1,134 stars today</span>
-                    </p>
-                    <p class="history">First seen: February 23, 2026 | Streak: 1d</p>
-                    <div class="ai-summary">
-                        <h4>Analysis</h4>
-                        <p>The `system-prompts-and-models-of-ai-tools` repository serves as a comprehensive, crowdsourced archive documenting the internal system prompts, agent architectures, and structural configurations of popular AI coding assistants and platforms. By aggregating over 30,000 lines of proprietary configuration data from tools like Cursor, Windsurf, Devin AI, and v0, the project provides transparency into how these agents perceive their environments and execute complex tasks. Technically, it acts as an observational database that decompiles or extracts the underlying instructional logic, allowing developers to study the behavioral frameworks that govern modern AI-driven development tools.</p>
+      
+    </article>
+    <article id="dossier-4" class="dossier-entry">
+      <div class="dossier-meta">N<sup>o</sup> 04 &nbsp;·&nbsp; The Library &nbsp;·&nbsp; Research Vault</div>
+      <h3>Untitled</h3>
+      <p class="dossier-source">
+        <a href="https://github.com/x1xhlol/system-prompts-and-models-of-ai-tools" target="_blank" rel="noopener">github.com</a>
+        &nbsp;·&nbsp; 118,195 stars &nbsp;·&nbsp; 0 stars today
+        
+      </p>
+      <h4>Analysis</h4>
+      <p>The `system-prompts-and-models-of-ai-tools` repository serves as a comprehensive, crowdsourced archive documenting the internal system prompts, agent architectures, and structural configurations of popular AI coding assistants and platforms. By aggregating over 30,000 lines of proprietary configuration data from tools like Cursor, Windsurf, Devin AI, and v0, the project provides transparency into how these agents perceive their environments and execute complex tasks. Technically, it acts as an observational database that decompiles or extracts the underlying instructional logic, allowing developers to study the behavioral frameworks that govern modern AI-driven development tools.</p>
 <p>This repository is primarily targeted at AI researchers, software engineers, and security professionals who wish to understand the prompt engineering techniques and decision-making logic powering top-tier AI models. It is trending because it offers developers an unprecedented look into the &quot;black box&quot; of commercial AI agents, which is invaluable for those looking to build their own systems, improve model predictability, or conduct security audits on prompt leakage. Furthermore, the repository serves as a cautionary resource for AI startups, highlighting the critical importance of securing system instructions against unauthorized exposure.</p>
-                    </div>
-                </div>
-            </section>
-
-            <section class="repo" data-seen-before="1"
-                     data-share-title="Stremio/stremio-web"
-                     data-share-url="https://github.com/Stremio/stremio-web">
-                <div class="repo-header-row">
-                    <h3>5. <a href="https://github.com/Stremio/stremio-web" target="_blank" rel="noopener noreferrer">Stremio/stremio-web</a> <span class="seen-badge">Not new today</span></h3>
-                    <div class="header-buttons">
-                        <button type="button" class="discuss-btn" aria-label="Discuss with AI" title="Discuss with AI">&#x1F4AC;</button>
-                        <button type="button" class="repo-toggle" aria-expanded="true">Hide details</button>
-                    </div>
-                </div>
-                <div class="repo-body">
-                    <p class="description">Stremio - Freedom to Stream</p>
-                    <p class="meta">
-                        <span class="language">JavaScript</span> |
-                        <span class="stars">9,763</span>
-                        | <span class="today">247 stars today</span>
-                    </p>
-                    <p class="history">First seen: February 22, 2026 | Streak: 2d</p>
-                    <div class="ai-summary">
-                        <h4>Analysis</h4>
-                        <p><em>Summary not available.</em></p>
-                    </div>
-                </div>
-            </section>
-
-            <section class="repo" data-seen-before="0"
-                     data-share-title="OpenBB-finance/OpenBB"
-                     data-share-url="https://github.com/OpenBB-finance/OpenBB">
-                <div class="repo-header-row">
-                    <h3>6. <a href="https://github.com/OpenBB-finance/OpenBB" target="_blank" rel="noopener noreferrer">OpenBB-finance/OpenBB</a> </h3>
-                    <div class="header-buttons">
-                        <button type="button" class="discuss-btn" aria-label="Discuss with AI" title="Discuss with AI">&#x1F4AC;</button>
-                        <button type="button" class="repo-toggle" aria-expanded="true">Hide details</button>
-                    </div>
-                </div>
-                <div class="repo-body">
-                    <p class="description">Financial data platform for analysts, quants and AI agents.</p>
-                    <p class="meta">
-                        <span class="language">Python</span> |
-                        <span class="stars">61,080</span>
-                        | <span class="today">188 stars today</span>
-                    </p>
-                    <p class="history">First seen: February 23, 2026 | Streak: 1d</p>
-                    <div class="ai-summary">
-                        <h4>Analysis</h4>
-                        <p>The OpenBB platform serves as an open-source data infrastructure layer designed to streamline the integration of public and proprietary financial data into diverse applications. Through its &quot;connect once, consume everywhere&quot; architecture, it consolidates data sources and exposes them via a Python SDK, CLI, REST APIs, and MCP servers for AI agents. Technically, it functions as a modular backend that can be hosted locally via FastAPI, enabling seamless data flow between raw financial feeds and high-level user interfaces like the OpenBB Workspace or custom research environments.</p>
+      
+    </article>
+    <article id="dossier-5" class="dossier-entry">
+      <div class="dossier-meta">N<sup>o</sup> 05 &nbsp;·&nbsp; UI Lab &nbsp;·&nbsp; Frontend Focus</div>
+      <h3>Untitled</h3>
+      <p class="dossier-source">
+        <a href="https://github.com/Stremio/stremio-web" target="_blank" rel="noopener">github.com</a>
+        &nbsp;·&nbsp; 9,763 stars &nbsp;·&nbsp; 0 stars today
+        
+      </p>
+      <h4>Analysis</h4>
+      <p class="muted"><em>Analysis not available.</em></p>
+      
+    </article>
+    <article id="dossier-6" class="dossier-entry">
+      <div class="dossier-meta">N<sup>o</sup> 06 &nbsp;·&nbsp; Data Pipeline &nbsp;·&nbsp; Data Streams</div>
+      <h3>Untitled</h3>
+      <p class="dossier-source">
+        <a href="https://github.com/OpenBB-finance/OpenBB" target="_blank" rel="noopener">github.com</a>
+        &nbsp;·&nbsp; 61,080 stars &nbsp;·&nbsp; 0 stars today
+        
+      </p>
+      <h4>Analysis</h4>
+      <p>The OpenBB platform serves as an open-source data infrastructure layer designed to streamline the integration of public and proprietary financial data into diverse applications. Through its &quot;connect once, consume everywhere&quot; architecture, it consolidates data sources and exposes them via a Python SDK, CLI, REST APIs, and MCP servers for AI agents. Technically, it functions as a modular backend that can be hosted locally via FastAPI, enabling seamless data flow between raw financial feeds and high-level user interfaces like the OpenBB Workspace or custom research environments.</p>
 <p>This platform is highly valuable for data engineers, quants, and financial analysts who require a unified, scalable pipeline for complex market analysis and AI-driven workflows. It is gaining significant traction because it lowers the barrier to entry for building sophisticated financial tools, effectively bridging the gap between raw data providers and modern AI-powered research dashboards. By simplifying the technical complexities of data integration, OpenBB empowers developers to rapidly deploy robust financial solutions that serve a wide array of professional and automated use cases.</p>
-                    </div>
-                </div>
-            </section>
-
-            <section class="repo" data-seen-before="0"
-                     data-share-title="cloudflare/agents"
-                     data-share-url="https://github.com/cloudflare/agents">
-                <div class="repo-header-row">
-                    <h3>7. <a href="https://github.com/cloudflare/agents" target="_blank" rel="noopener noreferrer">cloudflare/agents</a> </h3>
-                    <div class="header-buttons">
-                        <button type="button" class="discuss-btn" aria-label="Discuss with AI" title="Discuss with AI">&#x1F4AC;</button>
-                        <button type="button" class="repo-toggle" aria-expanded="true">Hide details</button>
-                    </div>
-                </div>
-                <div class="repo-body">
-                    <p class="description">Build and deploy AI Agents on Cloudflare</p>
-                    <p class="meta">
-                        <span class="language">TypeScript</span> |
-                        <span class="stars">3,807</span>
-                        | <span class="today">257 stars today</span>
-                    </p>
-                    <p class="history">First seen: February 23, 2026 | Streak: 1d</p>
-                    <div class="ai-summary">
-                        <h4>Analysis</h4>
-                        <p><em>Summary not available.</em></p>
-                    </div>
-                </div>
-            </section>
-
-            <section class="repo" data-seen-before="1"
-                     data-share-title="abhigyanpatwari/GitNexus"
-                     data-share-url="https://github.com/abhigyanpatwari/GitNexus">
-                <div class="repo-header-row">
-                    <h3>8. <a href="https://github.com/abhigyanpatwari/GitNexus" target="_blank" rel="noopener noreferrer">abhigyanpatwari/GitNexus</a> <span class="seen-badge">Not new today</span></h3>
-                    <div class="header-buttons">
-                        <button type="button" class="discuss-btn" aria-label="Discuss with AI" title="Discuss with AI">&#x1F4AC;</button>
-                        <button type="button" class="repo-toggle" aria-expanded="true">Hide details</button>
-                    </div>
-                </div>
-                <div class="repo-body">
-                    <p class="description">GitNexus: The Zero-Server Code Intelligence Engine - GitNexus is a client-side knowledge graph creator that runs entirely in your browser. Drop in a GitHub repo or ZIP file, and get an interactive knowledge graph wit a built in Graph RAG Agent. Perfect for code exploration</p>
-                    <p class="meta">
-                        <span class="language">TypeScript</span> |
-                        <span class="stars">1,601</span>
-                        | <span class="today">424 stars today</span>
-                    </p>
-                    <p class="history">First seen: February 22, 2026 | Streak: 2d</p>
-                    <div class="ai-summary">
-                        <h4>Analysis</h4>
-                        <p>GitNexus is a zero-server code intelligence engine that transforms local codebases into interactive knowledge graphs for enhanced AI developer assistance. By leveraging Tree-sitter for code parsing and a persistent, high-performance database called LadybugDB, it indexes dependencies, call chains, and execution flows directly on the user&#x27;s machine. The tool operates as an MCP (Model Context Protocol) server, providing AI agents—such as Claude Code and Cursor—with deep architectural awareness, impact analysis, and automated refactoring skills without requiring external data transmission.</p>
+      
+    </article>
+    <article id="dossier-7" class="dossier-entry">
+      <div class="dossier-meta">N<sup>o</sup> 07 &nbsp;·&nbsp; Growth Stat &nbsp;·&nbsp; Milestones</div>
+      <h3>Untitled</h3>
+      <p class="dossier-source">
+        <a href="https://github.com/cloudflare/agents" target="_blank" rel="noopener">github.com</a>
+        &nbsp;·&nbsp; 3,807 stars &nbsp;·&nbsp; 0 stars today
+        
+      </p>
+      <h4>Analysis</h4>
+      <p class="muted"><em>Analysis not available.</em></p>
+      
+    </article>
+    <article id="dossier-8" class="dossier-entry">
+      <div class="dossier-meta">N<sup>o</sup> 08 &nbsp;·&nbsp; System Core &nbsp;·&nbsp; Core Logic</div>
+      <h3>Untitled</h3>
+      <p class="dossier-source">
+        <a href="https://github.com/abhigyanpatwari/GitNexus" target="_blank" rel="noopener">github.com</a>
+        &nbsp;·&nbsp; 1,601 stars &nbsp;·&nbsp; 0 stars today
+        
+      </p>
+      <h4>Analysis</h4>
+      <p>GitNexus is a zero-server code intelligence engine that transforms local codebases into interactive knowledge graphs for enhanced AI developer assistance. By leveraging Tree-sitter for code parsing and a persistent, high-performance database called LadybugDB, it indexes dependencies, call chains, and execution flows directly on the user&#x27;s machine. The tool operates as an MCP (Model Context Protocol) server, providing AI agents—such as Claude Code and Cursor—with deep architectural awareness, impact analysis, and automated refactoring skills without requiring external data transmission.</p>
 <p>This project is primarily designed for professional software engineers and AI-assisted development teams who struggle with the context limitations of standard LLMs. It is currently trending because it solves the &quot;blind edit&quot; problem, allowing agents to understand the broader implications of code changes and dependencies that otherwise result in broken features. By offering both a visual web-based explorer and a robust CLI for seamless editor integration, GitNexus significantly bridges the gap between static code analysis and reliable, agent-driven software development.</p>
-                    </div>
-                </div>
-            </section>
-
-            <section class="repo" data-seen-before="1"
-                     data-share-title="stan-smith/FossFLOW"
-                     data-share-url="https://github.com/stan-smith/FossFLOW">
-                <div class="repo-header-row">
-                    <h3>9. <a href="https://github.com/stan-smith/FossFLOW" target="_blank" rel="noopener noreferrer">stan-smith/FossFLOW</a> <span class="seen-badge">Not new today</span></h3>
-                    <div class="header-buttons">
-                        <button type="button" class="discuss-btn" aria-label="Discuss with AI" title="Discuss with AI">&#x1F4AC;</button>
-                        <button type="button" class="repo-toggle" aria-expanded="true">Hide details</button>
-                    </div>
-                </div>
-                <div class="repo-body">
-                    <p class="description">Make beautiful isometric infrastructure diagrams</p>
-                    <p class="meta">
-                        <span class="language">TypeScript</span> |
-                        <span class="stars">18,252</span>
-                        | <span class="today">340 stars today</span>
-                    </p>
-                    <p class="history">First seen: February 22, 2026 | Streak: 2d</p>
-                    <div class="ai-summary">
-                        <h4>Analysis</h4>
-                        <p><em>Summary not available.</em></p>
-                    </div>
-                </div>
-            </section>
-
-            </div>
-        </article>
-    </main>
-    <footer>
-        <p>Generated automatically. Data from <a href="https://github.com/trending">GitHub Trending</a>.</p>
-    </footer>
-
+      
+    </article>
+    <article id="dossier-9" class="dossier-entry">
+      <div class="dossier-meta">N<sup>o</sup> 09 &nbsp;·&nbsp; Enterprise Engine &nbsp;·&nbsp; Scalable Systems</div>
+      <h3>Untitled</h3>
+      <p class="dossier-source">
+        <a href="https://github.com/stan-smith/FossFLOW" target="_blank" rel="noopener">github.com</a>
+        &nbsp;·&nbsp; 18,252 stars &nbsp;·&nbsp; 0 stars today
+        
+      </p>
+      <h4>Analysis</h4>
+      <p class="muted"><em>Analysis not available.</em></p>
+      
+    </article>
+  </section>
+  <footer class="colophon">
+    <p class="sig">— that's the edition.</p>
+    <p class="meta">Set in Fraunces &amp; Inter · Compiled February 23, 2026</p>
+    <p class="classic-link"><a href="classic.html">Prefer the classic card view? →</a></p>
+  </footer>
 <script>
 (() => {
-    const readKey = "gtd:read_days:gh:v1";
-    const dayStr = "2026-02-23";
-
-    let stored = [];
-    try {
-        stored = JSON.parse(localStorage.getItem(readKey) || "[]");
-        if (!Array.isArray(stored)) {
-            stored = [];
-        }
-    } catch (_err) {
-        stored = [];
-    }
-
-    if (!stored.includes(dayStr)) {
-        stored.push(dayStr);
-        stored.sort();
-        localStorage.setItem(readKey, JSON.stringify(stored));
-    }
-
-    const collapseParam = new URLSearchParams(window.location.search).get("collapse_seen");
-    const collapseSeen = collapseParam === "0" ? false : true;
-
-    function setCollapsed(repoEl, collapsed) {
-        repoEl.classList.toggle("collapsed", collapsed);
-        const button = repoEl.querySelector(".repo-toggle");
-        if (button) {
-            button.textContent = collapsed ? "Show details" : "Hide details";
-            button.setAttribute("aria-expanded", String(!collapsed));
-        }
-    }
-
-    const repos = Array.from(document.querySelectorAll("section.repo[data-seen-before]"));
-
-    repos.forEach((repoEl) => {
-        const toggle = repoEl.querySelector(".repo-toggle");
-        if (!toggle) {
-            return;
-        }
-
-        toggle.addEventListener("click", () => {
-            setCollapsed(repoEl, !repoEl.classList.contains("collapsed"));
-        });
-    });
-
-    const collapseBtn = document.getElementById("collapse-seen-btn");
-    const expandBtn = document.getElementById("expand-all-btn");
-
-    if (collapseBtn) {
-        collapseBtn.addEventListener("click", () => {
-            repos.forEach((repoEl) => {
-                if (repoEl.dataset.seenBefore === "1") {
-                    setCollapsed(repoEl, true);
-                }
-            });
-        });
-    }
-
-    if (expandBtn) {
-        expandBtn.addEventListener("click", () => {
-            repos.forEach((repoEl) => setCollapsed(repoEl, false));
-        });
-    }
-
-    if (collapseSeen) {
-        repos.forEach((repoEl) => {
-            if (repoEl.dataset.seenBefore === "1") {
-                setCollapsed(repoEl, true);
-            }
-        });
-    }
-
-    // Discuss with AI button
-    const toast = document.createElement("div");
-    toast.className = "discuss-toast";
-    document.body.appendChild(toast);
-
-    function showToast(msg) {
-        toast.textContent = msg;
-        toast.classList.add("show");
-        setTimeout(() => toast.classList.remove("show"), 2500);
-    }
-
-    function buildGHMarkdown(card) {
-        const title = card.dataset.shareTitle || "";
-        const url = card.dataset.shareUrl || "";
-        const desc = card.querySelector(".description");
-        const meta = card.querySelector(".meta");
-        const analysis = card.querySelector(".ai-summary");
-        let md = "# " + title + "\n";
-        md += "Source: " + url;
-        if (meta) md += " | " + meta.textContent.trim();
-        md += "\n";
-        if (desc) md += "\n" + desc.textContent.trim() + "\n";
-        if (analysis) md += "\n## Analysis\n" + analysis.textContent.replace("Analysis", "").trim() + "\n";
-        return md;
-    }
-
-    document.querySelectorAll(".discuss-btn").forEach((btn) => {
-        btn.addEventListener("click", () => {
-            const card = btn.closest("section.repo");
-            if (!card) return;
-            const md = buildGHMarkdown(card);
-            const text = "I'd like to discuss this repo with you. Here's a summary:\n\n" + md;
-            const title = "Discuss: " + (card.dataset.shareTitle || "");
-            if (navigator.share) {
-                navigator.share({ title: title, text: text }).catch(() => {});
-            } else {
-                navigator.clipboard.writeText(text).then(
-                    () => showToast("Copied to clipboard \u2014 paste into your AI chat"),
-                    () => showToast("Failed to copy")
-                );
-            }
-        });
-    });
+  const key = "gtd:read_days:gh:v1";
+  const day = "2026-02-23";
+  let stored = [];
+  try {
+    stored = JSON.parse(localStorage.getItem(key) || "[]");
+    if (!Array.isArray(stored)) stored = [];
+  } catch (e) {}
+  if (!stored.includes(day)) {
+    stored.push(day);
+    stored.sort();
+    localStorage.setItem(key, JSON.stringify(stored));
+  }
 })();
 </script>
-
 </body>
 </html>
