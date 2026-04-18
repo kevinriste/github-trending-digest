@@ -883,9 +883,10 @@ CSS_TEMPLATE = r"""
   .drawer-content {
     background: rgba(0,0,0,0.04); padding: 3.5rem; border-left: 6px solid var(--ink);
     animation: slideDown 0.35s cubic-bezier(0.23, 1, 0.32, 1); margin-bottom: 2.5rem;
+    text-align: left;
   }
-  .drawer-content h4 { text-transform: uppercase; letter-spacing: 0.25em; font-size: 0.95rem; margin-top: 0; margin-bottom: 1.5rem; opacity: 0.6; font-weight: 800; }
-  .drawer-content p { font-family: 'Fraunces', serif; font-size: 1.35rem; line-height: 1.55; margin-bottom: 1.5rem; font-weight: 400; }
+  .drawer-content h4 { text-transform: uppercase; letter-spacing: 0.25em; font-size: 0.95rem; margin-top: 0; margin-bottom: 1.5rem; opacity: 0.6; font-weight: 800; text-align: left; }
+  .drawer-content p { font-family: 'Fraunces', serif; font-size: 1.15rem; line-height: 1.55; margin-bottom: 1.5rem; font-weight: 400; text-align: left; }
   .drawer-footer { margin-top: 2.5rem; border-top: 1px solid rgba(0,0,0,0.1); padding-top: 1.5rem; }
   .drawer-footer a { font-size: 0.9rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.15em; text-decoration: none; color: inherit; opacity: 0.5; }
   @keyframes slideDown { from { opacity: 0; transform: translateY(-15px); } to { opacity: 1; transform: translateY(0); } }
