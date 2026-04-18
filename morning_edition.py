@@ -1178,8 +1178,9 @@ def generate_morning_edition_html(
 
     spreads_html = "\n".join(spreads)
     v = get_git_sha()
-    pref_src = "../../preference.js" if config.id == "hn" else "../preference.js"
-    pref_src = f"{pref_src}?v={v}"
+    rel_prefix = "../.." if config.id == "hn" else ".."
+    pref_src = f"{rel_prefix}/preference.js?v={v}"
+    css_href = f"{rel_prefix}/morning.css?v={v}"
 
     return f"""<!DOCTYPE html>
 <html lang="en">
@@ -1190,7 +1191,7 @@ def generate_morning_edition_html(
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght,SOFT@0,9..144,300..900,0..100;1,9..144,300..900,0..100&family=Inter:ital,wght@0,100..900;1,100..900&family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap" rel="stylesheet">
-  <style>{CSS_TEMPLATE}</style>
+  <link rel="stylesheet" href="{css_href}">
 </head>
 <body id="top" data-gtd-edition="{config.id}" data-gtd-date="{day.isoformat()}">
 {_render_masthead(config, day)}
@@ -1215,6 +1216,14 @@ document.querySelectorAll('.analysis-drawer').forEach(drawer => {{
 </body>
 </html>"""
 
+def _write_shared_css() -> None:
+    css_path = REPO_ROOT / "docs" / "morning.css"
+    new_content = CSS_TEMPLATE.lstrip("\n")
+    if css_path.exists() and css_path.read_text() == new_content:
+        return
+    css_path.write_text(new_content)
+
+
 def generate_morning_edition(
     day: date,
     items: list[dict],
@@ -1224,7 +1233,9 @@ def generate_morning_edition(
     config = CONFIGS[source]
     output_dir = config.output_dir / day.isoformat()
     output_dir.mkdir(parents=True, exist_ok=True)
-    
+
+    _write_shared_css()
+
     index_file = output_dir / "index.html"
     assignments_file = output_dir / "assignments.json"
     
