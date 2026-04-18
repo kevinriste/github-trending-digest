@@ -1,18 +1,11 @@
 (function () {
   var STYLE_KEY = "gtd:style_pref";
-  var BANNER_DISMISSED_KEY = "gtd:banner_dismissed"; // session-scoped
 
   function getPref() {
     try { return localStorage.getItem(STYLE_KEY); } catch (e) { return null; }
   }
   function setPref(v) {
     try { localStorage.setItem(STYLE_KEY, v); } catch (e) {}
-  }
-  function isBannerDismissed() {
-    try { return sessionStorage.getItem(BANNER_DISMISSED_KEY) === "1"; } catch (e) { return false; }
-  }
-  function dismissBanner() {
-    try { sessionStorage.setItem(BANNER_DISMISSED_KEY, "1"); } catch (e) {}
   }
 
   // Classify page: "morning" (daily index), "classic" (daily classic), or "calendar"
@@ -23,7 +16,6 @@
     return "calendar";
   }
 
-  // URL of the sibling view for the current daily page.
   function siblingUrl(targetView) {
     var path = location.pathname;
     if (targetView === "classic") {
@@ -47,7 +39,11 @@
       ".gtd-pref-banner button.primary{background:#fff;color:#111;border-color:#fff;}",
       ".gtd-pref-banner button:hover{opacity:0.88;}",
       "@keyframes gtd-slide-in{from{opacity:0;transform:translateY(-8px);}to{opacity:1;transform:translateY(0);}}",
-      "@media (max-width:640px){.gtd-pref{top:8px;right:8px;}.gtd-pref-banner{right:8px;top:48px;max-width:calc(100% - 16px);}}"
+      "@media (max-width:640px){.gtd-pref{top:8px;right:8px;}.gtd-pref-banner{right:8px;top:48px;max-width:calc(100% - 16px);}}",
+      // Editorial overrides: shrink lede/analysis copy next to headlines by one step.
+      ".spread .lede{font-size:1.15rem !important;line-height:1.55 !important;}",
+      ".spread .story-meta{font-size:0.9rem !important;letter-spacing:0.22em !important;}",
+      "@media (min-width:900px){.spread .lede{font-size:1.2rem !important;}}"
     ].join("");
     var style = document.createElement("style");
     style.setAttribute("data-gtd-pref", "1");
@@ -69,6 +65,7 @@
     var view = detectView();
     if (view === "calendar") {
       updateCalendarLinks(choice);
+      updateCrossEditionLinks(choice);
       updateToggleActive(choice);
       return;
     }
@@ -84,7 +81,6 @@
   function mountToggle() {
     var view = detectView();
     var pref = getPref();
-    // Highlight current view if no pref set; otherwise highlight pref.
     var active = pref || (view === "classic" ? "classic" : "morning");
 
     var wrap = document.createElement("div");
@@ -110,7 +106,6 @@
     if (view !== "morning" && view !== "classic") return;
     var pref = getPref();
     if (!pref || pref === view) return;
-    if (isBannerDismissed()) return;
 
     var prefName = pref === "morning" ? "Morning Edition" : "classic view";
     var banner = document.createElement("div");
@@ -127,7 +122,6 @@
       location.href = siblingUrl(pref);
     });
     banner.querySelector('[data-action="stay"]').addEventListener("click", function () {
-      dismissBanner();
       banner.remove();
     });
   }
@@ -140,7 +134,6 @@
       var a = links[i];
       var href = a.getAttribute("href");
       if (!href) continue;
-      // Strip trailing index.html/classic.html and trailing slash to get a base.
       var base = href.replace(/(?:index\.html|classic\.html)$/, "").replace(/\/$/, "");
       if (pref === "classic") {
         a.setAttribute("href", base + "/classic.html");
@@ -150,15 +143,50 @@
     }
   }
 
+  // Rewrite cross-edition links (GH → HN or HN → GH) so clicking them lands on
+  // the user's preferred style on the other edition's daily page.
+  function updateCrossEditionLinks(pref) {
+    var curPath = location.pathname;
+    var curIsHn = /(^|\/)hn\//.test(curPath);
+    var anchors = document.querySelectorAll('a[href]');
+    for (var i = 0; i < anchors.length; i++) {
+      var a = anchors[i];
+      // Skip links with data-date (handled separately) and internal hash links.
+      if (a.hasAttribute("data-date")) continue;
+      var href = a.getAttribute("href");
+      if (!href || href.charAt(0) === "#") continue;
+      var resolved;
+      try { resolved = new URL(href, location.href).pathname; } catch (e) { continue; }
+      var targetIsHn = /(^|\/)hn\//.test(resolved);
+      if (targetIsHn === curIsHn) continue; // same edition or calendar-within-edition
+      var m = resolved.match(/\/(\d{4}-\d{2}-\d{2})\/(?:index\.html|classic\.html)?$/);
+      if (!m) continue;
+      // Preserve the original prefix style (../ or ../../) by working off href, not resolved.
+      var prefix = href.match(/^((?:\.\.\/)+|\/)/);
+      prefix = prefix ? prefix[0] : "";
+      // Rebuild href: take relative path minus style suffix, append preferred suffix.
+      var relTail = href
+        .replace(/^((?:\.\.\/)+|\/)/, "")
+        .replace(/(?:index\.html|classic\.html)$/, "")
+        .replace(/\/$/, "");
+      var suffix = pref === "classic" ? "/classic.html" : "/";
+      a.setAttribute("href", prefix + relTail + suffix);
+    }
+  }
+
   function boot() {
-    if (document.querySelector(".gtd-pref")) return; // guard against double-mount
+    if (document.querySelector(".gtd-pref")) return;
     injectCSS();
     mountToggle();
     var view = detectView();
+    var pref = getPref();
     if (view === "calendar") {
-      var pref = getPref();
-      if (pref) updateCalendarLinks(pref);
+      if (pref) {
+        updateCalendarLinks(pref);
+        updateCrossEditionLinks(pref);
+      }
     } else {
+      if (pref) updateCrossEditionLinks(pref);
       mountBanner();
     }
   }
