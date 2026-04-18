@@ -43,7 +43,14 @@
       // Editorial overrides: shrink lede/analysis copy next to headlines by one step.
       ".spread .lede{font-size:1.15rem !important;line-height:1.55 !important;}",
       ".spread .story-meta{font-size:0.9rem !important;letter-spacing:0.22em !important;}",
-      "@media (min-width:900px){.spread .lede{font-size:1.2rem !important;}}"
+      "@media (min-width:900px){.spread .lede{font-size:1.2rem !important;}}",
+      // Day navigation bar (prev/next daily page). Sticks to top of page.
+      ".gtd-daynav{position:sticky;top:0;z-index:9997;display:flex;align-items:center;justify-content:space-between;gap:12px;padding:10px 16px;background:rgba(15,15,15,0.9);color:#fff;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif;font-size:13px;font-weight:600;letter-spacing:0.08em;backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);border-bottom:1px solid rgba(255,255,255,0.08);}",
+      ".gtd-daynav-btn{display:inline-flex;align-items:center;padding:6px 14px;border-radius:999px;text-decoration:none;color:#fff;background:rgba(255,255,255,0.08);transition:background .15s ease,color .15s ease;white-space:nowrap;}",
+      ".gtd-daynav-btn:hover:not(.disabled){background:#fff;color:#111;}",
+      ".gtd-daynav-btn.disabled{opacity:0.32;cursor:default;pointer-events:none;background:transparent;border:1px solid rgba(255,255,255,0.12);}",
+      ".gtd-daynav-label{font-family:'JetBrains Mono',ui-monospace,SFMono-Regular,Menlo,monospace;font-size:12px;letter-spacing:0.16em;opacity:0.78;text-transform:uppercase;}",
+      "@media (max-width:640px){.gtd-daynav{font-size:12px;padding:8px 12px;}.gtd-daynav-btn{padding:5px 10px;}.gtd-daynav-label{display:none;}}"
     ].join("");
     var style = document.createElement("style");
     style.setAttribute("data-gtd-pref", "1");
@@ -73,6 +80,8 @@
       location.href = siblingUrl(choice);
     } else {
       updateToggleActive(choice);
+      updateCalendarLinks(choice);
+      updateCrossEditionLinks(choice);
       var banner = document.querySelector(".gtd-pref-banner");
       if (banner) banner.remove();
     }
@@ -174,21 +183,89 @@
     }
   }
 
+  // Locate dates.json relative to preference.js's own <script src="...">.
+  // This works across all page depths without hardcoding relative paths.
+  function datesManifestUrl() {
+    var scripts = document.querySelectorAll('script[src]');
+    for (var i = 0; i < scripts.length; i++) {
+      var src = scripts[i].src || "";
+      if (/(^|\/)preference\.js(\?|$)/.test(src)) {
+        try { return new URL("dates.json", src).href; } catch (e) { return null; }
+      }
+    }
+    return null;
+  }
+
+  function renderDayNav(edition, current, prev, next, pref) {
+    // `pref` (or current view) determines the style suffix appended to nav hrefs.
+    var styleSuffix = pref === "classic" ? "classic.html" : "";
+    function btn(dateStr, direction, fallback) {
+      var arrow = direction === "prev" ? "\u2190" : "\u2192";
+      var label = direction === "prev" ? (arrow + " " + (dateStr || fallback)) : ((dateStr || fallback) + " " + arrow);
+      if (!dateStr) {
+        return '<span class="gtd-daynav-btn ' + direction + ' disabled" aria-disabled="true">' + label + "</span>";
+      }
+      var href = "../" + dateStr + "/" + styleSuffix;
+      return '<a class="gtd-daynav-btn ' + direction + '" href="' + href + '" data-date="' + dateStr + '">' + label + "</a>";
+    }
+    var nav = document.createElement("nav");
+    nav.className = "gtd-daynav";
+    nav.setAttribute("aria-label", "Day navigation");
+    nav.dataset.gtdEdition = edition;
+    nav.dataset.gtdDate = current;
+    nav.innerHTML =
+      btn(prev, "prev", "earlier") +
+      '<span class="gtd-daynav-label">' + current + "</span>" +
+      btn(next, "next", "later");
+    return nav;
+  }
+
+  function mountDayNav() {
+    var body = document.body;
+    var edition = body.dataset.gtdEdition;
+    var current = body.dataset.gtdDate;
+    if (!edition || !current) return;
+    if (document.querySelector(".gtd-daynav")) return; // avoid double-mount
+    var url = datesManifestUrl();
+    if (!url) return;
+    fetch(url, { cache: "no-cache" }).then(function (r) {
+      if (!r.ok) throw new Error("manifest fetch failed");
+      return r.json();
+    }).then(function (manifest) {
+      var all = manifest[edition] || [];
+      var idx = all.indexOf(current);
+      var prev = "", next = "";
+      if (idx >= 0) {
+        if (idx > 0) prev = all[idx - 1];
+        if (idx < all.length - 1) next = all[idx + 1];
+      } else {
+        // Current day isn't in manifest (e.g., stale cache or unlisted page) —
+        // fall back to nearest neighbours by date comparison.
+        for (var i = 0; i < all.length; i++) {
+          if (all[i] < current) prev = all[i];
+          else if (all[i] > current && !next) { next = all[i]; break; }
+        }
+      }
+      var pref = getPref();
+      var view = detectView();
+      var style = pref || (view === "classic" ? "classic" : "morning");
+      var nav = renderDayNav(edition, current, prev, next, style);
+      body.insertBefore(nav, body.firstChild);
+    }).catch(function () {});
+  }
+
   function boot() {
     if (document.querySelector(".gtd-pref")) return;
     injectCSS();
     mountToggle();
+    mountDayNav();
     var view = detectView();
     var pref = getPref();
-    if (view === "calendar") {
-      if (pref) {
-        updateCalendarLinks(pref);
-        updateCrossEditionLinks(pref);
-      }
-    } else {
-      if (pref) updateCrossEditionLinks(pref);
-      mountBanner();
+    if (pref) {
+      updateCalendarLinks(pref);
+      updateCrossEditionLinks(pref);
     }
+    if (view !== "calendar") mountBanner();
   }
 
   if (document.readyState === "loading") {

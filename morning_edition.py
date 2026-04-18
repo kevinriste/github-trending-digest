@@ -1153,7 +1153,12 @@ CSS_TEMPLATE = r"""
   }
 """
 
-def generate_morning_edition_html(config: EditionConfig, day: date, items: list[dict], assignments: list[dict]) -> str:
+def generate_morning_edition_html(
+    config: EditionConfig,
+    day: date,
+    items: list[dict],
+    assignments: list[dict],
+) -> str:
     title = f"{config.name} — {day.strftime('%B %-d, %Y')}"
 
     spreads = []
@@ -1176,7 +1181,7 @@ def generate_morning_edition_html(config: EditionConfig, day: date, items: list[
   <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght,SOFT@0,9..144,300..900,0..100;1,9..144,300..900,0..100&family=Inter:ital,wght@0,100..900;1,100..900&family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap" rel="stylesheet">
   <style>{CSS_TEMPLATE}</style>
 </head>
-<body id="top">
+<body id="top" data-gtd-edition="{config.id}" data-gtd-date="{day.isoformat()}">
 {_render_masthead(config, day)}
 {spreads_html}
 {_render_dossier(config, items, assignments)}

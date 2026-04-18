@@ -504,6 +504,17 @@ def format_date_display(day: date) -> str:
     return day.strftime("%B %d, %Y")
 
 
+def write_dates_manifest(docs_dir: Path, gh_dates: list[date], hn_dates: list[date]) -> None:
+    """Write docs/dates.json — the source of truth preference.js uses to
+    populate each page's prev/next day navigation.
+    """
+    manifest = {
+        "gh": sorted({d.isoformat() for d in gh_dates}),
+        "hn": sorted({d.isoformat() for d in hn_dates}),
+    }
+    (docs_dir / "dates.json").write_text(json.dumps(manifest, separators=(",", ":")), encoding="utf-8")
+
+
 def extract_domain(url: str) -> str:
     """Extract hostname domain from URL."""
     if not url:
@@ -2119,7 +2130,12 @@ def _generate_gh_repo_cards(repos: list[dict], extra_css_class: str = "", show_r
     return cards
 
 
-def generate_gh_daily_page(repos: list[dict], day: date, hn_dates_set: set[str], slow_burners: list[dict] | None = None) -> str:
+def generate_gh_daily_page(
+    repos: list[dict],
+    day: date,
+    hn_dates_set: set[str],
+    slow_burners: list[dict] | None = None,
+) -> str:
     """Generate GitHub daily digest page HTML."""
     date_str = day.isoformat()
     date_display = format_date_display(day)
@@ -2151,7 +2167,7 @@ def generate_gh_daily_page(repos: list[dict], day: date, hn_dates_set: set[str],
     <title>GitHub Trending - {date_display}</title>
     <link rel="stylesheet" href="../style.css">
 </head>
-<body>
+<body data-gtd-edition="gh" data-gtd-date="{date_str}">
     <header>
         <h1>GitHub Trending Digest - {date_display}</h1>
         <nav>
@@ -2253,7 +2269,7 @@ def generate_hn_daily_page(items: list[dict], day: date, gh_dates_set: set[str])
     <title>Hacker News Digest - {date_display}</title>
     <link rel="stylesheet" href="../../style.css">
 </head>
-<body>
+<body data-gtd-edition="hn" data-gtd-date="{date_str}">
     <header>
         <h1>Hacker News Digest - {date_display}</h1>
         <nav>
@@ -3314,6 +3330,7 @@ def main() -> None:
         css = generate_css()
 
         save_files(run_day, gh_daily_html, gh_index_html, hn_daily_html, hn_index_html, css, gh_dates, hn_dates)
+        write_dates_manifest(DOCS_DIR, gh_dates, hn_dates)
 
         try:
             generate_morning_edition(run_day, gh_rows, source="gh", force_regenerate=True)
