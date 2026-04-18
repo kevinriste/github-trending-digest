@@ -40,6 +40,10 @@
       ".gtd-pref-banner button:hover{opacity:0.88;}",
       "@keyframes gtd-slide-in{from{opacity:0;transform:translateY(-8px);}to{opacity:1;transform:translateY(0);}}",
       "@media (max-width:640px){.gtd-pref{top:8px;right:8px;}.gtd-pref-banner{right:8px;top:48px;max-width:calc(100% - 16px);}}",
+      // When the day-nav is mounted, drop the pref toggle below it so the 'next →' button isn't hidden.
+      "body.gtd-has-daynav .gtd-pref{top:54px;}",
+      "body.gtd-has-daynav .gtd-pref-banner{top:102px;}",
+      "@media (max-width:640px){body.gtd-has-daynav .gtd-pref{top:44px;}body.gtd-has-daynav .gtd-pref-banner{top:84px;}}",
       // Editorial overrides: shrink lede/analysis copy next to headlines by one step.
       ".spread .lede{font-size:1.15rem !important;line-height:1.55 !important;}",
       ".spread .story-meta{font-size:0.9rem !important;letter-spacing:0.22em !important;}",
@@ -251,6 +255,7 @@
       var style = pref || (view === "classic" ? "classic" : "morning");
       var nav = renderDayNav(edition, current, prev, next, style);
       body.insertBefore(nav, body.firstChild);
+      body.classList.add("gtd-has-daynav");
     }).catch(function () {});
   }
 
