@@ -134,6 +134,29 @@ def retry_fetch(fn, max_attempts=3, base_delay=1.0):
 
 
 _github_token: str | None = None
+_git_sha: str | None = None
+
+
+def get_git_sha() -> str:
+    """Get current git SHA for cache busting, cached for the process lifetime."""
+    global _git_sha
+    if _git_sha is None:
+        try:
+            # Try to get SHA from git
+            repo_dir = Path(__file__).parent
+            result = subprocess.run(
+                ["git", "rev-parse", "--short", "HEAD"],
+                capture_output=True, text=True, timeout=5,
+                cwd=repo_dir
+            )
+            if result.returncode == 0:
+                _git_sha = result.stdout.strip()
+            else:
+                # Fallback to GITHUB_SHA env var
+                _git_sha = os.getenv("GITHUB_SHA", datetime.now().strftime("%Y%m%d%H%M"))[:7]
+        except Exception:
+            _git_sha = os.getenv("GITHUB_SHA", datetime.now().strftime("%Y%m%d%H%M"))[:7]
+    return _git_sha
 
 
 def get_github_token() -> str:
@@ -2159,13 +2182,14 @@ def generate_gh_daily_page(
         </article>
 """
 
+    v = get_git_sha()
     return f"""<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>GitHub Trending - {date_display}</title>
-    <link rel="stylesheet" href="../style.css">
+    <link rel="stylesheet" href="../style.css?v={v}">
 </head>
 <body data-gtd-edition="gh" data-gtd-date="{date_str}">
     <header>
@@ -2193,7 +2217,7 @@ def generate_gh_daily_page(
         <p>Generated automatically. Data from <a href="https://github.com/trending">GitHub Trending</a>.</p>
     </footer>
 {generate_gh_daily_script(date_str)}
-<script src="../preference.js" defer></script>
+<script src="../preference.js?v={v}" defer></script>
 </body>
 </html>
 """
@@ -2261,13 +2285,14 @@ def generate_hn_daily_page(items: list[dict], day: date, gh_dates_set: set[str])
             </section>
 """
 
+    v = get_git_sha()
     return f"""<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Hacker News Digest - {date_display}</title>
-    <link rel="stylesheet" href="../../style.css">
+    <link rel="stylesheet" href="../../style.css?v={v}">
 </head>
 <body data-gtd-edition="hn" data-gtd-date="{date_str}">
     <header>
@@ -2293,7 +2318,7 @@ def generate_hn_daily_page(items: list[dict], day: date, gh_dates_set: set[str])
         <p>Generated automatically. Data from <a href="https://news.ycombinator.com/">Hacker News</a>.</p>
     </footer>
 {generate_hn_daily_script(date_str)}
-<script src="../../preference.js" defer></script>
+<script src="../../preference.js?v={v}" defer></script>
 </body>
 </html>
 """
@@ -2304,13 +2329,14 @@ def generate_gh_index_page(gh_dates: list[date], hn_dates: list[date]) -> str:
     calendar_html = build_calendar_html(gh_dates)
     today = date.today().isoformat()
 
+    v = get_git_sha()
     return f"""<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>GitHub Trending Digest - {today}</title>
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="style.css?v={v}">
 </head>
 <body>
     <header>
@@ -2332,7 +2358,7 @@ def generate_gh_index_page(gh_dates: list[date], hn_dates: list[date]) -> str:
         </p>
     </footer>
 {generate_read_days_script(READ_DAYS_KEY_GH)}
-<script src="preference.js" defer></script>
+<script src="preference.js?v={v}" defer></script>
 </body>
 </html>
 """
@@ -2343,13 +2369,14 @@ def generate_hn_index_page(hn_dates: list[date], gh_dates: list[date]) -> str:
     calendar_html = build_calendar_html(hn_dates)
     today = date.today().isoformat()
 
+    v = get_git_sha()
     return f"""<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Hacker News Digest - {today}</title>
-    <link rel="stylesheet" href="../style.css">
+    <link rel="stylesheet" href="../style.css?v={v}">
 </head>
 <body>
     <header>
@@ -2371,7 +2398,7 @@ def generate_hn_index_page(hn_dates: list[date], gh_dates: list[date]) -> str:
         </p>
     </footer>
 {generate_read_days_script(READ_DAYS_KEY_HN)}
-<script src="../preference.js" defer></script>
+<script src="../preference.js?v={v}" defer></script>
 </body>
 </html>
 """

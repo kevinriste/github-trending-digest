@@ -18,6 +18,14 @@ from datetime import date
 from pathlib import Path
 from typing import Literal
 
+# Import get_git_sha for cache busting
+def get_git_sha():
+    try:
+        from trending_digest import get_git_sha as sha_fn
+        return sha_fn()
+    except ImportError:
+        return "latest"
+
 from google import genai
 
 REPO_ROOT = Path(__file__).parent
@@ -1168,7 +1176,9 @@ def generate_morning_edition_html(
         spreads.append(renderer(config, i, a, item))
 
     spreads_html = "\n".join(spreads)
+    v = get_git_sha()
     pref_src = "../../preference.js" if config.id == "hn" else "../preference.js"
+    pref_src = f"{pref_src}?v={v}"
 
     return f"""<!DOCTYPE html>
 <html lang="en">

@@ -10,6 +10,7 @@ from trending_digest import (
     generate_gh_daily_script,
     generate_summary_html,
     get_db_connection,
+    get_git_sha,
     get_or_generate_gh_summary,
     init_db,
     write_text,
@@ -70,6 +71,7 @@ def main():
         row["seen_before"] = False
 
     repo_cards = _generate_gh_repo_cards(rows)
+    v = get_git_sha()
 
     page_html = f"""<!DOCTYPE html>
 <html lang="en">
@@ -77,7 +79,7 @@ def main():
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Unsurfaced Weekly/Monthly Repos</title>
-    <link rel="stylesheet" href="../style.css">
+    <link rel="stylesheet" href="../style.css?v={v}">
 </head>
 <body>
     <header>
