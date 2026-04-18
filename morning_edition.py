@@ -281,14 +281,14 @@ def _render_analysis_drawer(config: EditionConfig, i: int, item: dict) -> str:
         analysis = raw_analysis.split("\n\n")[0].strip()
     else:
         analysis = raw_analysis
-        
+
     bullets = parse_bullets(item.get("comment_analysis") or "")
     analysis_parts = [p.strip() for p in analysis.split("\n\n") if p.strip()]
     analysis_html = "\n".join(f'<p>{_h(p)}</p>' for p in analysis_parts)
-    
+
     if not analysis_html:
         analysis_html = '<p class="muted"><em>Analysis not available.</em></p>'
-        
+
     if bullets:
         reactions_label = "Reader Reactions" if config.id == "hn" else "Insights"
         bullets_html = (
@@ -298,12 +298,26 @@ def _render_analysis_drawer(config: EditionConfig, i: int, item: dict) -> str:
     else:
         bullets_html = ""
 
+    repo_link_html = ""
+    if config.id == "gh":
+        repo_full_name = (item.get("name") or "").strip()
+        repo_url = (item.get("url") or "").strip()
+        if repo_full_name and repo_url:
+            repo_link_html = (
+                f'<p class="drawer-repo-link">'
+                f'<a href="{_h(repo_url)}" target="_blank" rel="noopener">{_h(repo_full_name)} ↗</a>'
+                f'</p>'
+            )
+
     return f"""
       <details class="analysis-drawer">
         <summary class="btn-dossier">[ Analysis + ]</summary>
         <div class="drawer-content">
+          {repo_link_html}
           <h4>Technical Analysis</h4>
+          <div class="drawer-analysis">
           {analysis_html}
+          </div>
           {bullets_html}
           <p class="drawer-footer"><a href="#dossier-{i}">View in Dossier ↓</a></p>
         </div>
@@ -311,10 +325,24 @@ def _render_analysis_drawer(config: EditionConfig, i: int, item: dict) -> str:
     """
 
 def _links(config: EditionConfig, item: dict, n: int) -> str:
-    """Primary outbound + collapsible drawer."""
+    """Primary outbound + share link + collapsible drawer."""
+    if config.id == "gh":
+        share_title = (item.get("name") or "").strip()
+    else:
+        share_title = (item.get("title") or "").strip()
+    share_url = (item.get("url") or item.get("discussion_url") or "").strip()
+    share_html = ""
+    if share_title and share_url:
+        share_html = (
+            f'<a class="read-more share-link" href="#"'
+            f' data-share-title="{_h(share_title)}"'
+            f' data-share-url="{_h(share_url)}"'
+            f'>Share →</a>'
+        )
     return (
         f'<div class="spread-links">'
         f'<a class="read-more" href="{_read_href(item)}" target="_blank" rel="noopener">Read →</a>'
+        f'{share_html}'
         f'{_render_analysis_drawer(config, n, item)}'
         f'</div>'
     )
@@ -886,6 +914,17 @@ CSS_TEMPLATE = r"""
     text-align: left;
   }
   .drawer-content h4 { text-transform: uppercase; letter-spacing: 0.25em; font-size: 0.95rem; margin-top: 0; margin-bottom: 1.5rem; opacity: 0.6; font-weight: 800; text-align: left; }
+  .drawer-repo-link { font-family: 'JetBrains Mono', ui-monospace, monospace; font-size: 0.9rem; margin: 0 0 1.5rem; letter-spacing: 0.02em; opacity: 0.75; }
+  .drawer-repo-link a { text-decoration: none; border-bottom: 1px solid currentColor; }
+  .share-link { cursor: pointer; }
+  .discuss-toast {
+    position: fixed; bottom: 2rem; left: 50%; transform: translateX(-50%);
+    background-color: #238636; color: #fff; padding: 0.75rem 1.5rem;
+    border-radius: 8px; font-size: 0.9rem; z-index: 1000;
+    opacity: 0; transition: opacity 0.3s; pointer-events: none;
+    font-family: 'Inter', system-ui, sans-serif;
+  }
+  .discuss-toast.show { opacity: 1; }
   .drawer-content p { font-family: 'Fraunces', serif; font-size: 1.15rem; line-height: 1.55; margin-bottom: 1.5rem; font-weight: 400; text-align: left; }
   .drawer-footer { margin-top: 2.5rem; border-top: 1px solid rgba(0,0,0,0.1); padding-top: 1.5rem; }
   .drawer-footer a { font-size: 0.9rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.15em; text-decoration: none; color: inherit; opacity: 0.5; }
@@ -1212,6 +1251,55 @@ document.querySelectorAll('.analysis-drawer').forEach(drawer => {{
     }}
   }});
 }});
+
+// Share link — native share or copy markdown to clipboard
+(function () {{
+  const links = document.querySelectorAll('.share-link');
+  if (!links.length) return;
+
+  const toast = document.createElement('div');
+  toast.className = 'discuss-toast';
+  document.body.appendChild(toast);
+
+  function showToast(msg) {{
+    toast.textContent = msg;
+    toast.classList.add('show');
+    setTimeout(() => toast.classList.remove('show'), 2500);
+  }}
+
+  function buildMarkdown(link, spread) {{
+    const title = link.dataset.shareTitle || '';
+    const url = link.dataset.shareUrl || '';
+    const meta = spread ? spread.querySelector('.story-meta') : null;
+    const lede = spread ? spread.querySelector('.lede') : null;
+    const analysis = spread ? spread.querySelector('.drawer-analysis') : null;
+    let md = '# ' + title + '\\n';
+    md += 'Source: ' + url;
+    if (meta) md += ' | ' + meta.textContent.trim();
+    md += '\\n';
+    if (lede) md += '\\n' + lede.textContent.trim() + '\\n';
+    if (analysis) md += '\\n## Analysis\\n' + analysis.textContent.trim() + '\\n';
+    return md;
+  }}
+
+  links.forEach((link) => {{
+    link.addEventListener('click', (e) => {{
+      e.preventDefault();
+      const spread = link.closest('section.spread');
+      const md = buildMarkdown(link, spread);
+      const text = "I'd like to discuss this with you. Here's a summary:\\n\\n" + md;
+      const title = 'Discuss: ' + (link.dataset.shareTitle || '');
+      if (navigator.share) {{
+        navigator.share({{ title: title, text: text }}).catch(() => {{}});
+      }} else {{
+        navigator.clipboard.writeText(text).then(
+          () => showToast('Copied to clipboard \\u2014 paste into your AI chat'),
+          () => showToast('Failed to copy')
+        );
+      }}
+    }});
+  }});
+}})();
 </script>
 </body>
 </html>"""
