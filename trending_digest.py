@@ -2797,6 +2797,14 @@ def git_commit_and_push() -> bool:
 
     today_str = datetime.now().strftime("%Y-%m-%d")
     subprocess.run(["git", "commit", "-m", f"Update digests for {today_str}"], cwd=repo_dir, check=True)
+    # Rebase on remote before pushing so we stay in sync with sibling workflows
+    # (e.g. cache-bust action commits to docs/). Prefer our freshly regenerated
+    # docs on conflict — any downstream rewrites will be reapplied by their workflows.
+    subprocess.run(
+        ["git", "pull", "--rebase", "--autostash", "-X", "theirs"],
+        cwd=repo_dir,
+        check=True,
+    )
     subprocess.run(["git", "push"], cwd=repo_dir, check=True)
     logging.info("Pushed generated docs changes")
     return True
