@@ -40,10 +40,12 @@
       ".gtd-pref-banner button:hover{opacity:0.88;}",
       "@keyframes gtd-slide-in{from{opacity:0;transform:translateY(-8px);}to{opacity:1;transform:translateY(0);}}",
       "@media (max-width:640px){.gtd-pref{top:8px;right:8px;}.gtd-pref-banner{right:8px;top:48px;max-width:calc(100% - 16px);}}",
-      // When the day-nav is mounted, drop the pref toggle below it so the 'next →' button isn't hidden.
-      "body.gtd-has-daynav .gtd-pref{top:54px;}",
-      "body.gtd-has-daynav .gtd-pref-banner{top:102px;}",
-      "@media (max-width:640px){body.gtd-has-daynav .gtd-pref{top:44px;}body.gtd-has-daynav .gtd-pref-banner{top:84px;}}",
+      // When the day-nav mounts, the toggle is moved inside it so they share one flex row.
+      // Reset its fixed positioning so it flows as a nav cell; keep the banner dropped below the nav.
+      ".gtd-daynav .gtd-pref{position:static;top:auto;right:auto;margin:0;}",
+      ".gtd-daynav .gtd-pref-toggle{box-shadow:none;background:rgba(255,255,255,0.08);}",
+      "body.gtd-has-daynav .gtd-pref-banner{top:64px;}",
+      "@media (max-width:640px){body.gtd-has-daynav .gtd-pref-banner{top:52px;}.gtd-daynav .gtd-pref-toggle{font-size:10px;}.gtd-daynav .gtd-pref-toggle button{padding:4px 10px;}}",
       // Editorial overrides: shrink lede/analysis copy next to headlines by one step.
       ".spread .lede{font-size:1.15rem !important;line-height:1.55 !important;}",
       ".spread .story-meta{font-size:0.9rem !important;letter-spacing:0.22em !important;}",
@@ -53,6 +55,7 @@
       ".gtd-daynav-btn{display:inline-flex;align-items:center;padding:6px 14px;border-radius:999px;text-decoration:none;color:#fff;background:rgba(255,255,255,0.08);transition:background .15s ease,color .15s ease;white-space:nowrap;}",
       ".gtd-daynav-btn:hover:not(.disabled){background:#fff;color:#111;}",
       ".gtd-daynav-btn.disabled{opacity:0.32;cursor:default;pointer-events:none;background:transparent;border:1px solid rgba(255,255,255,0.12);}",
+      ".gtd-daynav-right{display:flex;align-items:center;gap:10px;}",
       ".gtd-daynav-label{font-family:'JetBrains Mono',ui-monospace,SFMono-Regular,Menlo,monospace;font-size:12px;letter-spacing:0.16em;opacity:0.78;text-transform:uppercase;}",
       "@media (max-width:640px){.gtd-daynav{font-size:12px;padding:8px 12px;}.gtd-daynav-btn{padding:5px 10px;}.gtd-daynav-label{display:none;}}"
     ].join("");
@@ -220,7 +223,7 @@
     nav.innerHTML =
       btn(prev, "prev", "earlier") +
       '<span class="gtd-daynav-label">' + current + "</span>" +
-      btn(next, "next", "later");
+      '<div class="gtd-daynav-right">' + btn(next, "next", "later") + "</div>";
     return nav;
   }
 
@@ -256,6 +259,11 @@
       var nav = renderDayNav(edition, current, prev, next, style);
       body.insertBefore(nav, body.firstChild);
       body.classList.add("gtd-has-daynav");
+      // Absorb the pref toggle into the nav's right-side group so they share one row
+      // and can't overlap. Calendar pages (no nav) keep the fixed-position toggle.
+      var toggle = document.querySelector(".gtd-pref");
+      var rightGroup = nav.querySelector(".gtd-daynav-right");
+      if (toggle && rightGroup) rightGroup.appendChild(toggle);
     }).catch(function () {});
   }
 
