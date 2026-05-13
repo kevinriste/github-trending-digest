@@ -134,7 +134,7 @@ response = client.models.generate_content(
 
 When `file_path` is absent, use the existing text-only prompt path unchanged.
 
-Confirmed: `gemini-3.1-flash-lite-preview` supports `files.upload` and can read PDFs.
+Confirmed: `gemini-3.1-flash-lite` supports `files.upload` and can read PDFs.
 
 If the Gemini upload fails, fall back to the text-only path using the markitdown-extracted content.
 
