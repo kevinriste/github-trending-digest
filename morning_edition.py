@@ -27,10 +27,30 @@ def get_git_sha():
         return "latest"
 
 from google import genai
+from google.genai import types
+from pydantic import BaseModel
 
 REPO_ROOT = Path(__file__).parent
-MODEL = "gemini-3.1-flash-lite-preview"
+MODEL = "gemini-3.1-flash-lite"
 NUM_STORIES = 10
+
+
+class _EditorialItem(BaseModel):
+    """Response schema for one story's editorial assignment.
+
+    Passed to Gemini as a structured-output schema so the model uses
+    constrained decoding and cannot emit malformed JSON (e.g. an unquoted
+    pullquote value, which previously crashed pick_editorial and left the
+    HN page with no index.html -> 404).
+    """
+
+    rank: int
+    archetype_id: str
+    kicker: str
+    headline: str
+    lede: str
+    big_figure: str | None = None
+    pullquote: str | None = None
 
 # Shared LocalStorage keys (maintaining compatibility with existing read tracking)
 READ_DAYS_KEY_HN = "gtd:read_days:hn:v1"
@@ -211,7 +231,7 @@ For each of the ten stories, produce one JSON object with these fields:
 - "headline": a rewritten magazine-voice headline, 3-12 words. Prefer active voice, present tense, concrete. It may differ from the source title if it reads better, but it must honor the facts in the Analysis. No clickbait.
 - "lede": 2-3 sentences of editorial prose that sets up the story in the voice the archetype suggests ({config.prompt_voice}). Stay specific. No hype. No meta-commentary about the magazine.
 - "big_figure": only when archetype_id is "stat-hero"; otherwise null. A short display string such as "50%", "10,000", "$1B".
-- "pullquote": only when archetype_id is "editorial-pullquote"; otherwise null. One sentence phrased as display type. Do NOT include surrounding quotation marks.
+- "pullquote": only when archetype_id is "editorial-pullquote"; otherwise null. A JSON string holding one sentence phrased as display type. Do not put literal quotation-mark characters inside the sentence text (the JSON string quotes themselves are of course required).
 
 Return a JSON array of exactly ten objects, in rank order (rank 1 first, rank 10 last). Output nothing outside the JSON array. Do not wrap the output in a code fence.
 """
@@ -233,17 +253,24 @@ def _parse_response(raw: str) -> list[dict]:
         raise ValueError(f"expected {NUM_STORIES} objects, got {len(data)}")
     return data
 
+_EDITORIAL_GEN_CONFIG = types.GenerateContentConfig(
+    response_mime_type="application/json",
+    response_schema=list[_EditorialItem],
+)
+
 def pick_editorial(config: EditionConfig, items: list[dict]) -> list[dict]:
     prompt = _build_prompt(config, items)
     last_error = ""
-    for attempt in range(2):
+    for attempt in range(4):
         try:
-            response = _client().models.generate_content(model=MODEL, contents=prompt)
+            response = _client().models.generate_content(
+                model=MODEL, contents=prompt, config=_EDITORIAL_GEN_CONFIG
+            )
             return _parse_response(response.text)
         except Exception as exc:
             last_error = str(exc)
             logging.warning("Morning Edition LLM response invalid (attempt %d): %s", attempt + 1, exc)
-    raise RuntimeError(f"LLM did not produce a valid response after 2 attempts: {last_error}")
+    raise RuntimeError(f"LLM did not produce a valid response after 4 attempts: {last_error}")
 
 # ─────────────────────── Renderers ───────────────────────
 
@@ -1312,6 +1339,18 @@ def _write_shared_css() -> None:
     css_path.write_text(new_content)
 
 
+def _write_classic_redirect(index_file: Path) -> None:
+    """Write an index.html that redirects to the classic view in the same dir."""
+    index_file.write_text(
+        "<!doctype html>\n"
+        '<html lang="en"><head><meta charset="utf-8">\n'
+        '<meta http-equiv="refresh" content="0; url=classic.html">\n'
+        '<link rel="canonical" href="classic.html">\n'
+        "<title>Redirecting…</title></head>\n"
+        '<body><p>Redirecting to the <a href="classic.html">classic view</a>.</p></body></html>\n'
+    )
+
+
 def generate_morning_edition(
     day: date,
     items: list[dict],
@@ -1338,7 +1377,18 @@ def generate_morning_edition(
             
     if not assignments:
         logging.info("%s: calling Gemini for %s", config.name, day)
-        assignments = pick_editorial(config, items[:NUM_STORIES])
+        try:
+            assignments = pick_editorial(config, items[:NUM_STORIES])
+        except Exception as exc:
+            # Never leave the page without an index.html. The classic view
+            # (classic.html) is always written before this point, so fall back
+            # to redirecting there rather than 404-ing the published URL.
+            logging.error(
+                "%s: editorial generation failed for %s, writing classic-view fallback: %s",
+                config.name, day, exc,
+            )
+            _write_classic_redirect(index_file)
+            return str(index_file)
         with open(assignments_file, "w") as f:
             json.dump(assignments, f, indent=2)
             

@@ -50,7 +50,7 @@ HN_PAGES_DATA_FILE = HN_DOCS_DIR / "pages.json"
 STYLE_FILE = DOCS_DIR / "style.css"
 GITHUB_PAGES_URL = "https://www.kevinriste.com/github-trending-digest/"
 
-SUMMARY_MODEL = "gemini-3.1-flash-lite-preview"
+SUMMARY_MODEL = "gemini-3.1-flash-lite"
 GH_SUMMARY_PROMPT_VERSION = "gh_v3"
 HN_SUMMARY_PROMPT_VERSION = "hn_v4"
 HN_COMMENT_ANALYSIS_PROMPT_VERSION = "hn_comments_v2"
