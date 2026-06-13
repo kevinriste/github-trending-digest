@@ -30,7 +30,7 @@ from markitdown import MarkItDown
 from psycopg.rows import dict_row
 from youtube_transcript_api import YouTubeTranscriptApi
 
-from morning_edition import generate_morning_edition, first_paragraph, limit_bullets
+from morning_edition import generate_morning_edition, first_paragraph, limit_bullets, parse_bullets
 
 logging.basicConfig(level=logging.INFO, format="%(levelname)s %(message)s")
 
@@ -1744,7 +1744,9 @@ def generate_bullet_paragraph_html(text: str) -> str:
         if not line:
             continue
         if line.startswith(("-", "*", "•")):
-            cleaned = normalize_text(line.lstrip("-*•").strip())
+            # parse_bullets strips the glyph plus any leaked "Bullet N:" label.
+            stripped = parse_bullets(line)
+            cleaned = normalize_text(stripped[0]) if stripped else ""
             if cleaned:
                 bullets.append(cleaned)
 

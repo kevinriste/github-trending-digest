@@ -7,9 +7,10 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght,SOFT@0,9..144,300..900,0..100;1,9..144,300..900,0..100&family=Inter:ital,wght@0,100..900;1,100..900&family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="../morning.css">
+  <link rel="stylesheet" href="../morning.css?v=ac1cb114">
 </head>
-<body id="top" data-gtd-edition="gh" data-gtd-date="2026-03-27"><header class="masthead">
+<body id="top" data-gtd-edition="gh" data-gtd-date="2026-03-27">
+  <header class="masthead">
     <div class="masthead-nav">
       <a href="../">GitHub Calendar</a>
       <span>&nbsp;·&nbsp;</span>
@@ -55,6 +56,7 @@
   }
 })();
 </script>
+<script src="../preference.js?v=ac1cb114" defer></script>
 <script>
 // Simple script to toggle the [+] and [-] labels on the drawers
 document.querySelectorAll('.analysis-drawer').forEach(drawer => {
@@ -67,7 +69,55 @@ document.querySelectorAll('.analysis-drawer').forEach(drawer => {
     }
   });
 });
+
+// Share link — native share or copy markdown to clipboard
+(function () {
+  const links = document.querySelectorAll('.share-link');
+  if (!links.length) return;
+
+  const toast = document.createElement('div');
+  toast.className = 'discuss-toast';
+  document.body.appendChild(toast);
+
+  function showToast(msg) {
+    toast.textContent = msg;
+    toast.classList.add('show');
+    setTimeout(() => toast.classList.remove('show'), 2500);
+  }
+
+  function buildMarkdown(link, spread) {
+    const title = link.dataset.shareTitle || '';
+    const url = link.dataset.shareUrl || '';
+    const meta = spread ? spread.querySelector('.story-meta') : null;
+    const lede = spread ? spread.querySelector('.lede') : null;
+    const analysis = spread ? spread.querySelector('.drawer-analysis') : null;
+    let md = '# ' + title + '\n';
+    md += 'Source: ' + url;
+    if (meta) md += ' | ' + meta.textContent.trim();
+    md += '\n';
+    if (lede) md += '\n' + lede.textContent.trim() + '\n';
+    if (analysis) md += '\n## Analysis\n' + analysis.textContent.trim() + '\n';
+    return md;
+  }
+
+  links.forEach((link) => {
+    link.addEventListener('click', (e) => {
+      e.preventDefault();
+      const spread = link.closest('section.spread');
+      const md = buildMarkdown(link, spread);
+      const text = "I'd like to discuss this with you. Here's a summary:\n\n" + md;
+      const title = 'Discuss: ' + (link.dataset.shareTitle || '');
+      if (navigator.share) {
+        navigator.share({ title: title, text: text }).catch(() => {});
+      } else {
+        navigator.clipboard.writeText(text).then(
+          () => showToast('Copied to clipboard \u2014 paste into your AI chat'),
+          () => showToast('Failed to copy')
+        );
+      }
+    });
+  });
+})();
 </script>
-<script src="../preference.js?v=a7052eb4" defer></script>
 </body>
 </html>

@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Open Source Edition — May 18, 2026</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght,SOFT@0,9..144,300..900,0..100;1,9..144,300..900,0..100&family=Inter:ital,wght@0,100..900;1,100..900&family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../morning.css?v=ac1cb114">
+</head>
+<body id="top" data-gtd-edition="gh" data-gtd-date="2026-05-18">
+  <header class="masthead">
+    <div class="masthead-nav">
+      <a href="../">GitHub Calendar</a>
+      <span>&nbsp;·&nbsp;</span>
+      <a href="../hn/2026-05-18/">Hacker News &nbsp;·&nbsp; May 18</a>
+      <span>&nbsp;·&nbsp;</span>
+      <a href="classic.html">Classic View</a>
+    </div>
+    <div class="tagline">The Open Source Edition</div>
+    <h1 class="frnc">Ten stories, before your coffee.</h1>
+    <div class="issue-line">
+      <span>Vol. I</span>
+      <span>May 18, 2026</span>
+      <span>GitHub Daily Trending</span>
+    </div>
+  </header>
+
+  <section id="dossier" class="dossier">
+    <div class="dossier-head">
+      <div class="tagline">Appendix</div>
+      <h2>The Dossier</h2>
+      <p class="intro">Full analysis and reactions for today's ten stories. <a href="#top">↑ Back to the edition</a></p>
+    </div>
+
+  </section>
+  <footer class="colophon">
+    <p class="sig">— that's the edition.</p>
+    <p class="meta">Set in Fraunces &amp; Inter · Compiled May 18, 2026</p>
+    <p class="classic-link"><a href="classic.html">Prefer the classic card view? →</a></p>
+  </footer>
+<script>
+(() => {
+  const key = "gtd:read_days:gh:v1";
+  const day = "2026-05-18";
+  let stored = [];
+  try {
+    stored = JSON.parse(localStorage.getItem(key) || "[]");
+    if (!Array.isArray(stored)) stored = [];
+  } catch (e) {}
+  if (!stored.includes(day)) {
+    stored.push(day);
+    stored.sort();
+    localStorage.setItem(key, JSON.stringify(stored));
+  }
+})();
+</script>
+<script src="../preference.js?v=ac1cb114" defer></script>
+<script>
+// Simple script to toggle the [+] and [-] labels on the drawers
+document.querySelectorAll('.analysis-drawer').forEach(drawer => {
+  drawer.addEventListener('toggle', () => {
+    const summary = drawer.querySelector('summary');
+    if (drawer.open) {
+      summary.textContent = '[ Analysis − ]';
+    } else {
+      summary.textContent = '[ Analysis + ]';
+    }
+  });
+});
+
+// Share link — native share or copy markdown to clipboard
+(function () {
+  const links = document.querySelectorAll('.share-link');
+  if (!links.length) return;
+
+  const toast = document.createElement('div');
+  toast.className = 'discuss-toast';
+  document.body.appendChild(toast);
+
+  function showToast(msg) {
+    toast.textContent = msg;
+    toast.classList.add('show');
+    setTimeout(() => toast.classList.remove('show'), 2500);
+  }
+
+  function buildMarkdown(link, spread) {
+    const title = link.dataset.shareTitle || '';
+    const url = link.dataset.shareUrl || '';
+    const meta = spread ? spread.querySelector('.story-meta') : null;
+    const lede = spread ? spread.querySelector('.lede') : null;
+    const analysis = spread ? spread.querySelector('.drawer-analysis') : null;
+    let md = '# ' + title + '\n';
+    md += 'Source: ' + url;
+    if (meta) md += ' | ' + meta.textContent.trim();
+    md += '\n';
+    if (lede) md += '\n' + lede.textContent.trim() + '\n';
+    if (analysis) md += '\n## Analysis\n' + analysis.textContent.trim() + '\n';
+    return md;
+  }
+
+  links.forEach((link) => {
+    link.addEventListener('click', (e) => {
+      e.preventDefault();
+      const spread = link.closest('section.spread');
+      const md = buildMarkdown(link, spread);
+      const text = "I'd like to discuss this with you. Here's a summary:\n\n" + md;
+      const title = 'Discuss: ' + (link.dataset.shareTitle || '');
+      if (navigator.share) {
+        navigator.share({ title: title, text: text }).catch(() => {});
+      } else {
+        navigator.clipboard.writeText(text).then(
+          () => showToast('Copied to clipboard \u2014 paste into your AI chat'),
+          () => showToast('Failed to copy')
+        );
+      }
+    });
+  });
+})();
+</script>
+</body>
+</html>
