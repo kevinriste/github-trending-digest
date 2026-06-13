@@ -1463,14 +1463,15 @@ Sample size: {len(sampled_comments)}
 Comment sample:
 {comment_block}
 
-Return exactly 3 bullet points:
-- Bullet 1: Core consensus or dominant viewpoint.
-- Bullet 2: Strongest disagreement or competing view.
-- Bullet 3: Practical technical takeaway.
+Return exactly 3 bullet points, in this order, each covering:
+1) the core consensus or dominant viewpoint;
+2) the strongest disagreement or competing view;
+3) the practical technical takeaway.
 
 Rules:
-- One sentence per bullet.
-- 18-35 words per bullet.
+- Output exactly three lines, each starting with "- " followed only by the sentence itself.
+- Do NOT prefix a line with a label, number, or "Bullet N" — the line is just the sentence.
+- One sentence per bullet, 18-35 words.
 - No hype or marketing language.
 - Do not quote usernames.
 """

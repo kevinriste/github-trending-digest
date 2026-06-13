@@ -144,7 +144,13 @@ def first_paragraph(summary_text: str) -> str:
     """Return the summary text (stripped). Prompt now handles truncation."""
     return summary_text.strip()
 
-_BULLET_PREFIX_RE = re.compile(r"^\s*(?:Bullet\s*\d+[:.]\s*|[-*•]\s*)", re.IGNORECASE)
+# Strips a single leading marker: a bullet glyph, a "Bullet 2:" / "Point 3"
+# label the model sometimes echoes from the prompt, or a "1." list number.
+# Applied in a loop so combinations like "- Bullet 2: " are fully removed.
+_BULLET_PREFIX_RE = re.compile(
+    r"^\s*(?:[-*•]|(?:bullet|point)\s*\d+\s*[:.)\-]?|\d+\s*[.)])\s*",
+    re.IGNORECASE,
+)
 
 def parse_bullets(text: str) -> list[str]:
     if not text:
@@ -154,7 +160,12 @@ def parse_bullets(text: str) -> list[str]:
         line = raw_line.strip()
         if not line:
             continue
-        cleaned = _BULLET_PREFIX_RE.sub("", line).strip()
+        cleaned = line
+        while True:
+            stripped = _BULLET_PREFIX_RE.sub("", cleaned).strip()
+            if stripped == cleaned:
+                break
+            cleaned = stripped
         if cleaned:
             out.append(cleaned)
     return out
