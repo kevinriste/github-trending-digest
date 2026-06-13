@@ -1382,13 +1382,14 @@ def generate_morning_edition(
         except Exception as exc:
             # Never leave the page without an index.html. The classic view
             # (classic.html) is always written before this point, so fall back
-            # to redirecting there rather than 404-ing the published URL.
+            # to redirecting there rather than 404-ing the published URL, then
+            # re-raise so the caller can alert that the page is degraded.
             logging.error(
-                "%s: editorial generation failed for %s, writing classic-view fallback: %s",
+                "%s: editorial generation failed for %s, wrote classic-view fallback: %s",
                 config.name, day, exc,
             )
             _write_classic_redirect(index_file)
-            return str(index_file)
+            raise
         with open(assignments_file, "w") as f:
             json.dump(assignments, f, indent=2)
             

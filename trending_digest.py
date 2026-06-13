@@ -2828,6 +2828,25 @@ def send_email(to_address: str, subject: str, body: str) -> None:
     logging.info("Email sent successfully to %s", to_address)
 
 
+def notify_gotify(title: str, message: str, priority: int = 7) -> None:
+    """Best-effort Gotify push for run-time problems. No-op if unconfigured; never raises."""
+    server = os.getenv("GOTIFY_SERVER")
+    token = os.getenv("GOTIFY_TOKEN")
+    if not server or not token:
+        logging.warning("Gotify not configured; skipping notification: %s", title)
+        return
+    try:
+        requests.post(
+            f"{server}/message",
+            params={"token": token},
+            json={"title": title, "message": message, "priority": priority},
+            timeout=10,
+        )
+        logging.info("Gotify notification sent: %s", title)
+    except Exception as exc:
+        logging.warning("Gotify notification failed (%s): %s", title, exc)
+
+
 def wait_for_page_live(url: str, max_attempts: int = 30, delay: int = 10) -> bool:
     """Wait for URL to return HTTP 200."""
     logging.info("Waiting for page to be live: %s", url)
@@ -3371,11 +3390,21 @@ def main() -> None:
             generate_morning_edition(run_day, gh_rows, source="gh", force_regenerate=True)
         except Exception as exc:
             logging.exception("Open Source Edition generation failed for %s: %s", run_day, exc)
+            notify_gotify(
+                "GitHub Trending Digest: GitHub edition degraded",
+                f"Open Source Edition generation failed for {run_day}; "
+                f"published the classic-view fallback instead.\n\n{exc}",
+            )
 
         try:
             generate_morning_edition(run_day, hn_rows, source="hn", force_regenerate=True)
         except Exception as exc:
             logging.exception("Morning Edition generation failed for %s: %s", run_day, exc)
+            notify_gotify(
+                "GitHub Trending Digest: HN edition degraded",
+                f"Morning Edition generation failed for {run_day}; "
+                f"published the classic-view fallback instead.\n\n{exc}",
+            )
 
         changed = git_commit_and_push()
 
@@ -3391,6 +3420,11 @@ def main() -> None:
                 )
             else:
                 logging.error("Skipping email because one or more pages did not go live")
+                notify_gotify(
+                    "GitHub Trending Digest: pages did not go live",
+                    "One or more published pages did not return HTTP 200:\n"
+                    f"{gh_page_url}\n{hn_page_url}",
+                )
         else:
             logging.info("Skipping email because there were no docs changes to publish")
 
