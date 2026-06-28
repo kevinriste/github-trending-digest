@@ -1092,18 +1092,18 @@ CSS_TEMPLATE = r"""
 
   /* ───── OBSERVATORY ───── */
   .arc-observatory { background: #080f3d; color: #f0f4ff; padding: 10vh 8vw; }
-  .arc-observatory .starfield { position: absolute; inset: 0; background-image: radial-gradient(1.5px 1.5px at 10% 20%, #fff, transparent), radial-gradient(1.5px 1.5px at 25% 70%, #fff, transparent), radial-gradient(2px 2px at 40% 30%, #fff, transparent), radial-gradient(1.5px 1.5px at 70% 15%, #fff, transparent), radial-gradient(2px 2px at 85% 55%, #fff, transparent); }
+  .arc-observatory .starfield { position: absolute; inset: 0; pointer-events: none; background-image: radial-gradient(1.5px 1.5px at 10% 20%, #fff, transparent), radial-gradient(1.5px 1.5px at 25% 70%, #fff, transparent), radial-gradient(2px 2px at 40% 30%, #fff, transparent), radial-gradient(1.5px 1.5px at 70% 15%, #fff, transparent), radial-gradient(2px 2px at 85% 55%, #fff, transparent); }
   .arc-observatory .numeral { font-family: 'Fraunces', serif; font-style: italic; font-weight: 500; font-size: clamp(4rem, 9vw, 8rem); border-bottom: 2px solid rgba(240,244,255,0.5); padding-bottom: 1.2rem; display: inline-block; margin-bottom: 2.5rem; }
 
   /* GH Specific: Brutalist System Core */
   .arc-system-core { background: #344054; color: #f9fafb; }
-  .arc-system-core .concrete { position: absolute; inset: 0; opacity: 0.12; background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E"); }
+  .arc-system-core .concrete { position: absolute; inset: 0; pointer-events: none; opacity: 0.12; background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E"); }
   .arc-system-core h2 { font-family: 'Inter', sans-serif; font-weight: 950; text-transform: uppercase; letter-spacing: -0.06em; font-size: clamp(3.5rem, 12vw, 9.5rem); line-height: 0.88; }
   .arc-system-core .drawer-content { background: rgba(0,0,0,0.1); border-color: #f9fafb; color: #f9fafb; }
 
   /* GH Specific: UI Lab */
   .arc-ui-lab { background: #fff; color: #5850ec; }
-  .arc-ui-lab .lab-gradient { position: absolute; inset: 0; opacity: 0.18; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); }
+  .arc-ui-lab .lab-gradient { position: absolute; inset: 0; pointer-events: none; opacity: 0.18; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); }
   .arc-ui-lab .read-more { border-radius: 12px; border: none; background: #5850ec; color: #fff; padding: 1.2rem 2.4rem; box-shadow: 0 10px 25px rgba(88, 80, 236, 0.25); }
   .arc-ui-lab .kicker { font-family: 'Inter', sans-serif; font-weight: 800; font-size: 1.1rem; letter-spacing: 0.35em; color: #5850ec; margin-bottom: 1.8rem; text-transform: uppercase; position: relative; z-index: 2; }
   .arc-ui-lab .numeral { font-family: 'Fraunces', serif; font-style: italic; font-weight: 700; font-size: clamp(6rem, 13vw, 11rem); color: #5850ec; margin-bottom: 1.2rem; line-height: 0.95; position: relative; z-index: 2; }
