@@ -72,6 +72,9 @@ class EditionConfig:
     archetypes: list[Archetype]
     prompt_voice: str
     summary_paragraphs: int = 1 # HN uses 1, GitHub uses 2
+    # Max stories on the magazine. None = use every item passed in (the AI edition
+    # varies 15-20). HN/GitHub keep the historical fixed 10.
+    max_stories: int | None = 10
 
 # ─────────────────────── Archetype Sets ───────────────────────
 
@@ -112,7 +115,44 @@ GH_ARCHETYPES = [
     Archetype("blueprint", "Build Log", "step-by-step 'build your own x' tutorials or documented hardware builds. Graph paper."),
 ]
 
+# AI edition. Reuses existing archetype IDs (so every id has a spread renderer) with
+# AI-news-oriented "best for" descriptions. ~20 archetypes so a 15-20 story issue can
+# still land mostly-distinct spreads; the prompt allows reuse past the pool size.
+AI_ARCHETYPES = [
+    Archetype("product-plate", "Model Launch", "frontier model releases, new model families, major version launches. Silver keynote-slide aesthetic. Tone: clean, declarative, spec-sheet"),
+    Archetype("model-bench", "Benchmark Desk", "benchmark results, intelligence-index scores, capability evaluations, price/performance analyses. Minimalist monochrome with silver accents. Tone: technical, benchmarking-focused"),
+    Archetype("agent-foundry", "Agent Foundry", "autonomous agents, multi-agent frameworks, agentic workflows, tool-use and orchestration. Blueprint aesthetic. Tone: procedural, architect-like"),
+    Archetype("academic-drop-cap", "Research Desk", "peer-reviewed papers, arXiv preprints, novel training methods, theoretical results. Ecru parchment with a drop cap. Tone: scholarly and measured"),
+    Archetype("stat-hero", "By The Numbers", "stories whose headline centers on a specific number, parameter count, or milestone. One huge display numeral. If picked, also return a `big_figure` string (e.g. \"2.8T\", \"61%\")"),
+    Archetype("caution-tape", "Security Watch", "exploits, jailbreaks, data-exfiltration attacks, model vulnerabilities, safety incidents. Yellow with black diagonal stripes. Tone: clipped warning"),
+    Archetype("midnight", "Infrastructure", "inference engines, training infrastructure, quantization, decentralized/edge compute, systems work. Dark palette, purple glow. Tone: quiet and technical"),
+    Archetype("system-core", "System Core", "low-level runtimes, kernels, compilers, GPU/hardware, performance libraries. Brutalist concrete, raw monospace. Tone: performance-obsessed"),
+    Archetype("data-pipeline", "Data & Retrieval", "RAG, vector databases, embeddings, retrieval systems, data curation. Flowing data-streams in indigo. Tone: fluid, high-throughput"),
+    Archetype("editorial-pullquote", "Analysis", "op-eds, industry analysis, essays with a strong quotable thesis, economics of AI. Dark with gold accent. If picked, also return a `pullquote` string"),
+    Archetype("observatory", "Frontier Science", "AI-for-science, brain-computer interfaces, novel scientific applications, speculative research. Deep indigo starfield. Tone: quiet wonder"),
+    Archetype("ui-lab", "Product Lab", "consumer AI products, app launches, hardware companions, UI/UX features, creative tools. Vibrant gradients, rounded components. Tone: enthusiastic, visual-first"),
+    Archetype("alert-stamp", "Accountability", "lawsuits, policy fights, public call-outs, platform controversies, governance disputes. Rose background, rotated red stamp. Tone: wry, deadpan"),
+    Archetype("terminal", "Dev Tools", "coding agents, developer tooling, CLI releases, IDE integrations, open-source governance. Black with green monospace. Tone: clipped, prompt-like"),
+    Archetype("blueprint", "Build Log", "reproductions, open-weight releases, from-scratch builds, reverse-engineering, technical write-ups. Graph-paper blue. Tone: hands-on, build-log"),
+    Archetype("enterprise-engine", "Enterprise", "enterprise adoption, cloud AI services, production deployments, business integrations. Clean professional blue. Tone: reliable, scalable"),
+    Archetype("library-archive", "The Library", "surveys, curated resources, educational drops, collections, retrospectives. Serif on ecru parchment. Tone: scholarly, archival"),
+    Archetype("privacy-shield", "Local & Private", "local-first inference, on-device models, self-hosted alternatives, privacy tech. Charcoal with neon accents. Tone: protective, defiant"),
+    Archetype("obituary", "Sunset Notice", "shutdowns, deprecations, discontinued models or products, EOL announcements. Black-bordered memorial frame. Tone: somber, minimal"),
+    Archetype("mint-pattern", "Deep Cut", "AI folklore, mechanistic-interpretability deep-dives, clever tricks, low-level ML trivia. Mint background. Tone: playful-technical"),
+]
+
 CONFIGS = {
+    "ai": EditionConfig(
+        id="ai",
+        name="AI Edition",
+        tagline="the AI/LLM Newsletter",
+        output_dir=REPO_ROOT / "docs" / "ai",
+        read_key="gtd:read_days:ai:v1",
+        archetypes=AI_ARCHETYPES,
+        prompt_voice="declarative for product-plate/model-bench, architect-like for agent-foundry, scholarly for academic-drop-cap/library-archive, clipped-warning for caution-tape, quiet-technical for midnight/system-core, wry for alert-stamp, quiet-wonder for observatory.",
+        summary_paragraphs=2,
+        max_stories=None,
+    ),
     "hn": EditionConfig(
         id="hn",
         name="Morning Edition",
@@ -135,8 +175,12 @@ CONFIGS = {
     ),
 }
 
-ORDINAL_LABELS = ["01", "02", "03", "04", "05", "06", "07", "08", "09", "10"]
-ROMAN_LABELS = ["I", "II", "III", "IV", "V", "VI", "VII", "VIII", "IX", "X"]
+# Sized to the largest edition (the AI edition runs up to 20 stories). HN/GitHub use
+# only the first 10, so extending these is inert for them but stops an IndexError when
+# a spread renderer looks up ORDINAL_LABELS[i-1] for story 11-20.
+ORDINAL_LABELS = [f"{i:02d}" for i in range(1, 21)]
+ROMAN_LABELS = ["I", "II", "III", "IV", "V", "VI", "VII", "VIII", "IX", "X",
+                "XI", "XII", "XIII", "XIV", "XV", "XVI", "XVII", "XVIII", "XIX", "XX"]
 
 # ─────────────────────── Content helpers ───────────────────────
 
@@ -194,9 +238,13 @@ def _build_prompt(config: EditionConfig, items: list[dict]) -> str:
         domain = _extract_domain(url) or "github.com"
         if config.id == "hn":
             stats = f"{item.get('score') or 0} pts · {item.get('comment_count') or 0} comments"
-        else:
+        elif config.id == "gh":
             period = (item.get("period_stars") or "").strip() or "no new stars today"
             stats = f"{item.get('stars') or '0'} stars · {period}"
+        else:  # ai edition: no engagement metrics; source + date instead
+            src = (item.get("source") or "").strip()
+            pub = (item.get("published") or "").strip()
+            stats = " · ".join(p for p in (src, pub[:10]) if p) or "AI newsletter"
         
         summary = (item.get("summary") or "").strip()
         comment_analysis = (item.get("comment_analysis") or "").strip()
@@ -220,11 +268,12 @@ def _build_prompt(config: EditionConfig, items: list[dict]) -> str:
 
     stories_section = "\n".join(story_blocks)
 
-    return f"""You are the editor of a daily curated magazine called "{config.name}." Today's issue contains exactly ten stories from {config.tagline}. Your job is to assign each story to a distinct visual spread archetype and write the editorial copy for that spread.
+    n = len(items)
+    return f"""You are the editor of a daily curated magazine called "{config.name}." Today's issue contains exactly {n} stories from {config.tagline}. Your job is to assign each story to a visual spread archetype and write the editorial copy for that spread.
 
 # Spread archetype catalog
 
-You have {len(config.archetypes)} archetypes to choose from. You must pick exactly ten for today — one per story — and all ten picks must be distinct archetype ids. Unused archetypes simply don't appear today. Choose the archetype whose "best for" description most closely matches the story's theme; if several stories could fit the same archetype, pick the best fit and send the others to their next-best archetypes.
+You have {len(config.archetypes)} archetypes to choose from. Assign one archetype per story — {n} assignments total. Prefer to make every pick a distinct archetype id; only reuse an archetype when there are more stories than archetypes, or when no unused archetype fits a story well. Choose the archetype whose "best for" description most closely matches the story's theme; if several stories could fit the same archetype, pick the best fit and send the others to their next-best archetypes.
 
 {catalog_lines}
 
@@ -234,22 +283,22 @@ You have {len(config.archetypes)} archetypes to choose from. You must pick exact
 
 # Your task
 
-For each of the ten stories, produce one JSON object with these fields:
+For each of the {n} stories, produce one JSON object with these fields:
 
-- "rank": integer, 1..10, matching the story's rank above
-- "archetype_id": one of the archetype ids. All ten picks must be distinct.
+- "rank": integer, 1..{n}, matching the story's rank above
+- "archetype_id": one of the archetype ids, chosen per the rules above.
 - "kicker": a 1-3 word department label fit to the archetype (e.g., "Infrastructure", "CVE Watch", "Keynote", "Archival Desk", "Build Log", "Observations", "Agent Foundry", "System Core"). Title Case is fine; the layout handles uppercasing.
 - "headline": a rewritten magazine-voice headline, 3-12 words. Prefer active voice, present tense, concrete. It may differ from the source title if it reads better, but it must honor the facts in the Analysis. No clickbait.
 - "lede": 2-3 sentences of editorial prose that sets up the story in the voice the archetype suggests ({config.prompt_voice}). Stay specific. No hype. No meta-commentary about the magazine.
 - "big_figure": only when archetype_id is "stat-hero"; otherwise null. A short display string such as "50%", "10,000", "$1B".
 - "pullquote": only when archetype_id is "editorial-pullquote"; otherwise null. A JSON string holding one sentence phrased as display type. Do not put literal quotation-mark characters inside the sentence text (the JSON string quotes themselves are of course required).
 
-Return a JSON array of exactly ten objects, in rank order (rank 1 first, rank 10 last). Output nothing outside the JSON array. Do not wrap the output in a code fence.
+Return a JSON array of exactly {n} objects, in rank order (rank 1 first, rank {n} last). Output nothing outside the JSON array. Do not wrap the output in a code fence.
 """
 
 _CODE_FENCE_RE = re.compile(r"^```(?:json)?\s*|\s*```\s*$", re.IGNORECASE)
 
-def _parse_response(raw: str) -> list[dict]:
+def _parse_response(raw: str, expected: int) -> list[dict]:
     text = raw.strip()
     if text.startswith("```"):
         text = _CODE_FENCE_RE.sub("", text).strip()
@@ -260,8 +309,8 @@ def _parse_response(raw: str) -> list[dict]:
     data = json.loads(text[start : end + 1])
     if not isinstance(data, list):
         raise ValueError("response is not a JSON array")
-    if len(data) != NUM_STORIES:
-        raise ValueError(f"expected {NUM_STORIES} objects, got {len(data)}")
+    if len(data) != expected:
+        raise ValueError(f"expected {expected} objects, got {len(data)}")
     return data
 
 _EDITORIAL_GEN_CONFIG = types.GenerateContentConfig(
@@ -277,7 +326,7 @@ def pick_editorial(config: EditionConfig, items: list[dict]) -> list[dict]:
             response = _client().models.generate_content(
                 model=MODEL, contents=prompt, config=_EDITORIAL_GEN_CONFIG
             )
-            return _parse_response(response.text)
+            return _parse_response(response.text, len(items))
         except Exception as exc:
             last_error = str(exc)
             logging.warning("Morning Edition LLM response invalid (attempt %d): %s", attempt + 1, exc)
@@ -308,6 +357,11 @@ def _meta_line(config: EditionConfig, item: dict) -> str:
         score = item.get("score") or 0
         comments = item.get("comment_count") or 0
         return f"{_h(domain)} &nbsp;·&nbsp; {score} pts &nbsp;·&nbsp; {comments} comments"
+    if config.id == "ai":  # no engagement metrics; show source feed + date
+        src = (item.get("source") or "").strip()
+        pub = (item.get("published") or "")[:10]
+        tail = " &nbsp;·&nbsp; ".join(_h(p) for p in (src, pub) if p)
+        return f"{_h(domain)}" + (f" &nbsp;·&nbsp; {tail}" if tail else "")
     stars = item.get("stars") or "0"
     period = (item.get("period_stars") or "").strip() or "no new stars today"
     return f"{_h(domain)} &nbsp;·&nbsp; {_h(str(stars))} stars &nbsp;·&nbsp; {_h(period)}"
@@ -1255,7 +1309,8 @@ def generate_morning_edition_html(
 
     spreads_html = "\n".join(spreads)
     v = get_git_sha()
-    rel_prefix = "../.." if config.id == "hn" else ".."
+    # gh lives at docs/<date>/ (one level under docs); hn and ai at docs/<src>/<date>/ (two).
+    rel_prefix = ".." if config.id == "gh" else "../.."
     pref_src = f"{rel_prefix}/preference.js?v={v}"
     css_href = f"{rel_prefix}/morning.css?v={v}"
 
@@ -1365,10 +1420,12 @@ def _write_classic_redirect(index_file: Path) -> None:
 def generate_morning_edition(
     day: date,
     items: list[dict],
-    source: Literal["hn", "gh"] = "hn",
+    source: Literal["hn", "gh", "ai"] = "hn",
     force_regenerate: bool = False,
 ) -> str:
     config = CONFIGS[source]
+    # HN/GitHub cap at 10; the AI edition (max_stories=None) uses every item passed in.
+    items = items[: config.max_stories] if config.max_stories else list(items)
     output_dir = config.output_dir / day.isoformat()
     output_dir.mkdir(parents=True, exist_ok=True)
 
@@ -1389,7 +1446,7 @@ def generate_morning_edition(
     if not assignments:
         logging.info("%s: calling Gemini for %s", config.name, day)
         try:
-            assignments = pick_editorial(config, items[:NUM_STORIES])
+            assignments = pick_editorial(config, items)
         except Exception as exc:
             # Never leave the page without an index.html. The classic view
             # (classic.html) is always written before this point, so fall back
@@ -1404,7 +1461,7 @@ def generate_morning_edition(
         with open(assignments_file, "w") as f:
             json.dump(assignments, f, indent=2)
             
-    html = generate_morning_edition_html(config, day, items[:NUM_STORIES], assignments)
+    html = generate_morning_edition_html(config, day, items, assignments)
     
     with open(index_file, "w") as f:
         f.write(html)
