@@ -2149,13 +2149,16 @@ def _generate_gh_repo_cards(repos: list[dict], extra_css_class: str = "", show_r
 def generate_gh_daily_page(
     repos: list[dict],
     day: date,
-    hn_dates_set: set[str],
+    known_dates: dict[str, set[str]],
     slow_burners: list[dict] | None = None,
 ) -> str:
     """Generate GitHub daily digest page HTML."""
     date_str = day.isoformat()
     date_display = format_date_display(day)
-    hn_link = f"../hn/{date_str}/" if date_str in hn_dates_set else "../hn/"
+    cross_html = "\n            ".join(
+        f'<a href="{href}">{label}</a>'
+        for href, label in cross_edition_links("gh", date_str, known_dates)
+    )
     repo_cards = ""
     if not repos:
         repo_cards = '<p class="empty-state">No GitHub repositories available for this day.</p>'
@@ -2188,8 +2191,8 @@ def generate_gh_daily_page(
     <header>
         <h1>GitHub Trending Digest - {date_display}</h1>
         <nav>
-            <a href="../">&larr; GitHub Calendar</a>
-            <a href="{hn_link}">Hacker News</a>
+            <a href="../">&larr; {EDITIONS["gh"].calendar_label}</a>
+            {cross_html}
         </nav>
     </header>
     <main>
@@ -2216,11 +2219,14 @@ def generate_gh_daily_page(
 """
 
 
-def generate_hn_daily_page(items: list[dict], day: date, gh_dates_set: set[str]) -> str:
+def generate_hn_daily_page(items: list[dict], day: date, known_dates: dict[str, set[str]]) -> str:
     """Generate Hacker News daily digest page HTML."""
     date_str = day.isoformat()
     date_display = format_date_display(day)
-    gh_link = f"../../{date_str}/" if date_str in gh_dates_set else "../../"
+    cross_html = "\n            ".join(
+        f'<a href="{href}">{label}</a>'
+        for href, label in cross_edition_links("hn", date_str, known_dates)
+    )
 
     story_cards = ""
     if not items:
@@ -2291,8 +2297,8 @@ def generate_hn_daily_page(items: list[dict], day: date, gh_dates_set: set[str])
     <header>
         <h1>Hacker News Digest - {date_display}</h1>
         <nav>
-            <a href="../">&larr; Hacker News Calendar</a>
-            <a href="{gh_link}">GitHub Trending</a>
+            <a href="../">&larr; {EDITIONS["hn"].calendar_label}</a>
+            {cross_html}
         </nav>
     </header>
     <main>
@@ -2321,6 +2327,9 @@ def generate_gh_index_page(gh_dates: list[date], hn_dates: list[date]) -> str:
     """Generate GitHub calendar index page."""
     calendar_html = build_calendar_html(gh_dates)
     today = date.today().isoformat()
+    cross_html = "\n            ".join(
+        f'<a href="{href}">{label}</a>' for href, label in cross_edition_links("gh")
+    )
 
     v = get_git_sha()
     return f"""<!DOCTYPE html>
@@ -2336,7 +2345,7 @@ def generate_gh_index_page(gh_dates: list[date], hn_dates: list[date]) -> str:
         <h1>GitHub Trending Digest</h1>
         <p class="subtitle">Daily GitHub trending repositories with AI analysis</p>
         <nav>
-            <a href="hn/">Hacker News Calendar</a>
+            {cross_html}
         </nav>
     </header>
     <main>
@@ -2361,6 +2370,9 @@ def generate_hn_index_page(hn_dates: list[date], gh_dates: list[date]) -> str:
     """Generate Hacker News calendar index page."""
     calendar_html = build_calendar_html(hn_dates)
     today = date.today().isoformat()
+    cross_html = "\n            ".join(
+        f'<a href="{href}">{label}</a>' for href, label in cross_edition_links("hn")
+    )
 
     v = get_git_sha()
     return f"""<!DOCTYPE html>
@@ -2376,7 +2388,7 @@ def generate_hn_index_page(hn_dates: list[date], gh_dates: list[date]) -> str:
         <h1>Hacker News Digest</h1>
         <p class="subtitle">Daily Hacker News top stories with AI analysis</p>
         <nav>
-            <a href="../">GitHub Trending Calendar</a>
+            {cross_html}
         </nav>
     </header>
     <main>
@@ -2740,7 +2752,7 @@ def save_files(
     logging.info("Saved stylesheet to %s", STYLE_FILE)
 
 
-def regenerate_gh_daily_pages(conn: psycopg.Connection, gh_dates: list[date], hn_dates_set: set[str]) -> None:
+def regenerate_gh_daily_pages(conn: psycopg.Connection, gh_dates: list[date], known_dates: dict[str, set[str]]) -> None:
     """Regenerate all GitHub daily pages from stored data."""
     if not gh_dates:
         return
@@ -2748,7 +2760,7 @@ def regenerate_gh_daily_pages(conn: psycopg.Connection, gh_dates: list[date], hn
     for render_day in sorted(gh_dates):
         gh_rows = build_gh_view_rows(conn, render_day, allow_summary_generation=False)
         slow_burners = build_gh_slow_burner_rows(conn, render_day, allow_summary_generation=False)
-        gh_daily_html = generate_gh_daily_page(gh_rows, render_day, hn_dates_set, slow_burners=slow_burners)
+        gh_daily_html = generate_gh_daily_page(gh_rows, render_day, known_dates, slow_burners=slow_burners)
         gh_daily_file = DOCS_DIR / render_day.isoformat() / "classic.html"
         write_text(gh_daily_file, gh_daily_html)
         try:
@@ -2759,14 +2771,14 @@ def regenerate_gh_daily_pages(conn: psycopg.Connection, gh_dates: list[date], hn
     logging.info("Regenerated %d GitHub daily pages", len(gh_dates))
 
 
-def regenerate_hn_daily_pages(conn: psycopg.Connection, hn_dates: list[date], gh_dates_set: set[str]) -> None:
+def regenerate_hn_daily_pages(conn: psycopg.Connection, hn_dates: list[date], known_dates: dict[str, set[str]]) -> None:
     """Regenerate all Hacker News daily pages from stored data."""
     if not hn_dates:
         return
 
     for render_day in sorted(hn_dates):
         hn_rows = build_hn_view_rows(conn, render_day, allow_summary_generation=False)
-        hn_daily_html = generate_hn_daily_page(hn_rows, render_day, gh_dates_set)
+        hn_daily_html = generate_hn_daily_page(hn_rows, render_day, known_dates)
         hn_daily_file = HN_DOCS_DIR / render_day.isoformat() / "classic.html"
         write_text(hn_daily_file, hn_daily_html)
         try:
@@ -3319,9 +3331,10 @@ def main() -> None:
             hn_dates = list_hn_daily_dates(conn)
             gh_dates_set = {day.isoformat() for day in gh_dates}
             hn_dates_set = {day.isoformat() for day in hn_dates}
+            known_dates = {"gh": gh_dates_set, "hn": hn_dates_set}
 
-            regenerate_gh_daily_pages(conn, gh_dates, hn_dates_set)
-            regenerate_hn_daily_pages(conn, hn_dates, gh_dates_set)
+            regenerate_gh_daily_pages(conn, gh_dates, known_dates)
+            regenerate_hn_daily_pages(conn, hn_dates, known_dates)
 
             write_text(INDEX_FILE, generate_gh_index_page(gh_dates, hn_dates))
             write_text(HN_INDEX_FILE, generate_hn_index_page(hn_dates, gh_dates))
@@ -3367,12 +3380,13 @@ def main() -> None:
         hn_dates = list_hn_daily_dates(conn)
         gh_dates_set = {day.isoformat() for day in gh_dates}
         hn_dates_set = {day.isoformat() for day in hn_dates}
+        known_dates = {"gh": gh_dates_set, "hn": hn_dates_set}
 
         slow_burners = build_gh_slow_burner_rows(conn, run_day)
-        gh_daily_html = generate_gh_daily_page(gh_rows, run_day, hn_dates_set, slow_burners=slow_burners)
+        gh_daily_html = generate_gh_daily_page(gh_rows, run_day, known_dates, slow_burners=slow_burners)
 
         gh_index_html = generate_gh_index_page(gh_dates, hn_dates)
-        hn_daily_html = generate_hn_daily_page(hn_rows, run_day, gh_dates_set)
+        hn_daily_html = generate_hn_daily_page(hn_rows, run_day, known_dates)
         hn_index_html = generate_hn_index_page(hn_dates, gh_dates)
         css = generate_css()
 
