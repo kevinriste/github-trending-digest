@@ -38,10 +38,12 @@ edition can silently inherit wrong labels and broken relative paths.
 ## Linking rules (agreed with user)
 
 - From a **dated page** (classic daily or magazine): link each *other* edition's
-  same-date page when it exists. If it does not exist and the target edition is
-  daily (GH/HN), fall back to that edition's calendar. If the target is
-  **non-daily (AI), omit the link entirely** — no calendar fallback.
+  same-date page when it exists; otherwise **omit the link entirely** — no
+  calendar fallback, for any edition. (This replaces the current GH/HN behavior
+  of falling back to the other calendar.)
 - From a **calendar page**: always link the other editions' calendars.
+- The links email follows the same rule: it lists only the editions that
+  actually published for that day (no calendar-link substitutes).
 - Existence is evaluated at generation time; no later-in-the-day look-back.
   Instead, the daily run picks up a new AI newsletter *first* (section:
   Pipeline ordering), so same-day AI links appear whenever the sidecar arrived
@@ -63,7 +65,6 @@ class Edition:
     root_path: str     # path under docs root: "" / "hn/" / "ai/"
     output_dir: Path   # docs / docs/hn / docs/ai
     read_key: str      # existing gtd:read_days:* values, unchanged
-    daily: bool        # gh/hn True, ai False
 
 EDITIONS: dict[str, Edition]  # insertion order = nav display order: gh, hn, ai
 ```
@@ -125,7 +126,7 @@ a new AI edition was rendered. A missing/stale sidecar is not an error.
 
 - New `tests/test_editions.py` (pytest, added as dev dependency — first tests
   in the repo) covering `cross_edition_links`: path math from each edition's
-  dated and calendar pages, dated-vs-fallback-vs-omit rules, `known_dates`
+  dated and calendar pages, link-if-published-else-omit rule, `known_dates`
   override.
 - End-to-end: render AI pages via `ai_edition.py --no-publish` against the real
   sidecar, and regenerate a GH/HN day locally; grep the emitted hrefs/labels;
