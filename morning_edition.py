@@ -357,8 +357,10 @@ def _extract_domain(url: str) -> str:
 def _read_href(item: dict) -> str:
     return item.get("url") or item.get("discussion_url") or "#"
 
+_DOMAIN_FALLBACKS = {"hn": "news.ycombinator.com", "gh": "github.com", "ai": "ainews"}
+
 def _meta_line(config: EditionConfig, item: dict) -> str:
-    domain = _extract_domain(item.get("url") or "") or ("news.ycombinator.com" if config.id == "hn" else "github.com")
+    domain = _extract_domain(item.get("url") or "") or _DOMAIN_FALLBACKS[config.id]
     if config.id == "hn":
         score = item.get("score") or 0
         comments = item.get("comment_count") or 0
@@ -499,10 +501,14 @@ def _render_dossier(config: EditionConfig, items: list[dict], assignments: list[
         title = item.get("title") or item.get("name") or item.get("repo_name") or "Untitled"
         discussion_url = _h(item.get("discussion_url") or "")
         source_url = _read_href(item)
-        domain = _extract_domain(item.get("url") or "") or ("news.ycombinator.com" if config.id == "hn" else "github.com")
+        domain = _extract_domain(item.get("url") or "") or _DOMAIN_FALLBACKS[config.id]
 
         if config.id == "hn":
             stats_line = f"{item.get('score') or 0} pts &nbsp;·&nbsp; {item.get('comment_count') or 0} comments"
+        elif config.id == "ai":
+            src = (item.get("source") or "").strip()
+            pub = (item.get("published") or "")[:10]
+            stats_line = " &nbsp;·&nbsp; ".join(_h(p) for p in (src, pub) if p) or "AI newsletter"
         else:
             stars = _h(str(item.get("stars") or "0"))
             period = (item.get("period_stars") or "").strip() or "no new stars today"
@@ -526,7 +532,7 @@ def _render_dossier(config: EditionConfig, items: list[dict], assignments: list[
     <div class="dossier-head">
       <div class="tagline">Appendix</div>
       <h2>The Dossier</h2>
-      <p class="intro">Full analysis and reactions for today's ten stories. <a href="#top">↑ Back to the edition</a></p>
+      <p class="intro">Full analysis and reactions for today's {len(items)} stories. <a href="#top">↑ Back to the edition</a></p>
     </div>
 {entries_html}
   </section>"""

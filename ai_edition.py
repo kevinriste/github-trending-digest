@@ -160,6 +160,52 @@ def _daily_script(day_str: str) -> str:
       btn.setAttribute("aria-expanded", open ? "true" : "false");
     }});
   }});
+
+  // Discuss with AI button
+  const toast = document.createElement("div");
+  toast.className = "discuss-toast";
+  document.body.appendChild(toast);
+
+  function showToast(msg) {{
+    toast.textContent = msg;
+    toast.classList.add("show");
+    setTimeout(() => toast.classList.remove("show"), 2500);
+  }}
+
+  function buildAIMarkdown(card) {{
+    const title = card.dataset.shareTitle || "";
+    const url = card.dataset.shareUrl || "";
+    const summaries = card.querySelectorAll(".ai-summary");
+    let md = "# " + title + "\\n";
+    md += "Source: " + url + "\\n";
+    summaries.forEach((s) => {{
+      const heading = s.querySelector("h4");
+      const label = heading ? heading.textContent.trim() : "Analysis";
+      const content = Array.from(s.querySelectorAll("p"))
+        .map((p) => p.textContent.trim())
+        .join("\\n");
+      md += "\\n## " + label + "\\n" + content + "\\n";
+    }});
+    return md;
+  }}
+
+  document.querySelectorAll(".discuss-btn").forEach((btn) => {{
+    btn.addEventListener("click", () => {{
+      const card = btn.closest("section.repo");
+      if (!card) return;
+      const md = buildAIMarkdown(card);
+      const text = "I'd like to discuss this article with you. Here's a summary:\\n\\n" + md;
+      const title = "Discuss: " + (card.dataset.shareTitle || "");
+      if (navigator.share) {{
+        navigator.share({{ title: title, text: text }}).catch(() => {{}});
+      }} else {{
+        navigator.clipboard.writeText(text).then(
+          () => showToast("Copied to clipboard \\u2014 paste into your AI chat"),
+          () => showToast("Failed to copy")
+        );
+      }}
+    }});
+  }});
 }})();
 </script>
 """
@@ -183,7 +229,7 @@ def generate_ai_classic_page(items: list[dict], day: date, known_dates=None) -> 
         blurb_html = f'<p class="lead">{html.escape(it["blurb"])}</p>' if it.get("blurb") else ""
         pub = (it.get("published") or "")[:10]
         meta_bits = " | ".join(
-            b for b in (html.escape(domain), html.escape(it.get("source") or ""), html.escape(pub)) if b
+            b for b in (f'<span class="language">{html.escape(domain)}</span>', html.escape(it.get("source") or ""), html.escape(pub)) if b
         )
         cards += f"""
             <section class="repo" data-seen-before="{1 if it.get('seen_before') else 0}"
@@ -192,6 +238,7 @@ def generate_ai_classic_page(items: list[dict], day: date, known_dates=None) -> 
                 <div class="repo-header-row">
                     <h3>{it['rank']}. <a href="{html.escape(it.get('url') or '#')}" target="_blank" rel="noopener noreferrer">{html.escape(it['title'])}</a> {seen_badge}</h3>
                     <div class="header-buttons">
+                        <button type="button" class="discuss-btn" aria-label="Discuss with AI" title="Discuss with AI">&#x1F4AC;</button>
                         <button type="button" class="repo-toggle" aria-expanded="true">Hide details</button>
                     </div>
                 </div>
@@ -218,15 +265,14 @@ def generate_ai_classic_page(items: list[dict], day: date, known_dates=None) -> 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AI Edition (Classic) - {date_display}</title>
+    <title>AI News Digest - {date_display}</title>
     <link rel="stylesheet" href="../../style.css?v={v}">
 </head>
 <body data-gtd-edition="ai" data-gtd-date="{date_str}">
     <header>
-        <h1>AI Edition - {date_display}</h1>
+        <h1>AI News Digest - {date_display}</h1>
         <nav>
             <a href="../">&larr; {EDITIONS["ai"].calendar_label}</a>
-            <a href="./">Magazine view</a>
             {cross_html}
         </nav>
     </header>
@@ -270,6 +316,7 @@ def list_ai_dates() -> list[date]:
 
 def generate_ai_index_page(ai_dates: list[date]) -> str:
     v = get_git_sha()
+    today = date.today().isoformat()
     calendar_html = build_calendar_html(ai_dates, link_prefix="")
     cross_html = "\n            ".join(
         f'<a href="{href}">{label}</a>' for href, label in cross_edition_links("ai")
@@ -279,23 +326,27 @@ def generate_ai_index_page(ai_dates: list[date]) -> str:
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AI Edition Calendar</title>
+    <title>AI News Digest - {today}</title>
     <link rel="stylesheet" href="../style.css?v={v}">
 </head>
 <body data-gtd-edition="ai">
     <header>
-        <h1>AI Edition</h1>
+        <h1>AI News Digest</h1>
+        <p class="subtitle">AI/LLM newsletter select stories with AI analysis</p>
         <nav>
             {cross_html}
         </nav>
     </header>
     <main>
-        <p class="seen-help">Daily digest of the AI/LLM newsletter — the 15-20 stories that matter, as a classic list or a magazine.</p>
-        <div class="calendars">
+        <div class="calendar-container">
 {calendar_html}
         </div>
     </main>
+    <footer>
+        <p>Generated from the AI/LLM Newsletter select digest. AI News days tracked: {len(ai_dates)}.</p>
+    </footer>
 {generate_read_days_script(READ_KEY)}
+<script src="../preference.js?v={v}" defer></script>
 </body>
 </html>
 """
