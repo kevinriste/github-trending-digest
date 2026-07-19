@@ -1,39 +1,24 @@
 #!/usr/bin/env python3
-"""Scan docs/ and write docs/dates.json with sorted GH and HN daily dates.
+"""CLI wrapper: rebuild docs/dates.json from the editions registry.
 
-Run after adding new daily pages. Generators also call this at end-of-run.
-preference.js fetches this file to build the prev/next day navigation.
+All logic lives in editions.write_dates_manifest; run this after manually
+adding/removing daily page directories.
 """
 from __future__ import annotations
 
 import json
-import re
+import sys
 from pathlib import Path
 
-DOCS = Path(__file__).resolve().parent.parent / "docs"
-DATE_RE = re.compile(r"^\d{4}-\d{2}-\d{2}$")
+sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 
-
-def dates_in(folder: Path) -> list[str]:
-    if not folder.is_dir():
-        return []
-    return sorted(d.name for d in folder.iterdir() if d.is_dir() and DATE_RE.match(d.name))
-
-
-def build(out_path: Path | None = None) -> Path:
-    manifest = {
-        "gh": dates_in(DOCS),
-        "hn": dates_in(DOCS / "hn"),
-    }
-    out_path = out_path or (DOCS / "dates.json")
-    out_path.write_text(json.dumps(manifest, separators=(",", ":")), encoding="utf-8")
-    return out_path
+from editions import DOCS_DIR, write_dates_manifest
 
 
 def main() -> int:
-    out = build()
-    manifest = json.loads(out.read_text(encoding="utf-8"))
-    print(f"Wrote {out} (gh={len(manifest['gh'])}, hn={len(manifest['hn'])})")
+    write_dates_manifest()
+    manifest = json.loads((DOCS_DIR / "dates.json").read_text(encoding="utf-8"))
+    print("Wrote docs/dates.json: " + ", ".join(f"{k}={len(v)}" for k, v in manifest.items()))
     return 0
 
 

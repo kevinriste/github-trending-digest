@@ -31,6 +31,7 @@ from psycopg.rows import dict_row
 from youtube_transcript_api import YouTubeTranscriptApi
 
 from morning_edition import generate_morning_edition, first_paragraph, limit_bullets, parse_bullets
+from editions import EDITIONS, cross_edition_links, write_dates_manifest
 
 logging.basicConfig(level=logging.INFO, format="%(levelname)s %(message)s")
 
@@ -525,17 +526,6 @@ def normalize_text(value: str) -> str:
 def format_date_display(day: date) -> str:
     """Format a date for page titles."""
     return day.strftime("%B %d, %Y")
-
-
-def write_dates_manifest(docs_dir: Path, gh_dates: list[date], hn_dates: list[date]) -> None:
-    """Write docs/dates.json — the source of truth preference.js uses to
-    populate each page's prev/next day navigation.
-    """
-    manifest = {
-        "gh": sorted({d.isoformat() for d in gh_dates}),
-        "hn": sorted({d.isoformat() for d in hn_dates}),
-    }
-    (docs_dir / "dates.json").write_text(json.dumps(manifest, separators=(",", ":")), encoding="utf-8")
 
 
 def extract_domain(url: str) -> str:
@@ -3387,7 +3377,7 @@ def main() -> None:
         css = generate_css()
 
         save_files(run_day, gh_daily_html, gh_index_html, hn_daily_html, hn_index_html, css, gh_dates, hn_dates)
-        write_dates_manifest(DOCS_DIR, gh_dates, hn_dates)
+        write_dates_manifest({"gh": gh_dates_set, "hn": hn_dates_set})
 
         try:
             generate_morning_edition(run_day, gh_rows, source="gh", force_regenerate=True)
