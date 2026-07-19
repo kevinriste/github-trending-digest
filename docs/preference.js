@@ -163,7 +163,12 @@
   // the user's preferred style on the other edition's daily page.
   function updateCrossEditionLinks(pref) {
     var curPath = location.pathname;
-    var curIsHn = /(^|\/)hn\//.test(curPath);
+    // Edition ids by path prefix; extend this regex when adding an edition.
+    function editionOf(path) {
+      var m = path.match(/(^|\/)(hn|ai)\//);
+      return m ? m[2] : "gh";
+    }
+    var curEdition = editionOf(curPath);
     var anchors = document.querySelectorAll('a[href]');
     for (var i = 0; i < anchors.length; i++) {
       var a = anchors[i];
@@ -173,8 +178,7 @@
       if (!href || href.charAt(0) === "#") continue;
       var resolved;
       try { resolved = new URL(href, location.href).pathname; } catch (e) { continue; }
-      var targetIsHn = /(^|\/)hn\//.test(resolved);
-      if (targetIsHn === curIsHn) continue; // same edition or calendar-within-edition
+      if (editionOf(resolved) === curEdition) continue; // same edition or calendar-within-edition
       var m = resolved.match(/\/(\d{4}-\d{2}-\d{2})\/(?:index\.html|classic\.html)?$/);
       if (!m) continue;
       // Preserve the original prefix style (../ or ../../) by working off href, not resolved.
