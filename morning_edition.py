@@ -445,10 +445,10 @@ def _links(config: EditionConfig, item: dict, n: int) -> str:
         f'</div>'
     )
 
-def _render_masthead(config: EditionConfig, day: date) -> str:
+def _render_masthead(config: EditionConfig, day: date, known_dates=None) -> str:
     ed = EDITIONS[config.id]
     nav_parts = [f'<a href="../">{ed.calendar_label}</a>']
-    for href, label in cross_edition_links(config.id, day.isoformat()):
+    for href, label in cross_edition_links(config.id, day.isoformat(), known_dates):
         nav_parts.append(f'<a href="{href}">{label} &nbsp;·&nbsp; {day.strftime("%b %-d")}</a>')
     nav_parts.append('<a href="classic.html">Classic View</a>')
     nav_html = "\n      <span>&nbsp;·&nbsp;</span>\n      ".join(nav_parts)
@@ -1293,6 +1293,7 @@ def generate_morning_edition_html(
     day: date,
     items: list[dict],
     assignments: list[dict],
+    known_dates=None,
 ) -> str:
     title = f"{config.name} — {day.strftime('%B %-d, %Y')}"
 
@@ -1321,7 +1322,7 @@ def generate_morning_edition_html(
   <link rel="stylesheet" href="{css_href}">
 </head>
 <body id="top" data-gtd-edition="{config.id}" data-gtd-date="{day.isoformat()}">
-{_render_masthead(config, day)}
+{_render_masthead(config, day, known_dates)}
 {spreads_html}
 {_render_dossier(config, items, assignments)}
 {_render_colophon(day)}
@@ -1417,6 +1418,7 @@ def generate_morning_edition(
     items: list[dict],
     source: Literal["hn", "gh", "ai"] = "hn",
     force_regenerate: bool = False,
+    known_dates=None,
 ) -> str:
     config = CONFIGS[source]
     # HN/GitHub cap at 10; the AI edition (max_stories=None) uses every item passed in.
@@ -1456,7 +1458,7 @@ def generate_morning_edition(
         with open(assignments_file, "w") as f:
             json.dump(assignments, f, indent=2)
             
-    html = generate_morning_edition_html(config, day, items, assignments)
+    html = generate_morning_edition_html(config, day, items, assignments, known_dates)
     
     with open(index_file, "w") as f:
         f.write(html)

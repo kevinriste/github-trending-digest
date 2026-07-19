@@ -165,7 +165,7 @@ def _daily_script(day_str: str) -> str:
 """
 
 
-def generate_ai_classic_page(items: list[dict], day: date) -> str:
+def generate_ai_classic_page(items: list[dict], day: date, known_dates=None) -> str:
     date_str = day.isoformat()
     date_display = format_date_display(day)
 
@@ -209,7 +209,7 @@ def generate_ai_classic_page(items: list[dict], day: date) -> str:
 
     cross_html = "\n            ".join(
         f'<a href="{href}">{label}</a>'
-        for href, label in cross_edition_links("ai", date_str)
+        for href, label in cross_edition_links("ai", date_str, known_dates)
     )
 
     v = get_git_sha()
@@ -303,7 +303,7 @@ def generate_ai_index_page(ai_dates: list[date]) -> str:
 
 # ─────────────────────── Orchestration ───────────────────────
 
-def build_pages(sidecar: Path, force_regenerate=True) -> tuple[date, int]:
+def build_pages(sidecar: Path, force_regenerate=True, known_dates=None) -> tuple[date, int]:
     """Render classic + magazine + calendar for the sidecar's edition. Returns (day, count)."""
     day, items = load_sidecar(sidecar)
     if not items:
@@ -315,11 +315,11 @@ def build_pages(sidecar: Path, force_regenerate=True) -> tuple[date, int]:
 
     out_dir = AI_DIR / day.isoformat()
     out_dir.mkdir(parents=True, exist_ok=True)
-    write_text(out_dir / "classic.html", generate_ai_classic_page(items, day))
+    write_text(out_dir / "classic.html", generate_ai_classic_page(items, day, known_dates))
 
     # Magazine (index.html). Fails open to a classic-view redirect (same contract as hn/gh).
     try:
-        generate_morning_edition(day, items, source="ai", force_regenerate=force_regenerate)
+        generate_morning_edition(day, items, source="ai", force_regenerate=force_regenerate, known_dates=known_dates)
     except Exception as exc:  # noqa: BLE001
         log.exception("AI magazine generation failed for %s: %s", day, exc)
         (out_dir / "index.html").write_text(

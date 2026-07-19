@@ -3293,7 +3293,7 @@ def build_hn_view_rows(
     return rows
 
 
-def maybe_render_ai_edition():
+def maybe_render_ai_edition(known_dates=None):
     """Render the ai-newsletter sidecar's edition if it isn't published yet.
 
     Runs before GH/HN page generation so those pages (and dates.json) see the
@@ -3310,7 +3310,7 @@ def maybe_render_ai_edition():
         if (EDITIONS["ai"].output_dir / day.isoformat()).is_dir():
             logging.info("AI edition for %s already published; skipping", day)
             return None
-        day, count = build_pages(DEFAULT_SIDECAR)
+        day, count = build_pages(DEFAULT_SIDECAR, known_dates=known_dates)
         logging.info("AI edition: rendered %d stories for %s", count, day)
         return day if count else None
     except Exception as exc:
@@ -3408,7 +3408,7 @@ def main() -> None:
         hn_dates_set = {day.isoformat() for day in hn_dates}
         known_dates = {"gh": gh_dates_set, "hn": hn_dates_set}
 
-        ai_day = maybe_render_ai_edition()
+        ai_day = maybe_render_ai_edition(known_dates)
 
         slow_burners = build_gh_slow_burner_rows(conn, run_day)
         gh_daily_html = generate_gh_daily_page(gh_rows, run_day, known_dates, slow_burners=slow_burners)
