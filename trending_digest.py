@@ -3293,6 +3293,32 @@ def build_hn_view_rows(
     return rows
 
 
+def maybe_render_ai_edition():
+    """Render the ai-newsletter sidecar's edition if it isn't published yet.
+
+    Runs before GH/HN page generation so those pages (and dates.json) see the
+    AI edition on disk and emit same-day AI links. Returns the AI day when a
+    new edition was rendered this run, else None. Never sinks the daily run.
+    """
+    from ai_edition import DEFAULT_SIDECAR, build_pages, load_sidecar  # deferred: ai_edition imports this module
+
+    try:
+        if not DEFAULT_SIDECAR.exists():
+            logging.info("No ai-newsletter sidecar at %s; skipping AI edition", DEFAULT_SIDECAR)
+            return None
+        day, _items = load_sidecar(DEFAULT_SIDECAR)
+        if (EDITIONS["ai"].output_dir / day.isoformat()).is_dir():
+            logging.info("AI edition for %s already published; skipping", day)
+            return None
+        day, count = build_pages(DEFAULT_SIDECAR)
+        logging.info("AI edition: rendered %d stories for %s", count, day)
+        return day if count else None
+    except Exception as exc:
+        logging.exception("AI edition pickup failed: %s", exc)
+        notify_gotify("AI edition pickup failed", str(exc))
+        return None
+
+
 def main() -> None:
     """Main entry point."""
     args = parse_args()
@@ -3382,6 +3408,8 @@ def main() -> None:
         hn_dates_set = {day.isoformat() for day in hn_dates}
         known_dates = {"gh": gh_dates_set, "hn": hn_dates_set}
 
+        ai_day = maybe_render_ai_edition()
+
         slow_burners = build_gh_slow_burner_rows(conn, run_day)
         gh_daily_html = generate_gh_daily_page(gh_rows, run_day, known_dates, slow_burners=slow_burners)
 
@@ -3417,20 +3445,29 @@ def main() -> None:
 
         gh_page_url = f"{GITHUB_PAGES_URL}{run_day.isoformat()}/"
         hn_page_url = f"{GITHUB_PAGES_URL}hn/{run_day.isoformat()}/"
+        email_sections = [
+            f"GitHub Trending Digest:\n{gh_page_url}",
+            f"Hacker News Digest:\n{hn_page_url}",
+        ]
+        live_urls = [gh_page_url, hn_page_url]
+        if ai_day:
+            ai_page_url = f"{GITHUB_PAGES_URL}ai/{ai_day.isoformat()}/"
+            email_sections.append(f"AI Edition:\n{ai_page_url}")
+            live_urls.append(ai_page_url)
 
         if changed:
-            if wait_for_pages_live([gh_page_url, hn_page_url]):
+            if wait_for_pages_live(live_urls):
                 send_email(
                     to_address=email_to_address,
                     subject="links",
-                    body=f"GitHub Trending Digest:\n{gh_page_url}\n\nHacker News Digest:\n{hn_page_url}",
+                    body="\n\n".join(email_sections),
                 )
             else:
                 logging.error("Skipping email because one or more pages did not go live")
                 notify_gotify(
                     "GitHub Trending Digest: pages did not go live",
                     "One or more published pages did not return HTTP 200:\n"
-                    f"{gh_page_url}\n{hn_page_url}",
+                    + "\n".join(live_urls),
                 )
         else:
             logging.info("Skipping email because there were no docs changes to publish")
