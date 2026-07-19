@@ -22,6 +22,7 @@ import logging
 from datetime import date, datetime
 from pathlib import Path
 
+from editions import EDITIONS, cross_edition_links, write_dates_manifest
 from morning_edition import CONFIGS, generate_morning_edition
 from trending_digest import (
     GITHUB_PAGES_URL,
@@ -206,6 +207,11 @@ def generate_ai_classic_page(items: list[dict], day: date) -> str:
             </section>
 """
 
+    cross_html = "\n            ".join(
+        f'<a href="{href}">{label}</a>'
+        for href, label in cross_edition_links("ai", date_str)
+    )
+
     v = get_git_sha()
     return f"""<!DOCTYPE html>
 <html lang="en">
@@ -219,9 +225,9 @@ def generate_ai_classic_page(items: list[dict], day: date) -> str:
     <header>
         <h1>AI Edition - {date_display}</h1>
         <nav>
-            <a href="../">&larr; AI Calendar</a>
+            <a href="../">&larr; {EDITIONS["ai"].calendar_label}</a>
             <a href="./">Magazine view</a>
-            <a href="../../">GitHub Trending</a>
+            {cross_html}
         </nav>
     </header>
     <main>
@@ -240,6 +246,7 @@ def generate_ai_classic_page(items: list[dict], day: date) -> str:
         <p>Generated from the AI/LLM Newsletter select digest.</p>
     </footer>
 {_daily_script(date_str)}
+<script src="../../preference.js?v={v}" defer></script>
 </body>
 </html>
 """
@@ -264,6 +271,9 @@ def list_ai_dates() -> list[date]:
 def generate_ai_index_page(ai_dates: list[date]) -> str:
     v = get_git_sha()
     calendar_html = build_calendar_html(ai_dates, link_prefix="")
+    cross_html = "\n            ".join(
+        f'<a href="{href}">{label}</a>' for href, label in cross_edition_links("ai")
+    )
     return f"""<!DOCTYPE html>
 <html lang="en">
 <head>
@@ -276,8 +286,7 @@ def generate_ai_index_page(ai_dates: list[date]) -> str:
     <header>
         <h1>AI Edition</h1>
         <nav>
-            <a href="../">GitHub Trending</a>
-            <a href="../hn/">Hacker News</a>
+            {cross_html}
         </nav>
     </header>
     <main>
@@ -294,7 +303,7 @@ def generate_ai_index_page(ai_dates: list[date]) -> str:
 
 # ─────────────────────── Orchestration ───────────────────────
 
-def build_pages(sidecar: Path) -> tuple[date, int]:
+def build_pages(sidecar: Path, force_regenerate=True) -> tuple[date, int]:
     """Render classic + magazine + calendar for the sidecar's edition. Returns (day, count)."""
     day, items = load_sidecar(sidecar)
     if not items:
@@ -310,7 +319,7 @@ def build_pages(sidecar: Path) -> tuple[date, int]:
 
     # Magazine (index.html). Fails open to a classic-view redirect (same contract as hn/gh).
     try:
-        generate_morning_edition(day, items, source="ai", force_regenerate=True)
+        generate_morning_edition(day, items, source="ai", force_regenerate=force_regenerate)
     except Exception as exc:  # noqa: BLE001
         log.exception("AI magazine generation failed for %s: %s", day, exc)
         (out_dir / "index.html").write_text(
@@ -322,6 +331,7 @@ def build_pages(sidecar: Path) -> tuple[date, int]:
 
     save_history(history)
     write_text(AI_DIR / "index.html", generate_ai_index_page(list_ai_dates()))
+    write_dates_manifest()
     return day, len(items)
 
 
@@ -332,13 +342,15 @@ def main() -> None:
                     help="path to the newsletter edition JSON (default: latest.json)")
     ap.add_argument("--no-publish", action="store_true",
                     help="render pages only; skip git push + email")
+    ap.add_argument("--reuse-assignments", action="store_true",
+                    help="reuse cached magazine archetype assignments (no LLM call)")
     args = ap.parse_args()
 
     if not args.sidecar.exists():
         log.error("sidecar not found: %s", args.sidecar)
         raise SystemExit(1)
 
-    day, count = build_pages(args.sidecar)
+    day, count = build_pages(args.sidecar, force_regenerate=not args.reuse_assignments)
     log.info("AI edition: rendered %d stories for %s", count, day)
     if count == 0 or args.no_publish:
         return
