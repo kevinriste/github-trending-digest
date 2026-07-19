@@ -18,6 +18,8 @@ from datetime import date
 from pathlib import Path
 from typing import Literal
 
+from editions import EDITIONS, cross_edition_links
+
 # Import get_git_sha for cache busting
 def get_git_sha():
     try:
@@ -53,8 +55,8 @@ class _EditorialItem(BaseModel):
     pullquote: str | None = None
 
 # Shared LocalStorage keys (maintaining compatibility with existing read tracking)
-READ_DAYS_KEY_HN = "gtd:read_days:hn:v1"
-READ_DAYS_KEY_GH = "gtd:read_days:gh:v1"
+READ_DAYS_KEY_HN = EDITIONS["hn"].read_key
+READ_DAYS_KEY_GH = EDITIONS["gh"].read_key
 
 @dataclass(frozen=True)
 class Archetype:
@@ -71,6 +73,7 @@ class EditionConfig:
     read_key: str
     archetypes: list[Archetype]
     prompt_voice: str
+    headline: str  # masthead <h1>
     summary_paragraphs: int = 1 # HN uses 1, GitHub uses 2
     # Max stories on the magazine. None = use every item passed in (the AI edition
     # varies 15-20). HN/GitHub keep the historical fixed 10.
@@ -146,10 +149,11 @@ CONFIGS = {
         id="ai",
         name="AI Edition",
         tagline="the AI/LLM Newsletter",
-        output_dir=REPO_ROOT / "docs" / "ai",
-        read_key="gtd:read_days:ai:v1",
+        output_dir=EDITIONS["ai"].output_dir,
+        read_key=EDITIONS["ai"].read_key,
         archetypes=AI_ARCHETYPES,
         prompt_voice="declarative for product-plate/model-bench, architect-like for agent-foundry, scholarly for academic-drop-cap/library-archive, clipped-warning for caution-tape, quiet-technical for midnight/system-core, wry for alert-stamp, quiet-wonder for observatory.",
+        headline="Today in AI, cover to cover.",
         summary_paragraphs=2,
         max_stories=None,
     ),
@@ -157,20 +161,22 @@ CONFIGS = {
         id="hn",
         name="Morning Edition",
         tagline="HN Front Page Digest",
-        output_dir=REPO_ROOT / "docs" / "hn",
+        output_dir=EDITIONS["hn"].output_dir,
         read_key=READ_DAYS_KEY_HN,
         archetypes=HN_ARCHETYPES,
         prompt_voice="scholarly for academic-drop-cap, clipped for terminal, wry for alert-stamp, quiet for midnight, declarative for product-plate, archival for archive, somber for obituary, build-log for blueprint, cosmic for observatory, etc.",
+        headline="Ten stories, before your coffee.",
         summary_paragraphs=1,
     ),
     "gh": EditionConfig(
         id="gh",
         name="Open Source Edition",
         tagline="GitHub Daily Trending",
-        output_dir=REPO_ROOT / "docs", # GH daily is at root docs/<date>
+        output_dir=EDITIONS["gh"].output_dir, # GH daily is at root docs/<date>
         read_key=READ_DAYS_KEY_GH,
         archetypes=GH_ARCHETYPES,
         prompt_voice="architect-like for agent-foundry, performance-obsessed for system-core, visual-first for ui-lab, fluid for data-pipeline, rugged for terminal-utility, benchmarking-focused for model-bench, protective for privacy-shield, playful for experimental-workshop, reliable for enterprise-engine, scholarly for library-archive.",
+        headline="Ten stories, before your coffee.",
         summary_paragraphs=2,
     ),
 }
@@ -440,30 +446,19 @@ def _links(config: EditionConfig, item: dict, n: int) -> str:
     )
 
 def _render_masthead(config: EditionConfig, day: date) -> str:
-    day_str = day.isoformat()
-    if config.id == "hn":
-        # On HN Page: Link to Today's GH and HN Calendar
-        other_edition_label = "GitHub Trending"
-        other_edition_link = f"../../{day_str}/"
-        own_calendar_label = "HN Calendar"
-        own_calendar_link = "../"
-    else:
-        # On GH Page: Link to Today's HN and GH Calendar
-        other_edition_label = "Hacker News"
-        other_edition_link = f"../hn/{day_str}/"
-        own_calendar_label = "GitHub Calendar"
-        own_calendar_link = "../"
+    ed = EDITIONS[config.id]
+    nav_parts = [f'<a href="../">{ed.calendar_label}</a>']
+    for href, label in cross_edition_links(config.id, day.isoformat()):
+        nav_parts.append(f'<a href="{href}">{label} &nbsp;·&nbsp; {day.strftime("%b %-d")}</a>')
+    nav_parts.append('<a href="classic.html">Classic View</a>')
+    nav_html = "\n      <span>&nbsp;·&nbsp;</span>\n      ".join(nav_parts)
 
     return f"""  <header class="masthead">
     <div class="masthead-nav">
-      <a href="{own_calendar_link}">{own_calendar_label}</a>
-      <span>&nbsp;·&nbsp;</span>
-      <a href="{other_edition_link}">{other_edition_label} &nbsp;·&nbsp; {day.strftime("%b %-d")}</a>
-      <span>&nbsp;·&nbsp;</span>
-      <a href="classic.html">Classic View</a>
+      {nav_html}
     </div>
-    <div class="tagline">{"The Morning Edition" if config.id == "hn" else "The Open Source Edition"}</div>
-    <h1 class="frnc">Ten stories, before your coffee.</h1>
+    <div class="tagline">The {config.name}</div>
+    <h1 class="frnc">{config.headline}</h1>
     <div class="issue-line">
       <span>Vol. I</span>
       <span>{day.strftime("%B %-d, %Y")}</span>
