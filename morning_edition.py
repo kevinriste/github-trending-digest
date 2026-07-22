@@ -1044,7 +1044,7 @@ CSS_TEMPLATE = r"""
   }
   .arc-midnight .kicker { font-family: 'JetBrains Mono', monospace; font-size: 1.15rem; letter-spacing: 0.25em; color: #b994ff; margin-bottom: 2.2rem; }
   .arc-midnight h2 { font-weight: 900; font-size: clamp(3.2rem, 8vw, 7rem); line-height: 0.98; letter-spacing: -0.04em; margin: 12rem 0 3rem; }
-  .arc-midnight .lede { font-size: 1.45rem; line-height: 1.6; color: #d0c9f0; max-width: 820px; }
+  .arc-midnight .lede { font-size: 1.2rem; line-height: 1.6; color: #d0c9f0; max-width: 820px; }
   .arc-midnight .story-meta { color: #9486d3; }
   .arc-midnight .drawer-content { background: rgba(255,255,255,0.06); border-color: #ece9ff; color: #ece9ff; }
 
@@ -1078,7 +1078,7 @@ CSS_TEMPLATE = r"""
   .arc-terminal .numeral { font-size: clamp(7rem, 15vw, 14rem); font-weight: 800; line-height: 1; color: #95ff95; margin: 0 0 1.5rem; }
   .arc-terminal .numeral::before { content: "> "; color: #51da51; }
   .arc-terminal h2 { font-weight: 800; font-size: clamp(2.5rem, 5.5vw, 5rem); line-height: 1.05; color: #e1ffe1; }
-  .arc-terminal .lede { font-size: 1.4rem; line-height: 1.7; max-width: 850px; color: #95ff95; }
+  .arc-terminal .lede { font-size: 1.2rem; line-height: 1.7; max-width: 850px; color: #95ff95; }
   .arc-terminal .lede::before { content: "# "; color: #51da51; }
   .arc-terminal .cursor { display: inline-block; width: 0.6em; height: 1.2em; background: #95ff95; vertical-align: text-bottom; margin-left: 0.3em; animation: me-blink 1.2s steps(2, start) infinite; }
   @keyframes me-blink { to { visibility: hidden; } }
@@ -1163,7 +1163,7 @@ CSS_TEMPLATE = r"""
   .arc-ui-lab .kicker { font-family: 'Inter', sans-serif; font-weight: 800; font-size: 1.1rem; letter-spacing: 0.35em; color: #5850ec; margin-bottom: 1.8rem; text-transform: uppercase; position: relative; z-index: 2; }
   .arc-ui-lab .numeral { font-family: 'Fraunces', serif; font-style: italic; font-weight: 700; font-size: clamp(6rem, 13vw, 11rem); color: #5850ec; margin-bottom: 1.2rem; line-height: 0.95; position: relative; z-index: 2; }
   .arc-ui-lab h2 { font-family: 'Inter', sans-serif; font-weight: 900; font-size: clamp(3rem, 7vw, 6rem); line-height: 1; letter-spacing: -0.03em; position: relative; z-index: 2; max-width: 20ch; }
-  .arc-ui-lab .lede { font-size: 1.4rem; line-height: 1.6; max-width: 780px; color: #312e81; position: relative; z-index: 2; }
+  .arc-ui-lab .lede { font-size: 1.2rem; line-height: 1.6; max-width: 780px; color: #312e81; position: relative; z-index: 2; }
 
   /* GH Specific: Agent Foundry (overlays on arc-blueprint) */
   .arc-agent-foundry .corner { font-family: 'JetBrains Mono', monospace; opacity: 0.75; }
@@ -1173,7 +1173,7 @@ CSS_TEMPLATE = r"""
   .arc-agent-foundry .corner.br { bottom: 3.5vh; right: 4vw; }
   .arc-agent-foundry .kicker { font-family: 'JetBrains Mono', monospace; font-weight: 700; font-size: 1rem; letter-spacing: 0.35em; color: #a8c7e8; margin-bottom: 2rem; text-transform: uppercase; }
   .arc-agent-foundry h2 { font-family: 'Inter', sans-serif; font-weight: 900; font-size: clamp(3rem, 7.5vw, 6.2rem); line-height: 1; max-width: 18ch; letter-spacing: -0.03em; }
-  .arc-agent-foundry .lede { font-size: 1.4rem; line-height: 1.55; max-width: 760px; color: #d8e7f5; }
+  .arc-agent-foundry .lede { font-size: 1.2rem; line-height: 1.55; max-width: 760px; color: #d8e7f5; }
 
   /* GH Specific: Data Pipeline */
   .arc-data-pipeline { background: radial-gradient(ellipse at 20% 85%, #4c1d95 0%, #1a0a47 55%, #0a0525 100%); color: #e9e2ff; padding: 10vh 8vw; }
@@ -1186,7 +1186,7 @@ CSS_TEMPLATE = r"""
   .arc-data-pipeline .numeral { font-family: 'JetBrains Mono', monospace; font-weight: 300; font-size: clamp(6rem, 13vw, 11rem); letter-spacing: -0.04em; color: transparent; -webkit-text-stroke: 2px #a78bfa; margin-bottom: 2rem; line-height: 0.95; }
   .arc-data-pipeline .kicker { font-family: 'JetBrains Mono', monospace; font-weight: 700; font-size: 1.05rem; letter-spacing: 0.3em; color: #a78bfa; margin-bottom: 1.8rem; text-transform: uppercase; }
   .arc-data-pipeline h2 { font-family: 'Fraunces', serif; font-weight: 700; font-size: clamp(3rem, 7vw, 6rem); line-height: 1.02; letter-spacing: -0.03em; max-width: 20ch; }
-  .arc-data-pipeline .lede { font-size: 1.4rem; line-height: 1.6; max-width: 780px; color: #dcd3ff; }
+  .arc-data-pipeline .lede { font-size: 1.2rem; line-height: 1.6; max-width: 780px; color: #dcd3ff; }
   .arc-data-pipeline .drawer-content { background: rgba(167,139,250,0.1); border-color: #a78bfa; color: #e9e2ff; }
 
   /* GH Specific: Terminal Utility (overlays on arc-terminal) */
@@ -1209,7 +1209,7 @@ CSS_TEMPLATE = r"""
   .arc-model-bench .numeral { font-family: 'Fraunces', serif; font-style: italic; font-weight: 300; font-size: clamp(6rem, 14vw, 12rem); letter-spacing: -0.05em; color: #52525b; margin-bottom: 2rem; line-height: 0.88; }
   .arc-model-bench .kicker { font-family: 'JetBrains Mono', monospace; font-weight: 600; font-size: 0.95rem; letter-spacing: 0.4em; color: #52525b; margin-bottom: 1.8rem; text-transform: uppercase; }
   .arc-model-bench h2 { font-family: 'Fraunces', serif; font-weight: 400; font-size: clamp(3rem, 7vw, 6rem); line-height: 1.04; letter-spacing: -0.03em; max-width: 20ch; }
-  .arc-model-bench .lede { font-size: 1.4rem; line-height: 1.6; max-width: 780px; color: #3f3f46; }
+  .arc-model-bench .lede { font-size: 1.2rem; line-height: 1.6; max-width: 780px; color: #3f3f46; }
 
   /* GH Specific: Privacy Shield */
   .arc-privacy-shield { background: #0a0a0a; color: #fafafa; padding: 10vh 8vw; }
@@ -1224,7 +1224,7 @@ CSS_TEMPLATE = r"""
   .arc-privacy-shield .numeral::after { content: "█"; color: #22d3ee; margin-left: 0.25em; animation: me-blink 1.2s steps(2, start) infinite; }
   .arc-privacy-shield .kicker { font-family: 'JetBrains Mono', monospace; font-weight: 700; font-size: 1rem; letter-spacing: 0.35em; color: #22d3ee; margin-bottom: 2rem; text-transform: uppercase; position: relative; z-index: 2; }
   .arc-privacy-shield h2 { font-family: 'JetBrains Mono', monospace; font-weight: 700; font-size: clamp(2.6rem, 5.5vw, 4.8rem); line-height: 1.1; letter-spacing: -0.02em; position: relative; z-index: 2; }
-  .arc-privacy-shield .lede { font-family: 'JetBrains Mono', monospace; font-size: 1.15rem; line-height: 1.75; max-width: 780px; color: #e4e4e7; position: relative; z-index: 2; }
+  .arc-privacy-shield .lede { font-family: 'JetBrains Mono', monospace; font-size: 1.2rem; line-height: 1.75; max-width: 780px; color: #e4e4e7; position: relative; z-index: 2; }
   .arc-privacy-shield .drawer-content { background: rgba(34,211,238,0.06); border-color: #22d3ee; color: #fafafa; }
 
   /* GH Specific: Enterprise Engine */
@@ -1238,7 +1238,7 @@ CSS_TEMPLATE = r"""
   .arc-enterprise-engine .numeral { font-family: 'Inter', sans-serif; font-weight: 100; font-size: clamp(6rem, 13vw, 11rem); color: #1d4ed8; letter-spacing: -0.06em; margin-bottom: 1.5rem; line-height: 1; }
   .arc-enterprise-engine .kicker { font-family: 'Inter', sans-serif; font-weight: 700; font-size: 1rem; letter-spacing: 0.32em; color: #1d4ed8; margin-bottom: 2rem; text-transform: uppercase; }
   .arc-enterprise-engine h2 { font-family: 'Inter', sans-serif; font-weight: 800; font-size: clamp(3rem, 7vw, 5.8rem); line-height: 1.02; letter-spacing: -0.03em; max-width: 20ch; }
-  .arc-enterprise-engine .lede { font-size: 1.4rem; line-height: 1.6; max-width: 780px; color: #1e3a8a; }
+  .arc-enterprise-engine .lede { font-size: 1.2rem; line-height: 1.6; max-width: 780px; color: #1e3a8a; }
 
   /* GH Specific: Experimental Workshop */
   .arc-experimental-workshop { background: #fef9c3; color: #422006; padding: 10vh 8vw; }
@@ -1248,7 +1248,7 @@ CSS_TEMPLATE = r"""
   .arc-experimental-workshop .numeral { font-family: 'Fraunces', serif; font-style: italic; font-weight: 800; font-size: clamp(7rem, 14vw, 12rem); color: #422006; margin-bottom: 1.5rem; line-height: 0.9; transform: rotate(-3deg); display: inline-block; position: relative; z-index: 2; }
   .arc-experimental-workshop .kicker { font-family: 'Fraunces', serif; font-style: italic; font-weight: 700; font-size: 1.3rem; color: #78350f; margin-bottom: 2rem; position: relative; z-index: 2; }
   .arc-experimental-workshop h2 { font-family: 'Fraunces', serif; font-weight: 800; font-style: italic; font-size: clamp(3rem, 7vw, 5.8rem); line-height: 1.04; letter-spacing: -0.02em; max-width: 22ch; position: relative; z-index: 2; }
-  .arc-experimental-workshop .lede { font-family: 'Fraunces', serif; font-size: 1.45rem; line-height: 2.2rem; max-width: 780px; position: relative; z-index: 2; }
+  .arc-experimental-workshop .lede { font-family: 'Fraunces', serif; font-size: 1.2rem; line-height: 2.2rem; max-width: 780px; position: relative; z-index: 2; }
 
   /* GH Specific: Library Archive */
   .arc-library-archive { background: #f5ead8; color: #2a1f10; padding: 12vh 10vw; }
@@ -1261,7 +1261,7 @@ CSS_TEMPLATE = r"""
   .arc-library-archive .numeral { font-family: 'Fraunces', serif; font-style: italic; font-weight: 500; font-size: clamp(5rem, 11vw, 9rem); color: #6b4a20; margin-bottom: 1.5rem; line-height: 0.95; position: relative; z-index: 2; }
   .arc-library-archive .kicker { font-family: 'Fraunces', serif; font-style: italic; font-weight: 700; font-size: 1.3rem; letter-spacing: 0.1em; color: #6b4a20; margin-bottom: 2rem; position: relative; z-index: 2; }
   .arc-library-archive h2 { font-family: 'Fraunces', serif; font-weight: 500; font-style: italic; font-size: clamp(3rem, 7vw, 6rem); line-height: 1.06; letter-spacing: -0.01em; max-width: 24ch; position: relative; z-index: 2; }
-  .arc-library-archive .lede { font-family: 'Fraunces', serif; font-size: 1.4rem; line-height: 1.7; max-width: 780px; font-weight: 400; position: relative; z-index: 2; }
+  .arc-library-archive .lede { font-family: 'Fraunces', serif; font-size: 1.2rem; line-height: 1.7; max-width: 780px; font-weight: 400; position: relative; z-index: 2; }
 
   /* ───── DOSSIER ───── */
   .dossier { background: #f5f1e8; color: #1b1a14; padding: 10rem 8vw 8rem; border-top: 10px solid #121212; }
