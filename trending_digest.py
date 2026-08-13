@@ -3333,7 +3333,7 @@ def maybe_render_ai_edition(known_dates=None):
         if not DEFAULT_SIDECAR.exists():
             logging.info("No ai-newsletter sidecar at %s; skipping AI edition", DEFAULT_SIDECAR)
             return None
-        day, _items = load_sidecar(DEFAULT_SIDECAR)
+        day, _items, _synthesis = load_sidecar(DEFAULT_SIDECAR)
         if (EDITIONS["ai"].output_dir / day.isoformat()).is_dir():
             logging.info("AI edition for %s already published; skipping", day)
             return None
