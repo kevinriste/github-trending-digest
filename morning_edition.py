@@ -917,6 +917,14 @@ CSS_TEMPLATE = r"""
 
   /* ───── MASTHEAD ───── */
   .masthead { padding: 2.5rem 6vw 3rem; border-bottom: 3px double #121212; background: #f5f1e8; text-align: center; }
+
+  /* ───── THE TAKE (Levine opening) ───── */
+  .the-take { max-width: 46rem; margin: 0 auto; padding: 2rem 6vw 0; }
+  .the-take details { border-bottom: 1px solid #121212; padding-bottom: 1.5rem; }
+  .the-take summary { font-weight: 700; font-size: 0.95rem; letter-spacing: 0.28em; text-transform: uppercase; cursor: pointer; padding: 1rem 0; color: #7a1e14; }
+  .the-take .take-head { font-family: 'Fraunces', Georgia, serif; font-size: 1.35rem; margin: 1.5rem 0 0.5rem; }
+  .the-take p { font-family: 'Fraunces', Georgia, serif; font-size: 1.08rem; line-height: 1.7; margin: 0 0 1rem; }
+
   .masthead-nav {
     display: flex;
     justify-content: center;
@@ -1294,12 +1302,34 @@ CSS_TEMPLATE = r"""
   }
 """
 
+def _render_the_take(synthesis: str) -> str:
+    """Render the newsletter's Levine-style opening ("The Take") as a collapsible-open block.
+    Returns '' when there is no synthesis (e.g. hn/gh editions or a failed synthesis)."""
+    text = (synthesis or "").strip()
+    if not text:
+        return ""
+    parts = []
+    for raw in text.split("\n"):
+        line = raw.strip()
+        if not line:
+            continue
+        # A short line with no terminal punctuation is one of the section titles.
+        if len(line) <= 55 and line[-1:] not in ".!?\"')":
+            parts.append(f'<h3 class="take-head">{_h(line)}</h3>')
+        else:
+            parts.append(f"<p>{_h(line)}</p>")
+    return (f'  <section class="the-take">\n    <details open>\n'
+            f'      <summary>The Take</summary>\n      {"".join(parts)}\n'
+            f"    </details>\n  </section>")
+
+
 def generate_morning_edition_html(
     config: EditionConfig,
     day: date,
     items: list[dict],
     assignments: list[dict],
     known_dates=None,
+    synthesis: str = "",
 ) -> str:
     title = f"{config.name} — {day.strftime('%B %-d, %Y')}"
 
@@ -1329,6 +1359,7 @@ def generate_morning_edition_html(
 </head>
 <body id="top" data-gtd-edition="{config.id}" data-gtd-date="{day.isoformat()}">
 {_render_masthead(config, day, known_dates)}
+{_render_the_take(synthesis)}
 {spreads_html}
 {_render_dossier(config, items, assignments)}
 {_render_colophon(day)}
@@ -1425,6 +1456,7 @@ def generate_morning_edition(
     source: Literal["hn", "gh", "ai"] = "hn",
     force_regenerate: bool = False,
     known_dates=None,
+    synthesis: str = "",
 ) -> str:
     config = CONFIGS[source]
     # HN/GitHub cap at 10; the AI edition (max_stories=None) uses every item passed in.
@@ -1464,7 +1496,7 @@ def generate_morning_edition(
         with open(assignments_file, "w") as f:
             json.dump(assignments, f, indent=2)
             
-    html = generate_morning_edition_html(config, day, items, assignments, known_dates)
+    html = generate_morning_edition_html(config, day, items, assignments, known_dates, synthesis=synthesis)
     
     with open(index_file, "w") as f:
         f.write(html)

@@ -52,15 +52,17 @@ log = logging.getLogger(__name__)
 
 # ─────────────────────── Sidecar loading ───────────────────────
 
-def load_sidecar(path: Path) -> tuple[date, list[dict]]:
+def load_sidecar(path: Path) -> tuple[date, list[dict], str]:
     """Read the newsletter sidecar and map its stories to renderer item dicts.
 
     The newsletter's `deep_summary` (rich multi-paragraph) becomes each item's `summary`
     (the "Analysis" both renderers consume); the one-liner is kept as `blurb`. We prefer the
     newsletter's `headline` (its LLM-normalized cool title) over the raw source `title`, which
-    for AI sources is sometimes a bare handle like "@soumithchintala"."""
+    for AI sources is sometimes a bare handle like "@soumithchintala". `synthesis` is the
+    newsletter's Levine-style opening ("The Take"), rendered above both editions when present."""
     data = json.loads(Path(path).read_text(encoding="utf-8"))
     day = date.fromisoformat(data["date"])
+    synthesis = (data.get("synthesis") or "").strip()
     items: list[dict] = []
     for s in data.get("stories", []):
         title = (s.get("headline") or s.get("title") or "").strip() or "(untitled)"
@@ -74,7 +76,7 @@ def load_sidecar(path: Path) -> tuple[date, list[dict]]:
             "blurb": (s.get("summary") or "").strip(),
             "comment_analysis": "",
         })
-    return day, items
+    return day, items, synthesis
 
 
 # ─────────────────────── Cross-day history ───────────────────────
@@ -211,7 +213,27 @@ def _daily_script(day_str: str) -> str:
 """
 
 
-def generate_ai_classic_page(items: list[dict], day: date, known_dates=None) -> str:
+def render_the_take(synthesis: str) -> str:
+    """The newsletter's Levine-style opening ("The Take") as a collapsible-open block.
+    Empty string when there is no synthesis, so the page renders unchanged."""
+    text = (synthesis or "").strip()
+    if not text:
+        return ""
+    parts = []
+    for raw in text.split("\n"):
+        line = raw.strip()
+        if not line:
+            continue
+        # A short line with no terminal punctuation is one of the section titles.
+        if len(line) <= 55 and line[-1:] not in ".!?\"')":
+            parts.append(f'<h3 class="take-head">{html.escape(line)}</h3>')
+        else:
+            parts.append(f"<p>{html.escape(line)}</p>")
+    return ('<section class="the-take"><details open>'
+            f'<summary>The Take</summary>{"".join(parts)}</details></section>')
+
+
+def generate_ai_classic_page(items: list[dict], day: date, known_dates=None, synthesis: str = "") -> str:
     date_str = day.isoformat()
     date_display = format_date_display(day)
 
@@ -277,6 +299,7 @@ def generate_ai_classic_page(items: list[dict], day: date, known_dates=None) -> 
         </nav>
     </header>
     <main>
+        {render_the_take(synthesis)}
         <div class="repo-controls">
             <button id="collapse-seen-btn" type="button">Collapse Stories Not New Today</button>
             <button id="expand-all-btn" type="button">Expand All</button>
@@ -356,7 +379,7 @@ def generate_ai_index_page(ai_dates: list[date]) -> str:
 
 def build_pages(sidecar: Path, force_regenerate=True, known_dates=None) -> tuple[date, int]:
     """Render classic + magazine + calendar for the sidecar's edition. Returns (day, count)."""
-    day, items = load_sidecar(sidecar)
+    day, items, synthesis = load_sidecar(sidecar)
     if not items:
         log.warning("sidecar %s has no stories; nothing to render", sidecar)
         return day, 0
@@ -366,11 +389,12 @@ def build_pages(sidecar: Path, force_regenerate=True, known_dates=None) -> tuple
 
     out_dir = AI_DIR / day.isoformat()
     out_dir.mkdir(parents=True, exist_ok=True)
-    write_text(out_dir / "classic.html", generate_ai_classic_page(items, day, known_dates))
+    write_text(out_dir / "classic.html", generate_ai_classic_page(items, day, known_dates, synthesis=synthesis))
 
     # Magazine (index.html). Fails open to a classic-view redirect (same contract as hn/gh).
     try:
-        generate_morning_edition(day, items, source="ai", force_regenerate=force_regenerate, known_dates=known_dates)
+        generate_morning_edition(day, items, source="ai", force_regenerate=force_regenerate,
+                                 known_dates=known_dates, synthesis=synthesis)
     except Exception as exc:  # noqa: BLE001
         log.exception("AI magazine generation failed for %s: %s", day, exc)
         (out_dir / "index.html").write_text(
