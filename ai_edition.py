@@ -224,9 +224,9 @@ def render_the_take(synthesis: str) -> str:
         line = raw.strip()
         if not line:
             continue
-        # A short line with no terminal punctuation is one of the section titles.
-        if len(line) <= 55 and line[-1:] not in ".!?\"')":
-            parts.append(f'<h3 class="take-head">{html.escape(line)}</h3>')
+        # Section titles are marked with a leading "# " by the synthesis prompt.
+        if line.startswith("# "):
+            parts.append(f'<h3 class="take-head">{html.escape(line[2:].strip())}</h3>')
         else:
             parts.append(f"<p>{html.escape(line)}</p>")
     return ('<section class="the-take"><details open>'
