@@ -1721,6 +1721,18 @@ def generate_bullet_paragraph_html(text: str) -> str:
     return "\n".join(f"<p>{html.escape(bullet)}</p>" for bullet in bullets)
 
 
+def render_comment_analysis_html(raw: str) -> str:
+    """Render stored HN comment analysis: camps HTML for v3 JSON, else legacy bullets.
+
+    Returns:
+        Inner HTML for the Comment Analysis card body.
+    """
+    parsed = hn_comment_camps.parse_comment_analysis(raw)
+    if parsed is not None:
+        return hn_comment_camps.render_camps_html(parsed)
+    return generate_bullet_paragraph_html(raw)
+
+
 def generate_month_calendar(year: int, month: int, pages_set: set[str], link_prefix: str = "") -> str:
     """Generate one month of calendar HTML."""
     cal = calendar.Calendar(firstweekday=6)
@@ -2210,7 +2222,7 @@ def generate_hn_daily_page(items: list[dict], day: date, known_dates: dict[str, 
             comment_analysis_html = f"""
                 <div class="ai-summary">
                     <h4>Comment Analysis</h4>
-                    {generate_bullet_paragraph_html(item["comment_analysis"])}
+                    {render_comment_analysis_html(item["comment_analysis"])}
                 </div>
 """
         history_line = (
