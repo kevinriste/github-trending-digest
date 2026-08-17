@@ -18,6 +18,7 @@ from datetime import date
 from pathlib import Path
 from typing import Literal
 
+import hn_comment_camps
 from editions import EDITIONS, cross_edition_links
 
 # Import get_git_sha for cache busting
@@ -374,6 +375,26 @@ def _meta_line(config: EditionConfig, item: dict) -> str:
     period = (item.get("period_stars") or "").strip() or "no new stars today"
     return f"{_h(domain)} &nbsp;·&nbsp; {_h(str(stars))} stars &nbsp;·&nbsp; {_h(period)}"
 
+def _render_reactions_html(config: EditionConfig, item: dict) -> str:
+    """Render the reactions block: camps HTML for HN v3 JSON, else legacy bullets.
+
+    Returns:
+        A heading + body block, or "" when there is nothing to show or for GH.
+    """
+    raw = (item.get("comment_analysis") or "").strip()
+    if not raw:
+        return ""
+    parsed = hn_comment_camps.parse_comment_analysis(raw)
+    if config.id == "hn" and parsed is not None:
+        return f"<h4>Reader Reactions</h4>\n{hn_comment_camps.render_camps_html(parsed)}"
+    bullets = parse_bullets(raw)
+    if not bullets:
+        return ""
+    reactions_label = "Reader Reactions" if config.id == "hn" else "Insights"
+    body = "\n".join(f"<p>{_h(b)}</p>" for b in bullets)
+    return f"<h4>{reactions_label}</h4>\n{body}"
+
+
 def _render_analysis_drawer(config: EditionConfig, i: int, item: dict) -> str:
     """Renders a collapsible drawer containing the technical analysis."""
     raw_analysis = (item.get("summary") or "").strip()
@@ -382,21 +403,13 @@ def _render_analysis_drawer(config: EditionConfig, i: int, item: dict) -> str:
     else:
         analysis = raw_analysis
 
-    bullets = parse_bullets(item.get("comment_analysis") or "")
     analysis_parts = [p.strip() for p in analysis.split("\n\n") if p.strip()]
     analysis_html = "\n".join(f'<p>{_h(p)}</p>' for p in analysis_parts)
 
     if not analysis_html:
         analysis_html = '<p class="muted"><em>Analysis not available.</em></p>'
 
-    if bullets:
-        reactions_label = "Reader Reactions" if config.id == "hn" else "Insights"
-        bullets_html = (
-            f'<h4>{reactions_label}</h4>\n'
-            + "\n".join(f"<p>{_h(b)}</p>" for b in bullets)
-        )
-    else:
-        bullets_html = ""
+    bullets_html = _render_reactions_html(config, item)
 
     repo_link_html = ""
     if config.id == "gh":
@@ -482,21 +495,12 @@ def _render_dossier(config: EditionConfig, items: list[dict], assignments: list[
         else:
             analysis = raw_analysis
             
-        bullets = parse_bullets(item.get("comment_analysis") or "")
-
         analysis_parts = [p.strip() for p in analysis.split("\n\n") if p.strip()]
         analysis_html = "\n".join(f'<p>{_h(p)}</p>' for p in analysis_parts)
         if not analysis_html:
             analysis_html = '<p class="muted"><em>Analysis not available.</em></p>'
-            
-        if bullets:
-            reactions_label = "Reader Reactions" if config.id == "hn" else "Insights"
-            reactions_html = (
-                f'<h4>{reactions_label}</h4>\n      '
-                + "\n      ".join(f"<p>{_h(b)}</p>" for b in bullets)
-            )
-        else:
-            reactions_html = ""
+
+        reactions_html = _render_reactions_html(config, item)
 
         title = item.get("title") or item.get("name") or item.get("repo_name") or "Untitled"
         discussion_url = _h(item.get("discussion_url") or "")
@@ -1101,6 +1105,16 @@ CSS_TEMPLATE = r"""
     font-family: 'Fraunces', serif; font-style: italic; font-weight: 400; font-size: clamp(2rem, 3.8vw, 3.4rem); line-height: 1.1; color: #fcfaf5; border-left: 6px solid #f1c40f; padding-left: 2.5rem; margin: 0;
   }
   .arc-editorial-pullquote .pullquote::before { content: "\201C"; color: #f1c40f; font-size: 1.5em; vertical-align: -0.4em; line-height: 0; }
+
+  /* ───── READER REACTIONS: camps ───── */
+  .camps-framing { margin: 0 0 1.1rem; line-height: 1.55; }
+  .camp { border-left: 3px solid currentColor; padding-left: 1.1rem; margin: 0 0 1.3rem; }
+  .camp:last-child { margin-bottom: 0; }
+  .camp-label { margin: 0 0 0.5rem; line-height: 1.4; }
+  .camp blockquote { margin: 0 0 0.6rem; font-family: 'Fraunces', Georgia, serif; font-style: italic; line-height: 1.45; opacity: 0.92; }
+  .camp blockquote:last-child { margin-bottom: 0; }
+  .camp blockquote cite { display: block; margin-top: 0.2rem; font-family: 'Inter', system-ui, sans-serif; font-style: normal; font-size: 0.8em; letter-spacing: 0.04em; text-transform: uppercase; opacity: 0.6; }
+  .camp blockquote cite::before { content: "\2014\00a0"; }
 
   /* ───── CAUTION TAPE ───── */
   .arc-caution-tape { background: #ffd900; color: #050505; padding: 10vh 8vw; }

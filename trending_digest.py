@@ -13,7 +13,6 @@ import smtplib
 import subprocess
 import tempfile
 import time
-from collections import deque
 from dataclasses import dataclass
 from concurrent.futures import ThreadPoolExecutor, as_completed
 from datetime import date, datetime, timedelta, timezone
@@ -24,11 +23,14 @@ from urllib.parse import urlparse, parse_qs
 import psycopg
 import requests
 import trafilatura
+from requests.adapters import HTTPAdapter
 from bs4 import BeautifulSoup
 from google import genai
 from markitdown import MarkItDown
 from psycopg.rows import dict_row
 from youtube_transcript_api import YouTubeTranscriptApi
+
+import hn_comment_camps
 
 from morning_edition import generate_morning_edition, first_paragraph, limit_bullets, parse_bullets
 from editions import EDITIONS, cross_edition_links, write_dates_manifest
@@ -54,7 +56,8 @@ GITHUB_PAGES_URL = "https://www.kevinriste.com/github-trending-digest/"
 SUMMARY_MODEL = "gemini-3.1-flash-lite"
 GH_SUMMARY_PROMPT_VERSION = "gh_v3"
 HN_SUMMARY_PROMPT_VERSION = "hn_v4"
-HN_COMMENT_ANALYSIS_PROMPT_VERSION = "hn_comments_v2"
+HN_COMMENT_ANALYSIS_PROMPT_VERSION = "hn_comments_v3"
+COMMENT_MODEL = os.environ.get("COMMENT_BRIEFING_MODEL", "gpt-5-mini")
 SUMMARY_REFRESH_DAYS = 60
 RUN_LOCK_KEY = 348_112_907
 READ_DAYS_KEY_GH = "gtd:read_days:gh:v1"
@@ -102,11 +105,12 @@ GH_DAILY_RENDER_LIMIT = get_int_env("GH_DAILY_RENDER_LIMIT", 0)  # 0 means all f
 HN_DAILY_RENDER_LIMIT = get_int_env("HN_DAILY_RENDER_LIMIT", 10)
 HN_MAX_ITEMS = get_int_env("HN_MAX_ITEMS", 0)  # 0 means all IDs from API
 HN_FETCH_WORKERS = max(1, get_int_env("HN_FETCH_WORKERS", 20))
-HN_COMMENT_SAMPLE_SIZE = get_int_env("HN_COMMENT_SAMPLE_SIZE", 16)
 HN_COMMENT_TRAVERSAL_MAX_NODES = get_int_env("HN_COMMENT_TRAVERSAL_MAX_NODES", 300)
 HN_COMMENT_TRAVERSAL_MAX_DEPTH = get_int_env("HN_COMMENT_TRAVERSAL_MAX_DEPTH", 6)
-HN_COMMENT_MAX_PER_BRANCH = get_int_env("HN_COMMENT_MAX_PER_BRANCH", 4)
 HN_COMMENT_MIN_TEXT_LEN = get_int_env("HN_COMMENT_MIN_TEXT_LEN", 40)
+HN_COMMENT_ANALYSIS_MAX_CHARS = get_int_env("HN_COMMENT_ANALYSIS_MAX_CHARS", 48000)
+HN_COMMENT_ANALYSIS_MAX_CAMPS = get_int_env("HN_COMMENT_ANALYSIS_MAX_CAMPS", 6)
+HN_COMMENT_ANALYSIS_MAX_QUOTES = get_int_env("HN_COMMENT_ANALYSIS_MAX_QUOTES", 3)
 HN_ARTICLE_CONTENT_MAX_CHARS = get_int_env("HN_ARTICLE_CONTENT_MAX_CHARS", 25000)
 
 PDF_MAX_DOWNLOAD_BYTES = 50 * 1024 * 1024  # 50MB
@@ -1397,11 +1401,11 @@ def get_latest_hn_comment_analysis(conn: psycopg.Connection, item_id: int) -> di
             FROM hn_comment_analyses
             WHERE item_id = %s
               AND model = %s
-              AND sample_size = %s
+              AND prompt_version = %s
             ORDER BY generated_at DESC
             LIMIT 1
             """,
-            (item_id, SUMMARY_MODEL, HN_COMMENT_SAMPLE_SIZE),
+            (item_id, COMMENT_MODEL, HN_COMMENT_ANALYSIS_PROMPT_VERSION),
         )
         return cur.fetchone()
 
@@ -1412,6 +1416,7 @@ def cache_hn_comment_analysis(
     analysis_text: str,
     sampled_comments: int,
     total_comments: int,
+    sample_size: int,
 ) -> None:
     """Insert Hacker News comment analysis row."""
     with conn.cursor() as cur:
@@ -1423,56 +1428,14 @@ def cache_hn_comment_analysis(
             """,
             (
                 item_id,
-                SUMMARY_MODEL,
+                COMMENT_MODEL,
                 HN_COMMENT_ANALYSIS_PROMPT_VERSION,
-                HN_COMMENT_SAMPLE_SIZE,
+                sample_size,
                 sampled_comments,
                 total_comments,
                 analysis_text,
             ),
         )
-
-
-def generate_hn_comment_analysis(item: dict, sampled_comments: list[dict], total_comments: int) -> str:
-    """Generate three bullet points from sampled Hacker News comments."""
-    comment_block = "\n\n".join(
-        (
-            f"[{idx}] depth={comment['depth']} top_thread={comment['root_pos']} "
-            f"by={comment['by'] or 'unknown'}: {comment['text']}"
-        )
-        for idx, comment in enumerate(sampled_comments, start=1)
-    )
-
-    prompt = f"""Analyze this Hacker News discussion sample and provide exactly 3 concise bullet points.
-
-Story title: {item.get("title", "")}
-Story URL: {item.get("url") or item.get("discussion_url") or "N/A"}
-Total comments in thread: {total_comments}
-Sample size: {len(sampled_comments)}
-
-Comment sample:
-{comment_block}
-
-Return exactly 3 bullet points, in this order, each covering:
-1) the core consensus or dominant viewpoint;
-2) the strongest disagreement or competing view;
-3) the practical technical takeaway.
-
-Rules:
-- Output exactly three lines, each starting with "- " followed only by the sentence itself.
-- Do NOT prefix a line with a label, number, or "Bullet N" — the line is just the sentence.
-- One sentence per bullet, 18-35 words.
-- No hype or marketing language.
-- Do not quote usernames.
-"""
-
-    try:
-        client = get_gemini_client()
-        response = client.models.generate_content(model=SUMMARY_MODEL, contents=prompt)
-        return response.text.strip()
-    except Exception as exc:
-        logging.exception("HN comment analysis generation failed for item %s: %s", item.get("item_id"), exc)
-        return ""
 
 
 def get_or_generate_hn_comment_analysis(conn: psycopg.Connection, item: dict, run_day: date) -> dict | None:
@@ -1486,12 +1449,18 @@ def get_or_generate_hn_comment_analysis(conn: psycopg.Connection, item: dict, ru
             "total_comments": int(latest["total_comments"]),
         }
 
-    total_comments, nodes = build_hn_comment_nodes(item_id, int(item.get("comment_count") or 0))
-    sampled = select_hn_comment_sample(nodes)
-    if not sampled:
+    total_comments, comments = build_hn_comment_outline(item_id, int(item.get("comment_count") or 0))
+    if not comments:
         return None
 
-    analysis_text = generate_hn_comment_analysis(item, sampled, total_comments)
+    outline = hn_comment_camps.render_outline(comments)
+    analysis_text = hn_comment_camps.build_camps_analysis(
+        title=str(item.get("title", "")),
+        summary=str(item.get("summary", "")),
+        outline=outline,
+        max_camps=HN_COMMENT_ANALYSIS_MAX_CAMPS,
+        max_quotes=HN_COMMENT_ANALYSIS_MAX_QUOTES,
+    )
     if not analysis_text:
         if latest:
             return {
@@ -1505,12 +1474,13 @@ def get_or_generate_hn_comment_analysis(conn: psycopg.Connection, item: dict, ru
         conn=conn,
         item_id=item_id,
         analysis_text=analysis_text,
-        sampled_comments=len(sampled),
+        sampled_comments=len(comments),
         total_comments=total_comments,
+        sample_size=len(comments),
     )
     return {
         "analysis_text": analysis_text,
-        "sampled_comments": len(sampled),
+        "sampled_comments": len(comments),
         "total_comments": total_comments,
     }
 
@@ -1748,6 +1718,18 @@ def generate_bullet_paragraph_html(text: str) -> str:
         return "<p><em>Comment analysis not available.</em></p>"
 
     return "\n".join(f"<p>{html.escape(bullet)}</p>" for bullet in bullets)
+
+
+def render_comment_analysis_html(raw: str) -> str:
+    """Render stored HN comment analysis: camps HTML for v3 JSON, else legacy bullets.
+
+    Returns:
+        Inner HTML for the Comment Analysis card body.
+    """
+    parsed = hn_comment_camps.parse_comment_analysis(raw)
+    if parsed is not None:
+        return hn_comment_camps.render_camps_html(parsed)
+    return generate_bullet_paragraph_html(raw)
 
 
 def generate_month_calendar(year: int, month: int, pages_set: set[str], link_prefix: str = "") -> str:
@@ -2239,7 +2221,7 @@ def generate_hn_daily_page(items: list[dict], day: date, known_dates: dict[str, 
             comment_analysis_html = f"""
                 <div class="ai-summary">
                     <h4>Comment Analysis</h4>
-                    {generate_bullet_paragraph_html(item["comment_analysis"])}
+                    {render_comment_analysis_html(item["comment_analysis"])}
                 </div>
 """
         history_line = (
@@ -2585,6 +2567,44 @@ nav a:hover {
 }
 .ai-summary p:last-child {
     margin-bottom: 0;
+}
+.camps-framing {
+    color: var(--text-color);
+    font-size: 0.9rem;
+    margin-bottom: 1rem;
+}
+.camp {
+    border-left: 2px solid var(--border-color);
+    padding-left: 0.9rem;
+    margin: 0 0 1rem;
+}
+.camp:last-child {
+    margin-bottom: 0;
+}
+.camp-label {
+    color: #f0f6fc;
+    font-size: 0.9rem;
+    margin-bottom: 0.5rem;
+}
+.camp blockquote {
+    margin: 0 0 0.5rem;
+    color: var(--text-color);
+    font-size: 0.88rem;
+    opacity: 0.92;
+}
+.camp blockquote:last-child {
+    margin-bottom: 0;
+}
+.camp blockquote cite {
+    display: block;
+    margin-top: 0.15rem;
+    font-size: 0.8rem;
+    font-style: normal;
+    color: var(--link-color);
+    opacity: 0.85;
+}
+.camp blockquote cite::before {
+    content: "\2014\00a0";
 }
 .empty-state {
     color: #8b949e;
@@ -2954,110 +2974,164 @@ def clean_hn_comment_text(raw_text: str) -> str:
     return normalize_text(BeautifulSoup(raw_text, "html.parser").get_text(" ", strip=True))
 
 
-def build_hn_comment_nodes(item_id: int, total_comments_hint: int) -> tuple[int, list[dict]]:
-    """Traverse HN comment tree with branch-diverse round-robin strategy."""
+def _fetch_hn_comment_tree(item_id: int) -> tuple[int, list[int], dict[int, dict]]:
+    """Fetch a bounded HN comment tree, breadth-first with parallel level fetches.
+
+    Traversal is capped at HN_COMMENT_TRAVERSAL_MAX_NODES comments and
+    HN_COMMENT_TRAVERSAL_MAX_DEPTH depth. Dead/deleted/non-comment items are
+    dropped. Every retained node keeps its parent link and reply list so callers
+    can compute engagement (subtree size) and reconstruct contiguous threads.
+
+    Returns:
+        (total_comments, top_kids, nodes) where nodes maps comment_id to a dict
+        with by, text, depth, root_pos (1-based top-thread rank), kids, parent.
+    """
     session = requests.Session()
+    # Size the connection pool to the worker count so parallel level fetches reuse connections.
+    adapter = HTTPAdapter(pool_connections=HN_FETCH_WORKERS, pool_maxsize=HN_FETCH_WORKERS)
+    session.mount("https://", adapter)
     item_cache: dict[int, dict | None] = {}
 
     story = fetch_hn_item_cached(item_id, item_cache, session)
     if not story:
-        return total_comments_hint, []
+        return 0, [], {}
 
-    total_comments = int(story.get("descendants") or total_comments_hint or 0)
+    total_comments = int(story.get("descendants") or 0)
     top_kids = [int(kid) for kid in (story.get("kids") or [])]
-    if not top_kids:
-        return total_comments, []
 
-    branch_queues = [deque([(kid, 1, kid, idx + 1)]) for idx, kid in enumerate(top_kids)]
-
-    nodes: list[dict] = []
-    visited: set[int] = set()
-    while len(nodes) < HN_COMMENT_TRAVERSAL_MAX_NODES:
-        progressed = False
-        for queue in branch_queues:
-            if not queue:
-                continue
-            progressed = True
-            comment_id, depth, root_id, root_pos = queue.popleft()
-            if comment_id in visited:
-                continue
-            visited.add(comment_id)
-            if depth > HN_COMMENT_TRAVERSAL_MAX_DEPTH:
-                continue
-
-            comment = fetch_hn_item_cached(comment_id, item_cache, session)
+    nodes: dict[int, dict] = {}
+    # frontier entries: (comment_id, depth, root_pos, parent_id)
+    frontier = [(kid, 1, idx + 1, item_id) for idx, kid in enumerate(top_kids)]
+    while frontier and len(nodes) < HN_COMMENT_TRAVERSAL_MAX_NODES:
+        with ThreadPoolExecutor(max_workers=HN_FETCH_WORKERS) as executor:
+            fetched = list(
+                executor.map(
+                    lambda job: (job, fetch_hn_item_cached(job[0], item_cache, session)),
+                    frontier,
+                )
+            )
+        next_frontier: list[tuple[int, int, int, int]] = []
+        for (comment_id, depth, root_pos, parent_id), comment in fetched:
             if not comment or comment.get("type") != "comment":
                 continue
             if comment.get("dead") or comment.get("deleted"):
                 continue
+            kids = [int(k) for k in (comment.get("kids") or [])]
+            nodes[comment_id] = {
+                "by": normalize_text(comment.get("by") or "unknown"),
+                "text": clean_hn_comment_text(comment.get("text") or ""),
+                "depth": depth,
+                "root_pos": root_pos,
+                "kids": kids,
+                "parent": parent_id,
+            }
+            if depth < HN_COMMENT_TRAVERSAL_MAX_DEPTH:
+                next_frontier.extend((k, depth + 1, root_pos, comment_id) for k in kids)
+        frontier = next_frontier
 
-            text = clean_hn_comment_text(comment.get("text") or "")
-            kids = [int(kid) for kid in (comment.get("kids") or [])]
-
-            # Continue exploring replies even when this node is too short to keep.
-            for kid in kids:
-                queue.append((kid, depth + 1, root_id, root_pos))
-
-            if len(text) < HN_COMMENT_MIN_TEXT_LEN:
-                continue
-
-            nodes.append(
-                {
-                    "comment_id": comment_id,
-                    "by": normalize_text(comment.get("by") or "unknown"),
-                    "depth": depth,
-                    "root_id": root_id,
-                    "root_pos": root_pos,
-                    "reply_count": len(kids),
-                    "len": len(text),
-                    "text": text,
-                }
-            )
-            if len(nodes) >= HN_COMMENT_TRAVERSAL_MAX_NODES:
-                break
-
-        if not progressed:
-            break
-
-    return total_comments, nodes
+    return total_comments, top_kids, nodes
 
 
-def select_hn_comment_sample(nodes: list[dict]) -> list[dict]:
-    """Select a branch-diverse high-signal subset of comments."""
+def _hn_subtree_size(nodes: dict[int, dict], comment_id: int) -> int:
+    """Count fetched descendants under a comment (an engagement proxy).
+
+    Returns:
+        The number of descendant comments present in ``nodes``.
+    """
+    count = 0
+    stack = list(nodes[comment_id]["kids"])
+    while stack:
+        kid = stack.pop()
+        node = nodes.get(kid)
+        if node is None:
+            continue
+        count += 1
+        stack.extend(node["kids"])
+    return count
+
+
+def build_hn_comment_outline(item_id: int, total_hint: int) -> tuple[int, list[dict]]:
+    """Select the highest-signal comments and render them as a contiguous outline.
+
+    Comments are ranked by engagement (fetched subtree size and direct reply
+    count, with a bonus for shallower comments), and the top ones are kept within
+    HN_COMMENT_ANALYSIS_MAX_CHARS. Each kept comment pulls in its ancestor chain
+    so who-replied-to-whom stays intact; the result is grouped by top thread and
+    ordered parent-before-children for indented rendering.
+
+    This favours the comments people actually engaged with (where camps form and
+    clash) over either a deep dive on the first few threads or a flat sweep of
+    top-level comments only.
+
+    Returns:
+        (total_comments, comments) where each comment dict has depth (1-based),
+        by, and text.
+    """
+    total_comments, top_kids, nodes = _fetch_hn_comment_tree(item_id)
     if not nodes:
-        return []
+        return total_comments or total_hint, []
 
-    ranked = []
-    for node in nodes:
-        depth_bonus = 1.2 if node["depth"] == 1 else (0.7 if node["depth"] == 2 else 0.3)
-        len_bonus = min(node["len"], 900) / 220
-        reply_bonus = min(node["reply_count"], 10) / 4
-        order_bonus = max(0, 14 - node["root_pos"]) / 14
-        signal = depth_bonus + len_bonus + reply_bonus + order_bonus
-        ranked.append((signal, node))
+    def line_cost(node: dict) -> int:
+        return len(node["text"]) + len(node["by"]) + 4 * node["depth"] + 3
 
-    ranked.sort(key=lambda row: (row[0], row[1]["len"]), reverse=True)
-
-    selected: list[dict] = []
-    branch_counts: dict[int, int] = {}
-    text_seen: set[str] = set()
-    for _, node in ranked:
-        branch_id = int(node["root_id"])
-        if branch_counts.get(branch_id, 0) >= HN_COMMENT_MAX_PER_BRANCH:
+    depth_bonus = {1: 1.5, 2: 1.0, 3: 0.6}
+    ranked: list[tuple[float, int]] = []
+    for comment_id, node in nodes.items():
+        if len(node["text"]) < HN_COMMENT_MIN_TEXT_LEN:
             continue
+        signal = (
+            _hn_subtree_size(nodes, comment_id)
+            + len(node["kids"]) * 1.5
+            + depth_bonus.get(node["depth"], 0.3) * 3
+            + min(len(node["text"]), 600) / 300
+        )
+        ranked.append((signal, comment_id))
+    ranked.sort(key=lambda row: (row[0], -row[1]), reverse=True)
 
-        dedupe_key = node["text"][:200].lower()
-        if dedupe_key in text_seen:
+    def ancestors(comment_id: int) -> list[int]:
+        chain: list[int] = []
+        parent = nodes[comment_id]["parent"]
+        while parent in nodes:
+            chain.append(parent)
+            parent = nodes[parent]["parent"]
+        return chain
+
+    chosen: set[int] = set()
+    char_total = 0
+    for _, comment_id in ranked:
+        if comment_id in chosen:
             continue
-
-        selected.append(node)
-        branch_counts[branch_id] = branch_counts.get(branch_id, 0) + 1
-        text_seen.add(dedupe_key)
-
-        if len(selected) >= HN_COMMENT_SAMPLE_SIZE:
+        # Include ancestors (even if short) so the reply chain stays contiguous.
+        needed = [a for a in ancestors(comment_id) if a not in chosen] + [comment_id]
+        add_cost = sum(line_cost(nodes[c]) for c in needed)
+        if char_total + add_cost > HN_COMMENT_ANALYSIS_MAX_CHARS and chosen:
+            continue
+        char_total += add_cost
+        chosen.update(needed)
+        if len(chosen) >= HN_COMMENT_TRAVERSAL_MAX_NODES:
             break
 
-    return selected
+    # Render order: group by top thread, then a stable pre-order walk within each thread.
+    order_index: dict[int, int] = {}
+    counter = 0
+    for kid in top_kids:
+        stack = [kid]
+        while stack:
+            comment_id = stack.pop()
+            if comment_id not in nodes:
+                continue
+            if comment_id in chosen and comment_id not in order_index:
+                order_index[comment_id] = counter
+                counter += 1
+            for child in reversed(nodes[comment_id]["kids"]):
+                stack.append(child)
+
+    ordered = sorted(chosen, key=lambda c: order_index.get(c, counter))
+    comments = [
+        {"depth": nodes[c]["depth"], "by": nodes[c]["by"], "text": nodes[c]["text"]}
+        for c in ordered
+    ]
+    return total_comments, comments
 
 
 def scrape_hn_topstories() -> list[dict]:
