@@ -23,6 +23,7 @@ from urllib.parse import urlparse, parse_qs
 import psycopg
 import requests
 import trafilatura
+from requests.adapters import HTTPAdapter
 from bs4 import BeautifulSoup
 from google import genai
 from markitdown import MarkItDown
@@ -2567,6 +2568,44 @@ nav a:hover {
 .ai-summary p:last-child {
     margin-bottom: 0;
 }
+.camps-framing {
+    color: var(--text-color);
+    font-size: 0.9rem;
+    margin-bottom: 1rem;
+}
+.camp {
+    border-left: 2px solid var(--border-color);
+    padding-left: 0.9rem;
+    margin: 0 0 1rem;
+}
+.camp:last-child {
+    margin-bottom: 0;
+}
+.camp-label {
+    color: #f0f6fc;
+    font-size: 0.9rem;
+    margin-bottom: 0.5rem;
+}
+.camp blockquote {
+    margin: 0 0 0.5rem;
+    color: var(--text-color);
+    font-size: 0.88rem;
+    opacity: 0.92;
+}
+.camp blockquote:last-child {
+    margin-bottom: 0;
+}
+.camp blockquote cite {
+    display: block;
+    margin-top: 0.15rem;
+    font-size: 0.8rem;
+    font-style: normal;
+    color: var(--link-color);
+    opacity: 0.85;
+}
+.camp blockquote cite::before {
+    content: "\2014\00a0";
+}
 .empty-state {
     color: #8b949e;
     font-style: italic;
@@ -2949,7 +2988,7 @@ def _fetch_hn_comment_tree(item_id: int) -> tuple[int, list[int], dict[int, dict
     """
     session = requests.Session()
     # Size the connection pool to the worker count so parallel level fetches reuse connections.
-    adapter = requests.adapters.HTTPAdapter(pool_connections=HN_FETCH_WORKERS, pool_maxsize=HN_FETCH_WORKERS)
+    adapter = HTTPAdapter(pool_connections=HN_FETCH_WORKERS, pool_maxsize=HN_FETCH_WORKERS)
     session.mount("https://", adapter)
     item_cache: dict[int, dict | None] = {}
 
