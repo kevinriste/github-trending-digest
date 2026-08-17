@@ -2935,61 +2935,163 @@ def clean_hn_comment_text(raw_text: str) -> str:
     return normalize_text(BeautifulSoup(raw_text, "html.parser").get_text(" ", strip=True))
 
 
-def build_hn_comment_outline(item_id: int, total_hint: int) -> tuple[int, list[dict]]:
-    """Traverse HN threads depth-first, keeping whole branches in reading order.
+def _fetch_hn_comment_tree(item_id: int) -> tuple[int, list[int], dict[int, dict]]:
+    """Fetch a bounded HN comment tree, breadth-first with parallel level fetches.
 
-    Branches (top-level replies) are visited in position order and each is
-    explored parent-before-children so the result renders as an indented outline.
-    Accumulation stops once the rendered outline would exceed
-    HN_COMMENT_ANALYSIS_MAX_CHARS, dropping the lowest-priority whole branches.
+    Traversal is capped at HN_COMMENT_TRAVERSAL_MAX_NODES comments and
+    HN_COMMENT_TRAVERSAL_MAX_DEPTH depth. Dead/deleted/non-comment items are
+    dropped. Every retained node keeps its parent link and reply list so callers
+    can compute engagement (subtree size) and reconstruct contiguous threads.
+
+    Returns:
+        (total_comments, top_kids, nodes) where nodes maps comment_id to a dict
+        with by, text, depth, root_pos (1-based top-thread rank), kids, parent.
+    """
+    session = requests.Session()
+    # Size the connection pool to the worker count so parallel level fetches reuse connections.
+    adapter = requests.adapters.HTTPAdapter(pool_connections=HN_FETCH_WORKERS, pool_maxsize=HN_FETCH_WORKERS)
+    session.mount("https://", adapter)
+    item_cache: dict[int, dict | None] = {}
+
+    story = fetch_hn_item_cached(item_id, item_cache, session)
+    if not story:
+        return 0, [], {}
+
+    total_comments = int(story.get("descendants") or 0)
+    top_kids = [int(kid) for kid in (story.get("kids") or [])]
+
+    nodes: dict[int, dict] = {}
+    # frontier entries: (comment_id, depth, root_pos, parent_id)
+    frontier = [(kid, 1, idx + 1, item_id) for idx, kid in enumerate(top_kids)]
+    while frontier and len(nodes) < HN_COMMENT_TRAVERSAL_MAX_NODES:
+        with ThreadPoolExecutor(max_workers=HN_FETCH_WORKERS) as executor:
+            fetched = list(
+                executor.map(
+                    lambda job: (job, fetch_hn_item_cached(job[0], item_cache, session)),
+                    frontier,
+                )
+            )
+        next_frontier: list[tuple[int, int, int, int]] = []
+        for (comment_id, depth, root_pos, parent_id), comment in fetched:
+            if not comment or comment.get("type") != "comment":
+                continue
+            if comment.get("dead") or comment.get("deleted"):
+                continue
+            kids = [int(k) for k in (comment.get("kids") or [])]
+            nodes[comment_id] = {
+                "by": normalize_text(comment.get("by") or "unknown"),
+                "text": clean_hn_comment_text(comment.get("text") or ""),
+                "depth": depth,
+                "root_pos": root_pos,
+                "kids": kids,
+                "parent": parent_id,
+            }
+            if depth < HN_COMMENT_TRAVERSAL_MAX_DEPTH:
+                next_frontier.extend((k, depth + 1, root_pos, comment_id) for k in kids)
+        frontier = next_frontier
+
+    return total_comments, top_kids, nodes
+
+
+def _hn_subtree_size(nodes: dict[int, dict], comment_id: int) -> int:
+    """Count fetched descendants under a comment (an engagement proxy).
+
+    Returns:
+        The number of descendant comments present in ``nodes``.
+    """
+    count = 0
+    stack = list(nodes[comment_id]["kids"])
+    while stack:
+        kid = stack.pop()
+        node = nodes.get(kid)
+        if node is None:
+            continue
+        count += 1
+        stack.extend(node["kids"])
+    return count
+
+
+def build_hn_comment_outline(item_id: int, total_hint: int) -> tuple[int, list[dict]]:
+    """Select the highest-signal comments and render them as a contiguous outline.
+
+    Comments are ranked by engagement (fetched subtree size and direct reply
+    count, with a bonus for shallower comments), and the top ones are kept within
+    HN_COMMENT_ANALYSIS_MAX_CHARS. Each kept comment pulls in its ancestor chain
+    so who-replied-to-whom stays intact; the result is grouped by top thread and
+    ordered parent-before-children for indented rendering.
+
+    This favours the comments people actually engaged with (where camps form and
+    clash) over either a deep dive on the first few threads or a flat sweep of
+    top-level comments only.
 
     Returns:
         (total_comments, comments) where each comment dict has depth (1-based),
         by, and text.
     """
-    session = requests.Session()
-    item_cache: dict[int, dict | None] = {}
+    total_comments, top_kids, nodes = _fetch_hn_comment_tree(item_id)
+    if not nodes:
+        return total_comments or total_hint, []
 
-    story = fetch_hn_item_cached(item_id, item_cache, session)
-    if not story:
-        return total_hint, []
+    def line_cost(node: dict) -> int:
+        return len(node["text"]) + len(node["by"]) + 4 * node["depth"] + 3
 
-    total_comments = int(story.get("descendants") or total_hint or 0)
-    top_kids = [int(kid) for kid in (story.get("kids") or [])]
+    depth_bonus = {1: 1.5, 2: 1.0, 3: 0.6}
+    ranked: list[tuple[float, int]] = []
+    for comment_id, node in nodes.items():
+        if len(node["text"]) < HN_COMMENT_MIN_TEXT_LEN:
+            continue
+        signal = (
+            _hn_subtree_size(nodes, comment_id)
+            + len(node["kids"]) * 1.5
+            + depth_bonus.get(node["depth"], 0.3) * 3
+            + min(len(node["text"]), 600) / 300
+        )
+        ranked.append((signal, comment_id))
+    ranked.sort(key=lambda row: (row[0], -row[1]), reverse=True)
 
-    comments: list[dict] = []
+    def ancestors(comment_id: int) -> list[int]:
+        chain: list[int] = []
+        parent = nodes[comment_id]["parent"]
+        while parent in nodes:
+            chain.append(parent)
+            parent = nodes[parent]["parent"]
+        return chain
+
+    chosen: set[int] = set()
     char_total = 0
+    for _, comment_id in ranked:
+        if comment_id in chosen:
+            continue
+        # Include ancestors (even if short) so the reply chain stays contiguous.
+        needed = [a for a in ancestors(comment_id) if a not in chosen] + [comment_id]
+        add_cost = sum(line_cost(nodes[c]) for c in needed)
+        if char_total + add_cost > HN_COMMENT_ANALYSIS_MAX_CHARS and chosen:
+            continue
+        char_total += add_cost
+        chosen.update(needed)
+        if len(chosen) >= HN_COMMENT_TRAVERSAL_MAX_NODES:
+            break
+
+    # Render order: group by top thread, then a stable pre-order walk within each thread.
+    order_index: dict[int, int] = {}
+    counter = 0
     for kid in top_kids:
-        stack = [(kid, 1)]
+        stack = [kid]
         while stack:
-            comment_id, depth = stack.pop()
-            if depth > HN_COMMENT_TRAVERSAL_MAX_DEPTH:
+            comment_id = stack.pop()
+            if comment_id not in nodes:
                 continue
-            if len(comments) >= HN_COMMENT_TRAVERSAL_MAX_NODES:
-                return total_comments, comments
+            if comment_id in chosen and comment_id not in order_index:
+                order_index[comment_id] = counter
+                counter += 1
+            for child in reversed(nodes[comment_id]["kids"]):
+                stack.append(child)
 
-            comment = fetch_hn_item_cached(comment_id, item_cache, session)
-            if not comment or comment.get("type") != "comment":
-                continue
-            if comment.get("dead") or comment.get("deleted"):
-                continue
-
-            kids = [int(k) for k in (comment.get("kids") or [])]
-            # DFS: push children reversed so leftmost is processed first (parent already emitted).
-            for child in reversed(kids):
-                stack.append((child, depth + 1))
-
-            text = clean_hn_comment_text(comment.get("text") or "")
-            if len(text) < HN_COMMENT_MIN_TEXT_LEN:
-                continue
-
-            by = normalize_text(comment.get("by") or "unknown")
-            line_cost = len(text) + len(by) + 4 * depth + 3
-            if char_total + line_cost > HN_COMMENT_ANALYSIS_MAX_CHARS and comments:
-                return total_comments, comments
-            char_total += line_cost
-            comments.append({"depth": depth, "by": by, "text": text})
-
+    ordered = sorted(chosen, key=lambda c: order_index.get(c, counter))
+    comments = [
+        {"depth": nodes[c]["depth"], "by": nodes[c]["by"], "text": nodes[c]["text"]}
+        for c in ordered
+    ]
     return total_comments, comments
 
 

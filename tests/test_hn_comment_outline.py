@@ -49,6 +49,34 @@ def test_outline_respects_char_budget(monkeypatch):
     assert len(comments) == 2
 
 
+def test_outline_high_engagement_deep_comment_pulls_ancestor_chain(monkeypatch):
+    # A linear chain 10<-11<-12<-13 where the DEEP comment (13) has all the
+    # engagement (three replies). Engagement ranking should pick 13 and pull in
+    # its whole ancestor chain for contiguity, even under a tight budget.
+    long = "this is a sufficiently long comment to clear the minimum text length filter"
+    items = {1: _story([10])}
+    items[10] = _comment(10, kids=[11], text=long)
+    items[11] = _comment(11, kids=[12], text=long)
+    items[12] = _comment(12, kids=[13], text=long)
+    items[13] = _comment(13, kids=[14, 15, 16], text=long)
+    for cid in (14, 15, 16):
+        items[cid] = _comment(cid, text=long)
+    monkeypatch.setattr(
+        trending_digest, "fetch_hn_item_cached",
+        lambda item_id, cache, session: items.get(item_id),
+    )
+    # Budget fits the 4-deep chain but not the depth-5 replies.
+    per_line = len(long) + len("user") + 3
+    monkeypatch.setattr(
+        trending_digest, "HN_COMMENT_ANALYSIS_MAX_CHARS", 4 * per_line + 4 * (1 + 2 + 3 + 4),
+    )
+    _total, comments = trending_digest.build_hn_comment_outline(1, 99)
+    # The engaged deep comment (13) and its full ancestor chain are present.
+    assert {c["depth"] for c in comments} == {1, 2, 3, 4}
+    # Rendered parent-before-child.
+    assert [c["depth"] for c in comments] == [1, 2, 3, 4]
+
+
 def test_outline_skips_short_dead_and_deep(monkeypatch):
     items = {
         1: _story([10]),
