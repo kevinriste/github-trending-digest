@@ -104,10 +104,8 @@ GH_DAILY_RENDER_LIMIT = get_int_env("GH_DAILY_RENDER_LIMIT", 0)  # 0 means all f
 HN_DAILY_RENDER_LIMIT = get_int_env("HN_DAILY_RENDER_LIMIT", 10)
 HN_MAX_ITEMS = get_int_env("HN_MAX_ITEMS", 0)  # 0 means all IDs from API
 HN_FETCH_WORKERS = max(1, get_int_env("HN_FETCH_WORKERS", 20))
-HN_COMMENT_SAMPLE_SIZE = get_int_env("HN_COMMENT_SAMPLE_SIZE", 16)
 HN_COMMENT_TRAVERSAL_MAX_NODES = get_int_env("HN_COMMENT_TRAVERSAL_MAX_NODES", 300)
 HN_COMMENT_TRAVERSAL_MAX_DEPTH = get_int_env("HN_COMMENT_TRAVERSAL_MAX_DEPTH", 6)
-HN_COMMENT_MAX_PER_BRANCH = get_int_env("HN_COMMENT_MAX_PER_BRANCH", 4)
 HN_COMMENT_MIN_TEXT_LEN = get_int_env("HN_COMMENT_MIN_TEXT_LEN", 40)
 HN_COMMENT_ANALYSIS_MAX_CHARS = get_int_env("HN_COMMENT_ANALYSIS_MAX_CHARS", 48000)
 HN_COMMENT_ANALYSIS_MAX_CAMPS = get_int_env("HN_COMMENT_ANALYSIS_MAX_CAMPS", 6)
@@ -1402,11 +1400,11 @@ def get_latest_hn_comment_analysis(conn: psycopg.Connection, item_id: int) -> di
             FROM hn_comment_analyses
             WHERE item_id = %s
               AND model = %s
-              AND sample_size = %s
+              AND prompt_version = %s
             ORDER BY generated_at DESC
             LIMIT 1
             """,
-            (item_id, COMMENT_MODEL, HN_COMMENT_SAMPLE_SIZE),
+            (item_id, COMMENT_MODEL, HN_COMMENT_ANALYSIS_PROMPT_VERSION),
         )
         return cur.fetchone()
 

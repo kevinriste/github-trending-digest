@@ -81,7 +81,8 @@ Override with `DATABASE_URL` if needed.
 | Variable | Purpose |
 |----------|---------|
 | `DATABASE_URL` | Postgres connection string (optional if using default compose setup) |
-| `OPENAI_API_KEY` | OpenAI API authentication |
+| `OPENAI_API_KEY` | OpenAI API authentication (HN comment "camps" analysis; without it, comment analysis is skipped) |
+| `COMMENT_BRIEFING_MODEL` | OpenAI Responses model for HN comment analysis (default `gpt-5-mini`; prod `gpt-5.6-luna`) |
 | `GMAIL_PODCAST_ACCOUNT` | Gmail sender address |
 | `GMAIL_PODCAST_ACCOUNT_APP_PASSWORD` | Gmail app password |
 | `DIGEST_EMAIL_TO` | Recipient for digest email (defaults to personal address in script) |
@@ -93,11 +94,12 @@ Optional tuning:
 - `HN_DAILY_RENDER_LIMIT` (default `10`)
 - `HN_MAX_ITEMS` (`0` = all topstories IDs)
 - `HN_FETCH_WORKERS` (default `20`)
-- `HN_COMMENT_SAMPLE_SIZE` (default `16`)
 - `HN_COMMENT_TRAVERSAL_MAX_NODES` (default `300`)
 - `HN_COMMENT_TRAVERSAL_MAX_DEPTH` (default `6`)
-- `HN_COMMENT_MAX_PER_BRANCH` (default `4`)
 - `HN_COMMENT_MIN_TEXT_LEN` (default `40`)
+- `HN_COMMENT_ANALYSIS_MAX_CHARS` (default `48000`; input outline budget per story)
+- `HN_COMMENT_ANALYSIS_MAX_CAMPS` (default `6`)
+- `HN_COMMENT_ANALYSIS_MAX_QUOTES` (default `3`)
 
 ## Setup
 
