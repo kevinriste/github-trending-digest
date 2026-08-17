@@ -54,7 +54,7 @@ GITHUB_PAGES_URL = "https://www.kevinriste.com/github-trending-digest/"
 SUMMARY_MODEL = "gemini-3.1-flash-lite"
 GH_SUMMARY_PROMPT_VERSION = "gh_v3"
 HN_SUMMARY_PROMPT_VERSION = "hn_v4"
-HN_COMMENT_ANALYSIS_PROMPT_VERSION = "hn_comments_v2"
+HN_COMMENT_ANALYSIS_PROMPT_VERSION = "hn_comments_v3"
 SUMMARY_REFRESH_DAYS = 60
 RUN_LOCK_KEY = 348_112_907
 READ_DAYS_KEY_GH = "gtd:read_days:gh:v1"
@@ -107,6 +107,9 @@ HN_COMMENT_TRAVERSAL_MAX_NODES = get_int_env("HN_COMMENT_TRAVERSAL_MAX_NODES", 3
 HN_COMMENT_TRAVERSAL_MAX_DEPTH = get_int_env("HN_COMMENT_TRAVERSAL_MAX_DEPTH", 6)
 HN_COMMENT_MAX_PER_BRANCH = get_int_env("HN_COMMENT_MAX_PER_BRANCH", 4)
 HN_COMMENT_MIN_TEXT_LEN = get_int_env("HN_COMMENT_MIN_TEXT_LEN", 40)
+HN_COMMENT_ANALYSIS_MAX_CHARS = get_int_env("HN_COMMENT_ANALYSIS_MAX_CHARS", 48000)
+HN_COMMENT_ANALYSIS_MAX_CAMPS = get_int_env("HN_COMMENT_ANALYSIS_MAX_CAMPS", 6)
+HN_COMMENT_ANALYSIS_MAX_QUOTES = get_int_env("HN_COMMENT_ANALYSIS_MAX_QUOTES", 3)
 HN_ARTICLE_CONTENT_MAX_CHARS = get_int_env("HN_ARTICLE_CONTENT_MAX_CHARS", 25000)
 
 PDF_MAX_DOWNLOAD_BYTES = 50 * 1024 * 1024  # 50MB
@@ -3020,6 +3023,64 @@ def build_hn_comment_nodes(item_id: int, total_comments_hint: int) -> tuple[int,
             break
 
     return total_comments, nodes
+
+
+def build_hn_comment_outline(item_id: int, total_hint: int) -> tuple[int, list[dict]]:
+    """Traverse HN threads depth-first, keeping whole branches in reading order.
+
+    Branches (top-level replies) are visited in position order and each is
+    explored parent-before-children so the result renders as an indented outline.
+    Accumulation stops once the rendered outline would exceed
+    HN_COMMENT_ANALYSIS_MAX_CHARS, dropping the lowest-priority whole branches.
+
+    Returns:
+        (total_comments, comments) where each comment dict has depth (1-based),
+        by, and text.
+    """
+    session = requests.Session()
+    item_cache: dict[int, dict | None] = {}
+
+    story = fetch_hn_item_cached(item_id, item_cache, session)
+    if not story:
+        return total_hint, []
+
+    total_comments = int(story.get("descendants") or total_hint or 0)
+    top_kids = [int(kid) for kid in (story.get("kids") or [])]
+
+    comments: list[dict] = []
+    char_total = 0
+    for kid in top_kids:
+        stack = [(kid, 1)]
+        while stack:
+            comment_id, depth = stack.pop()
+            if depth > HN_COMMENT_TRAVERSAL_MAX_DEPTH:
+                continue
+            if len(comments) >= HN_COMMENT_TRAVERSAL_MAX_NODES:
+                return total_comments, comments
+
+            comment = fetch_hn_item_cached(comment_id, item_cache, session)
+            if not comment or comment.get("type") != "comment":
+                continue
+            if comment.get("dead") or comment.get("deleted"):
+                continue
+
+            kids = [int(k) for k in (comment.get("kids") or [])]
+            # DFS: push children reversed so leftmost is processed first (parent already emitted).
+            for child in reversed(kids):
+                stack.append((child, depth + 1))
+
+            text = clean_hn_comment_text(comment.get("text") or "")
+            if len(text) < HN_COMMENT_MIN_TEXT_LEN:
+                continue
+
+            by = normalize_text(comment.get("by") or "unknown")
+            line_cost = len(text) + len(by) + 4 * depth + 3
+            if char_total + line_cost > HN_COMMENT_ANALYSIS_MAX_CHARS and comments:
+                return total_comments, comments
+            char_total += line_cost
+            comments.append({"depth": depth, "by": by, "text": text})
+
+    return total_comments, comments
 
 
 def select_hn_comment_sample(nodes: list[dict]) -> list[dict]:
