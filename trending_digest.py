@@ -724,6 +724,9 @@ def init_db(conn: psycopg.Connection) -> None:
         """
         ALTER TABLE hn_items ADD COLUMN IF NOT EXISTS article_content TEXT
         """,
+        """
+        ALTER TABLE hn_comment_analyses ADD COLUMN IF NOT EXISTS outline TEXT
+        """,
     ]
 
     with conn.cursor() as cur:
@@ -1417,14 +1420,19 @@ def cache_hn_comment_analysis(
     sampled_comments: int,
     total_comments: int,
     sample_size: int,
+    outline: str = "",
 ) -> None:
-    """Insert Hacker News comment analysis row."""
+    """Insert Hacker News comment analysis row.
+
+    ``outline`` is the exact indented thread text sent to the model, persisted so
+    a quote can later be diffed against its input for auditability.
+    """
     with conn.cursor() as cur:
         cur.execute(
             """
             INSERT INTO hn_comment_analyses
-                (item_id, model, prompt_version, sample_size, sampled_comments, total_comments, analysis_text, generated_at)
-            VALUES (%s, %s, %s, %s, %s, %s, %s, NOW())
+                (item_id, model, prompt_version, sample_size, sampled_comments, total_comments, analysis_text, outline, generated_at)
+            VALUES (%s, %s, %s, %s, %s, %s, %s, %s, NOW())
             """,
             (
                 item_id,
@@ -1434,6 +1442,7 @@ def cache_hn_comment_analysis(
                 sampled_comments,
                 total_comments,
                 analysis_text,
+                outline,
             ),
         )
 
@@ -1477,6 +1486,7 @@ def get_or_generate_hn_comment_analysis(conn: psycopg.Connection, item: dict, ru
         sampled_comments=len(comments),
         total_comments=total_comments,
         sample_size=len(comments),
+        outline=outline,
     )
     return {
         "analysis_text": analysis_text,
