@@ -2597,9 +2597,10 @@ nav a:hover {
     margin-bottom: 0.5rem;
 }
 .camp blockquote {
-    margin: 0 0 0.5rem;
+    margin: 0 0 0.5rem 1rem;
     color: var(--text-color);
     font-size: 0.88rem;
+    font-style: italic;
     opacity: 0.92;
 }
 .camp blockquote:last-child {
@@ -2614,7 +2615,7 @@ nav a:hover {
     opacity: 0.85;
 }
 .camp blockquote cite::before {
-    content: "\2014\00a0";
+    content: "\\2014\\00a0";
 }
 .empty-state {
     color: #8b949e;
