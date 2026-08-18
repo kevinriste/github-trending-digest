@@ -14,6 +14,11 @@ from openai import OpenAI, OpenAIError
 
 MODEL = os.environ.get("COMMENT_BRIEFING_MODEL", "gpt-5-mini")
 
+# OpenAI request failures (auth, rate limit, etc.) are swallowed so a bad key
+# never crashes the daily run. They are also recorded here so the caller can
+# surface a single run-level notification instead of failing silently.
+API_ERRORS: list[str] = []
+
 
 def render_outline(comments: list[dict]) -> str:
     """Render comments as an indented outline: a reply sits under its parent.
@@ -220,7 +225,8 @@ def build_camps_analysis(
                 }
             },
         ).output_text.strip()
-    except OpenAIError:
+    except OpenAIError as exc:
         logging.exception("HN comment camps analysis request failed")
+        API_ERRORS.append(f"{type(exc).__name__}: {exc}")
         return None
     return result if parse_comment_analysis(result) is not None else None

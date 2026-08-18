@@ -32,6 +32,20 @@ uv sync
 echo "GitHub Trending Digest--Ensure Postgres service is running"
 docker compose up -d postgres
 
+# OpenAI key + model for HN comment camps analysis.
+# The global /etc/profile.d/podcast-transcribe.sh (sourced by our `bash -l`) exports a
+# now-deactivated OPENAI_API_KEY. Override it with the dedicated good key, and pin the
+# prod model (COMMENT_BRIEFING_MODEL defaults to gpt-5-mini in code otherwise).
+OPENAI_KEY_ENV="/home/flog99/dev/openai-key/podcast-transcribe.env"
+if [ -f "$OPENAI_KEY_ENV" ]; then
+    set -a
+    . "$OPENAI_KEY_ENV"
+    set +a
+else
+    echo "WARNING: OpenAI key file $OPENAI_KEY_ENV not found; HN comment analysis will be skipped"
+fi
+export COMMENT_BRIEFING_MODEL="${COMMENT_BRIEFING_MODEL:-gpt-5.6-luna}"
+
 echo "GitHub Trending Digest--Run trending digest script"
 uv run python3 trending_digest.py
 

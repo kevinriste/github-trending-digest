@@ -3503,6 +3503,15 @@ def main() -> None:
         gh_rows = build_gh_view_rows(conn, run_day)
         hn_rows = build_hn_view_rows(conn, run_day)
 
+        if hn_comment_camps.API_ERRORS:
+            notify_gotify(
+                "GitHub Trending Digest: HN comment analysis degraded",
+                f"{len(hn_comment_camps.API_ERRORS)} OpenAI request(s) failed for {run_day}; "
+                f"reader-reaction camps were skipped (cached analysis used where available). "
+                f"Run completed and published normally.\n\n"
+                f"First error: {hn_comment_camps.API_ERRORS[0]}",
+            )
+
         gh_dates = list_gh_daily_dates(conn)
         hn_dates = list_hn_daily_dates(conn)
         gh_dates_set = {day.isoformat() for day in gh_dates}
