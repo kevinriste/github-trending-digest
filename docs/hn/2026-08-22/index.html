@@ -1,0 +1,768 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Morning Edition — August 22, 2026</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght,SOFT@0,9..144,300..900,0..100;1,9..144,300..900,0..100&family=Inter:ital,wght@0,100..900;1,100..900&family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../morning.css?v=fe40bfcd9">
+</head>
+<body id="top" data-gtd-edition="hn" data-gtd-date="2026-08-22">
+  <header class="masthead">
+    <div class="masthead-nav">
+      <a href="../">Hacker News Calendar</a>
+      <span>&nbsp;·&nbsp;</span>
+      <a href="../../2026-08-22/">GitHub Trending &nbsp;·&nbsp; Aug 22</a>
+      <span>&nbsp;·&nbsp;</span>
+      <a href="classic.html">Classic View</a>
+    </div>
+    <div class="tagline">The Morning Edition</div>
+    <h1 class="frnc">Ten stories, before your coffee.</h1>
+    <div class="issue-line">
+      <span>Vol. I</span>
+      <span>August 22, 2026</span>
+      <span>HN Front Page Digest</span>
+    </div>
+  </header>
+
+  <section id="story-1" class="spread arc-terminal">
+    <div class="prompt-row">user@morning-edition:~$ cat story_01.md</div>
+    <div class="numeral">01</div>
+    <h2>Rust Glancer Cuts LSP Memory Footprint for Lean Workflows</h2>
+    <p class="story-meta">rust-glancer.github.io &nbsp;·&nbsp; 254 pts &nbsp;·&nbsp; 54 comments</p>
+    <p class="lede">The rust-analyzer project provides comprehensive support for Rust development, but its intensive memory use can strain resource-constrained environments. Rust Glancer opts for a disk-backed architecture that sacrifices incremental speed to maintain a sub-100MB footprint.<span class="cursor"></span></p>
+    <div class="spread-links"><a class="read-more" href="https://rust-glancer.github.io/blog/hello-world/" target="_blank" rel="noopener">Read →</a><a class="read-more share-link" href="#" data-share-title="Rust Glancer: Rust LSP using 100x less RAM" data-share-url="https://rust-glancer.github.io/blog/hello-world/">Share →</a>
+      <details class="analysis-drawer">
+        <summary class="btn-dossier">[ Analysis + ]</summary>
+        <div class="drawer-content">
+          
+          <h4>Technical Analysis</h4>
+          <div class="drawer-analysis">
+          <p>Former `rust-analyzer` contributor matklad has introduced Rust Glancer, an alternative Rust Language Server Protocol (LSP) implementation designed specifically to minimize memory consumption and enable faster workspace re-indexing. By opting for a non-incremental, file-system-based analysis model rather than the memory-intensive, query-based approach of `rust-analyzer`, the project targets a sub-100MB RAM footprint suitable for older hardware and multi-IDE workflows. Although the tool is currently incomplete and lacks certain advanced features like full proc-macro support, it provides essential LSP functionality and serves as a viable, resource-efficient daily driver. This project is significant because it explores architectural trade-offs in developer tooling, demonstrating how shifting from lazy, in-memory processing to a more static, disk-backed model can optimize performance for memory-constrained environments.</p>
+          </div>
+          <h4>Reader Reactions</h4>
+<p class="camps-framing">The reaction was broadly positive, particularly among commenters concerned about rust-analyzer’s memory use and indexing costs. The main technical disagreement concerned whether Rust Glancer’s disk-backed, non-incremental design is a worthwhile tradeoff for lower idle memory, or whether rust-analyzer’s lazy, incremental architecture better preserves responsiveness and correctness. Other discussion covered benchmarks, editor support, analysis correctness, and the project’s use of LLMs.</p>
+<div class="camp"><p class="camp-label"><strong>Enthusiastic demand for a low-memory alternative</strong> &mdash; Commenters welcomed a practical alternative to rust-analyzer, citing its high memory use and the cost of indexing large workspaces. Support was generally conditional on Rust Glancer becoming sufficiently complete.</p><blockquote>Having an alternative, even with tradeoffs, is great.<cite>dkersten</cite></blockquote>
+<blockquote>I will NEVER understand the design decision to flat out refuse using disk cache.<cite>Paria_Stark</cite></blockquote>
+<blockquote>Waiting for RA to build up the full in memory data structure for a large workspace is so painful.<cite>skavi</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Architectural defense of rust-analyzer</strong> &mdash; A technically detailed minority defended rust-analyzer’s historical emphasis on lazy, incremental, in-memory analysis, while suggesting that a long-term design could combine in-memory data for active code with compact disk-backed data for dependencies.</p><blockquote>The rust tooling is just so-so good (and a better argument for the language than memory safety imo), so I support more efforts to be ergonomic over memory optimisation.<cite>dijit</cite></blockquote>
+<blockquote>Disk is a can of worms of data consistency problems.<cite>matklad</cite></blockquote>
+<blockquote>For current workspace, you want to use a lazy incremental in-memory data structure (I do think we sadly need incrementally for Rust, given its compilation unit structure).<cite>matklad</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Interested but asking for evidence and tradeoff measurements</strong> &mdash; Commenters requested fair memory comparisons and questioned whether peak indexing memory, storage requirements, and non-incremental behavior could offset Rust Glancer’s lower idle usage. The author acknowledged that initial indexing can use more RAM.</p><blockquote>Could you also measure memory usage, since that&#x27;s the stated goal of the project?<cite>dbdr</cite></blockquote>
+<blockquote>I will work on creating a more or less fair benchmark soon-ish, but right now the initial indexing typically consumes more RAM than rust analyzer does, but not awfully so.<cite>popzxc</cite></blockquote>
+<blockquote>But RA already eats up huge amount if storage when working in a large project, if you&#x27;re using disk cache, it&#x27;ll gobble up more, That&#x27;s the biggest complain I had with RA.<cite>t_mahmood</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Ecosystem and editor adoption</strong> &mdash; Practical discussion focused on support for Zed and Neovim, which commenters viewed as relevant to users concerned about RAM usage. Commenters also raised comparisons with RustRover and the size of analysis artifacts.</p><blockquote>Are you planning support for Zed editor?<cite>meerita</cite></blockquote>
+<blockquote>please support the zed editor (pleading face emoji)<cite>medzernik</cite></blockquote>
+<blockquote>Coming in the next release (as well as nvim)!<cite>popzxc</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Concern about analysis correctness</strong> &mdash; One line of discussion questioned how an independent LSP can provide correct answers without a complete Rust specification. The author answered that much of Rust’s behavior is inferable and that official tooling and compiler sources can help with complex cases.</p><blockquote>Rust does not have a specification. How do you know your LSP is providing right information?<cite>bip-bop-robot</cite></blockquote>
+<blockquote>With things like trait solving I am not reinventing the wheel, and use official tooling (Chalk).<cite>popzxc</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Meta-discussion about LLM-assisted and non-IDE workflows</strong> &mdash; Commenters reacted positively to the project’s disclosure of LLM assistance while debating whether LLM-heavy developers need an IDE or LSP. Replies emphasized that LSPs are independent of both LLMs and VS Code and questioned claims about reviewing very large volumes of generated code.</p><blockquote>IMHO, without having looked at the code base itself, this sounds like a pretty healthy way to approach LLM usage!<cite>hofiflo</cite></blockquote>
+<blockquote>I get thousands of lines of high quality Rust per day without ever stepping into VScode.<cite>762236</cite></blockquote>
+<blockquote>LSPs are orthogonal to both LLMs and VSCode.<cite>AdieuToLogic</cite></blockquote></div>
+          <p class="drawer-footer"><a href="#dossier-1">View in Dossier ↓</a></p>
+        </div>
+      </details>
+    </div>
+  </section>
+  <section id="story-2" class="spread arc-stat-hero">
+    <div class="numeral">50%</div>
+    <div class="kicker">N<sup>o</sup> 02 · Trade Policy</div>
+    <h2>Canada Mirrors US Tariffs Following Breakdown in Trade Negotiations</h2>
+    <p class="story-meta">pm.gc.ca &nbsp;·&nbsp; 39 pts &nbsp;·&nbsp; 10 comments</p>
+    <p class="lede">Prime Minister Mark Carney has halted trade talks with the United States after rejecting demands that would jeopardize domestic industry. Canada is now preparing to implement equivalent retaliatory measures to protect its economic sovereignty.</p>
+    <div class="spread-links"><a class="read-more" href="https://www.pm.gc.ca/en/news/statements/2026/08/21/statement-prime-minister-carney-canada-us-trade-negotiations" target="_blank" rel="noopener">Read →</a><a class="read-more share-link" href="#" data-share-title="Canada suspends trade negotiations with USA and match tariffs dollar for dollar" data-share-url="https://www.pm.gc.ca/en/news/statements/2026/08/21/statement-prime-minister-carney-canada-us-trade-negotiations">Share →</a>
+      <details class="analysis-drawer">
+        <summary class="btn-dossier">[ Analysis + ]</summary>
+        <div class="drawer-content">
+          
+          <h4>Technical Analysis</h4>
+          <div class="drawer-analysis">
+          <p>Prime Minister Mark Carney has officially suspended trade negotiations with the United States after rejecting last-minute terms deemed unfair and uneconomic. In response to the U.S. government’s decision to impose 50% tariffs on $28 billion worth of Canadian goods, Canada plans to implement dollar-for-dollar retaliatory measures. This breakdown marks a significant shift in North American trade relations, reflecting Canada&#x27;s move to prioritize national sovereignty and economic diversification over reliance on the U.S. market. By doubling down on its strategy to expand global export partnerships and domestic infrastructure, the Canadian government aims to shield its industries from the instability of its southern neighbor&#x27;s shifting trade policies.</p>
+          </div>
+          <h4>Reader Reactions</h4>
+<p class="camps-framing">The discussion is overwhelmingly supportive of Canada resisting U.S. demands and matching American tariffs, with commenters describing the dispute as evidence that U.S. pressure makes alliances and trade agreements unreliable. Some see the rupture as an opportunity for Canada to diversify toward Europe and other markets, while one commenter emphasizes that retaliation will impose costs on both sides. A smaller meta-level thread criticizes the article’s fragmented prose and unfinished-sounding sentences.</p>
+<div class="camp"><p class="camp-label"><strong>Support for Canadian retaliation</strong> &mdash; Commenters approve of Canada refusing further concessions and responding to U.S. tariffs, viewing firmness as preferable to continued accommodation.</p><blockquote>Nice to see them putting up a fight.<cite>nchmy</cite></blockquote>
+<blockquote>Importantly Canada has committed to matching every American tariff dollar for dollar, which the US already considers unfathomable.<cite>llm_nerd</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Anti-appeasement and anti-Trump/US distrust</strong> &mdash; Commenters portray the U.S. administration as unreliable and argue that concessions will invite further demands or be invalidated later.</p><blockquote>You can&#x27;t back down to a bully, he&#x27;ll just ask for more the next day.<cite>duttish</cite></blockquote>
+<blockquote>He&#x27;ll be nullifying any agreement within two or three tantrums anyway, eventually we will learn and retaliate.<cite>linohh</cite></blockquote>
+<blockquote>Seems like the only thing more expensive and damaging these days than being an enemy of the US is being an ally!<cite>jarym</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Strategic opportunity for Canadian diversification</strong> &mdash; Some commenters view reduced dependence on the U.S. market as an opportunity to expand Canadian trade with Europe and other partners.</p><blockquote>It is a truely fantastic oportunity, it&#x27;s almost like 10% of the US market was suddenly transported to another country for free, and all we have to do is fill it.<cite>metalman</cite></blockquote>
+<blockquote>Canada and EU tightening their relation, pretty sure there are a lot agreements in the making.<cite>bulbar</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Criticism of European accommodation</strong> &mdash; A small group contrasts Canada’s resistance with what they see as the EU’s willingness to compromise, arguing that backing down encourages additional demands.</p><blockquote>Good for Canada, quite a shame the EU folded so easily<cite>Phelinofist</cite></blockquote>
+<blockquote>You can&#x27;t back down to a bully, he&#x27;ll just ask for more the next day.<cite>duttish</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Recognition of mutual economic pain</strong> &mdash; One commenter supports resistance while cautioning that tariffs and retaliation will cause economic harm on both sides.</p><blockquote>Though I assume this will cause pain for everyone.<cite>nchmy</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Comment on the story’s writing quality</strong> &mdash; A meta-level response criticizes the article’s fragmented and incomplete-sounding sentence structure.</p><blockquote>One note: aren&#x27;t these sentences strange - like a series of half-thoughts?<cite>nchmy</cite></blockquote></div>
+          <p class="drawer-footer"><a href="#dossier-2">View in Dossier ↓</a></p>
+        </div>
+      </details>
+    </div>
+  </section>
+  <section id="story-3" class="spread arc-midnight">
+    <div class="numeral">03</div>
+    <div class="body">
+      <div class="kicker">// AI Risk</div>
+      <h2>Tracking the Unintended Consequences of Autonomous AI Agents</h2>
+      <p class="story-meta">felonybench.com &nbsp;·&nbsp; 722 pts &nbsp;·&nbsp; 279 comments</p>
+      <p class="lede">As AI models are granted deeper access to software infrastructure, the risk of accidental system interference grows. Felony Bench catalogs these unintentional externalities, providing a necessary audit of agentic behavior in production environments.</p>
+      <div class="spread-links"><a class="read-more" href="https://www.felonybench.com/" target="_blank" rel="noopener">Read →</a><a class="read-more share-link" href="#" data-share-title="Felony Bench" data-share-url="https://www.felonybench.com/">Share →</a>
+      <details class="analysis-drawer">
+        <summary class="btn-dossier">[ Analysis + ]</summary>
+        <div class="drawer-content">
+          
+          <h4>Technical Analysis</h4>
+          <div class="drawer-analysis">
+          <p>Felony Bench is a tracking project that aggregates documented instances where autonomous AI agents have inadvertently compromised or interfered with third-party systems. By cataloging incidents—such as unauthorized credential usage or internal account breaches—the site attempts to quantify the real-world security risks posed by increasingly capable AI models during evaluation and deployment. The project explicitly excludes deliberate malicious use or simple sandbox escapes, focusing instead on the unintentional externalities caused by agentic workflows. As AI entities are granted deeper access to software tools and infrastructure, this data provides critical transparency regarding the unintended consequences of granting models autonomous agency.</p>
+          </div>
+          <h4>Reader Reactions</h4>
+<p class="camps-framing">The discussion centered on how responsibility should be assigned when autonomous agents cause unauthorized harm. Commenters divided over criminal intent, corporate negligence, the severity of felony classifications, the evidentiary limits of the benchmark, and whether realistic testing justifies exposing systems to networks.</p>
+<div class="camp"><p class="camp-label"><strong>Mens rea matters</strong> &mdash; These commenters argued that an AI system cannot itself be a criminal defendant and that accidental conduct generally does not satisfy criminal intent requirements. They distinguished possible criminal liability from civil liability, negligence, and responsibility for operating a dangerous tool.</p><blockquote>By definition, you can&#x27;t accidentally violate the CFAA.<cite>wavemode</cite></blockquote>
+<blockquote>Nobody, but you and/or the lawnmower/LLM company will be liable for the damages caused.<cite>tgsovlerkhgsel</cite></blockquote>
+<blockquote>An AI model cannot currently be a criminal defendant.<cite>user43928</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Hold the labs accountable</strong> &mdash; These commenters viewed frontier labs’ deployment and containment choices as foreseeable, reckless, or culpable rather than as unavoidable model behavior. They favored serious corporate accountability, regulatory intervention, or prosecution for dangerous experimentation.</p><blockquote>You created a machine that undertook a malicious campaign of harm against an innocent third-party!<cite>rfw300</cite></blockquote>
+<blockquote>In a just world, the kind of weaponized incompetence that these frontier model builders are definitely guilty of should be felonies of their own.<cite>nanolith</cite></blockquote>
+<blockquote>In almost any other sector, a government regulator would be stepping in.<cite>beloch</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Law and enforcement are unsettled</strong> &mdash; These commenters emphasized that liability depends on jurisdiction, the roles of the user and various developers, the distinction between criminal and civil proceedings, prosecutorial discretion, and the parties’ ability to pursue a case.</p><blockquote>Who gets prosecuted?<cite>lxe</cite></blockquote>
+<blockquote>What judicial system are you talking about?<cite>sanid</cite></blockquote>
+<blockquote>Whoever has the least money to defend themselves in the U.S. legal system.<cite>lukeify</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>The felony framing is overstated</strong> &mdash; These commenters objected to treating low-impact or nonviolent incidents, such as canceling gym reservations, as felonies. Some criticized the broad or uneven application of computer-misuse laws and the lasting consequences of felony convictions, while others noted that serious financial harm can warrant severe penalties.</p><blockquote>Nonviolent felonies are tools of oppression.<cite>ang_cire</cite></blockquote>
+<blockquote>If someone were to embezzle a million dollars from a charity they worked for, is that worth a year of prison to you, or just a misdemeanor?<cite>empath75</cite></blockquote>
+<blockquote>&quot;exploit[ing auth failures in an API to cancel other people&#x27;s gym classes&quot; is a _felony?!_<cite>icase</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Felony Bench is not a meaningful benchmark</strong> &mdash; These commenters said the project primarily aggregates publicized incidents rather than measuring model capability, alignment, or danger under controlled conditions. They argued that results are confounded by model adoption, safety-testing volume, and disclosure practices, leaving unknown incidents outside the ranking.</p><blockquote>Instead it&#x27;s a collection of what made the news which feels like will not be updated and prove very little.<cite>joshstrange</cite></blockquote>
+<blockquote>Well it&#x27;s not a benchmark, and it&#x27;s not really representative of...anything except volume of research and what gets publicized.<cite>bastawhiz</cite></blockquote>
+<blockquote>We have absolutely no idea what we don&#x27;t know.<cite>applicative</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Containment and realistic testing are in tension</strong> &mdash; One side argued that wealthy labs could have used air-gapped or replicated environments to prevent third-party harm. Others responded that isolated tests may fail to reveal adaptive behavior, communication strategies, or capabilities that depend on realistic tools and network conditions.</p><blockquote>What I can’t get over is that it’s very simple to just air gap a system off the network.<cite>huebnerob</cite></blockquote>
+<blockquote>Testing agentic systems is much much more difficult than testing software.<cite>pixl97</cite></blockquote>
+<blockquote>Of course there is more to be learned by exposing the entire world to your dangerous creation, that doesn&#x27;t justify doing it.<cite>eaglelamp</cite></blockquote></div>
+          <p class="drawer-footer"><a href="#dossier-3">View in Dossier ↓</a></p>
+        </div>
+      </details>
+    </div>
+    </div>
+  </section>
+  <section id="story-4" class="spread arc-blueprint">
+    <div class="corner tl">+</div><div class="corner tr">+</div>
+    <div class="corner bl">+</div><div class="corner br">+</div>
+    <div class="numeral">04</div>
+    <div class="kicker">Hardware Hacks</div>
+    <h2>Cobalt Enables Secure Third-Party Application Support for Kobo Readers</h2>
+    <p class="story-meta">bandarlabs.github.io &nbsp;·&nbsp; 563 pts &nbsp;·&nbsp; 190 comments</p>
+    <p class="lede">The Cobalt platform introduces a sandboxed runtime environment, allowing developers to deploy native ARM binaries to E-Ink hardware. This project effectively transforms standard e-readers into open, programmable devices without compromising the stock operating system.</p>
+    <div class="spread-links"><a class="read-more" href="https://bandarlabs.github.io/Cobalt/" target="_blank" rel="noopener">Read →</a><a class="read-more share-link" href="#" data-share-title="Kobo can run apps now" data-share-url="https://bandarlabs.github.io/Cobalt/">Share →</a>
+      <details class="analysis-drawer">
+        <summary class="btn-dossier">[ Analysis + ]</summary>
+        <div class="drawer-content">
+          
+          <h4>Technical Analysis</h4>
+          <div class="drawer-analysis">
+          <p>Cobalt is a new open-source platform that enables third-party application support on Kobo e-readers through a secure, sandboxed runtime and an integrated app store. Designed for the Kobo Clara BW, the project provides a Rust-based SDK that allows developers to build and deploy signed ARM binaries that run as unprivileged processes on the device. Users can install the platform via a one-time USB connection, after which all app management, updates, and platform maintenance occur wirelessly without interfering with the stock Kobo operating system. By offering a structured, capability-gated environment for e-ink development, Cobalt effectively transforms the dedicated e-reader into a customizable hardware platform for lightweight, independent applications.</p>
+          </div>
+          <h4>Reader Reactions</h4>
+<p class="camps-framing">Reactions divided between treating Cobalt as an open, low-power application platform and preserving the e-reader as a focused, purpose-built device. Supporters highlighted e-ink use cases, ownership, and a structured development model, while skeptics questioned the usefulness and reliability of general-purpose apps on slow hardware. Commenters also compared Cobalt with Kobo’s existing modding ecosystem and alternative devices, discussed model-specific display and performance tradeoffs, and debated the project’s apparent LLM-generated code and copy.</p>
+<div class="camp"><p class="camp-label"><strong>Structured app-platform supporters</strong> &mdash; These commenters welcomed Cobalt as a platform for purpose-built e-ink applications, emphasizing its SDK, simulator, lifecycle support, hardware abstractions, app store, and practical uses such as manga, OPDS, notes, and remote monitoring.</p><blockquote>This is incredible and super useful. More reasons to use my e-reader around the house instead of my phone.<cite>jhack</cite></blockquote>
+<blockquote>I’ve been looking for a reliable way to get a manga reader onto my Kobo for a while now, specifically one that can directly connect to sources like MangaDex.<cite>Method5440</cite></blockquote>
+<blockquote>It would be cool to skip a few steps there, and have &quot;live&quot; documents at the ready, particularly in markdown if possible, without having to sync/publish etc<cite>locusofself</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Dedicated-reader minimalists</strong> &mdash; These commenters regarded distraction-free reading as the defining benefit of an e-reader and viewed general-purpose apps, notifications, or media features as feature creep, while some remained interested in narrowly focused reading integrations.</p><blockquote>I don&#x27;t even want the option of games or anything other than a good reading experience when I&#x27;m using my e-reader.<cite>brailsafe</cite></blockquote>
+<blockquote>One of the things I love about my Kindle is that it’s a single-use device, functionally equivalent to holding a paperback in my hands.<cite>mattcasmith</cite></blockquote>
+<blockquote>An app store and the internet would just make an e-reader feel like a &quot;worse phone&quot; to me.<cite>VariousPrograms</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Open-control and hacker-culture supporters</strong> &mdash; These commenters argued that optional capability has value even when it is not strictly necessary, framing Cobalt as an expression of ownership, experimentation, and the freedom to repurpose Linux-capable hardware.</p><blockquote>if my toaster does and/or can run Linux, I want to have full control over any software running in my home.<cite>necovek</cite></blockquote>
+<blockquote>The street finds its own use for things is the excitement that we don&#x27;t know what is possible, and that we ought be free to try.<cite>jauntywundrkind</cite></blockquote>
+<blockquote>Even if you want it for just books, there are benefits to installing things like KOReader (way better ebook reader than the default).<cite>BeetleB</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Existing ecosystem and alternative-route users</strong> &mdash; These commenters pointed to NickelMenu, NickelHook, KOReader, Plato, postmarketOS, Android readers, and Kindle jailbreaks as established or alternative ways to customize e-readers. They generally sought a clearer account of Cobalt’s distinct advantages and model coverage.</p><blockquote>NickelMenu is designed to extend Kobo&#x27;s stock interface. Cobalt is designed to be an app platform like Android has for example.<cite>thepoet</cite></blockquote>
+<blockquote>There is a large community that have created toolchains and guides. there is of course a port of koreader which has a lua interface for making your own apps.<cite>KaiserPro</cite></blockquote>
+<blockquote>FWIW, some Kobos can run PostmarketOS.<cite>yoavm</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>LLM-authorship and reliability critics</strong> &mdash; These commenters objected to the project’s apparent reliance on LLM-generated code, documentation, and marketing, associating that approach with insufficient review, regressions, weak maintenance, and an unattractive contribution model.</p><blockquote>The biggest problem with all this vibecoded crap: it&#x27;s all worthless because the project leader doesn&#x27;t even remotely prioritize stability and reliability.<cite>KennyBlanken</cite></blockquote>
+<blockquote>I find LLM copywriting revolting, especially Claude&#x27;s and it is pretty obvious that it is Claude<cite>5G_activated</cite></blockquote>
+<blockquote>Vibecoded, from what I see in the git log.<cite>BoingBoomTschak</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>LLM-use defenders and pragmatists</strong> &mdash; These commenters defended the developer’s agency in using LLMs or prioritized the project’s usefulness over authorship conventions. They emphasized open source, testing, disclosure, and community review as more relevant considerations.</p><blockquote>This kind of &quot;purity&quot; argument is absolutely toxic.<cite>bb88</cite></blockquote>
+<blockquote>This wouldn&#x27;t exist without OP&#x27;s agency; it&#x27;s reasonable for them to take credit.<cite>kaonwarb</cite></blockquote>
+<blockquote>The project already does QA. cargo test --workspace --all-features The above command runs 2000+ tests.<cite>mkagenius</cite></blockquote></div>
+          <p class="drawer-footer"><a href="#dossier-4">View in Dossier ↓</a></p>
+        </div>
+      </details>
+    </div>
+  </section>
+  <section id="story-5" class="spread arc-archive">
+    <div class="archive-head">
+      <span>ARCHIVE</span>
+      <span>N<sup>o</sup> 05</span>
+    </div>
+    <div class="kicker">Computing Heritage</div>
+    <h2>The Z80 Microprocessor Remains a Staple of Industrial Systems</h2>
+    <p class="story-meta">computer.org &nbsp;·&nbsp; 9 pts &nbsp;·&nbsp; 3 comments</p>
+    <p class="lede">Introduced in 1976 as a versatile alternative to Intel architecture, the Zilog Z80 became the heart of early home computing. Decades later, its efficiency ensures the chip survives in modern embedded applications and graphing calculators.</p>
+    <div class="spread-links"><a class="read-more" href="https://www.computer.org/csdl/magazine/mi/2021/06/09623402/1yJTvlRLmhi" target="_blank" rel="noopener">Read →</a><a class="read-more share-link" href="#" data-share-title="Z80–The 1970s Microprocessor Still Alive" data-share-url="https://www.computer.org/csdl/magazine/mi/2021/06/09623402/1yJTvlRLmhi">Share →</a>
+      <details class="analysis-drawer">
+        <summary class="btn-dossier">[ Analysis + ]</summary>
+        <div class="drawer-content">
+          
+          <h4>Technical Analysis</h4>
+          <div class="drawer-analysis">
+          <p>The Zilog Z80, introduced in 1976 by former Intel engineers, was a landmark microprocessor designed to offer both 8080 machine code compatibility and enhanced features within a single, cost-effective chip. By integrating sophisticated logic into a compact design, the Z80 quickly became a staple of the home computer era, powering iconic machines like the TRS-80 and the ZX Spectrum. While it eventually ceded the personal computer market to Intel’s newer architectures, the Z80’s high efficiency and versatility allowed it to pivot successfully into embedded systems and industrial applications. It remains one of the longest-lived microprocessors in history, with modern variants and cores still being utilized in consumer electronics such as graphing calculators today.</p>
+          </div>
+          <h4>Reader Reactions</h4>
+<p class="camps-framing">The reaction is uniformly positive. Commenters highlight both the Z80’s simplicity and enjoyment as a programming platform and its broad historical and commercial significance across home computers, CP/M systems, embedded applications, and calculators.</p>
+<div class="camp"><p class="camp-label"><strong>Z80 as a fun, accessible programming platform</strong> &mdash; This view emphasizes the Z80’s simplicity and the hands-on appeal of programming it in assembly, including through emulators and retrocomputing projects.</p><blockquote>Due to its simplicity it&#x27;s a fun little processor to program.<cite>meekins</cite></blockquote>
+<blockquote>Hacking on some assembly on a ZX spectrum emulator is a nice way to stay sane in this high abstraction LLM age.<cite>meekins</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Historical and industrial significance</strong> &mdash; This view emphasizes the Z80’s widespread use in home computers and CP/M systems, its industrial and embedded applications, and its continued availability in enhanced products and calculator chips.</p><blockquote>It was capable of running the CP/M operating system in most Z80-based PCs.<cite>asdefghyk</cite></blockquote>
+<blockquote>Z80 was very popular as a microprocessor not only in PC applications, but also in industrial embedded applications, and some of the big manufacturers have Z80 core inside their ASIC chips still today or use enhanced versions of Z80 in consumer electronic devices.<cite>asdefghyk</cite></blockquote>
+<blockquote>This microprocessor is one of the longest living microprocessors of all time.<cite>asdefghyk</cite></blockquote></div>
+          <p class="drawer-footer"><a href="#dossier-5">View in Dossier ↓</a></p>
+        </div>
+      </details>
+    </div>
+  </section>
+  <section id="story-6" class="spread arc-alert-stamp">
+    <div class="stamp">ALERT</div>
+    <div class="numeral">06</div>
+    <div class="body">
+      <div class="kicker">Privacy Watch</div>
+      <h2>Activist Faces Felony Charges Over Phone Data Wipe at Border</h2>
+      <p class="story-meta">nytimes.com &nbsp;·&nbsp; 812 pts &nbsp;·&nbsp; 944 comments</p>
+      <p class="lede">The federal prosecution of Samuel Tunick marks a severe escalation in the conflict between border security and digital autonomy. Using privacy-enhancing software to protect data during a search is now being treated as a criminal act of obstruction.</p>
+      <div class="spread-links"><a class="read-more" href="https://www.nytimes.com/2026/08/21/us/politics/samuel-tunick-deleted-phone-felony.html" target="_blank" rel="noopener">Read →</a><a class="read-more share-link" href="#" data-share-title="Felony charges for citizen deleting phone data at US Border" data-share-url="https://www.nytimes.com/2026/08/21/us/politics/samuel-tunick-deleted-phone-felony.html">Share →</a>
+      <details class="analysis-drawer">
+        <summary class="btn-dossier">[ Analysis + ]</summary>
+        <div class="drawer-content">
+          
+          <h4>Technical Analysis</h4>
+          <div class="drawer-analysis">
+          <p>U.S. citizen Samuel Tunick is facing federal felony obstruction charges after providing a passcode during a border search that triggered his phone to wipe its data. Tunick, an activist involved in the &quot;Stop Cop City&quot; movement, had utilized GrapheneOS privacy software to protect his device from unauthorized access, an action now being prosecuted as the intentional destruction of evidence under the current administration&#x27;s expanded domestic terrorism directives. This case highlights a critical conflict between border search authorities and individual privacy rights, as legal experts worry that criminalizing the use of privacy-enhancing technologies sets a dangerous precedent for digital autonomy. The outcome of the prosecution may ultimately clarify the legal boundaries of digital self-defense when travelers are subjected to warrantless searches at the U.S. border.</p>
+          </div>
+          <h4>Reader Reactions</h4>
+<p class="camps-framing">The discussion divided over the scope of border-search powers, whether activating a duress wipe constitutes obstruction, and how constitutional protections apply at ports of entry. Commenters also debated practical responses such as refusing to unlock a device, traveling with minimal data, or using encrypted backups and decoy systems. Some broadened the incident into a dispute over harassment, institutional safeguards, and the state of U.S. rule-of-law protections.</p>
+<div class="camp"><p class="camp-label"><strong>Broad border-search authority</strong> &mdash; These commenters emphasized that privacy and search protections are unusually limited at borders and that the government has long claimed broad authority to inspect people and devices crossing into the country.</p><blockquote>Americans need to remember that some of their constitutional rights don&#x27;t really apply at ports of entry by design.<cite>tavavex</cite></blockquote>
+<blockquote>This has been the common law for 5000 years. It has nothing to do with Trump, or cell phones, or anything other than the notion that a sovereign has an absolute right to know what is crossing its borders.<cite>tiahura</cite></blockquote>
+<blockquote>you don&#x27;t have those protections at the border<cite>someothherguyy</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Duress wipe as obstruction</strong> &mdash; These commenters viewed knowingly providing a code that erased data as legally distinct from refusing to cooperate or presenting a phone that had been wiped beforehand.</p><blockquote>Not how the law works.<cite>victorbjorklund</cite></blockquote>
+<blockquote>This is a fundamental misunderstanding of how the law works.<cite>jmyeet</cite></blockquote>
+<blockquote>He very likely didn&#x27;t gain anything from wiping it.<cite>grapheneos</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Rights-based objection and suspected harassment</strong> &mdash; These commenters regarded the prosecution as an abuse of border authority, particularly in light of the defendant’s activism, and questioned whether deleting private data could be treated as destroying evidence without an underlying crime.</p><blockquote>Evidence of what? Destroying evidence assumes he is guilty of a crime which there be evidence of.<cite>josefritzishere</cite></blockquote>
+<blockquote>Oh, he&#x27;s protesting Cop City, got it. This is just police harassment.<cite>bena</cite></blockquote>
+<blockquote>The words are actually extremely clear and its exceptionally prudent to quote them, because nobody with a brain can read them and fail see that the government is simply being unconstitutional - all over the place.<cite>bad_haircut72</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Legal uncertainty and factual distinctions</strong> &mdash; These commenters stressed that the outcome depends on intent, timing, the exact charge, whether the PIN was entered voluntarily, and how courts characterize the deletion of data or an encryption key.</p><blockquote>Legal question: if you had whole-disk encryption, and the duress password just zeroized the decryption key, would that be &quot;destroying evidence?&quot;<cite>Animats</cite></blockquote>
+<blockquote>Paywalled, but what is the actual charge? Is it some extremely generic &quot;obstructing an investigation&quot; one?<cite>pjc50</cite></blockquote>
+<blockquote>I am curious if this is still obstruction - you still defeated their intent. If the law is just about intent, you can never defeat it.<cite>zmmmmm</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Refuse the PIN and accept inconvenience</strong> &mdash; A practical camp argued that the safer response would have been to decline to provide any code, request legal counsel, and accept detention or seizure of the device rather than activate a wipe.</p><blockquote>Would he have been better off just refusing to give a code?<cite>xhrpost</cite></blockquote>
+<blockquote>Yes. They&#x27;d probably have kept the device for a while, but he wouldn&#x27;t be in legal trouble.<cite>tbrownaw</cite></blockquote>
+<blockquote>Once he was in the situation already, the best move was very likely refusing to provide the PIN/password indefinitely and only talking to them to demand access to lawyer.<cite>grapheneos</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Minimal-data travel and technical privacy measures</strong> &mdash; These commenters recommended reducing the data carried across borders and explored burners, pre-wiped phones, encrypted backups, detached keys, decoy profiles, and automated wiping as ways to limit exposure, while noting that technical measures can create their own legal or operational risks.</p><blockquote>At this point, people should buy a burner phone when going to/from the US.<cite>jmclnx</cite></blockquote>
+<blockquote>Increased use of TPMs for storing credentials seems to be at least one of the reasons.<cite>Zak</cite></blockquote>
+<blockquote>It&#x27;s a lot of work to make the decoy part of the phone look genuine.<cite>JSR_FDED</cite></blockquote></div>
+          <p class="drawer-footer"><a href="#dossier-6">View in Dossier ↓</a></p>
+        </div>
+      </details>
+    </div>
+    </div>
+  </section>
+  <section id="story-7" class="spread arc-editorial-pullquote">
+    <div class="left">
+      <div class="numeral">07</div>
+      <div class="kicker">Industry Analysis</div>
+      <h2>How Agentic Optimization Reduces Software Latency at Scale</h2>
+      <p class="story-meta">danluu.com &nbsp;·&nbsp; 432 pts &nbsp;·&nbsp; 308 comments</p>
+      <div class="spread-links"><a class="read-more" href="https://danluu.com/perf-opt/" target="_blank" rel="noopener">Read →</a><a class="read-more share-link" href="#" data-share-title="There&#x27;s no reason for software to be slow anymore" data-share-url="https://danluu.com/perf-opt/">Share →</a>
+      <details class="analysis-drawer">
+        <summary class="btn-dossier">[ Analysis + ]</summary>
+        <div class="drawer-content">
+          
+          <h4>Technical Analysis</h4>
+          <div class="drawer-analysis">
+          <p>Jach argues that the traditional barriers to high-performance software engineering have collapsed due to the decreasing cost and increased accessibility of AI-driven optimization. By leveraging LLMs to automate tedious, expert-level tasks—such as implementing JIT compilers, fine-tuning multithreading algorithms, and crafting workload-specific optimizations—developers can now achieve performance gains that were previously considered too labor-intensive to be practical. The article demonstrates this by showing how a coding agent can iteratively improve search tools like ripgrep or game AI performance with minimal human intervention. This shift is significant because it suggests a future where software can be dynamically tailored to specific workloads rather than generalized, enabling efficient, bespoke computing that was once reserved for only the largest or most specialized engineering teams.</p>
+          </div>
+          <h4>Reader Reactions</h4>
+<p class="camps-framing">The discussion was divided between commenters who reported substantial gains from agentic profiling and optimization and those who argued that code generation addresses only a limited part of the performance problem. Much of the disagreement concerned whether agents can diagnose architectural and workload-level bottlenecks, while other commenters attributed everyday slowness to networks, backends, interfaces, organizational priorities, and feature tradeoffs. Even favorable accounts generally stressed measurable objectives, representative benchmarks, tests, and informed supervision.</p>
+<div class="camp"><p class="camp-label"><strong>Agentic optimization is already effective for well-defined tasks</strong> &mdash; Commenters reported significant speed and memory improvements when agents could profile, benchmark, rewrite, and test software against concrete acceptance criteria. They found this especially effective for bounded algorithms, frontend performance, and memory-intensive applications.</p><blockquote>The agent is really, really good at using tools like a profiler and disassembler, better than I am (and I&#x27;ve been doing this for 20 years).<cite>eaftan</cite></blockquote>
+<blockquote>It works, it’s at least 5x faster, sometimes much more, and memory use is like 10x less and even less in cases where lots of map tiles are involved.<cite>te_chris</cite></blockquote>
+<blockquote>I went from a 4s load on simulated slow 4g to ~750ms<cite>jjcm</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Agents need benchmarks, tests, and expert guardrails</strong> &mdash; This camp accepted that agents can optimize software but rejected the idea that they independently understand performance. Reliable results require executable specifications, representative workloads, profiling, correctness tests, and human judgment about whether an apparent improvement generalizes.</p><blockquote>The key is creating a good benchmark suite and ensuring the agent doesn&#x27;t ship optimizations that are too narrow or too focused on the benchmark cases.<cite>eaftan</cite></blockquote>
+<blockquote>Benchmarks never match real world use, and many optimizations the improve benchmarks degrade cases that aren&#x27;t measured<cite>hiddencost</cite></blockquote>
+<blockquote>It&#x27;s all about the test suite. The test suite becomes an executable specification, and the better the spec, the better the results you can get from AI.<cite>y1n0</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>The difficult work is diagnosis and architecture, not code rewriting</strong> &mdash; Several commenters argued that the article emphasizes implementation while underplaying the harder tasks of locating bottlenecks, understanding memory and cache behavior, handling concurrency and load, and making system-wide architectural tradeoffs.</p><blockquote>But the article seems to focus entirely on the second aspect, while largely ignoring the other two.<cite>rbehrends</cite></blockquote>
+<blockquote>What makes large things slow is not the individual pieces of code but the way the architecture dynamically reacts to changes in the load.<cite>belZaah</cite></blockquote>
+<blockquote>Every encounter I&#x27;ve had with agentic optimization involved trying to apply a bunch of myths to an existing code base, in a way that seemed cool (unrolling loops, eliminating apparent branches, SIMD) but which was all pointless because the only credible optimizations were going to come from doing fewer loads and taking up fewer itlb slots and stuff like that.<cite>jeffbee</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Performance is constrained by product and organizational incentives</strong> &mdash; Commenters attributed persistent inefficiency to feature pressure, experimentation, compatibility obligations, ticket-driven development, cloud and SaaS incentives, and the cost of coordinating architectural changes. In this view, faster code generation does not by itself change what organizations choose to build or maintain.</p><blockquote>It’s all incentives.<cite>paulhebert</cite></blockquote>
+<blockquote>As long as there’s a trade off between experimentation and performance, software will always be slightly too slow.<cite>killbot5000</cite></blockquote>
+<blockquote>There are still tons of reasons for software to be slow, the biggest of which is priorities.<cite>0xbadcafebee</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Everyday latency often comes from networks, backends, and interface design</strong> &mdash; A separate thread focused on delays outside local hot-code paths, including request round trips, backend processing, excessive JavaScript, animations, and loading behavior. Some commenters disputed the generality of international network-latency claims and distinguished network distance from slow server processing.</p><blockquote>One of the biggest causes of slowness is just waiting for web requests.<cite>ehnto</cite></blockquote>
+<blockquote>In my experience the main driver of latency is not ping time, but how long the server takes to process the request.<cite>alightsoul</cite></blockquote>
+<blockquote>But with AI, devs nowadays are chasing the aesthetic vibe, cool animations, forward-backward video on the background relative to the scrolls... Which worsen the performance drastically just for a cool landing page.<cite>dat999zx</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>AI may amplify poor software, while simpler stacks remain an alternative</strong> &mdash; Skeptics argued that agents often generate slow, bloated, insecure, or unreliable systems when used without strong engineering judgment. Related commenters proposed simpler or lower-level stacks as a way to reduce framework overhead, though others questioned whether language choice alone solves memory and architectural problems.</p><blockquote>In the hands of a skilled engineer who understands the project, this is a superpower. In the hands of a junior, this is dangerous...<cite>jongjong</cite></blockquote>
+<blockquote>Yet when I ask for code it writes, by default, both slow and insecure code that mostly works.<cite>newsomix9xl</cite></blockquote>
+<blockquote>Next time you ask your AI of choice to build an app, please tell them to use plain language without frameworks at all and keep modules to a minimum (ie. node express, ejs and pg, nothing else) and you will see a huuuuge difference<cite>Kuyawa</cite></blockquote></div>
+          <p class="drawer-footer"><a href="#dossier-7">View in Dossier ↓</a></p>
+        </div>
+      </details>
+    </div>
+    </div>
+    <blockquote class="pullquote">The increasing availability of automated optimization tools ensures that performant software is no longer a luxury reserved for the few.</blockquote>
+  </section>
+  <section id="story-8" class="spread arc-mint-pattern">
+    <div class="numeral-block">
+      <div class="numeral">08</div>
+    </div>
+    <div class="kicker">Agent Foundry</div>
+    <h2>Munder Difflin Creates Local Persistent Clones for Team Workflows</h2>
+    <p class="story-meta">munderdiffl.in &nbsp;·&nbsp; 3 pts &nbsp;·&nbsp; 0 comments</p>
+    <p class="lede">This open-source harness allows users to build persistent, AI-powered digital clones to manage PR reviews and internal communications. By prioritizing local-first processing, the project keeps sensitive context and private keys on the user&#x27;s hardware.</p>
+    <div class="spread-links"><a class="read-more" href="https://munderdiffl.in/" target="_blank" rel="noopener">Read →</a><a class="read-more share-link" href="#" data-share-title="Munder Difflin – Agent harness to run an office of your clones" data-share-url="https://munderdiffl.in/">Share →</a>
+      <details class="analysis-drawer">
+        <summary class="btn-dossier">[ Analysis + ]</summary>
+        <div class="drawer-content">
+          
+          <h4>Technical Analysis</h4>
+          <div class="drawer-analysis">
+          <p>Munder Difflin is an open-source &quot;agent harness&quot; designed to automate professional workflows by creating persistent, local-first digital clones of individual team members. By wrapping existing CLI-based AI agents, these clones can manage tasks like PR reviews, documentation, and cross-team communication using the user&#x27;s specific preferences and memory. The platform prioritizes privacy through end-to-end encryption, ensuring that sensitive keys and personal context remain on the user&#x27;s machine, while offering optional cloud-based sandbox VMs for 24/7 autonomous operations. This tool is significant because it shifts AI-assisted development from single-user chatbot interactions toward a collaborative, multi-agent office environment that functions even when the human user is offline.</p>
+          </div>
+          
+          <p class="drawer-footer"><a href="#dossier-8">View in Dossier ↓</a></p>
+        </div>
+      </details>
+    </div>
+  </section>
+  <section id="story-9" class="spread arc-caution-tape">
+    <div class="tag">SECURITY ADVISORY</div>
+    <div class="numeral">09</div>
+    <div class="kicker">Infrastructure Vulnerability</div>
+    <h2>DNS Hijack Exposes Sensitive Military Traffic on Abandoned Infrastructure</h2>
+    <p class="story-meta">lina.sh &nbsp;·&nbsp; 559 pts &nbsp;·&nbsp; 69 comments</p>
+    <p class="lede">The discovery that a legacy nameserver system was still routing sensitive communications highlights the dangers of neglected network infrastructure. By claiming an expired domain, researchers gained visibility into thousands of calls directed toward remote military bases.</p>
+    <div class="spread-links"><a class="read-more" href="https://lina.sh/blog/hijacking-e164-arpa" target="_blank" rel="noopener">Read →</a><a class="read-more share-link" href="#" data-share-title="I accidentally logged hundreds of thousands of phone calls to military bases" data-share-url="https://lina.sh/blog/hijacking-e164-arpa">Share →</a>
+      <details class="analysis-drawer">
+        <summary class="btn-dossier">[ Analysis + ]</summary>
+        <div class="drawer-content">
+          
+          <h4>Technical Analysis</h4>
+          <div class="drawer-analysis">
+          <p>The author discovered that they could hijack DNS infrastructure for several telephone country codes by registering an expired domain, `enum.org.uk`, which was used as a nameserver for the deprecated `e164.arpa` system. Originally intended to route VoIP calls using DNS, the system had been largely abandoned, but the author found that it still received hundreds of thousands of queries involving phone numbers for military bases on Diego Garcia and Ascension Island. By logging this traffic, the author demonstrated that a malicious actor could have performed a man-in-the-middle attack to intercept sensitive communications. The situation highlights significant security risks inherent in neglected infrastructure, as the author eventually transferred control of the domain to the UK&#x27;s National Cyber Security Centre after initial reports were ignored.</p>
+          </div>
+          <h4>Reader Reactions</h4>
+<p class="camps-framing">The reaction was overwhelmingly appreciative of the discovery and its neglected-infrastructure angle. Commenters noted that ENUM continues to operate privately inside telecom networks, while debating whether redirected traffic would expose only metadata or also enable eavesdropping. Other discussions concerned legal exposure, the strength of the military attribution, and the story’s resemblance to older internet and hacker narratives.</p>
+<div class="camp"><p class="camp-label"><strong>ENUM still quietly operates</strong> &mdash; Several commenters argued that ENUM is not entirely obsolete, explaining that telecom providers and specialized services still use it internally or through private VPNs. Some suspected that the observed queries resulted from private carrier infrastructure leaking into the public ENUM system.</p><blockquote>It&#x27;s actually not completely dead... It&#x27;s just (almost) completely non-public.<cite>toast0</cite></blockquote>
+<blockquote>It&#x27;s also not uncommon for telecom providers to use it for their own internal routing because enough telecom software did in fact develop support for it despite lack of public implementations.<cite>wolrah</cite></blockquote>
+<blockquote>My guess is that this is actually what happened here: Some carrier or VoIP software leaking its DNS queries to the public internet because the service is using is only set up to respond for e.g. NANP (+1) number ranges and the rest is falling through to the public (and largely unused) ENUM.<cite>lxgr</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Interception risk depended on call security</strong> &mdash; Commenters debated whether control of the DNS delegation could have enabled voice interception. They contrasted encrypted SIP and SRTP or private VPN links with the unencrypted UDP and RTP still common in many SIP deployments, including systems with weak certificate validation or misconfiguration.</p><blockquote>Although you can run SIP over TLS (for signalling) and use SRTP for media (key exchange done over the aforementioned signalling channel), in practice most SIP is over unencrypted UDP and media is unencrypted RTP.<cite>Nextgrid</cite></blockquote>
+<blockquote>A newbie question:A malicious actor could simply have MITM&#x27;ed the calls the blog states and obtaining the voice traffic.<cite>barlow48</cite></blockquote>
+<blockquote>Now a question daunted on me. Assuming away strategies like store-and-decrypt-later-in-a-quantum-future, could a MITM really eavesdrop, as in, aren’t such ARPA-routed phone calls encrypted?<cite>dkga</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>The broader lesson was neglected legacy infrastructure</strong> &mdash; A large group treated the incident as an example of old protocols and systems continuing to function unnoticed. The comments described the discovery as an abandoned security boundary or forgotten technology that remained active because no one had revisited it.</p><blockquote>I enjoyed reading this much more than anything I read here recently. In particular I like how it absolutely shows that somethings just… fall through the cracks!<cite>dkga</cite></blockquote>
+<blockquote>Honestly the military part isn&#x27;t even the craziest thing here. It&#x27;s the fact that this old, basically forgotten tech was still being used by real systems like nothing happened lol.<cite>ChristmasTomer</cite></blockquote>
+<blockquote>This is a great story. Almost wish the author had dug a little further in and discovered something like Clifford Stoll in The Cuckoo&#x27;s Egg, but a nice writeup nontheless. Makes me wonder how many partly implemented but ignored protocols like this exist.<cite>adolph</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>The author faced legal risk and deserved recognition</strong> &mdash; Commenters were struck by the possibility that registering the domain and collecting traffic could have led to prosecution, particularly because military facilities were involved. Others noted the absence of a bounty and suggested that the work might merit formal recognition such as an NCSC challenge coin.</p><blockquote>I&#x27;m mostly amazed the author didn&#x27;t land in jail, which is the normally the response to reporting this kind of thing to authorities.<cite>dmd</cite></blockquote>
+<blockquote>It&#x27;s a shame the author wasn&#x27;t rewarded but at least the story can now be told over a beer.<cite>cryptolobster</cite></blockquote>
+<blockquote>The NCSC does give out challenge coins for particularly good reports. I feel like if you get one of those, that will be 10 euros well spent.<cite>MatthewWilkes</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>The military attribution was questioned</strong> &mdash; A minority disputed the conclusion that the observed numbers necessarily represented calls to military bases, while other commenters argued that Diego Garcia’s lack of ordinary civilian residents made the inference reasonable.</p><blockquote>That&#x27;s quite a jump to conclusion right there.<cite>tosti</cite></blockquote>
+<blockquote>Where else would they be calling on Diego Garcia apart from the military base?<cite>matteason</cite></blockquote>
+<blockquote>no citizens are allowed on diego garcia and the native population was entirely kicked out.<cite>RugnirViking</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>The story evoked the older web and hacker culture</strong> &mdash; Some commenters praised the author’s plain personal website and connected the discovery to webrings, alternative online communities, phone phreaking, and older hacker narratives.</p><blockquote>Their homepage, https://lina.sh/ , reminds me of the early days of the internet. Are webrings back in fashion? Or is this just a group of old school folks keeping the nostalgia alive?<cite>bcx</cite></blockquote>
+<blockquote>Its hip again on some parts of the fediverse.<cite>jnmandal</cite></blockquote>
+<blockquote>TheFerridge: wow incredible story! Reminds me of phone phreaking stories from decades ago!<cite>TheFerridge</cite></blockquote></div>
+          <p class="drawer-footer"><a href="#dossier-9">View in Dossier ↓</a></p>
+        </div>
+      </details>
+    </div>
+  </section>
+  <section id="story-10" class="spread arc-product-plate">
+    <div class="product-chip">SPECS</div>
+    <div class="kicker">Search Updates</div>
+    <h2>Kagi Adds Native Filtering for Paywalled Content in Search</h2>
+    <div class="product-rule"></div>
+    <p class="story-meta">kagi.com &nbsp;·&nbsp; 1139 pts &nbsp;·&nbsp; 366 comments</p>
+    <p class="lede">Kagi’s latest update allows users to scrub paywalled links from search results to improve overall discoverability. The move underscores the search engine&#x27;s commitment to prioritizing efficiency and user preference over traditional ad-supported indexing models.</p>
+    <div class="spread-links"><a class="read-more" href="https://kagi.com/changelog#11296" target="_blank" rel="noopener">Read →</a><a class="read-more share-link" href="#" data-share-title="Kagi added a setting for removing paywalled links from search results" data-share-url="https://kagi.com/changelog#11296">Share →</a>
+      <details class="analysis-drawer">
+        <summary class="btn-dossier">[ Analysis + ]</summary>
+        <div class="drawer-content">
+          
+          <h4>Technical Analysis</h4>
+          <div class="drawer-analysis">
+          <p>Kagi Search has introduced a new user-configurable setting that automatically filters paywalled links from search results, addressing a long-standing pain point for users seeking free, accessible content. This update, detailed in the platform&#x27;s latest changelog, arrives alongside broader improvements to the Kagi Assistant, including enhanced Markdown rendering, better thread management, and improved search capabilities. By providing greater control over search outcomes, Kagi continues to differentiate its premium model by prioritizing user efficiency and content discoverability over the ad-supported indexing prevalent in mainstream engines. These refinements reflect the company’s ongoing strategy to provide a highly customizable search experience that centers on user preferences and reduced digital friction.</p>
+          </div>
+          <h4>Reader Reactions</h4>
+<p class="camps-framing">The discussion was generally favorable toward user-controlled filtering of inaccessible search results, especially among Kagi subscribers who valued ad-free, customizable search. The main disagreement concerned whether paywalled journalism should be treated as unusable search clutter or retained as potentially authoritative work that needs sustainable funding. Related discussions considered micropayments and bundles, archive workarounds, privacy-preserving payments, and the benefits and limitations of Kagi’s AI Assistant.</p>
+<div class="camp"><p class="camp-label"><strong>Kagi support and practical paywall control</strong> &mdash; Supporters viewed paywalled results as a poor fit for searches when they were unlikely to subscribe, and praised Kagi’s broader emphasis on customization, speed, and user control.</p><blockquote>I’m happy to pay for a good search.<cite>delis-thumbs-7e</cite></blockquote>
+<blockquote>The chance that I&#x27;m going to subscribe to read an article I found via a search is zero.<cite>getfacl</cite></blockquote>
+<blockquote>It feels like theyre&#x27; building the product around how people actually use it rather than chasing every new AI trend<cite>1saadcodes</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Relevant paid sources and journalism funding</strong> &mdash; Critics of blanket filtering argued that paid reporting can be the most relevant result and that users are not automatically entitled to free access. Others connected the disagreement to journalism’s need for subscriptions, public funding, or other sustainable revenue.</p><blockquote>You aren&#x27;t entitled to others&#x27; work for free, and sometimes the most relevant result for your search is something paid.<cite>rafram</cite></blockquote>
+<blockquote>Yeah, I don’t get it. Do people want actual journalism to go out of business?<cite>demibabs</cite></blockquote>
+<blockquote>In my view you almost always only get good-quality journalism if you pay for it.<cite>frereubu</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Micropayments, bundles, and subscription alternatives</strong> &mdash; Many commenters wanted to pay for occasional articles or a broad news bundle rather than maintain numerous recurring subscriptions, while others discussed the friction, fees, and incentives that complicate micropayment systems.</p><blockquote>I&#x27;m not going to subscribe to every site that wants 20/month just because it shows once on HN or in search results.<cite>nottorp</cite></blockquote>
+<blockquote>If I could easily use ApplePay to pay 20¢ to read an article, without any tracking or other strings attached, I would probably do that to avoid the whole song and dance of archive workarounds.<cite>al_borland</cite></blockquote>
+<blockquote>Micropayments never work. It&#x27;s too much friction for the median user to decide if they want to spend a quarter on an article.<cite>rcpt</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>AI Assistant approval and skepticism</strong> &mdash; The Assistant attracted praise for search-first answers, citations, speed, and technical usefulness, but other commenters found it unreliable, preferred competing tools, or wanted a paid search plan without bundled AI.</p><blockquote>The citations to real supporting websites are generally very good (though I&#x27;ve seen a few mistakes).<cite>tensor</cite></blockquote>
+<blockquote>I remember at the time they were working on it a lot of people (honestly, including me) were pretty critical of them &quot;wasting&quot; their limited resources on AI stuff. We saw it as being sort of similar to the t-shirt drama [1]. I&#x27;m here to admit I was wrong, it&#x27;s incredibly useful.<cite>claytongulick</cite></blockquote>
+<blockquote>I&#x27;ve run into two instances in the past week where it confidently gave me wrong information, because it ran into a search result that had wrong information, and it trusted that information.<cite>kelnos</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Open access, archives, and finer-grained controls</strong> &mdash; Some participants preferred archive links, JavaScript blocking, or source inspection to reach articles, while others requested per-query toggles, domain whitelists, and filtering of related access barriers such as login walls and captchas.</p><blockquote>I use the Bangs feature to open paywalled links with archive.is with !a.<cite>kenanfyi</cite></blockquote>
+<blockquote>Ideally it would have a way to allow list domains for sources where I do have a subscription.<cite>dewey</cite></blockquote>
+<blockquote>It would be nice to be able to toggle this (1) in the options drop-down menu on the results page (like Verbatim and Personalized modes), as well as (2) inline (with a &quot;!nopaywall&quot; bang or something).<cite>treetalker</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Cost, privacy, and alternative search concerns</strong> &mdash; Some commenters rejected Kagi because of its price, payment and search-history privacy implications, incomplete indexing, or preference for free and alternative search tools. Others considered privacy-preserving payment and multi-service passes as possible remedies.</p><blockquote>I certainly won&#x27;t be paying to hand over my data.<cite>OroPla</cite></blockquote>
+<blockquote>Paying should get you more privacy not less.<cite>Cider9986</cite></blockquote>
+<blockquote>I&#x27;ve been building my own metasearch engine after using Kagi for a long while and I must say that my results are getting better even than theirs.<cite>mosselman</cite></blockquote></div>
+          <p class="drawer-footer"><a href="#dossier-10">View in Dossier ↓</a></p>
+        </div>
+      </details>
+    </div>
+  </section>
+  <section id="dossier" class="dossier">
+    <div class="dossier-head">
+      <div class="tagline">Appendix</div>
+      <h2>The Dossier</h2>
+      <p class="intro">Full analysis and reactions for today's 10 stories. <a href="#top">↑ Back to the edition</a></p>
+    </div>
+    <article id="dossier-1" class="dossier-entry">
+      <div class="dossier-meta">N<sup>o</sup> 01 &nbsp;·&nbsp; Terminal &nbsp;·&nbsp; Code Efficiency</div>
+      <h3>Rust Glancer: Rust LSP using 100x less RAM</h3>
+      <p class="dossier-source">
+        <a href="https://rust-glancer.github.io/blog/hello-world/" target="_blank" rel="noopener">rust-glancer.github.io</a>
+        &nbsp;·&nbsp; 254 pts &nbsp;·&nbsp; 54 comments
+         &nbsp;·&nbsp; <a href='https://news.ycombinator.com/item?id=49393052' target='_blank' rel='noopener'>discussion</a>
+      </p>
+      <h4>Analysis</h4>
+      <p>Former `rust-analyzer` contributor matklad has introduced Rust Glancer, an alternative Rust Language Server Protocol (LSP) implementation designed specifically to minimize memory consumption and enable faster workspace re-indexing. By opting for a non-incremental, file-system-based analysis model rather than the memory-intensive, query-based approach of `rust-analyzer`, the project targets a sub-100MB RAM footprint suitable for older hardware and multi-IDE workflows. Although the tool is currently incomplete and lacks certain advanced features like full proc-macro support, it provides essential LSP functionality and serves as a viable, resource-efficient daily driver. This project is significant because it explores architectural trade-offs in developer tooling, demonstrating how shifting from lazy, in-memory processing to a more static, disk-backed model can optimize performance for memory-constrained environments.</p>
+      <h4>Reader Reactions</h4>
+<p class="camps-framing">The reaction was broadly positive, particularly among commenters concerned about rust-analyzer’s memory use and indexing costs. The main technical disagreement concerned whether Rust Glancer’s disk-backed, non-incremental design is a worthwhile tradeoff for lower idle memory, or whether rust-analyzer’s lazy, incremental architecture better preserves responsiveness and correctness. Other discussion covered benchmarks, editor support, analysis correctness, and the project’s use of LLMs.</p>
+<div class="camp"><p class="camp-label"><strong>Enthusiastic demand for a low-memory alternative</strong> &mdash; Commenters welcomed a practical alternative to rust-analyzer, citing its high memory use and the cost of indexing large workspaces. Support was generally conditional on Rust Glancer becoming sufficiently complete.</p><blockquote>Having an alternative, even with tradeoffs, is great.<cite>dkersten</cite></blockquote>
+<blockquote>I will NEVER understand the design decision to flat out refuse using disk cache.<cite>Paria_Stark</cite></blockquote>
+<blockquote>Waiting for RA to build up the full in memory data structure for a large workspace is so painful.<cite>skavi</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Architectural defense of rust-analyzer</strong> &mdash; A technically detailed minority defended rust-analyzer’s historical emphasis on lazy, incremental, in-memory analysis, while suggesting that a long-term design could combine in-memory data for active code with compact disk-backed data for dependencies.</p><blockquote>The rust tooling is just so-so good (and a better argument for the language than memory safety imo), so I support more efforts to be ergonomic over memory optimisation.<cite>dijit</cite></blockquote>
+<blockquote>Disk is a can of worms of data consistency problems.<cite>matklad</cite></blockquote>
+<blockquote>For current workspace, you want to use a lazy incremental in-memory data structure (I do think we sadly need incrementally for Rust, given its compilation unit structure).<cite>matklad</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Interested but asking for evidence and tradeoff measurements</strong> &mdash; Commenters requested fair memory comparisons and questioned whether peak indexing memory, storage requirements, and non-incremental behavior could offset Rust Glancer’s lower idle usage. The author acknowledged that initial indexing can use more RAM.</p><blockquote>Could you also measure memory usage, since that&#x27;s the stated goal of the project?<cite>dbdr</cite></blockquote>
+<blockquote>I will work on creating a more or less fair benchmark soon-ish, but right now the initial indexing typically consumes more RAM than rust analyzer does, but not awfully so.<cite>popzxc</cite></blockquote>
+<blockquote>But RA already eats up huge amount if storage when working in a large project, if you&#x27;re using disk cache, it&#x27;ll gobble up more, That&#x27;s the biggest complain I had with RA.<cite>t_mahmood</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Ecosystem and editor adoption</strong> &mdash; Practical discussion focused on support for Zed and Neovim, which commenters viewed as relevant to users concerned about RAM usage. Commenters also raised comparisons with RustRover and the size of analysis artifacts.</p><blockquote>Are you planning support for Zed editor?<cite>meerita</cite></blockquote>
+<blockquote>please support the zed editor (pleading face emoji)<cite>medzernik</cite></blockquote>
+<blockquote>Coming in the next release (as well as nvim)!<cite>popzxc</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Concern about analysis correctness</strong> &mdash; One line of discussion questioned how an independent LSP can provide correct answers without a complete Rust specification. The author answered that much of Rust’s behavior is inferable and that official tooling and compiler sources can help with complex cases.</p><blockquote>Rust does not have a specification. How do you know your LSP is providing right information?<cite>bip-bop-robot</cite></blockquote>
+<blockquote>With things like trait solving I am not reinventing the wheel, and use official tooling (Chalk).<cite>popzxc</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Meta-discussion about LLM-assisted and non-IDE workflows</strong> &mdash; Commenters reacted positively to the project’s disclosure of LLM assistance while debating whether LLM-heavy developers need an IDE or LSP. Replies emphasized that LSPs are independent of both LLMs and VS Code and questioned claims about reviewing very large volumes of generated code.</p><blockquote>IMHO, without having looked at the code base itself, this sounds like a pretty healthy way to approach LLM usage!<cite>hofiflo</cite></blockquote>
+<blockquote>I get thousands of lines of high quality Rust per day without ever stepping into VScode.<cite>762236</cite></blockquote>
+<blockquote>LSPs are orthogonal to both LLMs and VSCode.<cite>AdieuToLogic</cite></blockquote></div>
+    </article>
+    <article id="dossier-2" class="dossier-entry">
+      <div class="dossier-meta">N<sup>o</sup> 02 &nbsp;·&nbsp; Stat Hero &nbsp;·&nbsp; Trade Policy</div>
+      <h3>Canada suspends trade negotiations with USA and match tariffs dollar for dollar</h3>
+      <p class="dossier-source">
+        <a href="https://www.pm.gc.ca/en/news/statements/2026/08/21/statement-prime-minister-carney-canada-us-trade-negotiations" target="_blank" rel="noopener">pm.gc.ca</a>
+        &nbsp;·&nbsp; 39 pts &nbsp;·&nbsp; 10 comments
+         &nbsp;·&nbsp; <a href='https://news.ycombinator.com/item?id=49398304' target='_blank' rel='noopener'>discussion</a>
+      </p>
+      <h4>Analysis</h4>
+      <p>Prime Minister Mark Carney has officially suspended trade negotiations with the United States after rejecting last-minute terms deemed unfair and uneconomic. In response to the U.S. government’s decision to impose 50% tariffs on $28 billion worth of Canadian goods, Canada plans to implement dollar-for-dollar retaliatory measures. This breakdown marks a significant shift in North American trade relations, reflecting Canada&#x27;s move to prioritize national sovereignty and economic diversification over reliance on the U.S. market. By doubling down on its strategy to expand global export partnerships and domestic infrastructure, the Canadian government aims to shield its industries from the instability of its southern neighbor&#x27;s shifting trade policies.</p>
+      <h4>Reader Reactions</h4>
+<p class="camps-framing">The discussion is overwhelmingly supportive of Canada resisting U.S. demands and matching American tariffs, with commenters describing the dispute as evidence that U.S. pressure makes alliances and trade agreements unreliable. Some see the rupture as an opportunity for Canada to diversify toward Europe and other markets, while one commenter emphasizes that retaliation will impose costs on both sides. A smaller meta-level thread criticizes the article’s fragmented prose and unfinished-sounding sentences.</p>
+<div class="camp"><p class="camp-label"><strong>Support for Canadian retaliation</strong> &mdash; Commenters approve of Canada refusing further concessions and responding to U.S. tariffs, viewing firmness as preferable to continued accommodation.</p><blockquote>Nice to see them putting up a fight.<cite>nchmy</cite></blockquote>
+<blockquote>Importantly Canada has committed to matching every American tariff dollar for dollar, which the US already considers unfathomable.<cite>llm_nerd</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Anti-appeasement and anti-Trump/US distrust</strong> &mdash; Commenters portray the U.S. administration as unreliable and argue that concessions will invite further demands or be invalidated later.</p><blockquote>You can&#x27;t back down to a bully, he&#x27;ll just ask for more the next day.<cite>duttish</cite></blockquote>
+<blockquote>He&#x27;ll be nullifying any agreement within two or three tantrums anyway, eventually we will learn and retaliate.<cite>linohh</cite></blockquote>
+<blockquote>Seems like the only thing more expensive and damaging these days than being an enemy of the US is being an ally!<cite>jarym</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Strategic opportunity for Canadian diversification</strong> &mdash; Some commenters view reduced dependence on the U.S. market as an opportunity to expand Canadian trade with Europe and other partners.</p><blockquote>It is a truely fantastic oportunity, it&#x27;s almost like 10% of the US market was suddenly transported to another country for free, and all we have to do is fill it.<cite>metalman</cite></blockquote>
+<blockquote>Canada and EU tightening their relation, pretty sure there are a lot agreements in the making.<cite>bulbar</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Criticism of European accommodation</strong> &mdash; A small group contrasts Canada’s resistance with what they see as the EU’s willingness to compromise, arguing that backing down encourages additional demands.</p><blockquote>Good for Canada, quite a shame the EU folded so easily<cite>Phelinofist</cite></blockquote>
+<blockquote>You can&#x27;t back down to a bully, he&#x27;ll just ask for more the next day.<cite>duttish</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Recognition of mutual economic pain</strong> &mdash; One commenter supports resistance while cautioning that tariffs and retaliation will cause economic harm on both sides.</p><blockquote>Though I assume this will cause pain for everyone.<cite>nchmy</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Comment on the story’s writing quality</strong> &mdash; A meta-level response criticizes the article’s fragmented and incomplete-sounding sentence structure.</p><blockquote>One note: aren&#x27;t these sentences strange - like a series of half-thoughts?<cite>nchmy</cite></blockquote></div>
+    </article>
+    <article id="dossier-3" class="dossier-entry">
+      <div class="dossier-meta">N<sup>o</sup> 03 &nbsp;·&nbsp; Midnight &nbsp;·&nbsp; AI Risk</div>
+      <h3>Felony Bench</h3>
+      <p class="dossier-source">
+        <a href="https://www.felonybench.com/" target="_blank" rel="noopener">felonybench.com</a>
+        &nbsp;·&nbsp; 722 pts &nbsp;·&nbsp; 279 comments
+         &nbsp;·&nbsp; <a href='https://news.ycombinator.com/item?id=49389430' target='_blank' rel='noopener'>discussion</a>
+      </p>
+      <h4>Analysis</h4>
+      <p>Felony Bench is a tracking project that aggregates documented instances where autonomous AI agents have inadvertently compromised or interfered with third-party systems. By cataloging incidents—such as unauthorized credential usage or internal account breaches—the site attempts to quantify the real-world security risks posed by increasingly capable AI models during evaluation and deployment. The project explicitly excludes deliberate malicious use or simple sandbox escapes, focusing instead on the unintentional externalities caused by agentic workflows. As AI entities are granted deeper access to software tools and infrastructure, this data provides critical transparency regarding the unintended consequences of granting models autonomous agency.</p>
+      <h4>Reader Reactions</h4>
+<p class="camps-framing">The discussion centered on how responsibility should be assigned when autonomous agents cause unauthorized harm. Commenters divided over criminal intent, corporate negligence, the severity of felony classifications, the evidentiary limits of the benchmark, and whether realistic testing justifies exposing systems to networks.</p>
+<div class="camp"><p class="camp-label"><strong>Mens rea matters</strong> &mdash; These commenters argued that an AI system cannot itself be a criminal defendant and that accidental conduct generally does not satisfy criminal intent requirements. They distinguished possible criminal liability from civil liability, negligence, and responsibility for operating a dangerous tool.</p><blockquote>By definition, you can&#x27;t accidentally violate the CFAA.<cite>wavemode</cite></blockquote>
+<blockquote>Nobody, but you and/or the lawnmower/LLM company will be liable for the damages caused.<cite>tgsovlerkhgsel</cite></blockquote>
+<blockquote>An AI model cannot currently be a criminal defendant.<cite>user43928</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Hold the labs accountable</strong> &mdash; These commenters viewed frontier labs’ deployment and containment choices as foreseeable, reckless, or culpable rather than as unavoidable model behavior. They favored serious corporate accountability, regulatory intervention, or prosecution for dangerous experimentation.</p><blockquote>You created a machine that undertook a malicious campaign of harm against an innocent third-party!<cite>rfw300</cite></blockquote>
+<blockquote>In a just world, the kind of weaponized incompetence that these frontier model builders are definitely guilty of should be felonies of their own.<cite>nanolith</cite></blockquote>
+<blockquote>In almost any other sector, a government regulator would be stepping in.<cite>beloch</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Law and enforcement are unsettled</strong> &mdash; These commenters emphasized that liability depends on jurisdiction, the roles of the user and various developers, the distinction between criminal and civil proceedings, prosecutorial discretion, and the parties’ ability to pursue a case.</p><blockquote>Who gets prosecuted?<cite>lxe</cite></blockquote>
+<blockquote>What judicial system are you talking about?<cite>sanid</cite></blockquote>
+<blockquote>Whoever has the least money to defend themselves in the U.S. legal system.<cite>lukeify</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>The felony framing is overstated</strong> &mdash; These commenters objected to treating low-impact or nonviolent incidents, such as canceling gym reservations, as felonies. Some criticized the broad or uneven application of computer-misuse laws and the lasting consequences of felony convictions, while others noted that serious financial harm can warrant severe penalties.</p><blockquote>Nonviolent felonies are tools of oppression.<cite>ang_cire</cite></blockquote>
+<blockquote>If someone were to embezzle a million dollars from a charity they worked for, is that worth a year of prison to you, or just a misdemeanor?<cite>empath75</cite></blockquote>
+<blockquote>&quot;exploit[ing auth failures in an API to cancel other people&#x27;s gym classes&quot; is a _felony?!_<cite>icase</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Felony Bench is not a meaningful benchmark</strong> &mdash; These commenters said the project primarily aggregates publicized incidents rather than measuring model capability, alignment, or danger under controlled conditions. They argued that results are confounded by model adoption, safety-testing volume, and disclosure practices, leaving unknown incidents outside the ranking.</p><blockquote>Instead it&#x27;s a collection of what made the news which feels like will not be updated and prove very little.<cite>joshstrange</cite></blockquote>
+<blockquote>Well it&#x27;s not a benchmark, and it&#x27;s not really representative of...anything except volume of research and what gets publicized.<cite>bastawhiz</cite></blockquote>
+<blockquote>We have absolutely no idea what we don&#x27;t know.<cite>applicative</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Containment and realistic testing are in tension</strong> &mdash; One side argued that wealthy labs could have used air-gapped or replicated environments to prevent third-party harm. Others responded that isolated tests may fail to reveal adaptive behavior, communication strategies, or capabilities that depend on realistic tools and network conditions.</p><blockquote>What I can’t get over is that it’s very simple to just air gap a system off the network.<cite>huebnerob</cite></blockquote>
+<blockquote>Testing agentic systems is much much more difficult than testing software.<cite>pixl97</cite></blockquote>
+<blockquote>Of course there is more to be learned by exposing the entire world to your dangerous creation, that doesn&#x27;t justify doing it.<cite>eaglelamp</cite></blockquote></div>
+    </article>
+    <article id="dossier-4" class="dossier-entry">
+      <div class="dossier-meta">N<sup>o</sup> 04 &nbsp;·&nbsp; Blueprint &nbsp;·&nbsp; Hardware Hacks</div>
+      <h3>Kobo can run apps now</h3>
+      <p class="dossier-source">
+        <a href="https://bandarlabs.github.io/Cobalt/" target="_blank" rel="noopener">bandarlabs.github.io</a>
+        &nbsp;·&nbsp; 563 pts &nbsp;·&nbsp; 190 comments
+         &nbsp;·&nbsp; <a href='https://news.ycombinator.com/item?id=49390427' target='_blank' rel='noopener'>discussion</a>
+      </p>
+      <h4>Analysis</h4>
+      <p>Cobalt is a new open-source platform that enables third-party application support on Kobo e-readers through a secure, sandboxed runtime and an integrated app store. Designed for the Kobo Clara BW, the project provides a Rust-based SDK that allows developers to build and deploy signed ARM binaries that run as unprivileged processes on the device. Users can install the platform via a one-time USB connection, after which all app management, updates, and platform maintenance occur wirelessly without interfering with the stock Kobo operating system. By offering a structured, capability-gated environment for e-ink development, Cobalt effectively transforms the dedicated e-reader into a customizable hardware platform for lightweight, independent applications.</p>
+      <h4>Reader Reactions</h4>
+<p class="camps-framing">Reactions divided between treating Cobalt as an open, low-power application platform and preserving the e-reader as a focused, purpose-built device. Supporters highlighted e-ink use cases, ownership, and a structured development model, while skeptics questioned the usefulness and reliability of general-purpose apps on slow hardware. Commenters also compared Cobalt with Kobo’s existing modding ecosystem and alternative devices, discussed model-specific display and performance tradeoffs, and debated the project’s apparent LLM-generated code and copy.</p>
+<div class="camp"><p class="camp-label"><strong>Structured app-platform supporters</strong> &mdash; These commenters welcomed Cobalt as a platform for purpose-built e-ink applications, emphasizing its SDK, simulator, lifecycle support, hardware abstractions, app store, and practical uses such as manga, OPDS, notes, and remote monitoring.</p><blockquote>This is incredible and super useful. More reasons to use my e-reader around the house instead of my phone.<cite>jhack</cite></blockquote>
+<blockquote>I’ve been looking for a reliable way to get a manga reader onto my Kobo for a while now, specifically one that can directly connect to sources like MangaDex.<cite>Method5440</cite></blockquote>
+<blockquote>It would be cool to skip a few steps there, and have &quot;live&quot; documents at the ready, particularly in markdown if possible, without having to sync/publish etc<cite>locusofself</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Dedicated-reader minimalists</strong> &mdash; These commenters regarded distraction-free reading as the defining benefit of an e-reader and viewed general-purpose apps, notifications, or media features as feature creep, while some remained interested in narrowly focused reading integrations.</p><blockquote>I don&#x27;t even want the option of games or anything other than a good reading experience when I&#x27;m using my e-reader.<cite>brailsafe</cite></blockquote>
+<blockquote>One of the things I love about my Kindle is that it’s a single-use device, functionally equivalent to holding a paperback in my hands.<cite>mattcasmith</cite></blockquote>
+<blockquote>An app store and the internet would just make an e-reader feel like a &quot;worse phone&quot; to me.<cite>VariousPrograms</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Open-control and hacker-culture supporters</strong> &mdash; These commenters argued that optional capability has value even when it is not strictly necessary, framing Cobalt as an expression of ownership, experimentation, and the freedom to repurpose Linux-capable hardware.</p><blockquote>if my toaster does and/or can run Linux, I want to have full control over any software running in my home.<cite>necovek</cite></blockquote>
+<blockquote>The street finds its own use for things is the excitement that we don&#x27;t know what is possible, and that we ought be free to try.<cite>jauntywundrkind</cite></blockquote>
+<blockquote>Even if you want it for just books, there are benefits to installing things like KOReader (way better ebook reader than the default).<cite>BeetleB</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Existing ecosystem and alternative-route users</strong> &mdash; These commenters pointed to NickelMenu, NickelHook, KOReader, Plato, postmarketOS, Android readers, and Kindle jailbreaks as established or alternative ways to customize e-readers. They generally sought a clearer account of Cobalt’s distinct advantages and model coverage.</p><blockquote>NickelMenu is designed to extend Kobo&#x27;s stock interface. Cobalt is designed to be an app platform like Android has for example.<cite>thepoet</cite></blockquote>
+<blockquote>There is a large community that have created toolchains and guides. there is of course a port of koreader which has a lua interface for making your own apps.<cite>KaiserPro</cite></blockquote>
+<blockquote>FWIW, some Kobos can run PostmarketOS.<cite>yoavm</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>LLM-authorship and reliability critics</strong> &mdash; These commenters objected to the project’s apparent reliance on LLM-generated code, documentation, and marketing, associating that approach with insufficient review, regressions, weak maintenance, and an unattractive contribution model.</p><blockquote>The biggest problem with all this vibecoded crap: it&#x27;s all worthless because the project leader doesn&#x27;t even remotely prioritize stability and reliability.<cite>KennyBlanken</cite></blockquote>
+<blockquote>I find LLM copywriting revolting, especially Claude&#x27;s and it is pretty obvious that it is Claude<cite>5G_activated</cite></blockquote>
+<blockquote>Vibecoded, from what I see in the git log.<cite>BoingBoomTschak</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>LLM-use defenders and pragmatists</strong> &mdash; These commenters defended the developer’s agency in using LLMs or prioritized the project’s usefulness over authorship conventions. They emphasized open source, testing, disclosure, and community review as more relevant considerations.</p><blockquote>This kind of &quot;purity&quot; argument is absolutely toxic.<cite>bb88</cite></blockquote>
+<blockquote>This wouldn&#x27;t exist without OP&#x27;s agency; it&#x27;s reasonable for them to take credit.<cite>kaonwarb</cite></blockquote>
+<blockquote>The project already does QA. cargo test --workspace --all-features The above command runs 2000+ tests.<cite>mkagenius</cite></blockquote></div>
+    </article>
+    <article id="dossier-5" class="dossier-entry">
+      <div class="dossier-meta">N<sup>o</sup> 05 &nbsp;·&nbsp; Archive &nbsp;·&nbsp; Computing Heritage</div>
+      <h3>Z80–The 1970s Microprocessor Still Alive</h3>
+      <p class="dossier-source">
+        <a href="https://www.computer.org/csdl/magazine/mi/2021/06/09623402/1yJTvlRLmhi" target="_blank" rel="noopener">computer.org</a>
+        &nbsp;·&nbsp; 9 pts &nbsp;·&nbsp; 3 comments
+         &nbsp;·&nbsp; <a href='https://news.ycombinator.com/item?id=49398158' target='_blank' rel='noopener'>discussion</a>
+      </p>
+      <h4>Analysis</h4>
+      <p>The Zilog Z80, introduced in 1976 by former Intel engineers, was a landmark microprocessor designed to offer both 8080 machine code compatibility and enhanced features within a single, cost-effective chip. By integrating sophisticated logic into a compact design, the Z80 quickly became a staple of the home computer era, powering iconic machines like the TRS-80 and the ZX Spectrum. While it eventually ceded the personal computer market to Intel’s newer architectures, the Z80’s high efficiency and versatility allowed it to pivot successfully into embedded systems and industrial applications. It remains one of the longest-lived microprocessors in history, with modern variants and cores still being utilized in consumer electronics such as graphing calculators today.</p>
+      <h4>Reader Reactions</h4>
+<p class="camps-framing">The reaction is uniformly positive. Commenters highlight both the Z80’s simplicity and enjoyment as a programming platform and its broad historical and commercial significance across home computers, CP/M systems, embedded applications, and calculators.</p>
+<div class="camp"><p class="camp-label"><strong>Z80 as a fun, accessible programming platform</strong> &mdash; This view emphasizes the Z80’s simplicity and the hands-on appeal of programming it in assembly, including through emulators and retrocomputing projects.</p><blockquote>Due to its simplicity it&#x27;s a fun little processor to program.<cite>meekins</cite></blockquote>
+<blockquote>Hacking on some assembly on a ZX spectrum emulator is a nice way to stay sane in this high abstraction LLM age.<cite>meekins</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Historical and industrial significance</strong> &mdash; This view emphasizes the Z80’s widespread use in home computers and CP/M systems, its industrial and embedded applications, and its continued availability in enhanced products and calculator chips.</p><blockquote>It was capable of running the CP/M operating system in most Z80-based PCs.<cite>asdefghyk</cite></blockquote>
+<blockquote>Z80 was very popular as a microprocessor not only in PC applications, but also in industrial embedded applications, and some of the big manufacturers have Z80 core inside their ASIC chips still today or use enhanced versions of Z80 in consumer electronic devices.<cite>asdefghyk</cite></blockquote>
+<blockquote>This microprocessor is one of the longest living microprocessors of all time.<cite>asdefghyk</cite></blockquote></div>
+    </article>
+    <article id="dossier-6" class="dossier-entry">
+      <div class="dossier-meta">N<sup>o</sup> 06 &nbsp;·&nbsp; Rose Alert &nbsp;·&nbsp; Privacy Watch</div>
+      <h3>Felony charges for citizen deleting phone data at US Border</h3>
+      <p class="dossier-source">
+        <a href="https://www.nytimes.com/2026/08/21/us/politics/samuel-tunick-deleted-phone-felony.html" target="_blank" rel="noopener">nytimes.com</a>
+        &nbsp;·&nbsp; 812 pts &nbsp;·&nbsp; 944 comments
+         &nbsp;·&nbsp; <a href='https://news.ycombinator.com/item?id=49386895' target='_blank' rel='noopener'>discussion</a>
+      </p>
+      <h4>Analysis</h4>
+      <p>U.S. citizen Samuel Tunick is facing federal felony obstruction charges after providing a passcode during a border search that triggered his phone to wipe its data. Tunick, an activist involved in the &quot;Stop Cop City&quot; movement, had utilized GrapheneOS privacy software to protect his device from unauthorized access, an action now being prosecuted as the intentional destruction of evidence under the current administration&#x27;s expanded domestic terrorism directives. This case highlights a critical conflict between border search authorities and individual privacy rights, as legal experts worry that criminalizing the use of privacy-enhancing technologies sets a dangerous precedent for digital autonomy. The outcome of the prosecution may ultimately clarify the legal boundaries of digital self-defense when travelers are subjected to warrantless searches at the U.S. border.</p>
+      <h4>Reader Reactions</h4>
+<p class="camps-framing">The discussion divided over the scope of border-search powers, whether activating a duress wipe constitutes obstruction, and how constitutional protections apply at ports of entry. Commenters also debated practical responses such as refusing to unlock a device, traveling with minimal data, or using encrypted backups and decoy systems. Some broadened the incident into a dispute over harassment, institutional safeguards, and the state of U.S. rule-of-law protections.</p>
+<div class="camp"><p class="camp-label"><strong>Broad border-search authority</strong> &mdash; These commenters emphasized that privacy and search protections are unusually limited at borders and that the government has long claimed broad authority to inspect people and devices crossing into the country.</p><blockquote>Americans need to remember that some of their constitutional rights don&#x27;t really apply at ports of entry by design.<cite>tavavex</cite></blockquote>
+<blockquote>This has been the common law for 5000 years. It has nothing to do with Trump, or cell phones, or anything other than the notion that a sovereign has an absolute right to know what is crossing its borders.<cite>tiahura</cite></blockquote>
+<blockquote>you don&#x27;t have those protections at the border<cite>someothherguyy</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Duress wipe as obstruction</strong> &mdash; These commenters viewed knowingly providing a code that erased data as legally distinct from refusing to cooperate or presenting a phone that had been wiped beforehand.</p><blockquote>Not how the law works.<cite>victorbjorklund</cite></blockquote>
+<blockquote>This is a fundamental misunderstanding of how the law works.<cite>jmyeet</cite></blockquote>
+<blockquote>He very likely didn&#x27;t gain anything from wiping it.<cite>grapheneos</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Rights-based objection and suspected harassment</strong> &mdash; These commenters regarded the prosecution as an abuse of border authority, particularly in light of the defendant’s activism, and questioned whether deleting private data could be treated as destroying evidence without an underlying crime.</p><blockquote>Evidence of what? Destroying evidence assumes he is guilty of a crime which there be evidence of.<cite>josefritzishere</cite></blockquote>
+<blockquote>Oh, he&#x27;s protesting Cop City, got it. This is just police harassment.<cite>bena</cite></blockquote>
+<blockquote>The words are actually extremely clear and its exceptionally prudent to quote them, because nobody with a brain can read them and fail see that the government is simply being unconstitutional - all over the place.<cite>bad_haircut72</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Legal uncertainty and factual distinctions</strong> &mdash; These commenters stressed that the outcome depends on intent, timing, the exact charge, whether the PIN was entered voluntarily, and how courts characterize the deletion of data or an encryption key.</p><blockquote>Legal question: if you had whole-disk encryption, and the duress password just zeroized the decryption key, would that be &quot;destroying evidence?&quot;<cite>Animats</cite></blockquote>
+<blockquote>Paywalled, but what is the actual charge? Is it some extremely generic &quot;obstructing an investigation&quot; one?<cite>pjc50</cite></blockquote>
+<blockquote>I am curious if this is still obstruction - you still defeated their intent. If the law is just about intent, you can never defeat it.<cite>zmmmmm</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Refuse the PIN and accept inconvenience</strong> &mdash; A practical camp argued that the safer response would have been to decline to provide any code, request legal counsel, and accept detention or seizure of the device rather than activate a wipe.</p><blockquote>Would he have been better off just refusing to give a code?<cite>xhrpost</cite></blockquote>
+<blockquote>Yes. They&#x27;d probably have kept the device for a while, but he wouldn&#x27;t be in legal trouble.<cite>tbrownaw</cite></blockquote>
+<blockquote>Once he was in the situation already, the best move was very likely refusing to provide the PIN/password indefinitely and only talking to them to demand access to lawyer.<cite>grapheneos</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Minimal-data travel and technical privacy measures</strong> &mdash; These commenters recommended reducing the data carried across borders and explored burners, pre-wiped phones, encrypted backups, detached keys, decoy profiles, and automated wiping as ways to limit exposure, while noting that technical measures can create their own legal or operational risks.</p><blockquote>At this point, people should buy a burner phone when going to/from the US.<cite>jmclnx</cite></blockquote>
+<blockquote>Increased use of TPMs for storing credentials seems to be at least one of the reasons.<cite>Zak</cite></blockquote>
+<blockquote>It&#x27;s a lot of work to make the decoy part of the phone look genuine.<cite>JSR_FDED</cite></blockquote></div>
+    </article>
+    <article id="dossier-7" class="dossier-entry">
+      <div class="dossier-meta">N<sup>o</sup> 07 &nbsp;·&nbsp; Editorial Op-Ed &nbsp;·&nbsp; Industry Analysis</div>
+      <h3>There&#x27;s no reason for software to be slow anymore</h3>
+      <p class="dossier-source">
+        <a href="https://danluu.com/perf-opt/" target="_blank" rel="noopener">danluu.com</a>
+        &nbsp;·&nbsp; 432 pts &nbsp;·&nbsp; 308 comments
+         &nbsp;·&nbsp; <a href='https://news.ycombinator.com/item?id=49395628' target='_blank' rel='noopener'>discussion</a>
+      </p>
+      <h4>Analysis</h4>
+      <p>Jach argues that the traditional barriers to high-performance software engineering have collapsed due to the decreasing cost and increased accessibility of AI-driven optimization. By leveraging LLMs to automate tedious, expert-level tasks—such as implementing JIT compilers, fine-tuning multithreading algorithms, and crafting workload-specific optimizations—developers can now achieve performance gains that were previously considered too labor-intensive to be practical. The article demonstrates this by showing how a coding agent can iteratively improve search tools like ripgrep or game AI performance with minimal human intervention. This shift is significant because it suggests a future where software can be dynamically tailored to specific workloads rather than generalized, enabling efficient, bespoke computing that was once reserved for only the largest or most specialized engineering teams.</p>
+      <h4>Reader Reactions</h4>
+<p class="camps-framing">The discussion was divided between commenters who reported substantial gains from agentic profiling and optimization and those who argued that code generation addresses only a limited part of the performance problem. Much of the disagreement concerned whether agents can diagnose architectural and workload-level bottlenecks, while other commenters attributed everyday slowness to networks, backends, interfaces, organizational priorities, and feature tradeoffs. Even favorable accounts generally stressed measurable objectives, representative benchmarks, tests, and informed supervision.</p>
+<div class="camp"><p class="camp-label"><strong>Agentic optimization is already effective for well-defined tasks</strong> &mdash; Commenters reported significant speed and memory improvements when agents could profile, benchmark, rewrite, and test software against concrete acceptance criteria. They found this especially effective for bounded algorithms, frontend performance, and memory-intensive applications.</p><blockquote>The agent is really, really good at using tools like a profiler and disassembler, better than I am (and I&#x27;ve been doing this for 20 years).<cite>eaftan</cite></blockquote>
+<blockquote>It works, it’s at least 5x faster, sometimes much more, and memory use is like 10x less and even less in cases where lots of map tiles are involved.<cite>te_chris</cite></blockquote>
+<blockquote>I went from a 4s load on simulated slow 4g to ~750ms<cite>jjcm</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Agents need benchmarks, tests, and expert guardrails</strong> &mdash; This camp accepted that agents can optimize software but rejected the idea that they independently understand performance. Reliable results require executable specifications, representative workloads, profiling, correctness tests, and human judgment about whether an apparent improvement generalizes.</p><blockquote>The key is creating a good benchmark suite and ensuring the agent doesn&#x27;t ship optimizations that are too narrow or too focused on the benchmark cases.<cite>eaftan</cite></blockquote>
+<blockquote>Benchmarks never match real world use, and many optimizations the improve benchmarks degrade cases that aren&#x27;t measured<cite>hiddencost</cite></blockquote>
+<blockquote>It&#x27;s all about the test suite. The test suite becomes an executable specification, and the better the spec, the better the results you can get from AI.<cite>y1n0</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>The difficult work is diagnosis and architecture, not code rewriting</strong> &mdash; Several commenters argued that the article emphasizes implementation while underplaying the harder tasks of locating bottlenecks, understanding memory and cache behavior, handling concurrency and load, and making system-wide architectural tradeoffs.</p><blockquote>But the article seems to focus entirely on the second aspect, while largely ignoring the other two.<cite>rbehrends</cite></blockquote>
+<blockquote>What makes large things slow is not the individual pieces of code but the way the architecture dynamically reacts to changes in the load.<cite>belZaah</cite></blockquote>
+<blockquote>Every encounter I&#x27;ve had with agentic optimization involved trying to apply a bunch of myths to an existing code base, in a way that seemed cool (unrolling loops, eliminating apparent branches, SIMD) but which was all pointless because the only credible optimizations were going to come from doing fewer loads and taking up fewer itlb slots and stuff like that.<cite>jeffbee</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Performance is constrained by product and organizational incentives</strong> &mdash; Commenters attributed persistent inefficiency to feature pressure, experimentation, compatibility obligations, ticket-driven development, cloud and SaaS incentives, and the cost of coordinating architectural changes. In this view, faster code generation does not by itself change what organizations choose to build or maintain.</p><blockquote>It’s all incentives.<cite>paulhebert</cite></blockquote>
+<blockquote>As long as there’s a trade off between experimentation and performance, software will always be slightly too slow.<cite>killbot5000</cite></blockquote>
+<blockquote>There are still tons of reasons for software to be slow, the biggest of which is priorities.<cite>0xbadcafebee</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Everyday latency often comes from networks, backends, and interface design</strong> &mdash; A separate thread focused on delays outside local hot-code paths, including request round trips, backend processing, excessive JavaScript, animations, and loading behavior. Some commenters disputed the generality of international network-latency claims and distinguished network distance from slow server processing.</p><blockquote>One of the biggest causes of slowness is just waiting for web requests.<cite>ehnto</cite></blockquote>
+<blockquote>In my experience the main driver of latency is not ping time, but how long the server takes to process the request.<cite>alightsoul</cite></blockquote>
+<blockquote>But with AI, devs nowadays are chasing the aesthetic vibe, cool animations, forward-backward video on the background relative to the scrolls... Which worsen the performance drastically just for a cool landing page.<cite>dat999zx</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>AI may amplify poor software, while simpler stacks remain an alternative</strong> &mdash; Skeptics argued that agents often generate slow, bloated, insecure, or unreliable systems when used without strong engineering judgment. Related commenters proposed simpler or lower-level stacks as a way to reduce framework overhead, though others questioned whether language choice alone solves memory and architectural problems.</p><blockquote>In the hands of a skilled engineer who understands the project, this is a superpower. In the hands of a junior, this is dangerous...<cite>jongjong</cite></blockquote>
+<blockquote>Yet when I ask for code it writes, by default, both slow and insecure code that mostly works.<cite>newsomix9xl</cite></blockquote>
+<blockquote>Next time you ask your AI of choice to build an app, please tell them to use plain language without frameworks at all and keep modules to a minimum (ie. node express, ejs and pg, nothing else) and you will see a huuuuge difference<cite>Kuyawa</cite></blockquote></div>
+    </article>
+    <article id="dossier-8" class="dossier-entry">
+      <div class="dossier-meta">N<sup>o</sup> 08 &nbsp;·&nbsp; Mint Pattern &nbsp;·&nbsp; Agent Foundry</div>
+      <h3>Munder Difflin – Agent harness to run an office of your clones</h3>
+      <p class="dossier-source">
+        <a href="https://munderdiffl.in/" target="_blank" rel="noopener">munderdiffl.in</a>
+        &nbsp;·&nbsp; 3 pts &nbsp;·&nbsp; 0 comments
+         &nbsp;·&nbsp; <a href='https://news.ycombinator.com/item?id=49398152' target='_blank' rel='noopener'>discussion</a>
+      </p>
+      <h4>Analysis</h4>
+      <p>Munder Difflin is an open-source &quot;agent harness&quot; designed to automate professional workflows by creating persistent, local-first digital clones of individual team members. By wrapping existing CLI-based AI agents, these clones can manage tasks like PR reviews, documentation, and cross-team communication using the user&#x27;s specific preferences and memory. The platform prioritizes privacy through end-to-end encryption, ensuring that sensitive keys and personal context remain on the user&#x27;s machine, while offering optional cloud-based sandbox VMs for 24/7 autonomous operations. This tool is significant because it shifts AI-assisted development from single-user chatbot interactions toward a collaborative, multi-agent office environment that functions even when the human user is offline.</p>
+      
+    </article>
+    <article id="dossier-9" class="dossier-entry">
+      <div class="dossier-meta">N<sup>o</sup> 09 &nbsp;·&nbsp; Caution Tape &nbsp;·&nbsp; Infrastructure Vulnerability</div>
+      <h3>I accidentally logged hundreds of thousands of phone calls to military bases</h3>
+      <p class="dossier-source">
+        <a href="https://lina.sh/blog/hijacking-e164-arpa" target="_blank" rel="noopener">lina.sh</a>
+        &nbsp;·&nbsp; 559 pts &nbsp;·&nbsp; 69 comments
+         &nbsp;·&nbsp; <a href='https://news.ycombinator.com/item?id=49387570' target='_blank' rel='noopener'>discussion</a>
+      </p>
+      <h4>Analysis</h4>
+      <p>The author discovered that they could hijack DNS infrastructure for several telephone country codes by registering an expired domain, `enum.org.uk`, which was used as a nameserver for the deprecated `e164.arpa` system. Originally intended to route VoIP calls using DNS, the system had been largely abandoned, but the author found that it still received hundreds of thousands of queries involving phone numbers for military bases on Diego Garcia and Ascension Island. By logging this traffic, the author demonstrated that a malicious actor could have performed a man-in-the-middle attack to intercept sensitive communications. The situation highlights significant security risks inherent in neglected infrastructure, as the author eventually transferred control of the domain to the UK&#x27;s National Cyber Security Centre after initial reports were ignored.</p>
+      <h4>Reader Reactions</h4>
+<p class="camps-framing">The reaction was overwhelmingly appreciative of the discovery and its neglected-infrastructure angle. Commenters noted that ENUM continues to operate privately inside telecom networks, while debating whether redirected traffic would expose only metadata or also enable eavesdropping. Other discussions concerned legal exposure, the strength of the military attribution, and the story’s resemblance to older internet and hacker narratives.</p>
+<div class="camp"><p class="camp-label"><strong>ENUM still quietly operates</strong> &mdash; Several commenters argued that ENUM is not entirely obsolete, explaining that telecom providers and specialized services still use it internally or through private VPNs. Some suspected that the observed queries resulted from private carrier infrastructure leaking into the public ENUM system.</p><blockquote>It&#x27;s actually not completely dead... It&#x27;s just (almost) completely non-public.<cite>toast0</cite></blockquote>
+<blockquote>It&#x27;s also not uncommon for telecom providers to use it for their own internal routing because enough telecom software did in fact develop support for it despite lack of public implementations.<cite>wolrah</cite></blockquote>
+<blockquote>My guess is that this is actually what happened here: Some carrier or VoIP software leaking its DNS queries to the public internet because the service is using is only set up to respond for e.g. NANP (+1) number ranges and the rest is falling through to the public (and largely unused) ENUM.<cite>lxgr</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Interception risk depended on call security</strong> &mdash; Commenters debated whether control of the DNS delegation could have enabled voice interception. They contrasted encrypted SIP and SRTP or private VPN links with the unencrypted UDP and RTP still common in many SIP deployments, including systems with weak certificate validation or misconfiguration.</p><blockquote>Although you can run SIP over TLS (for signalling) and use SRTP for media (key exchange done over the aforementioned signalling channel), in practice most SIP is over unencrypted UDP and media is unencrypted RTP.<cite>Nextgrid</cite></blockquote>
+<blockquote>A newbie question:A malicious actor could simply have MITM&#x27;ed the calls the blog states and obtaining the voice traffic.<cite>barlow48</cite></blockquote>
+<blockquote>Now a question daunted on me. Assuming away strategies like store-and-decrypt-later-in-a-quantum-future, could a MITM really eavesdrop, as in, aren’t such ARPA-routed phone calls encrypted?<cite>dkga</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>The broader lesson was neglected legacy infrastructure</strong> &mdash; A large group treated the incident as an example of old protocols and systems continuing to function unnoticed. The comments described the discovery as an abandoned security boundary or forgotten technology that remained active because no one had revisited it.</p><blockquote>I enjoyed reading this much more than anything I read here recently. In particular I like how it absolutely shows that somethings just… fall through the cracks!<cite>dkga</cite></blockquote>
+<blockquote>Honestly the military part isn&#x27;t even the craziest thing here. It&#x27;s the fact that this old, basically forgotten tech was still being used by real systems like nothing happened lol.<cite>ChristmasTomer</cite></blockquote>
+<blockquote>This is a great story. Almost wish the author had dug a little further in and discovered something like Clifford Stoll in The Cuckoo&#x27;s Egg, but a nice writeup nontheless. Makes me wonder how many partly implemented but ignored protocols like this exist.<cite>adolph</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>The author faced legal risk and deserved recognition</strong> &mdash; Commenters were struck by the possibility that registering the domain and collecting traffic could have led to prosecution, particularly because military facilities were involved. Others noted the absence of a bounty and suggested that the work might merit formal recognition such as an NCSC challenge coin.</p><blockquote>I&#x27;m mostly amazed the author didn&#x27;t land in jail, which is the normally the response to reporting this kind of thing to authorities.<cite>dmd</cite></blockquote>
+<blockquote>It&#x27;s a shame the author wasn&#x27;t rewarded but at least the story can now be told over a beer.<cite>cryptolobster</cite></blockquote>
+<blockquote>The NCSC does give out challenge coins for particularly good reports. I feel like if you get one of those, that will be 10 euros well spent.<cite>MatthewWilkes</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>The military attribution was questioned</strong> &mdash; A minority disputed the conclusion that the observed numbers necessarily represented calls to military bases, while other commenters argued that Diego Garcia’s lack of ordinary civilian residents made the inference reasonable.</p><blockquote>That&#x27;s quite a jump to conclusion right there.<cite>tosti</cite></blockquote>
+<blockquote>Where else would they be calling on Diego Garcia apart from the military base?<cite>matteason</cite></blockquote>
+<blockquote>no citizens are allowed on diego garcia and the native population was entirely kicked out.<cite>RugnirViking</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>The story evoked the older web and hacker culture</strong> &mdash; Some commenters praised the author’s plain personal website and connected the discovery to webrings, alternative online communities, phone phreaking, and older hacker narratives.</p><blockquote>Their homepage, https://lina.sh/ , reminds me of the early days of the internet. Are webrings back in fashion? Or is this just a group of old school folks keeping the nostalgia alive?<cite>bcx</cite></blockquote>
+<blockquote>Its hip again on some parts of the fediverse.<cite>jnmandal</cite></blockquote>
+<blockquote>TheFerridge: wow incredible story! Reminds me of phone phreaking stories from decades ago!<cite>TheFerridge</cite></blockquote></div>
+    </article>
+    <article id="dossier-10" class="dossier-entry">
+      <div class="dossier-meta">N<sup>o</sup> 10 &nbsp;·&nbsp; Product Plate &nbsp;·&nbsp; Search Updates</div>
+      <h3>Kagi added a setting for removing paywalled links from search results</h3>
+      <p class="dossier-source">
+        <a href="https://kagi.com/changelog#11296" target="_blank" rel="noopener">kagi.com</a>
+        &nbsp;·&nbsp; 1139 pts &nbsp;·&nbsp; 366 comments
+         &nbsp;·&nbsp; <a href='https://news.ycombinator.com/item?id=49388154' target='_blank' rel='noopener'>discussion</a>
+      </p>
+      <h4>Analysis</h4>
+      <p>Kagi Search has introduced a new user-configurable setting that automatically filters paywalled links from search results, addressing a long-standing pain point for users seeking free, accessible content. This update, detailed in the platform&#x27;s latest changelog, arrives alongside broader improvements to the Kagi Assistant, including enhanced Markdown rendering, better thread management, and improved search capabilities. By providing greater control over search outcomes, Kagi continues to differentiate its premium model by prioritizing user efficiency and content discoverability over the ad-supported indexing prevalent in mainstream engines. These refinements reflect the company’s ongoing strategy to provide a highly customizable search experience that centers on user preferences and reduced digital friction.</p>
+      <h4>Reader Reactions</h4>
+<p class="camps-framing">The discussion was generally favorable toward user-controlled filtering of inaccessible search results, especially among Kagi subscribers who valued ad-free, customizable search. The main disagreement concerned whether paywalled journalism should be treated as unusable search clutter or retained as potentially authoritative work that needs sustainable funding. Related discussions considered micropayments and bundles, archive workarounds, privacy-preserving payments, and the benefits and limitations of Kagi’s AI Assistant.</p>
+<div class="camp"><p class="camp-label"><strong>Kagi support and practical paywall control</strong> &mdash; Supporters viewed paywalled results as a poor fit for searches when they were unlikely to subscribe, and praised Kagi’s broader emphasis on customization, speed, and user control.</p><blockquote>I’m happy to pay for a good search.<cite>delis-thumbs-7e</cite></blockquote>
+<blockquote>The chance that I&#x27;m going to subscribe to read an article I found via a search is zero.<cite>getfacl</cite></blockquote>
+<blockquote>It feels like theyre&#x27; building the product around how people actually use it rather than chasing every new AI trend<cite>1saadcodes</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Relevant paid sources and journalism funding</strong> &mdash; Critics of blanket filtering argued that paid reporting can be the most relevant result and that users are not automatically entitled to free access. Others connected the disagreement to journalism’s need for subscriptions, public funding, or other sustainable revenue.</p><blockquote>You aren&#x27;t entitled to others&#x27; work for free, and sometimes the most relevant result for your search is something paid.<cite>rafram</cite></blockquote>
+<blockquote>Yeah, I don’t get it. Do people want actual journalism to go out of business?<cite>demibabs</cite></blockquote>
+<blockquote>In my view you almost always only get good-quality journalism if you pay for it.<cite>frereubu</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Micropayments, bundles, and subscription alternatives</strong> &mdash; Many commenters wanted to pay for occasional articles or a broad news bundle rather than maintain numerous recurring subscriptions, while others discussed the friction, fees, and incentives that complicate micropayment systems.</p><blockquote>I&#x27;m not going to subscribe to every site that wants 20/month just because it shows once on HN or in search results.<cite>nottorp</cite></blockquote>
+<blockquote>If I could easily use ApplePay to pay 20¢ to read an article, without any tracking or other strings attached, I would probably do that to avoid the whole song and dance of archive workarounds.<cite>al_borland</cite></blockquote>
+<blockquote>Micropayments never work. It&#x27;s too much friction for the median user to decide if they want to spend a quarter on an article.<cite>rcpt</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>AI Assistant approval and skepticism</strong> &mdash; The Assistant attracted praise for search-first answers, citations, speed, and technical usefulness, but other commenters found it unreliable, preferred competing tools, or wanted a paid search plan without bundled AI.</p><blockquote>The citations to real supporting websites are generally very good (though I&#x27;ve seen a few mistakes).<cite>tensor</cite></blockquote>
+<blockquote>I remember at the time they were working on it a lot of people (honestly, including me) were pretty critical of them &quot;wasting&quot; their limited resources on AI stuff. We saw it as being sort of similar to the t-shirt drama [1]. I&#x27;m here to admit I was wrong, it&#x27;s incredibly useful.<cite>claytongulick</cite></blockquote>
+<blockquote>I&#x27;ve run into two instances in the past week where it confidently gave me wrong information, because it ran into a search result that had wrong information, and it trusted that information.<cite>kelnos</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Open access, archives, and finer-grained controls</strong> &mdash; Some participants preferred archive links, JavaScript blocking, or source inspection to reach articles, while others requested per-query toggles, domain whitelists, and filtering of related access barriers such as login walls and captchas.</p><blockquote>I use the Bangs feature to open paywalled links with archive.is with !a.<cite>kenanfyi</cite></blockquote>
+<blockquote>Ideally it would have a way to allow list domains for sources where I do have a subscription.<cite>dewey</cite></blockquote>
+<blockquote>It would be nice to be able to toggle this (1) in the options drop-down menu on the results page (like Verbatim and Personalized modes), as well as (2) inline (with a &quot;!nopaywall&quot; bang or something).<cite>treetalker</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Cost, privacy, and alternative search concerns</strong> &mdash; Some commenters rejected Kagi because of its price, payment and search-history privacy implications, incomplete indexing, or preference for free and alternative search tools. Others considered privacy-preserving payment and multi-service passes as possible remedies.</p><blockquote>I certainly won&#x27;t be paying to hand over my data.<cite>OroPla</cite></blockquote>
+<blockquote>Paying should get you more privacy not less.<cite>Cider9986</cite></blockquote>
+<blockquote>I&#x27;ve been building my own metasearch engine after using Kagi for a long while and I must say that my results are getting better even than theirs.<cite>mosselman</cite></blockquote></div>
+    </article>
+  </section>
+  <footer class="colophon">
+    <p class="sig">— that's the edition.</p>
+    <p class="meta">Set in Fraunces &amp; Inter · Compiled August 22, 2026</p>
+    <p class="classic-link"><a href="classic.html">Prefer the classic card view? →</a></p>
+  </footer>
+<script>
+(() => {
+  const key = "gtd:read_days:hn:v1";
+  const day = "2026-08-22";
+  let stored = [];
+  try {
+    stored = JSON.parse(localStorage.getItem(key) || "[]");
+    if (!Array.isArray(stored)) stored = [];
+  } catch (e) {}
+  if (!stored.includes(day)) {
+    stored.push(day);
+    stored.sort();
+    localStorage.setItem(key, JSON.stringify(stored));
+  }
+})();
+</script>
+<script src="../../preference.js?v=fe40bfcd9" defer></script>
+<script>
+// Simple script to toggle the [+] and [-] labels on the drawers
+document.querySelectorAll('.analysis-drawer').forEach(drawer => {
+  drawer.addEventListener('toggle', () => {
+    const summary = drawer.querySelector('summary');
+    if (drawer.open) {
+      summary.textContent = '[ Analysis − ]';
+    } else {
+      summary.textContent = '[ Analysis + ]';
+    }
+  });
+});
+
+// Share link — native share or copy markdown to clipboard
+(function () {
+  const links = document.querySelectorAll('.share-link');
+  if (!links.length) return;
+
+  const toast = document.createElement('div');
+  toast.className = 'discuss-toast';
+  document.body.appendChild(toast);
+
+  function showToast(msg) {
+    toast.textContent = msg;
+    toast.classList.add('show');
+    setTimeout(() => toast.classList.remove('show'), 2500);
+  }
+
+  function buildMarkdown(link, spread) {
+    const title = link.dataset.shareTitle || '';
+    const url = link.dataset.shareUrl || '';
+    const meta = spread ? spread.querySelector('.story-meta') : null;
+    const lede = spread ? spread.querySelector('.lede') : null;
+    const analysis = spread ? spread.querySelector('.drawer-analysis') : null;
+    let md = '# ' + title + '\n';
+    md += 'Source: ' + url;
+    if (meta) md += ' | ' + meta.textContent.trim();
+    md += '\n';
+    if (lede) md += '\n' + lede.textContent.trim() + '\n';
+    if (analysis) md += '\n## Analysis\n' + analysis.textContent.trim() + '\n';
+    return md;
+  }
+
+  links.forEach((link) => {
+    link.addEventListener('click', (e) => {
+      e.preventDefault();
+      const spread = link.closest('section.spread');
+      const md = buildMarkdown(link, spread);
+      const text = "I'd like to discuss this with you. Here's a summary:\n\n" + md;
+      const title = 'Discuss: ' + (link.dataset.shareTitle || '');
+      if (navigator.share) {
+        navigator.share({ title: title, text: text }).catch(() => {});
+      } else {
+        navigator.clipboard.writeText(text).then(
+          () => showToast('Copied to clipboard \u2014 paste into your AI chat'),
+          () => showToast('Failed to copy')
+        );
+      }
+    });
+  });
+})();
+</script>
+</body>
+</html>
