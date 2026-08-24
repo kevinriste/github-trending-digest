@@ -38,6 +38,8 @@ def test_get_or_generate_uses_openai_camps(monkeypatch):
     assert result is not None
     assert json.loads(result["analysis_text"])["framing"] == "split"
     assert result["total_comments"] == 42
+    # the model input (outline) is persisted for retention/auditability
+    assert saved["outline"] and "alice: hello world" in saved["outline"]
     # outline was passed indented, caps threaded through
     assert "alice: hello world" in captured["outline"]
     assert captured["caps"] == (

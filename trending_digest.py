@@ -689,8 +689,12 @@ def init_db(conn: psycopg.Connection) -> None:
             model          TEXT NOT NULL,
             prompt_version TEXT NOT NULL,
             take_md        TEXT NOT NULL,
+            context_input  TEXT,
             generated_at   TIMESTAMPTZ NOT NULL DEFAULT NOW()
         )
+        """,
+        """
+        ALTER TABLE hn_takes ADD COLUMN IF NOT EXISTS context_input TEXT
         """,
         """
         CREATE UNIQUE INDEX IF NOT EXISTS hn_takes_day_ver
@@ -1435,7 +1439,7 @@ def cache_hn_comment_analysis(
     sampled_comments: int,
     total_comments: int,
     sample_size: int,
-    outline: str = "",
+    outline: str,
 ) -> None:
     """Insert Hacker News comment analysis row.
 

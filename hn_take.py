@@ -735,15 +735,21 @@ def load_cached_take(conn, run_day) -> str | None:
     return row[0] if row else None
 
 
-def store_take(conn, run_day, take_md) -> None:
-    """Upsert the generated column keyed on (run_date, model, prompt_version)."""
+def store_take(conn, run_day, take_md, context_input) -> None:
+    """Upsert the generated column keyed on (run_date, model, prompt_version).
+
+    Persists both the output (``take_md``) and the exact assembled prompt
+    ``context_input`` that produced it, so a column can be audited or
+    reproduced against its input.
+    """
     with conn.cursor() as cur:
         cur.execute(
-            "INSERT INTO hn_takes (run_date, model, prompt_version, take_md) "
-            "VALUES (%s, %s, %s, %s) "
+            "INSERT INTO hn_takes (run_date, model, prompt_version, take_md, context_input) "
+            "VALUES (%s, %s, %s, %s, %s) "
             "ON CONFLICT (run_date, model, prompt_version) "
-            "DO UPDATE SET take_md = EXCLUDED.take_md, generated_at = NOW()",
-            (run_day, HN_TAKE_MODEL, HN_TAKE_PROMPT_VERSION, take_md),
+            "DO UPDATE SET take_md = EXCLUDED.take_md, "
+            "context_input = EXCLUDED.context_input, generated_at = NOW()",
+            (run_day, HN_TAKE_MODEL, HN_TAKE_PROMPT_VERSION, take_md, context_input),
         )
 
 
@@ -761,7 +767,7 @@ def get_or_generate(conn, rows, run_day) -> str | None:
     take_md = generate_take(context)
     if not take_md:
         return None
-    store_take(conn, run_day, take_md)
+    store_take(conn, run_day, take_md, context)
     return take_md
 
 

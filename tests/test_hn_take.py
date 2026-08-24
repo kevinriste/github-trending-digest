@@ -177,10 +177,11 @@ def test_get_or_generate_generates_and_stores_on_miss(monkeypatch):
     monkeypatch.setattr(hn_take, "build_take_context", lambda rows: "ctx")
     monkeypatch.setattr(hn_take, "generate_take", lambda ctx: "fresh column")
     monkeypatch.setattr(hn_take, "store_take",
-                        lambda conn, day, md: stored.update(day=day, md=md))
+                        lambda conn, day, md, ctx: stored.update(day=day, md=md, ctx=ctx))
     result = hn_take.get_or_generate(None, [{"x": 1}], date(2026, 8, 24))
     assert result == "fresh column"
-    assert stored == {"day": date(2026, 8, 24), "md": "fresh column"}
+    # both output and the exact input context are persisted
+    assert stored == {"day": date(2026, 8, 24), "md": "fresh column", "ctx": "ctx"}
 
 
 def test_get_or_generate_none_when_no_qualifying(monkeypatch):
