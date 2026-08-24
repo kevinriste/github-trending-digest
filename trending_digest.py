@@ -1769,12 +1769,14 @@ def render_comment_analysis_html(raw: str) -> str:
     return generate_bullet_paragraph_html(raw)
 
 
-def render_hn_take_html(take_md: str | None) -> str:
+def render_hn_take_html(take_md: str | None, sources: list[dict] | None = None) -> str:
     """Render the daily HN Take column as a collapsible-open block.
 
     Section titles are '# '-prefixed (the synthesis prompt's convention); all
-    other non-blank lines become paragraphs. Returns '' for falsy input so the
-    page renders unchanged.
+    other non-blank lines become paragraphs. ``sources`` is an optional list of
+    {title, url} for stories the Take reliably drew on; when present they are
+    listed as links below the prose. Returns '' for falsy input so the page
+    renders unchanged.
     """
     text = (take_md or "").strip()
     if not text:
@@ -1788,6 +1790,13 @@ def render_hn_take_html(take_md: str | None) -> str:
             parts.append(f'<h3 class="take-head">{html.escape(line[2:].strip())}</h3>')
         else:
             parts.append(f"<p>{html.escape(line)}</p>")
+    if sources:
+        links = "".join(
+            f'<li><a href="{html.escape(s["url"], quote=True)}" target="_blank" '
+            f'rel="noopener noreferrer">{html.escape(s["title"])}</a></li>'
+            for s in sources
+        )
+        parts.append(f'<div class="take-sources"><span>Sources</span><ul>{links}</ul></div>')
     return ('<section class="the-take"><details open>'
             f'<summary>The HN Take</summary>{"".join(parts)}</details></section>')
 
@@ -2265,7 +2274,8 @@ def generate_hn_daily_page(items: list[dict], day: date, known_dates: dict[str, 
     """Generate Hacker News daily digest page HTML."""
     date_str = day.isoformat()
     date_display = format_date_display(day)
-    take_html = render_hn_take_html(take_md)
+    take_sources = hn_take.confident_sources(take_md, items) if take_md else []
+    take_html = render_hn_take_html(take_md, take_sources)
     take_block = f"\n        {take_html}" if take_html else ""
     cross_html = "\n            ".join(
         f'<a href="{href}">{label}</a>'
@@ -2527,6 +2537,24 @@ nav a:hover {
     line-height: 1.7;
     margin: 0 0 0.9rem;
     max-width: 46rem;
+}
+.take-sources {
+    margin-top: 1rem;
+    padding-top: 0.75rem;
+    border-top: 1px solid var(--border-color);
+    font-size: 0.85rem;
+}
+.take-sources > span {
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--muted-color, #8b949e);
+}
+.take-sources ul {
+    margin: 0.4rem 0 0;
+    padding-left: 1.1rem;
+}
+.take-sources li {
+    margin: 0.2rem 0;
 }
 .repo-controls {
     display: flex;

@@ -54,13 +54,23 @@ def test_link_post_text_does_not_qualify_on_type():
 
 # --- Task 1: context assembly ---
 
-def test_context_orders_by_descending_score():
+def test_context_preserves_page_rank_order():
+    # rows arrive in our page-rank order; the context keeps that order regardless of score
     rows = [
-        _row(rank=1, title="low", score=10, article_content="a" * HN_TAKE_MIN_CHARS),
-        _row(rank=2, title="high", score=999, article_content="a" * HN_TAKE_MIN_CHARS),
+        _row(rank=1, title="firstOnPage", score=10, article_content="a" * HN_TAKE_MIN_CHARS),
+        _row(rank=2, title="secondOnPage", score=999, article_content="a" * HN_TAKE_MIN_CHARS),
     ]
     ctx = build_take_context(rows)
-    assert ctx.index("high") < ctx.index("low")
+    assert ctx.index("firstOnPage") < ctx.index("secondOnPage")
+
+
+def test_context_omits_hn_score_rank_and_comments():
+    rows = [_row(rank=7, title="MyStory", score=321, comment_count=88,
+                 url="http://ex", article_content="a" * HN_TAKE_MIN_CHARS)]
+    ctx = build_take_context(rows)
+    assert "MyStory" in ctx and "url: http://ex" in ctx
+    assert "score" not in ctx and "321" not in ctx
+    assert "88 comments" not in ctx and "[7]" not in ctx
 
 
 def test_context_caps_body():
@@ -93,19 +103,54 @@ def test_context_empty_when_nothing_qualifies():
     assert build_take_context([_row(article_content="short", text="")]) == ""
 
 
+# distinctive vocab sets (>= the raw-overlap floor) padded to clear the char gate
+_LABS = "numbered labs naming convention startups integers domains distinctive branding sequence catalog elevenlabs twelvelabs"
+_LLM = "quantized cache attention backend inference kernels tokens precision local models qwen vllm determinism"
+
+
+def _body(words):
+    return (words + " ") * 200  # >> HN_TAKE_MIN_CHARS, keeps the distinct token set
+
+
 def test_map_sections_to_stories_attributes_by_content():
     rows = [
-        _row(rank=9, item_id=901, score=406, title="ElevenLabs, TwelveLabs",
-             article_content="numbered labs naming " + "x" * HN_TAKE_MIN_CHARS),
-        _row(rank=6, item_id=606, score=364, title="Why your local LLM feels dumber",
-             article_content="quantized kv cache attention backend " + "y" * HN_TAKE_MIN_CHARS),
+        _row(rank=9, item_id=901, title="ElevenLabs, TwelveLabs", url="http://labs",
+             article_content=_body(_LABS)),
+        _row(rank=6, item_id=606, title="Why your local LLM feels dumber", url="http://llm",
+             article_content=_body(_LLM)),
     ]
-    take_md = ("# Labs numbers\nA riff about numbered labs naming.\n\n"
-               "# Local intelligence\nOn quantized kv cache and attention backend choices.")
+    take_md = (f"# Labs numbers\n{_LABS} riff.\n\n"
+               f"# Local intelligence\n{_LLM} notes.")
     used = hn_take.map_sections_to_stories(take_md, rows)
     assert [u["section"] for u in used] == ["Labs numbers", "Local intelligence"]
     assert used[0]["item_id"] == 901 and used[0]["rank"] == 9
     assert used[1]["item_id"] == 606 and used[1]["rank"] == 6
+    # distinct articles -> confident attributions with urls
+    assert used[0]["confident"] and used[1]["confident"]
+    assert used[0]["url"] == "http://labs"
+
+
+def test_map_marks_ambiguous_section_not_confident():
+    # two identical-content candidates -> no clear winner -> not confident, no source link
+    rows = [
+        _row(rank=1, item_id=1, title="Alpha", url="http://a", article_content=_body(_LABS)),
+        _row(rank=2, item_id=2, title="Beta", url="http://b", article_content=_body(_LABS)),
+    ]
+    take_md = f"# Something\n{_LABS} discussion."
+    used = hn_take.map_sections_to_stories(take_md, rows)
+    assert used and not used[0]["confident"]
+    assert hn_take.confident_sources(take_md, rows) == []
+
+
+def test_confident_sources_dedupes_and_filters():
+    rows = [
+        _row(rank=1, item_id=1, title="Numbered labs", url="http://labs", article_content=_body(_LABS)),
+        _row(rank=2, item_id=2, title="Local models", url="http://local", article_content=_body(_LLM)),
+    ]
+    take_md = (f"# Labs\n{_LABS} riff.\n\n"
+               f"# Inference\n{_LLM} notes.")
+    srcs = hn_take.confident_sources(take_md, rows)
+    assert {s["url"] for s in srcs} == {"http://labs", "http://local"}
 
 
 def test_map_sections_to_stories_empty_when_no_candidates():

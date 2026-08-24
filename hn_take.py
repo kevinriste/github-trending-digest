@@ -10,6 +10,7 @@ trending_digest; mirrors hn_comment_camps.py's shape and error-swallowing.
 
 import json
 import logging
+import math
 import os
 import re
 
@@ -21,11 +22,18 @@ API_ERRORS: list[str] = []
 
 HN_TAKE_MODEL = os.environ.get("HN_TAKE_MODEL", "gpt-5.6-sol")
 HN_TAKE_REASONING = os.environ.get("HN_TAKE_REASONING", "medium")
-HN_TAKE_PROMPT_VERSION = "hn_take_v2"
+# v3: stories fed in our page-rank order with no HN score/rank metadata.
+HN_TAKE_PROMPT_VERSION = "hn_take_v3"
 
 HN_TAKE_MIN_CHARS = int(os.environ.get("HN_TAKE_MIN_CHARS", "1500"))
 HN_TAKE_BODY_CAP = int(os.environ.get("HN_TAKE_BODY_CAP", "12000"))
 HN_TAKE_MAX_STORIES = int(os.environ.get("HN_TAKE_MAX_STORIES", "10"))
+
+# Section->story attribution is reliable enough to surface as a source link when the
+# best candidate's IDF-weighted token overlap beats the runner-up by this ratio and
+# clears a small absolute floor (calibrated on real takes; see map_sections_to_stories).
+HN_TAKE_MAP_MIN_RATIO = float(os.environ.get("HN_TAKE_MAP_MIN_RATIO", "1.5"))
+HN_TAKE_MAP_MIN_OVERLAP = int(os.environ.get("HN_TAKE_MAP_MIN_OVERLAP", "8"))
 
 _SELF_POST_TYPES = {"story", "ask", "show"}
 
@@ -649,27 +657,26 @@ def qualifying_body(row: dict) -> str | None:
 
 
 def _eligible(rows: list[dict]) -> "list[tuple[dict, str]]":
-    """Qualifying (row, primary_body) pairs in the exact order the model sees them:
-    biggest HN score first, capped at HN_TAKE_MAX_STORIES."""
+    """Qualifying (row, primary_body) pairs in the order the model sees them.
+
+    Preserves the incoming order, which is our page's ranking (rows arrive from
+    build_hn_view_rows sorted by page rank), capped at HN_TAKE_MAX_STORIES.
+    """
     eligible = [(row, body) for row in rows if (body := qualifying_body(row)) is not None]
-    eligible.sort(key=lambda rb: int(rb[0].get("score") or 0), reverse=True)
     return eligible[:HN_TAKE_MAX_STORIES]
 
 
 def build_take_context(rows: list[dict]) -> str:
-    """Assemble the prompt input from qualifying rows, biggest HN score first.
+    """Assemble the prompt input from qualifying rows, in our page-rank order.
 
-    Only each story's primary content is fed (article or self-post); the comment
-    discussion is intentionally excluded. Returns '' when no story qualifies (the
+    Only each story's headline, url, and primary content are fed (article or
+    self-post); HN score, rank, and comment counts are deliberately omitted, and
+    the comment discussion is excluded. Returns '' when no story qualifies (the
     caller then produces no column).
     """
     blocks = []
     for row, body in _eligible(rows):
-        header = (
-            f"[{row.get('rank')}] {row.get('title')}  "
-            f"(score {row.get('score', 0)}, {row.get('comment_count', 0)} comments)\n"
-            f"url: {row.get('url') or ''}"
-        )
+        header = f"{row.get('title')}\nurl: {row.get('url') or ''}"
         blocks.append("\n".join([header, "--- STORY ---", body[:HN_TAKE_BODY_CAP]]))
     return "\n\n".join(blocks)
 
@@ -682,30 +689,64 @@ def map_sections_to_stories(take_md: str, rows: list[dict]) -> list[dict]:
     """Map each '# '-titled Take section to the candidate story it is about.
 
     The model writes its own paraphrased section titles, so there is no explicit
-    story id; we attribute each section to the eligible candidate whose title plus
-    body shares the most distinctive tokens with the section text. Heuristic but
-    reliable in practice, and deterministic, so 'which stories the Take used' is
-    always logged. Returns one entry per section (possibly empty list).
+    story id. We attribute each section to the candidate whose title+body shares
+    the most IDF-weighted tokens with the section (common English words carry
+    ~zero weight, so distinctive article jargon drives the match). ``confidence``
+    is the winner's weighted overlap divided by the runner-up's; ``confident`` is
+    True when that ratio clears HN_TAKE_MAP_MIN_RATIO and the raw shared-token
+    count clears HN_TAKE_MAP_MIN_OVERLAP. Deterministic; returns one entry per
+    section (possibly empty list).
     """
     candidates = _eligible(rows)
     if not candidates:
         return []
+
+    docs = [_tokens(f"{row.get('title') or ''} {(body or '')[:4000]}") for row, body in candidates]
+    n = len(docs)
+    df: dict[str, int] = {}
+    for doc in docs:
+        for tok in doc:
+            df[tok] = df.get(tok, 0) + 1
+    idf = {tok: math.log(1 + n / cnt) for tok, cnt in df.items()}
+
     used = []
     for block in re.split(r"(?m)^# ", take_md)[1:]:
         head = block.splitlines()[0].strip()
-        sec_tokens = _tokens(block)
-        row, _ = max(
-            candidates,
-            key=lambda rb: len(sec_tokens & _tokens(f"{rb[0].get('title') or ''} {(rb[1] or '')[:4000]}")),
+        sec = _tokens(block)
+        scores = sorted(
+            ((sum(idf[t] for t in (sec & docs[i])), len(sec & docs[i]), i) for i in range(n)),
+            reverse=True,
         )
+        top_score, top_overlap, top_i = scores[0]
+        runner = scores[1][0] if n > 1 else 0.0
+        ratio = top_score / runner if runner > 0 else float("inf")
+        row = candidates[top_i][0]
         used.append({
             "section": head,
             "item_id": int(row["item_id"]) if row.get("item_id") is not None else None,
             "rank": row.get("rank"),
-            "score": row.get("score"),
             "title": row.get("title"),
+            "url": row.get("url"),
+            "confidence": round(ratio, 2) if ratio != float("inf") else None,
+            "overlap": top_overlap,
+            "confident": top_overlap >= HN_TAKE_MAP_MIN_OVERLAP and ratio >= HN_TAKE_MAP_MIN_RATIO,
         })
     return used
+
+
+def confident_sources(take_md: str, rows: list[dict]) -> list[dict]:
+    """Deduplicated [{title, url}] for sections whose story attribution is reliable.
+
+    Empty when nothing clears the threshold, so the page simply shows no links.
+    """
+    seen: set = set()
+    out: list[dict] = []
+    for entry in map_sections_to_stories(take_md, rows):
+        url = entry.get("url")
+        if entry.get("confident") and url and url not in seen:
+            seen.add(url)
+            out.append({"title": entry.get("title") or url, "url": url})
+    return out
 
 
 def _client() -> "OpenAI | None":
