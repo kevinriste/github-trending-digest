@@ -31,6 +31,7 @@ from psycopg.rows import dict_row
 from youtube_transcript_api import YouTubeTranscriptApi
 
 import hn_comment_camps
+import hn_take
 
 from morning_edition import generate_morning_edition, first_paragraph, limit_bullets, parse_bullets
 from editions import EDITIONS, cross_edition_links, write_dates_manifest
@@ -680,6 +681,20 @@ def init_db(conn: psycopg.Connection) -> None:
             analysis_text TEXT NOT NULL,
             generated_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
         )
+        """,
+        """
+        CREATE TABLE IF NOT EXISTS hn_takes (
+            id             BIGSERIAL PRIMARY KEY,
+            run_date       DATE NOT NULL,
+            model          TEXT NOT NULL,
+            prompt_version TEXT NOT NULL,
+            take_md        TEXT NOT NULL,
+            generated_at   TIMESTAMPTZ NOT NULL DEFAULT NOW()
+        )
+        """,
+        """
+        CREATE UNIQUE INDEX IF NOT EXISTS hn_takes_day_ver
+            ON hn_takes (run_date, model, prompt_version)
         """,
         """
         CREATE TABLE IF NOT EXISTS gh_trending_snapshots (
@@ -1742,6 +1757,29 @@ def render_comment_analysis_html(raw: str) -> str:
     return generate_bullet_paragraph_html(raw)
 
 
+def render_hn_take_html(take_md: str | None) -> str:
+    """Render the daily HN Take column as a collapsible-open block.
+
+    Section titles are '# '-prefixed (the synthesis prompt's convention); all
+    other non-blank lines become paragraphs. Returns '' for falsy input so the
+    page renders unchanged.
+    """
+    text = (take_md or "").strip()
+    if not text:
+        return ""
+    parts = []
+    for raw in text.split("\n"):
+        line = raw.strip()
+        if not line:
+            continue
+        if line.startswith("# "):
+            parts.append(f'<h3 class="take-head">{html.escape(line[2:].strip())}</h3>')
+        else:
+            parts.append(f"<p>{html.escape(line)}</p>")
+    return ('<section class="the-take"><details open>'
+            f'<summary>The HN Take</summary>{"".join(parts)}</details></section>')
+
+
 def generate_month_calendar(year: int, month: int, pages_set: set[str], link_prefix: str = "") -> str:
     """Generate one month of calendar HTML."""
     cal = calendar.Calendar(firstweekday=6)
@@ -2211,10 +2249,12 @@ def generate_gh_daily_page(
 """
 
 
-def generate_hn_daily_page(items: list[dict], day: date, known_dates: dict[str, set[str]]) -> str:
+def generate_hn_daily_page(items: list[dict], day: date, known_dates: dict[str, set[str]], take_md: str | None = None) -> str:
     """Generate Hacker News daily digest page HTML."""
     date_str = day.isoformat()
     date_display = format_date_display(day)
+    take_html = render_hn_take_html(take_md)
+    take_block = f"\n        {take_html}" if take_html else ""
     cross_html = "\n            ".join(
         f'<a href="{href}">{label}</a>'
         for href, label in cross_edition_links("hn", date_str, known_dates)
@@ -2293,7 +2333,7 @@ def generate_hn_daily_page(items: list[dict], day: date, known_dates: dict[str, 
             {cross_html}
         </nav>
     </header>
-    <main>
+    <main>{take_block}
         <div class="repo-controls">
             <button id="collapse-seen-btn" type="button">Collapse Stories Not New Today</button>
             <button id="expand-all-btn" type="button">Expand All</button>
@@ -2836,7 +2876,7 @@ def regenerate_hn_daily_pages(conn: psycopg.Connection, hn_dates: list[date], kn
 
     for render_day in sorted(hn_dates):
         hn_rows = build_hn_view_rows(conn, render_day, allow_summary_generation=False)
-        hn_daily_html = generate_hn_daily_page(hn_rows, render_day, known_dates)
+        hn_daily_html = generate_hn_daily_page(hn_rows, render_day, known_dates, take_md=None)
         hn_daily_file = HN_DOCS_DIR / render_day.isoformat() / "classic.html"
         write_text(hn_daily_file, hn_daily_html)
         try:
@@ -3535,7 +3575,22 @@ def main() -> None:
         gh_daily_html = generate_gh_daily_page(gh_rows, run_day, known_dates, slow_burners=slow_burners)
 
         gh_index_html = generate_gh_index_page(gh_dates, hn_dates)
-        hn_daily_html = generate_hn_daily_page(hn_rows, run_day, known_dates)
+
+        take_md = None
+        if hn_take.enabled():
+            try:
+                take_md = hn_take.get_or_generate(conn, hn_rows, run_day)
+            except Exception as exc:  # defensive: the column must never sink the run
+                logging.exception("HN Take generation failed for %s: %s", run_day, exc)
+        if hn_take.API_ERRORS:
+            notify_gotify(
+                "GitHub Trending Digest: HN Take degraded",
+                f"{len(hn_take.API_ERRORS)} OpenAI request(s) failed for {run_day}; "
+                f"The HN Take was skipped (page published without the column). "
+                f"Run completed and published normally.\n\n"
+                f"First error: {hn_take.API_ERRORS[0]}",
+            )
+        hn_daily_html = generate_hn_daily_page(hn_rows, run_day, known_dates, take_md=take_md)
         hn_index_html = generate_hn_index_page(hn_dates, gh_dates)
         css = generate_css()
 
