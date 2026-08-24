@@ -928,6 +928,11 @@ CSS_TEMPLATE = r"""
   .the-take summary { font-weight: 700; font-size: 0.95rem; letter-spacing: 0.28em; text-transform: uppercase; cursor: pointer; padding: 1rem 0; color: #7a1e14; }
   .the-take .take-head { font-family: 'Fraunces', Georgia, serif; font-size: 1.35rem; margin: 1.5rem 0 0.5rem; }
   .the-take p { font-family: 'Fraunces', Georgia, serif; font-size: 1.08rem; line-height: 1.7; margin: 0 0 1rem; }
+  .take-sources { margin-top: 1.5rem; padding-top: 1rem; border-top: 1px solid #d9d2c2; }
+  .take-sources > span { display: block; font-size: 0.75rem; letter-spacing: 0.2em; text-transform: uppercase; color: #7a1e14; margin-bottom: 0.5rem; }
+  .take-sources ul { list-style: none; margin: 0; padding: 0; }
+  .take-sources li { font-family: 'JetBrains Mono', ui-monospace, monospace; font-size: 0.85rem; line-height: 1.6; }
+  .take-sources a { color: #121212; }
 
   .masthead-nav {
     display: flex;
@@ -1344,6 +1349,7 @@ def generate_morning_edition_html(
     assignments: list[dict],
     known_dates=None,
     synthesis: str = "",
+    take_html: str = "",
 ) -> str:
     title = f"{config.name} — {day.strftime('%B %-d, %Y')}"
 
@@ -1373,7 +1379,7 @@ def generate_morning_edition_html(
 </head>
 <body id="top" data-gtd-edition="{config.id}" data-gtd-date="{day.isoformat()}">
 {_render_masthead(config, day, known_dates)}
-{_render_the_take(synthesis)}
+{take_html or _render_the_take(synthesis)}
 {spreads_html}
 {_render_dossier(config, items, assignments)}
 {_render_colophon(day)}
@@ -1471,6 +1477,7 @@ def generate_morning_edition(
     force_regenerate: bool = False,
     known_dates=None,
     synthesis: str = "",
+    take_html: str = "",
 ) -> str:
     config = CONFIGS[source]
     # HN/GitHub cap at 10; the AI edition (max_stories=None) uses every item passed in.
@@ -1510,7 +1517,8 @@ def generate_morning_edition(
         with open(assignments_file, "w") as f:
             json.dump(assignments, f, indent=2)
             
-    html = generate_morning_edition_html(config, day, items, assignments, known_dates, synthesis=synthesis)
+    html = generate_morning_edition_html(config, day, items, assignments, known_dates,
+                                         synthesis=synthesis, take_html=take_html)
     
     with open(index_file, "w") as f:
         f.write(html)

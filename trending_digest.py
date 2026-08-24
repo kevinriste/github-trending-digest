@@ -3648,7 +3648,10 @@ def main() -> None:
             )
 
         try:
-            generate_morning_edition(run_day, hn_rows, source="hn", force_regenerate=True)
+            hn_take_sources = hn_take.confident_sources(take_md, hn_rows) if take_md else []
+            hn_take_html = render_hn_take_html(take_md, hn_take_sources)
+            generate_morning_edition(run_day, hn_rows, source="hn", force_regenerate=True,
+                                     take_html=hn_take_html)
         except Exception as exc:
             logging.exception("Morning Edition generation failed for %s: %s", run_day, exc)
             notify_gotify(
