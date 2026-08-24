@@ -1,8 +1,11 @@
 """Levine-style daily synthesis column over the day's substantial HN stories.
 
 Ported (copied + adapted) from ai-newsletter's OVERALL_SYNTHESIS_SYSTEM and its
-1500-char "substantial primary content" gate. Pure of presentation and of any
-import of trending_digest; mirrors hn_comment_camps.py's shape and error-swallowing.
+1500-char "substantial primary content" gate. Synthesizes each story's primary
+content (article or self-post); the HN comment discussion is rendered separately
+on the page and is deliberately NOT fed here (an A/B showed the weave diluted the
+column's voice without adding reaction). Pure of presentation and of any import of
+trending_digest; mirrors hn_comment_camps.py's shape and error-swallowing.
 """
 
 import logging
@@ -10,20 +13,17 @@ import os
 
 from openai import OpenAI, OpenAIError
 
-import hn_comment_camps
-
 # OpenAI request failures are swallowed so a bad key never crashes the daily run,
 # and recorded here so the caller can surface a single run-level notification.
 API_ERRORS: list[str] = []
 
 HN_TAKE_MODEL = os.environ.get("HN_TAKE_MODEL", "gpt-5.6-sol")
 HN_TAKE_REASONING = os.environ.get("HN_TAKE_REASONING", "medium")
-HN_TAKE_PROMPT_VERSION = "hn_take_v1"
+HN_TAKE_PROMPT_VERSION = "hn_take_v2"
 
 HN_TAKE_MIN_CHARS = int(os.environ.get("HN_TAKE_MIN_CHARS", "1500"))
 HN_TAKE_BODY_CAP = int(os.environ.get("HN_TAKE_BODY_CAP", "12000"))
 HN_TAKE_MAX_STORIES = int(os.environ.get("HN_TAKE_MAX_STORIES", "10"))
-HN_TAKE_QUOTES_PER_CAMP = int(os.environ.get("HN_TAKE_QUOTES_PER_CAMP", "2"))
 
 _SELF_POST_TYPES = {"story", "ask", "show"}
 
@@ -626,7 +626,7 @@ Things happen.
 Wall Street Talks Up Carry Trade as Returns Soar Most in Decades. Black Rock Leads $12 Billion Financing for New Meta Data Centers in Texas. Bessent Says US to Scrutinize Chinese AI Models for IP Theft. China weighs tighter export controls on AI models and chips. Quant Hedge Fund 'Free Fall' Spooks Wealthy Investors in China. Deep Seek Founder's Fund Slumps 16% as AI Rout Hits China Quants. Carlyle in Talks to Hand ESG Consulting Firm Over to Bridgepoint. Kalshi Seeks Approval for Perpetual Futures Tied to Gold, Silver. The Man Who Runs the IRS Spied on Colleagues When He Worked at JPMorgan. Tom Hayes says UBS's 'Project Chocolate' probe shows he was targeted from outset. The New Jersey Financier Behind Trump Media's Pivot Into Nuclear Energy.
 
 ===== YOUR TASK =====
-Write the opening for today's edition from the items you are given. Each item is a headline followed by its full primary text (a fetched article or a Hacker News self-post) under "--- STORY ---", and, where available, an "--- HN DISCUSSION ---" block summarizing how the Hacker News comment section reacted (a framing line and the main camps, some with short verbatim quotes). The items are given in the editor's consequence order, most important first. Choose your one or two sections from the top items (roughly the top five), strongly preferring the most important; pass over a top item only if there is genuinely too little to say about it. Do NOT pick a lower-ranked item just because it happens to have more text. Give each chosen item its own short titled section. Because you have the full primary text: ground everything in it and invent nothing (no numbers, names or quotes not present); you MAY quote short verbatim phrases from the story text, the way the examples quote their sources, then react. Where the community's reaction sharpens, complicates, or deflates the point, weave it in -- quote or paraphrase a camp -- but do not merely summarize the thread; the story is your spine and the discussion is a reaction layer. Keep it tight, as the examples do: the news lands as a short beat and then you react, you do not recount the article at length. Rules: start each section with its short title alone on one line, prefixed with a single "# " (for example: # Emergent cyber capability), and use no other markdown anywhere; no em or en dashes; straight ASCII quotes and apostrophes only; no bullet lists; no references to prior editions; no math notation. Output prose only."""
+Write the opening for today's edition from the items you are given. Each item is a headline followed by its full primary text under "--- STORY ---" (a fetched article or a Hacker News self-post). The items are given in the editor's consequence order, most important first. Choose your one or two sections from the top items (roughly the top five), strongly preferring the most important; pass over a top item only if there is genuinely too little to say about it. Do NOT pick a lower-ranked item just because it happens to have more text. Give each chosen item its own short titled section. Because you have the full primary text: ground everything in it and invent nothing (no numbers, names or quotes not present); you MAY quote short verbatim phrases from the story text, the way the examples quote their sources, then react. Keep it tight, as the examples do: the news lands as a short beat and then you react, you do not recount the article at length. Rules: start each section with its short title alone on one line, prefixed with a single "# " (for example: # Emergent cyber capability), and use no other markdown anywhere; no em or en dashes; straight ASCII quotes and apostrophes only; no bullet lists; no references to prior editions; no math notation. Output prose only."""
 
 
 def qualifying_body(row: dict) -> str | None:
@@ -646,26 +646,12 @@ def qualifying_body(row: dict) -> str | None:
     return None
 
 
-def _discussion_block(row: dict) -> str:
-    """Return the '--- HN DISCUSSION ---' block for a row, or '' if no usable camps."""
-    parsed = hn_comment_camps.parse_comment_analysis(row.get("comment_analysis"))
-    if parsed is None:
-        return ""
-    lines = ["--- HN DISCUSSION ---", f"Framing: {parsed['framing']}"]
-    for camp in parsed["camps"]:
-        quotes = camp["quotes"][:HN_TAKE_QUOTES_PER_CAMP]
-        eg = ""
-        if quotes:
-            joined = "; ".join(f'"{q["text"]}"' for q in quotes)
-            eg = f"  [e.g. {joined}]"
-        lines.append(f"- {camp['label']}: {camp['description']}{eg}")
-    return "\n".join(lines)
-
-
 def build_take_context(rows: list[dict]) -> str:
     """Assemble the prompt input from qualifying rows, biggest HN score first.
 
-    Returns '' when no story qualifies (the caller then produces no column).
+    Only each story's primary content is fed (article or self-post); the comment
+    discussion is intentionally excluded. Returns '' when no story qualifies (the
+    caller then produces no column).
     """
     eligible = []
     for row in rows:
@@ -682,11 +668,7 @@ def build_take_context(rows: list[dict]) -> str:
             f"(score {row.get('score', 0)}, {row.get('comment_count', 0)} comments)\n"
             f"url: {row.get('url') or ''}"
         )
-        parts = [header, "--- STORY ---", body[:HN_TAKE_BODY_CAP]]
-        discussion = _discussion_block(row)
-        if discussion:
-            parts.append(discussion)
-        blocks.append("\n".join(parts))
+        blocks.append("\n".join([header, "--- STORY ---", body[:HN_TAKE_BODY_CAP]]))
     return "\n\n".join(blocks)
 
 

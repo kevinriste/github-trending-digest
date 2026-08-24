@@ -70,20 +70,15 @@ def test_context_caps_body():
     assert "a" * (hn_take.HN_TAKE_BODY_CAP + 1) not in ctx
 
 
-def test_context_includes_discussion_when_camps_present():
+def test_context_excludes_comment_discussion_even_when_camps_present():
+    # article-only: the comment camps are rendered elsewhere and never fed to the Take
     camps = json.dumps({"framing": "people split", "camps": [
         {"label": "Pro", "description": "liked", "quotes": [{"text": "great", "author": "pg"}]}]})
     rows = [_row(article_content="a" * HN_TAKE_MIN_CHARS, comment_analysis=camps)]
     ctx = build_take_context(rows)
-    assert "--- HN DISCUSSION ---" in ctx
-    assert "people split" in ctx and "Pro" in ctx and "great" in ctx
-
-
-def test_context_omits_discussion_when_no_camps():
-    rows = [_row(article_content="a" * HN_TAKE_MIN_CHARS, comment_analysis="")]
-    ctx = build_take_context(rows)
     assert "--- STORY ---" in ctx
     assert "--- HN DISCUSSION ---" not in ctx
+    assert "people split" not in ctx and "great" not in ctx
 
 
 def test_context_respects_max_stories(monkeypatch):
@@ -110,8 +105,10 @@ def test_prompt_is_de_attributed():
         assert name not in hn_take.HN_TAKE_SYSTEM
 
 
-def test_prompt_mentions_hn_discussion():
-    assert "HN DISCUSSION" in hn_take.HN_TAKE_SYSTEM
+def test_prompt_is_article_only():
+    # article-only: no reference to a comment-discussion block in the prompt
+    assert "HN DISCUSSION" not in hn_take.HN_TAKE_SYSTEM
+    assert '--- STORY ---' in hn_take.HN_TAKE_SYSTEM
 
 
 # --- Task 2: generation ---
