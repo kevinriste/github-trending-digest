@@ -684,17 +684,25 @@ def init_db(conn: psycopg.Connection) -> None:
         """,
         """
         CREATE TABLE IF NOT EXISTS hn_takes (
-            id             BIGSERIAL PRIMARY KEY,
-            run_date       DATE NOT NULL,
-            model          TEXT NOT NULL,
-            prompt_version TEXT NOT NULL,
-            take_md        TEXT NOT NULL,
-            context_input  TEXT,
-            generated_at   TIMESTAMPTZ NOT NULL DEFAULT NOW()
+            id                BIGSERIAL PRIMARY KEY,
+            run_date          DATE NOT NULL,
+            model             TEXT NOT NULL,
+            prompt_version    TEXT NOT NULL,
+            take_md           TEXT NOT NULL,
+            context_input     TEXT,
+            reasoning_summary TEXT,
+            used_stories      TEXT,
+            generated_at      TIMESTAMPTZ NOT NULL DEFAULT NOW()
         )
         """,
         """
         ALTER TABLE hn_takes ADD COLUMN IF NOT EXISTS context_input TEXT
+        """,
+        """
+        ALTER TABLE hn_takes ADD COLUMN IF NOT EXISTS reasoning_summary TEXT
+        """,
+        """
+        ALTER TABLE hn_takes ADD COLUMN IF NOT EXISTS used_stories TEXT
         """,
         """
         CREATE UNIQUE INDEX IF NOT EXISTS hn_takes_day_ver

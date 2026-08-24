@@ -8,8 +8,10 @@ column's voice without adding reaction). Pure of presentation and of any import 
 trending_digest; mirrors hn_comment_camps.py's shape and error-swallowing.
 """
 
+import json
 import logging
 import os
+import re
 
 from openai import OpenAI, OpenAIError
 
@@ -646,6 +648,14 @@ def qualifying_body(row: dict) -> str | None:
     return None
 
 
+def _eligible(rows: list[dict]) -> "list[tuple[dict, str]]":
+    """Qualifying (row, primary_body) pairs in the exact order the model sees them:
+    biggest HN score first, capped at HN_TAKE_MAX_STORIES."""
+    eligible = [(row, body) for row in rows if (body := qualifying_body(row)) is not None]
+    eligible.sort(key=lambda rb: int(rb[0].get("score") or 0), reverse=True)
+    return eligible[:HN_TAKE_MAX_STORIES]
+
+
 def build_take_context(rows: list[dict]) -> str:
     """Assemble the prompt input from qualifying rows, biggest HN score first.
 
@@ -653,16 +663,8 @@ def build_take_context(rows: list[dict]) -> str:
     discussion is intentionally excluded. Returns '' when no story qualifies (the
     caller then produces no column).
     """
-    eligible = []
-    for row in rows:
-        body = qualifying_body(row)
-        if body is not None:
-            eligible.append((row, body))
-    eligible.sort(key=lambda rb: int(rb[0].get("score") or 0), reverse=True)
-    eligible = eligible[:HN_TAKE_MAX_STORIES]
-
     blocks = []
-    for row, body in eligible:
+    for row, body in _eligible(rows):
         header = (
             f"[{row.get('rank')}] {row.get('title')}  "
             f"(score {row.get('score', 0)}, {row.get('comment_count', 0)} comments)\n"
@@ -670,6 +672,40 @@ def build_take_context(rows: list[dict]) -> str:
         )
         blocks.append("\n".join([header, "--- STORY ---", body[:HN_TAKE_BODY_CAP]]))
     return "\n\n".join(blocks)
+
+
+def _tokens(text: str) -> set:
+    return set(re.findall(r"[a-z0-9]{4,}", (text or "").lower()))
+
+
+def map_sections_to_stories(take_md: str, rows: list[dict]) -> list[dict]:
+    """Map each '# '-titled Take section to the candidate story it is about.
+
+    The model writes its own paraphrased section titles, so there is no explicit
+    story id; we attribute each section to the eligible candidate whose title plus
+    body shares the most distinctive tokens with the section text. Heuristic but
+    reliable in practice, and deterministic, so 'which stories the Take used' is
+    always logged. Returns one entry per section (possibly empty list).
+    """
+    candidates = _eligible(rows)
+    if not candidates:
+        return []
+    used = []
+    for block in re.split(r"(?m)^# ", take_md)[1:]:
+        head = block.splitlines()[0].strip()
+        sec_tokens = _tokens(block)
+        row, _ = max(
+            candidates,
+            key=lambda rb: len(sec_tokens & _tokens(f"{rb[0].get('title') or ''} {(rb[1] or '')[:4000]}")),
+        )
+        used.append({
+            "section": head,
+            "item_id": int(row["item_id"]) if row.get("item_id") is not None else None,
+            "rank": row.get("rank"),
+            "score": row.get("score"),
+            "title": row.get("title"),
+        })
+    return used
 
 
 def _client() -> "OpenAI | None":
@@ -680,29 +716,53 @@ def _client() -> "OpenAI | None":
     return OpenAI(api_key=key, max_retries=6)
 
 
-def generate_take(context: str) -> str | None:
-    """Run the one OpenAI Responses call; return the column markdown or None.
+def _extract_reasoning_summary(response) -> str:
+    """Pull the model's reasoning summary text out of a Responses API result.
 
-    Fail-open: missing key, empty output, or any OpenAIError -> None (the error
-    is recorded in API_ERRORS so the daily run can surface one notification).
+    The Responses API returns reasoning as items of type ``reasoning`` whose
+    ``summary`` is a list of parts with a ``text`` field. Defensive: any shape we
+    do not recognize yields "" rather than raising (the summary is metadata; a
+    missing one must never break generation).
+    """
+    parts: list[str] = []
+    for item in getattr(response, "output", None) or []:
+        if getattr(item, "type", None) != "reasoning":
+            continue
+        for chunk in getattr(item, "summary", None) or []:
+            text = getattr(chunk, "text", None)
+            if text:
+                parts.append(text)
+    return "\n\n".join(parts)
+
+
+def generate_take(context: str) -> "tuple[str, str] | None":
+    """Run the one OpenAI Responses call; return (column_markdown, reasoning_summary).
+
+    The reasoning summary (why the model chose the stories/sections it did) is
+    captured for auditability and may be "" when the API returns none. Fail-open:
+    missing key, empty output, or any OpenAIError -> None (the error is recorded
+    in API_ERRORS so the daily run can surface one notification).
     """
     try:
         client = _client()
         if client is None:
             return None
-        out = client.responses.create(
+        response = client.responses.create(
             model=HN_TAKE_MODEL,
             instructions=HN_TAKE_SYSTEM,
             input=context,
-            reasoning={"effort": HN_TAKE_REASONING},
+            reasoning={"effort": HN_TAKE_REASONING, "summary": "auto"},
             timeout=300,
             prompt_cache_options={"mode": "explicit"},
-        ).output_text.strip()
+        )
+        out = (response.output_text or "").strip()
     except OpenAIError as exc:
         logging.exception("HN Take generation request failed")
         API_ERRORS.append(f"{type(exc).__name__}: {exc}")
         return None
-    return out or None
+    if not out:
+        return None
+    return out, _extract_reasoning_summary(response)
 
 
 def load_cached_take(conn, run_day) -> str | None:
@@ -717,21 +777,27 @@ def load_cached_take(conn, run_day) -> str | None:
     return row[0] if row else None
 
 
-def store_take(conn, run_day, take_md, context_input) -> None:
+def store_take(conn, run_day, take_md, context_input, reasoning_summary, used_stories) -> None:
     """Upsert the generated column keyed on (run_date, model, prompt_version).
 
-    Persists both the output (``take_md``) and the exact assembled prompt
-    ``context_input`` that produced it, so a column can be audited or
-    reproduced against its input.
+    Persists the output (``take_md``), the exact assembled prompt ``context_input``
+    that produced it, the model's ``reasoning_summary`` (why it chose those
+    stories/sections, when the endpoint provides one), and ``used_stories`` (a JSON
+    string mapping each section to the source story it used), so a column can be
+    audited or reproduced against its input.
     """
     with conn.cursor() as cur:
         cur.execute(
-            "INSERT INTO hn_takes (run_date, model, prompt_version, take_md, context_input) "
-            "VALUES (%s, %s, %s, %s, %s) "
+            "INSERT INTO hn_takes "
+            "(run_date, model, prompt_version, take_md, context_input, reasoning_summary, used_stories) "
+            "VALUES (%s, %s, %s, %s, %s, %s, %s) "
             "ON CONFLICT (run_date, model, prompt_version) "
             "DO UPDATE SET take_md = EXCLUDED.take_md, "
-            "context_input = EXCLUDED.context_input, generated_at = NOW()",
-            (run_day, HN_TAKE_MODEL, HN_TAKE_PROMPT_VERSION, take_md, context_input),
+            "context_input = EXCLUDED.context_input, "
+            "reasoning_summary = EXCLUDED.reasoning_summary, "
+            "used_stories = EXCLUDED.used_stories, generated_at = NOW()",
+            (run_day, HN_TAKE_MODEL, HN_TAKE_PROMPT_VERSION, take_md,
+             context_input, reasoning_summary, used_stories),
         )
 
 
@@ -746,10 +812,12 @@ def get_or_generate(conn, rows, run_day) -> str | None:
     context = build_take_context(rows)
     if not context:
         return None
-    take_md = generate_take(context)
-    if not take_md:
+    result = generate_take(context)
+    if not result:
         return None
-    store_take(conn, run_day, take_md, context)
+    take_md, reasoning_summary = result
+    used_stories = json.dumps(map_sections_to_stories(take_md, rows))
+    store_take(conn, run_day, take_md, context, reasoning_summary, used_stories)
     return take_md
 
 

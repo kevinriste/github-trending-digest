@@ -93,6 +93,25 @@ def test_context_empty_when_nothing_qualifies():
     assert build_take_context([_row(article_content="short", text="")]) == ""
 
 
+def test_map_sections_to_stories_attributes_by_content():
+    rows = [
+        _row(rank=9, item_id=901, score=406, title="ElevenLabs, TwelveLabs",
+             article_content="numbered labs naming " + "x" * HN_TAKE_MIN_CHARS),
+        _row(rank=6, item_id=606, score=364, title="Why your local LLM feels dumber",
+             article_content="quantized kv cache attention backend " + "y" * HN_TAKE_MIN_CHARS),
+    ]
+    take_md = ("# Labs numbers\nA riff about numbered labs naming.\n\n"
+               "# Local intelligence\nOn quantized kv cache and attention backend choices.")
+    used = hn_take.map_sections_to_stories(take_md, rows)
+    assert [u["section"] for u in used] == ["Labs numbers", "Local intelligence"]
+    assert used[0]["item_id"] == 901 and used[0]["rank"] == 9
+    assert used[1]["item_id"] == 606 and used[1]["rank"] == 6
+
+
+def test_map_sections_to_stories_empty_when_no_candidates():
+    assert hn_take.map_sections_to_stories("# X\nbody", [_row(article_content="short")]) == []
+
+
 # --- Task 1: prompt invariants ---
 
 def test_prompt_has_no_preamble_and_header_convention():
@@ -113,14 +132,21 @@ def test_prompt_is_article_only():
 
 # --- Task 2: generation ---
 
+class _ReasoningItem:
+    def __init__(self, summary_texts):
+        self.type = "reasoning"
+        self.summary = [types.SimpleNamespace(type="summary_text", text=t) for t in summary_texts]
+
+
 class _FakeResp:
-    def __init__(self, text):
+    def __init__(self, text, reasoning_texts=()):
         self.output_text = text
+        self.output = [_ReasoningItem(reasoning_texts)] if reasoning_texts else []
 
 
 class _FakeClient:
-    def __init__(self, text=None, exc=None):
-        self._text, self._exc = text, exc
+    def __init__(self, text=None, exc=None, reasoning_texts=()):
+        self._text, self._exc, self._reasoning = text, exc, reasoning_texts
         self.responses = types.SimpleNamespace(create=self._create)
         self.calls = []
 
@@ -128,17 +154,28 @@ class _FakeClient:
         self.calls.append(kw)
         if self._exc:
             raise self._exc
-        return _FakeResp(self._text)
+        return _FakeResp(self._text, self._reasoning)
 
 
-def test_generate_returns_output_text(monkeypatch):
-    client = _FakeClient(text="# Section\nprose here")
+def test_generate_returns_output_text_and_reasoning(monkeypatch):
+    client = _FakeClient(text="# Section\nprose here", reasoning_texts=["picked the top story"])
     monkeypatch.setattr(hn_take, "_client", lambda: client)
-    assert hn_take.generate_take("ctx") == "# Section\nprose here"
+    assert hn_take.generate_take("ctx") == ("# Section\nprose here", "picked the top story")
     assert client.calls[0]["model"] == hn_take.HN_TAKE_MODEL
     assert client.calls[0]["instructions"] == hn_take.HN_TAKE_SYSTEM
     assert client.calls[0]["input"] == "ctx"
-    assert client.calls[0]["reasoning"] == {"effort": hn_take.HN_TAKE_REASONING}
+    # reasoning summary requested (an API param, not a prompt change)
+    assert client.calls[0]["reasoning"] == {"effort": hn_take.HN_TAKE_REASONING, "summary": "auto"}
+
+
+def test_generate_empty_reasoning_when_none_returned(monkeypatch):
+    monkeypatch.setattr(hn_take, "_client", lambda: _FakeClient(text="col"))
+    assert hn_take.generate_take("ctx") == ("col", "")
+
+
+def test_extract_reasoning_summary_joins_parts():
+    resp = _FakeResp("out", reasoning_texts=["first", "second"])
+    assert hn_take._extract_reasoning_summary(resp) == "first\n\nsecond"
 
 
 def test_generate_none_on_empty_output(monkeypatch):
@@ -172,13 +209,15 @@ def test_get_or_generate_generates_and_stores_on_miss(monkeypatch):
     stored = {}
     monkeypatch.setattr(hn_take, "load_cached_take", lambda conn, day: None)
     monkeypatch.setattr(hn_take, "build_take_context", lambda rows: "ctx")
-    monkeypatch.setattr(hn_take, "generate_take", lambda ctx: "fresh column")
+    monkeypatch.setattr(hn_take, "generate_take", lambda ctx: ("fresh column", "because reasons"))
+    monkeypatch.setattr(hn_take, "map_sections_to_stories", lambda md, rows: [{"section": "S"}])
     monkeypatch.setattr(hn_take, "store_take",
-                        lambda conn, day, md, ctx: stored.update(day=day, md=md, ctx=ctx))
+                        lambda conn, day, md, ctx, rs, us: stored.update(day=day, md=md, ctx=ctx, rs=rs, us=us))
     result = hn_take.get_or_generate(None, [{"x": 1}], date(2026, 8, 24))
     assert result == "fresh column"
-    # both output and the exact input context are persisted
-    assert stored == {"day": date(2026, 8, 24), "md": "fresh column", "ctx": "ctx"}
+    # output, input context, reasoning summary, and used-stories mapping all persisted
+    assert stored == {"day": date(2026, 8, 24), "md": "fresh column", "ctx": "ctx",
+                      "rs": "because reasons", "us": json.dumps([{"section": "S"}])}
 
 
 def test_get_or_generate_none_when_no_qualifying(monkeypatch):
