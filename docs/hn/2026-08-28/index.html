@@ -1,0 +1,830 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Morning Edition — August 28, 2026</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght,SOFT@0,9..144,300..900,0..100;1,9..144,300..900,0..100&family=Inter:ital,wght@0,100..900;1,100..900&family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../morning.css?v=ad6e38b8b">
+</head>
+<body id="top" data-gtd-edition="hn" data-gtd-date="2026-08-28">
+  <header class="masthead">
+    <div class="masthead-nav">
+      <a href="../">Hacker News Calendar</a>
+      <span>&nbsp;·&nbsp;</span>
+      <a href="../../2026-08-28/">GitHub Trending &nbsp;·&nbsp; Aug 28</a>
+      <span>&nbsp;·&nbsp;</span>
+      <a href="classic.html">Classic View</a>
+    </div>
+    <div class="tagline">The Morning Edition</div>
+    <h1 class="frnc">Ten stories, before your coffee.</h1>
+    <div class="issue-line">
+      <span>Vol. I</span>
+      <span>August 28, 2026</span>
+      <span>HN Front Page Digest</span>
+    </div>
+  </header>
+<section class="the-take"><details open><summary>The HN Take</summary><h3 class="take-head">Volume.</h3><p>Here is a useful thing about the divergence theorem: If you want to know the volume inside a closed triangular mesh, you do not need to look inside it. You can walk around the outside, do a tiny calculation for each triangle, add up the answers and go home.</p><p>Alyssa Rosenzweig derives the algorithm:</p><p>&quot;The final algorithm contains no numerical integration nor differentiation.&quot;</p><p>There is one loop over the triangles. For each triangle, there are seven additions and three multiplications. After the loop, one more multiplication. Rosenzweig estimates that a $35 Raspberry Pi could measure around 30 million triangles every frame in a 60-frames-per-second application.</p><p>This is the ideal outcome of advanced mathematics. You spend years learning triple integrals, vector fields and surface parametrizations, and eventually the mathematics tells you not to do the integral. The volume is notionally distributed throughout the entire three-dimensional object, but going into the object to count it would be gauche. Just ask each bit of the surface how much volume it is responsible for and total the invoices.</p><p>The post is titled &quot;Hilariously Fast Volume Computation with the Divergence Theorem,&quot; followed immediately by &quot;(No, there won&#x27;t be jokes.)&quot; The joke is that the divergence theorem has made the calculation too efficient to leave time for jokes.</p><p>Rosenzweig adds that she would be &quot;pleasantly surprised&quot; if the algorithm were novel. Further research found an earlier paper describing the same algorithm. You begin by calculating the volume of 30 million triangles per frame, one thing leads to another, and eventually you discover that someone already did it. Also the vector calculus exam is soon.</p><h3 class="take-head">One byte.</h3><p>Cloudflare&#x27;s DNS platform stores more than 250 billion cache entries. At that scale, &quot;wasting a single byte per entry costs more than 250 gigabytes of memory across our fleet.&quot;</p><p>This is a good general rule for large technology companies. At a normal company, wasting one byte is not a business problem. At Cloudflare, one unnecessary byte requires a meeting, a custom allocator and possibly several servers. Five changes to the memory layout of its DNS cache cut the size of each entry by more than half, freeing roughly 100 terabytes of memory, equivalent to the RAM in 130 of its servers.</p><p>Also the cache got faster. Insert throughput rose 43% and lookup latency fell 19%. Normally optimization involves a tradeoff where you use more memory to go faster or more computation to use less memory. Here Cloudflare removed a lot of unnecessary bookkeeping and the computers became both smaller and happier.</p><p>One example is Rust&#x27;s growable list type. It keeps track of a pointer, the current length and the available capacity, because perhaps you will want to add more items later. But Cloudflare never modifies a DNS response after putting it in the cache. The capacity field was maintaining detailed plans for a future that would never arrive. Replacing growable lists and strings with fixed-size versions saved 64 bytes per cache entry, plus unused heap space, for more than 15 terabytes across the fleet.</p><p>Another problem was democratic representation. DNS records can contain many different kinds of data, and a Rust enum is sized to fit its largest possible variant. The largest record variant needed 136 bytes, so the full enum occupied 144 bytes. But more than 80% of Cloudflare&#x27;s traffic consists of address records needing only 4 or 16 bytes. Every tiny address record was allocated enough room to imagine that it might someday become a much more elaborate record. It never would, but it had potential.</p><p>Cloudflare first moved the large variants into separate allocations. Then it found that the allocations themselves wasted space and scattered data around memory, so it stored record data as raw bytes in one contiguous buffer. This used less memory and improved locality. The sophisticated parsed object representation was replaced by a box of bytes, which is often where systems engineering ends up after an extended period of sophistication.</p><p>There is something pleasing about saving 100 terabytes without deleting any DNS answers. Cloudflare did not need fewer facts about the internet. It just needed each fact to stop bringing eight empty suitcases.</p><div class="take-sources"><span>Sources</span><ul><li><a href="https://alyssarosenzweig.ca/blog/hilariously-fast-volume-computation-with-the-divergence-theorem.html" target="_blank" rel="noopener noreferrer">Hilariously Fast Volume Computation with the Divergence Theorem</a></li><li><a href="https://blog.cloudflare.com/dns-cache-memory-optimization-1111/" target="_blank" rel="noopener noreferrer">Saving 100 terabytes of memory by optimizing 1.1.1.1&#x27;s DNS cache</a></li></ul></div></details></section>
+  <section id="story-1" class="spread arc-mint-pattern">
+    <div class="numeral-block">
+      <div class="numeral">01</div>
+    </div>
+    <div class="kicker">Geometry</div>
+    <h2>Streamlining 3D Mesh Volume Calculations</h2>
+    <p class="story-meta">alyssarosenzweig.ca &nbsp;·&nbsp; 62 pts &nbsp;·&nbsp; 9 comments</p>
+    <p class="lede">Calculating the volume of complex 3D meshes no longer requires intensive numerical sampling. By applying the divergence theorem to simple surface integrals, developers can process millions of triangles with basic arithmetic, bringing high-speed geometric analysis to constrained hardware.</p>
+    <div class="spread-links"><a class="read-more" href="https://alyssarosenzweig.ca/blog/hilariously-fast-volume-computation-with-the-divergence-theorem.html" target="_blank" rel="noopener">Read →</a><a class="read-more share-link" href="#" data-share-title="Hilariously Fast Volume Computation with the Divergence Theorem" data-share-url="https://alyssarosenzweig.ca/blog/hilariously-fast-volume-computation-with-the-divergence-theorem.html">Share →</a>
+      <details class="analysis-drawer">
+        <summary class="btn-dossier">[ Analysis + ]</summary>
+        <div class="drawer-content">
+          
+          <h4>Technical Analysis</h4>
+          <div class="drawer-analysis">
+          <p>This article presents a highly efficient $O(n)$ algorithm for calculating the volume of a closed, triangulated 3D mesh by applying the divergence theorem to convert a volume integral into a simplified surface integral. By expressing the volume as a sum of signed tetrahedral volumes defined by triangle vertices, the method replaces expensive numerical integration with a streamlined computation requiring only basic arithmetic. This approach is significantly faster than traditional sampling methods, enabling the processing of millions of triangles per frame even on low-power hardware like a Raspberry Pi. While the technique likely predates the author&#x27;s derivation, it remains a vital optimization for performance-critical 3D graphics applications that require real-time geometric analysis.</p>
+          </div>
+          <h4>Reader Reactions</h4>
+<p class="camps-framing">The reaction was largely positive but tempered by recognition that the computation uses familiar geometric techniques rather than representing an entirely new discovery. Commenters connected it to polygon-area formulas, CAD, surveying, and volume decompositions, while one remained uncertain about the article’s comparison with rendering and sampling. Others valued the exposition, suggested an intuitive connection to the divergence theorem, or responded playfully at a meta level.</p>
+<div class="camp"><p class="camp-label"><strong>Familiar standard geometry</strong> &mdash; Several commenters recognized the method as a signed sum of geometric volumes with precedents in polygon-area calculations, surveying, and CAD. They generally regarded it as sound but not especially novel, while allowing that its generality or presentation could still be useful.</p><blockquote>My belly says the naive formula is summing the triangle pyramid volumes to the origin with sign in orientation.<cite>elikoga</cite></blockquote>
+<blockquote>This kind of formula works based on the basic geometry.<cite>eterevsky</cite></blockquote>
+<blockquote>Yes I remember doing something like that in 90s for a survey/map engineering cad application.<cite>aaa_aaa</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Intuitive geometric interpretation</strong> &mdash; A minority focused on understanding the result geometrically and on possible mathematical implications, including the prospect of reversing the construction into an intuitive proof of the divergence theorem.</p><blockquote>I wonder if this could be reversed to give an intuitive “proof” of the divergence theorem.<cite>xigoi</cite></blockquote>
+<blockquote>Isn&#x27;t the same as just taking every triangle from the mesh, calculating the volume of a prism-like polytope between it and its projection on one the planes, and then taking it with a + sign if its projection is oriented in one direction, and with a - sign if it&#x27;s oriented in another?<cite>eterevsky</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Appreciation of concise, practical exposition</strong> &mdash; One commenter welcomed the combination of a simple algorithm, strong performance, and accessible presentation, especially in contrast to AI-generated or overcomplicated material.</p><blockquote>I love these kinds of posts. Simple, fast, AI-free, and I learn something new.<cite>arn3n</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Uncertainty about the article’s rendering comparison</strong> &mdash; A skeptical point concerned the claim that the formula is equivalent to rendering the mesh and sampling the render. The uncertainty focused on the explanation and framing rather than the core signed-volume calculation.</p><blockquote>No idea what the author means by &quot;which are equivalent to rendering the mesh and then sampling the render&quot;.<cite>elikoga</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Lighthearted and meta-level engagement</strong> &mdash; A few comments responded with humor, topical levity, or a playful question about a possible connection to the Asahi graphics project, followed by a dry suggestion that the attribution could be checked online.</p><blockquote>I&#x27;ll accept any kind of jocularity in the current climate!<cite>N_Lens</cite></blockquote>
+<blockquote>Did they also work on the graphics stack for the Asahi project?<cite>gigatexal</cite></blockquote>
+<blockquote>Sadly, there is no way to find out, f.ex. by a quick Google search.<cite>unkeen</cite></blockquote></div>
+          <p class="drawer-footer"><a href="#dossier-1">View in Dossier ↓</a></p>
+        </div>
+      </details>
+    </div>
+  </section>
+  <section id="story-2" class="spread arc-stat-hero">
+    <div class="numeral">100TB</div>
+    <div class="kicker">N<sup>o</sup> 02 · Infrastructure</div>
+    <h2>Cloudflare Reclaims Massive Cache Footprint</h2>
+    <p class="story-meta">blog.cloudflare.com &nbsp;·&nbsp; 778 pts &nbsp;·&nbsp; 233 comments</p>
+    <p class="lede">An overhaul of the Big Pineapple DNS infrastructure has yielded remarkable memory savings across the entire fleet. By transitioning to compact data representations, engineers successfully reduced per-entry memory usage without sacrificing lookup speed.</p>
+    <div class="spread-links"><a class="read-more" href="https://blog.cloudflare.com/dns-cache-memory-optimization-1111/" target="_blank" rel="noopener">Read →</a><a class="read-more share-link" href="#" data-share-title="Saving 100 terabytes of memory by optimizing 1.1.1.1&#x27;s DNS cache" data-share-url="https://blog.cloudflare.com/dns-cache-memory-optimization-1111/">Share →</a>
+      <details class="analysis-drawer">
+        <summary class="btn-dossier">[ Analysis + ]</summary>
+        <div class="drawer-content">
+          
+          <h4>Technical Analysis</h4>
+          <div class="drawer-analysis">
+          <p>Cloudflare recently optimized its &quot;Big Pineapple&quot; DNS infrastructure, which powers 1.1.1.1 and other services, by significantly reducing the memory footprint of its 250 billion cache entries. By implementing five key changes—such as replacing dynamic vectors with fixed-size boxes, packing bitflags, and storing DNS records in raw wire format—the engineering team successfully cut the per-entry memory footprint by over 50%. These technical refinements achieved a total reduction of 100 terabytes of system memory across their fleet while simultaneously improving insert throughput and lookup latency. This project is significant because it demonstrates how granular low-level memory management in Rust can yield substantial cost and performance gains at extreme scale, allowing the company to reinvest those resources into higher cache hit rates and improved service reliability.</p>
+          </div>
+          <h4>Reader Reactions</h4>
+<p class="camps-framing">The discussion was broadly appreciative of the engineering result, while differing over whether memory efficiency should have been designed in earlier or deferred until scale made the tradeoffs clear. Commenters also debated the difficulty of production migration and team-wide data-model discipline, Rust’s suitability for compact layouts, alternative representations, and the practical significance of saving 100 terabytes across Cloudflare’s fleet.</p>
+<div class="camp"><p class="camp-label"><strong>Optimize after proving the business</strong> &mdash; This camp prioritizes shipping a correct product, validating demand, and addressing resource costs when they become material constraints. Commenters also emphasized the opportunity cost of assigning scarce engineers to speculative optimization.</p><blockquote>This is the right way to deliver software. Produce working product first, validate the idea, stabilize the business, start generating profit, and then you can start optimizing your costs.<cite>lpapez</cite></blockquote>
+<blockquote>It is often not worth optimising in the early days.<cite>lbriner</cite></blockquote>
+<blockquote>Discussing trivial optimizations is a waste of valuable design time. You&#x27;re never going to &quot;forget&quot; an optimization. The running system will remind you when the optimization is actually needed.<cite>scott_meyer</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Design for scale earlier</strong> &mdash; This camp argues that obvious inefficiencies in a hot-path data structure should be addressed during initial design because later migrations are costly and accumulated waste can become substantial.</p><blockquote>Or optimize a bit earlier and prevent having to scale out to a bazillion systems.<cite>vanviegen</cite></blockquote>
+<blockquote>Why do people seem to think that optimization is something you only have to deal with once the software scales so much that 100s of TB of memory or disk space (or thousands of hours of processing time) are being wasted.<cite>didgetmaster</cite></blockquote>
+<blockquote>Using obviously better data structures the first time isn&#x27;t premature optimization.<cite>toast0</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>The hard part is rollout and organizational context</strong> &mdash; These commenters stress that production migration, compatibility, staggered deployment, and team-wide adherence to an evolutionary data-model strategy can dominate the difficulty of an optimization, even when the local code changes appear simple.</p><blockquote>This is a misconception when you including roll out as a part of the change too, changing data once its running in production is hard, changing the data structure is even harder and when you talk about making changes in cache which is at the hot path its probably the hardest.<cite>sandeepkd</cite></blockquote>
+<blockquote>The fact that it took them 4 months to roll out does not mean this is the hard part: it&#x27;s simply a coordinated rollout with incremental, staggered deployments and rate-limited migrations.<cite>necovek</cite></blockquote>
+<blockquote>There are a class of optimizations that can happen transparently. Those can happen at any time, and are fine to defer. Not all profiling and scalability improvements fall into this bucket.<cite>switchbak</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Scale makes ordinary systems work consequential</strong> &mdash; This camp treats the result as evidence that data layout, allocation strategy, and system programming remain important when modest per-record savings are multiplied across very large fleets.</p><blockquote>This is why system programming still matters.<cite>irdc</cite></blockquote>
+<blockquote>System programming always matters. Things are cheap until they aren&#x27;t one day.<cite>sdcfgy</cite></blockquote>
+<blockquote>We&#x27;re finally seeing more appreciation for this kind of engineering. Not everything needs to be solved by throwing more hardware at the problem<cite>1saadcodes</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Rust can support the approach with suitable abstractions</strong> &mdash; These commenters generally regard arenas, packed buffers, and offset-based layouts as expressible in Rust, while emphasizing that private invariants and safe wrapper types are needed to preserve useful safety guarantees.</p><blockquote>For the curious, this is technically possible in Rust using a dynamically sized type [1], but in practice is difficult and doesn&#x27;t really play nice with the rest of the language.<cite>mkeeter</cite></blockquote>
+<blockquote>Rust can do those tricks, but it&#x27;s true that it is hard than in C or Zig.<cite>afdbcreid</cite></blockquote>
+<blockquote>You can make a wrapper type that abstracts the offset lookup logic with a safe interface. If it&#x27;s a transparent struct then rust will compile it away into nothing but you still get the abstraction in your code.<cite>NIckGeek</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Alternative layouts and further representation optimizations</strong> &mdash; A smaller technical discussion proposed inline storage, arenas, compressed or prefix-shared keys, radix trees, B-trees, memory compression, and compact serialized formats, while noting that added indirection or CPU work can offset memory savings.</p><blockquote>Looks like they&#x27;re missing the obvious optimisation of putting the record data right after the CacheEntry members instead of allocating memory separately though.<cite>irdc</cite></blockquote>
+<blockquote>If a hashmap is used, then a radix tree (adaptive radix tree) would be better in saving memory space.<cite>ww520</cite></blockquote>
+<blockquote>I wonder at their scale, why wouldn’t it make sense to store the entries lightly compressed in memory?<cite>squirrellous</cite></blockquote></div>
+          <p class="drawer-footer"><a href="#dossier-2">View in Dossier ↓</a></p>
+        </div>
+      </details>
+    </div>
+  </section>
+  <section id="story-3" class="spread arc-editorial-pullquote">
+    <div class="left">
+      <div class="numeral">03</div>
+      <div class="kicker">Industry Analysis</div>
+      <h2>The Practical Utility of Compact AI Models</h2>
+      <p class="story-meta">calv.info &nbsp;·&nbsp; 662 pts &nbsp;·&nbsp; 299 comments</p>
+      <div class="spread-links"><a class="read-more" href="https://calv.info/small-models-have-arrived" target="_blank" rel="noopener">Read →</a><a class="read-more share-link" href="#" data-share-title="Small Models Have Arrived" data-share-url="https://calv.info/small-models-have-arrived">Share →</a>
+      <details class="analysis-drawer">
+        <summary class="btn-dossier">[ Analysis + ]</summary>
+        <div class="drawer-content">
+          
+          <h4>Technical Analysis</h4>
+          <div class="drawer-analysis">
+          <p>Recent advancements in small, highly efficient AI models like &quot;luna&quot; are significantly lowering the cost of inference, making personalized consumer applications and high-frequency business automation economically viable for the first time. While frontier-level models remain essential for complex, breakthrough research, the author argues that the vast majority of professional and operational tasks require the speed and cost-effectiveness of smaller models rather than maximum intelligence. By drastically reducing token expenses, these compact models address the primary financial hurdle that has historically prevented AI-integrated software from achieving the unit economics of traditional consumer tech. This shift suggests that the future of enterprise AI will prioritize high-volume, responsive, and low-cost agents that handle routine &quot;token spewer&quot; work, mirroring the way companies naturally prioritize hiring efficient, reliable employees over exclusively seeking rare intellectual geniuses.</p>
+          </div>
+          <h4>Reader Reactions</h4>
+<p class="camps-framing">The discussion was broadly optimistic that small models can already deliver practical value for routine, narrowly scoped, and high-volume work, especially when paired with retrieval, testing, prompting, and human oversight. The main disagreement concerned whether their lower cost and latency compensate for the quality gap with frontier models, particularly on complex or unattended tasks. Commenters also debated whether local privacy and autonomy outweigh the capital and maintenance costs of self-hosting, and whether scaling general models will ultimately displace specialized systems.</p>
+<div class="camp"><p class="camp-label"><strong>Small models are already useful</strong> &mdash; Commenters reported that inexpensive small models are already effective for routine coding, summarization, tool use, and narrowly scoped applications, often making previously uneconomical products viable.</p><blockquote>Luna max is suitable for like 90% of the kinds of code changes I want to make.<cite>dgunay</cite></blockquote>
+<blockquote>Small, cheap, and hosted models. Luna (and open weight models and others) is ridiculously cheap @ $0.2/$1.2, easily accessible, and more than good enough for basic use cases (e.g. summarization, simple tool calling, etc.).<cite>wxw</cite></blockquote>
+<blockquote>The demand for fast, cheap, good enough models has always been borderline infinite, it’s the supply that’s going to take off.<cite>mattmaroon</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Frontier quality still matters</strong> &mdash; Others argued that larger models remain categorically more capable, especially for complex, high-value, or autonomous work, and that apparent equivalence should be established through production experience rather than assumed.</p><blockquote>Going from sol to luna is a downgrade. It is not a question, it is a fact.<cite>noodletheworld</cite></blockquote>
+<blockquote>I don’t care about the cost if the results are weak.<cite>butterisgood</cite></blockquote>
+<blockquote>Small models are good to the extent they are like big models, not to the extent that they are small.<cite>giraffe_lady</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Harnesses, routing, and responsiveness shape capability</strong> &mdash; A prominent middle position treated model performance as a systems question: decomposition, retrieval, tools, testing, human steering, and routing between models can make weaker models effective, while low latency improves interactive workflows.</p><blockquote>Unless you must 1-shot with no harness it’s the same amount of power, maybe more because the big “good” models make too many assumptions and tend to become rigid.<cite>LoveMistral</cite></blockquote>
+<blockquote>Luna as a doer, with a smarter model planning, can be a good compromise.<cite>usef-</cite></blockquote>
+<blockquote>My experience has been that responsiveness is value.<cite>arjie</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>The Bitter Lesson remains unsettled</strong> &mdash; Commenters disagreed about whether scaling general-purpose models will ultimately beat specialized systems, with some treating the Bitter Lesson as evidence for scale and others distinguishing capability from efficiency or pointing to current specialized-model advantages.</p><blockquote>This idea has failed to pan out time and time again - people have an instinct that hand-crafted finely-tuned specialized AI systems must be optimal, but throwing more scale and compute to something more generally smart always wins out.<cite>jimmaswell</cite></blockquote>
+<blockquote>The Bitter Lesson is all about large data-based approaches vs hand-crafted ones, it doesn&#x27;t say anything about language models not trained specifically for chess.<cite>Evidlo</cite></blockquote>
+<blockquote>No. The bitter lesson is about capabilities. GP is talking about efficiency.<cite>srcreigh</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Local models offer privacy and autonomy</strong> &mdash; Supporters of local inference valued privacy, offline resilience, predictable marginal cost, experimentation, and independence from providers, while acknowledging that suitable hardware is not widely available.</p><blockquote>Running small models locally beats wrestling with API latencies and rate limits. The compute trade-off is 100% worth it for the privacy and DX gains.<cite>pranav_tech26</cite></blockquote>
+<blockquote>Of course there will be a huge push to put all of it in the cloud but maybe we have a chance to take this technology home for good as it’s hard to imagine people will submit to this kind of surveillance required for AI home automation 24/7 (then again I might be wrong).<cite>throwaway63467</cite></blockquote>
+<blockquote>The percentage of people in the world who can afford the hardware is extremely low.<cite>9cb14c1ec0</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Hosted inference can be more economical</strong> &mdash; Some commenters argued that APIs are currently cheaper and simpler for modest workloads because self-hosting entails hardware, utilization, and operational overhead; local deployment is more compelling when privacy, scale, or latency justifies it.</p><blockquote>Local model hosting would force me into higher cost and overhead for less intelligence.<cite>jillesvangurp</cite></blockquote>
+<blockquote>Closed source is going to beat open source on price point due to scale (try buying a few GPUs to run your own model on...) and labs innovating across the full inference stack.<cite>scottgk</cite></blockquote>
+<blockquote>You could sell those and have enough money to pay for hosted inference for years.<cite>xnx</cite></blockquote></div>
+          <p class="drawer-footer"><a href="#dossier-3">View in Dossier ↓</a></p>
+        </div>
+      </details>
+    </div>
+    </div>
+    <blockquote class="pullquote">The future of enterprise AI prioritizes high-volume, responsive agents that handle routine work with the efficiency of a reliable employee.</blockquote>
+  </section>
+  <section id="story-4" class="spread arc-alert-stamp">
+    <div class="stamp">ALERT</div>
+    <div class="numeral">04</div>
+    <div class="body">
+      <div class="kicker">Open Source</div>
+      <h2>Sovereign Tech Fund Backs Flatpak Development</h2>
+      <p class="story-meta">modal.cx &nbsp;·&nbsp; 147 pts &nbsp;·&nbsp; 79 comments</p>
+      <p class="lede">A significant public investment aims to modernize Linux desktop security by funding critical upgrades to the Flatpak sandbox. This initiative seeks to bridge the gap between open-source ecosystem portability and the robust security models found in proprietary mobile platforms.</p>
+      <div class="spread-links"><a class="read-more" href="https://modal.cx/blog/announcing-flatpak-sta/" target="_blank" rel="noopener">Read →</a><a class="read-more share-link" href="#" data-share-title="Sovereign Tech Agency invests €500k in Flatpak" data-share-url="https://modal.cx/blog/announcing-flatpak-sta/">Share →</a>
+      <details class="analysis-drawer">
+        <summary class="btn-dossier">[ Analysis + ]</summary>
+        <div class="drawer-content">
+          
+          <h4>Technical Analysis</h4>
+          <div class="drawer-analysis">
+          <p>The German Sovereign Tech Fund has invested approximately €508,000 into the Flatpak project to accelerate the development of its Linux application sandboxing and security features over the next two years. This initiative, managed by the Modal Collective and a team of experienced contractors, aims to address long-standing technical limitations, such as granular audio permissions, network isolation, and the implementation of new portals for VPNs and password management. By bridging the security gap between Linux and proprietary mobile platforms, the project seeks to bolster the viability of image-based operating systems like SteamOS and Fedora Silverblue. This funding is critical for reducing the technical burden on overstretched maintainers and establishing a more robust, sustainable infrastructure for the open-source desktop ecosystem.</p>
+          </div>
+          <h4>Reader Reactions</h4>
+<p class="camps-framing">The discussion balanced support for public investment in open-source desktop infrastructure against doubts about Flatpak’s strategic importance and the sustainability of temporary grants. Much of the debate concerned whether Flatpak’s sandboxing offers a practical security foundation or instead creates confusing permissions, architectural coupling, and compatibility problems. Alternatives including distribution packages, bubblewrap, containers, and Nix were also considered.</p>
+<div class="camp"><p class="camp-label"><strong>Strategic public investment in Flatpak</strong> &mdash; Supporters viewed Flatpak as useful infrastructure for government Linux deployments, immutable systems, and a more consistent desktop application experience. Some also valued work on the underlying sandboxing protocols even if Flatpak itself does not persist indefinitely.</p><blockquote>Flatpak is proving to be a very important piece of underlying infrastructure if government agencies want to switch to Linux computers running distributed graphical applications for their workers.<cite>eigenspace</cite></blockquote>
+<blockquote>For a normal, non-technical user installing and updating software should be easy, and I believe that flatpak provides this.<cite>banger180</cite></blockquote>
+<blockquote>Flatpak itself might not survive, but the underlying protocols (portals, security contexts in wayland, pipewire, and d-bus, systemd-appd, …) are relevant for sandboxing on linux as a whole.<cite>ximm</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Skepticism about Flatpak’s strategic value</strong> &mdash; Critics questioned whether Flatpak is sufficiently important, durable, or relevant to technological sovereignty to justify public funding. Some preferred investment in more fundamental desktop or distribution infrastructure and viewed mobile-style sandboxing as an unsuitable priority.</p><blockquote>Great to see open source projects funded, but the value of Flatpak for tech sovereignty evades me somewhat.<cite>oytis</cite></blockquote>
+<blockquote>Waste of money. &quot;For Modal, a robust app sandboxing story is essential to creating a Free Software OS that is competitive with modern mobile platforms.&quot; Why? Focus should be desktop, not mobile.<cite>Nux</cite></blockquote>
+<blockquote>To be honest i don&#x27;t see how having flatpack going to help the (european/german) &quot;sovereign tech&quot; initiative.<cite>znpy</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Temporary grants versus sustainable support</strong> &mdash; Some commenters welcomed funding but considered recurring project grants an unstable way to support critical infrastructure. They advocated multi-year structural funding, direct employment, or ongoing contracts from organizations that depend on the software, while others defended the agency’s project-focused accelerator role.</p><blockquote>The projects need to apply repeatingly for funding. Wasting time and resources and chausing worries.<cite>ho_schi</cite></blockquote>
+<blockquote>There is also the option of structural funding (Strukturförderung in german) where important organizations receive multi-year contracts instead of short term project funding.<cite>ximm</cite></blockquote>
+<blockquote>The STA is basically trying to fill the role that venture capital plays in getting a startup ready to take on customers, except the STA doesn&#x27;t take an ownership stake, and they focus on FOSS.<cite>eigenspace</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Flatpak’s sandboxing is valuable but incomplete</strong> &mdash; Supporters considered the default isolation and portal model valuable, while acknowledging that legacy applications often request broad permissions or have not integrated the relevant desktop protocols. Flatseal and similar tools were seen as practical but imperfect ways to tighten access.</p><blockquote>By default, software has a sandboxed location that is exposed to the host in `~/.var/app/[APP]`.<cite>pinkwah</cite></blockquote>
+<blockquote>The fact that many apps choose to require excess permissions and can then bypass standard locations is a different matter<cite>kalaksi</cite></blockquote>
+<blockquote>If you are really concerened about this, you can use flatseal to limit the access that the application has.<cite>banger180</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Permission UX and security model are unacceptable</strong> &mdash; Critics argued that implicit permission grants and broad filesystem access undermine user trust in the sandbox. They preferred browser-like, just-in-time prompts and more granular controls, while noting that excessive prompts and application breakage make the design difficult in practice.</p><blockquote>Permissions being granted implicitly is awful for security.<cite>WhyNotHugo</cite></blockquote>
+<blockquote>Simple browser-like permissions that allow prompted overwrite would be WAY better!<cite>blizdiddy</cite></blockquote>
+<blockquote>Currently it&#x27;s a mishmash of separately using flatseal (and equivalents) and having your fingers crossed if you&#x27;re likely to exfiltrate or not your data.<cite>mhitza</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Architectural coupling and preference for alternatives</strong> &mdash; A more fundamental critique targeted Flatpak’s coupling of packaging, sandboxing, portals, and desktop services, as well as its ecosystem-wide ambitions. Some commenters preferred using bubblewrap or containers directly, or continuing with traditional distribution packages instead.</p><blockquote>Portals are just a terrible design for a security boundary: all interfaces clobbered up into one huge daemon, which also deals with a lot of the internals of Flatpak/Snap.<cite>WhyNotHugo</cite></blockquote>
+<blockquote>I use bubblewrap directly, never liked Flatpak.<cite>regexorcist</cite></blockquote>
+<blockquote>I&#x27;d rather they invested €500k in contributing to the maintenance of distribution packages so I don&#x27;t need to deal with Flatpak (on Debian here).<cite>sdcfgy</cite></blockquote></div>
+          <p class="drawer-footer"><a href="#dossier-4">View in Dossier ↓</a></p>
+        </div>
+      </details>
+    </div>
+    </div>
+  </section>
+  <section id="story-5" class="spread arc-archive">
+    <div class="archive-head">
+      <span>ARCHIVE</span>
+      <span>N<sup>o</sup> 05</span>
+    </div>
+    <div class="kicker">Mechanics</div>
+    <h2>Animating Five Hundred Classic Mechanical Designs</h2>
+    <p class="story-meta">507movements.com &nbsp;·&nbsp; 591 pts &nbsp;·&nbsp; 74 comments</p>
+    <p class="lede">Henry T. Brown’s 1868 compendium of mechanical movements is finding new life through digital animation. This project preserves historical engineering principles by pairing original technical illustrations with modern, interactive motion demonstrations.</p>
+    <div class="spread-links"><a class="read-more" href="https://507movements.com/" target="_blank" rel="noopener">Read →</a><a class="read-more share-link" href="#" data-share-title="507 Mechanical Movements" data-share-url="https://507movements.com/">Share →</a>
+      <details class="analysis-drawer">
+        <summary class="btn-dossier">[ Analysis + ]</summary>
+        <div class="drawer-content">
+          
+          <h4>Technical Analysis</h4>
+          <div class="drawer-analysis">
+          <p>*507 Mechanical Movements* is a digital project dedicated to cataloging Henry T. Brown’s 1868 reference book, which serves as a foundational compendium of mechanical engineering designs. While the original work relied on static technical illustrations to explain various kinetic principles, this project aims to enhance the text by providing animated visualizations for each entry. The website currently hosts a partial collection of these animations, offering engineers and hobbyists a modernized, interactive way to study classical machine design. This effort is important because it preserves historical technical knowledge while utilizing contemporary web media to make complex mechanical concepts more intuitive for modern users.</p>
+          </div>
+          <h4>Reader Reactions</h4>
+<p class="camps-framing">The reaction was predominantly positive, with commenters treating the collection as both a useful historical reference and an enjoyable way to study mechanical motion. Criticism focused on labeling, incomplete or ambiguous animations, repetition among entries, and the lack of richer interactive explanations. Other threads connected the project with larger mechanism indexes, historical collections, games, lightweight web design, and potential AI or simulation applications.</p>
+<div class="camp"><p class="camp-label"><strong>Enthusiastic appreciation and practical use</strong> &mdash; Many commenters viewed the collection as a valuable resource for makers, engineers, and anyone seeking ways to generate useful motion from compact mechanisms. Several also expressed interest in completing or preserving the collection.</p><blockquote>This site is a treasure for anyone who has ever tried to get useful motion out of a small motor.<cite>akshay_akula</cite></blockquote>
+<blockquote>As a &quot;wannabe&quot; DIY engineer/maker and also in the 3d-printing hobby world, this is a wonderful resource...<cite>jjkaczor</cite></blockquote>
+<blockquote>I feel like this is a website that needs to be made available with one of those swiss army USB sticks for collecting useful knowledge in case of apocalypse. Very cool.<cite>magicmicah85</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Labeling and richer presentation</strong> &mdash; Some commenters wanted titles, standardized names, or more context so that individual mechanisms would be easier to understand outside the original book. Others suggested a more polished, explanatory treatment comparable to interactive educational projects.</p><blockquote>It&#x27;s a great collection and exploring it is fun, but it misses on titles / names of the given linkage or movement.<cite>wowczarek</cite></blockquote>
+<blockquote>These things don&#x27;t have names they have descriptions of how they work. But I see your point that some of them are described only in reference to another movement with a more complete description.<cite>engineer_22</cite></blockquote>
+<blockquote>Now imagine if each of them got the ciechanow.ski treatment<cite>mohamedkoubaa</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Incomplete, repetitive, or ambiguous entries</strong> &mdash; Commenters identified unfinished animations, possible visual problems, and substantial similarity among entries. Suggestions included completing requested examples, correcting confusing animations, and distilling the collection to more distinct concepts.</p><blockquote>This is great, but repetitive. A lot of them are minor variances on a previous example. Is there a shorter list that distills it down to novel examples of the major concepts?<cite>rkagerer</cite></blockquote>
+<blockquote>Many of these aren&#x27;t animated... which gives me a great(?) idea for a new AI benchmark: &quot;Animate the mechanical movement at this URL: ...&quot; Way more telling that &quot;draw a pelican on a bicycle&quot;<cite>emacdona</cite></blockquote>
+<blockquote>The first two examples I looked at ( https://507movements.com/mm_016.html and https://507movements.com/mm_015.html ) have the ropes partially going in the wrong direction.<cite>frnz</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Related indexes and physical predecessors</strong> &mdash; Several commenters broadened the resource with larger online mechanism catalogs, video channels, older design books, and physical museum or university collections. These references were generally presented as complementary ways to explore similar material.</p><blockquote>Indexed and filterable index of over 4000 visualised mechanisms by thang010146 on YouTube<cite>hansihe</cite></blockquote>
+<blockquote>Of possible interest Mechanisms in Modern Engineering Design: A Handbook for Engineers, Designers and Inventors by I. I. Artobolevsky. In 5 volumes and seven books<cite>the-mitr</cite></blockquote>
+<blockquote>They are so fun to see since there&#x27;s a button you can toggle to activate them. My kid loves watching them go.<cite>andrewcl</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Interactive simulation and AI applications</strong> &mdash; Commenters proposed using the collection as training data or a benchmark for mechanical reasoning, noting that current generative systems often mishandle moving parts. Others imagined 3D simulations with formulas, modular components, and adjustable parameters.</p><blockquote>That&#x27;s a good training set for animation AIs. Image generators are terrible at mechanical understanding at the moment.<cite>Animats</cite></blockquote>
+<blockquote>Also, set up formulas for calculating speed, torque, forces etc, of each system. Then create a modular simulation library and point and click simulator where all the component variants are covered so that the user can piece new systems together using those components.<cite>worldsayshi</cite></blockquote>
+<blockquote>Tried it with chatgpt, and of course it failed. It showed pulleys and belt rotating in opposite directions for a simple two pulley coupling.<cite>KuriousCat</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Games, lightweight web design, and preservation</strong> &mdash; The animations evoked construction-puzzle games for some commenters, while others appreciated the site’s simple, focused design and its continuity with older interactive educational media. These reactions emphasized accessibility, durability, and playful exploration.</p><blockquote>It makes me want to find a way to boot up The Incredible Machine [0], so many hours spent on TIM and TIM2 back in the day.<cite>jihadjihad</cite></blockquote>
+<blockquote>I&#x27;d love to play a game that uses these as building blocks. Is there anything that approaches it?<cite>taftster</cite></blockquote>
+<blockquote>Honestly, I miss old-style internet sites like this. Nothing fancy, just good niched out information. No 300 MB loads for something that should be simple.<cite>mklyachman</cite></blockquote></div>
+          <p class="drawer-footer"><a href="#dossier-5">View in Dossier ↓</a></p>
+        </div>
+      </details>
+    </div>
+  </section>
+  <section id="story-6" class="spread arc-blueprint">
+    <div class="corner tl">+</div><div class="corner tr">+</div>
+    <div class="corner bl">+</div><div class="corner br">+</div>
+    <div class="numeral">06</div>
+    <div class="kicker">Retro Computing</div>
+    <h2>Modernizing Iconic Star Wars Flight Simulators</h2>
+    <p class="story-meta">github.com &nbsp;·&nbsp; 167 pts &nbsp;·&nbsp; 41 comments</p>
+    <p class="lede">Open-source projects are bringing vintage cockpit experiences to contemporary hardware with native ports of classic space sims. Enthusiasts can now enjoy high-refresh-rate rendering and modern input support while preserving the original logic of the 1990s titles.</p>
+    <div class="spread-links"><a class="read-more" href="https://github.com/elyosh/OpenTIE/" target="_blank" rel="noopener">Read →</a><a class="read-more share-link" href="#" data-share-title="Show HN: OpenTIE and OpenXWA, Modern Ports of Tie Fighter and X-Wing Alliance" data-share-url="https://github.com/elyosh/OpenTIE/">Share →</a>
+      <details class="analysis-drawer">
+        <summary class="btn-dossier">[ Analysis + ]</summary>
+        <div class="drawer-content">
+          
+          <h4>Technical Analysis</h4>
+          <div class="drawer-analysis">
+          <p>OpenTIE and OpenXWA are new open-source reimplementations of the classic *Star Wars* space simulators *TIE Fighter* and *X-Wing Alliance*, designed to run natively on Windows, macOS, and Linux. By utilizing existing game data from original CD-ROM or Windows releases, these projects allow users to combine different version assets, such as the 1995 iMUSE adaptive soundtrack and 1998 3D flight engines, for a customizable retro experience. The engines feature modern technical enhancements including high-refresh-rate support, improved rendering pipelines with ambient occlusion and FSR upscaling, and native gamepad compatibility. This is significant for the retro gaming community as it preserves these legacy titles on modern hardware while providing graphical and auditory fidelity that was previously impossible on original systems.</p>
+          </div>
+          <h4>Reader Reactions</h4>
+<p class="camps-framing">The discussion was overwhelmingly enthusiastic and nostalgic, with commenters recalling the games’ immersive cockpit atmosphere, distinctive hardware and sound, and formative role in their childhoods. The main practical debate concerned native reverse-engineered ports versus emulation, while smaller threads addressed combining releases and assets, introducing the games to younger players, related conversion projects, VR, mobile, and web distribution.</p>
+<div class="camp"><p class="camp-label"><strong>Nostalgic enthusiasm and preservation</strong> &mdash; Commenters welcomed the opportunity to revisit the games on modern systems and recalled how their hardware, music, and atmosphere made older PC gaming feel especially immersive.</p><blockquote>So much joy being at that age and in that era of computing/gaming.<cite>chucksmash</cite></blockquote>
+<blockquote>The original Star Wars: TIE Fighter was one of the first computer games I played as a teenager.<cite>felixding</cite></blockquote>
+<blockquote>Having a Thrustmaster and these games made me feel like we really might have space travel in our future.<cite>frog42</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Native port versus emulation</strong> &mdash; Commenters debated whether emulation was sufficient, with proponents of native reimplementation emphasizing reduced installation friction, modern display support, improved lighting, compatibility, and controls.</p><blockquote>A complete rewrite eliminates all of that awkward installer friction, so long as you have the necessary game files.<cite>hadlock</cite></blockquote>
+<blockquote>Many of them have added support for different display aspects, since most retro games are tied to 4:3.<cite>qingcharles</cite></blockquote>
+<blockquote>Why not just run it in an emulator or VM? Is there tangible benefit to reimplementing everything, or is it just an intellectual exercise?<cite>hackyhacky</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Combining releases and related projects</strong> &mdash; Some commenters valued combining the strongest features of different releases, while others highlighted conversions and reimplementations that extend the original games or engines.</p><blockquote>Being able to merge the two versions together is a killer feature.<cite>mysterydip</cite></blockquote>
+<blockquote>I personally like to play with the graphs of the Totally Games version of Tie Fighter but with the iMuse music of the original. it&#x27;s the best experience.<cite>Zardoz84</cite></blockquote>
+<blockquote>There’s also a great mod for the original x wing game that adds beautiful new models and textures.<cite>darthcircuit</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Passing retro gaming to the next generation</strong> &mdash; The discussion considered whether children can still form deep attachments to long-form games, with commenters noting both the pressures of short-form media and the ability of older games to engage children when introduced to them.</p><blockquote>I wonder if immersion in fiction (interactive or otherwise) is lower nowadays, given the rise of dopamine-saturating short-form content like scrolling.<cite>dmos62</cite></blockquote>
+<blockquote>So yeah, it is possible to get them into it (just dragging him away from minecraft is hard haha).<cite>marak830</cite></blockquote>
+<blockquote>There&#x27;s a lot of middle ground between doom-scrolling type content and a 10 hour block of non-stop immersion.<cite>jbstack</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Immersive hardware and VR</strong> &mdash; Commenters connected the games’ appeal to physical flight controls and cockpit equipment, and some discussed extending the experience into VR through new projects or modes.</p><blockquote>May need to find a modern HOTAS setup and immerse myself in these.<cite>electric_mayhem</cite></blockquote>
+<blockquote>So much so that I made a VR clone of sorts Rogue Stargun<cite>LarsDu88</cite></blockquote>
+<blockquote>Proper gamepad support would be clutch<cite>pdntspa</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Requests for broader modern platforms</strong> &mdash; A smaller group expressed interest in mobile, browser, or modern games with a similar feel, while replies noted the installation and copyright complications of distributing original game data.</p><blockquote>I think I would really like a Tie Fighter mobile port.<cite>xyzzy_plugh</cite></blockquote>
+<blockquote>Would be cool to have a web port of this.<cite>modeless</cite></blockquote>
+<blockquote>Although it&#x27;s already 20 years old and not very recent, have you tried Freelancer?<cite>shellwizard</cite></blockquote></div>
+          <p class="drawer-footer"><a href="#dossier-6">View in Dossier ↓</a></p>
+        </div>
+      </details>
+    </div>
+  </section>
+  <section id="story-7" class="spread arc-pastel-playful">
+    <div class="alpha-grid"><span>A</span><span>B</span><span>C</span><span>D</span><span>E</span><span>F</span><span>G</span><span>H</span><span>I</span><span>J</span><span>K</span><span>L</span><span>M</span></div>
+    <div class="alpha-grid" style="top: auto; bottom: 0;"><span>N</span><span>O</span><span>P</span><span>Q</span><span>R</span><span>S</span><span>T</span><span>U</span><span>V</span><span>W</span><span>X</span><span>Y</span><span>Z</span></div>
+    <div class="numeral">07</div>
+    <div class="kicker">Embodied AI</div>
+    <h2>Microduck Brings Simulation-Based Robotics to Desktops</h2>
+    <p class="story-meta">pollen-robotics.com &nbsp;·&nbsp; 679 pts &nbsp;·&nbsp; 215 comments</p>
+    <p class="lede">Designed for accessibility, the Microduck platform allows researchers to test complex reinforcement learning policies on affordable physical hardware. By bridging the gap between MuJoCo simulations and real-world movement, it provides a playground for rapid robotic iteration.</p>
+    <div class="spread-links"><a class="read-more" href="https://pollen-robotics.com/microduck/" target="_blank" rel="noopener">Read →</a><a class="read-more share-link" href="#" data-share-title="Microduck" data-share-url="https://pollen-robotics.com/microduck/">Share →</a>
+      <details class="analysis-drawer">
+        <summary class="btn-dossier">[ Analysis + ]</summary>
+        <div class="drawer-content">
+          
+          <h4>Technical Analysis</h4>
+          <div class="drawer-analysis">
+          <p>Pollen Robotics has unveiled &quot;Microduck,&quot; a 25-centimeter open-source bipedal robot designed to make reinforcement learning (RL) accessible to enthusiasts and researchers. Priced at $399, the hardware includes a camera, LiDAR, and onboard processing, allowing users to train locomotion and manipulation behaviors in a MuJoCo simulation before deploying them to the physical unit. By providing a transparent software stack and a community-driven platform for sharing custom policies, the project aims to bridge the gap between simulation and real-world robotics. This initiative is significant because it lowers the barrier to entry for hands-on experimentation with embodied AI, enabling users to iterate on complex motor skills in an affordable, desktop-friendly format.</p>
+          </div>
+          <h4>Reader Reactions</h4>
+<p class="camps-framing">Commenters were broadly interested in Microduck as an accessible, programmable robotics platform, particularly for reinforcement-learning experiments and hobbyist tinkering. The main disagreement was whether its hackability justified the purchase or whether its limited capabilities, short battery life, and uncertain delivery made it an expensive toy. Discussion also covered comparisons with other robots, the project’s open-source claims, privacy and presentation issues, and whether robot pets could meaningfully replace living animals.</p>
+<div class="camp"><p class="camp-label"><strong>Enthusiastic hobbyist and developer platform</strong> &mdash; Supporters valued the working simulator, MuJoCo-based tooling, sim-to-real workflow, and opportunity to experiment with gaits and behaviors without the setup burden of larger robotics frameworks such as Isaac.</p><blockquote>Having tried (and failed) to use Issac to do the same thing, the fact that their simulator actually works out of the box, &quot;batteries included&quot;, is a big deal for home hobbyists.<cite>hadlock</cite></blockquote>
+<blockquote>This actually seems awesome, just going through the video on their site made me burst out with 100 different ways in which I would tinker with it, spend time in learning different gaits, some RL or some tricks to have it jump or do a back flip<cite>martianvoid</cite></blockquote>
+<blockquote>Cute, and quite something if the sim-to-real pipeline is as smooth as we all might hope.<cite>unprovable</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Toy versus practical household utility</strong> &mdash; Some commenters considered Microduck mainly a novelty or learning toy because it has no arms, limited battery life, and few obvious useful capabilities. Others proposed that owners could program practical functions such as patrol, monitoring, automation, and autonomous charging.</p><blockquote>I would describe the Microduck as more of a toy than Beni. Autonomous cameraman is a real application that Beni performs out of the box. I think you&#x27;ll struggle to get Microduck to do anything genuinely useful.<cite>modeless</cite></blockquote>
+<blockquote>This is a dust magnet after the first few days of excitement. An expensive dust magent.<cite>onemoresoop</cite></blockquote>
+<blockquote>Basic great usecase (not just fun things): IF you can control it remote, you can check your flat if you are gone for a little bit longer.<cite>Zylokloto</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Comparisons with other small robot platforms</strong> &mdash; Commenters compared Microduck with Beni, Open Duck Mini, Reachy Mini, RoboRacer, and other open robots. The comparisons emphasized Microduck’s developer orientation and hackability against competitors’ sturdiness, existing applications, assembly experience, or broader availability.</p><blockquote>The Beni robot is just a toy, it&#x27;s just connect the app and drive it around, record videos and do some fancy tricks like flips. It is not meant to be a platform you program yourself. The Microduck is meant to be a hacker toy.<cite>Philip-J-Fry</cite></blockquote>
+<blockquote>I found a few open-source small bipedal robots on the internet. There are actually many open-source robots available:<cite>num42</cite></blockquote>
+<blockquote>wonder how it compares to https://github.com/apirrone/Open_Duck_Mini (besides being a lot easier to put together)<cite>ehaveman</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Hardware, delivery, and openness caution</strong> &mdash; Skeptics questioned the Kickstarter timeline, first-generation reliability, carpet performance, battery life, import costs, future subscriptions, and whether all hardware files and parts lists were genuinely open. Some also worried that changes in corporate ownership could affect long-term support.</p><blockquote>Personally I wouldn&#x27;t choose one that hasn&#x27;t shipped. Hardware projects are notorious for delivering late, with fewer features, or not at all. Microduck looks amazing, but the &quot;Ships before Christmas 2026&quot; is begging to be blown past.<cite>tyre</cite></blockquote>
+<blockquote>I couldn’t find hardware open source. If only I could 3d print and build it myself, that would be hell of a project.<cite>cwiz</cite></blockquote>
+<blockquote>I like the big OPEN SOURCE words all over the place, but is the case and full part list open anywhere? I honestly couldnt spot them on github.<cite>protocolture</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Privacy and product-presentation concerns</strong> &mdash; A smaller group focused on the camera, possible internet dependence, unclear offline behavior, dense documentation, keyboard-layout confusion, and an animation-heavy website that some found difficult or unpleasant to use.</p><blockquote>Does this work without an internet connection? It was unclear from the website.<cite>catlifeonmars</cite></blockquote>
+<blockquote>Does it work locally? I don&#x27;t want to have a camera robot in child&#x27;s room<cite>ibbtown</cite></blockquote>
+<blockquote>Help! I&#x27;m being assaulted by some kind of animated GIF and it makes my browser completely unresponsive. I had to kill that tab after clicking the link.<cite>zombot</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Robot pets and emotional-AI ethics</strong> &mdash; Some commenters welcomed robot pets as lower-maintenance companions that could avoid the burdens and suffering associated with animal ownership. Others argued that robots cannot replace biological relationships and objected to marketing simulated behavior as genuine emotion, particularly to vulnerable people or children.</p><blockquote>I think in the future we&#x27;ll have robot pets and look back in horror at how we enslaved animals out of their natural habitats and normalized (even glorified) it.<cite>bilater</cite></blockquote>
+<blockquote>If there was a robot alternative I&#x27;d jump on it. I think my brain would adjust fine to a convincingly-executed robotic cat.<cite>EvanAnderson</cite></blockquote>
+<blockquote>Because it’s a lie. And is pushing for even worse sycophantic products &gt; Emotional AI Support, Powered by Intelligence Targeting emotionally vulnerable people with AI promises is pretty disgusting<cite>dgellow</cite></blockquote></div>
+          <p class="drawer-footer"><a href="#dossier-7">View in Dossier ↓</a></p>
+        </div>
+      </details>
+    </div>
+  </section>
+  <section id="story-8" class="spread arc-product-plate">
+    <div class="product-chip">SPECS</div>
+    <div class="kicker">Speech Tech</div>
+    <h2>Google Releases High-Precision Gemini 3.5 Transcribe</h2>
+    <div class="product-rule"></div>
+    <p class="story-meta">blog.google &nbsp;·&nbsp; 299 pts &nbsp;·&nbsp; 97 comments</p>
+    <p class="lede">The latest transcription model achieves significant gains in latency and accuracy by refining how it processes complex background noise and jargon. Integrating deeply into developer APIs and consumer apps, the update standardizes intelligent voice interaction across the ecosystem.</p>
+    <div class="spread-links"><a class="read-more" href="https://blog.google/innovation-and-ai/models-and-research/gemini-models/gemini-3-5-transcribe/" target="_blank" rel="noopener">Read →</a><a class="read-more share-link" href="#" data-share-title="Gemini-3.5-Transcribe" data-share-url="https://blog.google/innovation-and-ai/models-and-research/gemini-models/gemini-3-5-transcribe/">Share →</a>
+      <details class="analysis-drawer">
+        <summary class="btn-dossier">[ Analysis + ]</summary>
+        <div class="drawer-content">
+          
+          <h4>Technical Analysis</h4>
+          <div class="drawer-analysis">
+          <p>Google has introduced Gemini 3.5 Transcribe, a high-precision speech-to-text model designed to handle background noise, complex jargon, and natural language disfluencies better than its predecessor, Chirp 3. Available through both real-time streaming and batch processing APIs, the model supports over 85 languages and features advanced capabilities like speaker attribution, custom vocabulary, and function calling to trigger external AI tasks. The launch marks a significant technical improvement, with independent benchmarks showing substantially lower word error rates and 70% faster latency than previous iterations. By integrating this technology into developer platforms and consumer surfaces like Gboard and the Gemini macOS app, Google aims to standardize intelligent, context-aware voice interaction across its ecosystem.</p>
+          </div>
+          <h4>Reader Reactions</h4>
+<p class="camps-framing">The discussion was strongly dependent on use case. Commenters differed over accuracy, latency, multilingual and domain-specific performance, faithful transcription versus helpful cleanup, and whether Google’s product matched practical needs such as diarization, reliability, pricing, and availability.</p>
+<div class="camp"><p class="camp-label"><strong>Strong Gemini performance</strong> &mdash; Some commenters found Gemini 3.5 Transcribe exceptionally accurate, fast, and well formatted in demanding personal use, although these were individual reports rather than shared evaluations.</p><blockquote>I am using it all day as a main dictation model, and I can say it&#x27;s the best model in terms of accuracy, latency, and formatting I have ever used.<cite>k9294</cite></blockquote>
+<blockquote>It works great in this scenario.<cite>sync</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Local and competing models remain preferable</strong> &mdash; Other commenters preferred Whisper, Voxtral, ElevenLabs, Soniox, or local dictation tools because of multilingual handling, technical vocabulary, cost, offline operation, or fit with their workflow.</p><blockquote>The only local model that satisfies me is Voxtral Mini 3b, the only paid API that is slightly better is eleven labs.<cite>Lucasoato</cite></blockquote>
+<blockquote>So far, for my needs, nothing could beat Whisper Large v3.<cite>jwr</cite></blockquote>
+<blockquote>Still more expensive and worse performing than ElevenLabs Scribe, unfortunately.<cite>dbbk</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Latency, benchmarks, and use-case tradeoffs</strong> &mdash; Real-time applications placed greater weight on latency, while meeting notes and voice-note transcription could prioritize accuracy. Commenters also questioned whether benchmark rankings captured multilingual real-world performance.</p><blockquote>At the moment, Soniox STT v5 is definitely the best, and I&#x27;m impressed by its performance.<cite>lnalx</cite></blockquote>
+<blockquote>If you&#x27;re transcribing meeting notes, latency is a non-issue.<cite>decimalenough</cite></blockquote>
+<blockquote>It doesn&#x27;t reach the frontier in either latency or accuracy for ai multilingual conversations.<cite>mariano54</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Faithful transcription versus smart cleanup</strong> &mdash; Some users valued filler removal, formatting, and correction passes, while others warned that smart mode could silently simplify precise wording or introduce sentence-boundary errors.</p><blockquote>But the main issue is when you want to say something precise with specific wording it might &quot;simplify&quot; it and break the meaning.<cite>Crystalin</cite></blockquote>
+<blockquote>My biggest complaint is that it inserts sentence breaks in random places, then fails to evaluate the result, even though it is obviously wrong.<cite>jeffbee</cite></blockquote>
+<blockquote>have another model do a pass to clean it up, saw a demo of local STT where someone did this, can fix a lot of things<cite>verdverm</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Noise, silence, and hybrid reliability</strong> &mdash; Robust behavior on silence and noisy audio was treated as a practical differentiator. Some commenters reported hallucinated repetitions from existing systems and used Whisper-plus-Gemini pipelines to combine timestamps with cleaner text.</p><blockquote>For this reason, we&#x27;ve moved back to Whisper for timestamp accuracy and then Gemini Flash for transcription correction.<cite>film42</cite></blockquote>
+<blockquote>I didn&#x27;t get any hallucinations though.<cite>sync</cite></blockquote>
+<blockquote>After that you can transfer the timestamps from whisper to the timestamp-less Gemini text, by looking for runs of identical words in both and fudging timestamps for the other words I&#x27;m between a bit.<cite>Doohickey-d</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Product limitations and Google ecosystem friction</strong> &mdash; Practical objections included limited speaker diarization, unclear rollout and device support, difficult Google Cloud billing, and announcements whose function-calling language appeared to conflate transcription with assistant behavior.</p><blockquote>Still no real time diarization beyond 3 people (and even then experimental) when others do it very well, like Soniox and Deepgram.<cite>satvikpendem</cite></blockquote>
+<blockquote>Annoying that they don&#x27;t include pricing info in new models<cite>mythz</cite></blockquote>
+<blockquote>The developer docs ( https://ai.google.dev/gemini-api/docs/models/gemini-3.5-tran... ) confirm that the Gemini 3.5 Transcribe model cannot in fact make function calls.<cite>ameliaquining</cite></blockquote></div>
+          <p class="drawer-footer"><a href="#dossier-8">View in Dossier ↓</a></p>
+        </div>
+      </details>
+    </div>
+  </section>
+  <section id="story-9" class="spread arc-notebook">
+    <div class="numeral">09</div>
+    <div class="kicker">Clinical Care</div>
+    <h2>Rethinking Approaches to Antidepressant Withdrawal</h2>
+    <p class="story-meta">newscientist.com &nbsp;·&nbsp; 141 pts &nbsp;·&nbsp; 127 comments</p>
+    <p class="lede">Growing evidence is forcing a clinical shift in how medical professionals handle the discontinuation of common antidepressants. Patients and researchers are leading the call for more cautious, individualized tapering plans to mitigate the risks of prolonged withdrawal symptoms.</p>
+    <div class="spread-links"><a class="read-more" href="https://www.newscientist.com/article/2584861-antidepressant-withdrawal-symptoms-are-prompting-a-radical-rethink-of-how-we-treat-depression/" target="_blank" rel="noopener">Read →</a><a class="read-more share-link" href="#" data-share-title="Doctors are finally learning to manage antidepressant withdrawal" data-share-url="https://www.newscientist.com/article/2584861-antidepressant-withdrawal-symptoms-are-prompting-a-radical-rethink-of-how-we-treat-depression/">Share →</a>
+      <details class="analysis-drawer">
+        <summary class="btn-dossier">[ Analysis + ]</summary>
+        <div class="drawer-content">
+          
+          <h4>Technical Analysis</h4>
+          <div class="drawer-analysis">
+          <p>Medical professionals are increasingly reevaluating the clinical management of antidepressant withdrawal as evidence suggests that tapering off SSRIs can cause severe, prolonged adverse effects that were previously underestimated. Driven by personal experiences and new research, experts like Dr. Mark Horowitz are challenging the long-standing assumption that these medications are entirely harmless or easily discontinued. This shift in perspective is prompting medical institutions to update their guidance on how to safely navigate treatment cessation to prevent debilitating withdrawal symptoms. Ultimately, this development represents a significant move toward more cautious prescribing practices and a greater emphasis on addressing the long-term dependency risks associated with common mental health treatments.</p>
+          </div>
+          <h4>Reader Reactions</h4>
+<p class="camps-framing">The discussion was shaped primarily by divergent personal experiences: some commenters reported severe, prolonged withdrawal and inadequate medical guidance, while others described mild withdrawal and substantial benefits. The main disagreements concerned how common serious withdrawal is, how effective antidepressants are, and whether prescribing should be recalibrated or substantially reduced. Commenters also debated individualized tapering, continuity of care, and the relative roles of medication, therapy, exercise, and other treatments.</p>
+<div class="camp"><p class="camp-label"><strong>Withdrawal is real, underdisclosed, and often mishandled</strong> &mdash; Commenters described brain zaps, panic, severe mood changes, cognitive problems, and prolonged difficulty stopping medication. They criticized inadequate warnings and abrupt or overly aggressive tapering plans.</p><blockquote>There is a real lack of transparency in communicating some of the long term impacts of SSRIs to new patients.<cite>bb123</cite></blockquote>
+<blockquote>I had panic attacks almost every day while I was reducing the dosage.<cite>snailmailman</cite></blockquote>
+<blockquote>I&#x27;ve been on 40mg citalopram for about 20 years now. I&#x27;ve tried a few times to come off either tapering or cold turkey and in all cases it&#x27;s been horrendous.<cite>drayfield</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Effects vary widely, and many people benefit</strong> &mdash; Other commenters reported little or manageable withdrawal and credited antidepressants with meaningful or life-changing improvements. They emphasized that individual responses differ substantially.</p><blockquote>Not downplaying the withdrawal effects for some people, but they’re not as catastrophic as this article suggests for many (perhaps most).<cite>sandcat_</cite></blockquote>
+<blockquote>Lexapro, noted in the article, was literally life changing for me.<cite>garciasn</cite></blockquote>
+<blockquote>Because they definitely work for me and I doubt a placebo could have such a large effect on the 48 hour stomach pains I used to get alongside my frequent panic attacks.<cite>justonceokay</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Tapering should be individualized and medically supported</strong> &mdash; Several commenters regarded slower, tolerance-based tapering as basic clinical practice. They favored smaller reductions, liquid formulations, pauses when symptoms emerge, and follow-up rather than abrupt discontinuation.</p><blockquote>Rate is individualized and determined by the patient&#x27;s tolerance.<cite>matheusmoreira</cite></blockquote>
+<blockquote>Use liquid medication for more granular dosing.<cite>matheusmoreira</cite></blockquote>
+<blockquote>For something prescribed to get someone through a temporary crisis, &quot;how and when do we get you back off this safely?&quot; should probably be discussed at the beginning, not years later when the patient decides to stop.<cite>KurSix</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Prescribing should be recalibrated rather than abandoned</strong> &mdash; A centrist position held that antidepressants can be reasonable, especially in severe cases, but that their benefits and harms have been communicated inaccurately. Commenters favored better measurement, periodic reassessment, and more careful selection of patients.</p><blockquote>We don&#x27;t want to get rid of them, we just need to recalibrate prescribing, and also to properly assess cessation at intervals more frequently than we have been.<cite>D-Machine</cite></blockquote>
+<blockquote>I wouldn&#x27;t say anti-depressants should be first-line treatments for ordinary depression, but for severe depression, I think they are a very reasonable first-line option.<cite>D-Machine</cite></blockquote>
+<blockquote>They’re just a medical treatment, with pluses and minuses.<cite>wat10000</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Medication should be combined with therapy, lifestyle changes, or alternatives</strong> &mdash; Commenters argued that medication is not a standalone cure. Some emphasized that antidepressants can enable therapy and healthier routines, while others preferred exercise, social support, psychotherapy, or treatments such as TMS and esketamine in suitable cases.</p><blockquote>SSRIs make some portion of people functional enough where they can at least build a healthy life.<cite>121789</cite></blockquote>
+<blockquote>Ideally they’re prescribed along with other lifestyle changes like your walks. It doesn’t have to be an either-or.<cite>Aurornis</cite></blockquote>
+<blockquote>Too many therapists dismiss meds and too many psychiatrists dismiss therapy.<cite>burnte</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Some commenters prioritized broad skepticism or rejection of psychiatric medication</strong> &mdash; A skeptical camp questioned the average effectiveness of antidepressants, the chemical-imbalance narrative, and the medicalization of distress. One commenter extended this skepticism into a sweeping rejection of psychiatric medication and mainstream psychiatric categories.</p><blockquote>The other problem with SSRI treatment is that individually they are only barely better than placebo.<cite>jaggederest</cite></blockquote>
+<blockquote>I can’t believe we’ve normalized anti depressants as a society.<cite>googaar</cite></blockquote>
+<blockquote>I am 100% off drugs, and I feel great about that.<cite>ButlerianJihad</cite></blockquote></div>
+          <p class="drawer-footer"><a href="#dossier-9">View in Dossier ↓</a></p>
+        </div>
+      </details>
+    </div>
+  </section>
+  <section id="story-10" class="spread arc-caution-tape">
+    <div class="tag">SECURITY ADVISORY</div>
+    <div class="numeral">10</div>
+    <div class="kicker">CVE Watch</div>
+    <h2>FFmpeg Vulnerability Found Via AI-Assisted Fuzzing</h2>
+    <p class="story-meta">code.ffmpeg.org &nbsp;·&nbsp; 253 pts &nbsp;·&nbsp; 200 comments</p>
+    <p class="lede">A division-by-zero flaw in the FFmpeg VPK demuxer exposes a reliable denial-of-service vector for media processing applications. This discovery underscores the necessity of rigorous input validation for untrusted data streams in legacy libraries.</p>
+    <div class="spread-links"><a class="read-more" href="https://code.ffmpeg.org/FFmpeg/FFmpeg/issues/24290" target="_blank" rel="noopener">Read →</a><a class="read-more share-link" href="#" data-share-title="We found a division by zero bug in FFmpeg with a vibecoded fuzzer" data-share-url="https://code.ffmpeg.org/FFmpeg/FFmpeg/issues/24290">Share →</a>
+      <details class="analysis-drawer">
+        <summary class="btn-dossier">[ Analysis + ]</summary>
+        <div class="drawer-content">
+          
+          <h4>Technical Analysis</h4>
+          <div class="drawer-analysis">
+          <p>Researchers identified an integer divide-by-zero vulnerability in the FFmpeg VPK demuxer using a custom fuzzer, leading to a reliable denial-of-service condition. The bug occurs because the code fails to validate the number of audio channels before using that value as a divisor during packet processing, causing a crash when a malformed VPK file sets the channel count to zero. Although the issue does not facilitate arbitrary code execution or memory corruption, it allows attackers to crash any application that processes untrusted VPK streams with FFmpeg. The find highlights the continued effectiveness of fuzzing in uncovering edge-case input handling flaws in widely used media processing libraries.</p>
+          </div>
+          <h4>Reader Reactions</h4>
+<p class="camps-framing">Reactions divided between enthusiasm for an inexpensive, AI-assisted fuzzer that uncovered a real flaw in legacy FFmpeg code and skepticism that the result was novel or practically significant. Discussion also addressed patch-review processes, the tradeoff between AI-assisted speed and software quality, and the accessibility costs of Anubis protection on the linked site.</p>
+<div class="camp"><p class="camp-label"><strong>Real but limited denial of service</strong> &mdash; Commenters generally agreed that malformed input can trigger a genuine crash, while disagreeing about its practical security impact. Some viewed it as a minor or self-inflicted denial of service, whereas others noted that services processing arbitrary uploads could be affected.</p><blockquote>It crashes because of input that should have been rejected for being invalid. How could that be construed as being benign?<cite>boomlinde</cite></blockquote>
+<blockquote>Because an attacker would not gain anything he not already has. This is basically local self-DOS.<cite>throwa356262</cite></blockquote>
+<blockquote>If you only expose your ffmpeg-based application to your own input then yes, of course it&#x27;s a self-DOS. But if you, say, expose it as a web service passing arbitrary user input to ffmpeg, that no longer holds.<cite>boomlinde</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Existing fix and project process</strong> &mdash; Several commenters noted that the issue had already been discussed and patched, raising concerns about FFmpeg’s review and merge process. Others defended reporting a reproducible failure separately from proposing a verified fix.</p><blockquote>A patch for this was submitted in April: https://lists.ffmpeg.org/archives/list/ffmpeg-devel@ffmpeg.o... Edit: And there was discussion about this back in 2024 as well<cite>aeyes</cite></blockquote>
+<blockquote>A patch was submitted, but apparently not merged.<cite>yorwba</cite></blockquote>
+<blockquote>A bug report just needs a proof of existence for the condition while a bug fix needs a proof of correctness.<cite>dclavijo</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>AI-assisted fuzzing is valuable</strong> &mdash; Supporters considered the low cost, speed, and persistence of AI-assisted harness development valuable even if the particular bug was simple. They emphasized that the resulting reproducible crash is more important than the novelty of the generation process.</p><blockquote>It’s very easy to send an AI agent on an open-ended bug hunt, and if it wastes a bunch of time and effort and finds nothing, no big deal.<cite>dabinat</cite></blockquote>
+<blockquote>I don&#x27;t care if you call it an over-engineered looping machine or what, there are concrete benefits to using LLMs for this.<cite>Supermancho</cite></blockquote>
+<blockquote>I find it pretty cool that a fuzzer thrown together this way actually found a bug in ffmpeg<cite>1saadcodes</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>The AI contribution is overhyped</strong> &mdash; Skeptics argued that the bug was a conventional parser-validation failure that humans, static analysis, or ordinary fuzzing could likely have found. They questioned whether generating malformed input demonstrated substantial technical capability.</p><blockquote>IDK seems like a bug that could&#x27;ve taken a human a few minutes at best to find.<cite>written-beyond</cite></blockquote>
+<blockquote>Nice find. The interesting part isn&#x27;t &quot;AI wrote the fuzzer.&quot; It&#x27;s that a cheap random harness still hits classical bugs in ancient parsers. Keep the corpus; throw away the hype.<cite>cpriest</cite></blockquote>
+<blockquote>Generating an incorrect input file seems to be the easiest task of all for any fuzzer. Generating correct input to get deep into the call stack and then finding something is the hard part.<cite>12j3afAv</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>AI improves speed more than quality</strong> &mdash; A middle position treated AI as useful for accelerating exploration, verification, and review while retaining human responsibility for understanding requirements and making architectural decisions. Critics warned that scaling code generation and automated review can also scale bloat, regressions, and technical debt.</p><blockquote>Finding the bugs with LLMs is easy. Reviewing the output, cleaning it up, and making sure it doesn&#x27;t break something else is the hard part.<cite>dmix</cite></blockquote>
+<blockquote>In my experience, there are two ways to use AI: speed or quality. Speed is where you give the AI a task to do and you review it; quality is where you write the code yourself and you get AI to review it. Both are valid for different situations.<cite>simonjuk</cite></blockquote>
+<blockquote>No one can keep up with the volume of code AI produces. We wont stop using AI. We will use AI to check AI.<cite>nonethewiser</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Anubis creates an access-versus-protection tradeoff</strong> &mdash; Many commenters reported that the proof-of-work challenge consumed excessive CPU, battery, or time, particularly on mobile devices and nonstandard configurations. Defenders viewed it as a privacy-preserving way to deter casual scraping, while others argued that its configuration excluded legitimate users.</p><blockquote>Thank you! I gave up after more than 2 whole minutes of waiting on a high-end smartphone. I&#x27;m not sure this keeps bots out, but it definitely keeps users out…<cite>timpera</cite></blockquote>
+<blockquote>It keeps casual users (which most bots masquerade as) out. For frequent users of that site it is a solve once access forever.<cite>vachina</cite></blockquote>
+<blockquote>happy to report my bots have no trouble with anubis or any other pow mechanism, little bit of deno and i&#x27;m right through.<cite>gguingff</cite></blockquote></div>
+          <p class="drawer-footer"><a href="#dossier-10">View in Dossier ↓</a></p>
+        </div>
+      </details>
+    </div>
+  </section>
+  <section id="dossier" class="dossier">
+    <div class="dossier-head">
+      <div class="tagline">Appendix</div>
+      <h2>The Dossier</h2>
+      <p class="intro">Full analysis and reactions for today's 10 stories. <a href="#top">↑ Back to the edition</a></p>
+    </div>
+    <article id="dossier-1" class="dossier-entry">
+      <div class="dossier-meta">N<sup>o</sup> 01 &nbsp;·&nbsp; Mint Pattern &nbsp;·&nbsp; Geometry</div>
+      <h3>Hilariously Fast Volume Computation with the Divergence Theorem</h3>
+      <p class="dossier-source">
+        <a href="https://alyssarosenzweig.ca/blog/hilariously-fast-volume-computation-with-the-divergence-theorem.html" target="_blank" rel="noopener">alyssarosenzweig.ca</a>
+        &nbsp;·&nbsp; 62 pts &nbsp;·&nbsp; 9 comments
+         &nbsp;·&nbsp; <a href='https://news.ycombinator.com/item?id=49476143' target='_blank' rel='noopener'>discussion</a>
+      </p>
+      <h4>Analysis</h4>
+      <p>This article presents a highly efficient $O(n)$ algorithm for calculating the volume of a closed, triangulated 3D mesh by applying the divergence theorem to convert a volume integral into a simplified surface integral. By expressing the volume as a sum of signed tetrahedral volumes defined by triangle vertices, the method replaces expensive numerical integration with a streamlined computation requiring only basic arithmetic. This approach is significantly faster than traditional sampling methods, enabling the processing of millions of triangles per frame even on low-power hardware like a Raspberry Pi. While the technique likely predates the author&#x27;s derivation, it remains a vital optimization for performance-critical 3D graphics applications that require real-time geometric analysis.</p>
+      <h4>Reader Reactions</h4>
+<p class="camps-framing">The reaction was largely positive but tempered by recognition that the computation uses familiar geometric techniques rather than representing an entirely new discovery. Commenters connected it to polygon-area formulas, CAD, surveying, and volume decompositions, while one remained uncertain about the article’s comparison with rendering and sampling. Others valued the exposition, suggested an intuitive connection to the divergence theorem, or responded playfully at a meta level.</p>
+<div class="camp"><p class="camp-label"><strong>Familiar standard geometry</strong> &mdash; Several commenters recognized the method as a signed sum of geometric volumes with precedents in polygon-area calculations, surveying, and CAD. They generally regarded it as sound but not especially novel, while allowing that its generality or presentation could still be useful.</p><blockquote>My belly says the naive formula is summing the triangle pyramid volumes to the origin with sign in orientation.<cite>elikoga</cite></blockquote>
+<blockquote>This kind of formula works based on the basic geometry.<cite>eterevsky</cite></blockquote>
+<blockquote>Yes I remember doing something like that in 90s for a survey/map engineering cad application.<cite>aaa_aaa</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Intuitive geometric interpretation</strong> &mdash; A minority focused on understanding the result geometrically and on possible mathematical implications, including the prospect of reversing the construction into an intuitive proof of the divergence theorem.</p><blockquote>I wonder if this could be reversed to give an intuitive “proof” of the divergence theorem.<cite>xigoi</cite></blockquote>
+<blockquote>Isn&#x27;t the same as just taking every triangle from the mesh, calculating the volume of a prism-like polytope between it and its projection on one the planes, and then taking it with a + sign if its projection is oriented in one direction, and with a - sign if it&#x27;s oriented in another?<cite>eterevsky</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Appreciation of concise, practical exposition</strong> &mdash; One commenter welcomed the combination of a simple algorithm, strong performance, and accessible presentation, especially in contrast to AI-generated or overcomplicated material.</p><blockquote>I love these kinds of posts. Simple, fast, AI-free, and I learn something new.<cite>arn3n</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Uncertainty about the article’s rendering comparison</strong> &mdash; A skeptical point concerned the claim that the formula is equivalent to rendering the mesh and sampling the render. The uncertainty focused on the explanation and framing rather than the core signed-volume calculation.</p><blockquote>No idea what the author means by &quot;which are equivalent to rendering the mesh and then sampling the render&quot;.<cite>elikoga</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Lighthearted and meta-level engagement</strong> &mdash; A few comments responded with humor, topical levity, or a playful question about a possible connection to the Asahi graphics project, followed by a dry suggestion that the attribution could be checked online.</p><blockquote>I&#x27;ll accept any kind of jocularity in the current climate!<cite>N_Lens</cite></blockquote>
+<blockquote>Did they also work on the graphics stack for the Asahi project?<cite>gigatexal</cite></blockquote>
+<blockquote>Sadly, there is no way to find out, f.ex. by a quick Google search.<cite>unkeen</cite></blockquote></div>
+    </article>
+    <article id="dossier-2" class="dossier-entry">
+      <div class="dossier-meta">N<sup>o</sup> 02 &nbsp;·&nbsp; Stat Hero &nbsp;·&nbsp; Infrastructure</div>
+      <h3>Saving 100 terabytes of memory by optimizing 1.1.1.1&#x27;s DNS cache</h3>
+      <p class="dossier-source">
+        <a href="https://blog.cloudflare.com/dns-cache-memory-optimization-1111/" target="_blank" rel="noopener">blog.cloudflare.com</a>
+        &nbsp;·&nbsp; 778 pts &nbsp;·&nbsp; 233 comments
+         &nbsp;·&nbsp; <a href='https://news.ycombinator.com/item?id=49468083' target='_blank' rel='noopener'>discussion</a>
+      </p>
+      <h4>Analysis</h4>
+      <p>Cloudflare recently optimized its &quot;Big Pineapple&quot; DNS infrastructure, which powers 1.1.1.1 and other services, by significantly reducing the memory footprint of its 250 billion cache entries. By implementing five key changes—such as replacing dynamic vectors with fixed-size boxes, packing bitflags, and storing DNS records in raw wire format—the engineering team successfully cut the per-entry memory footprint by over 50%. These technical refinements achieved a total reduction of 100 terabytes of system memory across their fleet while simultaneously improving insert throughput and lookup latency. This project is significant because it demonstrates how granular low-level memory management in Rust can yield substantial cost and performance gains at extreme scale, allowing the company to reinvest those resources into higher cache hit rates and improved service reliability.</p>
+      <h4>Reader Reactions</h4>
+<p class="camps-framing">The discussion was broadly appreciative of the engineering result, while differing over whether memory efficiency should have been designed in earlier or deferred until scale made the tradeoffs clear. Commenters also debated the difficulty of production migration and team-wide data-model discipline, Rust’s suitability for compact layouts, alternative representations, and the practical significance of saving 100 terabytes across Cloudflare’s fleet.</p>
+<div class="camp"><p class="camp-label"><strong>Optimize after proving the business</strong> &mdash; This camp prioritizes shipping a correct product, validating demand, and addressing resource costs when they become material constraints. Commenters also emphasized the opportunity cost of assigning scarce engineers to speculative optimization.</p><blockquote>This is the right way to deliver software. Produce working product first, validate the idea, stabilize the business, start generating profit, and then you can start optimizing your costs.<cite>lpapez</cite></blockquote>
+<blockquote>It is often not worth optimising in the early days.<cite>lbriner</cite></blockquote>
+<blockquote>Discussing trivial optimizations is a waste of valuable design time. You&#x27;re never going to &quot;forget&quot; an optimization. The running system will remind you when the optimization is actually needed.<cite>scott_meyer</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Design for scale earlier</strong> &mdash; This camp argues that obvious inefficiencies in a hot-path data structure should be addressed during initial design because later migrations are costly and accumulated waste can become substantial.</p><blockquote>Or optimize a bit earlier and prevent having to scale out to a bazillion systems.<cite>vanviegen</cite></blockquote>
+<blockquote>Why do people seem to think that optimization is something you only have to deal with once the software scales so much that 100s of TB of memory or disk space (or thousands of hours of processing time) are being wasted.<cite>didgetmaster</cite></blockquote>
+<blockquote>Using obviously better data structures the first time isn&#x27;t premature optimization.<cite>toast0</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>The hard part is rollout and organizational context</strong> &mdash; These commenters stress that production migration, compatibility, staggered deployment, and team-wide adherence to an evolutionary data-model strategy can dominate the difficulty of an optimization, even when the local code changes appear simple.</p><blockquote>This is a misconception when you including roll out as a part of the change too, changing data once its running in production is hard, changing the data structure is even harder and when you talk about making changes in cache which is at the hot path its probably the hardest.<cite>sandeepkd</cite></blockquote>
+<blockquote>The fact that it took them 4 months to roll out does not mean this is the hard part: it&#x27;s simply a coordinated rollout with incremental, staggered deployments and rate-limited migrations.<cite>necovek</cite></blockquote>
+<blockquote>There are a class of optimizations that can happen transparently. Those can happen at any time, and are fine to defer. Not all profiling and scalability improvements fall into this bucket.<cite>switchbak</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Scale makes ordinary systems work consequential</strong> &mdash; This camp treats the result as evidence that data layout, allocation strategy, and system programming remain important when modest per-record savings are multiplied across very large fleets.</p><blockquote>This is why system programming still matters.<cite>irdc</cite></blockquote>
+<blockquote>System programming always matters. Things are cheap until they aren&#x27;t one day.<cite>sdcfgy</cite></blockquote>
+<blockquote>We&#x27;re finally seeing more appreciation for this kind of engineering. Not everything needs to be solved by throwing more hardware at the problem<cite>1saadcodes</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Rust can support the approach with suitable abstractions</strong> &mdash; These commenters generally regard arenas, packed buffers, and offset-based layouts as expressible in Rust, while emphasizing that private invariants and safe wrapper types are needed to preserve useful safety guarantees.</p><blockquote>For the curious, this is technically possible in Rust using a dynamically sized type [1], but in practice is difficult and doesn&#x27;t really play nice with the rest of the language.<cite>mkeeter</cite></blockquote>
+<blockquote>Rust can do those tricks, but it&#x27;s true that it is hard than in C or Zig.<cite>afdbcreid</cite></blockquote>
+<blockquote>You can make a wrapper type that abstracts the offset lookup logic with a safe interface. If it&#x27;s a transparent struct then rust will compile it away into nothing but you still get the abstraction in your code.<cite>NIckGeek</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Alternative layouts and further representation optimizations</strong> &mdash; A smaller technical discussion proposed inline storage, arenas, compressed or prefix-shared keys, radix trees, B-trees, memory compression, and compact serialized formats, while noting that added indirection or CPU work can offset memory savings.</p><blockquote>Looks like they&#x27;re missing the obvious optimisation of putting the record data right after the CacheEntry members instead of allocating memory separately though.<cite>irdc</cite></blockquote>
+<blockquote>If a hashmap is used, then a radix tree (adaptive radix tree) would be better in saving memory space.<cite>ww520</cite></blockquote>
+<blockquote>I wonder at their scale, why wouldn’t it make sense to store the entries lightly compressed in memory?<cite>squirrellous</cite></blockquote></div>
+    </article>
+    <article id="dossier-3" class="dossier-entry">
+      <div class="dossier-meta">N<sup>o</sup> 03 &nbsp;·&nbsp; Editorial Op-Ed &nbsp;·&nbsp; Industry Analysis</div>
+      <h3>Small Models Have Arrived</h3>
+      <p class="dossier-source">
+        <a href="https://calv.info/small-models-have-arrived" target="_blank" rel="noopener">calv.info</a>
+        &nbsp;·&nbsp; 662 pts &nbsp;·&nbsp; 299 comments
+         &nbsp;·&nbsp; <a href='https://news.ycombinator.com/item?id=49466917' target='_blank' rel='noopener'>discussion</a>
+      </p>
+      <h4>Analysis</h4>
+      <p>Recent advancements in small, highly efficient AI models like &quot;luna&quot; are significantly lowering the cost of inference, making personalized consumer applications and high-frequency business automation economically viable for the first time. While frontier-level models remain essential for complex, breakthrough research, the author argues that the vast majority of professional and operational tasks require the speed and cost-effectiveness of smaller models rather than maximum intelligence. By drastically reducing token expenses, these compact models address the primary financial hurdle that has historically prevented AI-integrated software from achieving the unit economics of traditional consumer tech. This shift suggests that the future of enterprise AI will prioritize high-volume, responsive, and low-cost agents that handle routine &quot;token spewer&quot; work, mirroring the way companies naturally prioritize hiring efficient, reliable employees over exclusively seeking rare intellectual geniuses.</p>
+      <h4>Reader Reactions</h4>
+<p class="camps-framing">The discussion was broadly optimistic that small models can already deliver practical value for routine, narrowly scoped, and high-volume work, especially when paired with retrieval, testing, prompting, and human oversight. The main disagreement concerned whether their lower cost and latency compensate for the quality gap with frontier models, particularly on complex or unattended tasks. Commenters also debated whether local privacy and autonomy outweigh the capital and maintenance costs of self-hosting, and whether scaling general models will ultimately displace specialized systems.</p>
+<div class="camp"><p class="camp-label"><strong>Small models are already useful</strong> &mdash; Commenters reported that inexpensive small models are already effective for routine coding, summarization, tool use, and narrowly scoped applications, often making previously uneconomical products viable.</p><blockquote>Luna max is suitable for like 90% of the kinds of code changes I want to make.<cite>dgunay</cite></blockquote>
+<blockquote>Small, cheap, and hosted models. Luna (and open weight models and others) is ridiculously cheap @ $0.2/$1.2, easily accessible, and more than good enough for basic use cases (e.g. summarization, simple tool calling, etc.).<cite>wxw</cite></blockquote>
+<blockquote>The demand for fast, cheap, good enough models has always been borderline infinite, it’s the supply that’s going to take off.<cite>mattmaroon</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Frontier quality still matters</strong> &mdash; Others argued that larger models remain categorically more capable, especially for complex, high-value, or autonomous work, and that apparent equivalence should be established through production experience rather than assumed.</p><blockquote>Going from sol to luna is a downgrade. It is not a question, it is a fact.<cite>noodletheworld</cite></blockquote>
+<blockquote>I don’t care about the cost if the results are weak.<cite>butterisgood</cite></blockquote>
+<blockquote>Small models are good to the extent they are like big models, not to the extent that they are small.<cite>giraffe_lady</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Harnesses, routing, and responsiveness shape capability</strong> &mdash; A prominent middle position treated model performance as a systems question: decomposition, retrieval, tools, testing, human steering, and routing between models can make weaker models effective, while low latency improves interactive workflows.</p><blockquote>Unless you must 1-shot with no harness it’s the same amount of power, maybe more because the big “good” models make too many assumptions and tend to become rigid.<cite>LoveMistral</cite></blockquote>
+<blockquote>Luna as a doer, with a smarter model planning, can be a good compromise.<cite>usef-</cite></blockquote>
+<blockquote>My experience has been that responsiveness is value.<cite>arjie</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>The Bitter Lesson remains unsettled</strong> &mdash; Commenters disagreed about whether scaling general-purpose models will ultimately beat specialized systems, with some treating the Bitter Lesson as evidence for scale and others distinguishing capability from efficiency or pointing to current specialized-model advantages.</p><blockquote>This idea has failed to pan out time and time again - people have an instinct that hand-crafted finely-tuned specialized AI systems must be optimal, but throwing more scale and compute to something more generally smart always wins out.<cite>jimmaswell</cite></blockquote>
+<blockquote>The Bitter Lesson is all about large data-based approaches vs hand-crafted ones, it doesn&#x27;t say anything about language models not trained specifically for chess.<cite>Evidlo</cite></blockquote>
+<blockquote>No. The bitter lesson is about capabilities. GP is talking about efficiency.<cite>srcreigh</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Local models offer privacy and autonomy</strong> &mdash; Supporters of local inference valued privacy, offline resilience, predictable marginal cost, experimentation, and independence from providers, while acknowledging that suitable hardware is not widely available.</p><blockquote>Running small models locally beats wrestling with API latencies and rate limits. The compute trade-off is 100% worth it for the privacy and DX gains.<cite>pranav_tech26</cite></blockquote>
+<blockquote>Of course there will be a huge push to put all of it in the cloud but maybe we have a chance to take this technology home for good as it’s hard to imagine people will submit to this kind of surveillance required for AI home automation 24/7 (then again I might be wrong).<cite>throwaway63467</cite></blockquote>
+<blockquote>The percentage of people in the world who can afford the hardware is extremely low.<cite>9cb14c1ec0</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Hosted inference can be more economical</strong> &mdash; Some commenters argued that APIs are currently cheaper and simpler for modest workloads because self-hosting entails hardware, utilization, and operational overhead; local deployment is more compelling when privacy, scale, or latency justifies it.</p><blockquote>Local model hosting would force me into higher cost and overhead for less intelligence.<cite>jillesvangurp</cite></blockquote>
+<blockquote>Closed source is going to beat open source on price point due to scale (try buying a few GPUs to run your own model on...) and labs innovating across the full inference stack.<cite>scottgk</cite></blockquote>
+<blockquote>You could sell those and have enough money to pay for hosted inference for years.<cite>xnx</cite></blockquote></div>
+    </article>
+    <article id="dossier-4" class="dossier-entry">
+      <div class="dossier-meta">N<sup>o</sup> 04 &nbsp;·&nbsp; Rose Alert &nbsp;·&nbsp; Open Source</div>
+      <h3>Sovereign Tech Agency invests €500k in Flatpak</h3>
+      <p class="dossier-source">
+        <a href="https://modal.cx/blog/announcing-flatpak-sta/" target="_blank" rel="noopener">modal.cx</a>
+        &nbsp;·&nbsp; 147 pts &nbsp;·&nbsp; 79 comments
+         &nbsp;·&nbsp; <a href='https://news.ycombinator.com/item?id=49474786' target='_blank' rel='noopener'>discussion</a>
+      </p>
+      <h4>Analysis</h4>
+      <p>The German Sovereign Tech Fund has invested approximately €508,000 into the Flatpak project to accelerate the development of its Linux application sandboxing and security features over the next two years. This initiative, managed by the Modal Collective and a team of experienced contractors, aims to address long-standing technical limitations, such as granular audio permissions, network isolation, and the implementation of new portals for VPNs and password management. By bridging the security gap between Linux and proprietary mobile platforms, the project seeks to bolster the viability of image-based operating systems like SteamOS and Fedora Silverblue. This funding is critical for reducing the technical burden on overstretched maintainers and establishing a more robust, sustainable infrastructure for the open-source desktop ecosystem.</p>
+      <h4>Reader Reactions</h4>
+<p class="camps-framing">The discussion balanced support for public investment in open-source desktop infrastructure against doubts about Flatpak’s strategic importance and the sustainability of temporary grants. Much of the debate concerned whether Flatpak’s sandboxing offers a practical security foundation or instead creates confusing permissions, architectural coupling, and compatibility problems. Alternatives including distribution packages, bubblewrap, containers, and Nix were also considered.</p>
+<div class="camp"><p class="camp-label"><strong>Strategic public investment in Flatpak</strong> &mdash; Supporters viewed Flatpak as useful infrastructure for government Linux deployments, immutable systems, and a more consistent desktop application experience. Some also valued work on the underlying sandboxing protocols even if Flatpak itself does not persist indefinitely.</p><blockquote>Flatpak is proving to be a very important piece of underlying infrastructure if government agencies want to switch to Linux computers running distributed graphical applications for their workers.<cite>eigenspace</cite></blockquote>
+<blockquote>For a normal, non-technical user installing and updating software should be easy, and I believe that flatpak provides this.<cite>banger180</cite></blockquote>
+<blockquote>Flatpak itself might not survive, but the underlying protocols (portals, security contexts in wayland, pipewire, and d-bus, systemd-appd, …) are relevant for sandboxing on linux as a whole.<cite>ximm</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Skepticism about Flatpak’s strategic value</strong> &mdash; Critics questioned whether Flatpak is sufficiently important, durable, or relevant to technological sovereignty to justify public funding. Some preferred investment in more fundamental desktop or distribution infrastructure and viewed mobile-style sandboxing as an unsuitable priority.</p><blockquote>Great to see open source projects funded, but the value of Flatpak for tech sovereignty evades me somewhat.<cite>oytis</cite></blockquote>
+<blockquote>Waste of money. &quot;For Modal, a robust app sandboxing story is essential to creating a Free Software OS that is competitive with modern mobile platforms.&quot; Why? Focus should be desktop, not mobile.<cite>Nux</cite></blockquote>
+<blockquote>To be honest i don&#x27;t see how having flatpack going to help the (european/german) &quot;sovereign tech&quot; initiative.<cite>znpy</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Temporary grants versus sustainable support</strong> &mdash; Some commenters welcomed funding but considered recurring project grants an unstable way to support critical infrastructure. They advocated multi-year structural funding, direct employment, or ongoing contracts from organizations that depend on the software, while others defended the agency’s project-focused accelerator role.</p><blockquote>The projects need to apply repeatingly for funding. Wasting time and resources and chausing worries.<cite>ho_schi</cite></blockquote>
+<blockquote>There is also the option of structural funding (Strukturförderung in german) where important organizations receive multi-year contracts instead of short term project funding.<cite>ximm</cite></blockquote>
+<blockquote>The STA is basically trying to fill the role that venture capital plays in getting a startup ready to take on customers, except the STA doesn&#x27;t take an ownership stake, and they focus on FOSS.<cite>eigenspace</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Flatpak’s sandboxing is valuable but incomplete</strong> &mdash; Supporters considered the default isolation and portal model valuable, while acknowledging that legacy applications often request broad permissions or have not integrated the relevant desktop protocols. Flatseal and similar tools were seen as practical but imperfect ways to tighten access.</p><blockquote>By default, software has a sandboxed location that is exposed to the host in `~/.var/app/[APP]`.<cite>pinkwah</cite></blockquote>
+<blockquote>The fact that many apps choose to require excess permissions and can then bypass standard locations is a different matter<cite>kalaksi</cite></blockquote>
+<blockquote>If you are really concerened about this, you can use flatseal to limit the access that the application has.<cite>banger180</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Permission UX and security model are unacceptable</strong> &mdash; Critics argued that implicit permission grants and broad filesystem access undermine user trust in the sandbox. They preferred browser-like, just-in-time prompts and more granular controls, while noting that excessive prompts and application breakage make the design difficult in practice.</p><blockquote>Permissions being granted implicitly is awful for security.<cite>WhyNotHugo</cite></blockquote>
+<blockquote>Simple browser-like permissions that allow prompted overwrite would be WAY better!<cite>blizdiddy</cite></blockquote>
+<blockquote>Currently it&#x27;s a mishmash of separately using flatseal (and equivalents) and having your fingers crossed if you&#x27;re likely to exfiltrate or not your data.<cite>mhitza</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Architectural coupling and preference for alternatives</strong> &mdash; A more fundamental critique targeted Flatpak’s coupling of packaging, sandboxing, portals, and desktop services, as well as its ecosystem-wide ambitions. Some commenters preferred using bubblewrap or containers directly, or continuing with traditional distribution packages instead.</p><blockquote>Portals are just a terrible design for a security boundary: all interfaces clobbered up into one huge daemon, which also deals with a lot of the internals of Flatpak/Snap.<cite>WhyNotHugo</cite></blockquote>
+<blockquote>I use bubblewrap directly, never liked Flatpak.<cite>regexorcist</cite></blockquote>
+<blockquote>I&#x27;d rather they invested €500k in contributing to the maintenance of distribution packages so I don&#x27;t need to deal with Flatpak (on Debian here).<cite>sdcfgy</cite></blockquote></div>
+    </article>
+    <article id="dossier-5" class="dossier-entry">
+      <div class="dossier-meta">N<sup>o</sup> 05 &nbsp;·&nbsp; Archive &nbsp;·&nbsp; Mechanics</div>
+      <h3>507 Mechanical Movements</h3>
+      <p class="dossier-source">
+        <a href="https://507movements.com/" target="_blank" rel="noopener">507movements.com</a>
+        &nbsp;·&nbsp; 591 pts &nbsp;·&nbsp; 74 comments
+         &nbsp;·&nbsp; <a href='https://news.ycombinator.com/item?id=49465169' target='_blank' rel='noopener'>discussion</a>
+      </p>
+      <h4>Analysis</h4>
+      <p>*507 Mechanical Movements* is a digital project dedicated to cataloging Henry T. Brown’s 1868 reference book, which serves as a foundational compendium of mechanical engineering designs. While the original work relied on static technical illustrations to explain various kinetic principles, this project aims to enhance the text by providing animated visualizations for each entry. The website currently hosts a partial collection of these animations, offering engineers and hobbyists a modernized, interactive way to study classical machine design. This effort is important because it preserves historical technical knowledge while utilizing contemporary web media to make complex mechanical concepts more intuitive for modern users.</p>
+      <h4>Reader Reactions</h4>
+<p class="camps-framing">The reaction was predominantly positive, with commenters treating the collection as both a useful historical reference and an enjoyable way to study mechanical motion. Criticism focused on labeling, incomplete or ambiguous animations, repetition among entries, and the lack of richer interactive explanations. Other threads connected the project with larger mechanism indexes, historical collections, games, lightweight web design, and potential AI or simulation applications.</p>
+<div class="camp"><p class="camp-label"><strong>Enthusiastic appreciation and practical use</strong> &mdash; Many commenters viewed the collection as a valuable resource for makers, engineers, and anyone seeking ways to generate useful motion from compact mechanisms. Several also expressed interest in completing or preserving the collection.</p><blockquote>This site is a treasure for anyone who has ever tried to get useful motion out of a small motor.<cite>akshay_akula</cite></blockquote>
+<blockquote>As a &quot;wannabe&quot; DIY engineer/maker and also in the 3d-printing hobby world, this is a wonderful resource...<cite>jjkaczor</cite></blockquote>
+<blockquote>I feel like this is a website that needs to be made available with one of those swiss army USB sticks for collecting useful knowledge in case of apocalypse. Very cool.<cite>magicmicah85</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Labeling and richer presentation</strong> &mdash; Some commenters wanted titles, standardized names, or more context so that individual mechanisms would be easier to understand outside the original book. Others suggested a more polished, explanatory treatment comparable to interactive educational projects.</p><blockquote>It&#x27;s a great collection and exploring it is fun, but it misses on titles / names of the given linkage or movement.<cite>wowczarek</cite></blockquote>
+<blockquote>These things don&#x27;t have names they have descriptions of how they work. But I see your point that some of them are described only in reference to another movement with a more complete description.<cite>engineer_22</cite></blockquote>
+<blockquote>Now imagine if each of them got the ciechanow.ski treatment<cite>mohamedkoubaa</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Incomplete, repetitive, or ambiguous entries</strong> &mdash; Commenters identified unfinished animations, possible visual problems, and substantial similarity among entries. Suggestions included completing requested examples, correcting confusing animations, and distilling the collection to more distinct concepts.</p><blockquote>This is great, but repetitive. A lot of them are minor variances on a previous example. Is there a shorter list that distills it down to novel examples of the major concepts?<cite>rkagerer</cite></blockquote>
+<blockquote>Many of these aren&#x27;t animated... which gives me a great(?) idea for a new AI benchmark: &quot;Animate the mechanical movement at this URL: ...&quot; Way more telling that &quot;draw a pelican on a bicycle&quot;<cite>emacdona</cite></blockquote>
+<blockquote>The first two examples I looked at ( https://507movements.com/mm_016.html and https://507movements.com/mm_015.html ) have the ropes partially going in the wrong direction.<cite>frnz</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Related indexes and physical predecessors</strong> &mdash; Several commenters broadened the resource with larger online mechanism catalogs, video channels, older design books, and physical museum or university collections. These references were generally presented as complementary ways to explore similar material.</p><blockquote>Indexed and filterable index of over 4000 visualised mechanisms by thang010146 on YouTube<cite>hansihe</cite></blockquote>
+<blockquote>Of possible interest Mechanisms in Modern Engineering Design: A Handbook for Engineers, Designers and Inventors by I. I. Artobolevsky. In 5 volumes and seven books<cite>the-mitr</cite></blockquote>
+<blockquote>They are so fun to see since there&#x27;s a button you can toggle to activate them. My kid loves watching them go.<cite>andrewcl</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Interactive simulation and AI applications</strong> &mdash; Commenters proposed using the collection as training data or a benchmark for mechanical reasoning, noting that current generative systems often mishandle moving parts. Others imagined 3D simulations with formulas, modular components, and adjustable parameters.</p><blockquote>That&#x27;s a good training set for animation AIs. Image generators are terrible at mechanical understanding at the moment.<cite>Animats</cite></blockquote>
+<blockquote>Also, set up formulas for calculating speed, torque, forces etc, of each system. Then create a modular simulation library and point and click simulator where all the component variants are covered so that the user can piece new systems together using those components.<cite>worldsayshi</cite></blockquote>
+<blockquote>Tried it with chatgpt, and of course it failed. It showed pulleys and belt rotating in opposite directions for a simple two pulley coupling.<cite>KuriousCat</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Games, lightweight web design, and preservation</strong> &mdash; The animations evoked construction-puzzle games for some commenters, while others appreciated the site’s simple, focused design and its continuity with older interactive educational media. These reactions emphasized accessibility, durability, and playful exploration.</p><blockquote>It makes me want to find a way to boot up The Incredible Machine [0], so many hours spent on TIM and TIM2 back in the day.<cite>jihadjihad</cite></blockquote>
+<blockquote>I&#x27;d love to play a game that uses these as building blocks. Is there anything that approaches it?<cite>taftster</cite></blockquote>
+<blockquote>Honestly, I miss old-style internet sites like this. Nothing fancy, just good niched out information. No 300 MB loads for something that should be simple.<cite>mklyachman</cite></blockquote></div>
+    </article>
+    <article id="dossier-6" class="dossier-entry">
+      <div class="dossier-meta">N<sup>o</sup> 06 &nbsp;·&nbsp; Blueprint &nbsp;·&nbsp; Retro Computing</div>
+      <h3>Show HN: OpenTIE and OpenXWA, Modern Ports of Tie Fighter and X-Wing Alliance</h3>
+      <p class="dossier-source">
+        <a href="https://github.com/elyosh/OpenTIE/" target="_blank" rel="noopener">github.com</a>
+        &nbsp;·&nbsp; 167 pts &nbsp;·&nbsp; 41 comments
+         &nbsp;·&nbsp; <a href='https://news.ycombinator.com/item?id=49471965' target='_blank' rel='noopener'>discussion</a>
+      </p>
+      <h4>Analysis</h4>
+      <p>OpenTIE and OpenXWA are new open-source reimplementations of the classic *Star Wars* space simulators *TIE Fighter* and *X-Wing Alliance*, designed to run natively on Windows, macOS, and Linux. By utilizing existing game data from original CD-ROM or Windows releases, these projects allow users to combine different version assets, such as the 1995 iMUSE adaptive soundtrack and 1998 3D flight engines, for a customizable retro experience. The engines feature modern technical enhancements including high-refresh-rate support, improved rendering pipelines with ambient occlusion and FSR upscaling, and native gamepad compatibility. This is significant for the retro gaming community as it preserves these legacy titles on modern hardware while providing graphical and auditory fidelity that was previously impossible on original systems.</p>
+      <h4>Reader Reactions</h4>
+<p class="camps-framing">The discussion was overwhelmingly enthusiastic and nostalgic, with commenters recalling the games’ immersive cockpit atmosphere, distinctive hardware and sound, and formative role in their childhoods. The main practical debate concerned native reverse-engineered ports versus emulation, while smaller threads addressed combining releases and assets, introducing the games to younger players, related conversion projects, VR, mobile, and web distribution.</p>
+<div class="camp"><p class="camp-label"><strong>Nostalgic enthusiasm and preservation</strong> &mdash; Commenters welcomed the opportunity to revisit the games on modern systems and recalled how their hardware, music, and atmosphere made older PC gaming feel especially immersive.</p><blockquote>So much joy being at that age and in that era of computing/gaming.<cite>chucksmash</cite></blockquote>
+<blockquote>The original Star Wars: TIE Fighter was one of the first computer games I played as a teenager.<cite>felixding</cite></blockquote>
+<blockquote>Having a Thrustmaster and these games made me feel like we really might have space travel in our future.<cite>frog42</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Native port versus emulation</strong> &mdash; Commenters debated whether emulation was sufficient, with proponents of native reimplementation emphasizing reduced installation friction, modern display support, improved lighting, compatibility, and controls.</p><blockquote>A complete rewrite eliminates all of that awkward installer friction, so long as you have the necessary game files.<cite>hadlock</cite></blockquote>
+<blockquote>Many of them have added support for different display aspects, since most retro games are tied to 4:3.<cite>qingcharles</cite></blockquote>
+<blockquote>Why not just run it in an emulator or VM? Is there tangible benefit to reimplementing everything, or is it just an intellectual exercise?<cite>hackyhacky</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Combining releases and related projects</strong> &mdash; Some commenters valued combining the strongest features of different releases, while others highlighted conversions and reimplementations that extend the original games or engines.</p><blockquote>Being able to merge the two versions together is a killer feature.<cite>mysterydip</cite></blockquote>
+<blockquote>I personally like to play with the graphs of the Totally Games version of Tie Fighter but with the iMuse music of the original. it&#x27;s the best experience.<cite>Zardoz84</cite></blockquote>
+<blockquote>There’s also a great mod for the original x wing game that adds beautiful new models and textures.<cite>darthcircuit</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Passing retro gaming to the next generation</strong> &mdash; The discussion considered whether children can still form deep attachments to long-form games, with commenters noting both the pressures of short-form media and the ability of older games to engage children when introduced to them.</p><blockquote>I wonder if immersion in fiction (interactive or otherwise) is lower nowadays, given the rise of dopamine-saturating short-form content like scrolling.<cite>dmos62</cite></blockquote>
+<blockquote>So yeah, it is possible to get them into it (just dragging him away from minecraft is hard haha).<cite>marak830</cite></blockquote>
+<blockquote>There&#x27;s a lot of middle ground between doom-scrolling type content and a 10 hour block of non-stop immersion.<cite>jbstack</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Immersive hardware and VR</strong> &mdash; Commenters connected the games’ appeal to physical flight controls and cockpit equipment, and some discussed extending the experience into VR through new projects or modes.</p><blockquote>May need to find a modern HOTAS setup and immerse myself in these.<cite>electric_mayhem</cite></blockquote>
+<blockquote>So much so that I made a VR clone of sorts Rogue Stargun<cite>LarsDu88</cite></blockquote>
+<blockquote>Proper gamepad support would be clutch<cite>pdntspa</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Requests for broader modern platforms</strong> &mdash; A smaller group expressed interest in mobile, browser, or modern games with a similar feel, while replies noted the installation and copyright complications of distributing original game data.</p><blockquote>I think I would really like a Tie Fighter mobile port.<cite>xyzzy_plugh</cite></blockquote>
+<blockquote>Would be cool to have a web port of this.<cite>modeless</cite></blockquote>
+<blockquote>Although it&#x27;s already 20 years old and not very recent, have you tried Freelancer?<cite>shellwizard</cite></blockquote></div>
+    </article>
+    <article id="dossier-7" class="dossier-entry">
+      <div class="dossier-meta">N<sup>o</sup> 07 &nbsp;·&nbsp; Pastel Finale &nbsp;·&nbsp; Embodied AI</div>
+      <h3>Microduck</h3>
+      <p class="dossier-source">
+        <a href="https://pollen-robotics.com/microduck/" target="_blank" rel="noopener">pollen-robotics.com</a>
+        &nbsp;·&nbsp; 679 pts &nbsp;·&nbsp; 215 comments
+         &nbsp;·&nbsp; <a href='https://news.ycombinator.com/item?id=49462763' target='_blank' rel='noopener'>discussion</a>
+      </p>
+      <h4>Analysis</h4>
+      <p>Pollen Robotics has unveiled &quot;Microduck,&quot; a 25-centimeter open-source bipedal robot designed to make reinforcement learning (RL) accessible to enthusiasts and researchers. Priced at $399, the hardware includes a camera, LiDAR, and onboard processing, allowing users to train locomotion and manipulation behaviors in a MuJoCo simulation before deploying them to the physical unit. By providing a transparent software stack and a community-driven platform for sharing custom policies, the project aims to bridge the gap between simulation and real-world robotics. This initiative is significant because it lowers the barrier to entry for hands-on experimentation with embodied AI, enabling users to iterate on complex motor skills in an affordable, desktop-friendly format.</p>
+      <h4>Reader Reactions</h4>
+<p class="camps-framing">Commenters were broadly interested in Microduck as an accessible, programmable robotics platform, particularly for reinforcement-learning experiments and hobbyist tinkering. The main disagreement was whether its hackability justified the purchase or whether its limited capabilities, short battery life, and uncertain delivery made it an expensive toy. Discussion also covered comparisons with other robots, the project’s open-source claims, privacy and presentation issues, and whether robot pets could meaningfully replace living animals.</p>
+<div class="camp"><p class="camp-label"><strong>Enthusiastic hobbyist and developer platform</strong> &mdash; Supporters valued the working simulator, MuJoCo-based tooling, sim-to-real workflow, and opportunity to experiment with gaits and behaviors without the setup burden of larger robotics frameworks such as Isaac.</p><blockquote>Having tried (and failed) to use Issac to do the same thing, the fact that their simulator actually works out of the box, &quot;batteries included&quot;, is a big deal for home hobbyists.<cite>hadlock</cite></blockquote>
+<blockquote>This actually seems awesome, just going through the video on their site made me burst out with 100 different ways in which I would tinker with it, spend time in learning different gaits, some RL or some tricks to have it jump or do a back flip<cite>martianvoid</cite></blockquote>
+<blockquote>Cute, and quite something if the sim-to-real pipeline is as smooth as we all might hope.<cite>unprovable</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Toy versus practical household utility</strong> &mdash; Some commenters considered Microduck mainly a novelty or learning toy because it has no arms, limited battery life, and few obvious useful capabilities. Others proposed that owners could program practical functions such as patrol, monitoring, automation, and autonomous charging.</p><blockquote>I would describe the Microduck as more of a toy than Beni. Autonomous cameraman is a real application that Beni performs out of the box. I think you&#x27;ll struggle to get Microduck to do anything genuinely useful.<cite>modeless</cite></blockquote>
+<blockquote>This is a dust magnet after the first few days of excitement. An expensive dust magent.<cite>onemoresoop</cite></blockquote>
+<blockquote>Basic great usecase (not just fun things): IF you can control it remote, you can check your flat if you are gone for a little bit longer.<cite>Zylokloto</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Comparisons with other small robot platforms</strong> &mdash; Commenters compared Microduck with Beni, Open Duck Mini, Reachy Mini, RoboRacer, and other open robots. The comparisons emphasized Microduck’s developer orientation and hackability against competitors’ sturdiness, existing applications, assembly experience, or broader availability.</p><blockquote>The Beni robot is just a toy, it&#x27;s just connect the app and drive it around, record videos and do some fancy tricks like flips. It is not meant to be a platform you program yourself. The Microduck is meant to be a hacker toy.<cite>Philip-J-Fry</cite></blockquote>
+<blockquote>I found a few open-source small bipedal robots on the internet. There are actually many open-source robots available:<cite>num42</cite></blockquote>
+<blockquote>wonder how it compares to https://github.com/apirrone/Open_Duck_Mini (besides being a lot easier to put together)<cite>ehaveman</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Hardware, delivery, and openness caution</strong> &mdash; Skeptics questioned the Kickstarter timeline, first-generation reliability, carpet performance, battery life, import costs, future subscriptions, and whether all hardware files and parts lists were genuinely open. Some also worried that changes in corporate ownership could affect long-term support.</p><blockquote>Personally I wouldn&#x27;t choose one that hasn&#x27;t shipped. Hardware projects are notorious for delivering late, with fewer features, or not at all. Microduck looks amazing, but the &quot;Ships before Christmas 2026&quot; is begging to be blown past.<cite>tyre</cite></blockquote>
+<blockquote>I couldn’t find hardware open source. If only I could 3d print and build it myself, that would be hell of a project.<cite>cwiz</cite></blockquote>
+<blockquote>I like the big OPEN SOURCE words all over the place, but is the case and full part list open anywhere? I honestly couldnt spot them on github.<cite>protocolture</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Privacy and product-presentation concerns</strong> &mdash; A smaller group focused on the camera, possible internet dependence, unclear offline behavior, dense documentation, keyboard-layout confusion, and an animation-heavy website that some found difficult or unpleasant to use.</p><blockquote>Does this work without an internet connection? It was unclear from the website.<cite>catlifeonmars</cite></blockquote>
+<blockquote>Does it work locally? I don&#x27;t want to have a camera robot in child&#x27;s room<cite>ibbtown</cite></blockquote>
+<blockquote>Help! I&#x27;m being assaulted by some kind of animated GIF and it makes my browser completely unresponsive. I had to kill that tab after clicking the link.<cite>zombot</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Robot pets and emotional-AI ethics</strong> &mdash; Some commenters welcomed robot pets as lower-maintenance companions that could avoid the burdens and suffering associated with animal ownership. Others argued that robots cannot replace biological relationships and objected to marketing simulated behavior as genuine emotion, particularly to vulnerable people or children.</p><blockquote>I think in the future we&#x27;ll have robot pets and look back in horror at how we enslaved animals out of their natural habitats and normalized (even glorified) it.<cite>bilater</cite></blockquote>
+<blockquote>If there was a robot alternative I&#x27;d jump on it. I think my brain would adjust fine to a convincingly-executed robotic cat.<cite>EvanAnderson</cite></blockquote>
+<blockquote>Because it’s a lie. And is pushing for even worse sycophantic products &gt; Emotional AI Support, Powered by Intelligence Targeting emotionally vulnerable people with AI promises is pretty disgusting<cite>dgellow</cite></blockquote></div>
+    </article>
+    <article id="dossier-8" class="dossier-entry">
+      <div class="dossier-meta">N<sup>o</sup> 08 &nbsp;·&nbsp; Product Plate &nbsp;·&nbsp; Speech Tech</div>
+      <h3>Gemini-3.5-Transcribe</h3>
+      <p class="dossier-source">
+        <a href="https://blog.google/innovation-and-ai/models-and-research/gemini-models/gemini-3-5-transcribe/" target="_blank" rel="noopener">blog.google</a>
+        &nbsp;·&nbsp; 299 pts &nbsp;·&nbsp; 97 comments
+         &nbsp;·&nbsp; <a href='https://news.ycombinator.com/item?id=49468818' target='_blank' rel='noopener'>discussion</a>
+      </p>
+      <h4>Analysis</h4>
+      <p>Google has introduced Gemini 3.5 Transcribe, a high-precision speech-to-text model designed to handle background noise, complex jargon, and natural language disfluencies better than its predecessor, Chirp 3. Available through both real-time streaming and batch processing APIs, the model supports over 85 languages and features advanced capabilities like speaker attribution, custom vocabulary, and function calling to trigger external AI tasks. The launch marks a significant technical improvement, with independent benchmarks showing substantially lower word error rates and 70% faster latency than previous iterations. By integrating this technology into developer platforms and consumer surfaces like Gboard and the Gemini macOS app, Google aims to standardize intelligent, context-aware voice interaction across its ecosystem.</p>
+      <h4>Reader Reactions</h4>
+<p class="camps-framing">The discussion was strongly dependent on use case. Commenters differed over accuracy, latency, multilingual and domain-specific performance, faithful transcription versus helpful cleanup, and whether Google’s product matched practical needs such as diarization, reliability, pricing, and availability.</p>
+<div class="camp"><p class="camp-label"><strong>Strong Gemini performance</strong> &mdash; Some commenters found Gemini 3.5 Transcribe exceptionally accurate, fast, and well formatted in demanding personal use, although these were individual reports rather than shared evaluations.</p><blockquote>I am using it all day as a main dictation model, and I can say it&#x27;s the best model in terms of accuracy, latency, and formatting I have ever used.<cite>k9294</cite></blockquote>
+<blockquote>It works great in this scenario.<cite>sync</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Local and competing models remain preferable</strong> &mdash; Other commenters preferred Whisper, Voxtral, ElevenLabs, Soniox, or local dictation tools because of multilingual handling, technical vocabulary, cost, offline operation, or fit with their workflow.</p><blockquote>The only local model that satisfies me is Voxtral Mini 3b, the only paid API that is slightly better is eleven labs.<cite>Lucasoato</cite></blockquote>
+<blockquote>So far, for my needs, nothing could beat Whisper Large v3.<cite>jwr</cite></blockquote>
+<blockquote>Still more expensive and worse performing than ElevenLabs Scribe, unfortunately.<cite>dbbk</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Latency, benchmarks, and use-case tradeoffs</strong> &mdash; Real-time applications placed greater weight on latency, while meeting notes and voice-note transcription could prioritize accuracy. Commenters also questioned whether benchmark rankings captured multilingual real-world performance.</p><blockquote>At the moment, Soniox STT v5 is definitely the best, and I&#x27;m impressed by its performance.<cite>lnalx</cite></blockquote>
+<blockquote>If you&#x27;re transcribing meeting notes, latency is a non-issue.<cite>decimalenough</cite></blockquote>
+<blockquote>It doesn&#x27;t reach the frontier in either latency or accuracy for ai multilingual conversations.<cite>mariano54</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Faithful transcription versus smart cleanup</strong> &mdash; Some users valued filler removal, formatting, and correction passes, while others warned that smart mode could silently simplify precise wording or introduce sentence-boundary errors.</p><blockquote>But the main issue is when you want to say something precise with specific wording it might &quot;simplify&quot; it and break the meaning.<cite>Crystalin</cite></blockquote>
+<blockquote>My biggest complaint is that it inserts sentence breaks in random places, then fails to evaluate the result, even though it is obviously wrong.<cite>jeffbee</cite></blockquote>
+<blockquote>have another model do a pass to clean it up, saw a demo of local STT where someone did this, can fix a lot of things<cite>verdverm</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Noise, silence, and hybrid reliability</strong> &mdash; Robust behavior on silence and noisy audio was treated as a practical differentiator. Some commenters reported hallucinated repetitions from existing systems and used Whisper-plus-Gemini pipelines to combine timestamps with cleaner text.</p><blockquote>For this reason, we&#x27;ve moved back to Whisper for timestamp accuracy and then Gemini Flash for transcription correction.<cite>film42</cite></blockquote>
+<blockquote>I didn&#x27;t get any hallucinations though.<cite>sync</cite></blockquote>
+<blockquote>After that you can transfer the timestamps from whisper to the timestamp-less Gemini text, by looking for runs of identical words in both and fudging timestamps for the other words I&#x27;m between a bit.<cite>Doohickey-d</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Product limitations and Google ecosystem friction</strong> &mdash; Practical objections included limited speaker diarization, unclear rollout and device support, difficult Google Cloud billing, and announcements whose function-calling language appeared to conflate transcription with assistant behavior.</p><blockquote>Still no real time diarization beyond 3 people (and even then experimental) when others do it very well, like Soniox and Deepgram.<cite>satvikpendem</cite></blockquote>
+<blockquote>Annoying that they don&#x27;t include pricing info in new models<cite>mythz</cite></blockquote>
+<blockquote>The developer docs ( https://ai.google.dev/gemini-api/docs/models/gemini-3.5-tran... ) confirm that the Gemini 3.5 Transcribe model cannot in fact make function calls.<cite>ameliaquining</cite></blockquote></div>
+    </article>
+    <article id="dossier-9" class="dossier-entry">
+      <div class="dossier-meta">N<sup>o</sup> 09 &nbsp;·&nbsp; Notebook &nbsp;·&nbsp; Clinical Care</div>
+      <h3>Doctors are finally learning to manage antidepressant withdrawal</h3>
+      <p class="dossier-source">
+        <a href="https://www.newscientist.com/article/2584861-antidepressant-withdrawal-symptoms-are-prompting-a-radical-rethink-of-how-we-treat-depression/" target="_blank" rel="noopener">newscientist.com</a>
+        &nbsp;·&nbsp; 141 pts &nbsp;·&nbsp; 127 comments
+         &nbsp;·&nbsp; <a href='https://news.ycombinator.com/item?id=49472090' target='_blank' rel='noopener'>discussion</a>
+      </p>
+      <h4>Analysis</h4>
+      <p>Medical professionals are increasingly reevaluating the clinical management of antidepressant withdrawal as evidence suggests that tapering off SSRIs can cause severe, prolonged adverse effects that were previously underestimated. Driven by personal experiences and new research, experts like Dr. Mark Horowitz are challenging the long-standing assumption that these medications are entirely harmless or easily discontinued. This shift in perspective is prompting medical institutions to update their guidance on how to safely navigate treatment cessation to prevent debilitating withdrawal symptoms. Ultimately, this development represents a significant move toward more cautious prescribing practices and a greater emphasis on addressing the long-term dependency risks associated with common mental health treatments.</p>
+      <h4>Reader Reactions</h4>
+<p class="camps-framing">The discussion was shaped primarily by divergent personal experiences: some commenters reported severe, prolonged withdrawal and inadequate medical guidance, while others described mild withdrawal and substantial benefits. The main disagreements concerned how common serious withdrawal is, how effective antidepressants are, and whether prescribing should be recalibrated or substantially reduced. Commenters also debated individualized tapering, continuity of care, and the relative roles of medication, therapy, exercise, and other treatments.</p>
+<div class="camp"><p class="camp-label"><strong>Withdrawal is real, underdisclosed, and often mishandled</strong> &mdash; Commenters described brain zaps, panic, severe mood changes, cognitive problems, and prolonged difficulty stopping medication. They criticized inadequate warnings and abrupt or overly aggressive tapering plans.</p><blockquote>There is a real lack of transparency in communicating some of the long term impacts of SSRIs to new patients.<cite>bb123</cite></blockquote>
+<blockquote>I had panic attacks almost every day while I was reducing the dosage.<cite>snailmailman</cite></blockquote>
+<blockquote>I&#x27;ve been on 40mg citalopram for about 20 years now. I&#x27;ve tried a few times to come off either tapering or cold turkey and in all cases it&#x27;s been horrendous.<cite>drayfield</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Effects vary widely, and many people benefit</strong> &mdash; Other commenters reported little or manageable withdrawal and credited antidepressants with meaningful or life-changing improvements. They emphasized that individual responses differ substantially.</p><blockquote>Not downplaying the withdrawal effects for some people, but they’re not as catastrophic as this article suggests for many (perhaps most).<cite>sandcat_</cite></blockquote>
+<blockquote>Lexapro, noted in the article, was literally life changing for me.<cite>garciasn</cite></blockquote>
+<blockquote>Because they definitely work for me and I doubt a placebo could have such a large effect on the 48 hour stomach pains I used to get alongside my frequent panic attacks.<cite>justonceokay</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Tapering should be individualized and medically supported</strong> &mdash; Several commenters regarded slower, tolerance-based tapering as basic clinical practice. They favored smaller reductions, liquid formulations, pauses when symptoms emerge, and follow-up rather than abrupt discontinuation.</p><blockquote>Rate is individualized and determined by the patient&#x27;s tolerance.<cite>matheusmoreira</cite></blockquote>
+<blockquote>Use liquid medication for more granular dosing.<cite>matheusmoreira</cite></blockquote>
+<blockquote>For something prescribed to get someone through a temporary crisis, &quot;how and when do we get you back off this safely?&quot; should probably be discussed at the beginning, not years later when the patient decides to stop.<cite>KurSix</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Prescribing should be recalibrated rather than abandoned</strong> &mdash; A centrist position held that antidepressants can be reasonable, especially in severe cases, but that their benefits and harms have been communicated inaccurately. Commenters favored better measurement, periodic reassessment, and more careful selection of patients.</p><blockquote>We don&#x27;t want to get rid of them, we just need to recalibrate prescribing, and also to properly assess cessation at intervals more frequently than we have been.<cite>D-Machine</cite></blockquote>
+<blockquote>I wouldn&#x27;t say anti-depressants should be first-line treatments for ordinary depression, but for severe depression, I think they are a very reasonable first-line option.<cite>D-Machine</cite></blockquote>
+<blockquote>They’re just a medical treatment, with pluses and minuses.<cite>wat10000</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Medication should be combined with therapy, lifestyle changes, or alternatives</strong> &mdash; Commenters argued that medication is not a standalone cure. Some emphasized that antidepressants can enable therapy and healthier routines, while others preferred exercise, social support, psychotherapy, or treatments such as TMS and esketamine in suitable cases.</p><blockquote>SSRIs make some portion of people functional enough where they can at least build a healthy life.<cite>121789</cite></blockquote>
+<blockquote>Ideally they’re prescribed along with other lifestyle changes like your walks. It doesn’t have to be an either-or.<cite>Aurornis</cite></blockquote>
+<blockquote>Too many therapists dismiss meds and too many psychiatrists dismiss therapy.<cite>burnte</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Some commenters prioritized broad skepticism or rejection of psychiatric medication</strong> &mdash; A skeptical camp questioned the average effectiveness of antidepressants, the chemical-imbalance narrative, and the medicalization of distress. One commenter extended this skepticism into a sweeping rejection of psychiatric medication and mainstream psychiatric categories.</p><blockquote>The other problem with SSRI treatment is that individually they are only barely better than placebo.<cite>jaggederest</cite></blockquote>
+<blockquote>I can’t believe we’ve normalized anti depressants as a society.<cite>googaar</cite></blockquote>
+<blockquote>I am 100% off drugs, and I feel great about that.<cite>ButlerianJihad</cite></blockquote></div>
+    </article>
+    <article id="dossier-10" class="dossier-entry">
+      <div class="dossier-meta">N<sup>o</sup> 10 &nbsp;·&nbsp; Caution Tape &nbsp;·&nbsp; CVE Watch</div>
+      <h3>We found a division by zero bug in FFmpeg with a vibecoded fuzzer</h3>
+      <p class="dossier-source">
+        <a href="https://code.ffmpeg.org/FFmpeg/FFmpeg/issues/24290" target="_blank" rel="noopener">code.ffmpeg.org</a>
+        &nbsp;·&nbsp; 253 pts &nbsp;·&nbsp; 200 comments
+         &nbsp;·&nbsp; <a href='https://news.ycombinator.com/item?id=49468642' target='_blank' rel='noopener'>discussion</a>
+      </p>
+      <h4>Analysis</h4>
+      <p>Researchers identified an integer divide-by-zero vulnerability in the FFmpeg VPK demuxer using a custom fuzzer, leading to a reliable denial-of-service condition. The bug occurs because the code fails to validate the number of audio channels before using that value as a divisor during packet processing, causing a crash when a malformed VPK file sets the channel count to zero. Although the issue does not facilitate arbitrary code execution or memory corruption, it allows attackers to crash any application that processes untrusted VPK streams with FFmpeg. The find highlights the continued effectiveness of fuzzing in uncovering edge-case input handling flaws in widely used media processing libraries.</p>
+      <h4>Reader Reactions</h4>
+<p class="camps-framing">Reactions divided between enthusiasm for an inexpensive, AI-assisted fuzzer that uncovered a real flaw in legacy FFmpeg code and skepticism that the result was novel or practically significant. Discussion also addressed patch-review processes, the tradeoff between AI-assisted speed and software quality, and the accessibility costs of Anubis protection on the linked site.</p>
+<div class="camp"><p class="camp-label"><strong>Real but limited denial of service</strong> &mdash; Commenters generally agreed that malformed input can trigger a genuine crash, while disagreeing about its practical security impact. Some viewed it as a minor or self-inflicted denial of service, whereas others noted that services processing arbitrary uploads could be affected.</p><blockquote>It crashes because of input that should have been rejected for being invalid. How could that be construed as being benign?<cite>boomlinde</cite></blockquote>
+<blockquote>Because an attacker would not gain anything he not already has. This is basically local self-DOS.<cite>throwa356262</cite></blockquote>
+<blockquote>If you only expose your ffmpeg-based application to your own input then yes, of course it&#x27;s a self-DOS. But if you, say, expose it as a web service passing arbitrary user input to ffmpeg, that no longer holds.<cite>boomlinde</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Existing fix and project process</strong> &mdash; Several commenters noted that the issue had already been discussed and patched, raising concerns about FFmpeg’s review and merge process. Others defended reporting a reproducible failure separately from proposing a verified fix.</p><blockquote>A patch for this was submitted in April: https://lists.ffmpeg.org/archives/list/ffmpeg-devel@ffmpeg.o... Edit: And there was discussion about this back in 2024 as well<cite>aeyes</cite></blockquote>
+<blockquote>A patch was submitted, but apparently not merged.<cite>yorwba</cite></blockquote>
+<blockquote>A bug report just needs a proof of existence for the condition while a bug fix needs a proof of correctness.<cite>dclavijo</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>AI-assisted fuzzing is valuable</strong> &mdash; Supporters considered the low cost, speed, and persistence of AI-assisted harness development valuable even if the particular bug was simple. They emphasized that the resulting reproducible crash is more important than the novelty of the generation process.</p><blockquote>It’s very easy to send an AI agent on an open-ended bug hunt, and if it wastes a bunch of time and effort and finds nothing, no big deal.<cite>dabinat</cite></blockquote>
+<blockquote>I don&#x27;t care if you call it an over-engineered looping machine or what, there are concrete benefits to using LLMs for this.<cite>Supermancho</cite></blockquote>
+<blockquote>I find it pretty cool that a fuzzer thrown together this way actually found a bug in ffmpeg<cite>1saadcodes</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>The AI contribution is overhyped</strong> &mdash; Skeptics argued that the bug was a conventional parser-validation failure that humans, static analysis, or ordinary fuzzing could likely have found. They questioned whether generating malformed input demonstrated substantial technical capability.</p><blockquote>IDK seems like a bug that could&#x27;ve taken a human a few minutes at best to find.<cite>written-beyond</cite></blockquote>
+<blockquote>Nice find. The interesting part isn&#x27;t &quot;AI wrote the fuzzer.&quot; It&#x27;s that a cheap random harness still hits classical bugs in ancient parsers. Keep the corpus; throw away the hype.<cite>cpriest</cite></blockquote>
+<blockquote>Generating an incorrect input file seems to be the easiest task of all for any fuzzer. Generating correct input to get deep into the call stack and then finding something is the hard part.<cite>12j3afAv</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>AI improves speed more than quality</strong> &mdash; A middle position treated AI as useful for accelerating exploration, verification, and review while retaining human responsibility for understanding requirements and making architectural decisions. Critics warned that scaling code generation and automated review can also scale bloat, regressions, and technical debt.</p><blockquote>Finding the bugs with LLMs is easy. Reviewing the output, cleaning it up, and making sure it doesn&#x27;t break something else is the hard part.<cite>dmix</cite></blockquote>
+<blockquote>In my experience, there are two ways to use AI: speed or quality. Speed is where you give the AI a task to do and you review it; quality is where you write the code yourself and you get AI to review it. Both are valid for different situations.<cite>simonjuk</cite></blockquote>
+<blockquote>No one can keep up with the volume of code AI produces. We wont stop using AI. We will use AI to check AI.<cite>nonethewiser</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Anubis creates an access-versus-protection tradeoff</strong> &mdash; Many commenters reported that the proof-of-work challenge consumed excessive CPU, battery, or time, particularly on mobile devices and nonstandard configurations. Defenders viewed it as a privacy-preserving way to deter casual scraping, while others argued that its configuration excluded legitimate users.</p><blockquote>Thank you! I gave up after more than 2 whole minutes of waiting on a high-end smartphone. I&#x27;m not sure this keeps bots out, but it definitely keeps users out…<cite>timpera</cite></blockquote>
+<blockquote>It keeps casual users (which most bots masquerade as) out. For frequent users of that site it is a solve once access forever.<cite>vachina</cite></blockquote>
+<blockquote>happy to report my bots have no trouble with anubis or any other pow mechanism, little bit of deno and i&#x27;m right through.<cite>gguingff</cite></blockquote></div>
+    </article>
+  </section>
+  <footer class="colophon">
+    <p class="sig">— that's the edition.</p>
+    <p class="meta">Set in Fraunces &amp; Inter · Compiled August 28, 2026</p>
+    <p class="classic-link"><a href="classic.html">Prefer the classic card view? →</a></p>
+  </footer>
+<script>
+(() => {
+  const key = "gtd:read_days:hn:v1";
+  const day = "2026-08-28";
+  let stored = [];
+  try {
+    stored = JSON.parse(localStorage.getItem(key) || "[]");
+    if (!Array.isArray(stored)) stored = [];
+  } catch (e) {}
+  if (!stored.includes(day)) {
+    stored.push(day);
+    stored.sort();
+    localStorage.setItem(key, JSON.stringify(stored));
+  }
+})();
+</script>
+<script src="../../preference.js?v=ad6e38b8b" defer></script>
+<script>
+// Simple script to toggle the [+] and [-] labels on the drawers
+document.querySelectorAll('.analysis-drawer').forEach(drawer => {
+  drawer.addEventListener('toggle', () => {
+    const summary = drawer.querySelector('summary');
+    if (drawer.open) {
+      summary.textContent = '[ Analysis − ]';
+    } else {
+      summary.textContent = '[ Analysis + ]';
+    }
+  });
+});
+
+// Share link — native share or copy markdown to clipboard
+(function () {
+  const links = document.querySelectorAll('.share-link');
+  if (!links.length) return;
+
+  const toast = document.createElement('div');
+  toast.className = 'discuss-toast';
+  document.body.appendChild(toast);
+
+  function showToast(msg) {
+    toast.textContent = msg;
+    toast.classList.add('show');
+    setTimeout(() => toast.classList.remove('show'), 2500);
+  }
+
+  function buildMarkdown(link, spread) {
+    const title = link.dataset.shareTitle || '';
+    const url = link.dataset.shareUrl || '';
+    const meta = spread ? spread.querySelector('.story-meta') : null;
+    const lede = spread ? spread.querySelector('.lede') : null;
+    const analysis = spread ? spread.querySelector('.drawer-analysis') : null;
+    let md = '# ' + title + '\n';
+    md += 'Source: ' + url;
+    if (meta) md += ' | ' + meta.textContent.trim();
+    md += '\n';
+    if (lede) md += '\n' + lede.textContent.trim() + '\n';
+    if (analysis) md += '\n## Analysis\n' + analysis.textContent.trim() + '\n';
+    return md;
+  }
+
+  links.forEach((link) => {
+    link.addEventListener('click', (e) => {
+      e.preventDefault();
+      const spread = link.closest('section.spread');
+      const md = buildMarkdown(link, spread);
+      const text = "I'd like to discuss this with you. Here's a summary:\n\n" + md;
+      const title = 'Discuss: ' + (link.dataset.shareTitle || '');
+      if (navigator.share) {
+        navigator.share({ title: title, text: text }).catch(() => {});
+      } else {
+        navigator.clipboard.writeText(text).then(
+          () => showToast('Copied to clipboard \u2014 paste into your AI chat'),
+          () => showToast('Failed to copy')
+        );
+      }
+    });
+  });
+})();
+</script>
+</body>
+</html>
