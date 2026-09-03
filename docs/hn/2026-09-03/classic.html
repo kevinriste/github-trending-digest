@@ -1,0 +1,656 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hacker News Digest - September 03, 2026</title>
+    <link rel="stylesheet" href="../../style.css?v=601ad07e6">
+</head>
+<body data-gtd-edition="hn" data-gtd-date="2026-09-03">
+    <header>
+        <h1>Hacker News Digest - September 03, 2026</h1>
+        <nav>
+            <a href="../">&larr; Hacker News Calendar</a>
+            <a href="../../2026-09-03/">GitHub Trending</a>
+        </nav>
+    </header>
+    <main>
+        <section class="the-take"><details open><summary>The HN Take</summary><h3 class="take-head">Boring 2.0</h3><p>Here is a reassuring major software release:</p><p>&quot;We don&#x27;t aim to make a big feature release of Polars 2.0. In fact we hope it to be a boring experience for you.&quot;</p><p>Good. Polars, the data-processing library, has released the first candidate for version 2.0. The point of the major-version bump is not to add exciting new features but to remove old design decisions, change defaults and make existing queries much faster. The largest change is that LazyFrame queries will now run on Polars&#x27; streaming engine by default, which Polars expects to be &quot;easily 5x faster&quot; in aggregate while using much less memory.</p><p>There is one small catch, in the traditional sense that the catch is the reason this requires a major release: Some operations, including joins and groupings, no longer guarantee row order by default. If you need the rows to come back in a particular order, you can set maintain_order=True. If you need the query to be five times faster, you can stop caring where the rows are. Performance engineering is often about identifying guarantees that users did not know they were paying for and then no longer providing them.</p><p>Polars 2.0 is also stricter about mismatched data. The old version could silently convert a large integer user ID into a floating-point number, round it into a different user ID and report a false match. It could horizontally combine data sets of different lengths by quietly filling the missing rows with nulls. The new version raises errors instead.</p><p>&quot;Errors should ideally raise up-front, not 20 minutes into a pipeline,&quot; Polars writes. This has &quot;become even more valuable with the rise of AI-driven development,&quot; because agents can check schemas before materializing the data and quickly revise invalid queries.</p><p>Right. In the old model of software development, silent data corruption was bad because a human might spend 20 minutes waiting for the pipeline and then several days trying to understand the result. In the AI model, silent data corruption is worse because the agent can build the next 40 pipeline stages before you finish reading the first one. The agent is extremely productive, so it is important to stop it early.</p><h3 class="take-head">Works harder</h3><p>Google has released Gemini 3.8 Flash, three weeks after Gemini 3.7 Flash and six weeks into a run that has produced three Flash releases. The new model is available at the same introductory token prices as 3.7 Flash, and Google explains the performance improvement with admirable directness:</p><p>&quot;3.8 Flash works harder.&quot;</p><p>Specifically, it performs more reasoning steps and calls tools iteratively. &quot;At times, the model might use more tokens to maximize performance,&quot; particularly at higher effort settings.</p><p>Sure. Gemini 3.8 costs the same per token as Gemini 3.7, but it may consume more tokens because it is more diligent. This is like a consulting firm announcing that its hourly rates are unchanged and its consultants now work longer hours. The price is the same in the narrow technical sense that the price is not the same.</p><p>If compute efficiency matters more, Google suggests lowering the model&#x27;s effort level or continuing to use Gemini 3.7. The product lineup is therefore: the new model that works harder and sends a larger bill, the new model instructed not to work as hard, or the old model. There is a setting for every budget.</p><p>Google also introduced Gemini 3.8 Flash Cyber, a more permissive cybersecurity variant available to &quot;trusted defenders&quot; through its Fairwind Program. Google says it prioritized vulnerability fixing over offensive exploitation, and that the model produced 2.6 times more correct Chrome vulnerability patches than larger commercial models. Its Cloud Vulnerability Research team also used the model to find, in less than two hours, a critical vulnerability whose discovery would usually take months.</p><p>Cybersecurity capabilities are famously dual-use: A model that can find a vulnerability so defenders can patch it can also find the vulnerability before they do. Google&#x27;s solution is partly technical safeguards and partly deciding who counts as a trusted defender. The frontier of AI safety includes an application form.</p><div class="take-sources"><span>Sources</span><ul><li><a href="https://pola.rs/posts/announcing-polars-2/" target="_blank" rel="noopener noreferrer">Pre-Release of Polars 2.0</a></li><li><a href="https://blog.google/innovation-and-ai/models-and-research/gemini-models/3-8-flash-and-3-8-flash-cyber/" target="_blank" rel="noopener noreferrer">Gemini 3.8 Flash and 3.8 Flash Cyber</a></li></ul></div></details></section>
+        <div class="repo-controls">
+            <button id="collapse-seen-btn" type="button">Collapse Stories Not New Today</button>
+            <button id="expand-all-btn" type="button">Expand All</button>
+        </div>
+        <p class="seen-help">Stories marked "Not new today" appeared on one or more previous daily pages.</p>
+        <article>
+            <div class="repos">
+
+            <section class="repo" data-seen-before="0"
+                     data-share-title="Pre-Release of Polars 2.0"
+                     data-share-url="https://pola.rs/posts/announcing-polars-2/"
+                     data-share-points="187"
+                     data-share-comments="35">
+                <div class="repo-header-row">
+                    <h3>1. <a href="https://pola.rs/posts/announcing-polars-2/" target="_blank" rel="noopener noreferrer">Pre-Release of Polars 2.0</a> </h3>
+                    <div class="header-buttons">
+                        <button type="button" class="discuss-btn" aria-label="Discuss with AI" title="Discuss with AI">&#x1F4AC;</button>
+                        <button type="button" class="repo-toggle" aria-expanded="true">Hide details</button>
+                    </div>
+                </div>
+                <div class="repo-body">
+                    <p class="meta">
+                        <span class="language">pola.rs</span> |
+                        <span>komape</span> |
+                        <span>187 points</span> |
+                        <span>35 comments</span> |
+                        <a href="https://news.ycombinator.com/item?id=49546753" target="_blank" rel="noopener noreferrer">discussion</a>
+                    </p>
+                    <p class="history">First seen: September 03, 2026 | Consecutive daily streak: 1 day</p>
+                    <div class="ai-summary">
+                        <h4>Analysis</h4>
+                        <p>Polars 2.0 has entered its first release candidate phase, introducing significant architectural updates designed to improve performance and reliability for data processing pipelines. The most substantial change is that the streaming engine now serves as the default for `LazyFrame` queries, providing massive memory and speed optimizations at the expense of inherent row-order guarantees. Furthermore, the library is adopting a stricter approach to type coercion and data operations to prevent silent bugs and improve compatibility with AI-driven development. These changes reflect a move toward more predictable, explicit API behavior, requiring users to migrate existing codebases using the provided guide while setting the stage for future performance enhancements like full async support and out-of-core processing.</p>
+                    </div>
+                    
+                <div class="ai-summary">
+                    <h4>Comment Analysis</h4>
+                    <p class="camps-framing">The reaction was predominantly favorable toward Polars’ stability-focused major release and its perceived advantages over Pandas. Discussion centered on release-versioning expectations, the relative readability of Polars, SQL, and R/dplyr, the meaning and performance of the new streaming engine, and the usefulness and wording of the prerelease announcement.</p>
+<div class="camp"><p class="camp-label"><strong>Stability-first major release</strong> &mdash; Supporters welcomed a major version devoted to removing legacy constraints, changing defaults, and improving long-term stability rather than adding flashy features. One commenter also noted that Polars users already need to track changes closely between minor releases.</p><blockquote>Version bumps should really be about removing deprecated cruft rather than shiny new features.<cite>benrutter</cite></blockquote>
+<blockquote>Ideally: no. All new shiny new features shouldn&#x27;t have waited for the (N+1).0 version, they should already have been part of the (N).(M) version.<cite>kvdveer</cite></blockquote>
+<blockquote>That being said Polars is one of the few Python libraries from the hundreds I use that I need to read the notes of every minor release (eg 1.44 -&gt; 1.45), because they tend to frequently deprecate, remove or change features.<cite>dist-epoch</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Strong Polars preference over Pandas</strong> &mdash; Several commenters preferred Polars to Pandas because of its ergonomics and performance, with some actively encouraging coworkers to switch. DuckDB was also discussed as an alternative data-processing tool.</p><blockquote>This has been my go-to library for data processing due to the enhanced ergonomics compared to Pandas and SQL.<cite>Kydlaw</cite></blockquote>
+<blockquote>I love polars. Did a lot of evangelizing in work to get people to give up pandas in favor of it.<cite>bobson_dugnutt5</cite></blockquote>
+<blockquote>Pandas API is just so much worse and much slower.<cite>anotherpaul</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Polars and dplyr as expressive dataframe syntax</strong> &mdash; Some commenters found Polars and dplyr more elegant and composable than SQL, particularly when expressing business logic across multiple layers and integrating with Python. R/dplyr was also presented as a traditional readability benchmark, although newer Python tools were said to narrow that gap.</p><blockquote>Could not agree less. Ive always found SQL an unreadable mess but tools like polars and dplyr are such elegant ways to manipulate data. Pandas is a mess though.<cite>condwanaland</cite></blockquote>
+<blockquote>The cool thing about polars is that you can conditionally collect expressions over many layers of business logic, and then compute the result at the end.<cite>refactor_master</cite></blockquote>
+<blockquote>R really is/was the superior traditional data science language.<cite>jcattle</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>SQL as a clearer alternative</strong> &mdash; Other commenters considered SQL more readable than Polars, especially for straightforward queries or when AI generates code. The discussion also included the view that both Polars and Pandas can have awkward syntax.</p><blockquote>Both have terrible syntax that make SQL look like the most readable thing ever.<cite>mgaunard</cite></blockquote>
+<blockquote>There&#x27;s no way SQL is more unreadable than polars. IMO it&#x27;s the other way around.<cite>world2vec</cite></blockquote>
+<blockquote>SQL may have been harder to write in the past (worse autocomplete than pandas/polars), but now that AI is writing the code, SQL is usually much easier to read.<cite>fzumstein</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Streaming-default performance and terminology</strong> &mdash; A commenter questioned whether making the streaming engine the default could reduce parallelism. A Polars maintainer clarified that the engine processes parallel in-memory batches through a computational graph rather than sequentially processing an online row stream, while acknowledging that the name is confusing.</p><blockquote>My intuition is that this would be slower than other data frame operations that are more parallelizable with batch processing, because streaming engines necessarily process rows sequentially.<cite>arn3n</cite></blockquote>
+<blockquote>The new execution model first constructs a computational graph of nodes which communicate in streams of in-cache batches (morsels) of data, meaning the full dataset will never be held in memory if not necessary.<cite>orlp</cite></blockquote>
+<blockquote>In hindsight I do admit the naming choice is somewhat confusing.<cite>orlp</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Release timing and wording of the prerelease notice</strong> &mdash; Some readers valued advance notice and release-candidate time for testing wrappers and applications, while others objected to the phrasing or terminology used to describe the upcoming release. The wording discussion included speculation about AI-generated language.</p><blockquote>This gives leeway for sister projects (eg wrappers) to anticipate, room for apps that use it intensively to test things out (release candidate etc), something which has really helped me in the past.<cite>thibaut_barrere</cite></blockquote>
+<blockquote>Seeing &quot;release will land in the following weeks&quot; kind of immediately turns me off.<cite>rfgplk</cite></blockquote>
+<blockquote>What is your understanding of a Pre-Release then?<cite>marliechiller</cite></blockquote></div>
+                </div>
+
+                </div>
+            </section>
+
+            <section class="repo" data-seen-before="0"
+                     data-share-title="The Browser&#x27;s Main Thread Is Expensive"
+                     data-share-url="https://kciter.so/posts/the-expensive-main-thread/en/"
+                     data-share-points="102"
+                     data-share-comments="30">
+                <div class="repo-header-row">
+                    <h3>2. <a href="https://kciter.so/posts/the-expensive-main-thread/en/" target="_blank" rel="noopener noreferrer">The Browser&#x27;s Main Thread Is Expensive</a> </h3>
+                    <div class="header-buttons">
+                        <button type="button" class="discuss-btn" aria-label="Discuss with AI" title="Discuss with AI">&#x1F4AC;</button>
+                        <button type="button" class="repo-toggle" aria-expanded="true">Hide details</button>
+                    </div>
+                </div>
+                <div class="repo-body">
+                    <p class="meta">
+                        <span class="language">kciter.so</span> |
+                        <span>kciter</span> |
+                        <span>102 points</span> |
+                        <span>30 comments</span> |
+                        <a href="https://news.ycombinator.com/item?id=49522137" target="_blank" rel="noopener noreferrer">discussion</a>
+                    </p>
+                    <p class="history">First seen: September 03, 2026 | Consecutive daily streak: 1 day</p>
+                    <div class="ai-summary">
+                        <h4>Analysis</h4>
+                        <p>The article explains that the browser&#x27;s main thread is a constrained, single-threaded resource responsible for executing JavaScript, managing input, and performing layout and rendering. Because long-running tasks can block this thread and cause &quot;jank&quot;—visible UI stuttering or unresponsiveness—developers must treat main thread time as a finite budget. The author details practical techniques for optimizing this performance, including splitting long tasks, batching frequent updates, prioritizing urgent interactions, and deferring non-critical work. Mastering these strategies is essential for building modern, high-performance web applications that remain fluid even under heavy computational or data-intensive loads.</p>
+                    </div>
+                    
+                <div class="ai-summary">
+                    <h4>Comment Analysis</h4>
+                    <p class="camps-framing">The discussion was predominantly favorable toward the article’s practical demonstrations of main-thread performance problems. Disagreement centered on whether scheduling decisions should rely primarily on developer judgment or established theory, whether web applications should avoid unnecessary JavaScript altogether, and when richer interfaces justify performance machinery. Commenters also raised specific usability concerns about virtualization, questioned the article’s authorship, and broadened the discussion to browser-platform governance.</p>
+<div class="camp"><p class="camp-label"><strong>Practical endorsement</strong> &mdash; Many commenters praised the article’s clarity, interactive examples, and treatment of techniques that are important but often omitted from JavaScript education.</p><blockquote>Top article, kudos! applied some of these techniques previously, and they do matter a lot.<cite>larodi</cite></blockquote>
+<blockquote>Excellent article, I went into it thinking the headline is obvious, but the examples are well crafted and it isn&#x27;t just the obvious stuff.<cite>xnorswap</cite></blockquote>
+<blockquote>Such an excellently written articles with really nice interactive visualizations!<cite>Ayesh</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Theory and alternative threading architectures</strong> &mdash; Some commenters argued that scarce-resource scheduling should draw on established computer-science research, while others emphasized workers, actors, and easier threading or yielding primitives as architectural solutions.</p><blockquote>The problem of allocating work to a scarce resource is one of the oldest and most well-studied in all of computer science.<cite>jkhdigital</cite></blockquote>
+<blockquote>I wish await in JavaScript could conditionally yield.<cite>adzm</cite></blockquote>
+<blockquote>The current way of workers + messages is tedious as hell.<cite>baxuz</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Useful examples with rough edges</strong> &mdash; A smaller group focused on the demonstrations themselves, reporting device-specific performance, asking about interaction behavior, and noting repetition or differences between rendering strategies.</p><blockquote>On the price ticket example, on my device (Samsung A15, mediocre phone from 2024) I get 11 fps with the slow example and 30 fps with the fast one.<cite>andai</cite></blockquote>
+<blockquote>In the first example: doesn&#x27;t pushing the button while typing cause the textfield lose focus?<cite>nairboon</cite></blockquote>
+<blockquote>Nice examples, a bit repetetive perhaps.<cite>Tepix</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Avoid unnecessary web complexity</strong> &mdash; A minimalist camp argued that the first optimization should be removing unnecessary computation and JavaScript, restoring no-script and basic-HTML interoperability, and avoiding decorative or advertising-driven complexity.</p><blockquote>The javascript web is. Restore the interop with noscript/basic HTML and it will lean towards sanity, something lost a few years ago.<cite>sylware</cite></blockquote>
+<blockquote>the first question for optimizing something should be if you need to do the calculation at all.<cite>account42</cite></blockquote>
+<blockquote>Really most things should be text and if we lived in a more cooperative world everything would be easy to parse and manipulate text with some video and images and perhaps various well defined interface types for different services that can be implemented in various ways as to the users liking.<cite>kodoman</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Rich interfaces and usability require trade-offs</strong> &mdash; Others agreed that unnecessary complexity is harmful but maintained that editors, games, visualizations, animations, and live status displays genuinely need optimization techniques. A related criticism warned that virtualization can damage ordinary browser search and interaction.</p><blockquote>But if you do actually need things like images, animations, high frequency updates, etc, this is actually a pretty good overview of how to approach it.<cite>adzm</cite></blockquote>
+<blockquote>But if the page is, at least in part, an art piece rather than an information dump, or needs to do interactive rendering for its purpose (an editor like the markdown example, live updating status displays, games and other interactive toys, etc), then the tech is necessary and this article is useful.<cite>dspillett</cite></blockquote>
+<blockquote>It makes searching on such &quot;feed&quot; pages with the browser&#x27;s search function an utter pain in the ass, made worse by the fact that the platforms&#x27; own search functions are outright braindead.<cite>mschuster91</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Authorship and browser-platform concerns</strong> &mdash; A minority questioned whether the article was AI-generated or overly AI-assisted, while another commenter defended its technical quality. The discussion also included a broader concern about private companies’ control of the browser platform.</p><blockquote>So this is AI slop written? Why would anyone believe I&#x27;d want to read AI spam?<cite>shevy-java</cite></blockquote>
+<blockquote>I’ve worked in the field for a long time and see a carefully written, correct, calm article.<cite>ricardobeat</cite></blockquote>
+<blockquote>We need to find a solution here, as the browser is too important to allow private companies to keep mankind hostage.<cite>shevy-java</cite></blockquote></div>
+                </div>
+
+                </div>
+            </section>
+
+            <section class="repo" data-seen-before="0"
+                     data-share-title="Muse Spark 1.3"
+                     data-share-url="https://developer.meta.com/ai/models/muse-spark/"
+                     data-share-points="597"
+                     data-share-comments="393">
+                <div class="repo-header-row">
+                    <h3>3. <a href="https://developer.meta.com/ai/models/muse-spark/" target="_blank" rel="noopener noreferrer">Muse Spark 1.3</a> </h3>
+                    <div class="header-buttons">
+                        <button type="button" class="discuss-btn" aria-label="Discuss with AI" title="Discuss with AI">&#x1F4AC;</button>
+                        <button type="button" class="repo-toggle" aria-expanded="true">Hide details</button>
+                    </div>
+                </div>
+                <div class="repo-body">
+                    <p class="meta">
+                        <span class="language">developer.meta.com</span> |
+                        <span>bvaldivielso</span> |
+                        <span>597 points</span> |
+                        <span>393 comments</span> |
+                        <a href="https://news.ycombinator.com/item?id=49541256" target="_blank" rel="noopener noreferrer">discussion</a>
+                    </p>
+                    <p class="history">First seen: September 03, 2026 | Consecutive daily streak: 1 day</p>
+                    <div class="ai-summary">
+                        <h4>Analysis</h4>
+                        <p>Meta has released Muse Spark 1.3, an AI model specifically engineered for complex agentic workflows and high-performance competitive coding tasks. The model features a 1-million-token context window and is designed to improve first-attempt accuracy and tool-calling reliability in challenging technical scenarios. By offering both a contributor-tier model for product feedback and a privacy-focused professional version, Meta is targeting developers who require robust reasoning capabilities for long-horizon projects. This release represents a significant step in optimizing large language models for practical, real-world utility in automated software development and multi-step reasoning.</p>
+                    </div>
+                    
+                <div class="ai-summary">
+                    <h4>Comment Analysis</h4>
+                    <p class="camps-framing">Reactions to Muse Spark 1.3 were shaped by its low contributor-tier pricing, speed, and reported coding ability, but commenters disagreed about its reliability in real software work, the meaning of benchmark results, and the importance of the surrounding coding harness. The discount also prompted debate over data use, privacy, and trust in Meta, while a separate discussion questioned whether the recurring pelican SVG test still measures general capability.</p>
+<div class="camp"><p class="camp-label"><strong>Cheap, fast, and practically useful</strong> &mdash; Some commenters considered Spark 1.2 already effective for coding and viewed Spark 1.3 as an unusually strong value because of its speed, low contributor pricing, and obedient, pattern-following behavior.</p><blockquote>I&#x27;ve tried it via OpenCode and I&#x27;m impressed. So fast compared to Opus, and the results so far are comparable I&#x27;d say.<cite>lylo</cite></blockquote>
+<blockquote>i&#x27;ve been using muse spark 1.2 contribs since launch exclusively. no other models. i like it very much.<cite>sourcecodeplz</cite></blockquote>
+<blockquote>I am very impressed by this model so far. It&#x27;s faaast and it seems to be just intelligent enough to do really well.<cite>keyle</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Useful for some tasks, but not universally superior</strong> &mdash; Other hands-on reports praised Spark for particular tasks such as front-end work, reverse engineering, or translation, while acknowledging that competing models could perform better in other settings.</p><blockquote>I&#x27;m party using 1.2 to reverse engineer and re-implement an old game binary and it has been quite good and fast.<cite>WASDx</cite></blockquote>
+<blockquote>I&#x27;ve recently been using it to translate the subtitles of the show I&#x27;m watching into Latin, to provide me with a bit more input.<cite>coolcoder613</cite></blockquote>
+<blockquote>Nice, Muse Spark is so good and keeps improving, but it&#x27;s still not the best choice for any use-case.<cite>XCSme</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Benchmarks and harnesses do not settle engineering quality</strong> &mdash; A skeptical camp argued that DeepSWE and similar rankings may not reflect long-horizon software engineering, while others emphasized that the coding harness and native tool integration can materially affect results.</p><blockquote>anybody who&#x27;s used these models knows that their real-world software engineering performance has no relation to the ranking on deepSWE.<cite>notatoad</cite></blockquote>
+<blockquote>But is the score really reflective of the quality or are both models benchmaxxing?<cite>cbg0</cite></blockquote>
+<blockquote>This kind of raises another question to me regarding the coding benchmarks, how much of it is model versus harness?<cite>dcl</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Contributor pricing is attractive, but trades on user data</strong> &mdash; Many commenters saw the contributor tier as the release’s standout value proposition, especially for hobbyists and high-volume use, while recognizing that the discount is explicitly tied to training on interactions.</p><blockquote>The &#x27;contributor&#x27; pricing is the standout here at a ~20x discount, if you allow training on your data.<cite>jumploops</cite></blockquote>
+<blockquote>Practically free for &quot;contributors&quot; at 0.2 usd/mtok. That&#x27;s going to be hard to say no to for hobbyists.<cite>7734128</cite></blockquote>
+<blockquote>I like the approach of providing a discounted version of the API that is used to train vs. the full price version. Seems reasonable and transparent.<cite>apodolny</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Privacy and institutional trust concerns</strong> &mdash; A substantial camp considered contributor access inappropriate for confidential or enterprise work because prompts, code, and secrets could enter training pipelines, with some commenters also rejecting Meta on broader institutional grounds.</p><blockquote>it is not for serious works since Meta trains on your prompts so no ZDR<cite>a012</cite></blockquote>
+<blockquote>It is hard to not feed it &quot;secrets&quot; too. Models will see path names, read compose files, etc.<cite>HDBaseT</cite></blockquote>
+<blockquote>Meta is one of those companies where, if there is anything remotely comparable, I&#x27;m happy to pay more to not use them.<cite>tyre</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>The pelican SVG test is useful for comparison but saturated for qualification</strong> &mdash; Commenters disagreed over the recurring pelican-on-a-bicycle exercise: some found it useful for visualizing effort levels and progress within a model family, while others viewed it as too familiar or vulnerable to benchmark-specific tuning.</p><blockquote>At this point the only thing they&#x27;re useful for is visualizing the differences between effort levels and roughly tracking the progression of models within a specific model family. And they still do that really well!<cite>simonw</cite></blockquote>
+<blockquote>You should pick a random animal doing a random thing every time.<cite>drob518</cite></blockquote>
+<blockquote>We should just consider the pelican bench as saturated and mostly meaningless.<cite>gpt5</cite></blockquote></div>
+                </div>
+
+                </div>
+            </section>
+
+            <section class="repo" data-seen-before="0"
+                     data-share-title="Gemini 3.8 Flash and 3.8 Flash Cyber"
+                     data-share-url="https://blog.google/innovation-and-ai/models-and-research/gemini-models/3-8-flash-and-3-8-flash-cyber/"
+                     data-share-points="1040"
+                     data-share-comments="580">
+                <div class="repo-header-row">
+                    <h3>4. <a href="https://blog.google/innovation-and-ai/models-and-research/gemini-models/3-8-flash-and-3-8-flash-cyber/" target="_blank" rel="noopener noreferrer">Gemini 3.8 Flash and 3.8 Flash Cyber</a> </h3>
+                    <div class="header-buttons">
+                        <button type="button" class="discuss-btn" aria-label="Discuss with AI" title="Discuss with AI">&#x1F4AC;</button>
+                        <button type="button" class="repo-toggle" aria-expanded="true">Hide details</button>
+                    </div>
+                </div>
+                <div class="repo-body">
+                    <p class="meta">
+                        <span class="language">blog.google</span> |
+                        <span>bratao</span> |
+                        <span>1040 points</span> |
+                        <span>580 comments</span> |
+                        <a href="https://news.ycombinator.com/item?id=49537553" target="_blank" rel="noopener noreferrer">discussion</a>
+                    </p>
+                    <p class="history">First seen: September 03, 2026 | Consecutive daily streak: 1 day</p>
+                    <div class="ai-summary">
+                        <h4>Analysis</h4>
+                        <p>Google has introduced Gemini 3.8 Flash and 3.8 Flash Cyber, the latest iterations of its high-speed, cost-effective AI model series designed to enhance performance in coding, reasoning, and autonomous agentic tasks. While the standard 3.8 Flash model provides improved, diligent reasoning capabilities at the same price point as its predecessor, the specialized Cyber variant is engineered specifically for autonomous vulnerability detection and automated patching. The Cyber model is being restricted to trusted defenders through a new &quot;Fairwind Program&quot; to mitigate security risks, reflecting a broader corporate strategy to balance advanced defensive capabilities with safety guardrails. This release is significant because it demonstrates how Google is driving down the cost of frontier-level intelligence while embedding it directly into high-stakes enterprise workflows like software maintenance and cloud security.</p>
+                    </div>
+                    
+                <div class="ai-summary">
+                    <h4>Comment Analysis</h4>
+                    <p class="camps-framing">The discussion was broadly interested in Gemini Flash but divided over whether its speed, price, and multimodal breadth outweigh shortcomings in coding reliability, agentic workflows, token efficiency, and access. Commenters also debated the significance of benchmark results and Google’s rapid but confusing product rollout, while some raised safety and trust concerns.</p>
+<div class="camp"><p class="camp-label"><strong>Fast, cheap, practical workhorse</strong> &mdash; Some commenters considered Flash a useful everyday model because it is fast, inexpensive, and adequate for verifiable tasks such as prototyping, document extraction, and routine implementation.</p><blockquote>Gemini 3.7 is my workhorse - fast and good enough for most tasks.<cite>handzhiev</cite></blockquote>
+<blockquote>xnx: Seem like a great, no-compromise, upgrade over 3.7 which is already a bargain, fast, and doesn&#x27;t have the brain-damaged writing style of Claude.<cite>xnx</cite></blockquote>
+<blockquote>Gemini flash seems to have been a bit of a sleeper. Somehow it&#x27;s ended up as the most used LLM for my client document extraction work these past few months.<cite>tagalog</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Strong non-coding and multimodal model</strong> &mdash; Other commenters emphasized Gemini’s reported strengths in real-world knowledge, image recognition, document parsing, audio and video analysis, and Chinese-language writing, viewing multimodal support as a significant differentiator.</p><blockquote>I&#x27;ve been using Gemini 3.7 for my personal trip planning app. Across multiple benchmarks, it ranks higher on everything I tried: - Real world knowledge (when a thing opens and closes, the geographic region, historical facts). It&#x27;s also the best at taking a cluster of places and working out a visiting order. - Photo ranking (which photo should be the hero). Gemini can tell whether a photo is of the thing or of the view from it. - Document parsing (extracting the relevant trip info from PDFs).<cite>jampa</cite></blockquote>
+<blockquote>The most interesting thing about the Gemini models is still their multi-modal support: they accept audio and video input, OpenAI and Anthropic&#x27;s flagships are still image-only.<cite>simonw</cite></blockquote>
+<blockquote>3.7 flash was by far the best model for image recognition tasks according to my benchmarks.<cite>jerkstate</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Skeptical of coding reliability and agentic workflows</strong> &mdash; Many developers found Flash fast but insufficiently reliable for complex codebases, code review, debugging, and autonomous operation. Some used it as an implementer while relying on stronger models for planning, review, or difficult fixes; others attributed the gap partly to tooling and approval workflows.</p><blockquote>So I am guessing in a relatedly complex codebase, Gemini is much less effective in acting as a guardrail (or a senior engineer/team lead) than the other SOTA models.<cite>wwind123</cite></blockquote>
+<blockquote>On my short tests: This model is amazing and the speed makes it feel like another sort of AI. But it&#x27;s bad at code reviews (maybe it&#x27;s the harness agy cli?).<cite>therealmarv</cite></blockquote>
+<blockquote>I&#x27;m trying it now for token heavy coding tasks, it&#x27;s capable for many tasks but in noway compares to Claude/Sol - requires more prompts and the output isn&#x27;t as good.<cite>mythz</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Benchmark and token-economics skepticism</strong> &mdash; Commenters questioned claims that Gemini 3.8 matched or surpassed frontier models, citing benchmark selection, inconsistent scores, and different reasoning efforts. Others argued that greater token consumption can undermine advertised speed and cost advantages, even when raw generation throughput is high.</p><blockquote>As of writing this comment, Claude Opus 5 has an intelligence score of 63, not 59 (it&#x27;s not the same as Gemini 3.8 Flash). With a score of 59, Gemini 3.8 Flash is in eighth place, falling behind even Grok 4.6, Kimi k3, and GLM 5.3.<cite>theHocineSaad</cite></blockquote>
+<blockquote>So 89.4% on Terminal Bench 2 but only 19.1% on Tbench 4. Opus 5 is 89.1%/51.8%.<cite>leumon</cite></blockquote>
+<blockquote>3.8 uses nearly twice as many tokens as 3.7.<cite>eis</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Google’s strategic momentum and confusing rollout</strong> &mdash; Some commenters viewed Google’s rapid Flash cadence, infrastructure, and distillation strategy as a plausible long-term advantage. Others focused on the fragmented availability across Gemini, AI Studio, subscriptions, Workspace, and command-line tools, treating inconsistent access as a product weakness.</p><blockquote>Focus on speed and being OK with temporarily being #3/4 in intelligence might be the counterintuitive approach which makes Google win long term (whether accidentally or strategically).<cite>heliosAtwork</cite></blockquote>
+<blockquote>I don&#x27;t use Gemini, but I thought `cool, let&#x27;s give this new model a try`. Opened gemini.google.com, and I&#x27;m not even surprised.<cite>andreygrehov</cite></blockquote>
+<blockquote>Am I the only only one thinking that Google might still &quot;win&quot; the AI race, despite the apparent gap?<cite>lgl</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Safety, censorship, and trust concerns</strong> &mdash; Several commenters objected to restrictions on cyber, bio, programming, and image-generation tasks, arguing that excessive refusals push users toward less restricted alternatives. Others highlighted fabricated answers and unsafe autonomous actions as reasons to require close human verification.</p><blockquote>Then why even bother announcing this? Ordinary people can use K3 and GLM 5.3 or whatever drops next and avoid all this hassle.<cite>throwa356262</cite></blockquote>
+<blockquote>Gemini cut programming session 3 times for &quot;safety reasons&quot; yesterday for mentioning image generation (I need to generate bunch of those for infinite zoom virtual training app experience).<cite>FpUser</cite></blockquote>
+<blockquote>Not sure how anyone trusts their output without going through it line by line to make sure they don&#x27;t pull that crap.<cite>noir_lord</cite></blockquote></div>
+                </div>
+
+                </div>
+            </section>
+
+            <section class="repo" data-seen-before="0"
+                     data-share-title="Fish Bad, Sugar Good and Other Medieval Ideas About Food"
+                     data-share-url="https://lithub.com/fish-bad-sugar-good-and-other-medieval-ideas-about-food/"
+                     data-share-points="13"
+                     data-share-comments="1">
+                <div class="repo-header-row">
+                    <h3>5. <a href="https://lithub.com/fish-bad-sugar-good-and-other-medieval-ideas-about-food/" target="_blank" rel="noopener noreferrer">Fish Bad, Sugar Good and Other Medieval Ideas About Food</a> </h3>
+                    <div class="header-buttons">
+                        <button type="button" class="discuss-btn" aria-label="Discuss with AI" title="Discuss with AI">&#x1F4AC;</button>
+                        <button type="button" class="repo-toggle" aria-expanded="true">Hide details</button>
+                    </div>
+                </div>
+                <div class="repo-body">
+                    <p class="meta">
+                        <span class="language">lithub.com</span> |
+                        <span>mooreds</span> |
+                        <span>13 points</span> |
+                        <span>1 comments</span> |
+                        <a href="https://news.ycombinator.com/item?id=49513721" target="_blank" rel="noopener noreferrer">discussion</a>
+                    </p>
+                    <p class="history">First seen: September 03, 2026 | Consecutive daily streak: 1 day</p>
+                    <div class="ai-summary">
+                        <h4>Analysis</h4>
+                        <p>This article explores the complex and often counterintuitive approach to nutrition in the Middle Ages, where food was primarily categorized by qualities like hot, cold, wet, and dry rather than nutritional content. Medieval dietary choices were deeply intertwined with humoral medicine, leading to strict guidelines on food preparation, ingredient combinations, and eating schedules intended to maintain bodily balance. By analyzing historical perspectives on items ranging from &quot;dangerous&quot; fish to &quot;healthy&quot; sugar, the author demonstrates how medieval cuisine functioned as a form of applied dietetics tailored to an individual’s age, status, and constitution. Understanding these beliefs is important because it illustrates how pre-modern medical theories shaped daily social practices, religious observances, and even the dietary exemptions granted to the elite.</p>
+                    </div>
+                    
+                <div class="ai-summary">
+                    <h4>Comment Analysis</h4>
+                    <p class="camps-framing">The sole comment draws an ironic parallel between medieval concerns about lettuce being cold and moist and modern food-safety risks.</p>
+<div class="camp"><p class="camp-label"><strong>Modern lettuce-safety irony</strong> &mdash; This view notes that lettuce, despite its perceived danger in medieval dietary theory, can pose genuine foodborne-illness risks today.</p><blockquote>Joke&#x27;s on us, I guess.<cite>ceejayoz</cite></blockquote></div>
+                </div>
+
+                </div>
+            </section>
+
+            <section class="repo" data-seen-before="0"
+                     data-share-title="Japan halves speed limit to 30km/h on all narrow city streets"
+                     data-share-url="https://www.theguardian.com/world/2026/sep/02/japan-new-speed-limit-30kmh-narrow-city-streets"
+                     data-share-points="48"
+                     data-share-comments="31">
+                <div class="repo-header-row">
+                    <h3>6. <a href="https://www.theguardian.com/world/2026/sep/02/japan-new-speed-limit-30kmh-narrow-city-streets" target="_blank" rel="noopener noreferrer">Japan halves speed limit to 30km/h on all narrow city streets</a> </h3>
+                    <div class="header-buttons">
+                        <button type="button" class="discuss-btn" aria-label="Discuss with AI" title="Discuss with AI">&#x1F4AC;</button>
+                        <button type="button" class="repo-toggle" aria-expanded="true">Hide details</button>
+                    </div>
+                </div>
+                <div class="repo-body">
+                    <p class="meta">
+                        <span class="language">theguardian.com</span> |
+                        <span>haunter</span> |
+                        <span>48 points</span> |
+                        <span>31 comments</span> |
+                        <a href="https://news.ycombinator.com/item?id=49547763" target="_blank" rel="noopener noreferrer">discussion</a>
+                    </p>
+                    <p class="history">First seen: September 03, 2026 | Consecutive daily streak: 1 day</p>
+                    <div class="ai-summary">
+                        <h4>Analysis</h4>
+                        <p>Japan has implemented a nationwide speed limit reduction to 30 km/h on residential streets narrower than 5.5 meters that lack center lines. This policy change affects approximately 870,000 kilometers of road, representing roughly 70% of the country’s general road network. The move aims to curb persistent accident rates involving vulnerable groups like children and the elderly, which remained stagnant despite an overall decline in traffic fatalities. By standardizing these lower speeds, authorities hope to replicate the significant safety improvements previously observed in localized &quot;zone 30&quot; trials, where fatalities dropped by 30% when vehicles adhered to lower speed thresholds.</p>
+                    </div>
+                    
+                <div class="ai-summary">
+                    <h4>Comment Analysis</h4>
+                    <p class="camps-framing">The reaction was broadly supportive of lowering speeds on narrow residential streets, with many commenters surprised that 60 km/h had been the formal limit. The main disagreements concerned whether posted limits would change behavior without enforcement or physical traffic calming, and whether the policy represented a meaningful safety improvement or mainly formalized speeds drivers already chose. Commenters also compared Japan’s unusually narrow streets with lower-speed urban policies elsewhere.</p>
+<div class="camp"><p class="camp-label"><strong>Strong safety and walkability support</strong> &mdash; Commenters supported lower speeds as a way to reduce the severity of crashes and make walking and cycling safer and more attractive in dense urban areas.</p><blockquote>Low speed limits make cars safer, but they also encourage safer forms of transportation.<cite>mcv</cite></blockquote>
+<blockquote>The introduction in 2011 of “zone 30” areas on a limited number of residential streets and along school routes resulted in a 30% reduction in fatalities and serious injuries<cite>rwmj</cite></blockquote>
+<blockquote>Frankly, anyone driving at 60km/h through narrow streets isn&#x27;t driving with due care and consideration for the surroundings anyway.<cite>codeduck</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Thirty is still too fast</strong> &mdash; Some commenters argued that 30 km/h remained too high for extremely narrow residential streets, suggesting limits closer to walking speed or 20 km/h.</p><blockquote>In a street like that the even 30km/h is too fast.<cite>sajithdilshan</cite></blockquote>
+<blockquote>It is insane that 60 was ever considered a limit :P 20 seems much more than needed<cite>motbus3</cite></blockquote>
+<blockquote>In Germany that would probably be a &quot;verkehrsberuhigter Bereich&quot;, Traffic calming area with a speed limit of 7 km/h.<cite>kuerbel</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Limits need enforcement or self-enforcing design</strong> &mdash; Commenters questioned whether signs alone would affect behavior and favored enforcement or physical measures such as bumps and chicanes, while noting that traffic calming can have drawbacks.</p><blockquote>Why would they, since there are no automated controls in the city, and police sets manual controls once in a blue moon.<cite>idoubtit</cite></blockquote>
+<blockquote>Street bumps are much more efficient in lowering speed than either &quot;automated controls&quot; or &quot;manual controls&quot;.<cite>maratc</cite></blockquote>
+<blockquote>It&#x27;s why the best approach to slowing motor vehicles in places with people walking is to physically design the road to feel uncomfortable driving too fast, rather than slap a 20mph sign on a wide straight road.<cite>cryptopian</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>The change may be mostly symbolic</strong> &mdash; Some commenters argued that narrow, obstructed roads already prevented most drivers from reaching 60 km/h, so the practical effect could be limited apart from clarifying rules and formalizing markings.</p><blockquote>So basically they went from no effective speed limit (since most people will probably not drive 60kmh on those kinds of roads if left to their own devices) to a specific speed limit on a bunch of tiny roads that the overwhelming majority of people were probably already going pretty darn slow on for the most part.<cite>cucumber3732842</cite></blockquote>
+<blockquote>I suspect this will just result in a bunch of roads that really were overdue for it getting center lines and specific posted limits getting them and not much change anywhere else.<cite>cucumber3732842</cite></blockquote>
+<blockquote>I can bet it was very rare for anyone to ever reach 60km/h on streets like those shown in the picture.<cite>throw310822</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Japan-specific street and vehicle context</strong> &mdash; Commenters emphasized that many Japanese residential roads are exceptionally narrow, obstructed by utility poles, and difficult for large vehicles to navigate; restrictions on street parking and the prevalence of kei cars were presented as related context.</p><blockquote>Usually these roads are so small, you can barely fit a car and maybe one pedestrian on one / each side.<cite>NalNezumi</cite></blockquote>
+<blockquote>The really big thing in Japan is you&#x27;re not allowed to park (&quot;litter&quot;) your car in the street.<cite>rwmj</cite></blockquote>
+<blockquote>It feels like these traffic laws and the local conditions really go hand in hand with that.<cite>half_fish</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Lower limits are already normal elsewhere</strong> &mdash; Several commenters treated the change as consistent with established residential and urban speed limits in Europe, while noting that actual compliance varies.</p><blockquote>Most residential streets have been 30 (or less; the street I grew up in had a limit of 5 or 10 km/h) for some time, and Amsterdam recently made it the default for all streets with only exceptions for the biggest thoroughfares.<cite>mcv</cite></blockquote>
+<blockquote>In Spain it&#x27;s 30km/hr in the city on most one-lane roads.<cite>schnitzelstoat</cite></blockquote>
+<blockquote>In Sweden it&#x27;s commonly 30-50km/h for inner city streets, I think it&#x27;s a good sweet spot, 60km/h has 44% more kinetic energy than 50km/h, and since most time lost in urban areas is due to stoppage (traffic lights, intersections, etc.) there&#x27;s minimal change on travel times at the lower speed.<cite>piva00</cite></blockquote></div>
+                </div>
+
+                </div>
+            </section>
+
+            <section class="repo" data-seen-before="0"
+                     data-share-title="Three schoolgirls in Kinsale pulled up a pea plant covered in warts (2016)"
+                     data-share-url="https://scienceblog.com/b-three-schoolgirls-in-kinsale-pulled-up-a-pea-plant-covered-in-warts-and-instead-of-binning-it-spent-three-years-testing-13000-seeds-in-a-spare-bedroom-the-bacteria-living-in-those-warts-made-barley/"
+                     data-share-points="66"
+                     data-share-comments="22">
+                <div class="repo-header-row">
+                    <h3>7. <a href="https://scienceblog.com/b-three-schoolgirls-in-kinsale-pulled-up-a-pea-plant-covered-in-warts-and-instead-of-binning-it-spent-three-years-testing-13000-seeds-in-a-spare-bedroom-the-bacteria-living-in-those-warts-made-barley/" target="_blank" rel="noopener noreferrer">Three schoolgirls in Kinsale pulled up a pea plant covered in warts (2016)</a> </h3>
+                    <div class="header-buttons">
+                        <button type="button" class="discuss-btn" aria-label="Discuss with AI" title="Discuss with AI">&#x1F4AC;</button>
+                        <button type="button" class="repo-toggle" aria-expanded="true">Hide details</button>
+                    </div>
+                </div>
+                <div class="repo-body">
+                    <p class="meta">
+                        <span class="language">scienceblog.com</span> |
+                        <span>DamonHD</span> |
+                        <span>66 points</span> |
+                        <span>22 comments</span> |
+                        <a href="https://news.ycombinator.com/item?id=49546800" target="_blank" rel="noopener noreferrer">discussion</a>
+                    </p>
+                    <p class="history">First seen: September 03, 2026 | Consecutive daily streak: 1 day</p>
+                    <div class="ai-summary">
+                        <h4>Analysis</h4>
+                        <p>Three Irish schoolgirls discovered that *Rhizobium* bacteria, typically associated with nitrogen-fixing legume nodules, could significantly improve the germination and growth rates of cereal crops like barley and oats. Despite being told by experts that this symbiotic relationship was exclusive to legumes, the students spent three years testing 13,000 seeds in a home laboratory to empirically validate their hypothesis. Their research demonstrated that treating seeds with these bacteria increased germination speed by up to 50% and total dry mass by up to 74%, eventually earning them the grand prize at the 2014 Google Science Fair. This project is significant because it suggests a low-cost, natural method to improve agricultural yields, challenging established scientific assumptions and contributing to the ongoing research into expanding nitrogen-fixing partnerships to staple cereal crops.</p>
+                    </div>
+                    
+                <div class="ai-summary">
+                    <h4>Comment Analysis</h4>
+                    <p class="camps-framing">The reaction focused more on the article’s presentation and context than on disputing the students’ experiment. Commenters generally found the underlying nitrogen-fixation research interesting, while questioning its novelty and age. Parallel discussion addressed apparent AI involvement, advertising, typography, and the website’s overall quality.</p>
+<div class="camp"><p class="camp-label"><strong>AI involvement in the article</strong> &mdash; Commenters identified formulaic or LLM-like writing, especially in the article’s emphatic phrasing, while others noted that the site openly discloses AI use and argued that disclosed assistance is not necessarily unusual or unacceptable.</p><blockquote>Definitely AI written, though it got the point across and it wasn&#x27;t terrible to read and it was new information to me so I was glad to read it.<cite>telesilla</cite></blockquote>
+<blockquote>this reads so AI / LLMish.. it&#x27;s like the same feeling if you had to eat the same food again and again, not quite sickness but something about the repetition.<cite>stuaxo</cite></blockquote>
+<blockquote>Every published piece is editorially directed and reviewed before it goes live. We use AI tools in research, drafting, and editing. Editors decide what claims, framing, and pieces make it to publish.<cite>ChrisRR</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>The science is interesting and potentially useful</strong> &mdash; Some commenters viewed biological nitrogen fixation in staple crops as an important agricultural goal and saw the students’ work as a potentially useful step, even without treating it as a completed breakthrough.</p><blockquote>For years the holy grail has been for corn to produce its own nitrogen. This could be a small step in the right direction.<cite>rmason</cite></blockquote>
+<blockquote>Refreshing to see there are other outcomes than asking AI what it is these days.<cite>pluc</cite></blockquote>
+<blockquote>Nitrogen fixing is one of the more frustrating things to work on as there is such a massive ready supply of unfixed nitrogen to work with everywhere on our planet and all in all we need such a tiny proportion to dramiticly improve agriculture.<cite>metalman</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Not a new or current breakthrough</strong> &mdash; Commenters stressed that nitrogen-fixing agriculture is an established research field and that the experiment occurred more than a decade earlier, citing subsequent work that should have advanced or tested the result.</p><blockquote>Using nitrogen-fixing bacteria is not a new concept and it&#x27;s the life&#x27;s work of Dr Mariangela Hungria, who recently received the 2025 World Food Prize for her achievements in the field:<cite>Tade0</cite></blockquote>
+<blockquote>it also happened over a decade ago, so I guess everyone has tried furthering it by now.<cite>dofm</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Recycled story and poor-quality website</strong> &mdash; Several commenters said the subject was worthwhile but the post appeared to recycle older reporting and was undermined by intrusive advertising, clickbait, and unrelated material.</p><blockquote>This content is from 2014-15; perhaps they AI-rehashed the Yahoo! News story about them?<cite>altairprime</cite></blockquote>
+<blockquote>Cool a science blog! But it&#x27;s a rehashed article, followed by an infinite amount of random Taboola scams, arbitrage posts, clickbait articles with jarring content.<cite>spiderfarmer</cite></blockquote>
+<blockquote>Agreed, it&#x27;s an article with an interesting topic for once, and it&#x27;s completely ruined by the way it&#x27;s presented.<cite>classified</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Distracting typography and web design</strong> &mdash; A sustained side discussion criticized the site’s unusual typeface, particularly its rendering of the letter g. Some commenters identified the font and explained that the appearance was intentional, while others considered it an irritating design affectation.</p><blockquote>Is the letter &#x27;g&#x27; designed to appear as if the bottom loop is missing, or is that a rendering error on my end?<cite>GaryBluto</cite></blockquote>
+<blockquote>It&#x27;s just how the font looks: https://fonts.google.com/specimen/Syne<cite>invalidusernam3</cite></blockquote>
+<blockquote>It&#x27;s a design choice / affectation. https://fonts.google.com/specimen/Syne<cite>modernerd</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Broader ecological and practical interest in nitrogen fixation</strong> &mdash; A minority broadened the discussion from the school experiment to nitrogen-fixing trees, soil fertility, and possible soil-amendment projects such as terra preta.</p><blockquote>There is enough nitrogen and other nutrients in alder that the area&#x27;s where they are piled and burnt will remain significantly more fertile for many years after.<cite>metalman</cite></blockquote>
+<blockquote>One of my(many) projects is to experiment with &quot;terra preta&quot; and build a charcoal kiln, primarily for alder and hopefully be able to retain a greater portion of the &quot;good stuff™&quot; that is otherwise lost to rotting or combustion.<cite>metalman</cite></blockquote></div>
+                </div>
+
+                </div>
+            </section>
+
+            <section class="repo" data-seen-before="0"
+                     data-share-title="Google avoids a breakup of its ad tech business"
+                     data-share-url="https://www.nytimes.com/2026/09/02/technology/google-ad-tech-remedies.html"
+                     data-share-points="402"
+                     data-share-comments="284">
+                <div class="repo-header-row">
+                    <h3>8. <a href="https://www.nytimes.com/2026/09/02/technology/google-ad-tech-remedies.html" target="_blank" rel="noopener noreferrer">Google avoids a breakup of its ad tech business</a> </h3>
+                    <div class="header-buttons">
+                        <button type="button" class="discuss-btn" aria-label="Discuss with AI" title="Discuss with AI">&#x1F4AC;</button>
+                        <button type="button" class="repo-toggle" aria-expanded="true">Hide details</button>
+                    </div>
+                </div>
+                <div class="repo-body">
+                    <p class="meta">
+                        <span class="language">nytimes.com</span> |
+                        <span>donohoe</span> |
+                        <span>402 points</span> |
+                        <span>284 comments</span> |
+                        <a href="https://news.ycombinator.com/item?id=49537131" target="_blank" rel="noopener noreferrer">discussion</a>
+                    </p>
+                    <p class="history">First seen: September 03, 2026 | Consecutive daily streak: 1 day</p>
+                    <div class="ai-summary">
+                        <h4>Analysis</h4>
+                        <p>A U.S. federal judge has ruled against the government&#x27;s request to force a breakup of Google’s advertising technology business, rejecting the argument that the company’s dominance constitutes an illegal monopoly. While the court acknowledged Google&#x27;s significant market power, it concluded that the proposed structural remedies were not supported by sufficient evidence of antitrust harm under current legal frameworks. This decision marks a major legal victory for Google, allowing the company to retain control of its integrated ad-tech stack, which remains a central pillar of its revenue model. The outcome is significant as it sets a notable precedent for ongoing government efforts to regulate Big Tech&#x27;s influence over digital infrastructure and market competition.</p>
+                    </div>
+                    
+                <div class="ai-summary">
+                    <h4>Comment Analysis</h4>
+                    <p class="camps-framing">The discussion was largely critical of Google’s continued integration across the ad-tech market and skeptical that current antitrust enforcement can impose meaningful structural remedies. Commenters differed over whether to break up dominant firms, prevent mergers and require separability in advance, use taxation to encourage deconcentration, or preserve corporate scale for innovation and competition with China. Others focused on the technical difficulty of separation and the evidentiary and procedural limits of judging the decision before the ruling and remedies were fully examined.</p>
+<div class="camp"><p class="camp-label"><strong>Stronger antitrust and breakup</strong> &mdash; Commenters argued that Google’s control over multiple parts of the advertising ecosystem represents excessive market power and that behavioral remedies are insufficient. Several called for a return to more structural antitrust enforcement.</p><blockquote>They will always &quot;avoid&quot; stuff because there is no real antitrust anymore just the illusion of it, it stopped with Reagan.<cite>dev1ycan</cite></blockquote>
+<blockquote>This is obviously mega-rigged, it comes from the Robber Baron era, it was defeated before (look up Louis Brandeis) and it can be defeated again (look up Lina Khan).<cite>schmidtleonard</cite></blockquote>
+<blockquote>The US judges lack courage here. This means they help Google power through with its de-facto monopoly.<cite>shevy-java</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Prevent mergers and preserve separability</strong> &mdash; This camp emphasized preventing concentration before companies become deeply integrated. Proposed measures included higher merger barriers, mandatory separation plans, waiting periods, and penalties for undermining separability.</p><blockquote>There&#x27;s no shortage of obvious problems that can arise from concentration of influence and control over a market. So just try to prevent it.<cite>majormajor</cite></blockquote>
+<blockquote>The other, more interesting half, recognizes that unscrambling the egg is difficult, so we must take more precautions before scrambling it in the first place.<cite>otterley</cite></blockquote>
+<blockquote>If the time comes that they need to dissolve the merger but they don&#x27;t maintain that separation, they still have to do it and you slap a fine on them equal to some percentage of that mergers cost to be paid by the parent company.<cite>rigrassm</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Breakups are difficult but not impossible</strong> &mdash; Commenters disagreed about whether integrated companies can realistically be separated. One side stressed the technical and administrative complexity, while others pointed to spin-offs and legislation as evidence that separation can be made feasible.</p><blockquote>Separating mixed things is significantly more difficult than mixing them. &quot;The laws says X&quot; doesn&#x27;t change whether X is possible or not.<cite>Arainach</cite></blockquote>
+<blockquote>This is far from impossible, and happens all the time when, for example, a company spins off a subsidiary, or any number of other situations.<cite>codewench</cite></blockquote>
+<blockquote>Happened with Dow-Dupont! A three-way split, even (from a two-way merger). Took roughly two years and was the shareholders&#x27; plan from the start.<cite>qlte</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Market incentives and progressive taxation</strong> &mdash; A smaller camp proposed progressive taxes based on company size, assets, or market position to make deconcentration economically attractive and reduce reliance on lengthy antitrust litigation.</p><blockquote>We should just progressively tax monopolies. Companies will break themselves up to compete, no decade long DOJ case needed.<cite>siliconc0w</cite></blockquote>
+<blockquote>Yes, this, and we need to have this progressive tax be over the company&#x27;s total assets, including subsidiaries.<cite>falcor84</cite></blockquote>
+<blockquote>A progressive tax on the size of the company can do this.<cite>fpoling</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Pro-scale and innovation defense</strong> &mdash; Some commenters defended large integrated technology companies as necessary for expensive infrastructure, AI, autonomous vehicles, and competition with China. They argued that breaking up American technology firms could weaken national capabilities.</p><blockquote>How is wielding this weapon against our most innovative companies going to help the United States compete at scale against China? Scale is sort of required to do so.<cite>godwinson__4-8</cite></blockquote>
+<blockquote>Alphabet is rolling out autonomous driving vehicles in many cities around the USA, potentially getting rid of the need to drive a car in 90% of today&#x27;s use cases.<cite>lotsofpulp</cite></blockquote>
+<blockquote>Companies need to be able to match this horizon without fear of whatever the new normal in Washington is every four years.<cite>godwinson__4-8</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Legal-process and evidentiary skepticism</strong> &mdash; Commenters cautioned against treating an unfavorable outcome as proof of corruption or judicial failure before reviewing the ruling and remedies. They also defended settlements and emphasized the procedural constraints of adversarial litigation.</p><blockquote>How does one know something is a miscarriage of justice if you haven&#x27;t read the ruling? Because you don&#x27;t like the outcome?<cite>strictnein</cite></blockquote>
+<blockquote>What ruling? It isn&#x27;t released yet. We have declining to breakup, based on behavioral remedies, and zero details.<cite>shakna</cite></blockquote>
+<blockquote>Courts should regularly issue rulings you don&#x27;t like. Their job isn&#x27;t to make people happy.<cite>strictnein</cite></blockquote></div>
+                </div>
+
+                </div>
+            </section>
+
+            <section class="repo" data-seen-before="0"
+                     data-share-title="Three sites made 215,128 “best software” pages for AI. Perplexity cites them"
+                     data-share-url="https://trellner.com/reports/manufactured-sources-behind-ai-recommendations/"
+                     data-share-points="435"
+                     data-share-comments="212">
+                <div class="repo-header-row">
+                    <h3>9. <a href="https://trellner.com/reports/manufactured-sources-behind-ai-recommendations/" target="_blank" rel="noopener noreferrer">Three sites made 215,128 “best software” pages for AI. Perplexity cites them</a> </h3>
+                    <div class="header-buttons">
+                        <button type="button" class="discuss-btn" aria-label="Discuss with AI" title="Discuss with AI">&#x1F4AC;</button>
+                        <button type="button" class="repo-toggle" aria-expanded="true">Hide details</button>
+                    </div>
+                </div>
+                <div class="repo-body">
+                    <p class="meta">
+                        <span class="language">trellner.com</span> |
+                        <span>jakobgreenfeld</span> |
+                        <span>435 points</span> |
+                        <span>212 comments</span> |
+                        <a href="https://news.ycombinator.com/item?id=49536375" target="_blank" rel="noopener noreferrer">discussion</a>
+                    </p>
+                    <p class="history">First seen: September 03, 2026 | Consecutive daily streak: 1 day</p>
+                    <div class="ai-summary">
+                        <h4>Analysis</h4>
+                        <p>A recent analysis of Perplexity’s AI search results revealed that a significant portion of its &quot;best software&quot; recommendations are sourced from obscure, low-authority websites rather than established publishers. Specifically, the researchers found that three interconnected domains—created in late 2023—generated over 215,000 machine-readable &quot;best list&quot; pages explicitly designed to be crawled by AI models for grounding purposes. By analyzing 380 software categories, the study demonstrates that nearly 60% of the AI&#x27;s citations point to domains ranked outside the top 100,000 websites, including vendor marketing blogs and automated, template-driven content farms. This highlights a growing trend of &quot;SEO for AI,&quot; where content is manufactured to manipulate the retrieval layers of large language models, potentially compromising the reliability of automated consumer advice.</p>
+                    </div>
+                    
+                <div class="ai-summary">
+                    <h4>Comment Analysis</h4>
+                    <p class="camps-framing">The discussion was broadly concerned that AI-targeted SEO, autogenerated recommendation pages, and weak source evaluation could create adversarial feedback loops that degrade both search and future agents. Commenters also debated LLM self-preference, the commercial incentives behind online manipulation, Perplexity’s declining quality, and whether the submitted article itself exemplified the AI-generated content it criticized.</p>
+<div class="camp"><p class="camp-label"><strong>AI SEO is an adversarial threat</strong> &mdash; Commenters viewed AI-oriented optimization and paid placement as mechanisms that can manipulate recommendations, particularly when agents make purchases or other consequential decisions.</p><blockquote>Anything involving money is an adversarial adaptive system.<cite>steveBK123</cite></blockquote>
+<blockquote>Not deeply considering the motive of published information is currently a glitch that can be exploited, but the window will close.<cite>toddmorey</cite></blockquote>
+<blockquote>Yes 100%. I see this all the time. You’re asking about a product and the LLM will cite a source from a competitor where the competitor will review the source and list a few positives about the product but lots of negatives.<cite>bazmattaz</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>LLMs favor familiar or AI-generated styles</strong> &mdash; A substantial group argued that models may prefer text resembling their own outputs, including prose with recurring AI-associated stylistic markers, potentially biasing evaluation and rankings.</p><blockquote>The searchable term is &quot;Self-preference Bias&quot; :)<cite>abhgh</cite></blockquote>
+<blockquote>Take a random essay and add in a bunch of the phrases that LLMs love like “load-bearing,” “crucial,” structural,” and “woven,” and then submit the original and the edited version to an LLM and ask which is better. It will choose the second one virtually every time.<cite>cainxinth</cite></blockquote>
+<blockquote>I expect that after enough cycles of it training on it’s own output, it will converge on the One True Paragraph filled to saturation with AI cliches, and will refuse output anything else.<cite>jasonkester</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>The web is entering a self-reinforcing slop loop</strong> &mdash; Commenters described a cycle in which low-quality human or AI content is retrieved, expanded, republished, and eventually used as training material, amplifying errors and fabricated claims.</p><blockquote>The model takes that as granted, but expands on it and present it as a well established fact, presented in a very plausible fashion.<cite>dgellow</cite></blockquote>
+<blockquote>you have Ouroburos eating its own poop, and models have less then zero incentive to evaluate the quality of a source, especially if they are the source<cite>The_Blade</cite></blockquote>
+<blockquote>Bots trained on trash data, then produce trash. Why are we surprised here?<cite>xyst</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Perplexity has degraded as a product</strong> &mdash; Former and current users commonly reported that Perplexity had become faster but less accurate, less reliable in its citations, and more aggressively monetized than it had been initially.</p><blockquote>Then they started optimizing for speed of responses over quality of results.<cite>Aurornis</cite></blockquote>
+<blockquote>But instead of getting better (or at worst staying at the same level), it seems like it gets worse and worse instead.<cite>Grisu_FTP</cite></blockquote>
+<blockquote>I think they probably damaged themselves by going for a land grab of user base through freebies.<cite>stranded22</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Commercial incentives drive manipulation</strong> &mdash; Some commenters emphasized advertising, self-interest, and weak consequences as incentives that encourage publishers, companies, and other actors to produce misleading content.</p><blockquote>And it&#x27;s all because of ads. The incentives in an ad-funded internet are just always going to lead to this sort of thing.<cite>SoftTalker</cite></blockquote>
+<blockquote>It&#x27;s just incentives in general.<cite>csallen</cite></blockquote>
+<blockquote>Removing the economical incentives is very hard though.<cite>eddythompson80</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>The article is itself AI slop or astroturf</strong> &mdash; Many commenters questioned the submission’s provenance and argued that its writing, website, and posting history made it appear to be AI-generated promotional or engagement-seeking content.</p><blockquote>It&#x27;s difficult to read more than a few sentences, when this itself is clearly a Claude artifact.<cite>jpimbert</cite></blockquote>
+<blockquote>Honestly, I will just flag every post that is entirely AI slop from now on.<cite>ricardobeat</cite></blockquote>
+<blockquote>Cool, but, uh, this seems really astroturfed?<cite>nightpool</cite></blockquote></div>
+                </div>
+
+                </div>
+            </section>
+
+            <section class="repo" data-seen-before="1"
+                     data-share-title="The Computer Museum of America reclamation project"
+                     data-share-url="https://computer-museum.org/wp/"
+                     data-share-points="51"
+                     data-share-comments="20">
+                <div class="repo-header-row">
+                    <h3>10. <a href="https://computer-museum.org/wp/" target="_blank" rel="noopener noreferrer">The Computer Museum of America reclamation project</a> <span class="seen-badge">Not new today</span></h3>
+                    <div class="header-buttons">
+                        <button type="button" class="discuss-btn" aria-label="Discuss with AI" title="Discuss with AI">&#x1F4AC;</button>
+                        <button type="button" class="repo-toggle" aria-expanded="true">Hide details</button>
+                    </div>
+                </div>
+                <div class="repo-body">
+                    <p class="meta">
+                        <span class="language">computer-museum.org</span> |
+                        <span>rbanffy</span> |
+                        <span>51 points</span> |
+                        <span>20 comments</span> |
+                        <a href="https://news.ycombinator.com/item?id=49511493" target="_blank" rel="noopener noreferrer">discussion</a>
+                    </p>
+                    <p class="history">First seen: September 02, 2026 | Consecutive daily streak: 2 days</p>
+                    <div class="ai-summary">
+                        <h4>Analysis</h4>
+                        <p>The Computer Museum of America is initiating a formal reclamation project to catalog and promote its extensive collection of artifacts, which has remained largely stored in a San Diego State University basement for over two decades. Supported by recent grant funding, the project aims to organize a vast repository of hardware, software, and archival documentation that chronicles the rapid evolution of the information age. By preserving these primary sources, the organization seeks to provide researchers with a comprehensive look at the technological shifts that have fundamentally altered human life since the mid-20th century. This effort ensures that the historical context of the computer revolution remains accessible for future study across engineering, history, and the social sciences.</p>
+                    </div>
+                    
+                <div class="ai-summary">
+                    <h4>Comment Analysis</h4>
+                    <p class="camps-framing">The reaction was broadly supportive of preserving computing history, but commenters differed over what preservation should entail and whom it should serve. Discussion contrasted passive collections with working machines, public stewardship with private collecting, and prestige artifacts with ordinary equipment. Commenters also highlighted the fragility of museums, including funding, maintenance, audience size, and the preservation of software and digital archives.</p>
+<div class="camp"><p class="camp-label"><strong>Computing history as a responsibility</strong> &mdash; This camp viewed museums and archives as a responsibility to future generations, preserving the material record of the present for later researchers and the public.</p><blockquote>These museums are our Libraries of Alexandria.<cite>lisper</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Preserve the digital record too</strong> &mdash; This camp broadened preservation beyond physical machines to include old BBS archives and other user-held digital material that could otherwise disappear.</p><blockquote>I feel like there are probably a lot of users on HN who have access to old data such as old BBS archives and stuff which would be appreciated by archive.org or Archive Team.<cite>0xDEAFBEAD</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Working, interactive museums</strong> &mdash; These commenters argued that museums are especially compelling when visitors can operate historical systems, experiment with them, and encounter technology in context.</p><blockquote>They have a wide variety of working systems that you can play with, from home computers to mainframes, as well as Bombes and the Colossus (used to break the Lorenz cipher), and WITCH.<cite>plapsley</cite></blockquote>
+<blockquote>I got to try many other machines that night.<cite>raddan</cite></blockquote>
+<blockquote>The computers can be used by anyone.<cite>decide1000</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Museums are difficult to sustain</strong> &mdash; This camp emphasized the economic and technical challenges of keeping specialized museums open and machines operational, including limited funding, unpredictable failures, and maintenance demands.</p><blockquote>It amazes me how difficult it is to keep computer museums alive.<cite>PaulHoule</cite></blockquote>
+<blockquote>The Living Computer Museum tried until the money ran out.<cite>Animats</cite></blockquote>
+<blockquote>The museum on the afternoon we visited was nearly empty.<cite>raddan</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Prestige versus representative, hands-on technology</strong> &mdash; These commenters questioned the preference for famous or autographed objects over ordinary equipment that reflects how people actually built and used computers. Others noted that prestige artifacts can help museums attract visitors and recover costs.</p><blockquote>I don&#x27;t see them as museum pieces to be hung on a wall, and guarded.<cite>k310</cite></blockquote>
+<blockquote>That’s sad.<cite>rbanffy</cite></blockquote>
+<blockquote>In the end, unless the museum is well funded by a government grant or something similar, it’ll need to recover costs from tickets, and prestige items are something they can advertise to the muggles.<cite>rbanffy</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Private collecting and the niche-audience problem</strong> &mdash; This camp considered private ownership and collecting a possible preservation route when institutions lack resources, while recognizing that specialized museums and obsolete systems may have only a small audience of interested or wealthy buyers.</p><blockquote>Usually these appeal mostly to people in the field.<cite>glimshe</cite></blockquote>
+<blockquote>Who is buying these things? Private collectors?<cite>ex-aws-dude</cite></blockquote>
+<blockquote>But... the community was always very small.<cite>TheOtherHobbes</cite></blockquote></div>
+                </div>
+
+                </div>
+            </section>
+
+            </div>
+        </article>
+    </main>
+    <footer>
+        <p>Generated automatically. Data from <a href="https://news.ycombinator.com/">Hacker News</a>.</p>
+    </footer>
+
+<script>
+(() => {
+    const readKey = "gtd:read_days:hn:v1";
+    const dayStr = "2026-09-03";
+
+    let stored = [];
+    try {
+        stored = JSON.parse(localStorage.getItem(readKey) || "[]");
+        if (!Array.isArray(stored)) {
+            stored = [];
+        }
+    } catch (_err) {
+        stored = [];
+    }
+
+    if (!stored.includes(dayStr)) {
+        stored.push(dayStr);
+        stored.sort();
+        localStorage.setItem(readKey, JSON.stringify(stored));
+    }
+
+    const collapseParam = new URLSearchParams(window.location.search).get("collapse_seen");
+    const collapseSeen = collapseParam === "0" ? false : true;
+
+    function setCollapsed(repoEl, collapsed) {
+        repoEl.classList.toggle("collapsed", collapsed);
+        const button = repoEl.querySelector(".repo-toggle");
+        if (button) {
+            button.textContent = collapsed ? "Show details" : "Hide details";
+            button.setAttribute("aria-expanded", String(!collapsed));
+        }
+    }
+
+    const repos = Array.from(document.querySelectorAll("section.repo[data-seen-before]"));
+
+    repos.forEach((repoEl) => {
+        const toggle = repoEl.querySelector(".repo-toggle");
+        if (!toggle) {
+            return;
+        }
+
+        toggle.addEventListener("click", () => {
+            setCollapsed(repoEl, !repoEl.classList.contains("collapsed"));
+        });
+    });
+
+    const collapseBtn = document.getElementById("collapse-seen-btn");
+    const expandBtn = document.getElementById("expand-all-btn");
+
+    if (collapseBtn) {
+        collapseBtn.addEventListener("click", () => {
+            repos.forEach((repoEl) => {
+                if (repoEl.dataset.seenBefore === "1") {
+                    setCollapsed(repoEl, true);
+                }
+            });
+        });
+    }
+
+    if (expandBtn) {
+        expandBtn.addEventListener("click", () => {
+            repos.forEach((repoEl) => setCollapsed(repoEl, false));
+        });
+    }
+
+    if (collapseSeen) {
+        repos.forEach((repoEl) => {
+            if (repoEl.dataset.seenBefore === "1") {
+                setCollapsed(repoEl, true);
+            }
+        });
+    }
+
+    // Discuss with AI button
+    const toast = document.createElement("div");
+    toast.className = "discuss-toast";
+    document.body.appendChild(toast);
+
+    function showToast(msg) {
+        toast.textContent = msg;
+        toast.classList.add("show");
+        setTimeout(() => toast.classList.remove("show"), 2500);
+    }
+
+    function buildHNMarkdown(card) {
+        const title = card.dataset.shareTitle || "";
+        const url = card.dataset.shareUrl || "";
+        const points = card.dataset.sharePoints || "0";
+        const comments = card.dataset.shareComments || "0";
+        const summaries = card.querySelectorAll(".ai-summary");
+        let md = "# " + title + "\n";
+        md += "Source: " + url + " | " + points + " points | " + comments + " comments\n";
+        summaries.forEach((s) => {
+            const heading = s.querySelector("h4");
+            const label = heading ? heading.textContent.trim() : "Analysis";
+            const content = Array.from(s.querySelectorAll("p"))
+                .map((p) => p.textContent.trim())
+                .join("\n");
+            md += "\n## " + label + "\n" + content + "\n";
+        });
+        return md;
+    }
+
+    document.querySelectorAll(".discuss-btn").forEach((btn) => {
+        btn.addEventListener("click", () => {
+            const card = btn.closest("section.repo");
+            if (!card) return;
+            const md = buildHNMarkdown(card);
+            const text = "I'd like to discuss this article with you. Here's a summary:\n\n" + md;
+            const title = "Discuss: " + (card.dataset.shareTitle || "");
+            if (navigator.share) {
+                navigator.share({ title: title, text: text }).catch(() => {});
+            } else {
+                navigator.clipboard.writeText(text).then(
+                    () => showToast("Copied to clipboard \u2014 paste into your AI chat"),
+                    () => showToast("Failed to copy")
+                );
+            }
+        });
+    });
+})();
+</script>
+
+<script src="../../preference.js?v=601ad07e6" defer></script>
+</body>
+</html>
