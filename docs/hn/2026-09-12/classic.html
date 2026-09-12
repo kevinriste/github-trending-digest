@@ -1,0 +1,655 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hacker News Digest - September 12, 2026</title>
+    <link rel="stylesheet" href="../../style.css?v=f31b00fba">
+</head>
+<body data-gtd-edition="hn" data-gtd-date="2026-09-12">
+    <header>
+        <h1>Hacker News Digest - September 12, 2026</h1>
+        <nav>
+            <a href="../">&larr; Hacker News Calendar</a>
+            <a href="../../2026-09-12/">GitHub Trending</a>
+        </nav>
+    </header>
+    <main>
+        <section class="the-take"><details open><summary>The HN Take</summary><h3 class="take-head">Neural engine archaeology</h3><p>Here is a fairly pure reverse-engineering motivation:</p><p>&quot;I stopped working on the reverse-engineered Apple Neural Engine driver three years ago, upon a sad mini realization that the ANE block is just not that useful.&quot;</p><p>The problem was not that Apple&#x27;s Neural Engine lacked arithmetic. The M1 version had 16 compute cores and 2,048 parallel multiply-accumulate lanes. It could multiply numbers and add them together at considerable speed. The problem was that it was designed around a particular idea of what machine learning would look like: dense image-processing models with predictable reuse of data.</p><p>Then machine learning decided to look different.</p><p>&quot;A dot product is a dot product,&quot; the author writes. Convolution uses dot products; attention uses dot products. But the useful thing about specialized hardware is not just that it can do the underlying arithmetic. It is that it has made a lot of expensive physical commitments about where the numbers will come from, where they will stay and when they will move. Those commitments were sensible for the convolutional neural networks of 2017. Autoregressive transformers had other plans.</p><p>A Linux driver could expose the hardware interface, but it could not renegotiate the chip&#x27;s worldview. Even macOS, the author notes, regularly uses the ANE to generate upsampled preview images in Finder. It is a specialized neural accelerator whose dependable consumer use case is making the little picture of your file look nicer.</p><p>Apple&#x27;s M5 apparently acknowledges the problem by folding ANE cores into the GPU cores. The arithmetic remains useful; the surrounding architecture moves somewhere more flexible. The standalone neural processing unit starts to look like a fossil from an earlier machine-learning epoch.</p><p>So the author has returned to finish reverse-engineering the M1 ANE, because its approaching obsolescence makes it newly interesting:</p><p>&quot;So, in honor of the ANE&#x27;s apparent demise, we will do something even more useless: go back and reverse-engineer the ANE on the M1.&quot;</p><p>Sure. When the goal was to make the ANE useful, reverse-engineering it was disappointing. Now that the goal is to understand why it stopped being useful, it is perfect. The best workload for Apple&#x27;s old neural accelerator turns out to be hardware archaeology, which runs on a human.</p><h3 class="take-head">Mathematical output</h3><p>An imposing group of Fields medalists has published a statement called &quot;A Severe Misalignment of AI in Mathematics.&quot; The opening is striking:</p><p>&quot;Over the last few months, the mathematical capabilities of LLMs have improved dramatically, to the point that they can solve major outstanding problems in many fields of mathematics.&quot;</p><p>Traditionally this would be considered good news for mathematics. Mathematics contains outstanding problems; mathematicians would like them solved; now there is apparently a machine that can solve some of them. Problem solved, in both senses.</p><p>But the mathematicians&#x27; objection is that solving problems is not actually the final product of mathematics. It is a proxy for developing understanding, methods and new questions. A famous unsolved problem functions as a landmark that organizes years of human work. Once it is solved, mathematicians spend more years checking the proof, simplifying it, identifying the new ideas, connecting them to previous work and eventually turning the result into something another human can learn.</p><p>An AI company, meanwhile, would naturally prefer a cleaner metric: unsolved yesterday, solved today. That is measurable. &quot;Conceptual understanding gradually diffused through generations of seminars&quot; is harder to put on a benchmark leaderboard.</p><p>The statement worries that rapid production of solutions could become a &quot;mass production at faster and faster pace of &#x27;true/false&#x27; statements,&quot; leaving mathematicians responsible for attribution, verification and integration. The machine produces mathematical results; humans operate the mathematical aftercare system.</p><p>Meanwhile the Clay Mathematics Institute has announced that the Navier-Stokes Millennium Prize Problem has &quot;apparently been settled.&quot; Clay&#x27;s response is excited but pointedly slow. It hopes to see &quot;waves of new human understanding&quot; as the work is &quot;analysed and interrogated,&quot; and notes that its prize process is &quot;deliberately unhurried.&quot;</p><p>That seems like the emerging division of labor. New technologies can accelerate the arrival of purported solutions to the deepest problems in mathematics. Then the mathematical community has to slow everything back down enough to find out what the solutions mean, whether they are right and who did what.</p><p>If AI becomes infinitely fast at solving mathematical problems, mathematics will not become infinitely fast. It will proceed at the speed at which mathematicians can hold talks about the answers.</p><div class="take-sources"><span>Sources</span><ul><li><a href="https://eiln.github.io/posts/ane.html" target="_blank" rel="noopener noreferrer">Retrospectively Reverse-Engineering Apple&#x27;s Neural Engine</a></li><li><a href="https://mathandai.org/" target="_blank" rel="noopener noreferrer">A misalignment of AI in mathematics</a></li></ul></div></details></section>
+        <div class="repo-controls">
+            <button id="collapse-seen-btn" type="button">Collapse Stories Not New Today</button>
+            <button id="expand-all-btn" type="button">Expand All</button>
+        </div>
+        <p class="seen-help">Stories marked "Not new today" appeared on one or more previous daily pages.</p>
+        <article>
+            <div class="repos">
+
+            <section class="repo" data-seen-before="0"
+                     data-share-title="Retrospectively Reverse-Engineering Apple&#x27;s Neural Engine"
+                     data-share-url="https://eiln.github.io/posts/ane.html"
+                     data-share-points="97"
+                     data-share-comments="11">
+                <div class="repo-header-row">
+                    <h3>1. <a href="https://eiln.github.io/posts/ane.html" target="_blank" rel="noopener noreferrer">Retrospectively Reverse-Engineering Apple&#x27;s Neural Engine</a> </h3>
+                    <div class="header-buttons">
+                        <button type="button" class="discuss-btn" aria-label="Discuss with AI" title="Discuss with AI">&#x1F4AC;</button>
+                        <button type="button" class="repo-toggle" aria-expanded="true">Hide details</button>
+                    </div>
+                </div>
+                <div class="repo-body">
+                    <p class="meta">
+                        <span class="language">eiln.github.io</span> |
+                        <span>zdw</span> |
+                        <span>97 points</span> |
+                        <span>11 comments</span> |
+                        <a href="https://news.ycombinator.com/item?id=49670032" target="_blank" rel="noopener noreferrer">discussion</a>
+                    </p>
+                    <p class="history">First seen: September 12, 2026 | Consecutive daily streak: 1 day</p>
+                    <div class="ai-summary">
+                        <h4>Analysis</h4>
+                        <p>This post provides an in-depth retrospective reverse-engineering analysis of Apple’s Neural Engine (ANE) on M1 silicon, undertaken to document its internal architecture before the component is integrated into GPU blocks in future chips. The author details the ANE&#x27;s design as a fixed-function, task-descriptor-driven dataflow engine optimized for convolutional neural networks rather than general-purpose transformer workloads. By mapping the ANE&#x27;s compute, scheduling, and memory hierarchy, the analysis highlights how Apple prioritized deterministic data movement and energy efficiency over the flexibility required for modern LLMs. This study serves as a technical post-mortem that reveals the specific silicon-level assumptions Apple made regarding machine learning at the time of the M1&#x27;s release.</p>
+                    </div>
+                    
+                <div class="ai-summary">
+                    <h4>Comment Analysis</h4>
+                    <p class="camps-framing">The reaction was broadly positive and technically curious. Commenters valued the reverse-engineering and the explanation that the M1 ANE was optimized for CNN-style workloads rather than transformers. The main disagreements concerned whether Apple’s original specialization was a reasonable response to uncertainty or a prolonged strategic and software-integration failure, alongside questions about how the findings apply to newer Apple accelerators and other embedded ML hardware.</p>
+<div class="camp"><p class="camp-label"><strong>Technical clarification of newer Apple accelerators</strong> &mdash; Commenters distinguished the M1-era ANE from newer ANE capabilities and from NAX units in Apple GPUs, noting features such as INT8 support, additional ANE blocks, and matrix-multiplication acceleration.</p><blockquote>As an aside, the introduction to this article seems to conflate the ANE with the Neural Accelerators (NAX) found in the M5+ (and A-series equivalents) GPUs.<cite>zozbot234</cite></blockquote>
+<blockquote>M4 introduced a fast path for INT8 weights and activations (w8a8). M5 Ultra, M6 and A20 have two ANEs.<cite>woadwarrior01</cite></blockquote>
+<blockquote>NAX cores are matmult accelerators, closer to tensor cores in NVIDIA GPUs.<cite>woadwarrior01</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>ANE as a CNN-optimized design with an awkward transformer mapping</strong> &mdash; These comments described transformer execution on the ANE as a reformulation into the hardware’s expected four-dimensional convolutional dataflow, including replacing matrix multiplications with 1x1 convolutions.</p><blockquote>Ported a transformer to ANE and the whole job was pretending it was a CNN, 4D tensors with seq in the last axis and 1x1 convs instead of matmuls.<cite>hn9zmdcaou</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Appreciation and surprise at the article’s explanation</strong> &mdash; Several commenters praised the article’s writing and said it clarified why the ANE had seemed less impactful than expected given its prominence in Apple’s chips.</p><blockquote>This isn&#x27;t ai slop. It&#x27;s fascinating and well written.<cite>CraigJPerry</cite></blockquote>
+<blockquote>It&#x27;s always been an open loop in my head, wondering why the ANE was less impactful than i understood it should be.<cite>CraigJPerry</cite></blockquote>
+<blockquote>At least we know it wasn&#x27;t written by a bot<cite>osquar</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Broader embedded-accelerator model mismatch</strong> &mdash; One discussion placed Apple’s situation in a wider embedded-hardware pattern in which convolution-oriented accelerators require extensive profiling and architecture-specific optimization for other model types.</p><blockquote>A lot of neural engine, particularly in the embedded domain (ARM/RISC MCUs) have the same problem.<cite>riedel</cite></blockquote>
+<blockquote>Designing other models means on top of this means a lot of profiling to get convolution blocks right to get good speedups.<cite>riedel</cite></blockquote>
+<blockquote>We optimized this in the past e.g. using Neural Architecture Search on super networks<cite>riedel</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Sympathetic view of Apple’s original engineering tradeoff</strong> &mdash; Some commenters argued that the ANE’s design had to be chosen years before the direction of ML workloads was certain, making CNN-focused specialization an understandable engineering decision.</p><blockquote>Also, just imagine being the group at Apple responsible for designing this section of the chip, starting probably almost a decade back – under the constant uncertainty of not knowing what direction ML workloads would develop in…<cite>msdz</cite></blockquote>
+<blockquote>ML research was a rather known quantity, or the separate &quot;Neural Engine&quot; CPU explicitly aimed at existing ML pipelines wouldn&#x27;t exist.<cite>troupo</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Critique of Apple’s failure to turn the ANE into visible product value</strong> &mdash; A minority position held that Apple’s central problem was not only technological uncertainty but also years of limited use, weak user-facing features, and insufficient software integration despite prominent Neural Engine marketing.</p><blockquote>However, very few used it for anything, even within Apple. I feel like it was a huge wasted opportunity.<cite>troupo</cite></blockquote>
+<blockquote>It&#x27;s more like misreading the room for 5 to 10 years straight.<cite>eastbound</cite></blockquote>
+<blockquote>Siri maxxes out at &quot;There is no contact named &#x27;What&#x27;s the weather today&#x27; in your agenda&quot;<cite>eastbound</cite></blockquote></div>
+                </div>
+
+                </div>
+            </section>
+
+            <section class="repo" data-seen-before="0"
+                     data-share-title="IKEA made a mod for Skyrim [video]"
+                     data-share-url="https://www.youtube.com/watch?v=iZODN0QUgjI"
+                     data-share-points="161"
+                     data-share-comments="28">
+                <div class="repo-header-row">
+                    <h3>2. <a href="https://www.youtube.com/watch?v=iZODN0QUgjI" target="_blank" rel="noopener noreferrer">IKEA made a mod for Skyrim [video]</a> </h3>
+                    <div class="header-buttons">
+                        <button type="button" class="discuss-btn" aria-label="Discuss with AI" title="Discuss with AI">&#x1F4AC;</button>
+                        <button type="button" class="repo-toggle" aria-expanded="true">Hide details</button>
+                    </div>
+                </div>
+                <div class="repo-body">
+                    <p class="meta">
+                        <span class="language">youtube.com</span> |
+                        <span>kegenaar</span> |
+                        <span>161 points</span> |
+                        <span>28 comments</span> |
+                        <a href="https://news.ycombinator.com/item?id=49639647" target="_blank" rel="noopener noreferrer">discussion</a>
+                    </p>
+                    <p class="history">First seen: September 12, 2026 | Consecutive daily streak: 1 day</p>
+                    <div class="ai-summary">
+                        <h4>Analysis</h4>
+                        <p>A satirical YouTube video titled &quot;IKEA made a mod for Skyrim&quot; humorously reimagines the Swedish furniture retailer&#x27;s organizational products as a solution for the inventory management frustrations common in Bethesda’s *The Elder Scrolls V: Skyrim*. By blending IKEA’s iconic flat-pack aesthetic and branding with the game&#x27;s fantasy setting, the video highlights the long-standing community critique of the game’s cluttered looting system. This creative project demonstrates the enduring cultural relevance of *Skyrim* and the modding community&#x27;s tendency to use game assets for absurdist humor. It serves as a lighthearted commentary on how players often struggle to manage virtual spaces, playfully suggesting that even high-fantasy adventures could benefit from minimalist Swedish design.</p>
+                    </div>
+                    
+                <div class="ai-summary">
+                    <h4>Comment Analysis</h4>
+                    <p class="camps-framing">The discussion was overwhelmingly amused and positive, with commenters praising the mod’s unusually detailed execution and its fit with Skyrim’s familiar inventory-management frustrations. Many extended the joke through IKEA- and Skyrim-themed wordplay, while smaller threads discussed the collaboration’s origins, technical compatibility, and installation. A minority criticized IKEA’s environmental and tax practices, and a separate exchange debated date formats.</p>
+<div class="camp"><p class="camp-label"><strong>Enthusiastic appreciation</strong> &mdash; Commenters enjoyed the deliberately janky presentation, extensive scripted content, attention to Skyrim details, and commitment to the parody.</p><blockquote>I normally dislike shameless brand crossovers, but this faux low-budget, yet-another-janky-mod vibe... they committed to the bit. I can&#x27;t hate it.<cite>chao-</cite></blockquote>
+<blockquote>I watched a bit of someone&#x27;s play through and was impressed by how much content there actually was for a one-off bit like this. I would have assumed they would have just made enough content to make for a funny ad but there&#x27;s quite a lot of scripted storyline and voice acting.<cite>kalleboo</cite></blockquote>
+<blockquote>Best thing I saw on hacker news in a while.<cite>aenis</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Inventory and IKEA-themed riffing</strong> &mdash; Several commenters extended the central joke by comparing Skyrim’s storage problems with IKEA shelving and imagining furniture-themed updates or fantasy storage systems.</p><blockquote>Play a game long enough and the main challenge becomes inventory management. I look forward to the IVAR update.<cite>ludicrousdispla</cite></blockquote>
+<blockquote>Oh, so you&#x27;re team IVAR? BILLY gang forever! (just kidding, I actually have both, and way more IVAR shelves than BILLYs at that(BILLIES? What would be the proper plural here?))<cite>vanderZwan</cite></blockquote>
+<blockquote>Casting Leomund’s Secret Chest, now with TROFAST modular storage management system installed.<cite>Sharlin</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Corporate and environmental skepticism</strong> &mdash; One commenter challenged the celebratory marketing angle by emphasizing IKEA’s corporate practices and the externalities associated with its low prices.</p><blockquote>Just a reminder that they are a corporation and to not fall for their PR. They are actively destroying the environment while paying as little tax as possible. The cheapness of their furniture does have externalities one needs to consider.<cite>ulnarkressty</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Curiosity about the collaboration and its authenticity</strong> &mdash; A small group discussed whether the project originated at IKEA or was pitched to the company, with a reply identifying the creative agency and mod-development team involved.</p><blockquote>Do you think someone at IKEA had the idea and they hired someone to do it, or did someone have the idea and made it, and then talked IKEA into making it official?<cite>fragmede</cite></blockquote>
+<blockquote>The idea has been conceived and executed by creative agency Mother, in partnership with Kinggath Creations - a team of creatives, fans and mod developers who make fun and original content that blends seamlessly into the game world. https://creative.salon/articles/work/ikea-mother-kallax-stor...<cite>bcraven</cite></blockquote>
+<blockquote>Eitherway i would say it doesn&#x27;t really matter as long as they do fun stuff like this<cite>altmanaltman</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Practical and technical questions</strong> &mdash; Some commenters treated the project as a real mod, asking about its relationship to recent Skyrim updates, edition compatibility, and installation instructions.</p><blockquote>I was wondering what compelled Bethesda to update the game a few weeks ago, the first time in two years. On PC, any update to the game breaks mods that rely on DLL modification, so you&#x27;d expect them to be wary of doing it for no reason. Maybe improving support for this was the impetus.<cite>jml7c5</cite></blockquote>
+<blockquote>Is this Skyrim Special Edition or the Legendary Edition?<cite>cyh555</cite></blockquote>
+<blockquote>I wanted to install it, but the instructions were just a bunch of pictures.<cite>andrewclunn</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Off-topic date and format tangent</strong> &mdash; A nested exchange moved from the apparent April Fools framing into a debate over American, international, and year-month-day date conventions.</p><blockquote>Is it April yet?<cite>tonijn</cite></blockquote>
+<blockquote>20261209 Is a much better way to express the date than the 9/12 Americanism.<cite>englishrookie</cite></blockquote>
+<blockquote>Year, day, month in that order written all together? I have seen both day-month-year (12-09-2026) and year-month-day (2026-09-12), but _that_&#x27;s a new one.<cite>tmtvl</cite></blockquote></div>
+                </div>
+
+                </div>
+            </section>
+
+            <section class="repo" data-seen-before="0"
+                     data-share-title="A misalignment of AI in mathematics"
+                     data-share-url="https://mathandai.org/"
+                     data-share-points="952"
+                     data-share-comments="910">
+                <div class="repo-header-row">
+                    <h3>3. <a href="https://mathandai.org/" target="_blank" rel="noopener noreferrer">A misalignment of AI in mathematics</a> </h3>
+                    <div class="header-buttons">
+                        <button type="button" class="discuss-btn" aria-label="Discuss with AI" title="Discuss with AI">&#x1F4AC;</button>
+                        <button type="button" class="repo-toggle" aria-expanded="true">Hide details</button>
+                    </div>
+                </div>
+                <div class="repo-body">
+                    <p class="meta">
+                        <span class="language">mathandai.org</span> |
+                        <span>meredydd</span> |
+                        <span>952 points</span> |
+                        <span>910 comments</span> |
+                        <a href="https://news.ycombinator.com/item?id=49662371" target="_blank" rel="noopener noreferrer">discussion</a>
+                    </p>
+                    <p class="history">First seen: September 12, 2026 | Consecutive daily streak: 1 day</p>
+                    <div class="ai-summary">
+                        <h4>Analysis</h4>
+                        <p>A distinguished group of Fields Medalists has issued a warning regarding the rapid application of AI to solve major mathematical problems, arguing that current industry benchmarks prioritize raw output over deep conceptual understanding. While AI models can now solve complex proofs, the authors contend that the rush to produce these results undermines the collaborative, human-centric process of developing and transmitting mathematical knowledge. This misalignment risks turning mathematical discovery into a commoditized &quot;true/false&quot; race, potentially destroying the fertile environment necessary for nurturing new ideas and training the next generation of researchers. By highlighting the tension between automated productivity and authentic intellectual development, the article serves as a critical call for the mathematical community and tech companies to ensure that AI serves as a tool for deeper comprehension rather than a replacement for human inquiry.</p>
+                    </div>
+                    
+                <div class="ai-summary">
+                    <h4>Comment Analysis</h4>
+                    <p class="camps-framing">Reactions divide between commenters who see mathematics as a human process of understanding, discovery, and training future researchers, and those who regard correct proofs as the central output and AI as a major accelerator. Intermediate views accept AI’s capabilities while criticizing frontier companies’ marketing-driven use of major mathematical problems, especially when results lack provenance, explanation, or collaboration. The discussion also broadens into concerns about motivation and intellectual work generally, alongside objections that the declaration diagnoses problems without offering concrete remedies.</p>
+<div class="camp"><p class="camp-label"><strong>Human understanding is the point</strong> &mdash; These commenters argue that solving a problem is only a proxy for the deeper goals of mathematics: developing insight, preserving a path of discovery, training students, and generating new questions.</p><blockquote>I think progress is really measured by what humans are able to do and understand, not machines.<cite>onetimeusename</cite></blockquote>
+<blockquote>Now asking AI for the solution and „just“ getting it, risks our understanding, our creativity and our ability to connect the dots with other territories.<cite>doubtfuluser</cite></blockquote>
+<blockquote>But it has a major misalignment with the purpose of mathematics which is largely intellectualism.<cite>iamkeithmccoy</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>AI proofs are a net positive</strong> &mdash; These commenters regard valid machine-generated proofs as valuable even when their route is initially opaque, comparing AI mathematics to chess and other domains where powerful tools can accelerate discovery and expose human errors.</p><blockquote>I don&#x27;t see any reason that humans can&#x27;t continue to develop insights as they try to digest the 100-page Lean proof into something more manageable; but with more certainty and fewer false starts.<cite>gwd</cite></blockquote>
+<blockquote>I really don&#x27;t understand how this magical ability to know the truth of more theorems much more quickly—even via an &quot;ugly&quot; route—is anything but a net positive.<cite>throwaway713</cite></blockquote>
+<blockquote>Under the first definition, AI is already, and forevermore will be faster and better at proving theorems.<cite>adastra22</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Adapt rather than resist</strong> &mdash; This camp accepts that AI changes mathematical practice and status systems, but expects the field to redefine achievement, credit, problem selection, and collaboration rather than preserve older measures unchanged.</p><blockquote>I think that the most likely outcomes are either mathematics becomes more secretive, or there is a more deliberative approach to assigning credit than who was &quot;first&quot; to solve some problem.<cite>jeremysalwen</cite></blockquote>
+<blockquote>Once we have a tool that starts to work well for this task, it&#x27;s time to define success differently.<cite>fooker</cite></blockquote>
+<blockquote>I think the same will happen with Mathematics.<cite>keeda</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>The target is corporate behavior, not AI itself</strong> &mdash; These commenters distinguish between useful AI assistance and frontier labs’ incentive to pursue headline results, scoop researchers, and publish poorly integrated work primarily for competitive marketing.</p><blockquote>The statement is not about AI but about the behaviour of AI companies.<cite>omnicognate</cite></blockquote>
+<blockquote>The point he is trying to make here is much more subtle than &quot;AI bad&quot;, and it&#x27;s probably easy to miss if you have never engaged with research in maths: it&#x27;s that the particular approach that large commercial companies have opted to take to produce marketing material can be a net negative.<cite>pred_</cite></blockquote>
+<blockquote>This is a branding game rather over whether software engineers are going to use codex or claude.<cite>woopsn</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>A broader threat to intellectual work and motivation</strong> &mdash; Some commenters treat mathematics as an early example of a wider problem: if machines take over visible accomplishments, status, and rewards, people may lose the motivation to pursue demanding intellectual work.</p><blockquote>AI progression is very likely to affect every single thing humans can do today.<cite>gpt5</cite></blockquote>
+<blockquote>If all hope of “renown and stuff” in the intellectual realm is now taken by the AI companies, they will remove all human motivation to pursue these endeavours.<cite>lll-o-lll</cite></blockquote>
+<blockquote>Many graduate students (I know) are having a crisis if any of their research worth it?<cite>pks016</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>The declaration identifies a problem but not a solution</strong> &mdash; These commenters find the concerns plausible but ask what concrete institutional or corporate changes are being proposed, such as delaying publication, preserving attribution, or creating a review process.</p><blockquote>The concerns seem valid. I&#x27;m unclear what the ask is, though. What, even in theory, is a practical and realistic fix?<cite>jonahx</cite></blockquote>
+<blockquote>I’m sympathetic to the concern, but I’m still unclear on what the concrete ask is.<cite>k2xl</cite></blockquote>
+<blockquote>I don&#x27;t know, people. We still really don&#x27;t know how OpenAI or others are producing these results.<cite>krupan</cite></blockquote></div>
+                </div>
+
+                </div>
+            </section>
+
+            <section class="repo" data-seen-before="0"
+                     data-share-title="I spent $220 on Google app ads and 60% of the installs were robots"
+                     data-share-url="https://dayzlegame.com/blog/google-ads-bot-farm/"
+                     data-share-points="558"
+                     data-share-comments="296">
+                <div class="repo-header-row">
+                    <h3>4. <a href="https://dayzlegame.com/blog/google-ads-bot-farm/" target="_blank" rel="noopener noreferrer">I spent $220 on Google app ads and 60% of the installs were robots</a> </h3>
+                    <div class="header-buttons">
+                        <button type="button" class="discuss-btn" aria-label="Discuss with AI" title="Discuss with AI">&#x1F4AC;</button>
+                        <button type="button" class="repo-toggle" aria-expanded="true">Hide details</button>
+                    </div>
+                </div>
+                <div class="repo-body">
+                    <p class="meta">
+                        <span class="language">dayzlegame.com</span> |
+                        <span>nickabe</span> |
+                        <span>558 points</span> |
+                        <span>296 comments</span> |
+                        <a href="https://news.ycombinator.com/item?id=49662990" target="_blank" rel="noopener noreferrer">discussion</a>
+                    </p>
+                    <p class="history">First seen: September 12, 2026 | Consecutive daily streak: 1 day</p>
+                    <div class="ai-summary">
+                        <h4>Analysis</h4>
+                        <p>After spending $220 on a Google App campaign for his puzzle game, developer nickabe discovered that 60% of his attributed installs were generated by bot farms that bypassed the Play Store to create a self-reinforcing loop of fraudulent conversions. The bots exploited Google’s install-based optimization algorithm, which prioritized the fake traffic because it appeared to be meeting the campaign&#x27;s goals. To mitigate this, the developer shifted his campaign metric from &quot;installs&quot; to &quot;in-app actions,&quot; specifically solving a puzzle, to increase the cost of automation for attackers. This experience highlights a significant vulnerability in automated advertising platforms where algorithms may inadvertently reward fraudulent activity if the primary conversion metric is easily spoofed.</p>
+                    </div>
+                    
+                <div class="ai-summary">
+                    <h4>Comment Analysis</h4>
+                    <p class="camps-framing">The discussion was overwhelmingly skeptical of Google and the wider ad-tech ecosystem, with commenters describing bot traffic, weak attribution, unexplained bans, and wasted spending. The main disagreement was whether these failures reflect deliberate incentives and a broken advertising model, or a difficult fraud-prevention problem in which advertising can still work when carefully configured. Other threads focused on defensive measurement, the economics of bot farms, and alternatives to centralized advertising.</p>
+<div class="camp"><p class="camp-label"><strong>Ad-tech incentives appear fundamentally misaligned</strong> &mdash; Commenters argued that platforms may have weak incentives to identify fraudulent traffic because advertisers pay before discovering the problem, while the platforms benefit from continued spending. Some viewed the combination of billing advertisers and punishing recipients of fraudulent traffic as systemic.</p><blockquote>Google Ads sells you the traffic and AdMob bans you for receiving it. The left hand bills you, the right hand punishes you, and neither talks.<cite>kwhitlock</cite></blockquote>
+<blockquote>My feeling is that this is systemic, and basically it&#x27;s the very business model.<cite>kimi</cite></blockquote>
+<blockquote>In fact, it&#x27;s contrary to their incentives to investigate &amp; fix these problems - unless they feel some pressure from competition...<cite>yalok</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Fraud is difficult, and advertising can still work</strong> &mdash; A counter-position held that Google invests substantially in fraud prevention and that poor outcomes do not by themselves establish deliberate enablement. These commenters also emphasized that advertising can work for some businesses when campaigns and downstream measurement are handled carefully.</p><blockquote>It&#x27;s not that they&#x27;re not trying, it&#x27;s just a very hard problem.<cite>GeneralMayhem</cite></blockquote>
+<blockquote>But in large, it works.<cite>tokioyoyo</cite></blockquote>
+<blockquote>Most marketers should know exactly how effective their ads are by measuring to the end of the funnel.<cite>Gustomaximus</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Many advertisers report bots, poor attribution, and wasted spend</strong> &mdash; Several commenters generalized from repeated campaigns across Google, Meta, Reddit, LinkedIn, and X, reporting implausible traffic, little engagement, broken metrics, and no positive return on investment.</p><blockquote>Google ads are a con. Meta ads are a con. If someone tells you you’re just not doing it right yet, they’re probably trying to sell you something.<cite>dave_sid</cite></blockquote>
+<blockquote>Every ad system I tried resulted in nearly 100% bot traffic to my site.<cite>jwr</cite></blockquote>
+<blockquote>With a small budget, in 15 years I never managed to get any positive ROI on any online platform I tried advertising on.<cite>XCSme</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Use downstream conversions and defensive campaign controls</strong> &mdash; Practical advice focused on excluding suspicious networks, restricting campaign placements and keywords, rejecting automated recommendations, and optimizing for meaningful in-app actions rather than installs or clicks.</p><blockquote>In 99% of cases, these bot networks are not run from residential providers.<cite>phenomen</cite></blockquote>
+<blockquote>The main problem with Google Ads is that Google tries to squeeze money out of you in all possible ways.<cite>reddalo</cite></blockquote>
+<blockquote>At this point you have to just factor bots into your marketing costs. You have to go by overall cost per acquisition not cost per click.<cite>chung8123</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Bot farms profit through controlled ad inventory and expanding proxy networks</strong> &mdash; A technical subthread explained that bot operators can control the sites, accounts, or placements displaying ads and receive payments for impressions or related activity. Other commenters noted that residential proxies and compromised home devices make simple IP-based defenses increasingly inadequate.</p><blockquote>The bot owner is also providing &quot;ad space&quot; to Google.<cite>Sayrus</cite></blockquote>
+<blockquote>The install isn&#x27;t what gets the farm paid. It&#x27;s what makes Google&#x27;s bidding think that placement is working, so it sends it more of your ads.<cite>nickabe</cite></blockquote>
+<blockquote>This is one of the primary reasons why fraud actors purchase residential proxies in bulk now.<cite>walrus01</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Prefer organic, affiliate, or other alternatives to opaque ads</strong> &mdash; Some commenters recommended word of mouth, search, reviews, affiliates, or influencer distribution instead of centralized ad platforms. Others noted that these alternatives can also be manipulated and that advertising persists partly because organizations have difficulty measuring its true value.</p><blockquote>Search + reviews, and so on are a million times more useful than advertising.<cite>somenameforme</cite></blockquote>
+<blockquote>Digital marketing is a solved problem. You pay a commission on verified real sales to affiliates, and they can do what the hell they please to make those sales.<cite>carlosjobim</cite></blockquote>
+<blockquote>The most valuable bullshit is the numbers that you can sell to someone else who is looking for bullshit.<cite>nostrademons</cite></blockquote></div>
+                </div>
+
+                </div>
+            </section>
+
+            <section class="repo" data-seen-before="1"
+                     data-share-title="A Design Space Exploration of Async/Await"
+                     data-share-url="https://cel.cs.brown.edu/blog/design-space-async-await/"
+                     data-share-points="299"
+                     data-share-comments="79">
+                <div class="repo-header-row">
+                    <h3>5. <a href="https://cel.cs.brown.edu/blog/design-space-async-await/" target="_blank" rel="noopener noreferrer">A Design Space Exploration of Async/Await</a> <span class="seen-badge">Not new today</span></h3>
+                    <div class="header-buttons">
+                        <button type="button" class="discuss-btn" aria-label="Discuss with AI" title="Discuss with AI">&#x1F4AC;</button>
+                        <button type="button" class="repo-toggle" aria-expanded="true">Hide details</button>
+                    </div>
+                </div>
+                <div class="repo-body">
+                    <p class="meta">
+                        <span class="language">cel.cs.brown.edu</span> |
+                        <span>wcrichton</span> |
+                        <span>299 points</span> |
+                        <span>79 comments</span> |
+                        <a href="https://news.ycombinator.com/item?id=49626718" target="_blank" rel="noopener noreferrer">discussion</a>
+                    </p>
+                    <p class="history">First seen: September 10, 2026 | Consecutive daily streak: 3 days</p>
+                    <div class="ai-summary">
+                        <h4>Analysis</h4>
+                        <p>The paper &quot;A Design Space Exploration of Async/Await&quot; examines why the seemingly consistent `async/await` syntax results in wildly different execution behaviors across modern programming languages like Rust, Python, and Swift. The authors identify nine distinct design dimensions—categorized by task lifecycle, cancellation, and destruction—that govern how asynchronous code behaves, illustrating these differences with a formal model that explains why identical code produces divergent outputs. This research is significant because it clarifies the often-hidden semantic trade-offs in concurrency models, helping developers navigate the complexity of their chosen language&#x27;s runtime. By deconstructing these design decisions, the study provides a foundational framework for understanding the nuances of straight-line asynchrony in contemporary software development.</p>
+                    </div>
+                    
+                <div class="ai-summary">
+                    <h4>Comment Analysis</h4>
+                    <p class="camps-framing">The reaction was broadly positive toward making async semantics explicit, with readers valuing the taxonomy for teaching and language design while debating whether async/await’s complexity is a useful I/O boundary or an avoidable architectural burden. Secondary disagreements concerned concurrency versus parallelism, configurable runtimes, dynamic suspension, and alternatives such as processes, actors, and virtual threads.</p>
+<div class="camp"><p class="camp-label"><strong>Taxonomy is valuable and overdue</strong> &mdash; Supporters welcomed the semantics-first comparison as a useful framework for understanding async behavior across languages and for teaching language design.</p><blockquote>This kind of semantics-first comparative analysis of programming languages is so important.<cite>cpa</cite></blockquote>
+<blockquote>It&#x27;s one thing to say &quot;async is complex&quot;. It&#x27;s another to parse that statement so carefully as to have a cross-language theory of async execution.<cite>perrygeo</cite></blockquote>
+<blockquote>At last someone took the time to pore over all the tedious crap that I have been trying and failing to keep straight in my head since forever.<cite>biorach</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Async as an explicit I/O boundary</strong> &mdash; This camp viewed async functions as useful markers for I/O and suspension, arguing that separating asynchronous and synchronous call trees can be understandable and practical when planned deliberately.</p><blockquote>Async functions end up being markers of where IO may occur, which is very useful.<cite>brabel</cite></blockquote>
+<blockquote>You better know if a function does IO, hiding that can lead to nasty surprises.<cite>mrsmrtss</cite></blockquote>
+<blockquote>I usually arrange my programs to have a call tree of all my async code, and separate call trees of sync processing work.<cite>josephg</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Colored functions are a serious architectural cost</strong> &mdash; Critics argued that async behavior can infect call chains and make software harder to adapt when requirements change unexpectedly, favoring effect systems or other less viral mechanisms.</p><blockquote>This affects the whole tree of possible function calls in my program.<cite>galaxyLogic</cite></blockquote>
+<blockquote>In an Effectful system, this (previously unplanned) change remains isolated to that one function.<cite>e1g</cite></blockquote>
+<blockquote>Planning ahead helps with &#x27;known unknowns&#x27;, but it&#x27;s impractical when building across N years in a dynamic environment - &quot;knowing ahead of time&quot; is just not possible for anything non-trivial.<cite>e1g</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Async/await is inferior to richer concurrency primitives</strong> &mdash; Some commenters preferred threads, actors, message passing, Erlang processes, goroutines, or virtual threads, arguing that runtime primitives can reduce the cognitive burden placed on individual functions and call chains.</p><blockquote>Some other way to get thread like semantics without having to have OS threads for everything seems better (to me).<cite>toast0</cite></blockquote>
+<blockquote>Concurrency is a decision at the calling site , not when writing the function being called.<cite>spinningslate</cite></blockquote>
+<blockquote>From an ergonomic perspective, Async/Await feels like a poor abstraction by comparison.<cite>spinningslate</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Async is control flow, not parallelism</strong> &mdash; This camp emphasized that async/await primarily expresses cooperative concurrency and suspension, often through a state machine on one thread, while distinguishing that role from parallel execution.</p><blockquote>Being mere control flow is a good thing: some async/await implementations are just desugared into a state machine anyways, and it totally works on a single thread.<cite>kccqzy</cite></blockquote>
+<blockquote>This cleanly demonstrates the separation between the concepts of concurrency versus parallelism.<cite>kccqzy</cite></blockquote>
+<blockquote>Async/await is a concurrency construct.<cite>MichaelNolan</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Runtime configuration and suspension semantics complicate simple comparisons</strong> &mdash; Commenters noted that framework configuration can change execution, scope, propagation, and laziness, while dynamic suspension can intentionally avoid a context switch when a result is already available.</p><blockquote>The quiz is unfair - it assumes there is only one &quot;true way&quot;, but a lot of frameworks give you options<cite>theamk</cite></blockquote>
+<blockquote>Trio behaves differently (in well-defined, easy to understand ways) depending on where you put nurseries.<cite>wzdd</cite></blockquote>
+<blockquote>There are scenarios where something might need to await and might not. Why take the hit if you are able to do something synchronously?<cite>nxc18</cite></blockquote></div>
+                </div>
+
+                </div>
+            </section>
+
+            <section class="repo" data-seen-before="0"
+                     data-share-title="Navier-Stokes Announcement"
+                     data-share-url="https://www.claymath.org/news/navier-stokes-announcement/"
+                     data-share-points="182"
+                     data-share-comments="122">
+                <div class="repo-header-row">
+                    <h3>6. <a href="https://www.claymath.org/news/navier-stokes-announcement/" target="_blank" rel="noopener noreferrer">Navier-Stokes Announcement</a> </h3>
+                    <div class="header-buttons">
+                        <button type="button" class="discuss-btn" aria-label="Discuss with AI" title="Discuss with AI">&#x1F4AC;</button>
+                        <button type="button" class="repo-toggle" aria-expanded="true">Hide details</button>
+                    </div>
+                </div>
+                <div class="repo-body">
+                    <p class="meta">
+                        <span class="language">claymath.org</span> |
+                        <span>rvz</span> |
+                        <span>182 points</span> |
+                        <span>122 comments</span> |
+                        <a href="https://news.ycombinator.com/item?id=49668706" target="_blank" rel="noopener noreferrer">discussion</a>
+                    </p>
+                    <p class="history">First seen: September 12, 2026 | Consecutive daily streak: 1 day</p>
+                    <div class="ai-summary">
+                        <h4>Analysis</h4>
+                        <p>The Clay Mathematics Institute has announced that the Navier-Stokes existence and smoothness problem, one of the seven Millennium Prize Problems, has potentially been solved. This fundamental challenge in fluid dynamics concerns whether smooth, globally defined solutions exist for the Navier-Stokes equations in three-dimensional space, a hurdle that has defied mathematicians for decades. The Institute is now initiating its formal, deliberative review process to evaluate the reported proof and verify its validity. Should the solution be confirmed, it would mark a historic achievement in mathematics, providing the profound conceptual innovations necessary to deepen our understanding of fluid motion and the mathematical structures governing the physical world.</p>
+                    </div>
+                    
+                <div class="ai-summary">
+                    <h4>Comment Analysis</h4>
+                    <p class="camps-framing">The reaction combined excitement about a possible landmark result with skepticism about whether the announcement should yet be treated as a complete solution. The main disagreements concerned confidence in Lean verification, the exact scope of the formalized problem, publication and prize eligibility, attribution and possible idea appropriation, and the effects of AI on mathematical practice and human understanding.</p>
+<div class="camp"><p class="camp-label"><strong>Cautious celebration and AI-driven acceleration</strong> &mdash; Some commenters welcomed the possibility of a major advance and argued that mathematical progress should be celebrated, even while verification and controversy continue. They viewed AI and other tools as means of accelerating research rather than reasons to withhold recognition.</p><blockquote>It’s easy to verify the lean statement, you don’t need to read the proof. That is part of the breakthrough<cite>baby</cite></blockquote>
+<blockquote>I found it refreshing to get away from all of the AI drama and just enjoy the advancement in math.<cite>ComplexSystems</cite></blockquote>
+<blockquote>Agree! &#x27;Problems&#x27; are getting solved and this needs to be celebrated.<cite>gps372</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Formal verification and problem scope require human scrutiny</strong> &mdash; Commenters distinguished mechanical checking of a Lean proof term from validating the theorem statement, assumptions, semantics, and honesty of the proof. They also stressed that the full Navier–Stokes problem may differ from the weaker or forced variants addressed by the announcement.</p><blockquote>checking correctness of the proof itself can be delegated to machine, checking that the claim that has been proved is free of mistakes is something that still requires much human attention.<cite>tkz1312</cite></blockquote>
+<blockquote>If the Lean initial-problem-setup/statements/assumptions/etc. aren&#x27;t correct then the proof is meaningless. Lean does not know what it is that it is proving i.e. it does not have any semantic understanding but only executes formal logic. Humans need to verify everything.<cite>rramadass</cite></blockquote>
+<blockquote>No one: Navier–Stokes without forcing Euler equations = Navier–Stokes without viscosity. Forcing means external force. Absence of viscosity and presence of external force make blowup easier to construct. Tristan+Levent ticked the weakest case, OpenAI ticked the two next weakest, then the final case is unsolved.<cite>tristanj</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Publication, Clay review, and the secondary importance of the prize</strong> &mdash; A substantial discussion focused on whether arXiv or self-publication satisfies Clay’s qualifying-outlet rule and when the review period begins. Others regarded the prize as less important than independent scrutiny, recognition, and acceptance by the mathematical community.</p><blockquote>Their rules PDF says they won&#x27;t accept any solution until at least two years after publication in a qualifying outlet. This allows time for the mathematical community to review and accept new results. As the OpenAI proof hasn&#x27;t been officially published yet, the clock hasn&#x27;t started ticking.<cite>Legend2440</cite></blockquote>
+<blockquote>I&#x27;m not sure it actually makes a difference. OpenAI doesn&#x27;t care about the million dollars in any case.<cite>eru</cite></blockquote>
+<blockquote>It&#x27;s possible that Clay Mathematics Institute will not award the prize at all. The spirit of the rules seems to be that the result can be attributed clearly to one or more individual mathematicians.<cite>jltsiren</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Provenance, plagiarism, and attribution disputes</strong> &mdash; Some commenters interpreted the shared technical route, timing, and interactions with researchers as possible appropriation or an effort to preempt other mathematicians. Others argued that the methods were public, the problems differed, and the available timeline did not establish copying. The dispute also raised questions about who deserves credit for an AI-assisted proof.</p><blockquote>OpenAI released a statement that their work does not relate to the work of the other team, but it clearly does. They use the same niche smooth-forcing mechanism.<cite>u1hcw9nx</cite></blockquote>
+<blockquote>The accusation is that they used the same avenue of attack, and it&#x27;s an uncommon one, and that makes it suspicious that they may have taken the idea.<cite>nearbuy</cite></blockquote>
+<blockquote>It will be tough to draw the line, as the meat brains trying to prove it were also using AI. I assume that the mathematicians outside Anthropic were hoping to publish an actual human-understandable paper. That could be one way to draw line: you can use AI, but you must also have an intelligible explanation at the end.<cite>glimshe</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Concern that mathematics may become less human</strong> &mdash; A skeptical group worried that opaque AI-generated results could weaken understanding, autonomy, and the personal character of mathematical work. They also raised concerns about concentration of resources in large companies and about people becoming consumers of results they cannot understand.</p><blockquote>I am worried that we might slowly lose some of that side of mathematics as AI becomes more powerful.<cite>unknown-unknown</cite></blockquote>
+<blockquote>I hope that pure mathematics research can retain a strongly human component forever. It would sadden me immensely for human understanding of our mathematical world to wither and die, and for us to become ignorant consumers of wonders beyond our understanding just because our robots can do it better than we can.<cite>reasonableklout</cite></blockquote>
+<blockquote>Proving things without comprehending them is a threat to intellectual work.<cite>andsoitis</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>AI mathematics as an overdue technological transition</strong> &mdash; Other commenters rejected the idea that mathematics should remain human-only, comparing AI assistance with calculators, computers, and industrial tools. They argued that mathematicians can adapt and that results produced through stronger tools remain valuable.</p><blockquote>Mathematics becomes engineering. I think it is great and long overdue.<cite>trhway</cite></blockquote>
+<blockquote>Nothing is stopping them from using &#x27;new technologies&#x27; or sticking a gun to their head to use the &#x27;new technologies&#x27; either.<cite>gps372</cite></blockquote>
+<blockquote>Who cares about the prize and the outdated methods? OpenAI and Anthropic might have 3 millennium problems by December<cite>vatsachak</cite></blockquote></div>
+                </div>
+
+                </div>
+            </section>
+
+            <section class="repo" data-seen-before="0"
+                     data-share-title="Great Lakes sturgeon may be 400 years old:Scientists rethinking how to save them"
+                     data-share-url="https://www.cbc.ca/news/canada/ontario-great-lakes-sturgeon-lifespan-study-9.7329250"
+                     data-share-points="73"
+                     data-share-comments="8">
+                <div class="repo-header-row">
+                    <h3>7. <a href="https://www.cbc.ca/news/canada/ontario-great-lakes-sturgeon-lifespan-study-9.7329250" target="_blank" rel="noopener noreferrer">Great Lakes sturgeon may be 400 years old:Scientists rethinking how to save them</a> </h3>
+                    <div class="header-buttons">
+                        <button type="button" class="discuss-btn" aria-label="Discuss with AI" title="Discuss with AI">&#x1F4AC;</button>
+                        <button type="button" class="repo-toggle" aria-expanded="true">Hide details</button>
+                    </div>
+                </div>
+                <div class="repo-body">
+                    <p class="meta">
+                        <span class="language">cbc.ca</span> |
+                        <span>bookofjoe</span> |
+                        <span>73 points</span> |
+                        <span>8 comments</span> |
+                        <a href="https://news.ycombinator.com/item?id=49624456" target="_blank" rel="noopener noreferrer">discussion</a>
+                    </p>
+                    <p class="history">First seen: September 12, 2026 | Consecutive daily streak: 1 day</p>
+                    <div class="ai-summary">
+                        <h4>Analysis</h4>
+                        <p>New research based on 44 years of capture and growth data suggests that Great Lakes lake sturgeon may live for up to 400 years, significantly longer than the previously accepted estimate of 150 years. By modeling the slow growth rates of recaptured individuals rather than relying on traditional fin ray ring analysis, scientists have discovered that these ancient fish reach maturity and age much more slowly than anticipated. This finding forces conservationists to re-evaluate their long-term restoration plans, as the recovery of the species—which remains at roughly one percent of its historic population—will likely require a much longer timeline than current programs account for. The study highlights the profound ecological and cultural significance of these &quot;grandfather fish,&quot; whose extraordinary longevity underscores the severe, multi-generational impact of past overfishing and habitat destruction.</p>
+                    </div>
+                    
+                <div class="ai-summary">
+                    <h4>Comment Analysis</h4>
+                    <p class="camps-framing">The discussion was predominantly appreciative and conservation-minded, with commenters sharing firsthand sightings and describing the fish as unusually large, powerful, and possibly long-lived. Smaller side discussions addressed taxonomy and population estimates, the history of human settlement around the Great Lakes, and the use of “Lake America.”</p>
+<div class="camp"><p class="camp-label"><strong>Awe and conservation support</strong> &mdash; Commenters described encounters with large sturgeon, emphasized their strength and ancient appearance, and expressed support for conservation efforts.</p><blockquote>The way they look, it feels like coming across a dinosaur.<cite>aschla</cite></blockquote>
+<blockquote>They are deceptively strong for their size, and a big part of local conservation efforts.<cite>Joel_Mckay</cite></blockquote>
+<blockquote>They are very majestic.<cite>earth-tattoo</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Taxonomic and population-decline correction</strong> &mdash; One commenter highlighted a recent taxonomic reclassification and argued that the reported population reduction may understate the historical decline.</p><blockquote>Also, note the recent reclassification from Acipenser to Huso .<cite>bell-cot</cite></blockquote>
+<blockquote>From the descriptions there, the article&#x27;s estimate of 99% (reduction from historic population levels) is a severe underestimate.<cite>bell-cot</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Historical context about human settlement</strong> &mdash; Commenters qualified the claim that sturgeon predated local towns by discussing the age of North American settlements and the much older history of human occupation in the Great Lakes region.</p><blockquote>To be fair the towns a North American might be talking about could easily date to 400 to 600 years ago at least - with signs of human occupation in the Great Lakes area going back 10-12,000 years before present, a good deal on the present lake floors.<cite>defrost</cite></blockquote>
+<blockquote>To be fair, the towns you&#x27;re talking about are barely 200-300 years or so I presume?<cite>embedding-shape</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Lake-naming and sovereignty tangent</strong> &mdash; A separate discussion debated whether “Lake America” was politically meaningful, related to sovereignty, or simply a media-driven novelty.</p><blockquote>It&#x27;s like a TV show, hilarious from the outside but I&#x27;m sure dire internally.<cite>embedding-shape</cite></blockquote>
+<blockquote>How does renaming a lake infringe on Canada’s sovereignty?<cite>nonethewiser</cite></blockquote>
+<blockquote>Nobody is calling it Lake America but prime idiots and Google.<cite>pluc</cite></blockquote></div>
+                </div>
+
+                </div>
+            </section>
+
+            <section class="repo" data-seen-before="0"
+                     data-share-title="google.com/goto: Google&#x27;s anti-scraping update"
+                     data-share-url="https://www.autom.dev/blog/google-search-goto-links"
+                     data-share-points="451"
+                     data-share-comments="352">
+                <div class="repo-header-row">
+                    <h3>8. <a href="https://www.autom.dev/blog/google-search-goto-links" target="_blank" rel="noopener noreferrer">google.com/goto: Google&#x27;s anti-scraping update</a> </h3>
+                    <div class="header-buttons">
+                        <button type="button" class="discuss-btn" aria-label="Discuss with AI" title="Discuss with AI">&#x1F4AC;</button>
+                        <button type="button" class="repo-toggle" aria-expanded="true">Hide details</button>
+                    </div>
+                </div>
+                <div class="repo-body">
+                    <p class="meta">
+                        <span class="language">autom.dev</span> |
+                        <span>1e1a</span> |
+                        <span>451 points</span> |
+                        <span>352 comments</span> |
+                        <a href="https://news.ycombinator.com/item?id=49668386" target="_blank" rel="noopener noreferrer">discussion</a>
+                    </p>
+                    <p class="history">First seen: September 12, 2026 | Consecutive daily streak: 1 day</p>
+                    <div class="ai-summary">
+                        <h4>Analysis</h4>
+                        <p>Google has begun replacing direct search result links with an opaque `google.com/goto` redirect format, requiring crawlers to perform a secondary HEAD request to resolve the actual destination URL. Unlike previous redirect wrappers that contained readable parameters, this new system uses custom encoding to prevent offline parsing of search results. This change serves as a significant anti-scraping measure, forcing automated tools to generate more detectable traffic if they wish to extract destination links from Google’s index. By increasing the technical and operational costs of bulk extraction, Google is effectively tightening its control over SERP data to hinder AI crawlers and third-party indexers.</p>
+                    </div>
+                    
+                <div class="ai-summary">
+                    <h4>Comment Analysis</h4>
+                    <p class="camps-framing">The discussion was predominantly critical of Google’s opaque result links, with commenters connecting them to diminished link transparency, user control, privacy, and the open-web norm of inspecting or copying destinations. A smaller group viewed the change as a reasonable anti-scraping measure with little effect on ordinary users. The debate also expanded into Google’s search monopoly, alternative engines, the limits of click tracking as a new concern, and the risks and merits of Yandex.</p>
+<div class="camp"><p class="camp-label"><strong>Opaque links violate the web’s social contract</strong> &mdash; The largest camp objected to hiding destination URLs behind Google-controlled resolution. Commenters emphasized the loss of hover previews, right-click copying, user-agent filtering, archival usefulness, and confidence about where a result leads.</p><blockquote>It broke an unwritten contract between the company and the user&#x27;s expectation of how websites worked.<cite>rkagerer</cite></blockquote>
+<blockquote>My user agent should be able to tell me where a hyperlink goes without first clicking on it, and perhaps act differently based on that information.<cite>LeoPanthera</cite></blockquote>
+<blockquote>Privacy-wise, it enables them to track the result you click on. Also, though more niche, it would make archived search result pages (e.g. on the Wayback Machine) less useful.<cite>jolmg</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Google is enshittifying search and defending its moat</strong> &mdash; Many commenters treated the change as part of Google’s broader decline in search quality and an effort to preserve control over its index by making competitors and automated services pay more to access it.</p><blockquote>The enshittification continues. Nothing good ever comes from businesses desperately trying to protect their moats rather than making their products better so they don&#x27;t need to.<cite>nullbio</cite></blockquote>
+<blockquote>It&#x27;s primarily relevant because it makes scraping search results much more expensive, solidifying Google&#x27;s effective monopoly on Internet search.<cite>InsideOutSanta</cite></blockquote>
+<blockquote>Google wants to build up a private web here.<cite>shevy-java</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Ordinary users are mostly unaffected; anti-scraping is legitimate</strong> &mdash; A minority argued that Google is entitled to protect a service it built from automated extraction and that users can still reach the destination normally. Some also noted that redirect and tracking behavior is longstanding rather than entirely new.</p><blockquote>So why are we angry about that ? I mean the end result for the users are exactly the same, it matters only for bots.<cite>aucisson_masque</cite></blockquote>
+<blockquote>This seems good. I&#x27;m not sure why I should be upset that Google is preventing abuse of its service.<cite>tobinfricke</cite></blockquote>
+<blockquote>and trying to protect your moat isn&#x27;t automatically a bad thing.<cite>adtac</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Tracking is not the new part, but opacity and control still matter</strong> &mdash; Several commenters disputed that the format grants Google a major new tracking capability, since clicks could already be logged through JavaScript, redirects, accounts, and analytics. They nevertheless identified the extra request and loss of visibility as meaningful drawbacks.</p><blockquote>But what’s stopping Google from doing this already?<cite>demibabs</cite></blockquote>
+<blockquote>Google was already sending analytics pings when search result links were clicked on, using JS.<cite>1e1a</cite></blockquote>
+<blockquote>This new scheme would make that impossible.<cite>JohnFen</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Leave Google for alternative search engines</strong> &mdash; A practical response was to recommend alternatives such as Kagi, DuckDuckGo, Brave Search, Mojeek, and SearXNG. Commenters differed on their quality, cost, independence, and ability to replace Google for specialized searches.</p><blockquote>The real &quot;old-school Google, but modern&quot; is Kagi, with the caveat of being paid.<cite>nine_k</cite></blockquote>
+<blockquote>Brave search (free) or Kagi (paid) are able to replace Google and not feel like I&#x27;m missing out.<cite>Cider9986</cite></blockquote>
+<blockquote>For my uses, it&#x27;s undistinguishable from Google.<cite>stncls</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Yandex as an old-Google substitute, versus a security and censorship risk</strong> &mdash; One thread praised Yandex for long-tail results and a less commercial feel, while others rejected it because of Russian state control, propaganda, surveillance, and risks to users in countries such as Estonia. Some participants challenged how visible that bias is in observed results.</p><blockquote>For actual web search I actually like using Yandex. It reminds me of old Google, returning reasonable results and much less &quot;shaping results to please our corpo-political masters&quot;.<cite>lubujackson</cite></blockquote>
+<blockquote>I’d expect everything that you type into Yandex that can be of use to the Russia will be used by Russia - they will nit care about hurting you.<cite>kolinko</cite></blockquote>
+<blockquote>Why would anyone try to assess Yandex&#x27;s results? They could be like a slot machine serving good results 78% of the time and slipping propaganda in when least expected.<cite>Lio</cite></blockquote></div>
+                </div>
+
+                </div>
+            </section>
+
+            <section class="repo" data-seen-before="1"
+                     data-share-title="Inverse Kinematics and Foot Locking"
+                     data-share-url="https://theorangeduck.com/page/inverse-kinematics-foot-locking"
+                     data-share-points="52"
+                     data-share-comments="6">
+                <div class="repo-header-row">
+                    <h3>9. <a href="https://theorangeduck.com/page/inverse-kinematics-foot-locking" target="_blank" rel="noopener noreferrer">Inverse Kinematics and Foot Locking</a> <span class="seen-badge">Not new today</span></h3>
+                    <div class="header-buttons">
+                        <button type="button" class="discuss-btn" aria-label="Discuss with AI" title="Discuss with AI">&#x1F4AC;</button>
+                        <button type="button" class="repo-toggle" aria-expanded="true">Hide details</button>
+                    </div>
+                </div>
+                <div class="repo-body">
+                    <p class="meta">
+                        <span class="language">theorangeduck.com</span> |
+                        <span>airhangerf15</span> |
+                        <span>52 points</span> |
+                        <span>6 comments</span> |
+                        <a href="https://news.ycombinator.com/item?id=49595505" target="_blank" rel="noopener noreferrer">discussion</a>
+                    </p>
+                    <p class="history">First seen: September 08, 2026 | Consecutive daily streak: 1 day</p>
+                    <div class="ai-summary">
+                        <h4>Analysis</h4>
+                        <p>This technical article from *The Orange Duck* provides a practical, code-focused guide for animation programmers on mitigating &quot;foot sliding,&quot; a common visual artifact in character animation. The author details a modular approach to the problem, covering inverse kinematics for leg-chain positioning, an inertialization-based method for runtime foot locking, and heuristics for automatically annotating animation contact data. By breaking down these complex spatial geometry and signal-processing tasks into implementable &quot;recipes,&quot; the post offers developers a reliable framework for improving character movement quality. This work is important because it addresses a persistent challenge in game development where bridging the gap between artistic animation data and physical ground contact is essential for visual immersion.</p>
+                    </div>
+                    
+                <div class="ai-summary">
+                    <h4>Comment Analysis</h4>
+                    <p class="camps-framing">The reaction was overwhelmingly positive, with several commenters praising the article as unusually useful and accessible documentation for a technically under-documented problem. The main criticism was that, despite its practical value, it leaves important technical details unspecified, especially about the joints and the exact inverse-kinematics problem being solved. One commenter also broadened the discussion to why foot sliding remains common in games, suggesting that players may have become accustomed to it.</p>
+<div class="camp"><p class="camp-label"><strong>Strongly positive technical reception</strong> &mdash; Several commenters considered the article comprehensive, enlightening, and among the better available references on foot locking and animation programming. This was the clear majority position.</p><blockquote>This is one of the best references on this topic I&#x27;ve seen - run cycles and foot locking are annoyingly lacking in documentation outside a few papers.<cite>mmastrac</cite></blockquote>
+<blockquote>I always wanted to know how physics and kinematics came together and could be worked on with code. Your blog post was enlightening. Thanks.<cite>minimeow</cite></blockquote>
+<blockquote>That was really comprehensive. Good read.<cite>badmonkey0001</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Request for greater technical precision</strong> &mdash; A minority commenter found the presentation promising but criticized it for omitting foundational implementation details, including joint types and whether the IK handles position, orientation, or both. They viewed the post as potentially excellent if it were more fully specified and polished.</p><blockquote>Too much detail is missing from this post and its related post on &quot;two-joint inverse kinematics&quot; (that is actually three joint inverse kinematics) - what are the joint types? which inverse kinematics problem is being solved (position, orientation, or both?).<cite>windriverthrum</cite></blockquote>
+<blockquote>This could be a great post if the author spends some more time polishing it.<cite>windriverthrum</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Concern about normalized foot sliding in games</strong> &mdash; One commenter used the article to question why foot sliding remains common in fighting games despite IK techniques being available. They speculated that audiences and developers may have become accustomed to the artifact or interpret it as normal behavior.</p><blockquote>I was recently wondering why foot sliding is still a common problem in fighting games.<cite>cubefox</cite></blockquote>
+<blockquote>I have the suspicion that people who are accustomed to fighting games are so used to it that they don&#x27;t notice it anymore, or view it as correct behavior.<cite>cubefox</cite></blockquote></div>
+                </div>
+
+                </div>
+            </section>
+
+            <section class="repo" data-seen-before="0"
+                     data-share-title="Usenet rewind archive search engine"
+                     data-share-url="https://www.usenet-rewind.com/"
+                     data-share-points="66"
+                     data-share-comments="14">
+                <div class="repo-header-row">
+                    <h3>10. <a href="https://www.usenet-rewind.com/" target="_blank" rel="noopener noreferrer">Usenet rewind archive search engine</a> </h3>
+                    <div class="header-buttons">
+                        <button type="button" class="discuss-btn" aria-label="Discuss with AI" title="Discuss with AI">&#x1F4AC;</button>
+                        <button type="button" class="repo-toggle" aria-expanded="true">Hide details</button>
+                    </div>
+                </div>
+                <div class="repo-body">
+                    <p class="meta">
+                        <span class="language">usenet-rewind.com</span> |
+                        <span>cstadler1869</span> |
+                        <span>66 points</span> |
+                        <span>14 comments</span> |
+                        <a href="https://news.ycombinator.com/item?id=49668777" target="_blank" rel="noopener noreferrer">discussion</a>
+                    </p>
+                    <p class="history">First seen: September 12, 2026 | Consecutive daily streak: 1 day</p>
+                    <div class="ai-summary">
+                        <h4>Analysis</h4>
+                        <p>Usenet-Rewind is a searchable archive providing access to over one billion text posts spanning from 1981 to the present day. By indexing decades of newsgroup conversations, the platform preserves early internet discourse, including technical support, academic debates, and firsthand historical accounts. The project functions as a comprehensive research tool, capturing the evolution of digital communication before the widespread adoption of the modern web. Its importance lies in the long-term preservation of internet history, ensuring that these foundational community interactions remain accessible for future study.</p>
+                    </div>
+                    
+                <div class="ai-summary">
+                    <h4>Comment Analysis</h4>
+                    <p class="camps-framing">The discussion was broadly favorable toward making old Usenet material searchable, particularly as an alternative to unreliable Google Groups and as a means of preserving early internet history. Participants also compared the service with free archives and local indexing tools, with some questioning the value of paying for access. The main disagreement concerned whether preserving youthful, context-dependent posts serves historical purposes or creates an unwanted and potentially harmful permanent record.</p>
+<div class="camp"><p class="camp-label"><strong>Searchable archive is highly useful</strong> &mdash; Supporters valued the archive as a dependable way to find obscure technical and personal material that is difficult to retrieve elsewhere, including material missing from Google Groups. Personal self-searching and rediscovery were also treated as entertaining uses.</p><blockquote>Oh my god this is a lifesaver.<cite>rfarley04</cite></blockquote>
+<blockquote>Just searched for what I was looking for in Rewind and immediately found the posts and even some I never saw in Google Groups results.<cite>rfarley04</cite></blockquote>
+<blockquote>The most prolific self-references (to myself that is) I found were UUCP maps updates because I ran a node which was in the centrally coordinated catalog (iirc it drove honey-danber to convert a!b!c paths to user@c so you didn&#x27;t have to hand-route)<cite>ggm</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>DIY and free alternatives</strong> &mdash; Several commenters emphasized that Usenet collections can be downloaded from Archive.org and indexed locally, while others pointed to free web archives and questioned whether the paid service contains substantially more data. The limited free account and advanced filtering were mentioned as a possible convenience justification.</p><blockquote>If you go local, notmuch beat recoll for me on the mbox split, ~2M messages indexed in about 40 min on a cheap SSD.<cite>hn1rig3rak</cite></blockquote>
+<blockquote>Grabbed the UTZOO tapes off archive.org a while back, ~2GB compressed for 1981-1991, and recoll indexed the whole thing in an afternoon.<cite>sparrowidle</cite></blockquote>
+<blockquote>Not to be a party pooper but this is a paid service.<cite>imprint5</cite></blockquote>
+<blockquote>It has a free account has 25 full searches with advanced filtering etc.<cite>cstadler1869</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Internet-history preservation</strong> &mdash; This perspective treated comprehensive retention as culturally and historically important, especially because much early online material has already disappeared and future generations may value records from the 1980s and 1990s.</p><blockquote>Turns out storage wasn&#x27;t free and the the following generations did not have the same appreciation for everything 80s and 90s, so much of it is lost forever.<cite>weinzierl</cite></blockquote>
+<blockquote>So glad all of this is archived in multiple, non Google places<cite>rfarley04</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Opposition to permanent archival exposure</strong> &mdash; Critics objected to repeatedly republishing youthful and personally identifying posts made before people could reasonably anticipate long-term searchable persistence. They also worried that archived material could enable profiling, harassment, or reputational harm.</p><blockquote>No one in the 1980s and early 1990s expected the internet to become what it did.<cite>matherial</cite></blockquote>
+<blockquote>Today, agents make it easier than ever to build a dossier on anyone you don&#x27;t like, so this data is bound to cause some harm.<cite>matherial</cite></blockquote>
+<blockquote>And I guess when I die, the best-preserved memory of me that my grandchildren and grand-grandchildren will be able to pull up will be snarky posts from a 15-year-old on some unix-related discussion group.<cite>matherial</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Public posts should remain available and be judged in context</strong> &mdash; Respondents argued that people knowingly posted publicly and that embarrassing teenage behavior should generally be understood in context. Some also noted that old contact information often no longer has practical relevance.</p><blockquote>Anyone fair minded will dismiss it.<cite>davidwritesbugs</cite></blockquote>
+<blockquote>Man, I sure knew 35 years ago that whatever I shared in public was.... public. :)<cite>ssl-3</cite></blockquote>
+<blockquote>It doesn&#x27;t bother me.<cite>ssl-3</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Changed historical norms complicate consent</strong> &mdash; A middle position emphasized that formal publicness did not amount to meaningful informed consent in 1991, before expectations about permanence and online reputational consequences had developed. These comments challenged treating old posts exactly like contemporary public statements without necessarily rejecting archival projects.</p><blockquote>Public or not 1991 was a very, very, very different time.<cite>CalRobert</cite></blockquote>
+<blockquote>The idea that some dumb stuff I posted would still be around in 30+ years would have been crazy.<cite>CalRobert</cite></blockquote>
+<blockquote>35 years ago we didn’t have the cultural precedent/zeitgeist of getting cancelled for some stupid shit you wrote on a message board in 1991 so we were less guarded with our opinions.<cite>stackghost</cite></blockquote></div>
+                </div>
+
+                </div>
+            </section>
+
+            </div>
+        </article>
+    </main>
+    <footer>
+        <p>Generated automatically. Data from <a href="https://news.ycombinator.com/">Hacker News</a>.</p>
+    </footer>
+
+<script>
+(() => {
+    const readKey = "gtd:read_days:hn:v1";
+    const dayStr = "2026-09-12";
+
+    let stored = [];
+    try {
+        stored = JSON.parse(localStorage.getItem(readKey) || "[]");
+        if (!Array.isArray(stored)) {
+            stored = [];
+        }
+    } catch (_err) {
+        stored = [];
+    }
+
+    if (!stored.includes(dayStr)) {
+        stored.push(dayStr);
+        stored.sort();
+        localStorage.setItem(readKey, JSON.stringify(stored));
+    }
+
+    const collapseParam = new URLSearchParams(window.location.search).get("collapse_seen");
+    const collapseSeen = collapseParam === "0" ? false : true;
+
+    function setCollapsed(repoEl, collapsed) {
+        repoEl.classList.toggle("collapsed", collapsed);
+        const button = repoEl.querySelector(".repo-toggle");
+        if (button) {
+            button.textContent = collapsed ? "Show details" : "Hide details";
+            button.setAttribute("aria-expanded", String(!collapsed));
+        }
+    }
+
+    const repos = Array.from(document.querySelectorAll("section.repo[data-seen-before]"));
+
+    repos.forEach((repoEl) => {
+        const toggle = repoEl.querySelector(".repo-toggle");
+        if (!toggle) {
+            return;
+        }
+
+        toggle.addEventListener("click", () => {
+            setCollapsed(repoEl, !repoEl.classList.contains("collapsed"));
+        });
+    });
+
+    const collapseBtn = document.getElementById("collapse-seen-btn");
+    const expandBtn = document.getElementById("expand-all-btn");
+
+    if (collapseBtn) {
+        collapseBtn.addEventListener("click", () => {
+            repos.forEach((repoEl) => {
+                if (repoEl.dataset.seenBefore === "1") {
+                    setCollapsed(repoEl, true);
+                }
+            });
+        });
+    }
+
+    if (expandBtn) {
+        expandBtn.addEventListener("click", () => {
+            repos.forEach((repoEl) => setCollapsed(repoEl, false));
+        });
+    }
+
+    if (collapseSeen) {
+        repos.forEach((repoEl) => {
+            if (repoEl.dataset.seenBefore === "1") {
+                setCollapsed(repoEl, true);
+            }
+        });
+    }
+
+    // Discuss with AI button
+    const toast = document.createElement("div");
+    toast.className = "discuss-toast";
+    document.body.appendChild(toast);
+
+    function showToast(msg) {
+        toast.textContent = msg;
+        toast.classList.add("show");
+        setTimeout(() => toast.classList.remove("show"), 2500);
+    }
+
+    function buildHNMarkdown(card) {
+        const title = card.dataset.shareTitle || "";
+        const url = card.dataset.shareUrl || "";
+        const points = card.dataset.sharePoints || "0";
+        const comments = card.dataset.shareComments || "0";
+        const summaries = card.querySelectorAll(".ai-summary");
+        let md = "# " + title + "\n";
+        md += "Source: " + url + " | " + points + " points | " + comments + " comments\n";
+        summaries.forEach((s) => {
+            const heading = s.querySelector("h4");
+            const label = heading ? heading.textContent.trim() : "Analysis";
+            const content = Array.from(s.querySelectorAll("p"))
+                .map((p) => p.textContent.trim())
+                .join("\n");
+            md += "\n## " + label + "\n" + content + "\n";
+        });
+        return md;
+    }
+
+    document.querySelectorAll(".discuss-btn").forEach((btn) => {
+        btn.addEventListener("click", () => {
+            const card = btn.closest("section.repo");
+            if (!card) return;
+            const md = buildHNMarkdown(card);
+            const text = "I'd like to discuss this article with you. Here's a summary:\n\n" + md;
+            const title = "Discuss: " + (card.dataset.shareTitle || "");
+            if (navigator.share) {
+                navigator.share({ title: title, text: text }).catch(() => {});
+            } else {
+                navigator.clipboard.writeText(text).then(
+                    () => showToast("Copied to clipboard \u2014 paste into your AI chat"),
+                    () => showToast("Failed to copy")
+                );
+            }
+        });
+    });
+})();
+</script>
+
+<script src="../../preference.js?v=f31b00fba" defer></script>
+</body>
+</html>
