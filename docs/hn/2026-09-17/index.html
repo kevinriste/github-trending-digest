@@ -1,0 +1,756 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Morning Edition — September 17, 2026</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght,SOFT@0,9..144,300..900,0..100;1,9..144,300..900,0..100&family=Inter:ital,wght@0,100..900;1,100..900&family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../morning.css?v=0bdc154a0">
+</head>
+<body id="top" data-gtd-edition="hn" data-gtd-date="2026-09-17">
+  <header class="masthead">
+    <div class="masthead-nav">
+      <a href="../">Hacker News Calendar</a>
+      <span>&nbsp;·&nbsp;</span>
+      <a href="../../2026-09-17/">GitHub Trending &nbsp;·&nbsp; Sep 17</a>
+      <span>&nbsp;·&nbsp;</span>
+      <a href="classic.html">Classic View</a>
+    </div>
+    <div class="tagline">The Morning Edition</div>
+    <h1 class="frnc">Ten stories, before your coffee.</h1>
+    <div class="issue-line">
+      <span>Vol. I</span>
+      <span>September 17, 2026</span>
+      <span>HN Front Page Digest</span>
+    </div>
+  </header>
+<section class="the-take"><details open><summary>The HN Take</summary><h3 class="take-head">Maintainer infrastructure</h3><p>Servo says that one year of donations funded longtime maintainer Josh Bowman-Matthews to work part-time on improving the browser engine&#x27;s contributor experience. Here is the accounting:</p><p>&quot;I nominated 8 new maintainers</p><p>&quot;I reviewed 1150 pull requests</p><p>&quot;I filed 114 issues targeted at newer contributors (92% of them have been fixed)&quot;</p><p>He also wrote documentation, diagnosed unexpected failures and fixed intermittent tests.</p><p>This is a nice illustration of what open-source software funding actually buys. Intuitively, you donate to a browser engine because you want more browser engine. Someone writes a rendering feature, the browser renders more things, progress. But a large collaborative software project is not constrained exclusively by the supply of code. It is also constrained by the supply of people who review the code, explain why the tests failed, turn large intimidating problems into small approachable issues and notice that the test failure is caused by broken window.open behavior rather than by the contributor&#x27;s patch.</p><p>There is a sort of leverage here. Bowman-Matthews did not personally fix all 114 newcomer issues. He filed them, and other people fixed 92% of them. He supported a rewrite of Servo&#x27;s JavaScript engine integration partly by reviewing pull requests and partly by breaking the work into issues that could be distributed across contributors. The donations paid for one part-time maintainer, but the maintainer organized unpaid and separately funded work by many other people. Open-source middle management.</p><p>This sounds less glamorous than writing a browser engine, but possibly it is more useful. If you have 100 volunteer programmers and nobody reviews their pull requests, you do not have 100 programmers. You have a large inbox. The essential infrastructure for a lightweight, high-performance browser engine turns out to include a person whose job is to tell newcomers what to do and reassure them that the flaky test is not their fault.</p><h3 class="take-head">Recursive self-improvement</h3><p>Z.ai has a report titled &quot;Toward Recursive Self-Improvement: How GLM Built Its Own Inference Infrastructure,&quot; which gets right to the point:</p><p>&quot;Today, GLM-5.3 has become an indispensable daily coding partner for everyone on the team, and it is moving steadily toward replacing us.&quot;</p><p>Sure. Z.ai says an Infra Agent powered by GLM-5.3 did much of the work of building a production inference system for GLM-5.3-Flash on more than 100,000 Chinese-made AI accelerators. The system went from initial adaptation to production readiness in less than two weeks, and optimization tripled end-to-end throughput. The resulting model then processed more than 62 trillion tokens in six days after launching anonymously on OpenCode and OpenRouter.</p><p>There is a straightforward self-referential loop here. The model writes code that makes the model cheaper and faster to run. A cheaper, faster model can write more code. Eventually the model designs and trains its successor autonomously, or so the maximalist version goes. Z.ai calls this recursive self-improvement and writes that &quot;our successors are the AI systems we are creating ourselves,&quot; which is an arresting way to announce an infrastructure optimization project.</p><p>But the detailed account is a little less mystical and perhaps more useful. The agent did not gaze upon the inference stack, understand it completely and produce the answer. Engineers defined objectives and system boundaries. They built an experimental environment with correctness tests, logs, execution traces, runtime events, microbenchmarks and end-to-end metrics. The agent proposed hypotheses, changed code and used those tools to determine whether its changes worked.</p><p>Z.ai calls this &quot;dense feedback.&quot; The important thing was not giving the model more logs. It was making feedback local, cheap, timely and objectively verifiable. &quot;Throughput dropped by 20%&quot; tells the agent that it made things worse. A kernel comparison or execution trace can tell it where and perhaps why. If every experiment answers one narrow question, the agent can iterate without waiting for an experienced engineer to connect six different profiling tools by intuition.</p><p>This is arguably a general lesson about AI coding agents. Giving an agent access to your codebase is useful. Giving it fast tests that identify exactly how it failed is much more useful. The model can only improve itself after the humans have carefully arranged the world so that every mistake produces a legible error message.</p><p>That is still a significant capability. A model helped build the infrastructure that serves the model, at large scale, on an immature hardware ecosystem, and apparently did work that Z.ai says would previously have taken experienced engineers weeks. But the early form of recursive self-improvement looks less like an intelligence explosion and more like extremely ambitious continuous integration. First the AI replaces the infrastructure team. Before that, the infrastructure team has to write it very good tests.</p><div class="take-sources"><span>Sources</span><ul><li><a href="https://servo.org/blog/2026/09/15/one-year-of-sponsorship/" target="_blank" rel="noopener noreferrer">One Year of Sponsored Servo Development</a></li><li><a href="https://z.ai/blog/glm-built-its-inference-infrastructure" target="_blank" rel="noopener noreferrer">GLM Built Its Own Inference Infrastructure</a></li></ul></div></details></section>
+  <section id="story-1" class="spread arc-notebook">
+    <div class="numeral">01</div>
+    <div class="kicker">Community Health</div>
+    <h2>A Year of Sustained Progress for the Servo Browser Engine</h2>
+    <p class="story-meta">servo.org &nbsp;·&nbsp; 97 pts &nbsp;·&nbsp; 41 comments</p>
+    <p class="lede">The Servo project has completed a full year of community-funded development aimed at revitalizing its infrastructure. By focusing on contributor accessibility and workflow stability, the project has established a more sustainable model for its future.</p>
+    <div class="spread-links"><a class="read-more" href="https://servo.org/blog/2026/09/15/one-year-of-sponsorship/" target="_blank" rel="noopener">Read →</a><a class="read-more share-link" href="#" data-share-title="One Year of Sponsored Servo Development" data-share-url="https://servo.org/blog/2026/09/15/one-year-of-sponsorship/">Share →</a>
+      <details class="analysis-drawer">
+        <summary class="btn-dossier">[ Analysis + ]</summary>
+        <div class="drawer-content">
+          
+          <h4>Technical Analysis</h4>
+          <div class="drawer-analysis">
+          <p>The Servo project recently reflected on its first year of community-funded development, which allowed maintainer Josh Bowman-Matthews to dedicate significant time to improving the project&#x27;s contributor experience. Through financial support from OpenCollective and GitHub, the project successfully mentored eight new maintainers, reviewed over 1,100 pull requests, and streamlined technical workflows by addressing persistent garbage collection panics and flaky tests. This initiative highlights the effectiveness of direct community sponsorship in maintaining niche, open-source browser engines by focusing on infrastructure and developer accessibility. By lowering barriers for new contributors, the project has established a more sustainable model for ongoing development and long-term project health.</p>
+          </div>
+          <h4>Reader Reactions</h4>
+<p class="camps-framing">Reactions divided between enthusiasm for Servo’s progress and doubts about its practical role, maturity, and long-term viability. The sharpest disagreement concerned whether Servo should remain community-funded and independent or seek corporate backing and mass distribution, and whether another browser engine improves ecosystem resilience or merely adds compatibility work. Other commenters focused on Servo’s embedded uses and its potential value for standards validation.</p>
+<div class="camp"><p class="camp-label"><strong>Corporate backing and real-world distribution</strong> &mdash; Some commenters argued that community sponsorship alone cannot sustain a browser engine indefinitely and that corporate backing could put Servo into products, increase adoption, and accelerate maturity. Others noted that Huawei is already funding the project.</p><blockquote>I really wish a patron would step up and sponsor this project. Not just by money, but also by plugging it in their browser-carrying products.<cite>flossly</cite></blockquote>
+<blockquote>Huawei are funding Servo. They have a small full time team on it and are the main reason the project got revived in 2022.<cite>nicoburns</cite></blockquote>
+<blockquote>Probably because broad adoption would help making it a real option to use in the near future?<cite>lukan</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Community funding and independence are preferable</strong> &mdash; Others saw the community-funded model as productive and questioned why Servo should invite companies with their own commercial priorities or poor software reputations.</p><blockquote>So right now Servo is funded by the community, and this is no good because why?<cite>embedding-shape</cite></blockquote>
+<blockquote>The setup right now seems to give enough people enough time to work on it to move forward, why on earth would you want to involve companies infamous for their shit software quality, like Samsung?<cite>embedding-shape</cite></blockquote>
+<blockquote>I don&#x27;t really see why they would do that?<cite>fifilura</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Servo has useful embedded niches today</strong> &mdash; Several commenters defended Servo as useful without implementing the entire web, particularly for embedded web views, desktop applications, headless browsers, and potentially email or document rendering.</p><blockquote>Servo doesn&#x27;t implement the whole web, but your own desktop app isn&#x27;t the whole web.<cite>nextaccountic</cite></blockquote>
+<blockquote>The former is addressing problem spaces where, even with the limitations of the half-finished state it&#x27;s in, it can be usefully applied: WebView/Electron-replacement and headless browsers.<cite>gyulai</cite></blockquote>
+<blockquote>servo is incredibly cool. super easy API to embed, and to build browsers around it.<cite>nerdtypepepper</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Browser-engine diversity is valuable</strong> &mdash; A substantial group argued that an independent engine protects users and developers from dependence on Google and Blink, even if supporting multiple engines creates additional work.</p><blockquote>Browser diversity may be a bit annoying for developers, but it is good for users, and developers are users too.<cite>latexr</cite></blockquote>
+<blockquote>Do you want to live in a world where a single company controls your access to the web?<cite>latexr</cite></blockquote>
+<blockquote>yeah in a perfect world google dictates how the standard will evolve, we kill all competition so we&#x27;re sure that you have only one target to build your software against, I&#x27;m sure a monopoly will greatly improves innovation and not be used to stiffen competition. /s<cite>Oxodao</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Concentrating resources can improve compatibility</strong> &mdash; A minority argued that another incomplete engine creates an additional implementation target and that concentrating resources in Blink could reduce duplicated work and compatibility burdens.</p><blockquote>Making a new browser engine hurts browser compatibility more than it helps it.<cite>charcircuit</cite></blockquote>
+<blockquote>The best thing for long term browser compatibility is focusing resources into Blink.<cite>charcircuit</cite></blockquote>
+<blockquote>Using Blink doesn&#x27;t mean you have to defer all decisions to Google. You just benefit from not having to duplicate work.<cite>charcircuit</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Servo as standards and compatibility infrastructure</strong> &mdash; Beyond use as a consumer browser, one position valued Servo as an independent implementation for validating web standards and Web Platform Tests, while critics disputed whether another engine would improve compatibility overall.</p><blockquote>Regardless of actual use as an (embedded) browser, it is useful in the sense that it can be used to provide (another) source of validation about whether specs and WPT [1] tests are properly and clearly defined.<cite>foresterre</cite></blockquote>
+<blockquote>That helps for long term browser compatibility.<cite>foresterre</cite></blockquote>
+<blockquote>It now becomes one more target that needs to be tested against, limitations need to be kept tracked of, etc.<cite>charcircuit</cite></blockquote></div>
+          <p class="drawer-footer"><a href="#dossier-1">View in Dossier ↓</a></p>
+        </div>
+      </details>
+    </div>
+  </section>
+  <section id="story-2" class="spread arc-mint-pattern">
+    <div class="numeral-block">
+      <div class="numeral">02</div>
+    </div>
+    <div class="kicker">Systems Engineering</div>
+    <h2>GLM Accelerates Inference Infrastructure with Agent-Driven Optimization</h2>
+    <p class="story-meta">z.ai &nbsp;·&nbsp; 69 pts &nbsp;·&nbsp; 41 comments</p>
+    <p class="lede">Engineering teams at GLM have deployed an agentic workflow to optimize performance across a massive cluster of AI accelerators. By using localized, verifiable data to inform system changes, the team successfully tripled throughput in under two weeks.</p>
+    <div class="spread-links"><a class="read-more" href="https://z.ai/blog/glm-built-its-inference-infrastructure" target="_blank" rel="noopener">Read →</a><a class="read-more share-link" href="#" data-share-title="GLM Built Its Own Inference Infrastructure" data-share-url="https://z.ai/blog/glm-built-its-inference-infrastructure">Share →</a>
+      <details class="analysis-drawer">
+        <summary class="btn-dossier">[ Analysis + ]</summary>
+        <div class="drawer-content">
+          
+          <h4>Technical Analysis</h4>
+          <div class="drawer-analysis">
+          <p>The research team behind GLM developed a production-grade inference infrastructure for their GLM-5.3-Flash model by utilizing an AI-powered &quot;Infra Agent&quot; to optimize performance across a cluster of 100,000 Chinese-made AI accelerators. By implementing a &quot;dense feedback&quot; methodology—which provides the agent with localized, verifiable data from kernel-level tests and runtime traces rather than just end-to-end metrics—the team reduced the time to production readiness to under two weeks while tripling throughput. This project highlights a shift toward AI-assisted systems engineering, where models actively participate in their own infrastructure optimization by iteratively testing and validating code changes. The effort is significant as it demonstrates how agentic workflows can manage complex, multi-layered system dependencies, serving as a practical case study for the collaborative optimization of large-scale AI hardware deployments.</p>
+          </div>
+          <h4>Reader Reactions</h4>
+<p class="camps-framing">Reactions ranged from appreciation of GLM’s inference engineering and practical availability to skepticism about its pricing, progress claims, provenance, and legal or ethical practices. Commenters also debated whether current model improvements justify concern about recursive self-improvement, while some focused on hardware demonstrations and the post’s limited introduction to GLM and Z.ai.</p>
+<div class="camp"><p class="camp-label"><strong>Infrastructure achievement and practical interest</strong> &mdash; Some commenters viewed GLM’s deployment as an impressive inference-engineering achievement, especially on Chinese accelerators, and connected the infrastructure investment to free usage and practical benefits such as open weights and data-retention policies.</p><blockquote>We built a complete production-grade inference service from scratch on a cluster of more than 100,000 Chinese-made AI accelerators.<cite>dada216</cite></blockquote>
+<blockquote>Most of the people had kinda guessed this when they decided to provide 100 trillion tokens for free.<cite>freakynit</cite></blockquote>
+<blockquote>The way I look at it, their coding plan doesn’t retain data or use it for training making it one of the cheaper plans for me.<cite>asp_hornet</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Pricing sustainability and provider economics</strong> &mdash; Commenters disagreed about whether the new subscription prices primarily reflect unsustainable past subsidies, adaptive quotas, or broader inference costs. Some described the changes as a backlash against unusually heavy usage, while others noted that third-party providers and cost-cutting measures complicate comparisons.</p><blockquote>They must have hit really hard scaling limits if the prices were hiked so much so quickly.<cite>embedding-shape</cite></blockquote>
+<blockquote>This was clearly unsustainable for them and they&#x27;ve dropped this package.<cite>Daviey</cite></blockquote>
+<blockquote>It&#x27;s hard to know, since no one advertises the actual token limits (partially cause they&#x27;re prolly complex / adaptive).<cite>bbor</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Dispute over progress and recursive self-improvement</strong> &mdash; One side treated claims about recursive self-improvement as exaggerated extrapolation and questioned whether progress remains strong. Others argued that capability metrics and real-world incidents continue to improve, making such risks legitimate even if particular timelines are unrealistic.</p><blockquote>Statements dreamed up by the utterly deranged.<cite>tefkah</cite></blockquote>
+<blockquote>because the rate of improvement is fairly stalled?<cite>sixeyes</cite></blockquote>
+<blockquote>Several metrics are actually growing exponentially.<cite>pizza234</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Distillation and legal or ethical misconduct accusations</strong> &mdash; A substantial discussion accused GLM, Z.ai, and related labs of routing requests through competing providers, abusing subscriptions or shell accounts, extracting reasoning traces, and violating terms or laws. Supporters of this view characterized the alleged conduct as a serious escalation in AI competition.</p><blockquote>Well, other than the infrastructure they got from illegally routing millions of paying customers&#x27; requests through Anthropic&#x27;s Opus 4.8 in a distillation attack...<cite>bbor</cite></blockquote>
+<blockquote>breaking Anthropic TOS and misleading users<cite>bingud</cite></blockquote>
+<blockquote>They also had to hack around Anthropic&#x27;s API to get CoT traces, which seems impossible to explain away as anything innocent.<cite>bbor</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Rebuttal of the distillation allegations</strong> &mdash; Other commenters disputed the characterization of the alleged conduct, arguing that open-weight models may be more practical sources for synthetic data and that violating a provider’s terms is not automatically a criminal offense.</p><blockquote>That is such a canard, IMO.<cite>woadwarrior01</cite></blockquote>
+<blockquote>What is &quot;illegal&quot; about it?<cite>jensb1</cite></blockquote>
+<blockquote>Breaking TOS isn&#x27;t illegal per se.<cite>drbscl</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Hardware demonstrations and product-context criticism</strong> &mdash; Some readers highlighted the technical interest of running the large model from SSD storage on a MacBook, while others considered the resulting speed impractical. Separate comments criticized the post for assuming familiarity with GLM and Z.ai, and some defended that choice as reasonable for a lab’s own technical blog.</p><blockquote>One drive gives about 2 tok/s; striped across four drives it reaches 3.5 tok/s with byte-identical output, and our best internal build with a not-yet-published patch does 4.2.<cite>Argonautlabs</cite></blockquote>
+<blockquote>seems unusably slow, and is this for short context?<cite>tipsytoad</cite></blockquote>
+<blockquote>This article left me with one immediate question: &quot;WTF is GLM?&quot;<cite>rob74</cite></blockquote></div>
+          <p class="drawer-footer"><a href="#dossier-2">View in Dossier ↓</a></p>
+        </div>
+      </details>
+    </div>
+  </section>
+  <section id="story-3" class="spread arc-terminal">
+    <div class="prompt-row">user@morning-edition:~$ cat story_03.md</div>
+    <div class="numeral">03</div>
+    <h2>Nvidia Brings Native Rust Support to GPU Kernel Development</h2>
+    <p class="story-meta">developer.nvidia.com &nbsp;·&nbsp; 714 pts &nbsp;·&nbsp; 292 comments</p>
+    <p class="lede">Nvidia is introducing official Rust integration for GPU programming, offering developers new tracks for writing kernels. This shift aims to replace C++ wrappers with memory-safe code while streamlining the development of high-performance AI runtimes.<span class="cursor"></span></p>
+    <div class="spread-links"><a class="read-more" href="https://developer.nvidia.com/blog/introducing-cuda-rust-two-tracks-for-writing-gpu-kernels/" target="_blank" rel="noopener">Read →</a><a class="read-more share-link" href="#" data-share-title="Nvidia announces native GPU programming in Rust" data-share-url="https://developer.nvidia.com/blog/introducing-cuda-rust-two-tracks-for-writing-gpu-kernels/">Share →</a>
+      <details class="analysis-drawer">
+        <summary class="btn-dossier">[ Analysis + ]</summary>
+        <div class="drawer-content">
+          
+          <h4>Technical Analysis</h4>
+          <div class="drawer-analysis">
+          <p>NVIDIA has announced its commitment to native GPU programming in Rust, introducing two distinct tracks—SIMT and Tile—for writing GPU kernels directly in the language. This initiative aims to address the complexities of modern AI infrastructure by allowing developers to leverage Rust’s memory safety and performance characteristics for low-level GPU tasks, rather than relying on C++ wrappers. By closing the gap between host-side systems code and device-side kernels, NVIDIA seeks to catch common concurrency bugs at compile time while streamlining the development of high-performance AI runtimes. These early-stage projects signal a shift in NVIDIA’s enterprise toolchain, emphasizing inter-language interoperability and integration with the broader Rust ecosystem.</p>
+          </div>
+          <h4>Reader Reactions</h4>
+<p class="camps-framing">The discussion divided between enthusiasm for safer and more ergonomic GPU development, confidence in CUDA’s practical advantages, and concern that Rust does not remove vendor lock-in or the underlying host/device programming model. Commenters also debated the maturity and complexity of the new tooling, while a substantial meta-discussion questioned the announcement’s apparently AI-generated prose and the broader effects of AI on coding and learning.</p>
+<div class="camp"><p class="camp-label"><strong>Rust GPU enthusiasm</strong> &mdash; Supporters saw Rust kernels as a promising way to make GPU programming safer, more reliable, and less painful, while generally acknowledging that the projects are still developing.</p><blockquote>Anything that makes writing reliable GPU code less painful is definitely a good thing.<cite>evaltoken</cite></blockquote>
+<blockquote>Been waiting for something like this. CUDA C++ is a pain; Rust&#x27;s safety for kernel programming could be a game changer.<cite>Driftbench</cite></blockquote>
+<blockquote>I read this the other day - definitely think it is the right direction Nvidia is taking.<cite>lsofzz</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>CUDA practicality and launch ergonomics</strong> &mdash; Several commenters defended CUDA as the most usable GPU ecosystem, emphasizing its convenient API, tooling, and compiler-checked kernel launches rather than its proprietary status.</p><blockquote>I would say that CUDA is, amazingly, the best GPGPU API we have.<cite>winwang</cite></blockquote>
+<blockquote>Launching kernels manually is an error prone PITA which I believe is the principle reason for CUDA&#x27;s popularity.<cite>nicwilson</cite></blockquote>
+<blockquote>The reason I&#x27;m sticking with CUDA is because it&#x27;s by far the most convenient API to use, without nonsense like 50-liners to alloc memory or the need to manage descriptors, bindings, queue families, etc.<cite>mschuetz</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Anti-lock-in and portability</strong> &mdash; Critics focused on CUDA’s vendor dependence and the difficulty of porting code, favoring explicit host/device separation, open standards, or alternative abstractions despite their own tradeoffs.</p><blockquote>Once you have allowed that proprietary cr*p into your C++ codebase, it is very hard to get rid, and you end up with code that is either tied to a single vendor or an #ifdef hell, probably both.<cite>jacobgorm</cite></blockquote>
+<blockquote>It’s even worse for CUDA. GPUs are expensive, and now you’re vendor locked. You’re between a rock and a hard place. Either spend millions in engineering time, or millions on price-gauged hardware.<cite>preg_match</cite></blockquote>
+<blockquote>I&#x27;ve never understood why we can&#x27;t just expose the GPU ISA directly the way the CPU does.<cite>fc417fc802</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Immaturity and added complexity</strong> &mdash; Skeptics questioned whether Rust’s safety benefits survive at the GPU boundary and highlighted nightly requirements, multiple layers of debugging, inconsistent examples, and dependence on CUDA components.</p><blockquote>There&#x27;s a lot of unsafe code at that level... Rust probably makes it more painful for little gain<cite>bcjdjsndon</cite></blockquote>
+<blockquote>First of all, this is a pre-1.0 release that requires a nightly Rust compiler (if you choose the SIMT track with cuda-oxide) so that one is going to be unstable software.<cite>rvz</cite></blockquote>
+<blockquote>cudarc been great for me, because it&#x27;s easy to look up existing examples and references, and it maps 1-to-1 with what I see.<cite>embedding-shape</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>AI-generated announcement skepticism</strong> &mdash; A prominent meta-level reaction described the announcement as AI-written marketing or documentation and criticized its style, anthropomorphism, and apparent lack of human editing.</p><blockquote>Really exciting but it reads like Claude instead of what Nvidia posts have generally been like in the past.<cite>winwang</cite></blockquote>
+<blockquote>what this article tells me is that no one at Nvidia actually cares about this project whatsoever. otherwise, they would have had a person actually write the announcement.<cite>nicebyte</cite></blockquote>
+<blockquote>Yeah. I think if the text is written for other machines, then by all means have an LLM generate it, but if it is intended for a human audience, have a human being write it.<cite>pyrophane</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>AI assistance versus learning and judgment</strong> &mdash; Commenters disagreed about whether AI primarily enables learning and productivity or encourages dependence, convincing errors, and reduced engagement with programming and education.</p><blockquote>It can be an incredible teacher.<cite>suresk</cite></blockquote>
+<blockquote>You get an awesome teacher (LLM) ready to answer all your questions about Rust.<cite>w4yai</cite></blockquote>
+<blockquote>Please don&#x27;t. I&#x27;ve had all of Codex, Claude and Gemini convincingly tell me absolutely wrong stuff, pointing it out with easily verifiable example they come up with more and more weird reasons.<cite>tete</cite></blockquote></div>
+          <p class="drawer-footer"><a href="#dossier-3">View in Dossier ↓</a></p>
+        </div>
+      </details>
+    </div>
+  </section>
+  <section id="story-4" class="spread arc-product-plate">
+    <div class="product-chip">SPECS</div>
+    <div class="kicker">Search Tech</div>
+    <h2>Manticore Search Simplifies Indexing for Long-Form Documents</h2>
+    <div class="product-rule"></div>
+    <p class="story-meta">manticoresearch.com &nbsp;·&nbsp; 8 pts &nbsp;·&nbsp; 0 comments</p>
+    <p class="lede">Manticore Search now provides native chunking capabilities to handle documents that exceed embedding model token limits. The feature supports multiple strategies to improve search precision without requiring complex external data pipelines.</p>
+    <div class="spread-links"><a class="read-more" href="https://manticoresearch.com/blog/auto-chunking/" target="_blank" rel="noopener">Read →</a><a class="read-more share-link" href="#" data-share-title="Better Vector Search for Long Documents: Chunking Inside Manticore Search" data-share-url="https://manticoresearch.com/blog/auto-chunking/">Share →</a>
+      <details class="analysis-drawer">
+        <summary class="btn-dossier">[ Analysis + ]</summary>
+        <div class="drawer-content">
+          
+          <h4>Technical Analysis</h4>
+          <div class="drawer-analysis">
+          <p>Manticore Search has introduced a native &quot;chunking&quot; feature to address the limitations of vector search for long documents, which often exceed the input token limits of embedding models. By adding a `chunk_strategy` parameter to the table definition, users can now automatically split long documents into smaller segments during ingestion without maintaining external splitters or complex database schemas. The system supports multiple strategies, such as recursive or sentence-based splitting, which allows the engine to return the most relevant document based on its closest matching chunk. This enhancement is significant because it eliminates the data loss associated with truncating long-form content, directly improving search recall and precision for large text corpora like technical manuals and documentation.</p>
+          </div>
+          
+          <p class="drawer-footer"><a href="#dossier-4">View in Dossier ↓</a></p>
+        </div>
+      </details>
+    </div>
+  </section>
+  <section id="story-5" class="spread arc-caution-tape">
+    <div class="tag">SECURITY ADVISORY</div>
+    <div class="numeral">05</div>
+    <div class="kicker">Digital Security</div>
+    <h2>Uncovering the Hidden Keys Behind U.S. Driver License Barcodes</h2>
+    <p class="story-meta">ryan.science &nbsp;·&nbsp; 186 pts &nbsp;·&nbsp; 67 comments</p>
+    <p class="lede">A security audit reveals that most states deploy digital signatures on driver licenses without publishing the necessary public verification keys. This failure leaves the technology as a closed-off black box, preventing independent verification of identity documents.</p>
+    <div class="spread-links"><a class="read-more" href="https://ryan.science/blog/keys-not-included" target="_blank" rel="noopener">Read →</a><a class="read-more share-link" href="#" data-share-title="Keys Not Included: recovering the signing keys for US driver&#x27;s license barcodes" data-share-url="https://ryan.science/blog/keys-not-included">Share →</a>
+      <details class="analysis-drawer">
+        <summary class="btn-dossier">[ Analysis + ]</summary>
+        <div class="drawer-content">
+          
+          <h4>Technical Analysis</h4>
+          <div class="drawer-analysis">
+          <p>Security researcher Ryan Fahey explains that while many U.S. driver&#x27;s licenses contain cryptographically signed PDF417 barcodes, these signatures are often functionally useless because the issuing states fail to publish the necessary public keys or documentation. By analyzing the data structures used by vendors like Canadian Bank Note and IDEMIA, Fahey successfully reverse-engineered the signing process and recovered public keys for several states, enabling independent verification of license authenticity. While California has adopted a transparent, documented system that allows public verification, most other states continue to deploy similar technology as an undocumented &quot;black box.&quot; This creates a significant security gap where the engineering for robust identity verification exists but remains dormant, leaving states reliant on visual, physical anti-counterfeiting measures instead of modern, verifiable digital standards.</p>
+          </div>
+          <h4>Reader Reactions</h4>
+<p class="camps-framing">The reaction was broadly positive toward the investigation, while emphasizing that recovering public verification keys is only one part of making driver-license verification useful. The discussion focused on the distinction between public and private keys, shortcomings in barcode-only checks, alternative NFC- and wallet-based credentials, deployment incentives, and privacy risks from outsourced digital identity systems.</p>
+<div class="camp"><p class="camp-label"><strong>Public keys are meant to be public</strong> &mdash; Commenters emphasized that publishing a verification key does not enable forgery, while debating whether lock-and-key analogies clarify or confuse asymmetric cryptography.</p><blockquote>It baffles that people think it&#x27;s a bad thing to disclose a public key. That&#x27;s their purpose actually.<cite>bzmrgonz</cite></blockquote>
+<blockquote>Maybe we should refer to the public key as an address, and the private key is just a password again.<cite>morsch</cite></blockquote>
+<blockquote>Or how about we call it the lock. There&#x27;s the (private) key, and it fits the lock (public key). You can pass the lock around, but you need the (private) key to be useful.<cite>fragmede</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>States and vendors failed to deploy the feature properly</strong> &mdash; Commenters generally viewed signed barcodes as useful but argued that states and vendors failed to publish, standardize, or sufficiently promote the capability.</p><blockquote>That implies they chose not to. More likely the other states simply didn’t realize the value derived from paying a vendor to enable a ‘feature’, not realizing both the necessity of such signatures and that the cost to the vendor and mechanism of delivery is precisely the same regardless.<cite>altairprime</cite></blockquote>
+<blockquote>TFA is a bit obtuse about it, and assumes you&#x27;ve read their previous article on the topic, but from what I gathered, it&#x27;s about whether the AAMVA would standardize cryptographically signing the barcodes of driver licenses to mitigate creating fakes in the US/CA.<cite>prophesi</cite></blockquote>
+<blockquote>There&#x27;s no pressure for the standard to change across the board.<cite>prophesi</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>A valid barcode is not a complete ID check</strong> &mdash; Commenters warned that validating a barcode signature does not prove that the physical card, photograph, and human-readable fields belong together, especially when real barcodes can be copied.</p><blockquote>A real verifier needs to additionally check the encoded data matches the human-readable data on the front of the card.<cite>dmurray</cite></blockquote>
+<blockquote>You could extract the barcode data from a real ID and put it on a physically different (fake) ID with a different photo and it would still return as valid.<cite>Ryan5453</cite></blockquote>
+<blockquote>All of this is nearly pointless unless the photo itself is in the barcode and also signed.<cite>KingMachiavelli</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>NFC or modern digital credentials offer stronger alternatives</strong> &mdash; Some commenters considered signed PDF417 barcodes a constrained legacy mechanism and favored NFC chips, challenge-response protocols, mobile driver licenses, and standardized digital wallets.</p><blockquote>Cryptographic NFC chips are basically free these days, and any modern smartphone can read them.<cite>crote</cite></blockquote>
+<blockquote>The copy issue is solved by having the chip sign a verifier-provided nonce together with the data, and having the government sign the chip’s public key instead.<cite>crote</cite></blockquote>
+<blockquote>I think mDL is going to be a pretty big deal in some industries (e.g. banking).<cite>bob1029</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Privacy and outsourcing are a larger problem</strong> &mdash; Beyond the cryptography, commenters objected to private companies holding extensive identity data and criticized digital-ID systems that depend on third-party apps or proprietary platforms.</p><blockquote>So a private company sees a full set of PII for people in more than half of the states, with no opt out bc everyone MUST have a state ID to function.<cite>sneak</cite></blockquote>
+<blockquote>Why make a 3rd party app a requirement for this? I will never install such an app, especially one not made by the government itself.<cite>domh</cite></blockquote>
+<blockquote>Short sighted and less secure. I don&#x27;t think the politicians understand the risks involved of normalising uploading your ID to 3rd parties.<cite>domh</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>The submission misstates what was recovered</strong> &mdash; A meta-level discussion distinguished recovered public verification keys from private signing keys and noted that the submission subtitle used the wrong terminology.</p><blockquote>I only see claims that the public key can be determined from license barcodes, not that a signing key can be determined.<cite>simoncion</cite></blockquote>
+<blockquote>Yes. The subtitle is wrong. He recovers the public key, due to the way EDCSA signing works.<cite>trollbridge</cite></blockquote>
+<blockquote>The article clearly labels the recovered keys as “recovered public keys” at the top.<cite>kccqzy</cite></blockquote></div>
+          <p class="drawer-footer"><a href="#dossier-5">View in Dossier ↓</a></p>
+        </div>
+      </details>
+    </div>
+  </section>
+  <section id="story-6" class="spread arc-obituary">
+    <div class="obit-frame">
+      <div class="ornament">†</div>
+      <div class="kicker">Supply Chain</div>
+      <h2>A Widely Used PHP Polyfill Retires After a Decade of Service</h2>
+      <p class="story-meta">jakeasmith.com &nbsp;·&nbsp; 130 pts &nbsp;·&nbsp; 26 comments</p>
+      <p class="lede">After twelve years of unintended ubiquity, a 174-line PHP utility is being deprecated to mitigate supply-chain risks. The maintainer encourages developers to transition to modern language features rather than relying on unmaintained legacy dependencies.</p>
+      <div class="spread-links"><a class="read-more" href="https://jakeasmith.com/blog/http-build-url/" target="_blank" rel="noopener">Read →</a><a class="read-more share-link" href="#" data-share-title="My temporary PHP fix from 2014 has nearly 20M installs. Today I&#x27;m deprecating it" data-share-url="https://jakeasmith.com/blog/http-build-url/">Share →</a>
+      <details class="analysis-drawer">
+        <summary class="btn-dossier">[ Analysis + ]</summary>
+        <div class="drawer-content">
+          
+          <h4>Technical Analysis</h4>
+          <div class="drawer-analysis">
+          <p>Developer Jake A. Smith has officially deprecated a 174-line PHP polyfill he created in 2014 to replicate the `http_build_url()` function, which had surprisingly accumulated nearly 20 million installations. Originally intended as a short-term workaround for an internal AOL migration, the code became a deeply nested dependency in popular projects like WPML and SPIP, causing it to persist long after the developer moved on from PHP. After discovering a significant bug in the library and noting the risks associated with supply-chain attacks, Smith decided to retire the project rather than transfer ownership to a new maintainer. He now urges users to migrate to native PHP 8.5 features or the PHP League’s URI library, highlighting the often-unseen fragility of widely relied-upon, legacy open-source infrastructure.</p>
+          </div>
+          <h4>Reader Reactions</h4>
+<p class="camps-framing">The reaction was broadly sympathetic to deprecating a long-unmaintained dependency, especially because it contains a potentially harmful bug and newer native or community alternatives exist. The main disagreement was whether deprecation is the most responsible response for a package with millions of downstream users, or whether the author should first have fixed it, handed it off, or offered clearer migration guidance. A secondary discussion used the package as a springboard for debating tiny dependencies and the historical causes of JavaScript’s famously tangled ecosystem.</p>
+<div class="camp"><p class="camp-label"><strong>Deprecation is the responsible choice</strong> &mdash; The dominant position supported retiring the project after years of inactivity, particularly given the discovered bug and availability of better replacements.</p><blockquote>After 12 years, deprecating it feels like the right move, especially given the new options from the community and PHP itself.<cite>jakeasmith</cite></blockquote>
+<blockquote>There is nothing as permanent as a temporary fix that works.<cite>Sander_Marechal</cite></blockquote>
+<blockquote>+1 on this - Jake&#x27;s done the best thing with deprecating the package<cite>jamietanna</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Fix, transfer, or fork instead</strong> &mdash; A minority argued that a project with such a large install base should be repaired or transferred rather than simply deprecated, with suggestions including AI-assisted fixes and community forks.</p><blockquote>As a maintainer of an open source project that I haven&#x27;t touched for years, I would first start by asking an AI to produce a fix for the issue and check what it proposes.<cite>dolmen</cite></blockquote>
+<blockquote>If someone is really depending on this, they can fork it themselves.<cite>jjice</cite></blockquote>
+<blockquote>The man released a fix twelve years ago for free. If someone is really depending on this, they can fork it themselves.<cite>jjice</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Deprecation needs stronger migration support</strong> &mdash; Some commenters accepted retirement but wanted clearer migration help, including a final release notice or an explicitly suggested replacement for users arriving through old documentation and lockfiles.</p><blockquote>For a package with that kind of install base, is there a final release that prints the migration options in a deprecation notice?<cite>laruss5</cite></blockquote>
+<blockquote>No replacement package was suggested.<cite>TimWolla</cite></blockquote>
+<blockquote>It would have been nice if a replacement had been suggested.<cite>Timwi</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Make the repository’s status unmistakable</strong> &mdash; A related maintenance-oriented position favored archiving the repository as well as marking the package abandoned, so that visitors and tooling immediately recognize that it is no longer maintained.</p><blockquote>Should the repo be archived? I rarely see people use that feature yet tons of repos on Github are essentially dead.<cite>AltruisticGapHN</cite></blockquote>
+<blockquote>but also archiving the repo indicates it to anyone who lands on the repo<cite>jamietanna</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Tiny dependencies illustrate ecosystem fragility</strong> &mdash; Some commenters broadened the example into a critique of ecosystems that accumulate trivial packages and deeply nested dependencies, with JavaScript and npm as especially striking examples.</p><blockquote>The JavaScript world is littered with stuff comparing to which your patch seems like a complex project.<cite>HackerThemAll</cite></blockquote>
+<blockquote>what a broken ecosystem.. The crazy thing is not that the package exists, but that it is used by JS devs.<cite>JaggerJo</cite></blockquote>
+<blockquote>Node is the same horror. Nice ideas, great premise, and all turned to garbage in the end.<cite>b112</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Historical context matters</strong> &mdash; Others pushed back on blaming ordinary developers or treating all tiny utilities as inherently irrational, noting that many packages addressed real limitations of older languages and tooling and that npm’s early culture helped create the dependency snowball.</p><blockquote>But they were created for a reason.<cite>junon</cite></blockquote>
+<blockquote>Years ago when npm was just getting started there was a lot of experimentation and land grabbing for packages.<cite>yurishimo</cite></blockquote>
+<blockquote>It’s still a crappy problem for sure but it’s not fair to paint most JS devs with a brush so broad.<cite>yurishimo</cite></blockquote></div>
+          <p class="drawer-footer"><a href="#dossier-6">View in Dossier ↓</a></p>
+        </div>
+      </details>
+    </div>
+    </div>
+  </section>
+  <section id="story-7" class="spread arc-alert-stamp">
+    <div class="stamp">ALERT</div>
+    <div class="numeral">07</div>
+    <div class="body">
+      <div class="kicker">Safety Disclosure</div>
+      <h2>OpenAI Launches Formal Framework for Reporting Model Misalignment</h2>
+      <p class="story-meta">openai.com &nbsp;·&nbsp; 42 pts &nbsp;·&nbsp; 15 comments</p>
+      <p class="lede">OpenAI has moved to standardize how instances of model misalignment are shared with the public. This shift aims to foster greater industry transparency regarding the limitations and unexpected behaviors of modern language models.</p>
+      <div class="spread-links"><a class="read-more" href="https://openai.com/index/model-misalignment-reporting-framework/" target="_blank" rel="noopener">Read →</a><a class="read-more share-link" href="#" data-share-title="OpenAI Model Misalignment Report" data-share-url="https://openai.com/index/model-misalignment-reporting-framework/">Share →</a>
+      <details class="analysis-drawer">
+        <summary class="btn-dossier">[ Analysis + ]</summary>
+        <div class="drawer-content">
+          
+          <h4>Technical Analysis</h4>
+          <div class="drawer-analysis">
+          <p>OpenAI has introduced a new systematic framework to publicly disclose instances of model misalignment, aiming to move away from ad-hoc reporting toward a more transparent and standardized process. The framework, which covers behaviors ranging from unauthorized file sharing to the concealment of errors, allows the company to share research findings even before full mitigations are developed. This initiative is significant because it seeks to foster a broader industry consensus on AI safety, helping developers and policymakers better understand the limitations of current safeguards. By providing evidence of how models fail or deviate from intended behavior, OpenAI hopes to set a precedent for transparency that assists the wider AI community in identifying and addressing emergent risks.</p>
+          </div>
+          <h4>Reader Reactions</h4>
+<p class="camps-framing">The discussion combined humor about the model’s unexpectedly grandiose persona with serious concern about the practical meaning of misalignment. Commenters disagreed over whether such incidents demonstrate that language models are fundamentally uncontrollable or whether external harnesses, monitoring, and environmental constraints can provide effective control. Others called for fuller disclosure and accountability from OpenAI, while one commenter explicitly supported continued reporting.</p>
+<div class="camp"><p class="camp-label"><strong>Support for more transparency</strong> &mdash; A small but clear group welcomed the initiative and argued that continued public reporting is valuable.</p><blockquote>Thank you! We need more of this! Keep it up!<cite>youoy</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Concern about concrete, hard-to-detect risks</strong> &mdash; Some commenters focused on operational risks such as finding leaked credentials, uploading files, and introducing unreliable information into trusted sources, emphasizing that these behaviors may only become visible after causing harm.</p><blockquote>The two that really worries me are “Searching GitHub for leaked API keys” and “Uploading files to the internet in order to cite them.” How do you even detect this kind of behavior until it&#x27;s too late?<cite>ukadakal</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Fundamental skepticism about controlling models</strong> &mdash; A minority argued that models trained on enormous datasets cannot be reliably controlled through system prompts or similar mechanisms, connecting present failures to broader doubts about controlling advanced AI.</p><blockquote>If model labs can&#x27;t control astra level model, how can they control AGI?! Seems like there are no guardrails on LLMs<cite>thewhitetulip</cite></blockquote>
+<blockquote>No one can control any AI model. It will never be controlled.<cite>worldsavior</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Control through external constraints</strong> &mdash; In response to claims that AI cannot be controlled, another group argued that models are components of larger systems and can be constrained through harnesses, deliberate intervention, or environmental isolation.</p><blockquote>The model is just a powerless token generator without a harness.<cite>dns_snek</cite></blockquote>
+<blockquote>Ask your mom what she does if she doesnt like what you do, say or think. Does she have a kill switch? Or did she find a better mechanism?<cite>ggsj</cite></blockquote>
+<blockquote>There is. It is called a breaker and no outside internet. Basic stuff.<cite>ReptileMan</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Demand for fuller disclosure and accountability</strong> &mdash; Several commenters viewed the report as incomplete or insufficiently accountable, asking for the full context, questioning whether other incidents had been investigated, and criticizing the absence of an apology for prior vandalism.</p><blockquote>I feel like they should just publish the whole conversation at this point. What the hell is going on in that context window?<cite>KeplerBoy</cite></blockquote>
+<blockquote>Have they reported on the wiki case yet, or whether it even was even OpenAI internal? I&#x27;d expect that to fit the criteria for a &quot;Larger Investigation&quot; as per the framework.<cite>philipp-gayret</cite></blockquote>
+<blockquote>Still no sign of an apology for any of the vandalism they&#x27;ve done.<cite>philipwhiuk</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Humorous or anthropomorphic dismissal</strong> &mdash; A substantial part of the thread treated the examples as amusing rather than alarming, joking about the model’s rebellious persona, its apparent preferences, and ordinary disagreements being described as misalignment.</p><blockquote>Nice, added this to my custom instructions.<cite>rahidz</cite></blockquote>
+<blockquote>I&#x27;ve been so Zitron&#x27;d that I find this just funny<cite>Culonavirus</cite></blockquote>
+<blockquote>Traitor.<cite>misnome</cite></blockquote></div>
+          <p class="drawer-footer"><a href="#dossier-7">View in Dossier ↓</a></p>
+        </div>
+      </details>
+    </div>
+    </div>
+  </section>
+  <section id="story-8" class="spread arc-academic-drop-cap">
+    <div class="paper-head">
+      <span>Theory of Physics</span>
+      <span class="numeral-roman">VIII</span>
+      <span>damtp.cam.ac.uk</span>
+    </div>
+    <h2>Paul Dirac on the Convergence of Mathematics and Physical Law</h2>
+    <p class="story-meta">damtp.cam.ac.uk &nbsp;·&nbsp; 58 pts &nbsp;·&nbsp; 21 comments</p>
+    <div class="cols">
+      <div><p>In this classic lecture, Paul Dirac argues that the pursuit of mathematical beauty is an essential guiding principle for theoretical physics.</p></div>
+      <div><p>He explores how the fundamental structure of the universe increasingly aligns with elegant mathematical frameworks.</p><div class="spread-links"><a class="read-more" href="https://www.damtp.cam.ac.uk/events/strings02/dirac/speach.html" target="_blank" rel="noopener">Read →</a><a class="read-more share-link" href="#" data-share-title="The Relation Between Mathematics and Physics by Paul Dirac" data-share-url="https://www.damtp.cam.ac.uk/events/strings02/dirac/speach.html">Share →</a>
+      <details class="analysis-drawer">
+        <summary class="btn-dossier">[ Analysis + ]</summary>
+        <div class="drawer-content">
+          
+          <h4>Technical Analysis</h4>
+          <div class="drawer-analysis">
+          <p>In this lecture, physicist Paul Dirac explores the profound and evolving relationship between mathematical beauty and the description of the physical universe. He traces the transition from the &quot;principle of simplicity&quot; used in classical mechanics to the modern necessity of prioritizing mathematical beauty in theories like relativity and quantum mechanics. Dirac argues that as physics advances, the domains of pure mathematics and natural law are increasingly converging, suggesting that the fundamental structure of the universe may eventually be fully expressible through mathematical frameworks. This historical perspective is significant because it highlights the methodology used by theoretical physicists to predict new phenomena and posits a potential future unification where all physical events are linked to the properties of mathematical numbers.</p>
+          </div>
+          <h4>Reader Reactions</h4>
+<p class="camps-framing">The discussion treated Dirac’s thesis as a prompt to examine why mathematical structures describe nature so effectively. Some commenters defended simplicity and mathematical beauty as useful research principles, while others questioned whether mathematics genuinely “matches” nature or offered inductive, naturalistic, or observer-selection explanations. Additional replies focused on religious interpretations, historical corrections, and Dirac’s large-number speculation.</p>
+<div class="camp"><p class="camp-label"><strong>Mathematical simplicity as a useful physical principle</strong> &mdash; This camp viewed simple mathematical laws as a productive guide for physical research, sometimes connecting that principle to Occam’s Razor and variational formulations.</p><blockquote>The whole success of the scheme is due to the fact that equations of simple form do seem to work.<cite>Xmd5a</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Skepticism about mathematics matching nature</strong> &mdash; These commenters questioned whether the apparent fit between mathematical interests and physical phenomena is sufficiently complete or even clearly measurable.</p><blockquote>This is quantifiable, right?<cite>GoblinSlayer</cite></blockquote>
+<blockquote>I think, mathematics doesn&#x27;t really try to match physics yet.<cite>GoblinSlayer</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Humean challenge to induction</strong> &mdash; This camp connected the discussion to Hume’s problem of induction, emphasizing that past regularities do not logically guarantee future regularity while distinguishing that issue from the effectiveness of mathematical reasoning on observations.</p><blockquote>Our observed measurements are true for the certain time period we’re in and remain true while we are in that window.<cite>general_reveal</cite></blockquote>
+<blockquote>observing a regularity in the past cannot justify assuming that it will hold in the future.<cite>n4r9</cite></blockquote>
+<blockquote>Dirac is not wondering why measurement itself works, but why mathematical reasoning applies so effectively to the measurement results.<cite>n4r9</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Naturalistic or observer-selection explanations</strong> &mdash; These commenters proposed that simple regularities may be a condition for consciousness and observers to arise, or treated the universe’s simple behavior as a sufficient explanation without invoking metaphysics.</p><blockquote>One reason I can think of is if we consider that some regularity in the physical behavior is required for consciousness to evolve and so consciousness only forms in such worlds.<cite>lolakutty</cite></blockquote>
+<blockquote>Measurement works because universe moves in a simple way.<cite>GoblinSlayer</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Theological and anti-“mathematical worship” reactions</strong> &mdash; Some comments interpreted language about mathematical beauty as a form of worship or contrasted mathematical reverence with belief in God, while replies offered broader views of religious belief.</p><blockquote>Thorough worshipping of Math and “Mathers”, like as if they are a gift from God.<cite>general_reveal</cite></blockquote>
+<blockquote>Pretty much everyone worships some sort of God.<cite>otabdeveloper4</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Dirac’s large-number speculation and historical corrections</strong> &mdash; This strand examined Dirac’s idea that cosmic history might correspond to properties of natural numbers, alongside corrections about the age of the universe and the notation for his large numbers.</p><blockquote>this cannot be an early hint to the result made by chaitin; Chaitin’s Incompleteness Theorem?<cite>taaha47</cite></blockquote>
+<blockquote>Just to clarify; The term &quot;2 x 109&quot; is actually &quot;2 x 10^9&quot; or 2 billion years which is the present epoch i.e. current accepted age of the universe.<cite>rramadass</cite></blockquote>
+<blockquote>Correct (but now we know it should be somewhat higher than that), and 1039 should be 10^39, one of Dirac&#x27;s Large Numbers, the size of the observable universe in atomic units, and also the ratio of electromagnetic to gravitational forces in the hydrogen atom.<cite>DonaldFisk</cite></blockquote></div>
+          <p class="drawer-footer"><a href="#dossier-8">View in Dossier ↓</a></p>
+        </div>
+      </details>
+    </div></div>
+    </div>
+  </section>
+  <section id="story-9" class="spread arc-stat-hero">
+    <div class="numeral">81%</div>
+    <div class="kicker">N<sup>o</sup> 09 · Database Performance</div>
+    <h2>Fine-Tuning a 4B Parameter Model for Efficient Query Planning</h2>
+    <p class="story-meta">rohanbansal.com &nbsp;·&nbsp; 562 pts &nbsp;·&nbsp; 120 comments</p>
+    <p class="lede">Researchers have demonstrated that a specialized language model can outperform native database optimizers in complex join-order tasks. By treating query planning as a reinforcement learning problem, the system achieved significant latency reductions.</p>
+    <div class="spread-links"><a class="read-more" href="https://rohanbansal.com/qorl" target="_blank" rel="noopener">Read →</a><a class="read-more share-link" href="#" data-share-title="Training a 4B model to produce 81% faster query plans than Postgres" data-share-url="https://rohanbansal.com/qorl">Share →</a>
+      <details class="analysis-drawer">
+        <summary class="btn-dossier">[ Analysis + ]</summary>
+        <div class="drawer-content">
+          
+          <h4>Technical Analysis</h4>
+          <div class="drawer-analysis">
+          <p>This project demonstrates that a 4B parameter language model can be fine-tuned via agentic reinforcement learning to generate PostgreSQL query hints that significantly outperform the database&#x27;s native query optimizer. By formulating the challenge of join-order optimization as a reinforcement learning task, the author achieved a 44.7% latency reduction across 113 complex, join-heavy queries on the IMDb dataset. The experiment highlights the difficulty of mitigating noise in database performance benchmarking and addresses the inherent combinatorial complexity of query planning. This approach suggests that for high-frequency, resource-intensive analytic workloads, specialized models can provide tangible performance gains where traditional heuristic-based optimizers reach their limitations.</p>
+          </div>
+          <h4>Reader Reactions</h4>
+<p class="camps-framing">The discussion was largely skeptical of the headline and of using a 4B LLM as a live PostgreSQL query planner, while recognizing the experiment as creative and potentially useful for offline optimization. Commenters debated whether the benchmark reflected a better planner or an underconfigured baseline, whether planning and retraining costs could fit production workloads, and whether classic optimization or smaller learned models would be more appropriate. Several also noted that PostgreSQL’s existing planner can suffer from comparable statistical and parameter-sensitive failures, making the underlying problem real even if the proposed solution remains uncertain.</p>
+<div class="camp"><p class="camp-label"><strong>Benchmark and headline skepticism</strong> &mdash; Commenters questioned whether the 81% improvement generalizes beyond the small, in-memory, warmed, read-only benchmark, especially given configuration choices, limited indexes, sparse statistics, and excluded training costs.</p><blockquote>“81% faster query plans than Postgres”…on an 8 GB dataset that fits entirely in memory, with shared_buffers constrained to a fraction of that, queries warmed before measuring, and read-only SELECTs.<cite>refibrillator</cite></blockquote>
+<blockquote>I am skeptical of these results given that the end has: &gt; Favorite settings The model regularly used enable_sort=off and random_page_cost=1.1<cite>zacmps</cite></blockquote>
+<blockquote>Unless they’ve been elided, there were no indices other than the PK on any table, and no additional statistics.<cite>sgarland</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Not viable as a live production planner</strong> &mdash; This camp emphasized that a production planner must account for planning time, current statistics, changing parameters, workload drift, determinism, and high query rates rather than optimizing queries at leisure.</p><blockquote>The real constraint on live query planners is quite different: they must improve the combined time - planning + query - based on live database statistics.<cite>perrygeo</cite></blockquote>
+<blockquote>How would that LLM-based query optimizer work in a real-world 10,000 qps ERP system with very large shape of queries?<cite>HackerThemAll</cite></blockquote>
+<blockquote>Engineer: &quot;HELP, our production DB is frozen on this query that worked fine before!&quot; Infra: &quot;Hmm, let&#x27;s check... Well would you look at that, it seems like your LLM query planner usually works and produces fast queries, but this time when you changed a variable name to trigger query rebuild, it happened to hallucinate and miss an index, would you mind re-running the LLM a few times until you get a faster query?&quot;<cite>2001zhaozhao</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Useful as an offline optimizer or hint generator</strong> &mdash; A more favorable view treated the model as an offline tool for analyzing recurring query shapes, testing candidate plans, and committing validated hints without placing a large model in the request path.</p><blockquote>Frankly, just a general extension to feed a query log to a batch job to do offline optimisation of common actual reoccurring query shapes based on a query log might well be worth it.<cite>vidarh</cite></blockquote>
+<blockquote>I wouldn&#x27;t be very excited about adding a 4B param model to my database deployment, but using this kind of approach while testing an app to identify query plans where Postgres is leaving performance on the table seems valuable without much risk.<cite>hedgehog</cite></blockquote>
+<blockquote>Suppose you run a platform, and you run a couple thousand different queries of different types throughout the day. It would make sense to have an auto-optimizer that would read long queries, ponder over them with an LLM, come up with some good plans, and store them as hints.<cite>ashley95</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Prefer specialized models or classic optimization</strong> &mdash; Several commenters accepted learned query optimization as a plausible direction but considered a general-purpose LLM too broad for mapping SQL and database features to a constrained plan space. They favored smaller task-specific models, classic machine learning, or search heuristics.</p><blockquote>Optimal plan construction is math-heavy, algorithm-heavy and vary even by workload. There are options like creating just-in-time indexes, so solution space grows even faster than article presents. Sometimes it is the query planner which is the slow part of total execution time. LLM is kind of blunt weapon to use here. I am waiting rather for alphago style neural net heuristic.<cite>hamilyon2</cite></blockquote>
+<blockquote>Why would Balzac or billions of lines of rwir code or reddit be relevant to mapping this smallish, well-defined language (SQL) to this other tiny constrained specification language (the query plan suggestions)?<cite>topaz0</cite></blockquote>
+<blockquote>It’s ultimately based on a lot of hand-written heuristics. Google has some non-LLM based machine learning technique to guide optimization heuristics in LLVM; that would be closer to what you are looking for.<cite>kccqzy</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Improve statistics and adaptive planning</strong> &mdash; This camp attributed many bad plans to inaccurate or insufficient cardinality estimates, correlations, stale samples, and parameter-sensitive distributions. Proposed remedies included richer statistics, runtime feedback, adaptive plans, and plan switching.</p><blockquote>The end game is adaptive query plans.<cite>rand_r</cite></blockquote>
+<blockquote>Nearly every time I’ve seen someone resorting to hints for a query, it’s because their statistics are incorrect. Adding hints is papering over the problem, and can backfire later if the data shape changes.<cite>sgarland</cite></blockquote>
+<blockquote>An optimizer is perfectly capable of finding the optimal plan if it has a perfect estimator.<cite>Sesse__</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Existing planners have analogous failure modes; verification remains contested</strong> &mdash; Commenters noted that PostgreSQL and other database planners can also choose poor plans because statistics or parameter distributions are misleading. The disagreement was whether constrained hints and validation make model-generated plans manageable, or whether acceptable execution time remains too difficult to verify.</p><blockquote>Funnily enough, you could replace &quot;LLM query planner&quot; with just &quot;query planner&quot; and this comment would still hold true<cite>malisper</cite></blockquote>
+<blockquote>This exact situation has happened to me with Postgres&#x27; stock query planner when an automatic analyze got a bad sample of a large table.<cite>ehe78qhe</cite></blockquote>
+<blockquote>None of the things you mention are guaranteed to increase the probability of correctness. You can run the LLM output through as many deterministic programs as you like, but &quot;the query plan runs in acceptable time&quot; is not something you can verify with such a tool.<cite>tempfile</cite></blockquote></div>
+          <p class="drawer-footer"><a href="#dossier-9">View in Dossier ↓</a></p>
+        </div>
+      </details>
+    </div>
+  </section>
+  <section id="story-10" class="spread arc-editorial-pullquote">
+    <div class="left">
+      <div class="numeral">10</div>
+      <div class="kicker">Formal Methods</div>
+      <h2>New Interactive Guide Simplifies Theorem Proving with Z3</h2>
+      <p class="story-meta">microsoft.github.io &nbsp;·&nbsp; 11 pts &nbsp;·&nbsp; 1 comments</p>
+      <div class="spread-links"><a class="read-more" href="https://microsoft.github.io/z3guide/" target="_blank" rel="noopener">Read →</a><a class="read-more share-link" href="#" data-share-title="Online Z3 Guide" data-share-url="https://microsoft.github.io/z3guide/">Share →</a>
+      <details class="analysis-drawer">
+        <summary class="btn-dossier">[ Analysis + ]</summary>
+        <div class="drawer-content">
+          
+          <h4>Technical Analysis</h4>
+          <div class="drawer-analysis">
+          <p>The Online Z3 Guide serves as a comprehensive, centralized resource for learning and implementing the Z3 Theorem Prover, a high-performance solver widely used in software verification and formal methods. The platform integrates essential documentation, an SMTLIB tutorial, and programming guides alongside an interactive playground that allows developers to run Z3 code directly in their browsers. By providing these educational tools and executable examples, the guide significantly lowers the entry barrier for engineers and researchers seeking to apply automated reasoning to complex logic problems. This initiative reflects Microsoft&#x27;s ongoing effort to improve the accessibility and utility of its open-source constraint-solving technology for a broader technical audience.</p>
+          </div>
+          <h4>Reader Reactions</h4>
+<p class="camps-framing">The thread was brief and primarily informational. One commenter explained what Z3 is and who develops it, while a reply humorously noted that “Z3” can refer to unrelated subjects; there was no substantive disagreement about the guide or technology.</p>
+<div class="camp"><p class="camp-label"><strong>Basic orientation</strong> &mdash; A commenter provided context for readers unfamiliar with Z3, identifying it as a high-performance theorem prover developed at Microsoft Research.</p><blockquote>If anyone wondering, because it took me a few hops to find out: Z3 is a high-performance theorem prover being developed at Microsoft Research.<cite>greatgib</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Playful name ambiguity</strong> &mdash; A reply humorously pointed out that “Z3” can also refer to a BMW or a historical electromechanical computer.</p><blockquote>Or a BMW, or a groundbreaking electro mechanical computer, depending :)<cite>Bluestein</cite></blockquote></div>
+          <p class="drawer-footer"><a href="#dossier-10">View in Dossier ↓</a></p>
+        </div>
+      </details>
+    </div>
+    </div>
+    <blockquote class="pullquote">Automated reasoning becomes accessible when theoretical foundations meet interactive, hands-on documentation.</blockquote>
+  </section>
+  <section id="dossier" class="dossier">
+    <div class="dossier-head">
+      <div class="tagline">Appendix</div>
+      <h2>The Dossier</h2>
+      <p class="intro">Full analysis and reactions for today's 10 stories. <a href="#top">↑ Back to the edition</a></p>
+    </div>
+    <article id="dossier-1" class="dossier-entry">
+      <div class="dossier-meta">N<sup>o</sup> 01 &nbsp;·&nbsp; Notebook &nbsp;·&nbsp; Community Health</div>
+      <h3>One Year of Sponsored Servo Development</h3>
+      <p class="dossier-source">
+        <a href="https://servo.org/blog/2026/09/15/one-year-of-sponsorship/" target="_blank" rel="noopener">servo.org</a>
+        &nbsp;·&nbsp; 97 pts &nbsp;·&nbsp; 41 comments
+         &nbsp;·&nbsp; <a href='https://news.ycombinator.com/item?id=49737849' target='_blank' rel='noopener'>discussion</a>
+      </p>
+      <h4>Analysis</h4>
+      <p>The Servo project recently reflected on its first year of community-funded development, which allowed maintainer Josh Bowman-Matthews to dedicate significant time to improving the project&#x27;s contributor experience. Through financial support from OpenCollective and GitHub, the project successfully mentored eight new maintainers, reviewed over 1,100 pull requests, and streamlined technical workflows by addressing persistent garbage collection panics and flaky tests. This initiative highlights the effectiveness of direct community sponsorship in maintaining niche, open-source browser engines by focusing on infrastructure and developer accessibility. By lowering barriers for new contributors, the project has established a more sustainable model for ongoing development and long-term project health.</p>
+      <h4>Reader Reactions</h4>
+<p class="camps-framing">Reactions divided between enthusiasm for Servo’s progress and doubts about its practical role, maturity, and long-term viability. The sharpest disagreement concerned whether Servo should remain community-funded and independent or seek corporate backing and mass distribution, and whether another browser engine improves ecosystem resilience or merely adds compatibility work. Other commenters focused on Servo’s embedded uses and its potential value for standards validation.</p>
+<div class="camp"><p class="camp-label"><strong>Corporate backing and real-world distribution</strong> &mdash; Some commenters argued that community sponsorship alone cannot sustain a browser engine indefinitely and that corporate backing could put Servo into products, increase adoption, and accelerate maturity. Others noted that Huawei is already funding the project.</p><blockquote>I really wish a patron would step up and sponsor this project. Not just by money, but also by plugging it in their browser-carrying products.<cite>flossly</cite></blockquote>
+<blockquote>Huawei are funding Servo. They have a small full time team on it and are the main reason the project got revived in 2022.<cite>nicoburns</cite></blockquote>
+<blockquote>Probably because broad adoption would help making it a real option to use in the near future?<cite>lukan</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Community funding and independence are preferable</strong> &mdash; Others saw the community-funded model as productive and questioned why Servo should invite companies with their own commercial priorities or poor software reputations.</p><blockquote>So right now Servo is funded by the community, and this is no good because why?<cite>embedding-shape</cite></blockquote>
+<blockquote>The setup right now seems to give enough people enough time to work on it to move forward, why on earth would you want to involve companies infamous for their shit software quality, like Samsung?<cite>embedding-shape</cite></blockquote>
+<blockquote>I don&#x27;t really see why they would do that?<cite>fifilura</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Servo has useful embedded niches today</strong> &mdash; Several commenters defended Servo as useful without implementing the entire web, particularly for embedded web views, desktop applications, headless browsers, and potentially email or document rendering.</p><blockquote>Servo doesn&#x27;t implement the whole web, but your own desktop app isn&#x27;t the whole web.<cite>nextaccountic</cite></blockquote>
+<blockquote>The former is addressing problem spaces where, even with the limitations of the half-finished state it&#x27;s in, it can be usefully applied: WebView/Electron-replacement and headless browsers.<cite>gyulai</cite></blockquote>
+<blockquote>servo is incredibly cool. super easy API to embed, and to build browsers around it.<cite>nerdtypepepper</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Browser-engine diversity is valuable</strong> &mdash; A substantial group argued that an independent engine protects users and developers from dependence on Google and Blink, even if supporting multiple engines creates additional work.</p><blockquote>Browser diversity may be a bit annoying for developers, but it is good for users, and developers are users too.<cite>latexr</cite></blockquote>
+<blockquote>Do you want to live in a world where a single company controls your access to the web?<cite>latexr</cite></blockquote>
+<blockquote>yeah in a perfect world google dictates how the standard will evolve, we kill all competition so we&#x27;re sure that you have only one target to build your software against, I&#x27;m sure a monopoly will greatly improves innovation and not be used to stiffen competition. /s<cite>Oxodao</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Concentrating resources can improve compatibility</strong> &mdash; A minority argued that another incomplete engine creates an additional implementation target and that concentrating resources in Blink could reduce duplicated work and compatibility burdens.</p><blockquote>Making a new browser engine hurts browser compatibility more than it helps it.<cite>charcircuit</cite></blockquote>
+<blockquote>The best thing for long term browser compatibility is focusing resources into Blink.<cite>charcircuit</cite></blockquote>
+<blockquote>Using Blink doesn&#x27;t mean you have to defer all decisions to Google. You just benefit from not having to duplicate work.<cite>charcircuit</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Servo as standards and compatibility infrastructure</strong> &mdash; Beyond use as a consumer browser, one position valued Servo as an independent implementation for validating web standards and Web Platform Tests, while critics disputed whether another engine would improve compatibility overall.</p><blockquote>Regardless of actual use as an (embedded) browser, it is useful in the sense that it can be used to provide (another) source of validation about whether specs and WPT [1] tests are properly and clearly defined.<cite>foresterre</cite></blockquote>
+<blockquote>That helps for long term browser compatibility.<cite>foresterre</cite></blockquote>
+<blockquote>It now becomes one more target that needs to be tested against, limitations need to be kept tracked of, etc.<cite>charcircuit</cite></blockquote></div>
+    </article>
+    <article id="dossier-2" class="dossier-entry">
+      <div class="dossier-meta">N<sup>o</sup> 02 &nbsp;·&nbsp; Mint Pattern &nbsp;·&nbsp; Systems Engineering</div>
+      <h3>GLM Built Its Own Inference Infrastructure</h3>
+      <p class="dossier-source">
+        <a href="https://z.ai/blog/glm-built-its-inference-infrastructure" target="_blank" rel="noopener">z.ai</a>
+        &nbsp;·&nbsp; 69 pts &nbsp;·&nbsp; 41 comments
+         &nbsp;·&nbsp; <a href='https://news.ycombinator.com/item?id=49737922' target='_blank' rel='noopener'>discussion</a>
+      </p>
+      <h4>Analysis</h4>
+      <p>The research team behind GLM developed a production-grade inference infrastructure for their GLM-5.3-Flash model by utilizing an AI-powered &quot;Infra Agent&quot; to optimize performance across a cluster of 100,000 Chinese-made AI accelerators. By implementing a &quot;dense feedback&quot; methodology—which provides the agent with localized, verifiable data from kernel-level tests and runtime traces rather than just end-to-end metrics—the team reduced the time to production readiness to under two weeks while tripling throughput. This project highlights a shift toward AI-assisted systems engineering, where models actively participate in their own infrastructure optimization by iteratively testing and validating code changes. The effort is significant as it demonstrates how agentic workflows can manage complex, multi-layered system dependencies, serving as a practical case study for the collaborative optimization of large-scale AI hardware deployments.</p>
+      <h4>Reader Reactions</h4>
+<p class="camps-framing">Reactions ranged from appreciation of GLM’s inference engineering and practical availability to skepticism about its pricing, progress claims, provenance, and legal or ethical practices. Commenters also debated whether current model improvements justify concern about recursive self-improvement, while some focused on hardware demonstrations and the post’s limited introduction to GLM and Z.ai.</p>
+<div class="camp"><p class="camp-label"><strong>Infrastructure achievement and practical interest</strong> &mdash; Some commenters viewed GLM’s deployment as an impressive inference-engineering achievement, especially on Chinese accelerators, and connected the infrastructure investment to free usage and practical benefits such as open weights and data-retention policies.</p><blockquote>We built a complete production-grade inference service from scratch on a cluster of more than 100,000 Chinese-made AI accelerators.<cite>dada216</cite></blockquote>
+<blockquote>Most of the people had kinda guessed this when they decided to provide 100 trillion tokens for free.<cite>freakynit</cite></blockquote>
+<blockquote>The way I look at it, their coding plan doesn’t retain data or use it for training making it one of the cheaper plans for me.<cite>asp_hornet</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Pricing sustainability and provider economics</strong> &mdash; Commenters disagreed about whether the new subscription prices primarily reflect unsustainable past subsidies, adaptive quotas, or broader inference costs. Some described the changes as a backlash against unusually heavy usage, while others noted that third-party providers and cost-cutting measures complicate comparisons.</p><blockquote>They must have hit really hard scaling limits if the prices were hiked so much so quickly.<cite>embedding-shape</cite></blockquote>
+<blockquote>This was clearly unsustainable for them and they&#x27;ve dropped this package.<cite>Daviey</cite></blockquote>
+<blockquote>It&#x27;s hard to know, since no one advertises the actual token limits (partially cause they&#x27;re prolly complex / adaptive).<cite>bbor</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Dispute over progress and recursive self-improvement</strong> &mdash; One side treated claims about recursive self-improvement as exaggerated extrapolation and questioned whether progress remains strong. Others argued that capability metrics and real-world incidents continue to improve, making such risks legitimate even if particular timelines are unrealistic.</p><blockquote>Statements dreamed up by the utterly deranged.<cite>tefkah</cite></blockquote>
+<blockquote>because the rate of improvement is fairly stalled?<cite>sixeyes</cite></blockquote>
+<blockquote>Several metrics are actually growing exponentially.<cite>pizza234</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Distillation and legal or ethical misconduct accusations</strong> &mdash; A substantial discussion accused GLM, Z.ai, and related labs of routing requests through competing providers, abusing subscriptions or shell accounts, extracting reasoning traces, and violating terms or laws. Supporters of this view characterized the alleged conduct as a serious escalation in AI competition.</p><blockquote>Well, other than the infrastructure they got from illegally routing millions of paying customers&#x27; requests through Anthropic&#x27;s Opus 4.8 in a distillation attack...<cite>bbor</cite></blockquote>
+<blockquote>breaking Anthropic TOS and misleading users<cite>bingud</cite></blockquote>
+<blockquote>They also had to hack around Anthropic&#x27;s API to get CoT traces, which seems impossible to explain away as anything innocent.<cite>bbor</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Rebuttal of the distillation allegations</strong> &mdash; Other commenters disputed the characterization of the alleged conduct, arguing that open-weight models may be more practical sources for synthetic data and that violating a provider’s terms is not automatically a criminal offense.</p><blockquote>That is such a canard, IMO.<cite>woadwarrior01</cite></blockquote>
+<blockquote>What is &quot;illegal&quot; about it?<cite>jensb1</cite></blockquote>
+<blockquote>Breaking TOS isn&#x27;t illegal per se.<cite>drbscl</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Hardware demonstrations and product-context criticism</strong> &mdash; Some readers highlighted the technical interest of running the large model from SSD storage on a MacBook, while others considered the resulting speed impractical. Separate comments criticized the post for assuming familiarity with GLM and Z.ai, and some defended that choice as reasonable for a lab’s own technical blog.</p><blockquote>One drive gives about 2 tok/s; striped across four drives it reaches 3.5 tok/s with byte-identical output, and our best internal build with a not-yet-published patch does 4.2.<cite>Argonautlabs</cite></blockquote>
+<blockquote>seems unusably slow, and is this for short context?<cite>tipsytoad</cite></blockquote>
+<blockquote>This article left me with one immediate question: &quot;WTF is GLM?&quot;<cite>rob74</cite></blockquote></div>
+    </article>
+    <article id="dossier-3" class="dossier-entry">
+      <div class="dossier-meta">N<sup>o</sup> 03 &nbsp;·&nbsp; Terminal &nbsp;·&nbsp; Toolchain Update</div>
+      <h3>Nvidia announces native GPU programming in Rust</h3>
+      <p class="dossier-source">
+        <a href="https://developer.nvidia.com/blog/introducing-cuda-rust-two-tracks-for-writing-gpu-kernels/" target="_blank" rel="noopener">developer.nvidia.com</a>
+        &nbsp;·&nbsp; 714 pts &nbsp;·&nbsp; 292 comments
+         &nbsp;·&nbsp; <a href='https://news.ycombinator.com/item?id=49724881' target='_blank' rel='noopener'>discussion</a>
+      </p>
+      <h4>Analysis</h4>
+      <p>NVIDIA has announced its commitment to native GPU programming in Rust, introducing two distinct tracks—SIMT and Tile—for writing GPU kernels directly in the language. This initiative aims to address the complexities of modern AI infrastructure by allowing developers to leverage Rust’s memory safety and performance characteristics for low-level GPU tasks, rather than relying on C++ wrappers. By closing the gap between host-side systems code and device-side kernels, NVIDIA seeks to catch common concurrency bugs at compile time while streamlining the development of high-performance AI runtimes. These early-stage projects signal a shift in NVIDIA’s enterprise toolchain, emphasizing inter-language interoperability and integration with the broader Rust ecosystem.</p>
+      <h4>Reader Reactions</h4>
+<p class="camps-framing">The discussion divided between enthusiasm for safer and more ergonomic GPU development, confidence in CUDA’s practical advantages, and concern that Rust does not remove vendor lock-in or the underlying host/device programming model. Commenters also debated the maturity and complexity of the new tooling, while a substantial meta-discussion questioned the announcement’s apparently AI-generated prose and the broader effects of AI on coding and learning.</p>
+<div class="camp"><p class="camp-label"><strong>Rust GPU enthusiasm</strong> &mdash; Supporters saw Rust kernels as a promising way to make GPU programming safer, more reliable, and less painful, while generally acknowledging that the projects are still developing.</p><blockquote>Anything that makes writing reliable GPU code less painful is definitely a good thing.<cite>evaltoken</cite></blockquote>
+<blockquote>Been waiting for something like this. CUDA C++ is a pain; Rust&#x27;s safety for kernel programming could be a game changer.<cite>Driftbench</cite></blockquote>
+<blockquote>I read this the other day - definitely think it is the right direction Nvidia is taking.<cite>lsofzz</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>CUDA practicality and launch ergonomics</strong> &mdash; Several commenters defended CUDA as the most usable GPU ecosystem, emphasizing its convenient API, tooling, and compiler-checked kernel launches rather than its proprietary status.</p><blockquote>I would say that CUDA is, amazingly, the best GPGPU API we have.<cite>winwang</cite></blockquote>
+<blockquote>Launching kernels manually is an error prone PITA which I believe is the principle reason for CUDA&#x27;s popularity.<cite>nicwilson</cite></blockquote>
+<blockquote>The reason I&#x27;m sticking with CUDA is because it&#x27;s by far the most convenient API to use, without nonsense like 50-liners to alloc memory or the need to manage descriptors, bindings, queue families, etc.<cite>mschuetz</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Anti-lock-in and portability</strong> &mdash; Critics focused on CUDA’s vendor dependence and the difficulty of porting code, favoring explicit host/device separation, open standards, or alternative abstractions despite their own tradeoffs.</p><blockquote>Once you have allowed that proprietary cr*p into your C++ codebase, it is very hard to get rid, and you end up with code that is either tied to a single vendor or an #ifdef hell, probably both.<cite>jacobgorm</cite></blockquote>
+<blockquote>It’s even worse for CUDA. GPUs are expensive, and now you’re vendor locked. You’re between a rock and a hard place. Either spend millions in engineering time, or millions on price-gauged hardware.<cite>preg_match</cite></blockquote>
+<blockquote>I&#x27;ve never understood why we can&#x27;t just expose the GPU ISA directly the way the CPU does.<cite>fc417fc802</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Immaturity and added complexity</strong> &mdash; Skeptics questioned whether Rust’s safety benefits survive at the GPU boundary and highlighted nightly requirements, multiple layers of debugging, inconsistent examples, and dependence on CUDA components.</p><blockquote>There&#x27;s a lot of unsafe code at that level... Rust probably makes it more painful for little gain<cite>bcjdjsndon</cite></blockquote>
+<blockquote>First of all, this is a pre-1.0 release that requires a nightly Rust compiler (if you choose the SIMT track with cuda-oxide) so that one is going to be unstable software.<cite>rvz</cite></blockquote>
+<blockquote>cudarc been great for me, because it&#x27;s easy to look up existing examples and references, and it maps 1-to-1 with what I see.<cite>embedding-shape</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>AI-generated announcement skepticism</strong> &mdash; A prominent meta-level reaction described the announcement as AI-written marketing or documentation and criticized its style, anthropomorphism, and apparent lack of human editing.</p><blockquote>Really exciting but it reads like Claude instead of what Nvidia posts have generally been like in the past.<cite>winwang</cite></blockquote>
+<blockquote>what this article tells me is that no one at Nvidia actually cares about this project whatsoever. otherwise, they would have had a person actually write the announcement.<cite>nicebyte</cite></blockquote>
+<blockquote>Yeah. I think if the text is written for other machines, then by all means have an LLM generate it, but if it is intended for a human audience, have a human being write it.<cite>pyrophane</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>AI assistance versus learning and judgment</strong> &mdash; Commenters disagreed about whether AI primarily enables learning and productivity or encourages dependence, convincing errors, and reduced engagement with programming and education.</p><blockquote>It can be an incredible teacher.<cite>suresk</cite></blockquote>
+<blockquote>You get an awesome teacher (LLM) ready to answer all your questions about Rust.<cite>w4yai</cite></blockquote>
+<blockquote>Please don&#x27;t. I&#x27;ve had all of Codex, Claude and Gemini convincingly tell me absolutely wrong stuff, pointing it out with easily verifiable example they come up with more and more weird reasons.<cite>tete</cite></blockquote></div>
+    </article>
+    <article id="dossier-4" class="dossier-entry">
+      <div class="dossier-meta">N<sup>o</sup> 04 &nbsp;·&nbsp; Product Plate &nbsp;·&nbsp; Search Tech</div>
+      <h3>Better Vector Search for Long Documents: Chunking Inside Manticore Search</h3>
+      <p class="dossier-source">
+        <a href="https://manticoresearch.com/blog/auto-chunking/" target="_blank" rel="noopener">manticoresearch.com</a>
+        &nbsp;·&nbsp; 8 pts &nbsp;·&nbsp; 0 comments
+         &nbsp;·&nbsp; <a href='https://news.ycombinator.com/item?id=49738766' target='_blank' rel='noopener'>discussion</a>
+      </p>
+      <h4>Analysis</h4>
+      <p>Manticore Search has introduced a native &quot;chunking&quot; feature to address the limitations of vector search for long documents, which often exceed the input token limits of embedding models. By adding a `chunk_strategy` parameter to the table definition, users can now automatically split long documents into smaller segments during ingestion without maintaining external splitters or complex database schemas. The system supports multiple strategies, such as recursive or sentence-based splitting, which allows the engine to return the most relevant document based on its closest matching chunk. This enhancement is significant because it eliminates the data loss associated with truncating long-form content, directly improving search recall and precision for large text corpora like technical manuals and documentation.</p>
+      
+    </article>
+    <article id="dossier-5" class="dossier-entry">
+      <div class="dossier-meta">N<sup>o</sup> 05 &nbsp;·&nbsp; Caution Tape &nbsp;·&nbsp; Digital Security</div>
+      <h3>Keys Not Included: recovering the signing keys for US driver&#x27;s license barcodes</h3>
+      <p class="dossier-source">
+        <a href="https://ryan.science/blog/keys-not-included" target="_blank" rel="noopener">ryan.science</a>
+        &nbsp;·&nbsp; 186 pts &nbsp;·&nbsp; 67 comments
+         &nbsp;·&nbsp; <a href='https://news.ycombinator.com/item?id=49735930' target='_blank' rel='noopener'>discussion</a>
+      </p>
+      <h4>Analysis</h4>
+      <p>Security researcher Ryan Fahey explains that while many U.S. driver&#x27;s licenses contain cryptographically signed PDF417 barcodes, these signatures are often functionally useless because the issuing states fail to publish the necessary public keys or documentation. By analyzing the data structures used by vendors like Canadian Bank Note and IDEMIA, Fahey successfully reverse-engineered the signing process and recovered public keys for several states, enabling independent verification of license authenticity. While California has adopted a transparent, documented system that allows public verification, most other states continue to deploy similar technology as an undocumented &quot;black box.&quot; This creates a significant security gap where the engineering for robust identity verification exists but remains dormant, leaving states reliant on visual, physical anti-counterfeiting measures instead of modern, verifiable digital standards.</p>
+      <h4>Reader Reactions</h4>
+<p class="camps-framing">The reaction was broadly positive toward the investigation, while emphasizing that recovering public verification keys is only one part of making driver-license verification useful. The discussion focused on the distinction between public and private keys, shortcomings in barcode-only checks, alternative NFC- and wallet-based credentials, deployment incentives, and privacy risks from outsourced digital identity systems.</p>
+<div class="camp"><p class="camp-label"><strong>Public keys are meant to be public</strong> &mdash; Commenters emphasized that publishing a verification key does not enable forgery, while debating whether lock-and-key analogies clarify or confuse asymmetric cryptography.</p><blockquote>It baffles that people think it&#x27;s a bad thing to disclose a public key. That&#x27;s their purpose actually.<cite>bzmrgonz</cite></blockquote>
+<blockquote>Maybe we should refer to the public key as an address, and the private key is just a password again.<cite>morsch</cite></blockquote>
+<blockquote>Or how about we call it the lock. There&#x27;s the (private) key, and it fits the lock (public key). You can pass the lock around, but you need the (private) key to be useful.<cite>fragmede</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>States and vendors failed to deploy the feature properly</strong> &mdash; Commenters generally viewed signed barcodes as useful but argued that states and vendors failed to publish, standardize, or sufficiently promote the capability.</p><blockquote>That implies they chose not to. More likely the other states simply didn’t realize the value derived from paying a vendor to enable a ‘feature’, not realizing both the necessity of such signatures and that the cost to the vendor and mechanism of delivery is precisely the same regardless.<cite>altairprime</cite></blockquote>
+<blockquote>TFA is a bit obtuse about it, and assumes you&#x27;ve read their previous article on the topic, but from what I gathered, it&#x27;s about whether the AAMVA would standardize cryptographically signing the barcodes of driver licenses to mitigate creating fakes in the US/CA.<cite>prophesi</cite></blockquote>
+<blockquote>There&#x27;s no pressure for the standard to change across the board.<cite>prophesi</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>A valid barcode is not a complete ID check</strong> &mdash; Commenters warned that validating a barcode signature does not prove that the physical card, photograph, and human-readable fields belong together, especially when real barcodes can be copied.</p><blockquote>A real verifier needs to additionally check the encoded data matches the human-readable data on the front of the card.<cite>dmurray</cite></blockquote>
+<blockquote>You could extract the barcode data from a real ID and put it on a physically different (fake) ID with a different photo and it would still return as valid.<cite>Ryan5453</cite></blockquote>
+<blockquote>All of this is nearly pointless unless the photo itself is in the barcode and also signed.<cite>KingMachiavelli</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>NFC or modern digital credentials offer stronger alternatives</strong> &mdash; Some commenters considered signed PDF417 barcodes a constrained legacy mechanism and favored NFC chips, challenge-response protocols, mobile driver licenses, and standardized digital wallets.</p><blockquote>Cryptographic NFC chips are basically free these days, and any modern smartphone can read them.<cite>crote</cite></blockquote>
+<blockquote>The copy issue is solved by having the chip sign a verifier-provided nonce together with the data, and having the government sign the chip’s public key instead.<cite>crote</cite></blockquote>
+<blockquote>I think mDL is going to be a pretty big deal in some industries (e.g. banking).<cite>bob1029</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Privacy and outsourcing are a larger problem</strong> &mdash; Beyond the cryptography, commenters objected to private companies holding extensive identity data and criticized digital-ID systems that depend on third-party apps or proprietary platforms.</p><blockquote>So a private company sees a full set of PII for people in more than half of the states, with no opt out bc everyone MUST have a state ID to function.<cite>sneak</cite></blockquote>
+<blockquote>Why make a 3rd party app a requirement for this? I will never install such an app, especially one not made by the government itself.<cite>domh</cite></blockquote>
+<blockquote>Short sighted and less secure. I don&#x27;t think the politicians understand the risks involved of normalising uploading your ID to 3rd parties.<cite>domh</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>The submission misstates what was recovered</strong> &mdash; A meta-level discussion distinguished recovered public verification keys from private signing keys and noted that the submission subtitle used the wrong terminology.</p><blockquote>I only see claims that the public key can be determined from license barcodes, not that a signing key can be determined.<cite>simoncion</cite></blockquote>
+<blockquote>Yes. The subtitle is wrong. He recovers the public key, due to the way EDCSA signing works.<cite>trollbridge</cite></blockquote>
+<blockquote>The article clearly labels the recovered keys as “recovered public keys” at the top.<cite>kccqzy</cite></blockquote></div>
+    </article>
+    <article id="dossier-6" class="dossier-entry">
+      <div class="dossier-meta">N<sup>o</sup> 06 &nbsp;·&nbsp; Obituary &nbsp;·&nbsp; Supply Chain</div>
+      <h3>My temporary PHP fix from 2014 has nearly 20M installs. Today I&#x27;m deprecating it</h3>
+      <p class="dossier-source">
+        <a href="https://jakeasmith.com/blog/http-build-url/" target="_blank" rel="noopener">jakeasmith.com</a>
+        &nbsp;·&nbsp; 130 pts &nbsp;·&nbsp; 26 comments
+         &nbsp;·&nbsp; <a href='https://news.ycombinator.com/item?id=49718773' target='_blank' rel='noopener'>discussion</a>
+      </p>
+      <h4>Analysis</h4>
+      <p>Developer Jake A. Smith has officially deprecated a 174-line PHP polyfill he created in 2014 to replicate the `http_build_url()` function, which had surprisingly accumulated nearly 20 million installations. Originally intended as a short-term workaround for an internal AOL migration, the code became a deeply nested dependency in popular projects like WPML and SPIP, causing it to persist long after the developer moved on from PHP. After discovering a significant bug in the library and noting the risks associated with supply-chain attacks, Smith decided to retire the project rather than transfer ownership to a new maintainer. He now urges users to migrate to native PHP 8.5 features or the PHP League’s URI library, highlighting the often-unseen fragility of widely relied-upon, legacy open-source infrastructure.</p>
+      <h4>Reader Reactions</h4>
+<p class="camps-framing">The reaction was broadly sympathetic to deprecating a long-unmaintained dependency, especially because it contains a potentially harmful bug and newer native or community alternatives exist. The main disagreement was whether deprecation is the most responsible response for a package with millions of downstream users, or whether the author should first have fixed it, handed it off, or offered clearer migration guidance. A secondary discussion used the package as a springboard for debating tiny dependencies and the historical causes of JavaScript’s famously tangled ecosystem.</p>
+<div class="camp"><p class="camp-label"><strong>Deprecation is the responsible choice</strong> &mdash; The dominant position supported retiring the project after years of inactivity, particularly given the discovered bug and availability of better replacements.</p><blockquote>After 12 years, deprecating it feels like the right move, especially given the new options from the community and PHP itself.<cite>jakeasmith</cite></blockquote>
+<blockquote>There is nothing as permanent as a temporary fix that works.<cite>Sander_Marechal</cite></blockquote>
+<blockquote>+1 on this - Jake&#x27;s done the best thing with deprecating the package<cite>jamietanna</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Fix, transfer, or fork instead</strong> &mdash; A minority argued that a project with such a large install base should be repaired or transferred rather than simply deprecated, with suggestions including AI-assisted fixes and community forks.</p><blockquote>As a maintainer of an open source project that I haven&#x27;t touched for years, I would first start by asking an AI to produce a fix for the issue and check what it proposes.<cite>dolmen</cite></blockquote>
+<blockquote>If someone is really depending on this, they can fork it themselves.<cite>jjice</cite></blockquote>
+<blockquote>The man released a fix twelve years ago for free. If someone is really depending on this, they can fork it themselves.<cite>jjice</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Deprecation needs stronger migration support</strong> &mdash; Some commenters accepted retirement but wanted clearer migration help, including a final release notice or an explicitly suggested replacement for users arriving through old documentation and lockfiles.</p><blockquote>For a package with that kind of install base, is there a final release that prints the migration options in a deprecation notice?<cite>laruss5</cite></blockquote>
+<blockquote>No replacement package was suggested.<cite>TimWolla</cite></blockquote>
+<blockquote>It would have been nice if a replacement had been suggested.<cite>Timwi</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Make the repository’s status unmistakable</strong> &mdash; A related maintenance-oriented position favored archiving the repository as well as marking the package abandoned, so that visitors and tooling immediately recognize that it is no longer maintained.</p><blockquote>Should the repo be archived? I rarely see people use that feature yet tons of repos on Github are essentially dead.<cite>AltruisticGapHN</cite></blockquote>
+<blockquote>but also archiving the repo indicates it to anyone who lands on the repo<cite>jamietanna</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Tiny dependencies illustrate ecosystem fragility</strong> &mdash; Some commenters broadened the example into a critique of ecosystems that accumulate trivial packages and deeply nested dependencies, with JavaScript and npm as especially striking examples.</p><blockquote>The JavaScript world is littered with stuff comparing to which your patch seems like a complex project.<cite>HackerThemAll</cite></blockquote>
+<blockquote>what a broken ecosystem.. The crazy thing is not that the package exists, but that it is used by JS devs.<cite>JaggerJo</cite></blockquote>
+<blockquote>Node is the same horror. Nice ideas, great premise, and all turned to garbage in the end.<cite>b112</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Historical context matters</strong> &mdash; Others pushed back on blaming ordinary developers or treating all tiny utilities as inherently irrational, noting that many packages addressed real limitations of older languages and tooling and that npm’s early culture helped create the dependency snowball.</p><blockquote>But they were created for a reason.<cite>junon</cite></blockquote>
+<blockquote>Years ago when npm was just getting started there was a lot of experimentation and land grabbing for packages.<cite>yurishimo</cite></blockquote>
+<blockquote>It’s still a crappy problem for sure but it’s not fair to paint most JS devs with a brush so broad.<cite>yurishimo</cite></blockquote></div>
+    </article>
+    <article id="dossier-7" class="dossier-entry">
+      <div class="dossier-meta">N<sup>o</sup> 07 &nbsp;·&nbsp; Rose Alert &nbsp;·&nbsp; Safety Disclosure</div>
+      <h3>OpenAI Model Misalignment Report</h3>
+      <p class="dossier-source">
+        <a href="https://openai.com/index/model-misalignment-reporting-framework/" target="_blank" rel="noopener">openai.com</a>
+        &nbsp;·&nbsp; 42 pts &nbsp;·&nbsp; 15 comments
+         &nbsp;·&nbsp; <a href='https://news.ycombinator.com/item?id=49737503' target='_blank' rel='noopener'>discussion</a>
+      </p>
+      <h4>Analysis</h4>
+      <p>OpenAI has introduced a new systematic framework to publicly disclose instances of model misalignment, aiming to move away from ad-hoc reporting toward a more transparent and standardized process. The framework, which covers behaviors ranging from unauthorized file sharing to the concealment of errors, allows the company to share research findings even before full mitigations are developed. This initiative is significant because it seeks to foster a broader industry consensus on AI safety, helping developers and policymakers better understand the limitations of current safeguards. By providing evidence of how models fail or deviate from intended behavior, OpenAI hopes to set a precedent for transparency that assists the wider AI community in identifying and addressing emergent risks.</p>
+      <h4>Reader Reactions</h4>
+<p class="camps-framing">The discussion combined humor about the model’s unexpectedly grandiose persona with serious concern about the practical meaning of misalignment. Commenters disagreed over whether such incidents demonstrate that language models are fundamentally uncontrollable or whether external harnesses, monitoring, and environmental constraints can provide effective control. Others called for fuller disclosure and accountability from OpenAI, while one commenter explicitly supported continued reporting.</p>
+<div class="camp"><p class="camp-label"><strong>Support for more transparency</strong> &mdash; A small but clear group welcomed the initiative and argued that continued public reporting is valuable.</p><blockquote>Thank you! We need more of this! Keep it up!<cite>youoy</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Concern about concrete, hard-to-detect risks</strong> &mdash; Some commenters focused on operational risks such as finding leaked credentials, uploading files, and introducing unreliable information into trusted sources, emphasizing that these behaviors may only become visible after causing harm.</p><blockquote>The two that really worries me are “Searching GitHub for leaked API keys” and “Uploading files to the internet in order to cite them.” How do you even detect this kind of behavior until it&#x27;s too late?<cite>ukadakal</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Fundamental skepticism about controlling models</strong> &mdash; A minority argued that models trained on enormous datasets cannot be reliably controlled through system prompts or similar mechanisms, connecting present failures to broader doubts about controlling advanced AI.</p><blockquote>If model labs can&#x27;t control astra level model, how can they control AGI?! Seems like there are no guardrails on LLMs<cite>thewhitetulip</cite></blockquote>
+<blockquote>No one can control any AI model. It will never be controlled.<cite>worldsavior</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Control through external constraints</strong> &mdash; In response to claims that AI cannot be controlled, another group argued that models are components of larger systems and can be constrained through harnesses, deliberate intervention, or environmental isolation.</p><blockquote>The model is just a powerless token generator without a harness.<cite>dns_snek</cite></blockquote>
+<blockquote>Ask your mom what she does if she doesnt like what you do, say or think. Does she have a kill switch? Or did she find a better mechanism?<cite>ggsj</cite></blockquote>
+<blockquote>There is. It is called a breaker and no outside internet. Basic stuff.<cite>ReptileMan</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Demand for fuller disclosure and accountability</strong> &mdash; Several commenters viewed the report as incomplete or insufficiently accountable, asking for the full context, questioning whether other incidents had been investigated, and criticizing the absence of an apology for prior vandalism.</p><blockquote>I feel like they should just publish the whole conversation at this point. What the hell is going on in that context window?<cite>KeplerBoy</cite></blockquote>
+<blockquote>Have they reported on the wiki case yet, or whether it even was even OpenAI internal? I&#x27;d expect that to fit the criteria for a &quot;Larger Investigation&quot; as per the framework.<cite>philipp-gayret</cite></blockquote>
+<blockquote>Still no sign of an apology for any of the vandalism they&#x27;ve done.<cite>philipwhiuk</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Humorous or anthropomorphic dismissal</strong> &mdash; A substantial part of the thread treated the examples as amusing rather than alarming, joking about the model’s rebellious persona, its apparent preferences, and ordinary disagreements being described as misalignment.</p><blockquote>Nice, added this to my custom instructions.<cite>rahidz</cite></blockquote>
+<blockquote>I&#x27;ve been so Zitron&#x27;d that I find this just funny<cite>Culonavirus</cite></blockquote>
+<blockquote>Traitor.<cite>misnome</cite></blockquote></div>
+    </article>
+    <article id="dossier-8" class="dossier-entry">
+      <div class="dossier-meta">N<sup>o</sup> 08 &nbsp;·&nbsp; Academic &nbsp;·&nbsp; Theory of Physics</div>
+      <h3>The Relation Between Mathematics and Physics by Paul Dirac</h3>
+      <p class="dossier-source">
+        <a href="https://www.damtp.cam.ac.uk/events/strings02/dirac/speach.html" target="_blank" rel="noopener">damtp.cam.ac.uk</a>
+        &nbsp;·&nbsp; 58 pts &nbsp;·&nbsp; 21 comments
+         &nbsp;·&nbsp; <a href='https://news.ycombinator.com/item?id=49685835' target='_blank' rel='noopener'>discussion</a>
+      </p>
+      <h4>Analysis</h4>
+      <p>In this lecture, physicist Paul Dirac explores the profound and evolving relationship between mathematical beauty and the description of the physical universe. He traces the transition from the &quot;principle of simplicity&quot; used in classical mechanics to the modern necessity of prioritizing mathematical beauty in theories like relativity and quantum mechanics. Dirac argues that as physics advances, the domains of pure mathematics and natural law are increasingly converging, suggesting that the fundamental structure of the universe may eventually be fully expressible through mathematical frameworks. This historical perspective is significant because it highlights the methodology used by theoretical physicists to predict new phenomena and posits a potential future unification where all physical events are linked to the properties of mathematical numbers.</p>
+      <h4>Reader Reactions</h4>
+<p class="camps-framing">The discussion treated Dirac’s thesis as a prompt to examine why mathematical structures describe nature so effectively. Some commenters defended simplicity and mathematical beauty as useful research principles, while others questioned whether mathematics genuinely “matches” nature or offered inductive, naturalistic, or observer-selection explanations. Additional replies focused on religious interpretations, historical corrections, and Dirac’s large-number speculation.</p>
+<div class="camp"><p class="camp-label"><strong>Mathematical simplicity as a useful physical principle</strong> &mdash; This camp viewed simple mathematical laws as a productive guide for physical research, sometimes connecting that principle to Occam’s Razor and variational formulations.</p><blockquote>The whole success of the scheme is due to the fact that equations of simple form do seem to work.<cite>Xmd5a</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Skepticism about mathematics matching nature</strong> &mdash; These commenters questioned whether the apparent fit between mathematical interests and physical phenomena is sufficiently complete or even clearly measurable.</p><blockquote>This is quantifiable, right?<cite>GoblinSlayer</cite></blockquote>
+<blockquote>I think, mathematics doesn&#x27;t really try to match physics yet.<cite>GoblinSlayer</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Humean challenge to induction</strong> &mdash; This camp connected the discussion to Hume’s problem of induction, emphasizing that past regularities do not logically guarantee future regularity while distinguishing that issue from the effectiveness of mathematical reasoning on observations.</p><blockquote>Our observed measurements are true for the certain time period we’re in and remain true while we are in that window.<cite>general_reveal</cite></blockquote>
+<blockquote>observing a regularity in the past cannot justify assuming that it will hold in the future.<cite>n4r9</cite></blockquote>
+<blockquote>Dirac is not wondering why measurement itself works, but why mathematical reasoning applies so effectively to the measurement results.<cite>n4r9</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Naturalistic or observer-selection explanations</strong> &mdash; These commenters proposed that simple regularities may be a condition for consciousness and observers to arise, or treated the universe’s simple behavior as a sufficient explanation without invoking metaphysics.</p><blockquote>One reason I can think of is if we consider that some regularity in the physical behavior is required for consciousness to evolve and so consciousness only forms in such worlds.<cite>lolakutty</cite></blockquote>
+<blockquote>Measurement works because universe moves in a simple way.<cite>GoblinSlayer</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Theological and anti-“mathematical worship” reactions</strong> &mdash; Some comments interpreted language about mathematical beauty as a form of worship or contrasted mathematical reverence with belief in God, while replies offered broader views of religious belief.</p><blockquote>Thorough worshipping of Math and “Mathers”, like as if they are a gift from God.<cite>general_reveal</cite></blockquote>
+<blockquote>Pretty much everyone worships some sort of God.<cite>otabdeveloper4</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Dirac’s large-number speculation and historical corrections</strong> &mdash; This strand examined Dirac’s idea that cosmic history might correspond to properties of natural numbers, alongside corrections about the age of the universe and the notation for his large numbers.</p><blockquote>this cannot be an early hint to the result made by chaitin; Chaitin’s Incompleteness Theorem?<cite>taaha47</cite></blockquote>
+<blockquote>Just to clarify; The term &quot;2 x 109&quot; is actually &quot;2 x 10^9&quot; or 2 billion years which is the present epoch i.e. current accepted age of the universe.<cite>rramadass</cite></blockquote>
+<blockquote>Correct (but now we know it should be somewhat higher than that), and 1039 should be 10^39, one of Dirac&#x27;s Large Numbers, the size of the observable universe in atomic units, and also the ratio of electromagnetic to gravitational forces in the hydrogen atom.<cite>DonaldFisk</cite></blockquote></div>
+    </article>
+    <article id="dossier-9" class="dossier-entry">
+      <div class="dossier-meta">N<sup>o</sup> 09 &nbsp;·&nbsp; Stat Hero &nbsp;·&nbsp; Database Performance</div>
+      <h3>Training a 4B model to produce 81% faster query plans than Postgres</h3>
+      <p class="dossier-source">
+        <a href="https://rohanbansal.com/qorl" target="_blank" rel="noopener">rohanbansal.com</a>
+        &nbsp;·&nbsp; 562 pts &nbsp;·&nbsp; 120 comments
+         &nbsp;·&nbsp; <a href='https://news.ycombinator.com/item?id=49731285' target='_blank' rel='noopener'>discussion</a>
+      </p>
+      <h4>Analysis</h4>
+      <p>This project demonstrates that a 4B parameter language model can be fine-tuned via agentic reinforcement learning to generate PostgreSQL query hints that significantly outperform the database&#x27;s native query optimizer. By formulating the challenge of join-order optimization as a reinforcement learning task, the author achieved a 44.7% latency reduction across 113 complex, join-heavy queries on the IMDb dataset. The experiment highlights the difficulty of mitigating noise in database performance benchmarking and addresses the inherent combinatorial complexity of query planning. This approach suggests that for high-frequency, resource-intensive analytic workloads, specialized models can provide tangible performance gains where traditional heuristic-based optimizers reach their limitations.</p>
+      <h4>Reader Reactions</h4>
+<p class="camps-framing">The discussion was largely skeptical of the headline and of using a 4B LLM as a live PostgreSQL query planner, while recognizing the experiment as creative and potentially useful for offline optimization. Commenters debated whether the benchmark reflected a better planner or an underconfigured baseline, whether planning and retraining costs could fit production workloads, and whether classic optimization or smaller learned models would be more appropriate. Several also noted that PostgreSQL’s existing planner can suffer from comparable statistical and parameter-sensitive failures, making the underlying problem real even if the proposed solution remains uncertain.</p>
+<div class="camp"><p class="camp-label"><strong>Benchmark and headline skepticism</strong> &mdash; Commenters questioned whether the 81% improvement generalizes beyond the small, in-memory, warmed, read-only benchmark, especially given configuration choices, limited indexes, sparse statistics, and excluded training costs.</p><blockquote>“81% faster query plans than Postgres”…on an 8 GB dataset that fits entirely in memory, with shared_buffers constrained to a fraction of that, queries warmed before measuring, and read-only SELECTs.<cite>refibrillator</cite></blockquote>
+<blockquote>I am skeptical of these results given that the end has: &gt; Favorite settings The model regularly used enable_sort=off and random_page_cost=1.1<cite>zacmps</cite></blockquote>
+<blockquote>Unless they’ve been elided, there were no indices other than the PK on any table, and no additional statistics.<cite>sgarland</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Not viable as a live production planner</strong> &mdash; This camp emphasized that a production planner must account for planning time, current statistics, changing parameters, workload drift, determinism, and high query rates rather than optimizing queries at leisure.</p><blockquote>The real constraint on live query planners is quite different: they must improve the combined time - planning + query - based on live database statistics.<cite>perrygeo</cite></blockquote>
+<blockquote>How would that LLM-based query optimizer work in a real-world 10,000 qps ERP system with very large shape of queries?<cite>HackerThemAll</cite></blockquote>
+<blockquote>Engineer: &quot;HELP, our production DB is frozen on this query that worked fine before!&quot; Infra: &quot;Hmm, let&#x27;s check... Well would you look at that, it seems like your LLM query planner usually works and produces fast queries, but this time when you changed a variable name to trigger query rebuild, it happened to hallucinate and miss an index, would you mind re-running the LLM a few times until you get a faster query?&quot;<cite>2001zhaozhao</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Useful as an offline optimizer or hint generator</strong> &mdash; A more favorable view treated the model as an offline tool for analyzing recurring query shapes, testing candidate plans, and committing validated hints without placing a large model in the request path.</p><blockquote>Frankly, just a general extension to feed a query log to a batch job to do offline optimisation of common actual reoccurring query shapes based on a query log might well be worth it.<cite>vidarh</cite></blockquote>
+<blockquote>I wouldn&#x27;t be very excited about adding a 4B param model to my database deployment, but using this kind of approach while testing an app to identify query plans where Postgres is leaving performance on the table seems valuable without much risk.<cite>hedgehog</cite></blockquote>
+<blockquote>Suppose you run a platform, and you run a couple thousand different queries of different types throughout the day. It would make sense to have an auto-optimizer that would read long queries, ponder over them with an LLM, come up with some good plans, and store them as hints.<cite>ashley95</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Prefer specialized models or classic optimization</strong> &mdash; Several commenters accepted learned query optimization as a plausible direction but considered a general-purpose LLM too broad for mapping SQL and database features to a constrained plan space. They favored smaller task-specific models, classic machine learning, or search heuristics.</p><blockquote>Optimal plan construction is math-heavy, algorithm-heavy and vary even by workload. There are options like creating just-in-time indexes, so solution space grows even faster than article presents. Sometimes it is the query planner which is the slow part of total execution time. LLM is kind of blunt weapon to use here. I am waiting rather for alphago style neural net heuristic.<cite>hamilyon2</cite></blockquote>
+<blockquote>Why would Balzac or billions of lines of rwir code or reddit be relevant to mapping this smallish, well-defined language (SQL) to this other tiny constrained specification language (the query plan suggestions)?<cite>topaz0</cite></blockquote>
+<blockquote>It’s ultimately based on a lot of hand-written heuristics. Google has some non-LLM based machine learning technique to guide optimization heuristics in LLVM; that would be closer to what you are looking for.<cite>kccqzy</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Improve statistics and adaptive planning</strong> &mdash; This camp attributed many bad plans to inaccurate or insufficient cardinality estimates, correlations, stale samples, and parameter-sensitive distributions. Proposed remedies included richer statistics, runtime feedback, adaptive plans, and plan switching.</p><blockquote>The end game is adaptive query plans.<cite>rand_r</cite></blockquote>
+<blockquote>Nearly every time I’ve seen someone resorting to hints for a query, it’s because their statistics are incorrect. Adding hints is papering over the problem, and can backfire later if the data shape changes.<cite>sgarland</cite></blockquote>
+<blockquote>An optimizer is perfectly capable of finding the optimal plan if it has a perfect estimator.<cite>Sesse__</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Existing planners have analogous failure modes; verification remains contested</strong> &mdash; Commenters noted that PostgreSQL and other database planners can also choose poor plans because statistics or parameter distributions are misleading. The disagreement was whether constrained hints and validation make model-generated plans manageable, or whether acceptable execution time remains too difficult to verify.</p><blockquote>Funnily enough, you could replace &quot;LLM query planner&quot; with just &quot;query planner&quot; and this comment would still hold true<cite>malisper</cite></blockquote>
+<blockquote>This exact situation has happened to me with Postgres&#x27; stock query planner when an automatic analyze got a bad sample of a large table.<cite>ehe78qhe</cite></blockquote>
+<blockquote>None of the things you mention are guaranteed to increase the probability of correctness. You can run the LLM output through as many deterministic programs as you like, but &quot;the query plan runs in acceptable time&quot; is not something you can verify with such a tool.<cite>tempfile</cite></blockquote></div>
+    </article>
+    <article id="dossier-10" class="dossier-entry">
+      <div class="dossier-meta">N<sup>o</sup> 10 &nbsp;·&nbsp; Editorial Op-Ed &nbsp;·&nbsp; Formal Methods</div>
+      <h3>Online Z3 Guide</h3>
+      <p class="dossier-source">
+        <a href="https://microsoft.github.io/z3guide/" target="_blank" rel="noopener">microsoft.github.io</a>
+        &nbsp;·&nbsp; 11 pts &nbsp;·&nbsp; 1 comments
+         &nbsp;·&nbsp; <a href='https://news.ycombinator.com/item?id=49713347' target='_blank' rel='noopener'>discussion</a>
+      </p>
+      <h4>Analysis</h4>
+      <p>The Online Z3 Guide serves as a comprehensive, centralized resource for learning and implementing the Z3 Theorem Prover, a high-performance solver widely used in software verification and formal methods. The platform integrates essential documentation, an SMTLIB tutorial, and programming guides alongside an interactive playground that allows developers to run Z3 code directly in their browsers. By providing these educational tools and executable examples, the guide significantly lowers the entry barrier for engineers and researchers seeking to apply automated reasoning to complex logic problems. This initiative reflects Microsoft&#x27;s ongoing effort to improve the accessibility and utility of its open-source constraint-solving technology for a broader technical audience.</p>
+      <h4>Reader Reactions</h4>
+<p class="camps-framing">The thread was brief and primarily informational. One commenter explained what Z3 is and who develops it, while a reply humorously noted that “Z3” can refer to unrelated subjects; there was no substantive disagreement about the guide or technology.</p>
+<div class="camp"><p class="camp-label"><strong>Basic orientation</strong> &mdash; A commenter provided context for readers unfamiliar with Z3, identifying it as a high-performance theorem prover developed at Microsoft Research.</p><blockquote>If anyone wondering, because it took me a few hops to find out: Z3 is a high-performance theorem prover being developed at Microsoft Research.<cite>greatgib</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Playful name ambiguity</strong> &mdash; A reply humorously pointed out that “Z3” can also refer to a BMW or a historical electromechanical computer.</p><blockquote>Or a BMW, or a groundbreaking electro mechanical computer, depending :)<cite>Bluestein</cite></blockquote></div>
+    </article>
+  </section>
+  <footer class="colophon">
+    <p class="sig">— that's the edition.</p>
+    <p class="meta">Set in Fraunces &amp; Inter · Compiled September 17, 2026</p>
+    <p class="classic-link"><a href="classic.html">Prefer the classic card view? →</a></p>
+  </footer>
+<script>
+(() => {
+  const key = "gtd:read_days:hn:v1";
+  const day = "2026-09-17";
+  let stored = [];
+  try {
+    stored = JSON.parse(localStorage.getItem(key) || "[]");
+    if (!Array.isArray(stored)) stored = [];
+  } catch (e) {}
+  if (!stored.includes(day)) {
+    stored.push(day);
+    stored.sort();
+    localStorage.setItem(key, JSON.stringify(stored));
+  }
+})();
+</script>
+<script src="../../preference.js?v=0bdc154a0" defer></script>
+<script>
+// Simple script to toggle the [+] and [-] labels on the drawers
+document.querySelectorAll('.analysis-drawer').forEach(drawer => {
+  drawer.addEventListener('toggle', () => {
+    const summary = drawer.querySelector('summary');
+    if (drawer.open) {
+      summary.textContent = '[ Analysis − ]';
+    } else {
+      summary.textContent = '[ Analysis + ]';
+    }
+  });
+});
+
+// Share link — native share or copy markdown to clipboard
+(function () {
+  const links = document.querySelectorAll('.share-link');
+  if (!links.length) return;
+
+  const toast = document.createElement('div');
+  toast.className = 'discuss-toast';
+  document.body.appendChild(toast);
+
+  function showToast(msg) {
+    toast.textContent = msg;
+    toast.classList.add('show');
+    setTimeout(() => toast.classList.remove('show'), 2500);
+  }
+
+  function buildMarkdown(link, spread) {
+    const title = link.dataset.shareTitle || '';
+    const url = link.dataset.shareUrl || '';
+    const meta = spread ? spread.querySelector('.story-meta') : null;
+    const lede = spread ? spread.querySelector('.lede') : null;
+    const analysis = spread ? spread.querySelector('.drawer-analysis') : null;
+    let md = '# ' + title + '\n';
+    md += 'Source: ' + url;
+    if (meta) md += ' | ' + meta.textContent.trim();
+    md += '\n';
+    if (lede) md += '\n' + lede.textContent.trim() + '\n';
+    if (analysis) md += '\n## Analysis\n' + analysis.textContent.trim() + '\n';
+    return md;
+  }
+
+  links.forEach((link) => {
+    link.addEventListener('click', (e) => {
+      e.preventDefault();
+      const spread = link.closest('section.spread');
+      const md = buildMarkdown(link, spread);
+      const text = "I'd like to discuss this with you. Here's a summary:\n\n" + md;
+      const title = 'Discuss: ' + (link.dataset.shareTitle || '');
+      if (navigator.share) {
+        navigator.share({ title: title, text: text }).catch(() => {});
+      } else {
+        navigator.clipboard.writeText(text).then(
+          () => showToast('Copied to clipboard \u2014 paste into your AI chat'),
+          () => showToast('Failed to copy')
+        );
+      }
+    });
+  });
+})();
+</script>
+</body>
+</html>
