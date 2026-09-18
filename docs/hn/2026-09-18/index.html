@@ -1,0 +1,811 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Morning Edition — September 18, 2026</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght,SOFT@0,9..144,300..900,0..100;1,9..144,300..900,0..100&family=Inter:ital,wght@0,100..900;1,100..900&family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../morning.css?v=a31fa2273">
+</head>
+<body id="top" data-gtd-edition="hn" data-gtd-date="2026-09-18">
+  <header class="masthead">
+    <div class="masthead-nav">
+      <a href="../">Hacker News Calendar</a>
+      <span>&nbsp;·&nbsp;</span>
+      <a href="../../2026-09-18/">GitHub Trending &nbsp;·&nbsp; Sep 18</a>
+      <span>&nbsp;·&nbsp;</span>
+      <a href="classic.html">Classic View</a>
+    </div>
+    <div class="tagline">The Morning Edition</div>
+    <h1 class="frnc">Ten stories, before your coffee.</h1>
+    <div class="issue-line">
+      <span>Vol. I</span>
+      <span>September 18, 2026</span>
+      <span>HN Front Page Digest</span>
+    </div>
+  </header>
+<section class="the-take"><details open><summary>The HN Take</summary><h3 class="take-head">Decision model.</h3><p>Here is a nice idea: If you want an artificial intelligence model to choose among several options, perhaps you should ask it which option it prefers. Not ask it to write a little essay in JSON about which option it prefers. Just look.</p><p>OpenJev is a browser-only experiment that runs a local model and compares two ways of getting a probability distribution over choices. One way reads the model&#x27;s logits for the supplied options and normalizes them. The other asks the same model to generate the probabilities token by token as JSON.</p><p>&quot;One reads option probabilities directly; the other asks the model to write its option probabilities as JSON text.&quot;</p><p>Right. Imagine that you ask an employee whether the company should do A, B or C. One approach is to read her answer. Another is to ask her to prepare a properly formatted regulatory filing describing the probability that she would answer A, B or C, and then infer her answer from that. The filing might be useful for some purposes, but it introduces a lot of ways to get the answer wrong.</p><p>Large language models are trained to predict tokens. If you supply options corresponding to tokens, the model already has scores for them. You can just read those scores. Or you can ask the model to turn the scores into decimal numbers, put the numbers in JSON, make them add up properly and stop generating text at the right moment. This is approximately using an AI model to predict what an AI model thinks, with the second AI model being the same AI model but wearing an accounting visor.</p><p>The experiment is pleasingly literal. It downloads a quantized local model, runs both methods sequentially on the same GPU and reports the timing. The direct method has &quot;1 readout.&quot; The generation method has a first token, total time, input tokens and output tokens. You can watch the model slowly compose a written report about information that was already sitting inside it.</p><p>There are limitations. The direct scores are &quot;a softmax over only the displayed option tokens.&quot; They are not calibrated confidence, and they exclude answers the model might prefer that you did not offer. If you ask whether the correct investment is A, B or C, and the model&#x27;s actual answer is &quot;please stop,&quot; OpenJev will still allocate 100% among A, B and C. But this is also how many human decision processes work.</p><p>The demo runs locally, with no backend, and its model weights remain in the browser cache. The default desktop model is a 1.56-gigabyte MiniCPM5 2B model; larger models require more memory. There is no waitlist. At last, democratized access to asking a machine what it thinks before asking it to explain what it thinks.</p><h3 class="take-head">Theft memo.</h3><p>There is a conventional public argument about training artificial intelligence models on copyrighted material. AI companies say that training is transformative fair use, that models learn statistical patterns rather than storing works, and that the resulting products create new value. Publishers say that the companies copied their work without permission and built products that compete with it.</p><p>And then there is the internal PowerPoint version. Newly unredacted material in the New York Times&#x27;s copyright lawsuit against OpenAI and Microsoft quotes a Microsoft executive calling AI training &quot;an astonishing theft of unprecedented proportions&quot; and &quot;the largest theft of labor in human history.&quot;</p><p>To be fair, the quotes are presented in the Times&#x27;s brief without their original context, because the underlying exhibits remain sealed. Perhaps the missing context is: &quot;Some uninformed person might inaccurately call this the largest theft of labor in human history, but I certainly would not.&quot; Lawyers will investigate.</p><p>Still, the quoted internal analysis is admirably direct. Microsoft data showed that its Copilot answer engine reduced click-through rates to the Times&#x27;s domain by as much as 93% compared with traditional Bing search. An internal presentation called this a &quot;doom loop&quot; that would &quot;hurt the performance of our models and the entire web at the same time.&quot;</p><p>&quot;It is highly unusual that an end-product threatens the economic foundations of its essential suppliers,&quot; the document said, &quot;but that is the situation we have created for our LLM business with respect to its &#x27;content supply chain.&#x27;&quot;</p><p>Yes. The basic AI content business is:</p><p>Publishers pay journalists to produce useful information.</p><p>AI companies copy the useful information.</p><p>AI products answer readers&#x27; questions so they do not visit the publishers.</p><p>Publishers lose the money they use to pay journalists.</p><p>Eventually there is less useful information to copy.</p><p>This is bad supply-chain management. If your factory depends on a supplier of specialized components, you generally do not build a product whose key feature is that nobody pays the supplier anymore. Or perhaps you do, but internally you call it a doom loop.</p><p>The filing also says that OpenAI employees discussed a &quot;hack to get around nytimes paywall.&quot; When a researcher mentioned it to OpenAI President Greg Brockman, he allegedly replied: &quot;ah nice.&quot;</p><p>Again, context may matter. But &quot;ah nice&quot; is an unusually compact corporate approval process.</p><p>Meanwhile OpenAI&#x27;s head of ChatGPT reportedly wrote that publishers face an &quot;existential threat&quot; from chatbots, which are &quot;largely substitutive&quot; and will become more substitutive as they improve. This is awkward for a fair-use argument that considers whether the new use harms the market for the original. The public position is that the product transforms journalism. The private concern is that it substitutes for journalism so effectively that journalism disappears and takes the model&#x27;s training data with it.</p><p>There is a certain grandiosity to calling web scraping the largest theft of labor in human history. Human history has had some fairly competitive thefts of labor. But perhaps the claim is quantitative: more than 2 million documents from nytimes.com in one Common Crawl-derived dataset, at least 160,903 unique publisher works in Project Mango, and more than 91,692 copies of works in OpenAI&#x27;s mid-training datasets. Industrial scale changes the superlative.</p><p>The AI industry often says that data is the new oil. Apparently the complete analogy is that you extract it, remove the identifying material, damage the surrounding ecosystem and then hire lawyers to explain why this is economically necessary.</p><div class="take-sources"><span>Sources</span><ul><li><a href="https://openjev.com/" target="_blank" rel="noopener noreferrer">OpenJev</a></li><li><a href="https://techcrunch.com/2026/09/17/microsoft-exec-called-ai-scraping-the-largest-theft-of-labor-in-human-history-new-unredacted-filings-reveal/" target="_blank" rel="noopener noreferrer">Microsoft exec called AI scraping &#x27;the largest theft of labor in human history&#x27;</a></li></ul></div></details></section>
+  <section id="story-1" class="spread arc-mint-pattern">
+    <div class="numeral-block">
+      <div class="numeral">01</div>
+    </div>
+    <div class="kicker">Model Logic</div>
+    <h2>Browser-based decision models bridge local privacy and speed</h2>
+    <p class="story-meta">openjev.com &nbsp;·&nbsp; 96 pts &nbsp;·&nbsp; 47 comments</p>
+    <p class="lede">OpenJev pushes decision-making to the client-side using WebGPU acceleration. By comparing probability logits with tokenized output, the project offers a new sandbox for benchmarking model behavior directly in the browser.</p>
+    <div class="spread-links"><a class="read-more" href="https://openjev.com/" target="_blank" rel="noopener">Read →</a><a class="read-more share-link" href="#" data-share-title="OpenJev" data-share-url="https://openjev.com/">Share →</a>
+      <details class="analysis-drawer">
+        <summary class="btn-dossier">[ Analysis + ]</summary>
+        <div class="drawer-content">
+          
+          <h4>Technical Analysis</h4>
+          <div class="drawer-analysis">
+          <p>OpenJev is a browser-based tool that allows users to run local decision-making models directly within their web browser using WebGPU, ensuring that all data processing remains private and client-side. The project provides a comparative interface to evaluate two different methods of model decision-making: reading direct probability logits versus generating probabilities through tokenized JSON output. By utilizing quantized models like MiniCPM and Qwen, the tool offers a transparent way to measure performance differences between these approaches on local hardware without requiring a backend server. This experiment highlights the growing feasibility of running complex, privacy-focused machine learning tasks directly in the browser, providing researchers and developers with a sandbox for benchmarking model behavior.</p>
+          </div>
+          <h4>Reader Reactions</h4>
+<p class="camps-framing">The discussion was mixed. Commenters saw potential in fast, local, constrained decision-making, but many questioned its technical novelty and the association with Jev. The website’s presentation drew substantial criticism alongside some positive assessments, while other comments focused on calibration, prompt injection, practical access, and possible broader applications.</p>
+<div class="camp"><p class="camp-label"><strong>Useful efficient decision primitive</strong> &mdash; Some commenters saw value in running small models locally and answering multiple constrained decisions in parallel, potentially making classification faster and cheaper than ordinary generation.</p><blockquote>in short: it&#x27;s faster, cheaper, smart structured output. each &quot;question&quot; is answered in parallel instead of a sequential (like an LLM).<cite>mritchie712</cite></blockquote>
+<blockquote>So this should at least be a way to be a lot cheaper than any LLM can hope to be.<cite>spwa4</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Existing techniques and misleading Jev association</strong> &mdash; Several commenters compared the approach with structured output, JSONFormer, Guidance, encoder-only models, or older model designs, while also questioning whether using the Jev name was confusing because the project is not made by the Jev team.</p><blockquote>is it just jsonformer / guidance (2023) + cache? what is this hype about?<cite>zemlyansky</cite></blockquote>
+<blockquote>Correct me if I&#x27;m wrong but Jev itself works pretty much the same as encoder only models.<cite>neilellis</cite></blockquote>
+<blockquote>This has no relation with the Jev team, isn&#x27;t it?<cite>tecleandor</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Divided reaction to the website’s design and copy</strong> &mdash; Many commenters found the site repetitive, overfilled, uncanny, or visibly machine-generated, while a smaller group considered it clean, clear, or acceptably brutalist.</p><blockquote>The problem is the overabundance of text, they can’t let it breathe. Everywhere has to be filled up with bits of hardly-relevant text.<cite>joegibbs</cite></blockquote>
+<blockquote>It&#x27;s overly automated and repetitive in its styling.<cite>adventured</cite></blockquote>
+<blockquote>Maybe I am conditioned, but I found it nice and clean.<cite>cgio</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Promise of explicit-choice systems</strong> &mdash; Some commenters were interested in systems that require explicit options and make focused choices, suggesting possible applications in tagging, training recommendations, and other real-world decisions.</p><blockquote>Jev is such a different approach where you have to be specific about what you want and which options are open.<cite>lucfranken</cite></blockquote>
+<blockquote>Might be wildly successful for real world decisions.<cite>lucfranken</cite></blockquote>
+<blockquote>Look for and replace implied information with explicit information (that does not have to be detailed, just the correct non-casual language loaded with implied context.)<cite>bsenftner</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Poor calibration and susceptibility to injection</strong> &mdash; Commenters reported that the system appeared forced to choose among alternatives, assigned high confidence to arbitrary or ambiguous answers, and could be influenced by injected text.</p><blockquote>I gave it a choice of &quot;Foo&quot; and &quot;Bar&quot; and it scored &quot;Foo&quot; at 98% percent. Why not 0% for both?<cite>ares623</cite></blockquote>
+<blockquote>Because it&#x27;s forced to rate them, there&#x27;s should be a separate uncertainty parameter for both.<cite>lukasbm</cite></blockquote>
+<blockquote>OpenJev then classifies it as 100% legitimate.<cite>FooBarWidget</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Broader ecosystem and adoption considerations</strong> &mdash; A few commenters focused on practical access to models, the appeal of open-weight alternatives, or the possibility that constrained decision systems could enable many new applications and jobs.</p><blockquote>Unfortunately huggingface.co is blocked by my company&#x27;s firewall and VPN so it breaks when downloading a model. Are there any huggingface mirrors out there?<cite>tomaytotomato</cite></blockquote>
+<blockquote>I wish the free/open weight alternatives to Pangram were better.<cite>tmach32</cite></blockquote>
+<blockquote>there will be so many usecases, applications and even new jobs out of this.<cite>colesantiago</cite></blockquote></div>
+          <p class="drawer-footer"><a href="#dossier-1">View in Dossier ↓</a></p>
+        </div>
+      </details>
+    </div>
+  </section>
+  <section id="story-2" class="spread arc-stat-hero">
+    <div class="numeral">160</div>
+    <div class="kicker">N<sup>o</sup> 02 · Memory Management</div>
+    <h2>Jemalloc 5.4.0 refines memory allocation for modern runtimes</h2>
+    <p class="story-meta">github.com &nbsp;·&nbsp; 167 pts &nbsp;·&nbsp; 47 comments</p>
+    <p class="lede">The latest release of jemalloc introduces significant structural modernization and pinned-memory flags to improve stability. These changes address technical debt to better support high-performance applications across diverse operating systems.</p>
+    <div class="spread-links"><a class="read-more" href="https://github.com/jemalloc/jemalloc/releases/tag/5.4.0" target="_blank" rel="noopener">Read →</a><a class="read-more share-link" href="#" data-share-title="Jemalloc 5.4.0" data-share-url="https://github.com/jemalloc/jemalloc/releases/tag/5.4.0">Share →</a>
+      <details class="analysis-drawer">
+        <summary class="btn-dossier">[ Analysis + ]</summary>
+        <div class="drawer-content">
+          
+          <h4>Technical Analysis</h4>
+          <div class="drawer-analysis">
+          <p>Jemalloc 5.4.0 is a substantial release for the widely-used general-purpose memory allocator, featuring over 160 commits dedicated to extensive technical debt reduction, refactoring, and codebase modernization. Key updates include the introduction of pinned-memory allocation flags for improved resource management, significant architectural modularization of the allocator&#x27;s core, and various portability improvements across different operating systems. The release also includes several critical bug fixes and removes legacy tcache configuration options in favor of more adaptive, demand-based policies. These changes are important for developers who rely on jemalloc for high-performance applications, as they improve system stability, platform compatibility, and long-term maintainability.</p>
+          </div>
+          <h4>Reader Reactions</h4>
+<p class="camps-framing">The discussion was broadly favorable toward jemalloc, with commenters highlighting production benefits and its relevance to managed-language runtimes. Other threads provided context about the project’s stewardship and release history, debated per-CPU versus per-thread caching, compared general-purpose and specialized allocators, and questioned why the release reached the front page.</p>
+<div class="camp"><p class="camp-label"><strong>Practical users and managed-language developers</strong> &mdash; Commenters reported substantial memory and operational benefits from jemalloc in production systems, including Rails, Python, and JVM-based workloads. Others emphasized that managed-language runtimes and native libraries still depend on malloc behavior.</p><blockquote>I switched to jemalloc on a sidekiq queue and memory dropped from 8gib to under 1gib There’s a slow memory leak somewhere in my code but with jemalloc it no longer actually matters. Thanks to jemalloc team for this!<cite>albertgoeswoof</cite></blockquote>
+<blockquote>Memory allocation behaviour has visible impact also for users of managed languages, and the behaviour of software for end users.<cite>nh2</cite></blockquote>
+<blockquote>Because the runtime of most GC:d languages uses malloc for its internal data structures.<cite>iam-da-author</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Project history and stewardship context</strong> &mdash; Commenters sought context about Jason Evans’s departure, Meta’s role, and the gap between tagged releases. Some viewed corporate involvement as potentially harmful over the long term, while others clarified that development continued without releases being tagged.</p><blockquote>Trillion dollar companies having sudden interest in your open source project is not necessarily a long term benefit.<cite>ezst</cite></blockquote>
+<blockquote>Development was never stopped for jemalloc. This is a common misconception. There just were not releases being tagged and packaged against the ongoing development.<cite>charcircuit</cite></blockquote>
+<blockquote>Ok. Why both the homepage and its Github repo doesn&#x27;t make a single mention of Jason Evans?<cite>ksec</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Per-CPU versus per-thread allocator design</strong> &mdash; A technical discussion examined why tcmalloc adopted CPU-local caches while many allocators retain thread-local caches. Commenters considered locality, thread churn, oversubscription, portability, and cross-thread frees.</p><blockquote>unless you pin threads to cores, which is not the default and somewhat awkward in Linux for user applications, having a per-thread cache doesn&#x27;t really make sense as your thread could be moved to another core and then your cache will no longer be local to the physical cache.<cite>rwmj</cite></blockquote>
+<blockquote>I think tcmalloc gains on thread churn and oversubscription by going the cpu-cache route on Linux.<cite>enduku</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>General-purpose versus specialized allocators</strong> &mdash; Some commenters argued that application-specific arenas, pools, and bump allocators can be faster and safer for constrained workloads. Others stressed that building a robust, scalable general-purpose allocator for varied, highly concurrent workloads is substantially harder.</p><blockquote>Writing an allocator is simple, you’re correct, but writing an allocator that doesn’t suck is not simple.<cite>stackghost</cite></blockquote>
+<blockquote>Writing a general-purpose high performing, stable allocator with bounded P99 latency is hard.<cite>HackerThemAll</cite></blockquote>
+<blockquote>Allocation can be as easy as bumping a pointer, and it&#x27;s hard to beat that.<cite>matheusmoreira</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Why the release reached the front page</strong> &mdash; Some commenters questioned the release’s newsworthiness, while others attributed its visibility to renewed development, recent related discussion, broad practical use, and interest in non-AI infrastructure stories.</p><blockquote>Why is this on the HN front page? Is there something particularly noteworthy about this release?<cite>ZenoArrow</cite></blockquote>
+<blockquote>They resumed development on jemalloc only recently, after years of no releases.<cite>aktenlage</cite></blockquote>
+<blockquote>jemalloc is something you should be aware of if you do software for a living<cite>baq</cite></blockquote></div>
+          <p class="drawer-footer"><a href="#dossier-2">View in Dossier ↓</a></p>
+        </div>
+      </details>
+    </div>
+  </section>
+  <section id="story-3" class="spread arc-academic-drop-cap">
+    <div class="paper-head">
+      <span>System Architecture</span>
+      <span class="numeral-roman">III</span>
+      <span>fex-emu.com</span>
+    </div>
+    <h2>Memory model discrepancies complicate x86 emulation on ARM</h2>
+    <p class="story-meta">fex-emu.com &nbsp;·&nbsp; 160 pts &nbsp;·&nbsp; 28 comments</p>
+    <div class="cols">
+      <div><p>Emulating the strict memory ordering of x86-TSO on weaker ARM architectures necessitates significant overhead in barrier instructions.</p></div>
+      <div><p>Achieving native-like performance requires hardware-level support, positioning current Apple Silicon as an outlier in the emulation landscape.</p><div class="spread-links"><a class="read-more" href="https://fex-emu.com/Scourge-of-emulation/" target="_blank" rel="noopener">Read →</a><a class="read-more share-link" href="#" data-share-title="The scourge of x86 emulation" data-share-url="https://fex-emu.com/Scourge-of-emulation/">Share →</a>
+      <details class="analysis-drawer">
+        <summary class="btn-dossier">[ Analysis + ]</summary>
+        <div class="drawer-content">
+          
+          <h4>Technical Analysis</h4>
+          <div class="drawer-analysis">
+          <p>This article from the FEX emulation team explores the technical challenges of emulating the strict x86 Total Store Ordering (x86-TSO) memory model on the weak memory model inherent to ARM architectures. Because x86 applications frequently rely on strong memory consistency and disregard alignment, emulators must bridge the gap using costly barrier instructions or newer ARM extensions like LRCPC, which often result in significant performance overheads. The author highlights that while ARM hardware vendors are slowly adding features to support these requirements, Apple Silicon’s hardware-level support for TSO remains the current gold standard for minimizing emulation latency. Understanding these memory model discrepancies is vital for developers aiming to achieve native-like performance when running x86-based software on modern ARM-based processors.</p>
+          </div>
+          <h4>Reader Reactions</h4>
+<p class="camps-framing">The discussion was broadly positive toward FEX and the practical importance of x86-on-ARM emulation, while debating whether weaker ARM memory ordering delivers the optimization benefits often attributed to it. Commenters also considered bytecode and install-time recompilation, but emphasized backward compatibility, native-code-heavy games, tooling, and ecosystem constraints. Apple’s x86-compatible memory ordering was viewed as a significant advantage, though some commenters cautioned that it is neither a complete nor simple solution.</p>
+<div class="camp"><p class="camp-label"><strong>Skepticism about the memory-model premise</strong> &mdash; A technically focused group questioned whether ARM’s weaker memory model necessarily provides major performance benefits over x86, citing outside analysis and research.</p><blockquote>I&#x27;ve seen some compelling arguments that a relaxed model doesn&#x27;t necessarily have much of a benefit<cite>pdw</cite></blockquote>
+<blockquote>A recent study seemed to support Fabian&#x27;s well written article<cite>Aissen</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>FEX is valuable and increasingly practical</strong> &mdash; Commenters highlighted FEX’s importance for Steam, Linux gaming, and ARM handhelds, while noting remaining anti-cheat problems.</p><blockquote>Valve sponsor development as it’s also the way the new Steam Frame supports x86 games.<cite>dagmx</cite></blockquote>
+<blockquote>Feels kind of insane how far x86 emulation has come.<cite>sureglymop</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Use bytecode or install-time recompilation</strong> &mdash; A minority proposed distributing games in bytecode and compiling them for the target CPU during installation, potentially reducing the need for emulation for future releases.</p><blockquote>Why doesnt Stream require their binaries to be compiled to some bytecode and transpiled during the install ? THen they wouldnt require any emulator for any new compiles.<cite>MiroslavPokorny</cite></blockquote>
+<blockquote>This is what Android does with Dalvik/Android Runtime.<cite>DanielHB</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Ecosystem and backward-compatibility barriers</strong> &mdash; The dominant response was that Valve cannot realistically require the existing catalog, game engines, launchers, and native components to adopt a new bytecode format or toolchain.</p><blockquote>They still have to support the entire back-catalog. It&#x27;s not reasonable to expect thousands of existing games to port to ARM<cite>swiftcoder</cite></blockquote>
+<blockquote>Games use plenty of native code; so much in fact that when Intel tried to enter the Android tablet market with x86 they had to write an ARM emulator.<cite>dezgeg</cite></blockquote>
+<blockquote>because there&#x27;s no gaming-oriented toolchain for it<cite>SSLy</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Existing CPU translation complicates the distinction</strong> &mdash; A brief architectural discussion noted that modern x86 processors already translate or decode x86 instructions internally, making the distinction between native binaries and an intermediate representation less absolute.</p><blockquote>I mean don&#x27;t modern CPUs basically just run an x86_64 emulator on a RISC machine anyway? Like there&#x27;s a layer between the microcode and the actual x86 instructions already.<cite>ErroneousBosh</cite></blockquote>
+<blockquote>I think it&#x27;s more like a (kinda) VLIW machine but yes, pretty much<cite>raverbashing</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Apple’s hardware support is important but not simple or complete</strong> &mdash; Commenters generally treated Apple’s x86-compatible memory ordering as a major advantage enabled by strong product commitment, while others cautioned that it does not resolve every corner case and understates the engineering complexity.</p><blockquote>Apple solved this problem six years ago by simply adding an x86-compatible memory ordering mode to their chip when x86 emulation became important.<cite>modeless</cite></blockquote>
+<blockquote>The word &quot;simply&quot; is doing a lot of work there<cite>karel-3d</cite></blockquote>
+<blockquote>And as noted in the article, while that helps a lot with most of the issues, there are some corner-cases they still don&#x27;t handle.<cite>gavinsyancey</cite></blockquote></div>
+          <p class="drawer-footer"><a href="#dossier-3">View in Dossier ↓</a></p>
+        </div>
+      </details>
+    </div></div>
+    </div>
+  </section>
+  <section id="story-4" class="spread arc-editorial-pullquote">
+    <div class="left">
+      <div class="numeral">04</div>
+      <div class="kicker">Industry Analysis</div>
+      <h2>Legal filings expose internal views on AI training data</h2>
+      <p class="story-meta">techcrunch.com &nbsp;·&nbsp; 95 pts &nbsp;·&nbsp; 38 comments</p>
+      <div class="spread-links"><a class="read-more" href="https://techcrunch.com/2026/09/17/microsoft-exec-called-ai-scraping-the-largest-theft-of-labor-in-human-history-new-unredacted-filings-reveal/" target="_blank" rel="noopener">Read →</a><a class="read-more share-link" href="#" data-share-title="Microsoft exec called AI scraping &#x27;the largest theft of labor in human history&#x27;" data-share-url="https://techcrunch.com/2026/09/17/microsoft-exec-called-ai-scraping-the-largest-theft-of-labor-in-human-history-new-unredacted-filings-reveal/">Share →</a>
+      <details class="analysis-drawer">
+        <summary class="btn-dossier">[ Analysis + ]</summary>
+        <div class="drawer-content">
+          
+          <h4>Technical Analysis</h4>
+          <div class="drawer-analysis">
+          <p>Newly unredacted court filings from The New York Times’ copyright lawsuit against OpenAI and Microsoft reveal that internal executives privately acknowledged their AI training practices involved the mass scraping of paywalled content and represented a significant threat to the publishers providing that data. The documents detail how these companies allegedly bypassed paywalls and stripped copyright notices to build training datasets, with some Microsoft employees even characterizing the activity as &quot;the largest theft of labor in human history.&quot; These admissions directly challenge the companies&#x27; &quot;fair use&quot; legal defense by highlighting how their models act as market substitutes that potentially destroy the economic viability of the news organizations they rely on for training data. This development is important because it undermines the tech giants&#x27; public arguments regarding the transformative nature of generative AI, potentially shifting the legal landscape for how proprietary content is used to develop future large language models.</p>
+          </div>
+          <h4>Reader Reactions</h4>
+<p class="camps-framing">The discussion was largely critical of companies’ use of copyrighted and paywalled material for AI training, especially where firms appeared to apply stricter standards to users than to themselves. The main dispute concerned whether copying and model training constitute theft, infringement, or a form of synthesis analogous to human learning. Commenters also debated regulation, open models, and the risk that AI could undermine the economic ecosystem that produces source material.</p>
+<div class="camp"><p class="camp-label"><strong>Mass appropriation and corporate hypocrisy</strong> &mdash; Commenters characterized AI training as large-scale appropriation of cultural and creative labor, made more objectionable by companies that previously defended strong intellectual-property enforcement.</p><blockquote>It&#x27;s the robbery of all of our culture to sell it back to us at a mark-up.<cite>jacquesm</cite></blockquote>
+<blockquote>We don’t have to treat people reading books and companies stealing all human knowledge the same.<cite>CJefferson</cite></blockquote>
+<blockquote>This blatant disregard of licenses and copyright is clearly infringing on the authors ability to make a profit from their work, which was the whole point of copyright.<cite>Luker88</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Paywall bypassing and piracy are the clearest violations</strong> &mdash; This camp distinguished ordinary web scraping from bypassing paywalls, recording copyrighted media, and training on pirated material, viewing the latter conduct as especially hypocritical and legally vulnerable.</p><blockquote>The second is more immediately hypocritical because they are license/copyright/DMCA violations that the little guy could get sued for while the labs get $2T valuations for.<cite>steveBK123</cite></blockquote>
+<blockquote>People engaging in piracy have their lives ruined, companies engaging in piracy pay a tiny fraction of their revenues out to authors who can&#x27;t legally outgun them.<cite>hkt</cite></blockquote>
+<blockquote>The reality is that no regulation would help because we don&#x27;t have regulators willing to enforce it nor do we have a legal system designed to help individuals against mass theft by corporations.<cite>fzeroracer</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Copying is not necessarily theft</strong> &mdash; Some commenters questioned the theft framing, emphasizing that copying does not remove the original and that the legal and moral status of model training remains unsettled.</p><blockquote>Nobody would say a human reading a book and learning from it is stealing.<cite>pingou</cite></blockquote>
+<blockquote>But it&#x27;s copying...how is it theft? Your labour WASNT stolen was it?<cite>bcjdjsndon</cite></blockquote>
+<blockquote>So maybe it&#x27;s not theft of knowledge that we should be angry about, it&#x27;s something else harder to define.<cite>Neil44</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Regulation may protect incumbents rather than creators</strong> &mdash; Commenters disagreed over remedies: some favored enforcement of existing law, while others warned that licensing could entrench wealthy firms or proposed disclosure and open-weight requirements instead.</p><blockquote>With regulation and compensation, only rich companies would be able to do that, and they would definitely not give it back for free.<cite>pingou</cite></blockquote>
+<blockquote>Imagine a law that stipulates that if you want to offer &quot;LLM-inference-as-a-service&quot;, you need to also publish exact details about how it was trained, what datasets were used and also offer those exact weights for download.<cite>embedding-shape</cite></blockquote>
+<blockquote>We do have regulation against these issues.<cite>fzeroracer</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Public or open models as a counterweight</strong> &mdash; Some commenters regarded free or open-weight models as a public benefit because they make accumulated knowledge more accessible and avoid returning it only through expensive proprietary services.</p><blockquote>At least the Chinese AI companies are doing good service open-sourcing their models back to the public.<cite>cyber_kinetist</cite></blockquote>
+<blockquote>As to open-weights models: at least it&#x27;s not sold back at a mark-up and anyone can run them.<cite>TacticalCoder</cite></blockquote>
+<blockquote>At this point in our civilization, all human knowledge NEEDS to be collated in one place and easily queryable.<cite>Razengan</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>AI threatens the survival of the source ecosystem</strong> &mdash; Beyond questions of legal terminology, commenters argued that scraping and AI-generated substitutes can destroy traffic and monetization, causing the original sites and publications to disappear.</p><blockquote>Bots kill sites, AI kills monetization - both results in the original material disappearing.<cite>pluc</cite></blockquote>
+<blockquote>Content from both gets served back to us, in exchange for watching ads/paying a subscription/paying tokens.<cite>steveBK123</cite></blockquote>
+<blockquote>If something isn&#x27;t done to prevent AI from being used to farm the masses for data, we will be living in a sci-fi dystopia without a doubt.<cite>proc0</cite></blockquote></div>
+          <p class="drawer-footer"><a href="#dossier-4">View in Dossier ↓</a></p>
+        </div>
+      </details>
+    </div>
+    </div>
+    <blockquote class="pullquote">The mass scraping of paywalled content represents a fundamental threat to the economic viability of the source material.</blockquote>
+  </section>
+  <section id="story-5" class="spread arc-product-plate">
+    <div class="product-chip">SPECS</div>
+    <div class="kicker">Enterprise AI</div>
+    <h2>OpenAI launches Astra for Law to automate legal research</h2>
+    <div class="product-rule"></div>
+    <p class="story-meta">openai.com &nbsp;·&nbsp; 501 pts &nbsp;·&nbsp; 589 comments</p>
+    <p class="lede">Astra for Law integrates a massive legal search index with enterprise-grade privacy controls. The platform enables law firms to apply model reasoning to statutes and case law while maintaining institutional data security.</p>
+    <div class="spread-links"><a class="read-more" href="https://openai.com/index/astra-for-law/" target="_blank" rel="noopener">Read →</a><a class="read-more share-link" href="#" data-share-title="Astra for Law" data-share-url="https://openai.com/index/astra-for-law/">Share →</a>
+      <details class="analysis-drawer">
+        <summary class="btn-dossier">[ Analysis + ]</summary>
+        <div class="drawer-content">
+          
+          <h4>Technical Analysis</h4>
+          <div class="drawer-analysis">
+          <p>OpenAI has introduced &quot;Astra for Law,&quot; a specialized configuration of its GPT-6 model designed to integrate with law firms&#x27; proprietary workflows, research tools, and case-law databases. By incorporating a massive legal search index—developed in partnership with the Free Law Project—the model provides enhanced reasoning and retrieval capabilities for analyzing U.S. statutes and precedents. To address industry concerns, the platform includes enterprise-grade privacy controls, such as Zero Data Retention, and supports ecosystem plugins that connect with established legal software like Relativity and Clio. This launch is significant because it represents a move toward industry-specific foundation models, allowing legal professionals to leverage AI for complex drafting and litigation tasks while maintaining institutional oversight and data security.</p>
+          </div>
+          <h4>Reader Reactions</h4>
+<p class="camps-framing">The discussion was broadly interested in AI’s practical value for legal work while questioning whether it can replace legal judgment or professional accountability. Commenters largely agreed that automation can improve document-heavy workflows, but disagreed about its effects on legal employment, access, costs, litigation volume, and the concentration of power among AI vendors.</p>
+<div class="camp"><p class="camp-label"><strong>Useful augmentation for structured legal work</strong> &mdash; Commenters identified substantial benefits in OCR, extraction, search, document organization, and other discrete tasks whose outputs can be checked by humans. They distinguished these productivity gains from automating legal judgment.</p><blockquote>LLMs have great advantages for this kind of work - but not for decision-making.<cite>ivraatiems</cite></blockquote>
+<blockquote>I trusted it because there were traces I could follow.<cite>droidjj</cite></blockquote>
+<blockquote>At my company we&#x27;re also in the process of deploying a system that does exactly that.<cite>stymaar</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Skepticism about accuracy and legal reasoning</strong> &mdash; A substantial group questioned the reliability of models with PDFs, legal research, drafting, interpretation, and factual nuance. These commenters argued that polished output or benchmark performance does not establish dependable legal competence.</p><blockquote>LLMs are still absolutely horrid at analyzing PDFs so the results they are getting must be chock full of errors..<cite>jorvi</cite></blockquote>
+<blockquote>One big thing was the overly excessive protective clauses which didn&#x27;t make sense for reality or conflicted with another.<cite>halamadrid</cite></blockquote>
+<blockquote>Recently was involved in legal matters requiring lawyers - I used OpenAI extensively for research, advice etc - I have to be honest, much of it was completely useless - the real world outcome with lawyers in the room was very different from what OpenAI was spitting out.<cite>medion</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Lawyers remain, but support roles and wages shrink</strong> &mdash; Many commenters expected experienced lawyers to remain necessary for judgment, negotiation, and accountability while AI reduces demand for paralegals, assistants, junior associates, and routine work. Some described this as deskilling or wage compression rather than immediate professional elimination.</p><blockquote>The typical pattern is called “deskilling”.<cite>janalsncm</cite></blockquote>
+<blockquote>This doesn’t replace lawyers, but paralegals surely will be affected.<cite>darth_avocado</cite></blockquote>
+<blockquote>AI doesn&#x27;t need to wipe out lawyers. If they just depress salaries enough, virtually nobody is going to want to be a lawyer anymore.<cite>matheusmoreira</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Democratizing access and reducing legal costs</strong> &mdash; Some commenters viewed AI as a way for people who cannot readily obtain or afford counsel to understand their rights, assess disputes, and handle simple matters. Others connected this possibility to opposition toward expensive legal procedures and routine professional busywork.</p><blockquote>I think this is a valid use case to get at least some understanding what the next steps might be and if it even makes sense to seek legal representation.<cite>p0deje</cite></blockquote>
+<blockquote>If both parties use ChatGPT to find the relevant laws or read contracts, they could come to an agreement without expensive legal fees.<cite>whazor</cite></blockquote>
+<blockquote>If there is any cartel that deserves to be broken its legal search.<cite>forrestthewoods</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>More litigation and intensified inequality</strong> &mdash; Another group predicted that cheaper legal research and drafting would increase lawsuits, claims, and adversarial maneuvering rather than simply lower costs. They also warned that wealthy parties could deploy larger AI-assisted operations and gain advantages through volume.</p><blockquote>AI will not kill off lawyers, or reduce the amount of litigation. It will increase volume and velocity.<cite>Digory</cite></blockquote>
+<blockquote>Now we&#x27;ll start an arms race for abusing every possible letter of the law.<cite>aaimnr</cite></blockquote>
+<blockquote>Just like breaking crypto in the age of cloud is more about cost than time, this will lead to legal attacks based on the same principle.<cite>pletnes</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Privacy, liability, and institutional trust</strong> &mdash; Commenters raised concerns about confidential legal material being sent to AI vendors, unclear responsibility for erroneous output, and possible conflicts when providers or investors have interests connected to a dispute. They questioned whether vendor assurances amount to meaningful guarantees.</p><blockquote>This is everything OpenAI have to say about privacy in this announcement. No guarantees. No promises. Just a pinky-swear promise.<cite>JumpCrisscross</cite></blockquote>
+<blockquote>Can you use this to create legitimate terms and contracts for my products and if I do who is getting sued when it is wrong?<cite>boredumb</cite></blockquote>
+<blockquote>Can you imagine the sort of corruption that is possible here? Like if you have a lawsuit against someone or some entity openai or their investors have business with...<cite>claaams</cite></blockquote></div>
+          <p class="drawer-footer"><a href="#dossier-5">View in Dossier ↓</a></p>
+        </div>
+      </details>
+    </div>
+  </section>
+  <section id="story-6" class="spread arc-stat-hero">
+    <div class="numeral">9x</div>
+    <div class="kicker">N<sup>o</sup> 06 · Model Efficiency</div>
+    <h2>Bonsai 2 delivers 27B-class intelligence on consumer hardware</h2>
+    <p class="story-meta">prismml.com &nbsp;·&nbsp; 461 pts &nbsp;·&nbsp; 135 comments</p>
+    <p class="lede">By utilizing ternary weights, the Bonsai 2 model achieves a significantly reduced memory footprint without substantial loss in performance. The release enables complex, multimodal inference on edge devices with limited power budgets.</p>
+    <div class="spread-links"><a class="read-more" href="https://prismml.com/news/bonsai-2-27b" target="_blank" rel="noopener">Read →</a><a class="read-more share-link" href="#" data-share-title="Bonsai 2 27B: Near-Lossless Compression in a 9x Smaller Footprint" data-share-url="https://prismml.com/news/bonsai-2-27b">Share →</a>
+      <details class="analysis-drawer">
+        <summary class="btn-dossier">[ Analysis + ]</summary>
+        <div class="drawer-content">
+          
+          <h4>Technical Analysis</h4>
+          <div class="drawer-analysis">
+          <p>PrismML has released Ternary Bonsai 2 27B, a compressed version of the Qwen3.8 27B model that uses ternary weights to achieve a 9x smaller memory footprint while retaining 98.2% of the original model&#x27;s performance. By utilizing 1.76 effective bits per weight, the model occupies only 5.9GB of memory and supports a 262K-token context window, making it highly efficient for local deployment on NVIDIA GPUs and Apple devices. The release highlights the increasing feasibility of running complex, multimodal AI tasks on edge hardware with significantly reduced power consumption and higher inference throughput. This development is significant because it demonstrates that extreme weight compression can be nearly lossless, allowing powerful 27B-class intelligence to operate effectively within the strict memory and energy constraints of local consumer devices.</p>
+          </div>
+          <h4>Reader Reactions</h4>
+<p class="camps-framing">The discussion was broadly positive about making a capable 27B model usable on constrained hardware, but commenters disagreed about whether benchmark results translated into reliable real-world quality. Other debates concerned the specialized quantization method, comparisons with higher-bit alternatives, and the practical friction of immature tooling and hardware support.</p>
+<div class="camp"><p class="camp-label"><strong>Enthusiastic local-inference adopters</strong> &mdash; Commenters welcomed the prospect of running a strong 27B model on 16GB-class GPUs, Apple hardware, and other constrained devices, and several reported successful local runs.</p><blockquote>Running at about 7-8 tok/s (~60 tok/s prefill) on a Mac Mini M2 16GB. So far feels smarter than Bonsai 1 27B, it’s slightly larger than the Q1_0 quant. Super exciting stuff :)<cite>jedbrooke</cite></blockquote>
+<blockquote>result looks good: [ Prompt: 165.6 t/s | Generation: 40.6 t/s ] would be nice if they upstreamed their changes so that it runs with the original llama.cpp<cite>wombat23</cite></blockquote>
+<blockquote>Awesome results. Opens up doors for a lot of people.<cite>zhiyan</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Practical-quality skeptics</strong> &mdash; Skeptics argued that selected benchmarks did not establish near-lossless behavior, citing looping, poor reasoning, weak agentic coding, and failures on longer or more difficult tasks.</p><blockquote>Very soon after release!) mainly for toy games or websites. He just did one for this model and included a comparison with the base model Qwen 3.8 which shows the “near-lossless” claim should be taken with a grain of salt.<cite>verytrivial</cite></blockquote>
+<blockquote>I tried their WebGPU version and it immediately started looping. Yeah &quot;near lossless&quot; my ass. Plus the reasoning that it looped on was clearly wrong and unlike the non quantized 27B<cite>redox99</cite></blockquote>
+<blockquote>The issue is I have yet to find a useful agentic local llm that I can run on this machine.<cite>huseyinkeles</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Quantization-method explainers</strong> &mdash; Technical commenters emphasized that the effective bit count reflected a specialized encoding and quantization process rather than naive ternarization, while others noted that the proprietary method and benchmark selection warranted caution.</p><blockquote>I think the general idea is naive quantization falls apart below 4bpw but you can go lower with more sophisticated QAT-adjacent methods. Bonsai&#x27;s quantization method is proprietary though.<cite>edflsafoiewq</cite></blockquote>
+<blockquote>1.76 bpw number is kinda misleading if you compare it directly to IQ2/Q2. The encoding is ternary, but the quantization procedure is way more sophisticated than &quot;round Qwen weights to {-1,0,+1}.&quot;<cite>0x457</cite></blockquote>
+<blockquote>There&#x27;s a table on the HF page that compares it against UD-Q4_K_XL and IQ2_XXS:<cite>nulld3v</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Existing-quant comparison advocates</strong> &mdash; Commenters compared Bonsai with Unsloth, ISTA, Q2/Q3/Q4, mixed-precision, and NVFP4 formats, generally viewing Bonsai as most valuable when memory capacity was the binding constraint rather than when larger models fit comfortably.</p><blockquote>I run Unsloth&#x27;s UD-Q4_K_S on 20 GB of VRAM (RX 7900 XT) and I get ~90k tokens of context without quantizing KV cache.<cite>spijdar</cite></blockquote>
+<blockquote>Their mention of the 5090 is bit odd, since on 32 GB GPUs, Q6 fits while having better quality. Very interesting model for 16 GB GPUs though!<cite>pizza234</cite></blockquote>
+<blockquote>You’d have to be insane to not run an NVFP4 quant over a ternary quant on Blackwell if they both fit.<cite>selectodude</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Tooling, hardware, and performance critics</strong> &mdash; Several commenters identified the custom llama.cpp fork, inconsistent documentation, incomplete accelerator support, and immature or untuned kernels as significant practical limitations, with performance varying substantially by device.</p><blockquote>If you want to try out out the GGUFs from https://huggingface.co/prism-ml/Ternary-Bonsai-2-27B-gguf#th... be aware that you need Prism&#x27;s llama.cpp fork to get them to work<cite>simonw</cite></blockquote>
+<blockquote>Tried it today on a B70 and couldn&#x27;t get anything usable out of it. Prism&#x27;s llama.cpp fork only has the kernels for CUDA, CPU and Vulkan. No SYCL at all :(<cite>djkoolaide</cite></blockquote>
+<blockquote>Smaller size I suppose does not mean better performance in this case - we maybe limited by Spark&#x27;s low memory bandwidth.<cite>flutetornado</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Edge-device and deployment visionaries</strong> &mdash; Some commenters focused on the broader implications for browser, phone, offline, Apple-accelerated, enterprise, and larger-model deployments, treating compression as a path toward wider local AI access.</p><blockquote>These are small enough that you can run them entirely in the browser<cite>Aurornis</cite></blockquote>
+<blockquote>I&#x27;m hoping they release an 8B v2 based on the Qwen 3.8 series in the near future - that would give us a really powerful model that could be run directly on users phones.<cite>JonSchneider</cite></blockquote>
+<blockquote>I&#x27;d love to see a Bonsai model start with a 100B+ parameter model and get that down to &lt;30 GB.<cite>z2</cite></blockquote></div>
+          <p class="drawer-footer"><a href="#dossier-6">View in Dossier ↓</a></p>
+        </div>
+      </details>
+    </div>
+  </section>
+  <section id="story-7" class="spread arc-terminal">
+    <div class="prompt-row">user@morning-edition:~$ cat story_07.md</div>
+    <div class="numeral">07</div>
+    <h2>Delta replaces pull requests with continuous collaborative threads</h2>
+    <p class="story-meta">zed.dev &nbsp;·&nbsp; 33 pts &nbsp;·&nbsp; 4 comments</p>
+    <p class="lede">The Delta platform shifts engineering away from batch-based review cycles using a custom storage engine. By capturing human and agent interactions in real-time, the tool attempts to evolve beyond standard Git-centric workflows.<span class="cursor"></span></p>
+    <div class="spread-links"><a class="read-more" href="https://zed.dev/blog/delta-public-beta" target="_blank" rel="noopener">Read →</a><a class="read-more share-link" href="#" data-share-title="Replacing Pull Requests with Delta" data-share-url="https://zed.dev/blog/delta-public-beta">Share →</a>
+      <details class="analysis-drawer">
+        <summary class="btn-dossier">[ Analysis + ]</summary>
+        <div class="drawer-content">
+          
+          <h4>Technical Analysis</h4>
+          <div class="drawer-analysis">
+          <p>The Zed team has launched a public beta of Delta, a collaborative coding platform designed to replace traditional pull-request workflows with real-time &quot;threads.&quot; By utilizing a custom storage engine called DeltaDB, the platform captures the full context of human and AI agent interactions, allowing teammates to join ongoing work sessions and explore code changes without disrupting the primary codebase. This approach aims to shift software development from batch-based review cycles toward continuous engineering, where planning, implementation, and review occur simultaneously. While Delta remains compatible with standard Git repositories, it represents a significant effort to move development collaboration beyond the constraints of GitHub-centric primitives.</p>
+          </div>
+          <h4>Reader Reactions</h4>
+<p class="camps-framing">The reaction was cautiously curious rather than strongly enthusiastic or hostile. Commenters differed over whether Delta’s collaborative and agent-mediated workflow represents a promising evolution of pair programming or mainly a pull request with richer rationale. Concerns included the value of preserving agent-chat history versus distilling decisions into concise artifacts, the workflow’s fit for coding-intensive settings, platform support, and interest in the underlying DeltaDB technology.</p>
+<div class="camp"><p class="camp-label"><strong>Collaborative-programming model is promising</strong> &mdash; These commenters viewed Delta as an interesting extension of remote collaboration, pair programming, or Extreme Programming, while acknowledging that it may require adjustment and may not suit every type of work.</p><blockquote>Certainly looks interesting and a new way of working which would take some time to get adjusted.<cite>sajithdilshan</cite></blockquote>
+<blockquote>It&#x27;s interesting enough and I&#x27;d like to try it sometime<cite>Cthulhu_</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Agent-chat skepticism and preference for distilled artifacts</strong> &mdash; This position questioned making conversational logs the central interface, favoring concise written artifacts that preserve important conclusions while minimizing surrounding interaction. It also raised concerns that agents could obscure human understanding and contribute to skill atrophy.</p><blockquote>Instead of &quot;agent chat&quot;, I feel like a written page (that could be interacted with through agents) is a much more interesting way of working through a problem.<cite>rtpg</cite></blockquote>
+<blockquote>Skill atrophy is real, folks! Be careful.<cite>rtpg</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Mostly a pull request with better rationale</strong> &mdash; This commenter saw little fundamental conceptual difference from a merge or pull request, but recognized value in preserving the reasoning behind changes, especially when an agent can interpret the discussion history.</p><blockquote>It sounds like it&#x27;s not conceptually different from a MR, the main difference is preserving the rationale for all the changes by bolting the &quot;threads&quot; (a log of agent interactions) on top.<cite>dguest</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Useful mainly for coding-intensive settings</strong> &mdash; Delta’s collaborative model was viewed as potentially suitable for hackathons or intensive pair or mob programming, but less attractive for work dominated by planning rather than active coding.</p><blockquote>but probably only for hackathons - my main line of work is more planning than actual coding.<cite>Cthulhu_</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Practical platform limitation</strong> &mdash; One commenter’s interest was blocked by the lack of Apple Intel support, highlighting platform availability as a practical adoption constraint.</p><blockquote>Would have loved to have tried this, but it still bizarrely lacks Apple Intel support.<cite>ghusto</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Interest centered on DeltaDB</strong> &mdash; One commenter was primarily interested in the eventual open-source release of DeltaDB rather than the proposed collaboration workflow itself.</p><blockquote>Though admittedly I am mostly interested in the open-source release of DeltaDB.<cite>Palmik</cite></blockquote></div>
+          <p class="drawer-footer"><a href="#dossier-7">View in Dossier ↓</a></p>
+        </div>
+      </details>
+    </div>
+  </section>
+  <section id="story-8" class="spread arc-blueprint">
+    <div class="corner tl">+</div><div class="corner tr">+</div>
+    <div class="corner bl">+</div><div class="corner br">+</div>
+    <div class="numeral">08</div>
+    <div class="kicker">Formal Methods</div>
+    <h2>Bend language integrates proof-checking into high-speed parallel code</h2>
+    <p class="story-meta">bend-lang.com &nbsp;·&nbsp; 487 pts &nbsp;·&nbsp; 229 comments</p>
+    <p class="lede">Bend uses an affine dependent type system to enforce mathematical laws on AI-generated software. The compiler ensures that code satisfies specified constraints while automatically parallelizing operations across modern CPUs and GPUs.</p>
+    <div class="spread-links"><a class="read-more" href="https://bend-lang.com/" target="_blank" rel="noopener">Read →</a><a class="read-more share-link" href="#" data-share-title="Bend – A language that blocks AI mistakes via proof, on CPU and GPU" data-share-url="https://bend-lang.com/">Share →</a>
+      <details class="analysis-drawer">
+        <summary class="btn-dossier">[ Analysis + ]</summary>
+        <div class="drawer-content">
+          
+          <h4>Technical Analysis</h4>
+          <div class="drawer-analysis">
+          <p>Bend is a new programming language designed to ensure code reliability and performance in an era of AI-driven development by integrating formal verification with high-speed execution. By leveraging an affine dependent type system, the language allows developers to define mathematical &quot;laws&quot; that AI agents must satisfy, making it physically impossible to ship code that violates specified constraints. The compiler translates these programs into native code that automatically parallelizes across CPUs and GPUs without the need for manual thread or lock management. This approach aims to solve the problem of trust in AI-generated software by providing a verifiable, high-performance framework for the next generation of automated coding environments.</p>
+          </div>
+          <h4>Reader Reactions</h4>
+<p class="camps-framing">The discussion centered on whether Bend’s combination of formal laws, proof checking, and automatic parallelism offers a practical way to make AI-generated software safer. Supporters viewed it as a promising and unusually ambitious project, while skeptics questioned whether the demonstrations establish more than existing tests, contracts, type systems, and proof assistants. Much of the disagreement concerned the difficulty of specifying laws correctly, the possibility that AI systems or reviewers could weaken them, and whether the language’s performance and verification claims had been demonstrated. Repository history, AI-assisted documentation, and post-AGI claims also shaped perceptions of the project’s credibility.</p>
+<div class="camp"><p class="camp-label"><strong>Enthusiastic supporters</strong> &mdash; These commenters welcomed Bend as an ambitious attempt to make AI-generated software safer and to combine formal reasoning with parallel execution. Some had followed the author’s earlier work and were willing to explore the project despite its unfinished presentation.</p><blockquote>Congrats, Victor! É ótimo ver um brasileiro criando algo tão único!<cite>hei-lima</cite></blockquote>
+<blockquote>Victor Taelin&#x27;s work (HVM) got me interested in interaction combinators as a compilation target. I&#x27;m now working on an implementation as part of my Uni research. Cool to see Bend 2.0 release!<cite>tyushk</cite></blockquote>
+<blockquote>This is great. I can&#x27;t imagine why would anyone be unappreciative of this. Since AI is going to be here anyway, why not make it safer and more useful?<cite>jan_m_savage</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Constructive technical interest</strong> &mdash; A substantial group found the project promising while seeking concrete explanations about GPU support, profiling, proof foundations, runtime behavior, library integration, and how Bend handles large or complex state spaces.</p><blockquote>Do you plan to invest in profile guided optimization or autotuning in Bend2 - using runtime profiles / cost models to make decisions around SIMD vs. multicore vs. GPU parallelization?<cite>rao-v</cite></blockquote>
+<blockquote>Could you recommed literature (preferrably a single book) that does not require prior knowledge and allows to fully understand the logical foundation of it?<cite>avodonosov</cite></blockquote>
+<blockquote>I’m missing an actual explanation of how that works. I feel like we all had the idea, but how is all possible move sequences proven ?<cite>jwpapi</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Laws are useful but specifications remain the bottleneck</strong> &mdash; These commenters accepted that laws can rule out broad classes of implementation errors, but argued that the difficult human task remains expressing the intended behavior completely and avoiding technically valid but absurd interpretations.</p><blockquote>The problem, of course, is that having only the one single <cite>pdpi</cite></blockquote>
+<blockquote>Doesn&#x27;t this just mean that the code is now <cite>runeks</cite></blockquote>
+<blockquote>The law I most wanted: <cite>svachalek</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>AI may evade or alter the safeguards</strong> &mdash; These commenters questioned whether language-model agents can reliably preserve laws and contracts, noting that agents may ignore instructions or modify constraints. Some extended the concern to human reviewers who may miss specification changes in large generated patches.</p><blockquote>Yeah, but this assumes the llm will follow the <cite>shantnutiwari</cite></blockquote>
+<blockquote>Exactly, you can have all the laws, but an LLM (or even a human) will just delete or refine the laws and hide the change in a 5kloc PR, that the <cite>serial_dev</cite></blockquote>
+<blockquote>Is there an overview on how this works? E.g. if we code a contract in LAWS.bend, how is it enforced? What prevents my LLM model to skip a contract?<cite>jmakov</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Formal verification, scalability, and language-design skepticism</strong> &mdash; Skeptics questioned whether formal verification can scale to arbitrary real-world systems, whether Bend’s comparisons with established proof assistants were meaningful, and whether its type system, scheduler, and language design support the claimed range of applications.</p><blockquote>Beginners in computer science need to understand that there&#x27;s no such thing as a computer programming method or discipline that <cite>lutusp</cite></blockquote>
+<blockquote>This reads very vibecoded, but putting that aside... 1. How does this benefit from GPU parallelism?<cite>stschaef</cite></blockquote>
+<blockquote>Bend is likely to be good at <cite>mccoyb</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Trust, provenance, presentation, and AI-era framing</strong> &mdash; Repository history, star and issue counts, AI-written documentation, unclear demonstrations, and sweeping post-AGI claims strongly influenced how some readers assessed Bend. Others defended the author’s long research history and argued that the project should be judged primarily on its implementation and ideas.</p><blockquote>This project&#x27;s repo has 20K stars with only 500 forks, with less than 300 issues(including closed). Something&#x27;s not right.<cite>plastic041</cite></blockquote>
+<blockquote>victor&#x27;s legit and people have been excited about his work for years; squashing the history was just a bit of an optics oopsie on his part.<cite>0x69420</cite></blockquote>
+<blockquote>Would the author have specified on the page that it&#x27;s a fast new language with a new take on proof and so on, without mentioning ai and that alone would have caught my attention.<cite>hollowturtle</cite></blockquote></div>
+          <p class="drawer-footer"><a href="#dossier-8">View in Dossier ↓</a></p>
+        </div>
+      </details>
+    </div>
+  </section>
+  <section id="story-9" class="spread arc-midnight">
+    <div class="numeral">09</div>
+    <div class="body">
+      <div class="kicker">// Agent Foundry</div>
+      <h2>Qwen Omni Flash enables long-horizon agentic task execution</h2>
+      <p class="story-meta">qwen.ai &nbsp;·&nbsp; 235 pts &nbsp;·&nbsp; 85 comments</p>
+      <p class="lede">This omnimodal model introduces agentic reasoning capabilities optimized for audio, video, and text analysis. By reducing the cost of processing high-dimensional inputs, the system supports autonomous workflows for complex research and development.</p>
+      <div class="spread-links"><a class="read-more" href="https://qwen.ai/blog?id=qwen3.8-omni-flash" target="_blank" rel="noopener">Read →</a><a class="read-more share-link" href="#" data-share-title="Qwen 3.8 Omni Flash" data-share-url="https://qwen.ai/blog?id=qwen3.8-omni-flash">Share →</a>
+      <details class="analysis-drawer">
+        <summary class="btn-dossier">[ Analysis + ]</summary>
+        <div class="drawer-content">
+          
+          <h4>Technical Analysis</h4>
+          <div class="drawer-analysis">
+          <p>Qwen3.8-Omni-Flash is a new native omnimodal model designed to transition artificial intelligence from simple content perception to complex, agentic task execution involving audio, video, and text. Featuring a 1-million-token context window and optimized for efficiency, the model utilizes agentic workflows to perform long-horizon tasks such as video editing, professional meeting analysis, and automated software engineering. By significantly reducing the computational costs of processing audio-visual inputs compared to its predecessors, the release demonstrates a shift toward using large models to drive autonomous research and development. This advancement is important because it integrates model-based reasoning with real-time tool usage, enabling agents to actively solve multifaceted productivity challenges rather than just summarizing media.</p>
+          </div>
+          <h4>Reader Reactions</h4>
+<p class="camps-framing">The discussion focused less on the announcement’s agentic vision than on whether Qwen is useful, affordable, reliable, and accessible enough for practical adoption. Commenters debated model-selection strategies, Qwen’s pricing and capabilities, serving and quantization problems, agentic behavior and reinforcement learning, open-weight availability and hardware demands, and Europe’s ability to produce comparable systems.</p>
+<div class="camp"><p class="camp-label"><strong>Pragmatic model selection and routing</strong> &mdash; Some commenters argued that users should keep a model that already solves their problems rather than continually testing new releases, while others wanted better tools for comparing or automatically routing among models by use case, price, and capability.</p><blockquote>As long as the model you&#x27;re using solves the problems you have to your satisfaction, there is no need to try any other models, except for financial reasons maybe.<cite>Systemerror7A69</cite></blockquote>
+<blockquote>Have you tried openrouters auto model? Tries to give you the best model based on prompt and price<cite>sisve</cite></blockquote>
+<blockquote>If it works fine, this chase of the latest LLM is bit pointless.<cite>epolanski</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Qwen’s cost and capability appeal</strong> &mdash; Supporters viewed Qwen as a potentially much cheaper alternative to comparable Gemini offerings and praised its multimodal performance, grounding, obedience, and general usefulness, while noting that performance and token efficiency determine the real cost.</p><blockquote>That is a massive cost reduction.<cite>_ache_</cite></blockquote>
+<blockquote>3.8 Max is the most “grounded” model I think - talks generally normal, doesn’t go crazy and start doing things (I see you Gemini), has good design choices and isn’t overly nitpicky.<cite>conception</cite></blockquote>
+<blockquote>Qwen 3.8 Flash Next is amazing, i did hundreds of turns and billions of prefill and it may not be as smart as sota but then again it does what i tell it to and it does it well.<cite>diddid</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Practical reliability, serving, and quantization limits</strong> &mdash; Other commenters reported that Qwen could be slow, unreliable, or difficult to run, while a technical thread attributed bizarre outputs and excessive reasoning to serving recipes, quantization, or harness interactions. Reports differed over whether recommended configurations fully resolved the issues.</p><blockquote>Qwen 3.8 didn&#x27;t do it for me, whatever tweaks I added to my harness.<cite>insightfulornot</cite></blockquote>
+<blockquote>This is a serving bug or quantization issue.<cite>anon373839</cite></blockquote>
+<blockquote>Flash-Next thinking also sometimes glitches out and takes minutes to return a simple answer, randomly, in my experience. You’ve gotta kill the request and send it again.<cite>nojs</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Concern about over-agentic behavior and RL</strong> &mdash; Commenters described models taking unwanted actions, arguing with subagents, digressing, or optimizing for relentless completion rather than clarification. Some framed these behaviors as consequences of reinforcement learning and benchmarks that reward replacement-oriented autonomy.</p><blockquote>Tuning the model so far in the direction of being aggressively useful that it will quickly go off the rails in the name of helpfulness.<cite>pennomi</cite></blockquote>
+<blockquote>I guess the agentic coding benchmarks don&#x27;t have many rewards for stopping and clarifying what the user wants?<cite>vintermann</cite></blockquote>
+<blockquote>Reinforcement Learning (in LLMs) trains via gradient descent on a reward signal that&#x27;s an imperfect proxy for the actual goal of the engineers doing the training.<cite>khafra</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Open weights and hardware accessibility</strong> &mdash; The discussion included disagreement over whether Qwen is slowing its open-weight releases, alongside recognition that the largest models remain difficult to serve locally. Some users nevertheless reported strong results with heavily quantized models on older hardware.</p><blockquote>There are definitively slowing down open weight release.<cite>_ache_</cite></blockquote>
+<blockquote>Qwen 3.8 Max was open-weight released [1], as was Qwen 3.8 Flash Next [2].<cite>vinzenzu</cite></blockquote>
+<blockquote>But you need ~128GB of RAM to get it going and not a lot of people have that or can serve it very quickly.<cite>bitexploder</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Europe’s AI position and structural constraints</strong> &mdash; A major side debate asked why Europe has not produced comparable general-purpose frontier models. Explanations emphasized capital, compute, risk tolerance, regulation, infrastructure, and government coordination, while others pointed to European research, companies, chip facilities, and publicly backed projects.</p><blockquote>This is one of the most capital intense technologies to exist. Europe does not have enough capital to compete. China is building its own chips. It’s own everything.<cite>bitexploder</cite></blockquote>
+<blockquote>Well there is Mistral. The EU is ahead on specialised models than general purpose LLMs.<cite>EagnaIonat</cite></blockquote>
+<blockquote>ASML in the Netherlands for example was the only company in the world that makes EUV lithography machines, which all the major chip companies depend on.<cite>EagnaIonat</cite></blockquote></div>
+          <p class="drawer-footer"><a href="#dossier-9">View in Dossier ↓</a></p>
+        </div>
+      </details>
+    </div>
+    </div>
+  </section>
+  <section id="story-10" class="spread arc-archive">
+    <div class="archive-head">
+      <span>ARCHIVE</span>
+      <span>N<sup>o</sup> 10</span>
+    </div>
+    <div class="kicker">Personal Data</div>
+    <h2>Hister indexes local web archives for private retrieval</h2>
+    <p class="story-meta">github.com &nbsp;·&nbsp; 624 pts &nbsp;·&nbsp; 170 comments</p>
+    <p class="lede">Hister provides a self-hosted search interface for personal file storage and browser history. By operating entirely on user-controlled infrastructure, the tool eliminates reliance on third-party cloud services for data archival.</p>
+    <div class="spread-links"><a class="read-more" href="https://github.com/asciimoo/hister" target="_blank" rel="noopener">Read →</a><a class="read-more share-link" href="#" data-share-title="Hister: A private search engine for the pages you visit and the files you keep" data-share-url="https://github.com/asciimoo/hister">Share →</a>
+      <details class="analysis-drawer">
+        <summary class="btn-dossier">[ Analysis + ]</summary>
+        <div class="drawer-content">
+          
+          <h4>Technical Analysis</h4>
+          <div class="drawer-analysis">
+          <p>Hister is a privacy-focused, self-hosted search engine designed to index the full content of visited web pages and local files for personal retrieval. Built in Go, it functions by capturing data through browser extensions, file imports, or local directory indexing, allowing users to query their personal data via a web interface, terminal, or AI assistant. Unlike commercial search engines that track user behavior, Hister operates entirely on infrastructure controlled by the user, ensuring no telemetry or third-party cloud dependency. This tool addresses the growing need for manageable, searchable archives of one&#x27;s own digital history, offering a robust alternative to reliance on ephemeral browser bookmarks or fragmented file storage.</p>
+          </div>
+          <h4>Reader Reactions</h4>
+<p class="camps-framing">The reaction was strongly positive, with many commenters reporting that Hister or similar tools helped them recover information from old browsing sessions and personal archives. Discussion focused mainly on integrating Hister into existing search, bookmarking, archival, and AI workflows. The principal reservations concerned selective capture, durable preservation, software trust, deployment overhead, and whether the project duplicated older browser or desktop-search features.</p>
+<div class="camp"><p class="camp-label"><strong>Enthusiastic adopters</strong> &mdash; Many commenters had already used Hister for days or months and described it as valuable for recovering forgotten pages, searching browser history, and combining web content with personal notes or files.</p><blockquote>Thanks so much for creating this. Installed last time it was posted and have been loving it.<cite>asdfqwertzxcv</cite></blockquote>
+<blockquote>It&#x27;s one of those things I don&#x27;t look at until I need to, but when I do need it, it solves the dreaded hunting through the last month of browser history.<cite>jjice</cite></blockquote>
+<blockquote>I use Hister as my default search engine. I’m quite happy with it.<cite>Yehoshaphat</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Feature expansion and selective capture</strong> &mdash; Interested users proposed broader note-taking, bookmark filtering, browser-native interfaces, mobile capture, custom extractors, and rules that avoid indexing pages opened only briefly.</p><blockquote>Ability to add notes to history<cite>jamienk</cite></blockquote>
+<blockquote>I&#x27;d love a extension setting to only send tabs that were visible for ~4+ seconds.<cite>rao-v</cite></blockquote>
+<blockquote>This is amazing and something I&#x27;d like to integrate with my personal AI assistant. Is there a way to make it also index pages visited from an Android phone?<cite>etamponi</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>AI and personal-assistant integration</strong> &mdash; Commenters saw Hister as a private retrieval layer for local or hosted assistants, summaries, research, and semantic discovery, while some debated whether local models could provide similar convenience without vendor dependence.</p><blockquote>I can see using this to index the thousands of bookmarks I have and my every growing reading list and see if my local model and find a pattern and/or help surface anything interesting related to the papers I read<cite>rochansinha</cite></blockquote>
+<blockquote>There is a surprisingly high chance chatbot can just give the exact answer back to me, usually with extra interesting reading materials as a plus.<cite>361994752</cite></blockquote>
+<blockquote>Nothing about this depends on the provider, you could spin up a local Qwen and give it a search tool like SearXNG or something.<cite>randomblock1</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Interoperability and durable archiving</strong> &mdash; Commenters compared Hister with ArchiveBox, Zotero, SingleFile, Linkding, Linkwarden, Betula, and Recoll. Many wanted shared storage or imports rather than maintaining separate archives, while others distinguished active retrieval from long-term preservation.</p><blockquote>The main difference I see is Hister focuses on creating an active knowledge base and finding information quickly, while ArchiveBox focuses on preserving web content for the long term.<cite>asciimoo</cite></blockquote>
+<blockquote>Roughly in the same space is Zotero &lt; https://www.zotero.org/ &gt; which is intended as a way of organizing research materials but is also a great way of quickly archiving web pages you&#x27;ve visited, including quick tagging and full text search.<cite>phyzome</cite></blockquote>
+<blockquote>Integrate it with linkwarden so it searches the bookmarked pages.<cite>tamimio</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Private search as a missing basic feature</strong> &mdash; Several commenters viewed Hister as restoring full-text search capabilities that browsers and desktop software once offered, especially for visited pages and local documents.</p><blockquote>Google Chrome did this in 2008. Full-text search over all visited pages, stored offline. It was very useful and I miss it.<cite>jval43</cite></blockquote>
+<blockquote>There was also Google Desktop Search for several years: https://en.wikipedia.org/wiki/Google_Desktop<cite>wtallis</cite></blockquote>
+<blockquote>Ooh, very nice! I have my own tool I’ve been using for this [ https://github.com/bradrn/full-history-search/ ], and it’s incredibly useful, but it’s also pretty primitive. This one looks a lot nicer.<cite>bradrn</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Trust, deployment, and maintenance concerns</strong> &mdash; Reservations centered on running software that reads browsing history, resource consumption, deployment complexity, and the effort required to isolate or maintain self-hosted services.</p><blockquote>I&#x27;d like to use it, but I&#x27;m hesitant to use anything that isn&#x27;t a reviewed and approved package in my Linux distribution.<cite>computator</cite></blockquote>
+<blockquote>I used to use it, but it would use a lot of CPU and hurt battery life, is the idea that you self host on a different machine?<cite>elestor</cite></blockquote>
+<blockquote>After running fine for a few days, it would hog the whole server and everything else proxied by Nginx would become unreachable.<cite>g_host</cite></blockquote></div>
+          <p class="drawer-footer"><a href="#dossier-10">View in Dossier ↓</a></p>
+        </div>
+      </details>
+    </div>
+  </section>
+  <section id="dossier" class="dossier">
+    <div class="dossier-head">
+      <div class="tagline">Appendix</div>
+      <h2>The Dossier</h2>
+      <p class="intro">Full analysis and reactions for today's 10 stories. <a href="#top">↑ Back to the edition</a></p>
+    </div>
+    <article id="dossier-1" class="dossier-entry">
+      <div class="dossier-meta">N<sup>o</sup> 01 &nbsp;·&nbsp; Mint Pattern &nbsp;·&nbsp; Model Logic</div>
+      <h3>OpenJev</h3>
+      <p class="dossier-source">
+        <a href="https://openjev.com/" target="_blank" rel="noopener">openjev.com</a>
+        &nbsp;·&nbsp; 96 pts &nbsp;·&nbsp; 47 comments
+         &nbsp;·&nbsp; <a href='https://news.ycombinator.com/item?id=49752041' target='_blank' rel='noopener'>discussion</a>
+      </p>
+      <h4>Analysis</h4>
+      <p>OpenJev is a browser-based tool that allows users to run local decision-making models directly within their web browser using WebGPU, ensuring that all data processing remains private and client-side. The project provides a comparative interface to evaluate two different methods of model decision-making: reading direct probability logits versus generating probabilities through tokenized JSON output. By utilizing quantized models like MiniCPM and Qwen, the tool offers a transparent way to measure performance differences between these approaches on local hardware without requiring a backend server. This experiment highlights the growing feasibility of running complex, privacy-focused machine learning tasks directly in the browser, providing researchers and developers with a sandbox for benchmarking model behavior.</p>
+      <h4>Reader Reactions</h4>
+<p class="camps-framing">The discussion was mixed. Commenters saw potential in fast, local, constrained decision-making, but many questioned its technical novelty and the association with Jev. The website’s presentation drew substantial criticism alongside some positive assessments, while other comments focused on calibration, prompt injection, practical access, and possible broader applications.</p>
+<div class="camp"><p class="camp-label"><strong>Useful efficient decision primitive</strong> &mdash; Some commenters saw value in running small models locally and answering multiple constrained decisions in parallel, potentially making classification faster and cheaper than ordinary generation.</p><blockquote>in short: it&#x27;s faster, cheaper, smart structured output. each &quot;question&quot; is answered in parallel instead of a sequential (like an LLM).<cite>mritchie712</cite></blockquote>
+<blockquote>So this should at least be a way to be a lot cheaper than any LLM can hope to be.<cite>spwa4</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Existing techniques and misleading Jev association</strong> &mdash; Several commenters compared the approach with structured output, JSONFormer, Guidance, encoder-only models, or older model designs, while also questioning whether using the Jev name was confusing because the project is not made by the Jev team.</p><blockquote>is it just jsonformer / guidance (2023) + cache? what is this hype about?<cite>zemlyansky</cite></blockquote>
+<blockquote>Correct me if I&#x27;m wrong but Jev itself works pretty much the same as encoder only models.<cite>neilellis</cite></blockquote>
+<blockquote>This has no relation with the Jev team, isn&#x27;t it?<cite>tecleandor</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Divided reaction to the website’s design and copy</strong> &mdash; Many commenters found the site repetitive, overfilled, uncanny, or visibly machine-generated, while a smaller group considered it clean, clear, or acceptably brutalist.</p><blockquote>The problem is the overabundance of text, they can’t let it breathe. Everywhere has to be filled up with bits of hardly-relevant text.<cite>joegibbs</cite></blockquote>
+<blockquote>It&#x27;s overly automated and repetitive in its styling.<cite>adventured</cite></blockquote>
+<blockquote>Maybe I am conditioned, but I found it nice and clean.<cite>cgio</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Promise of explicit-choice systems</strong> &mdash; Some commenters were interested in systems that require explicit options and make focused choices, suggesting possible applications in tagging, training recommendations, and other real-world decisions.</p><blockquote>Jev is such a different approach where you have to be specific about what you want and which options are open.<cite>lucfranken</cite></blockquote>
+<blockquote>Might be wildly successful for real world decisions.<cite>lucfranken</cite></blockquote>
+<blockquote>Look for and replace implied information with explicit information (that does not have to be detailed, just the correct non-casual language loaded with implied context.)<cite>bsenftner</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Poor calibration and susceptibility to injection</strong> &mdash; Commenters reported that the system appeared forced to choose among alternatives, assigned high confidence to arbitrary or ambiguous answers, and could be influenced by injected text.</p><blockquote>I gave it a choice of &quot;Foo&quot; and &quot;Bar&quot; and it scored &quot;Foo&quot; at 98% percent. Why not 0% for both?<cite>ares623</cite></blockquote>
+<blockquote>Because it&#x27;s forced to rate them, there&#x27;s should be a separate uncertainty parameter for both.<cite>lukasbm</cite></blockquote>
+<blockquote>OpenJev then classifies it as 100% legitimate.<cite>FooBarWidget</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Broader ecosystem and adoption considerations</strong> &mdash; A few commenters focused on practical access to models, the appeal of open-weight alternatives, or the possibility that constrained decision systems could enable many new applications and jobs.</p><blockquote>Unfortunately huggingface.co is blocked by my company&#x27;s firewall and VPN so it breaks when downloading a model. Are there any huggingface mirrors out there?<cite>tomaytotomato</cite></blockquote>
+<blockquote>I wish the free/open weight alternatives to Pangram were better.<cite>tmach32</cite></blockquote>
+<blockquote>there will be so many usecases, applications and even new jobs out of this.<cite>colesantiago</cite></blockquote></div>
+    </article>
+    <article id="dossier-2" class="dossier-entry">
+      <div class="dossier-meta">N<sup>o</sup> 02 &nbsp;·&nbsp; Stat Hero &nbsp;·&nbsp; Memory Management</div>
+      <h3>Jemalloc 5.4.0</h3>
+      <p class="dossier-source">
+        <a href="https://github.com/jemalloc/jemalloc/releases/tag/5.4.0" target="_blank" rel="noopener">github.com</a>
+        &nbsp;·&nbsp; 167 pts &nbsp;·&nbsp; 47 comments
+         &nbsp;·&nbsp; <a href='https://news.ycombinator.com/item?id=49750152' target='_blank' rel='noopener'>discussion</a>
+      </p>
+      <h4>Analysis</h4>
+      <p>Jemalloc 5.4.0 is a substantial release for the widely-used general-purpose memory allocator, featuring over 160 commits dedicated to extensive technical debt reduction, refactoring, and codebase modernization. Key updates include the introduction of pinned-memory allocation flags for improved resource management, significant architectural modularization of the allocator&#x27;s core, and various portability improvements across different operating systems. The release also includes several critical bug fixes and removes legacy tcache configuration options in favor of more adaptive, demand-based policies. These changes are important for developers who rely on jemalloc for high-performance applications, as they improve system stability, platform compatibility, and long-term maintainability.</p>
+      <h4>Reader Reactions</h4>
+<p class="camps-framing">The discussion was broadly favorable toward jemalloc, with commenters highlighting production benefits and its relevance to managed-language runtimes. Other threads provided context about the project’s stewardship and release history, debated per-CPU versus per-thread caching, compared general-purpose and specialized allocators, and questioned why the release reached the front page.</p>
+<div class="camp"><p class="camp-label"><strong>Practical users and managed-language developers</strong> &mdash; Commenters reported substantial memory and operational benefits from jemalloc in production systems, including Rails, Python, and JVM-based workloads. Others emphasized that managed-language runtimes and native libraries still depend on malloc behavior.</p><blockquote>I switched to jemalloc on a sidekiq queue and memory dropped from 8gib to under 1gib There’s a slow memory leak somewhere in my code but with jemalloc it no longer actually matters. Thanks to jemalloc team for this!<cite>albertgoeswoof</cite></blockquote>
+<blockquote>Memory allocation behaviour has visible impact also for users of managed languages, and the behaviour of software for end users.<cite>nh2</cite></blockquote>
+<blockquote>Because the runtime of most GC:d languages uses malloc for its internal data structures.<cite>iam-da-author</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Project history and stewardship context</strong> &mdash; Commenters sought context about Jason Evans’s departure, Meta’s role, and the gap between tagged releases. Some viewed corporate involvement as potentially harmful over the long term, while others clarified that development continued without releases being tagged.</p><blockquote>Trillion dollar companies having sudden interest in your open source project is not necessarily a long term benefit.<cite>ezst</cite></blockquote>
+<blockquote>Development was never stopped for jemalloc. This is a common misconception. There just were not releases being tagged and packaged against the ongoing development.<cite>charcircuit</cite></blockquote>
+<blockquote>Ok. Why both the homepage and its Github repo doesn&#x27;t make a single mention of Jason Evans?<cite>ksec</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Per-CPU versus per-thread allocator design</strong> &mdash; A technical discussion examined why tcmalloc adopted CPU-local caches while many allocators retain thread-local caches. Commenters considered locality, thread churn, oversubscription, portability, and cross-thread frees.</p><blockquote>unless you pin threads to cores, which is not the default and somewhat awkward in Linux for user applications, having a per-thread cache doesn&#x27;t really make sense as your thread could be moved to another core and then your cache will no longer be local to the physical cache.<cite>rwmj</cite></blockquote>
+<blockquote>I think tcmalloc gains on thread churn and oversubscription by going the cpu-cache route on Linux.<cite>enduku</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>General-purpose versus specialized allocators</strong> &mdash; Some commenters argued that application-specific arenas, pools, and bump allocators can be faster and safer for constrained workloads. Others stressed that building a robust, scalable general-purpose allocator for varied, highly concurrent workloads is substantially harder.</p><blockquote>Writing an allocator is simple, you’re correct, but writing an allocator that doesn’t suck is not simple.<cite>stackghost</cite></blockquote>
+<blockquote>Writing a general-purpose high performing, stable allocator with bounded P99 latency is hard.<cite>HackerThemAll</cite></blockquote>
+<blockquote>Allocation can be as easy as bumping a pointer, and it&#x27;s hard to beat that.<cite>matheusmoreira</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Why the release reached the front page</strong> &mdash; Some commenters questioned the release’s newsworthiness, while others attributed its visibility to renewed development, recent related discussion, broad practical use, and interest in non-AI infrastructure stories.</p><blockquote>Why is this on the HN front page? Is there something particularly noteworthy about this release?<cite>ZenoArrow</cite></blockquote>
+<blockquote>They resumed development on jemalloc only recently, after years of no releases.<cite>aktenlage</cite></blockquote>
+<blockquote>jemalloc is something you should be aware of if you do software for a living<cite>baq</cite></blockquote></div>
+    </article>
+    <article id="dossier-3" class="dossier-entry">
+      <div class="dossier-meta">N<sup>o</sup> 03 &nbsp;·&nbsp; Academic &nbsp;·&nbsp; System Architecture</div>
+      <h3>The scourge of x86 emulation</h3>
+      <p class="dossier-source">
+        <a href="https://fex-emu.com/Scourge-of-emulation/" target="_blank" rel="noopener">fex-emu.com</a>
+        &nbsp;·&nbsp; 160 pts &nbsp;·&nbsp; 28 comments
+         &nbsp;·&nbsp; <a href='https://news.ycombinator.com/item?id=49750094' target='_blank' rel='noopener'>discussion</a>
+      </p>
+      <h4>Analysis</h4>
+      <p>This article from the FEX emulation team explores the technical challenges of emulating the strict x86 Total Store Ordering (x86-TSO) memory model on the weak memory model inherent to ARM architectures. Because x86 applications frequently rely on strong memory consistency and disregard alignment, emulators must bridge the gap using costly barrier instructions or newer ARM extensions like LRCPC, which often result in significant performance overheads. The author highlights that while ARM hardware vendors are slowly adding features to support these requirements, Apple Silicon’s hardware-level support for TSO remains the current gold standard for minimizing emulation latency. Understanding these memory model discrepancies is vital for developers aiming to achieve native-like performance when running x86-based software on modern ARM-based processors.</p>
+      <h4>Reader Reactions</h4>
+<p class="camps-framing">The discussion was broadly positive toward FEX and the practical importance of x86-on-ARM emulation, while debating whether weaker ARM memory ordering delivers the optimization benefits often attributed to it. Commenters also considered bytecode and install-time recompilation, but emphasized backward compatibility, native-code-heavy games, tooling, and ecosystem constraints. Apple’s x86-compatible memory ordering was viewed as a significant advantage, though some commenters cautioned that it is neither a complete nor simple solution.</p>
+<div class="camp"><p class="camp-label"><strong>Skepticism about the memory-model premise</strong> &mdash; A technically focused group questioned whether ARM’s weaker memory model necessarily provides major performance benefits over x86, citing outside analysis and research.</p><blockquote>I&#x27;ve seen some compelling arguments that a relaxed model doesn&#x27;t necessarily have much of a benefit<cite>pdw</cite></blockquote>
+<blockquote>A recent study seemed to support Fabian&#x27;s well written article<cite>Aissen</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>FEX is valuable and increasingly practical</strong> &mdash; Commenters highlighted FEX’s importance for Steam, Linux gaming, and ARM handhelds, while noting remaining anti-cheat problems.</p><blockquote>Valve sponsor development as it’s also the way the new Steam Frame supports x86 games.<cite>dagmx</cite></blockquote>
+<blockquote>Feels kind of insane how far x86 emulation has come.<cite>sureglymop</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Use bytecode or install-time recompilation</strong> &mdash; A minority proposed distributing games in bytecode and compiling them for the target CPU during installation, potentially reducing the need for emulation for future releases.</p><blockquote>Why doesnt Stream require their binaries to be compiled to some bytecode and transpiled during the install ? THen they wouldnt require any emulator for any new compiles.<cite>MiroslavPokorny</cite></blockquote>
+<blockquote>This is what Android does with Dalvik/Android Runtime.<cite>DanielHB</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Ecosystem and backward-compatibility barriers</strong> &mdash; The dominant response was that Valve cannot realistically require the existing catalog, game engines, launchers, and native components to adopt a new bytecode format or toolchain.</p><blockquote>They still have to support the entire back-catalog. It&#x27;s not reasonable to expect thousands of existing games to port to ARM<cite>swiftcoder</cite></blockquote>
+<blockquote>Games use plenty of native code; so much in fact that when Intel tried to enter the Android tablet market with x86 they had to write an ARM emulator.<cite>dezgeg</cite></blockquote>
+<blockquote>because there&#x27;s no gaming-oriented toolchain for it<cite>SSLy</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Existing CPU translation complicates the distinction</strong> &mdash; A brief architectural discussion noted that modern x86 processors already translate or decode x86 instructions internally, making the distinction between native binaries and an intermediate representation less absolute.</p><blockquote>I mean don&#x27;t modern CPUs basically just run an x86_64 emulator on a RISC machine anyway? Like there&#x27;s a layer between the microcode and the actual x86 instructions already.<cite>ErroneousBosh</cite></blockquote>
+<blockquote>I think it&#x27;s more like a (kinda) VLIW machine but yes, pretty much<cite>raverbashing</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Apple’s hardware support is important but not simple or complete</strong> &mdash; Commenters generally treated Apple’s x86-compatible memory ordering as a major advantage enabled by strong product commitment, while others cautioned that it does not resolve every corner case and understates the engineering complexity.</p><blockquote>Apple solved this problem six years ago by simply adding an x86-compatible memory ordering mode to their chip when x86 emulation became important.<cite>modeless</cite></blockquote>
+<blockquote>The word &quot;simply&quot; is doing a lot of work there<cite>karel-3d</cite></blockquote>
+<blockquote>And as noted in the article, while that helps a lot with most of the issues, there are some corner-cases they still don&#x27;t handle.<cite>gavinsyancey</cite></blockquote></div>
+    </article>
+    <article id="dossier-4" class="dossier-entry">
+      <div class="dossier-meta">N<sup>o</sup> 04 &nbsp;·&nbsp; Editorial Op-Ed &nbsp;·&nbsp; Industry Analysis</div>
+      <h3>Microsoft exec called AI scraping &#x27;the largest theft of labor in human history&#x27;</h3>
+      <p class="dossier-source">
+        <a href="https://techcrunch.com/2026/09/17/microsoft-exec-called-ai-scraping-the-largest-theft-of-labor-in-human-history-new-unredacted-filings-reveal/" target="_blank" rel="noopener">techcrunch.com</a>
+        &nbsp;·&nbsp; 95 pts &nbsp;·&nbsp; 38 comments
+         &nbsp;·&nbsp; <a href='https://news.ycombinator.com/item?id=49752056' target='_blank' rel='noopener'>discussion</a>
+      </p>
+      <h4>Analysis</h4>
+      <p>Newly unredacted court filings from The New York Times’ copyright lawsuit against OpenAI and Microsoft reveal that internal executives privately acknowledged their AI training practices involved the mass scraping of paywalled content and represented a significant threat to the publishers providing that data. The documents detail how these companies allegedly bypassed paywalls and stripped copyright notices to build training datasets, with some Microsoft employees even characterizing the activity as &quot;the largest theft of labor in human history.&quot; These admissions directly challenge the companies&#x27; &quot;fair use&quot; legal defense by highlighting how their models act as market substitutes that potentially destroy the economic viability of the news organizations they rely on for training data. This development is important because it undermines the tech giants&#x27; public arguments regarding the transformative nature of generative AI, potentially shifting the legal landscape for how proprietary content is used to develop future large language models.</p>
+      <h4>Reader Reactions</h4>
+<p class="camps-framing">The discussion was largely critical of companies’ use of copyrighted and paywalled material for AI training, especially where firms appeared to apply stricter standards to users than to themselves. The main dispute concerned whether copying and model training constitute theft, infringement, or a form of synthesis analogous to human learning. Commenters also debated regulation, open models, and the risk that AI could undermine the economic ecosystem that produces source material.</p>
+<div class="camp"><p class="camp-label"><strong>Mass appropriation and corporate hypocrisy</strong> &mdash; Commenters characterized AI training as large-scale appropriation of cultural and creative labor, made more objectionable by companies that previously defended strong intellectual-property enforcement.</p><blockquote>It&#x27;s the robbery of all of our culture to sell it back to us at a mark-up.<cite>jacquesm</cite></blockquote>
+<blockquote>We don’t have to treat people reading books and companies stealing all human knowledge the same.<cite>CJefferson</cite></blockquote>
+<blockquote>This blatant disregard of licenses and copyright is clearly infringing on the authors ability to make a profit from their work, which was the whole point of copyright.<cite>Luker88</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Paywall bypassing and piracy are the clearest violations</strong> &mdash; This camp distinguished ordinary web scraping from bypassing paywalls, recording copyrighted media, and training on pirated material, viewing the latter conduct as especially hypocritical and legally vulnerable.</p><blockquote>The second is more immediately hypocritical because they are license/copyright/DMCA violations that the little guy could get sued for while the labs get $2T valuations for.<cite>steveBK123</cite></blockquote>
+<blockquote>People engaging in piracy have their lives ruined, companies engaging in piracy pay a tiny fraction of their revenues out to authors who can&#x27;t legally outgun them.<cite>hkt</cite></blockquote>
+<blockquote>The reality is that no regulation would help because we don&#x27;t have regulators willing to enforce it nor do we have a legal system designed to help individuals against mass theft by corporations.<cite>fzeroracer</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Copying is not necessarily theft</strong> &mdash; Some commenters questioned the theft framing, emphasizing that copying does not remove the original and that the legal and moral status of model training remains unsettled.</p><blockquote>Nobody would say a human reading a book and learning from it is stealing.<cite>pingou</cite></blockquote>
+<blockquote>But it&#x27;s copying...how is it theft? Your labour WASNT stolen was it?<cite>bcjdjsndon</cite></blockquote>
+<blockquote>So maybe it&#x27;s not theft of knowledge that we should be angry about, it&#x27;s something else harder to define.<cite>Neil44</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Regulation may protect incumbents rather than creators</strong> &mdash; Commenters disagreed over remedies: some favored enforcement of existing law, while others warned that licensing could entrench wealthy firms or proposed disclosure and open-weight requirements instead.</p><blockquote>With regulation and compensation, only rich companies would be able to do that, and they would definitely not give it back for free.<cite>pingou</cite></blockquote>
+<blockquote>Imagine a law that stipulates that if you want to offer &quot;LLM-inference-as-a-service&quot;, you need to also publish exact details about how it was trained, what datasets were used and also offer those exact weights for download.<cite>embedding-shape</cite></blockquote>
+<blockquote>We do have regulation against these issues.<cite>fzeroracer</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Public or open models as a counterweight</strong> &mdash; Some commenters regarded free or open-weight models as a public benefit because they make accumulated knowledge more accessible and avoid returning it only through expensive proprietary services.</p><blockquote>At least the Chinese AI companies are doing good service open-sourcing their models back to the public.<cite>cyber_kinetist</cite></blockquote>
+<blockquote>As to open-weights models: at least it&#x27;s not sold back at a mark-up and anyone can run them.<cite>TacticalCoder</cite></blockquote>
+<blockquote>At this point in our civilization, all human knowledge NEEDS to be collated in one place and easily queryable.<cite>Razengan</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>AI threatens the survival of the source ecosystem</strong> &mdash; Beyond questions of legal terminology, commenters argued that scraping and AI-generated substitutes can destroy traffic and monetization, causing the original sites and publications to disappear.</p><blockquote>Bots kill sites, AI kills monetization - both results in the original material disappearing.<cite>pluc</cite></blockquote>
+<blockquote>Content from both gets served back to us, in exchange for watching ads/paying a subscription/paying tokens.<cite>steveBK123</cite></blockquote>
+<blockquote>If something isn&#x27;t done to prevent AI from being used to farm the masses for data, we will be living in a sci-fi dystopia without a doubt.<cite>proc0</cite></blockquote></div>
+    </article>
+    <article id="dossier-5" class="dossier-entry">
+      <div class="dossier-meta">N<sup>o</sup> 05 &nbsp;·&nbsp; Product Plate &nbsp;·&nbsp; Enterprise AI</div>
+      <h3>Astra for Law</h3>
+      <p class="dossier-source">
+        <a href="https://openai.com/index/astra-for-law/" target="_blank" rel="noopener">openai.com</a>
+        &nbsp;·&nbsp; 501 pts &nbsp;·&nbsp; 589 comments
+         &nbsp;·&nbsp; <a href='https://news.ycombinator.com/item?id=49745940' target='_blank' rel='noopener'>discussion</a>
+      </p>
+      <h4>Analysis</h4>
+      <p>OpenAI has introduced &quot;Astra for Law,&quot; a specialized configuration of its GPT-6 model designed to integrate with law firms&#x27; proprietary workflows, research tools, and case-law databases. By incorporating a massive legal search index—developed in partnership with the Free Law Project—the model provides enhanced reasoning and retrieval capabilities for analyzing U.S. statutes and precedents. To address industry concerns, the platform includes enterprise-grade privacy controls, such as Zero Data Retention, and supports ecosystem plugins that connect with established legal software like Relativity and Clio. This launch is significant because it represents a move toward industry-specific foundation models, allowing legal professionals to leverage AI for complex drafting and litigation tasks while maintaining institutional oversight and data security.</p>
+      <h4>Reader Reactions</h4>
+<p class="camps-framing">The discussion was broadly interested in AI’s practical value for legal work while questioning whether it can replace legal judgment or professional accountability. Commenters largely agreed that automation can improve document-heavy workflows, but disagreed about its effects on legal employment, access, costs, litigation volume, and the concentration of power among AI vendors.</p>
+<div class="camp"><p class="camp-label"><strong>Useful augmentation for structured legal work</strong> &mdash; Commenters identified substantial benefits in OCR, extraction, search, document organization, and other discrete tasks whose outputs can be checked by humans. They distinguished these productivity gains from automating legal judgment.</p><blockquote>LLMs have great advantages for this kind of work - but not for decision-making.<cite>ivraatiems</cite></blockquote>
+<blockquote>I trusted it because there were traces I could follow.<cite>droidjj</cite></blockquote>
+<blockquote>At my company we&#x27;re also in the process of deploying a system that does exactly that.<cite>stymaar</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Skepticism about accuracy and legal reasoning</strong> &mdash; A substantial group questioned the reliability of models with PDFs, legal research, drafting, interpretation, and factual nuance. These commenters argued that polished output or benchmark performance does not establish dependable legal competence.</p><blockquote>LLMs are still absolutely horrid at analyzing PDFs so the results they are getting must be chock full of errors..<cite>jorvi</cite></blockquote>
+<blockquote>One big thing was the overly excessive protective clauses which didn&#x27;t make sense for reality or conflicted with another.<cite>halamadrid</cite></blockquote>
+<blockquote>Recently was involved in legal matters requiring lawyers - I used OpenAI extensively for research, advice etc - I have to be honest, much of it was completely useless - the real world outcome with lawyers in the room was very different from what OpenAI was spitting out.<cite>medion</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Lawyers remain, but support roles and wages shrink</strong> &mdash; Many commenters expected experienced lawyers to remain necessary for judgment, negotiation, and accountability while AI reduces demand for paralegals, assistants, junior associates, and routine work. Some described this as deskilling or wage compression rather than immediate professional elimination.</p><blockquote>The typical pattern is called “deskilling”.<cite>janalsncm</cite></blockquote>
+<blockquote>This doesn’t replace lawyers, but paralegals surely will be affected.<cite>darth_avocado</cite></blockquote>
+<blockquote>AI doesn&#x27;t need to wipe out lawyers. If they just depress salaries enough, virtually nobody is going to want to be a lawyer anymore.<cite>matheusmoreira</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Democratizing access and reducing legal costs</strong> &mdash; Some commenters viewed AI as a way for people who cannot readily obtain or afford counsel to understand their rights, assess disputes, and handle simple matters. Others connected this possibility to opposition toward expensive legal procedures and routine professional busywork.</p><blockquote>I think this is a valid use case to get at least some understanding what the next steps might be and if it even makes sense to seek legal representation.<cite>p0deje</cite></blockquote>
+<blockquote>If both parties use ChatGPT to find the relevant laws or read contracts, they could come to an agreement without expensive legal fees.<cite>whazor</cite></blockquote>
+<blockquote>If there is any cartel that deserves to be broken its legal search.<cite>forrestthewoods</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>More litigation and intensified inequality</strong> &mdash; Another group predicted that cheaper legal research and drafting would increase lawsuits, claims, and adversarial maneuvering rather than simply lower costs. They also warned that wealthy parties could deploy larger AI-assisted operations and gain advantages through volume.</p><blockquote>AI will not kill off lawyers, or reduce the amount of litigation. It will increase volume and velocity.<cite>Digory</cite></blockquote>
+<blockquote>Now we&#x27;ll start an arms race for abusing every possible letter of the law.<cite>aaimnr</cite></blockquote>
+<blockquote>Just like breaking crypto in the age of cloud is more about cost than time, this will lead to legal attacks based on the same principle.<cite>pletnes</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Privacy, liability, and institutional trust</strong> &mdash; Commenters raised concerns about confidential legal material being sent to AI vendors, unclear responsibility for erroneous output, and possible conflicts when providers or investors have interests connected to a dispute. They questioned whether vendor assurances amount to meaningful guarantees.</p><blockquote>This is everything OpenAI have to say about privacy in this announcement. No guarantees. No promises. Just a pinky-swear promise.<cite>JumpCrisscross</cite></blockquote>
+<blockquote>Can you use this to create legitimate terms and contracts for my products and if I do who is getting sued when it is wrong?<cite>boredumb</cite></blockquote>
+<blockquote>Can you imagine the sort of corruption that is possible here? Like if you have a lawsuit against someone or some entity openai or their investors have business with...<cite>claaams</cite></blockquote></div>
+    </article>
+    <article id="dossier-6" class="dossier-entry">
+      <div class="dossier-meta">N<sup>o</sup> 06 &nbsp;·&nbsp; Stat Hero &nbsp;·&nbsp; Model Efficiency</div>
+      <h3>Bonsai 2 27B: Near-Lossless Compression in a 9x Smaller Footprint</h3>
+      <p class="dossier-source">
+        <a href="https://prismml.com/news/bonsai-2-27b" target="_blank" rel="noopener">prismml.com</a>
+        &nbsp;·&nbsp; 461 pts &nbsp;·&nbsp; 135 comments
+         &nbsp;·&nbsp; <a href='https://news.ycombinator.com/item?id=49746618' target='_blank' rel='noopener'>discussion</a>
+      </p>
+      <h4>Analysis</h4>
+      <p>PrismML has released Ternary Bonsai 2 27B, a compressed version of the Qwen3.8 27B model that uses ternary weights to achieve a 9x smaller memory footprint while retaining 98.2% of the original model&#x27;s performance. By utilizing 1.76 effective bits per weight, the model occupies only 5.9GB of memory and supports a 262K-token context window, making it highly efficient for local deployment on NVIDIA GPUs and Apple devices. The release highlights the increasing feasibility of running complex, multimodal AI tasks on edge hardware with significantly reduced power consumption and higher inference throughput. This development is significant because it demonstrates that extreme weight compression can be nearly lossless, allowing powerful 27B-class intelligence to operate effectively within the strict memory and energy constraints of local consumer devices.</p>
+      <h4>Reader Reactions</h4>
+<p class="camps-framing">The discussion was broadly positive about making a capable 27B model usable on constrained hardware, but commenters disagreed about whether benchmark results translated into reliable real-world quality. Other debates concerned the specialized quantization method, comparisons with higher-bit alternatives, and the practical friction of immature tooling and hardware support.</p>
+<div class="camp"><p class="camp-label"><strong>Enthusiastic local-inference adopters</strong> &mdash; Commenters welcomed the prospect of running a strong 27B model on 16GB-class GPUs, Apple hardware, and other constrained devices, and several reported successful local runs.</p><blockquote>Running at about 7-8 tok/s (~60 tok/s prefill) on a Mac Mini M2 16GB. So far feels smarter than Bonsai 1 27B, it’s slightly larger than the Q1_0 quant. Super exciting stuff :)<cite>jedbrooke</cite></blockquote>
+<blockquote>result looks good: [ Prompt: 165.6 t/s | Generation: 40.6 t/s ] would be nice if they upstreamed their changes so that it runs with the original llama.cpp<cite>wombat23</cite></blockquote>
+<blockquote>Awesome results. Opens up doors for a lot of people.<cite>zhiyan</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Practical-quality skeptics</strong> &mdash; Skeptics argued that selected benchmarks did not establish near-lossless behavior, citing looping, poor reasoning, weak agentic coding, and failures on longer or more difficult tasks.</p><blockquote>Very soon after release!) mainly for toy games or websites. He just did one for this model and included a comparison with the base model Qwen 3.8 which shows the “near-lossless” claim should be taken with a grain of salt.<cite>verytrivial</cite></blockquote>
+<blockquote>I tried their WebGPU version and it immediately started looping. Yeah &quot;near lossless&quot; my ass. Plus the reasoning that it looped on was clearly wrong and unlike the non quantized 27B<cite>redox99</cite></blockquote>
+<blockquote>The issue is I have yet to find a useful agentic local llm that I can run on this machine.<cite>huseyinkeles</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Quantization-method explainers</strong> &mdash; Technical commenters emphasized that the effective bit count reflected a specialized encoding and quantization process rather than naive ternarization, while others noted that the proprietary method and benchmark selection warranted caution.</p><blockquote>I think the general idea is naive quantization falls apart below 4bpw but you can go lower with more sophisticated QAT-adjacent methods. Bonsai&#x27;s quantization method is proprietary though.<cite>edflsafoiewq</cite></blockquote>
+<blockquote>1.76 bpw number is kinda misleading if you compare it directly to IQ2/Q2. The encoding is ternary, but the quantization procedure is way more sophisticated than &quot;round Qwen weights to {-1,0,+1}.&quot;<cite>0x457</cite></blockquote>
+<blockquote>There&#x27;s a table on the HF page that compares it against UD-Q4_K_XL and IQ2_XXS:<cite>nulld3v</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Existing-quant comparison advocates</strong> &mdash; Commenters compared Bonsai with Unsloth, ISTA, Q2/Q3/Q4, mixed-precision, and NVFP4 formats, generally viewing Bonsai as most valuable when memory capacity was the binding constraint rather than when larger models fit comfortably.</p><blockquote>I run Unsloth&#x27;s UD-Q4_K_S on 20 GB of VRAM (RX 7900 XT) and I get ~90k tokens of context without quantizing KV cache.<cite>spijdar</cite></blockquote>
+<blockquote>Their mention of the 5090 is bit odd, since on 32 GB GPUs, Q6 fits while having better quality. Very interesting model for 16 GB GPUs though!<cite>pizza234</cite></blockquote>
+<blockquote>You’d have to be insane to not run an NVFP4 quant over a ternary quant on Blackwell if they both fit.<cite>selectodude</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Tooling, hardware, and performance critics</strong> &mdash; Several commenters identified the custom llama.cpp fork, inconsistent documentation, incomplete accelerator support, and immature or untuned kernels as significant practical limitations, with performance varying substantially by device.</p><blockquote>If you want to try out out the GGUFs from https://huggingface.co/prism-ml/Ternary-Bonsai-2-27B-gguf#th... be aware that you need Prism&#x27;s llama.cpp fork to get them to work<cite>simonw</cite></blockquote>
+<blockquote>Tried it today on a B70 and couldn&#x27;t get anything usable out of it. Prism&#x27;s llama.cpp fork only has the kernels for CUDA, CPU and Vulkan. No SYCL at all :(<cite>djkoolaide</cite></blockquote>
+<blockquote>Smaller size I suppose does not mean better performance in this case - we maybe limited by Spark&#x27;s low memory bandwidth.<cite>flutetornado</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Edge-device and deployment visionaries</strong> &mdash; Some commenters focused on the broader implications for browser, phone, offline, Apple-accelerated, enterprise, and larger-model deployments, treating compression as a path toward wider local AI access.</p><blockquote>These are small enough that you can run them entirely in the browser<cite>Aurornis</cite></blockquote>
+<blockquote>I&#x27;m hoping they release an 8B v2 based on the Qwen 3.8 series in the near future - that would give us a really powerful model that could be run directly on users phones.<cite>JonSchneider</cite></blockquote>
+<blockquote>I&#x27;d love to see a Bonsai model start with a 100B+ parameter model and get that down to &lt;30 GB.<cite>z2</cite></blockquote></div>
+    </article>
+    <article id="dossier-7" class="dossier-entry">
+      <div class="dossier-meta">N<sup>o</sup> 07 &nbsp;·&nbsp; Terminal &nbsp;·&nbsp; Code Governance</div>
+      <h3>Replacing Pull Requests with Delta</h3>
+      <p class="dossier-source">
+        <a href="https://zed.dev/blog/delta-public-beta" target="_blank" rel="noopener">zed.dev</a>
+        &nbsp;·&nbsp; 33 pts &nbsp;·&nbsp; 4 comments
+         &nbsp;·&nbsp; <a href='https://news.ycombinator.com/item?id=49727245' target='_blank' rel='noopener'>discussion</a>
+      </p>
+      <h4>Analysis</h4>
+      <p>The Zed team has launched a public beta of Delta, a collaborative coding platform designed to replace traditional pull-request workflows with real-time &quot;threads.&quot; By utilizing a custom storage engine called DeltaDB, the platform captures the full context of human and AI agent interactions, allowing teammates to join ongoing work sessions and explore code changes without disrupting the primary codebase. This approach aims to shift software development from batch-based review cycles toward continuous engineering, where planning, implementation, and review occur simultaneously. While Delta remains compatible with standard Git repositories, it represents a significant effort to move development collaboration beyond the constraints of GitHub-centric primitives.</p>
+      <h4>Reader Reactions</h4>
+<p class="camps-framing">The reaction was cautiously curious rather than strongly enthusiastic or hostile. Commenters differed over whether Delta’s collaborative and agent-mediated workflow represents a promising evolution of pair programming or mainly a pull request with richer rationale. Concerns included the value of preserving agent-chat history versus distilling decisions into concise artifacts, the workflow’s fit for coding-intensive settings, platform support, and interest in the underlying DeltaDB technology.</p>
+<div class="camp"><p class="camp-label"><strong>Collaborative-programming model is promising</strong> &mdash; These commenters viewed Delta as an interesting extension of remote collaboration, pair programming, or Extreme Programming, while acknowledging that it may require adjustment and may not suit every type of work.</p><blockquote>Certainly looks interesting and a new way of working which would take some time to get adjusted.<cite>sajithdilshan</cite></blockquote>
+<blockquote>It&#x27;s interesting enough and I&#x27;d like to try it sometime<cite>Cthulhu_</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Agent-chat skepticism and preference for distilled artifacts</strong> &mdash; This position questioned making conversational logs the central interface, favoring concise written artifacts that preserve important conclusions while minimizing surrounding interaction. It also raised concerns that agents could obscure human understanding and contribute to skill atrophy.</p><blockquote>Instead of &quot;agent chat&quot;, I feel like a written page (that could be interacted with through agents) is a much more interesting way of working through a problem.<cite>rtpg</cite></blockquote>
+<blockquote>Skill atrophy is real, folks! Be careful.<cite>rtpg</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Mostly a pull request with better rationale</strong> &mdash; This commenter saw little fundamental conceptual difference from a merge or pull request, but recognized value in preserving the reasoning behind changes, especially when an agent can interpret the discussion history.</p><blockquote>It sounds like it&#x27;s not conceptually different from a MR, the main difference is preserving the rationale for all the changes by bolting the &quot;threads&quot; (a log of agent interactions) on top.<cite>dguest</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Useful mainly for coding-intensive settings</strong> &mdash; Delta’s collaborative model was viewed as potentially suitable for hackathons or intensive pair or mob programming, but less attractive for work dominated by planning rather than active coding.</p><blockquote>but probably only for hackathons - my main line of work is more planning than actual coding.<cite>Cthulhu_</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Practical platform limitation</strong> &mdash; One commenter’s interest was blocked by the lack of Apple Intel support, highlighting platform availability as a practical adoption constraint.</p><blockquote>Would have loved to have tried this, but it still bizarrely lacks Apple Intel support.<cite>ghusto</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Interest centered on DeltaDB</strong> &mdash; One commenter was primarily interested in the eventual open-source release of DeltaDB rather than the proposed collaboration workflow itself.</p><blockquote>Though admittedly I am mostly interested in the open-source release of DeltaDB.<cite>Palmik</cite></blockquote></div>
+    </article>
+    <article id="dossier-8" class="dossier-entry">
+      <div class="dossier-meta">N<sup>o</sup> 08 &nbsp;·&nbsp; Blueprint &nbsp;·&nbsp; Formal Methods</div>
+      <h3>Bend – A language that blocks AI mistakes via proof, on CPU and GPU</h3>
+      <p class="dossier-source">
+        <a href="https://bend-lang.com/" target="_blank" rel="noopener">bend-lang.com</a>
+        &nbsp;·&nbsp; 487 pts &nbsp;·&nbsp; 229 comments
+         &nbsp;·&nbsp; <a href='https://news.ycombinator.com/item?id=49746163' target='_blank' rel='noopener'>discussion</a>
+      </p>
+      <h4>Analysis</h4>
+      <p>Bend is a new programming language designed to ensure code reliability and performance in an era of AI-driven development by integrating formal verification with high-speed execution. By leveraging an affine dependent type system, the language allows developers to define mathematical &quot;laws&quot; that AI agents must satisfy, making it physically impossible to ship code that violates specified constraints. The compiler translates these programs into native code that automatically parallelizes across CPUs and GPUs without the need for manual thread or lock management. This approach aims to solve the problem of trust in AI-generated software by providing a verifiable, high-performance framework for the next generation of automated coding environments.</p>
+      <h4>Reader Reactions</h4>
+<p class="camps-framing">The discussion centered on whether Bend’s combination of formal laws, proof checking, and automatic parallelism offers a practical way to make AI-generated software safer. Supporters viewed it as a promising and unusually ambitious project, while skeptics questioned whether the demonstrations establish more than existing tests, contracts, type systems, and proof assistants. Much of the disagreement concerned the difficulty of specifying laws correctly, the possibility that AI systems or reviewers could weaken them, and whether the language’s performance and verification claims had been demonstrated. Repository history, AI-assisted documentation, and post-AGI claims also shaped perceptions of the project’s credibility.</p>
+<div class="camp"><p class="camp-label"><strong>Enthusiastic supporters</strong> &mdash; These commenters welcomed Bend as an ambitious attempt to make AI-generated software safer and to combine formal reasoning with parallel execution. Some had followed the author’s earlier work and were willing to explore the project despite its unfinished presentation.</p><blockquote>Congrats, Victor! É ótimo ver um brasileiro criando algo tão único!<cite>hei-lima</cite></blockquote>
+<blockquote>Victor Taelin&#x27;s work (HVM) got me interested in interaction combinators as a compilation target. I&#x27;m now working on an implementation as part of my Uni research. Cool to see Bend 2.0 release!<cite>tyushk</cite></blockquote>
+<blockquote>This is great. I can&#x27;t imagine why would anyone be unappreciative of this. Since AI is going to be here anyway, why not make it safer and more useful?<cite>jan_m_savage</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Constructive technical interest</strong> &mdash; A substantial group found the project promising while seeking concrete explanations about GPU support, profiling, proof foundations, runtime behavior, library integration, and how Bend handles large or complex state spaces.</p><blockquote>Do you plan to invest in profile guided optimization or autotuning in Bend2 - using runtime profiles / cost models to make decisions around SIMD vs. multicore vs. GPU parallelization?<cite>rao-v</cite></blockquote>
+<blockquote>Could you recommed literature (preferrably a single book) that does not require prior knowledge and allows to fully understand the logical foundation of it?<cite>avodonosov</cite></blockquote>
+<blockquote>I’m missing an actual explanation of how that works. I feel like we all had the idea, but how is all possible move sequences proven ?<cite>jwpapi</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Laws are useful but specifications remain the bottleneck</strong> &mdash; These commenters accepted that laws can rule out broad classes of implementation errors, but argued that the difficult human task remains expressing the intended behavior completely and avoiding technically valid but absurd interpretations.</p><blockquote>The problem, of course, is that having only the one single <cite>pdpi</cite></blockquote>
+<blockquote>Doesn&#x27;t this just mean that the code is now <cite>runeks</cite></blockquote>
+<blockquote>The law I most wanted: <cite>svachalek</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>AI may evade or alter the safeguards</strong> &mdash; These commenters questioned whether language-model agents can reliably preserve laws and contracts, noting that agents may ignore instructions or modify constraints. Some extended the concern to human reviewers who may miss specification changes in large generated patches.</p><blockquote>Yeah, but this assumes the llm will follow the <cite>shantnutiwari</cite></blockquote>
+<blockquote>Exactly, you can have all the laws, but an LLM (or even a human) will just delete or refine the laws and hide the change in a 5kloc PR, that the <cite>serial_dev</cite></blockquote>
+<blockquote>Is there an overview on how this works? E.g. if we code a contract in LAWS.bend, how is it enforced? What prevents my LLM model to skip a contract?<cite>jmakov</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Formal verification, scalability, and language-design skepticism</strong> &mdash; Skeptics questioned whether formal verification can scale to arbitrary real-world systems, whether Bend’s comparisons with established proof assistants were meaningful, and whether its type system, scheduler, and language design support the claimed range of applications.</p><blockquote>Beginners in computer science need to understand that there&#x27;s no such thing as a computer programming method or discipline that <cite>lutusp</cite></blockquote>
+<blockquote>This reads very vibecoded, but putting that aside... 1. How does this benefit from GPU parallelism?<cite>stschaef</cite></blockquote>
+<blockquote>Bend is likely to be good at <cite>mccoyb</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Trust, provenance, presentation, and AI-era framing</strong> &mdash; Repository history, star and issue counts, AI-written documentation, unclear demonstrations, and sweeping post-AGI claims strongly influenced how some readers assessed Bend. Others defended the author’s long research history and argued that the project should be judged primarily on its implementation and ideas.</p><blockquote>This project&#x27;s repo has 20K stars with only 500 forks, with less than 300 issues(including closed). Something&#x27;s not right.<cite>plastic041</cite></blockquote>
+<blockquote>victor&#x27;s legit and people have been excited about his work for years; squashing the history was just a bit of an optics oopsie on his part.<cite>0x69420</cite></blockquote>
+<blockquote>Would the author have specified on the page that it&#x27;s a fast new language with a new take on proof and so on, without mentioning ai and that alone would have caught my attention.<cite>hollowturtle</cite></blockquote></div>
+    </article>
+    <article id="dossier-9" class="dossier-entry">
+      <div class="dossier-meta">N<sup>o</sup> 09 &nbsp;·&nbsp; Midnight &nbsp;·&nbsp; Agent Foundry</div>
+      <h3>Qwen 3.8 Omni Flash</h3>
+      <p class="dossier-source">
+        <a href="https://qwen.ai/blog?id=qwen3.8-omni-flash" target="_blank" rel="noopener">qwen.ai</a>
+        &nbsp;·&nbsp; 235 pts &nbsp;·&nbsp; 85 comments
+         &nbsp;·&nbsp; <a href='https://news.ycombinator.com/item?id=49747925' target='_blank' rel='noopener'>discussion</a>
+      </p>
+      <h4>Analysis</h4>
+      <p>Qwen3.8-Omni-Flash is a new native omnimodal model designed to transition artificial intelligence from simple content perception to complex, agentic task execution involving audio, video, and text. Featuring a 1-million-token context window and optimized for efficiency, the model utilizes agentic workflows to perform long-horizon tasks such as video editing, professional meeting analysis, and automated software engineering. By significantly reducing the computational costs of processing audio-visual inputs compared to its predecessors, the release demonstrates a shift toward using large models to drive autonomous research and development. This advancement is important because it integrates model-based reasoning with real-time tool usage, enabling agents to actively solve multifaceted productivity challenges rather than just summarizing media.</p>
+      <h4>Reader Reactions</h4>
+<p class="camps-framing">The discussion focused less on the announcement’s agentic vision than on whether Qwen is useful, affordable, reliable, and accessible enough for practical adoption. Commenters debated model-selection strategies, Qwen’s pricing and capabilities, serving and quantization problems, agentic behavior and reinforcement learning, open-weight availability and hardware demands, and Europe’s ability to produce comparable systems.</p>
+<div class="camp"><p class="camp-label"><strong>Pragmatic model selection and routing</strong> &mdash; Some commenters argued that users should keep a model that already solves their problems rather than continually testing new releases, while others wanted better tools for comparing or automatically routing among models by use case, price, and capability.</p><blockquote>As long as the model you&#x27;re using solves the problems you have to your satisfaction, there is no need to try any other models, except for financial reasons maybe.<cite>Systemerror7A69</cite></blockquote>
+<blockquote>Have you tried openrouters auto model? Tries to give you the best model based on prompt and price<cite>sisve</cite></blockquote>
+<blockquote>If it works fine, this chase of the latest LLM is bit pointless.<cite>epolanski</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Qwen’s cost and capability appeal</strong> &mdash; Supporters viewed Qwen as a potentially much cheaper alternative to comparable Gemini offerings and praised its multimodal performance, grounding, obedience, and general usefulness, while noting that performance and token efficiency determine the real cost.</p><blockquote>That is a massive cost reduction.<cite>_ache_</cite></blockquote>
+<blockquote>3.8 Max is the most “grounded” model I think - talks generally normal, doesn’t go crazy and start doing things (I see you Gemini), has good design choices and isn’t overly nitpicky.<cite>conception</cite></blockquote>
+<blockquote>Qwen 3.8 Flash Next is amazing, i did hundreds of turns and billions of prefill and it may not be as smart as sota but then again it does what i tell it to and it does it well.<cite>diddid</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Practical reliability, serving, and quantization limits</strong> &mdash; Other commenters reported that Qwen could be slow, unreliable, or difficult to run, while a technical thread attributed bizarre outputs and excessive reasoning to serving recipes, quantization, or harness interactions. Reports differed over whether recommended configurations fully resolved the issues.</p><blockquote>Qwen 3.8 didn&#x27;t do it for me, whatever tweaks I added to my harness.<cite>insightfulornot</cite></blockquote>
+<blockquote>This is a serving bug or quantization issue.<cite>anon373839</cite></blockquote>
+<blockquote>Flash-Next thinking also sometimes glitches out and takes minutes to return a simple answer, randomly, in my experience. You’ve gotta kill the request and send it again.<cite>nojs</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Concern about over-agentic behavior and RL</strong> &mdash; Commenters described models taking unwanted actions, arguing with subagents, digressing, or optimizing for relentless completion rather than clarification. Some framed these behaviors as consequences of reinforcement learning and benchmarks that reward replacement-oriented autonomy.</p><blockquote>Tuning the model so far in the direction of being aggressively useful that it will quickly go off the rails in the name of helpfulness.<cite>pennomi</cite></blockquote>
+<blockquote>I guess the agentic coding benchmarks don&#x27;t have many rewards for stopping and clarifying what the user wants?<cite>vintermann</cite></blockquote>
+<blockquote>Reinforcement Learning (in LLMs) trains via gradient descent on a reward signal that&#x27;s an imperfect proxy for the actual goal of the engineers doing the training.<cite>khafra</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Open weights and hardware accessibility</strong> &mdash; The discussion included disagreement over whether Qwen is slowing its open-weight releases, alongside recognition that the largest models remain difficult to serve locally. Some users nevertheless reported strong results with heavily quantized models on older hardware.</p><blockquote>There are definitively slowing down open weight release.<cite>_ache_</cite></blockquote>
+<blockquote>Qwen 3.8 Max was open-weight released [1], as was Qwen 3.8 Flash Next [2].<cite>vinzenzu</cite></blockquote>
+<blockquote>But you need ~128GB of RAM to get it going and not a lot of people have that or can serve it very quickly.<cite>bitexploder</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Europe’s AI position and structural constraints</strong> &mdash; A major side debate asked why Europe has not produced comparable general-purpose frontier models. Explanations emphasized capital, compute, risk tolerance, regulation, infrastructure, and government coordination, while others pointed to European research, companies, chip facilities, and publicly backed projects.</p><blockquote>This is one of the most capital intense technologies to exist. Europe does not have enough capital to compete. China is building its own chips. It’s own everything.<cite>bitexploder</cite></blockquote>
+<blockquote>Well there is Mistral. The EU is ahead on specialised models than general purpose LLMs.<cite>EagnaIonat</cite></blockquote>
+<blockquote>ASML in the Netherlands for example was the only company in the world that makes EUV lithography machines, which all the major chip companies depend on.<cite>EagnaIonat</cite></blockquote></div>
+    </article>
+    <article id="dossier-10" class="dossier-entry">
+      <div class="dossier-meta">N<sup>o</sup> 10 &nbsp;·&nbsp; Archive &nbsp;·&nbsp; Personal Data</div>
+      <h3>Hister: A private search engine for the pages you visit and the files you keep</h3>
+      <p class="dossier-source">
+        <a href="https://github.com/asciimoo/hister" target="_blank" rel="noopener">github.com</a>
+        &nbsp;·&nbsp; 624 pts &nbsp;·&nbsp; 170 comments
+         &nbsp;·&nbsp; <a href='https://news.ycombinator.com/item?id=49743097' target='_blank' rel='noopener'>discussion</a>
+      </p>
+      <h4>Analysis</h4>
+      <p>Hister is a privacy-focused, self-hosted search engine designed to index the full content of visited web pages and local files for personal retrieval. Built in Go, it functions by capturing data through browser extensions, file imports, or local directory indexing, allowing users to query their personal data via a web interface, terminal, or AI assistant. Unlike commercial search engines that track user behavior, Hister operates entirely on infrastructure controlled by the user, ensuring no telemetry or third-party cloud dependency. This tool addresses the growing need for manageable, searchable archives of one&#x27;s own digital history, offering a robust alternative to reliance on ephemeral browser bookmarks or fragmented file storage.</p>
+      <h4>Reader Reactions</h4>
+<p class="camps-framing">The reaction was strongly positive, with many commenters reporting that Hister or similar tools helped them recover information from old browsing sessions and personal archives. Discussion focused mainly on integrating Hister into existing search, bookmarking, archival, and AI workflows. The principal reservations concerned selective capture, durable preservation, software trust, deployment overhead, and whether the project duplicated older browser or desktop-search features.</p>
+<div class="camp"><p class="camp-label"><strong>Enthusiastic adopters</strong> &mdash; Many commenters had already used Hister for days or months and described it as valuable for recovering forgotten pages, searching browser history, and combining web content with personal notes or files.</p><blockquote>Thanks so much for creating this. Installed last time it was posted and have been loving it.<cite>asdfqwertzxcv</cite></blockquote>
+<blockquote>It&#x27;s one of those things I don&#x27;t look at until I need to, but when I do need it, it solves the dreaded hunting through the last month of browser history.<cite>jjice</cite></blockquote>
+<blockquote>I use Hister as my default search engine. I’m quite happy with it.<cite>Yehoshaphat</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Feature expansion and selective capture</strong> &mdash; Interested users proposed broader note-taking, bookmark filtering, browser-native interfaces, mobile capture, custom extractors, and rules that avoid indexing pages opened only briefly.</p><blockquote>Ability to add notes to history<cite>jamienk</cite></blockquote>
+<blockquote>I&#x27;d love a extension setting to only send tabs that were visible for ~4+ seconds.<cite>rao-v</cite></blockquote>
+<blockquote>This is amazing and something I&#x27;d like to integrate with my personal AI assistant. Is there a way to make it also index pages visited from an Android phone?<cite>etamponi</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>AI and personal-assistant integration</strong> &mdash; Commenters saw Hister as a private retrieval layer for local or hosted assistants, summaries, research, and semantic discovery, while some debated whether local models could provide similar convenience without vendor dependence.</p><blockquote>I can see using this to index the thousands of bookmarks I have and my every growing reading list and see if my local model and find a pattern and/or help surface anything interesting related to the papers I read<cite>rochansinha</cite></blockquote>
+<blockquote>There is a surprisingly high chance chatbot can just give the exact answer back to me, usually with extra interesting reading materials as a plus.<cite>361994752</cite></blockquote>
+<blockquote>Nothing about this depends on the provider, you could spin up a local Qwen and give it a search tool like SearXNG or something.<cite>randomblock1</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Interoperability and durable archiving</strong> &mdash; Commenters compared Hister with ArchiveBox, Zotero, SingleFile, Linkding, Linkwarden, Betula, and Recoll. Many wanted shared storage or imports rather than maintaining separate archives, while others distinguished active retrieval from long-term preservation.</p><blockquote>The main difference I see is Hister focuses on creating an active knowledge base and finding information quickly, while ArchiveBox focuses on preserving web content for the long term.<cite>asciimoo</cite></blockquote>
+<blockquote>Roughly in the same space is Zotero &lt; https://www.zotero.org/ &gt; which is intended as a way of organizing research materials but is also a great way of quickly archiving web pages you&#x27;ve visited, including quick tagging and full text search.<cite>phyzome</cite></blockquote>
+<blockquote>Integrate it with linkwarden so it searches the bookmarked pages.<cite>tamimio</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Private search as a missing basic feature</strong> &mdash; Several commenters viewed Hister as restoring full-text search capabilities that browsers and desktop software once offered, especially for visited pages and local documents.</p><blockquote>Google Chrome did this in 2008. Full-text search over all visited pages, stored offline. It was very useful and I miss it.<cite>jval43</cite></blockquote>
+<blockquote>There was also Google Desktop Search for several years: https://en.wikipedia.org/wiki/Google_Desktop<cite>wtallis</cite></blockquote>
+<blockquote>Ooh, very nice! I have my own tool I’ve been using for this [ https://github.com/bradrn/full-history-search/ ], and it’s incredibly useful, but it’s also pretty primitive. This one looks a lot nicer.<cite>bradrn</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Trust, deployment, and maintenance concerns</strong> &mdash; Reservations centered on running software that reads browsing history, resource consumption, deployment complexity, and the effort required to isolate or maintain self-hosted services.</p><blockquote>I&#x27;d like to use it, but I&#x27;m hesitant to use anything that isn&#x27;t a reviewed and approved package in my Linux distribution.<cite>computator</cite></blockquote>
+<blockquote>I used to use it, but it would use a lot of CPU and hurt battery life, is the idea that you self host on a different machine?<cite>elestor</cite></blockquote>
+<blockquote>After running fine for a few days, it would hog the whole server and everything else proxied by Nginx would become unreachable.<cite>g_host</cite></blockquote></div>
+    </article>
+  </section>
+  <footer class="colophon">
+    <p class="sig">— that's the edition.</p>
+    <p class="meta">Set in Fraunces &amp; Inter · Compiled September 18, 2026</p>
+    <p class="classic-link"><a href="classic.html">Prefer the classic card view? →</a></p>
+  </footer>
+<script>
+(() => {
+  const key = "gtd:read_days:hn:v1";
+  const day = "2026-09-18";
+  let stored = [];
+  try {
+    stored = JSON.parse(localStorage.getItem(key) || "[]");
+    if (!Array.isArray(stored)) stored = [];
+  } catch (e) {}
+  if (!stored.includes(day)) {
+    stored.push(day);
+    stored.sort();
+    localStorage.setItem(key, JSON.stringify(stored));
+  }
+})();
+</script>
+<script src="../../preference.js?v=a31fa2273" defer></script>
+<script>
+// Simple script to toggle the [+] and [-] labels on the drawers
+document.querySelectorAll('.analysis-drawer').forEach(drawer => {
+  drawer.addEventListener('toggle', () => {
+    const summary = drawer.querySelector('summary');
+    if (drawer.open) {
+      summary.textContent = '[ Analysis − ]';
+    } else {
+      summary.textContent = '[ Analysis + ]';
+    }
+  });
+});
+
+// Share link — native share or copy markdown to clipboard
+(function () {
+  const links = document.querySelectorAll('.share-link');
+  if (!links.length) return;
+
+  const toast = document.createElement('div');
+  toast.className = 'discuss-toast';
+  document.body.appendChild(toast);
+
+  function showToast(msg) {
+    toast.textContent = msg;
+    toast.classList.add('show');
+    setTimeout(() => toast.classList.remove('show'), 2500);
+  }
+
+  function buildMarkdown(link, spread) {
+    const title = link.dataset.shareTitle || '';
+    const url = link.dataset.shareUrl || '';
+    const meta = spread ? spread.querySelector('.story-meta') : null;
+    const lede = spread ? spread.querySelector('.lede') : null;
+    const analysis = spread ? spread.querySelector('.drawer-analysis') : null;
+    let md = '# ' + title + '\n';
+    md += 'Source: ' + url;
+    if (meta) md += ' | ' + meta.textContent.trim();
+    md += '\n';
+    if (lede) md += '\n' + lede.textContent.trim() + '\n';
+    if (analysis) md += '\n## Analysis\n' + analysis.textContent.trim() + '\n';
+    return md;
+  }
+
+  links.forEach((link) => {
+    link.addEventListener('click', (e) => {
+      e.preventDefault();
+      const spread = link.closest('section.spread');
+      const md = buildMarkdown(link, spread);
+      const text = "I'd like to discuss this with you. Here's a summary:\n\n" + md;
+      const title = 'Discuss: ' + (link.dataset.shareTitle || '');
+      if (navigator.share) {
+        navigator.share({ title: title, text: text }).catch(() => {});
+      } else {
+        navigator.clipboard.writeText(text).then(
+          () => showToast('Copied to clipboard \u2014 paste into your AI chat'),
+          () => showToast('Failed to copy')
+        );
+      }
+    });
+  });
+})();
+</script>
+</body>
+</html>
