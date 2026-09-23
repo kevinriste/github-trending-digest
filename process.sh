@@ -44,7 +44,7 @@ if [ -f "$OPENAI_KEY_ENV" ]; then
 else
     echo "WARNING: OpenAI key file $OPENAI_KEY_ENV not found; HN comment analysis will be skipped"
 fi
-export COMMENT_BRIEFING_MODEL="${COMMENT_BRIEFING_MODEL:-gpt-5.6-luna}"
+export COMMENT_BRIEFING_MODEL="${COMMENT_BRIEFING_MODEL:-gpt-6-luna}"
 
 echo "GitHub Trending Digest--Run trending digest script"
 uv run python3 trending_digest.py
