@@ -32,10 +32,9 @@ uv sync
 echo "GitHub Trending Digest--Ensure Postgres service is running"
 docker compose up -d postgres
 
-# OpenAI key + model for HN comment camps analysis.
-# The global /etc/profile.d/podcast-transcribe.sh (sourced by our `bash -l`) exports a
-# now-deactivated OPENAI_API_KEY. Override it with the dedicated good key, and pin the
-# prod model (COMMENT_BRIEFING_MODEL defaults to gpt-5-mini in code otherwise).
+# OpenAI key + model for HN comment camps analysis and the HN Take. The key comes from a
+# shared key file (it overrides any OPENAI_API_KEY in .env), and the prod model is pinned
+# (COMMENT_BRIEFING_MODEL defaults to gpt-5-mini in code otherwise).
 OPENAI_KEY_ENV="/home/flog99/dev/openai-key/podcast-transcribe.env"
 if [ -f "$OPENAI_KEY_ENV" ]; then
     set -a

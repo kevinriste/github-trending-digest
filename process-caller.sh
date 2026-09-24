@@ -1,6 +1,8 @@
 #!/bin/bash
 
 SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
+# Secrets and settings live in a gitignored .env next to this script (see .env.example).
+if [ -f "$SCRIPT_DIR/.env" ]; then set -a; . "$SCRIPT_DIR/.env"; set +a; fi
 FIRST_LOG_DATE=$(TZ='America/Chicago' date +%FT%T.%3N%:z)
 RUN_LOG="$HOME/github-trending-digest-log-runs/${FIRST_LOG_DATE}.log"
 
