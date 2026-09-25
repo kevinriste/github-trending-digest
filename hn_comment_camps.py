@@ -10,7 +10,7 @@ import json
 import logging
 import os
 
-from openai import OpenAI, OpenAIError
+from openai import APITimeoutError, OpenAI, OpenAIError, RateLimitError
 
 MODEL = os.environ.get("COMMENT_BRIEFING_MODEL", "gpt-5-mini")
 
@@ -177,8 +177,49 @@ _SCHEMA = {
 }
 
 
+# Models billed through a separate OpenAI project with data sharing OFF: gpt-6-luna is
+# in the 1M free-token group with Astra/Sol but ~100x cheaper, so paying list price
+# for it beats spending that shared free quota. Falls back to OPENAI_API_KEY.
+NOSHARE_MODELS = {
+    m.strip() for m in os.environ.get("NOSHARE_MODELS", "gpt-6-luna").split(",") if m.strip()
+}
+
+
+def _api_key_for(model: str) -> str | None:
+    if model in NOSHARE_MODELS and os.environ.get("OPENAI_API_KEY_NOSHARE"):
+        return os.environ["OPENAI_API_KEY_NOSHARE"]
+    return os.environ.get("OPENAI_API_KEY")
+
+
+# Billed noshare calls use Flex processing (Batch rates, -50%). A Flex 429 means "no
+# capacity" (not billed), so it and a Flex timeout fall back to the standard tier at once.
+# OPENAI_FLEX=0 turns it off.
+FLEX_TIMEOUT = float(os.environ.get("OPENAI_FLEX_TIMEOUT", "900"))
+
+
+def _uses_flex(model: str) -> bool:
+    return (
+        model in NOSHARE_MODELS
+        and bool(os.environ.get("OPENAI_API_KEY_NOSHARE"))
+        and os.environ.get("OPENAI_FLEX", "1") != "0"
+    )
+
+
+def _create(client: "OpenAI", *, timeout: float, **kwargs):
+    """client.responses.create at the Flex tier for billed models, else (or on fallback) standard."""
+    if not _uses_flex(kwargs["model"]):
+        return client.responses.create(timeout=timeout, **kwargs)
+    try:
+        return client.with_options(max_retries=0).responses.create(
+            service_tier="flex", timeout=FLEX_TIMEOUT, **kwargs
+        )
+    except (RateLimitError, APITimeoutError) as exc:
+        logging.info("Flex unavailable for %s (%s); retrying at standard tier", kwargs["model"], type(exc).__name__)
+        return client.responses.create(timeout=timeout, **kwargs)
+
+
 def _client() -> "OpenAI | None":
-    key = os.environ.get("OPENAI_API_KEY")
+    key = _api_key_for(MODEL)
     if not key:
         logging.error("OPENAI_API_KEY not set; cannot generate HN comment camps analysis")
         return None
@@ -201,7 +242,8 @@ def build_camps_analysis(
         client = _client()
         if client is None:
             return None
-        analysis = client.responses.create(
+        analysis = _create(
+            client,
             model=MODEL,
             input=_ANALYSIS_PROMPT.format(title=title, summary=summary, outline=outline),
             timeout=300,
@@ -209,7 +251,8 @@ def build_camps_analysis(
         ).output_text.strip()
         if not analysis:
             return None
-        result = client.responses.create(
+        result = _create(
+            client,
             model=MODEL,
             input=_WRITE_PROMPT.format(
                 analysis=analysis, outline=outline, max_camps=max_camps, max_quotes=max_quotes

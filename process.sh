@@ -43,6 +43,8 @@ if [ -f "$OPENAI_KEY_ENV" ]; then
 else
     echo "WARNING: OpenAI key file $OPENAI_KEY_ENV not found; HN comment analysis will be skipped"
 fi
+# Prefer this app's own data-sharing project key (.env) over the shared key file.
+if [ -n "${OPENAI_API_KEY_SHARE:-}" ]; then export OPENAI_API_KEY="$OPENAI_API_KEY_SHARE"; fi
 export COMMENT_BRIEFING_MODEL="${COMMENT_BRIEFING_MODEL:-gpt-6-luna}"
 
 echo "GitHub Trending Digest--Run trending digest script"
