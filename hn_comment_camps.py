@@ -232,8 +232,7 @@ def build_camps_analysis(
     """Run the two-stage OpenAI pipeline; return validated JSON string or None.
 
     Stage 1 detects the camps (free text spine); stage 2 emits structured JSON with
-    verbatim quotes, constrained by a strict JSON schema. Explicit prompt-cache mode
-    with no breakpoints avoids cache-write charges on these unique prompts.
+    verbatim quotes, constrained by a strict JSON schema.
 
     Returns:
         A JSON string that passes parse_comment_analysis, or None on any failure.
@@ -247,7 +246,6 @@ def build_camps_analysis(
             model=MODEL,
             input=_ANALYSIS_PROMPT.format(title=title, summary=summary, outline=outline),
             timeout=300,
-            prompt_cache_options={"mode": "explicit"},
         ).output_text.strip()
         if not analysis:
             return None
@@ -258,7 +256,6 @@ def build_camps_analysis(
                 analysis=analysis, outline=outline, max_camps=max_camps, max_quotes=max_quotes
             ),
             timeout=300,
-            prompt_cache_options={"mode": "explicit"},
             text={
                 "format": {
                     "type": "json_schema",

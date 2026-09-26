@@ -794,7 +794,6 @@ def generate_take(context: str) -> "tuple[str, str] | None":
             input=context,
             reasoning={"effort": HN_TAKE_REASONING, "summary": "auto"},
             timeout=300,
-            prompt_cache_options={"mode": "explicit"},
         )
         out = (response.output_text or "").strip()
     except OpenAIError as exc:
