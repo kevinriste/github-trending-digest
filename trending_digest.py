@@ -25,13 +25,13 @@ import requests
 import trafilatura
 from requests.adapters import HTTPAdapter
 from bs4 import BeautifulSoup
-from google import genai
 from markitdown import MarkItDown
 from psycopg.rows import dict_row
 from youtube_transcript_api import YouTubeTranscriptApi
 
 import hn_comment_camps
 import hn_take
+import openai_text
 
 from morning_edition import generate_morning_edition, first_paragraph, limit_bullets, parse_bullets
 from editions import EDITIONS, cross_edition_links, write_dates_manifest
@@ -54,7 +54,7 @@ HN_PAGES_DATA_FILE = HN_DOCS_DIR / "pages.json"
 STYLE_FILE = DOCS_DIR / "style.css"
 GITHUB_PAGES_URL = "https://www.kevinriste.com/github-trending-digest/"
 
-SUMMARY_MODEL = "gemini-3.1-flash-lite"
+SUMMARY_MODEL = openai_text.SUMMARY_MODEL
 GH_SUMMARY_PROMPT_VERSION = "gh_v3"
 HN_SUMMARY_PROMPT_VERSION = "hn_v4"
 HN_COMMENT_ANALYSIS_PROMPT_VERSION = "hn_comments_v3"
@@ -72,7 +72,6 @@ DEFAULT_DATABASE_URL = "postgresql://trending_digest:trending_digest@localhost:5
 gmail_user = os.getenv("GMAIL_PODCAST_ACCOUNT")
 gmail_password = os.getenv("GMAIL_PODCAST_ACCOUNT_APP_PASSWORD")
 email_to_address = os.getenv("DIGEST_EMAIL_TO", "kevinbobriste@gmail.com")
-_gemini_client = None
 
 
 def parse_args() -> argparse.Namespace:
@@ -119,7 +118,7 @@ PDF_MAX_DOWNLOAD_BYTES = 50 * 1024 * 1024  # 50MB
 
 @dataclass
 class FetchedContent:
-    """Result from a content fetcher — text for DB caching, optional file for Gemini upload."""
+    """Result from a content fetcher — text for DB caching, optional file to attach to the summary call."""
     text: str
     file_path: str = ""
 
@@ -550,12 +549,6 @@ def summary_is_fresh(generated_at: datetime, target_day: date) -> bool:
     return age_days < SUMMARY_REFRESH_DAYS
 
 
-def get_gemini_client():
-    """Lazy-init Gemini client."""
-    global _gemini_client
-    if _gemini_client is None:
-        _gemini_client = genai.Client(api_key=os.environ["GEMINI_API_KEY"])
-    return _gemini_client
 
 
 def get_db_connection() -> psycopg.Connection:
@@ -935,9 +928,7 @@ Write exactly two paragraphs:
 Keep each paragraph concise (5-6 sentences). Use a professional, informative tone."""
 
     try:
-        client = get_gemini_client()
-        response = client.models.generate_content(model=SUMMARY_MODEL, contents=prompt)
-        return response.text.strip()
+        return openai_text.generate(prompt)
     except Exception as exc:
         logging.exception("GitHub summary generation failed for %s: %s", repo_name, exc)
         return ""
@@ -1076,21 +1067,14 @@ Write exactly one paragraph explaining what the story is about, the key technica
 Keep the paragraph concise (4-5 sentences) and avoid hype."""
 
     try:
-        client = get_gemini_client()
-        contents: list = []
-
-        # If we have a file (PDF/image), upload it to Gemini for direct analysis
-        if file_path:
-            try:
-                uploaded = client.files.upload(file=file_path)
-                contents.append(uploaded)
-                logging.info("Uploaded file to Gemini for item %s", item.get("item_id"))
-            except Exception as exc:
-                logging.warning("Gemini file upload failed for item %s: %s — using text only", item.get("item_id"), exc)
-
-        contents.append(prompt)
-        response = client.models.generate_content(model=SUMMARY_MODEL, contents=contents)
-        return response.text.strip()
+        # A fetched PDF/image goes along as a file part for direct analysis.
+        try:
+            return openai_text.generate(prompt, file_path=file_path or None)
+        except Exception as exc:
+            if not file_path:
+                raise
+            logging.warning("Summary with attached file failed for item %s: %s — using text only", item.get("item_id"), exc)
+            return openai_text.generate(prompt)
     except Exception as exc:
         logging.exception("Hacker News summary generation failed for item %s: %s", item.get("item_id"), exc)
         return ""
@@ -1266,11 +1250,11 @@ def get_latest_gh_summary(conn: psycopg.Connection, repo_id: int) -> dict | None
             """
             SELECT summary_text, generated_at
             FROM gh_summaries
-            WHERE repo_id = %s AND model = %s
+            WHERE repo_id = %s
             ORDER BY generated_at DESC
             LIMIT 1
             """,
-            (repo_id, SUMMARY_MODEL),
+            (repo_id,),
         )
         return cur.fetchone()
 
@@ -1342,11 +1326,11 @@ def get_latest_hn_summary(conn: psycopg.Connection, item_id: int) -> dict | None
             """
             SELECT summary_text, generated_at
             FROM hn_summaries
-            WHERE item_id = %s AND model = %s
+            WHERE item_id = %s
             ORDER BY generated_at DESC
             LIMIT 1
             """,
-            (item_id, SUMMARY_MODEL),
+            (item_id,),
         )
         return cur.fetchone()
 
@@ -1366,7 +1350,7 @@ def cache_hn_summary(conn: psycopg.Connection, item_id: int, summary_text: str) 
 def ensure_article_content(conn: psycopg.Connection, item: dict) -> str:
     """Fetch and cache article content if not already present.
 
-    Returns a temp file path if the fetcher produced one (e.g. PDFs for Gemini upload),
+    Returns a temp file path if the fetcher produced one (e.g. PDFs to attach to the summary call),
     or empty string otherwise. Caller is responsible for deleting the temp file.
     """
     url = item.get("url") or ""

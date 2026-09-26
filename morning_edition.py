@@ -29,19 +29,18 @@ def get_git_sha():
     except ImportError:
         return "latest"
 
-from google import genai
-from google.genai import types
+import openai_text
 from pydantic import BaseModel
 
 REPO_ROOT = Path(__file__).parent
-MODEL = "gemini-3.1-flash-lite"
+MODEL = openai_text.SUMMARY_MODEL
 NUM_STORIES = 10
 
 
 class _EditorialItem(BaseModel):
     """Response schema for one story's editorial assignment.
 
-    Passed to Gemini as a structured-output schema so the model uses
+    Passed to the model as a structured-output schema so the model uses
     constrained decoding and cannot emit malformed JSON (e.g. an unquoted
     pullquote value, which previously crashed pick_editorial and left the
     HN page with no index.html -> 404).
@@ -225,15 +224,7 @@ def limit_bullets(text: str, n: int = 3) -> list[str]:
     """Return the first n bullets. Prompt now handles truncation."""
     return parse_bullets(text)[:n]
 
-# ─────────────────────── Gemini call ───────────────────────
-
-_gemini_client: genai.Client | None = None
-
-def _client() -> genai.Client:
-    global _gemini_client
-    if _gemini_client is None:
-        _gemini_client = genai.Client(api_key=os.environ["GEMINI_API_KEY"])
-    return _gemini_client
+# ─────────────────────── LLM call ───────────────────────
 
 def _build_prompt(config: EditionConfig, items: list[dict]) -> str:
     catalog_lines = "\n".join(f"- {a.id}: {a.best_for}" for a in config.archetypes)
@@ -320,20 +311,19 @@ def _parse_response(raw: str, expected: int) -> list[dict]:
         raise ValueError(f"expected {expected} objects, got {len(data)}")
     return data
 
-_EDITORIAL_GEN_CONFIG = types.GenerateContentConfig(
-    response_mime_type="application/json",
-    response_schema=list[_EditorialItem],
-)
+class _EditorialEdition(BaseModel):
+    """Structured-output root: the schema must be an object, so the array is wrapped."""
+
+    items: list[_EditorialItem]
 
 def pick_editorial(config: EditionConfig, items: list[dict]) -> list[dict]:
     prompt = _build_prompt(config, items)
     last_error = ""
     for attempt in range(4):
         try:
-            response = _client().models.generate_content(
-                model=MODEL, contents=prompt, config=_EDITORIAL_GEN_CONFIG
-            )
-            return _parse_response(response.text, len(items))
+            parsed = openai_text.generate_parsed(prompt, _EditorialEdition, model=MODEL)
+            raw = json.dumps([item.model_dump() for item in parsed.items])
+            return _parse_response(raw, len(items))
         except Exception as exc:
             last_error = str(exc)
             logging.warning("Morning Edition LLM response invalid (attempt %d): %s", attempt + 1, exc)
@@ -1500,7 +1490,7 @@ def generate_morning_edition(
             pass
             
     if not assignments:
-        logging.info("%s: calling Gemini for %s", config.name, day)
+        logging.info("%s: calling the LLM for %s", config.name, day)
         try:
             assignments = pick_editorial(config, items)
         except Exception as exc:

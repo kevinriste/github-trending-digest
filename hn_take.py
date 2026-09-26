@@ -20,7 +20,7 @@ from openai import OpenAI, OpenAIError
 # and recorded here so the caller can surface a single run-level notification.
 API_ERRORS: list[str] = []
 
-HN_TAKE_MODEL = os.environ.get("HN_TAKE_MODEL", "gpt-6-sol")
+HN_TAKE_MODEL = os.environ.get("HN_TAKE_MODEL", "gpt-6-astra")
 HN_TAKE_REASONING = os.environ.get("HN_TAKE_REASONING", "medium")
 # v3: stories fed in our page-rank order with no HN score/rank metadata.
 HN_TAKE_PROMPT_VERSION = "hn_take_v3"
