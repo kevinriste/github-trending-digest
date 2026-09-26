@@ -5,12 +5,12 @@ from datetime import date
 from openai import OpenAIError
 
 import hn_take
-from hn_take import qualifying_body, build_take_context, HN_TAKE_MIN_CHARS
+from hn_take import qualifying_body, build_take_context, HN_TAKE_MIN_CHARS, HN_TAKE_HOMEPAGE_MIN_CHARS
 
 
 def _row(**kw):
     base = {
-        "rank": 1, "title": "T", "url": "http://x", "score": 100,
+        "rank": 1, "title": "T", "url": "http://x/post", "score": 100,
         "comment_count": 5, "item_type": "story", "text": "",
         "article_content": "", "summary": "s", "comment_analysis": "",
     }
@@ -19,6 +19,18 @@ def _row(**kw):
 
 
 # --- Task 1: eligibility gate ---
+
+def test_bare_homepage_needs_more_text():
+    thin = "a" * (HN_TAKE_HOMEPAGE_MIN_CHARS - 1)
+    assert qualifying_body(_row(url="https://www.inkandswitch.com/", article_content=thin)) is None
+    assert qualifying_body(_row(url="https://onionfutures.com", article_content=thin)) is None
+    assert qualifying_body(_row(url="https://x.com/", article_content="a" * HN_TAKE_HOMEPAGE_MIN_CHARS)) is not None
+    # Same length on a real path, or a homepage with a query (e.g. a blog post id), qualifies.
+    assert qualifying_body(_row(url="https://x.com/2026/post", article_content=thin)) is not None
+    assert qualifying_body(_row(url="https://qwen.ai/blog?id=1", article_content=thin)) is not None
+    # Self-posts have no fetched homepage; the ordinary minimum applies.
+    assert qualifying_body(_row(url="", item_type="ask", text="b" * HN_TAKE_MIN_CHARS)) is not None
+
 
 def test_full_article_qualifies():
     assert qualifying_body(_row(article_content="a" * HN_TAKE_MIN_CHARS)) is not None
@@ -66,9 +78,9 @@ def test_context_preserves_page_rank_order():
 
 def test_context_omits_hn_score_rank_and_comments():
     rows = [_row(rank=7, title="MyStory", score=321, comment_count=88,
-                 url="http://ex", article_content="a" * HN_TAKE_MIN_CHARS)]
+                 url="http://ex/story", article_content="a" * HN_TAKE_MIN_CHARS)]
     ctx = build_take_context(rows)
-    assert "MyStory" in ctx and "url: http://ex" in ctx
+    assert "MyStory" in ctx and "url: http://ex/story" in ctx
     assert "score" not in ctx and "321" not in ctx
     assert "88 comments" not in ctx and "[7]" not in ctx
 

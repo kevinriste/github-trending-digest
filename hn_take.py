@@ -13,6 +13,7 @@ import logging
 import math
 import os
 import re
+from urllib.parse import urlparse
 
 from openai import OpenAI, OpenAIError
 
@@ -26,6 +27,9 @@ HN_TAKE_REASONING = os.environ.get("HN_TAKE_REASONING", "medium")
 HN_TAKE_PROMPT_VERSION = "hn_take_v3"
 
 HN_TAKE_MIN_CHARS = int(os.environ.get("HN_TAKE_MIN_CHARS", "1500"))
+# A site's bare homepage (no path) is usually navigation and taglines, not a story;
+# it needs this much text to qualify (drops e.g. inkandswitch.com/ at 3.3K chars).
+HN_TAKE_HOMEPAGE_MIN_CHARS = int(os.environ.get("HN_TAKE_HOMEPAGE_MIN_CHARS", "4000"))
 HN_TAKE_BODY_CAP = int(os.environ.get("HN_TAKE_BODY_CAP", "12000"))
 HN_TAKE_MAX_STORIES = int(os.environ.get("HN_TAKE_MAX_STORIES", "10"))
 
@@ -639,15 +643,25 @@ Wall Street Talks Up Carry Trade as Returns Soar Most in Decades. Black Rock Lea
 Write the opening for today's edition from the items you are given. Each item is a headline followed by its full primary text under "--- STORY ---" (a fetched article or a Hacker News self-post). The items are given in the editor's consequence order, most important first. Choose your one or two sections from the top items (roughly the top five), strongly preferring the most important; pass over a top item only if there is genuinely too little to say about it. Do NOT pick a lower-ranked item just because it happens to have more text. Give each chosen item its own short titled section. Because you have the full primary text: ground everything in it and invent nothing (no numbers, names or quotes not present); you MAY quote short verbatim phrases from the story text, the way the examples quote their sources, then react. Keep it tight, as the examples do: the news lands as a short beat and then you react, you do not recount the article at length. Rules: start each section with its short title alone on one line, prefixed with a single "# " (for example: # Emergent cyber capability), and use no other markdown anywhere; no em or en dashes; straight ASCII quotes and apostrophes only; no bullet lists; no references to prior editions; no math notation. Output prose only."""
 
 
+def _is_homepage(url: str | None) -> bool:
+    """True for a site root like https://example.com/ (no path, query or fragment)."""
+    if not url:
+        return False
+    parsed = urlparse(url)
+    return bool(parsed.netloc) and parsed.path in ("", "/") and not parsed.query and not parsed.fragment
+
+
 def qualifying_body(row: dict) -> str | None:
     """Return the row's substantial primary body, or None if it doesn't qualify.
 
     A full fetched article (>= HN_TAKE_MIN_CHARS) qualifies; otherwise a self/text
     post (item_type in story/ask/show) whose text >= HN_TAKE_MIN_CHARS qualifies.
+    An article fetched from a bare homepage needs HN_TAKE_HOMEPAGE_MIN_CHARS.
     Comments never qualify a story on their own.
     """
     article = (row.get("article_content") or "").strip()
-    if len(article) >= HN_TAKE_MIN_CHARS:
+    min_chars = HN_TAKE_HOMEPAGE_MIN_CHARS if _is_homepage(row.get("url")) else HN_TAKE_MIN_CHARS
+    if len(article) >= min_chars:
         return article
     text = (row.get("text") or "").strip()
     item_type = (row.get("item_type") or "").strip().lower()
