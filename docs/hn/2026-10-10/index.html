@@ -1,0 +1,794 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Morning Edition — October 10, 2026</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght,SOFT@0,9..144,300..900,0..100;1,9..144,300..900,0..100&family=Inter:ital,wght@0,100..900;1,100..900&family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../morning.css?v=fb3481105">
+</head>
+<body id="top" data-gtd-edition="hn" data-gtd-date="2026-10-10">
+  <header class="masthead">
+    <div class="masthead-nav">
+      <a href="../">Hacker News Calendar</a>
+      <span>&nbsp;·&nbsp;</span>
+      <a href="../../2026-10-10/">GitHub Trending &nbsp;·&nbsp; Oct 10</a>
+      <span>&nbsp;·&nbsp;</span>
+      <a href="classic.html">Classic View</a>
+    </div>
+    <div class="tagline">The Morning Edition</div>
+    <h1 class="frnc">Ten stories, before your coffee.</h1>
+    <div class="issue-line">
+      <span>Vol. I</span>
+      <span>October 10, 2026</span>
+      <span>HN Front Page Digest</span>
+    </div>
+  </header>
+<section class="the-take"><details open><summary>The HN Take</summary><h3 class="take-head">123456</h3><p>Here is one approach to protecting a national identity database:</p><p>At least three user accounts at the Funen-based IT company Pays used the password &quot;123456&quot; when hackers gained access to Denmark&#x27;s CPR register, Politiken reports.</p><p>One of them was the company&#x27;s administrator account.</p><p>The breach exposed information linked to around 8.8 million CPR numbers. Jens Myrup Pedersen, a professor at Aarhus University, called the password security &quot;hopeless&quot;:</p><p>&quot;There is really no security, it is an open door. A password like &#x27;123456&#x27; is one of the very first things you would guess if you took a list of common passwords.&quot;</p><p>Yes. In computer security there is a complicated ongoing contest between attackers and defenders involving zero-day vulnerabilities, cryptography, artificial intelligence and highly sophisticated social engineering. There is also typing &quot;123456&quot; into the administrator login. You would perhaps start with that one.</p><p>Denmark&#x27;s CPR register contains personal information about people living or previously registered in the country. Private companies can receive access when they have a legitimate need, for instance to look up customer addresses. This is sensible enough: A useful central database has to be usable. But then the security model for the central database becomes approximately &quot;every small company with legitimate access must secure that access.&quot; Pays had two employees as of July. At least three of its accounts reportedly had the password &quot;123456.&quot; There were more copies of the password than there were employees.</p><p>The hacker reportedly got in using a leaked password belonging to a former employee, then built two programs to retrieve and store CPR information. The access lasted 21 days and 17 hours. The hacker said that gaining access &quot;had not been particularly difficult&quot; and that there were no plans to sell or publish the information.</p><p>Fine. Denmark constructed a central civil register covering millions of people, carefully limited access to organizations with legitimate needs, and one of those organizations secured its administrator account with the password used to demonstrate bad passwords. The hacker apparently does not plan to misuse the data. That is fortunate, because the main remaining control was politeness.</p><h3 class="take-head">Semicolon</h3><p>Telegram Desktop had a semicolon problem.</p><p>When you click a Telegram link while Telegram is already running, the operating system launches a second instance of the application. That instance sends the link to the first instance over a local socket and exits. Telegram serializes commands as text, with semicolons separating them. It did not escape semicolons inside the links.</p><p>So a link that Telegram&#x27;s new process regarded as one URL could arrive at the running process as several commands. The security researcher who found the vulnerability writes:</p><p>&quot;The new process treats it as a single URL, because to it that semicolon is just a character inside the query.&quot;</p><p>The existing process then &quot;cuts at every semicolon and gets two instructions instead of one.&quot;</p><p>This is the standard problem with inventing your own tiny command language. You decide that semicolons separate commands. Later you allow users to supply text containing semicolons. The computer faithfully concludes that the users are supplying commands. Computers are literal in ways that are useful until they are extremely not.</p><p>On its own, command injection was not enough for account takeover. But Telegram also had an internal URI scheme called &quot;interpret:&quot; that had been built to automate publishing Telegram releases. An instruction file could specify a channel, a local file and a caption, and Telegram would read the local file and send it to the channel. This was meant for Telegram&#x27;s own release process, and it performed &quot;no authorization check.&quot;</p><p>Again, considered locally, this made some sense. If an attacker can already launch Telegram from your computer with a local instruction file, the attacker probably has access to your files anyway. But the semicolon bug made the internal feature reachable from a clicked link. Two individually manageable design decisions met each other and became remote arbitrary file theft.</p><p>The remaining problem for an attacker was getting an instruction file onto the victim&#x27;s computer at a known location. Telegram handled that too. By default, Telegram Desktop automatically downloaded group attachments up to 8 MiB into a predictable folder. Relative paths could reach that folder without knowing the victim&#x27;s Windows username. The attacker could therefore send instruction files to a group, wait for Telegram to download them, and send a crafted link telling Telegram to interpret them.</p><p>The files could include Telegram&#x27;s own local session data. By default, Telegram Desktop has no local passcode, so obtaining the relevant encrypted files and stored salt was enough to reconstruct the keys and take over the account. The flaw affected Telegram Desktop through version 7.2.8 and was fixed in 7.2.9.</p><p>The vulnerability chain was therefore: Telegram automatically downloads the attacker&#x27;s instructions, the victim clicks one link, an unescaped semicolon turns the link into internal commands, and Telegram&#x27;s release-publishing tool sends the victim&#x27;s login files to the attacker. The software did not merely contain the vulnerability. It helpfully distributed, parsed and executed the paperwork.</p><div class="take-sources"><span>Sources</span><ul><li><a href="https://cphpost.dk/2026-10-10/news/round-up/123456-password-used-in-massive-danish-cpr-data-breach/" target="_blank" rel="noopener noreferrer">`123456&#x27; password used in Danish CPR data breach</a></li><li><a href="https://beaksec.github.io/posts/telegram-desktop-one-click-account-takeover/" target="_blank" rel="noopener noreferrer">Telegram Desktop vulnerability allowed any user&#x27;s file to be stolen</a></li></ul></div></details></section>
+  <section id="story-1" class="spread arc-caution-tape">
+    <div class="tag">SECURITY ADVISORY</div>
+    <div class="numeral">01</div>
+    <div class="kicker">Breach Watch</div>
+    <h2>A Weak Password Opens Denmark’s CPR Register</h2>
+    <p class="story-meta">cphpost.dk &nbsp;·&nbsp; 81 pts &nbsp;·&nbsp; 53 comments</p>
+    <p class="lede">Three accounts, including an administrator, reportedly used 123456 while attackers queried Denmark’s civil-registration system for nearly 22 days. The breach exposed data associated with roughly 8.8 million CPR numbers—and the governance around third-party access.</p>
+    <div class="spread-links"><a class="read-more" href="https://cphpost.dk/2026-10-10/news/round-up/123456-password-used-in-massive-danish-cpr-data-breach/" target="_blank" rel="noopener">Read →</a><a class="read-more share-link" href="#" data-share-title="`123456&#x27; password used in Danish CPR data breach" data-share-url="https://cphpost.dk/2026-10-10/news/round-up/123456-password-used-in-massive-danish-cpr-data-breach/">Share →</a>
+      <details class="analysis-drawer">
+        <summary class="btn-dossier">[ Analysis + ]</summary>
+        <div class="drawer-content">
+          
+          <h4>Technical Analysis</h4>
+          <div class="drawer-analysis">
+          <p>A Danish IT company, Pays ApS, reportedly allowed at least three accounts—including an administrator account—to use the password “123456,” enabling hackers to access Denmark’s CPR civil-registration system. The attackers allegedly exploited a former employee’s leaked credentials and accessed the system for nearly 22 days, extracting data associated with about 8.8 million CPR numbers. Pays had legitimate access to the register to retrieve information for customers or members, illustrating how third-party access can create risks for sensitive government databases. The incident is important because weak authentication and inadequate account management exposed extensive personal information and raised serious questions about oversight of organizations permitted to query the CPR system.</p>
+          </div>
+          <h4>Reader Reactions</h4>
+<p class="camps-framing">The discussion treated the weak password as one part of a broader security and governance failure. Commenters differed over responsibility for the incident, the adequacy of password practices and access controls, and whether security and productivity must conflict. Side discussions addressed government and vendor oversight, CPR numbers as authentication information, and the value of accountability and postmortems.</p>
+<div class="camp"><p class="camp-label"><strong>Systemic responsibility and accountability</strong> &mdash; These commenters placed responsibility beyond the person who chose the password, pointing to organizational oversight and the value of investigating root causes rather than simply moving on.</p><blockquote>Its always , oh yeah so we fired the guy furthest down the ladder.<cite>ionwake</cite></blockquote>
+<blockquote>I love getting to the root cause of these incidents. Hate it when they just move on with no post mortem, the rest of us are trying to learn here!<cite>INTPenis</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Basic password hygiene</strong> &mdash; These commenters regarded 123456 as an indefensible password and argued that usable tools and basic safeguards can prevent weak credentials.</p><blockquote>In fact using password manager is more convenient than typing password manually, even 123456 :)<cite>ulfbert_inc</cite></blockquote>
+<blockquote>Setting &#x27;123456&#x27; as a password on any non-trivial system is not &quot;the shortest route possible to maximize their productivity.&quot;<cite>altmanaltman</cite></blockquote>
+<blockquote>It&#x27;s easy to blame the individual users but any system (designed by incompetent people) that accepts such a password as valid deserves whatever compromise it gets.<cite>caaqil</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Audit access and limit the blast radius</strong> &mdash; These commenters focused on the duration and scope of access, proposing regular audits, least-privilege controls, and monitoring for misuse.</p><blockquote>I think that the third parties who have been granted access to the civil registry should be audited on a regular basis for the “best practices” of the day.<cite>sokols</cite></blockquote>
+<blockquote>A least privilege access redesign seems reasonable too. And abuse monitoring; the leak went on for 21 days undetected.<cite>zweifuss</cite></blockquote>
+<blockquote>And then completely unchecked access to the CPR database for 22 days which apparently does not have monitoring or limits if someone tries to access all the records (they must have made some 16k downloads per hour).<cite>ano-ther</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Government and vendor oversight</strong> &mdash; These commenters questioned how basic controls and competence were overseen, including the role of outsourcing and procurement rules.</p><blockquote>How does a government completely lack controls or oversight for basic competence?<cite>sneak</cite></blockquote>
+<blockquote>When doing a contract on such programs the Danish government must take the cheapest offer by rule<cite>LarsKrimi</cite></blockquote>
+<blockquote>Its interesting, while private companies just blast our data out there, I cannot install the software I need to do my work because the state IT provider blocks it on security grounds.<cite>tokai</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>CPR numbers should not function as secrets</strong> &mdash; These commenters questioned relying on widely readable personal identifiers for authentication and discussed what information CPR numbers reveal.</p><blockquote>In sweden, this data is public by design. Authentication happens using public/private key and other secure mechanisms.<cite>tuwtuwtuwtuw</cite></blockquote>
+<blockquote>It&#x27;s unique, but it encodes your birthday and sex. There&#x27;s only 500 numbers it could be, assuming someone knows those other things about you.<cite>lordnacho</cite></blockquote>
+<blockquote>For some unknown reason, the SSN in USA is assumed to be secret.<cite>gus_massa</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Security versus productivity</strong> &mdash; These commenters debated whether security and productivity are opposing goals, with replies arguing that basic protections need not require a tradeoff.</p><blockquote>It&#x27;s tussle between two counter-acting forces at play.<cite>zkmon</cite></blockquote>
+<blockquote>It really doesn&#x27;t have to be, and setting things up as adversarial is counter-productive.<cite>tialaramex</cite></blockquote>
+<blockquote>I would love to hear about a world where security and productivity are not counter acting forces.<cite>tossandthrow</cite></blockquote></div>
+          <p class="drawer-footer"><a href="#dossier-1">View in Dossier ↓</a></p>
+        </div>
+      </details>
+    </div>
+  </section>
+  <section id="story-2" class="spread arc-blueprint">
+    <div class="corner tl">+</div><div class="corner tr">+</div>
+    <div class="corner bl">+</div><div class="corner br">+</div>
+    <div class="numeral">02</div>
+    <div class="kicker">Build Log</div>
+    <h2>REA Gives Agents a Reverse-Engineering Workbench</h2>
+    <p class="story-meta">rea.tools &nbsp;·&nbsp; 451 pts &nbsp;·&nbsp; 175 comments</p>
+    <p class="lede">REA connects coding agents to live applications, JavaScript packages, native binaries, and browser processes. It observes, tests, and explains software that its builders cannot simply read—turning reverse engineering into a repeatable workflow.</p>
+    <div class="spread-links"><a class="read-more" href="https://rea.tools/" target="_blank" rel="noopener">Read →</a><a class="read-more share-link" href="#" data-share-title="REA Reverse – Engineer Anything" data-share-url="https://rea.tools/">Share →</a>
+      <details class="analysis-drawer">
+        <summary class="btn-dossier">[ Analysis + ]</summary>
+        <div class="drawer-content">
+          
+          <h4>Technical Analysis</h4>
+          <div class="drawer-analysis">
+          <p>REA is a toolkit that connects coding agents to reverse-engineering workflows, enabling them to inspect running web applications, JavaScript/Electron packages, native binaries, and browser or process activity. Its demonstrations show an agent recovering Chrome’s dinosaur-game acceleration logic and Windows Calculator’s context-dependent percentage behavior, then using those findings to build simplified reproductions. The project combines runtime observation, source and binary analysis, controlled validation, and generated explanations rather than relying solely on static code reading. It is relevant for understanding, debugging, cloning, modifying, or rebuilding software when documentation or source code is unavailable, though its practical use depends on access to the target program and suitable debugging or analysis environments.</p>
+          </div>
+          <h4>Reader Reactions</h4>
+<p class="camps-framing">Commenters are broadly impressed by agents’ ability to analyze binaries and revive or modify software, while debating what this changes for reverse-engineering communities, how much value dedicated workflows add, and whether AI-assisted alternatives can be dependable and legally sound. Some also question whether access mediated by commercial models is genuinely open.</p>
+<div class="camp"><p class="camp-label"><strong>Practical access and preservation</strong> &mdash; Some commenters describe agents as useful for fixing bugs, understanding programs, and restoring older software, with preservation and broader access as important potential benefits.</p><blockquote>The benefit to preservation would be incredible.<cite>ashdnazg</cite></blockquote>
+<blockquote>And it just did it.<cite>SyzygyRhythm</cite></blockquote>
+<blockquote>It’s able to understand the data formats, unpack graphics and sound assets, and reconstruct game logic.<cite>armcat</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Reverse engineering as craft and community</strong> &mdash; Some worry that automating decomps and ports could reduce opportunities for people to collaborate around shared technical challenges and build lasting communities.</p><blockquote>But we don&#x27;t end up with the rich, vibrant communities that get created in the inherent process of collaborating on a project.<cite>InvisibleUp</cite></blockquote>
+<blockquote>So perhaps then, the sentiment being as negative as it is, is revealing something about the hobby: that many participants, considered the metagame of being the first to do it, to be &quot;smart enough&quot; to have figured it out, the &quot;street cred&quot; if you were, is what they are lamenting, but they just either lack the words, or aren&#x27;t being honest with themselves.<cite>cassonmars</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Hobbies can survive automation</strong> &mdash; Others argue that automating a result does not prevent people from enjoying the process themselves, drawing comparisons with hobbies that persist alongside automated or easier alternatives.</p><blockquote>$800-level consumer 3D printers let people make highly detailed plastic models of things with very little level of technical knowledge, but people still buy and hand assemble LEGO kits for the fun of it.<cite>walrus01</cite></blockquote>
+<blockquote>Same idea; the existence of AI doesn&#x27;t stop people who love the act of reverse engineering from doing it.<cite>mjr00</cite></blockquote>
+<blockquote>because someone ported aomething it doesnt mean u cant do it anymore... how does it eliminate hobbyists exactyl? hobbyists are the ones AI doesnt really impact because they pursue joy rather than financial gains in their craft...<cite>saidnooneever</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>What a dedicated workflow adds</strong> &mdash; Some question whether a specialized reverse-engineering agent does more than a capable coding agent using familiar tools, while others see value in a ready-made workflow for people without established methods.</p><blockquote>How exactly is this better than telling Claude for example to &quot;install and set up a full RE environment including Ghidra&quot; on my local system and get to work?<cite>ethin</cite></blockquote>
+<blockquote>I think this is aimed at people who do not have a “current RE methodology”, do not know enough to specify things like Ghidra, etc., but who do have a desire to feel like they reverse-engineered and can reliably predict that a conversation with a chatbot will make them feel that way.<cite>fwlr</cite></blockquote>
+<blockquote>Because it&#x27;s already been done for you? Sure, you can spend your own tokens on it, but it&#x27;s probably cheaper and more time-effective to use something that already exists and does the job.<cite>ambicapter</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Reimplementation’s promise and limits</strong> &mdash; Commenters see potential in alternatives to proprietary software, but dispute whether clones are sufficiently reliable, sustainable, or legally separated from the products they resemble.</p><blockquote>The main reason people pay Adobe is because it&#x27;s a familiar line of stable, well-supported, interoperable, and actively-developed products.<cite>socializer</cite></blockquote>
+<blockquote>We&#x27;re working our asses off on this.<cite>echelon</cite></blockquote>
+<blockquote>Using an LLM is not a clean room, imo.<cite>lifeisloving</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Freedom from closed software, with model dependence</strong> &mdash; Some welcome reverse engineering as a route to greater access and user control; others question whether that access is durable when it depends on commercial models and their safeguards.</p><blockquote>&quot;Source code? We don&#x27;t need no stinkin&#x27; source code!&quot;<cite>userbinator</cite></blockquote>
+<blockquote>Wouldn&#x27;t this be reliant on continued and cheap access to the models?<cite>ares623</cite></blockquote>
+<blockquote>Yay, all software will be open…Except the models.<cite>TheSamFischer</cite></blockquote></div>
+          <p class="drawer-footer"><a href="#dossier-2">View in Dossier ↓</a></p>
+        </div>
+      </details>
+    </div>
+  </section>
+  <section id="story-3" class="spread arc-alert-stamp">
+    <div class="stamp">ALERT</div>
+    <div class="numeral">03</div>
+    <div class="body">
+      <div class="kicker">Security Callout</div>
+      <h2>A Telegram Link Could Steal Local Files</h2>
+      <p class="story-meta">beaksec.github.io &nbsp;·&nbsp; 191 pts &nbsp;·&nbsp; 91 comments</p>
+      <p class="lede">Telegram Desktop accepted crafted input through its local IPC socket, letting one clicked link read files and upload them to an attacker-controlled chat. Version 7.2.9 removes the vulnerable mechanism; older clients should not linger.</p>
+      <div class="spread-links"><a class="read-more" href="https://beaksec.github.io/posts/telegram-desktop-one-click-account-takeover/" target="_blank" rel="noopener">Read →</a><a class="read-more share-link" href="#" data-share-title="Telegram Desktop vulnerability allowed any user&#x27;s file to be stolen" data-share-url="https://beaksec.github.io/posts/telegram-desktop-one-click-account-takeover/">Share →</a>
+      <details class="analysis-drawer">
+        <summary class="btn-dossier">[ Analysis + ]</summary>
+        <div class="drawer-content">
+          
+          <h4>Technical Analysis</h4>
+          <div class="drawer-analysis">
+          <p>A vulnerability in Telegram Desktop through version 7.2.8 allowed a single clicked link to inject commands into the already-running client through its local IPC socket. By combining unescaped command separators with Telegram’s internal `interpret:` feature, attackers could make the application read arbitrary local files and upload them to an attacker-controlled chat, including session data. On systems without a Telegram local passcode, stolen files could be used to reconstruct the victim’s session and take over the account. Telegram fixed the issue in version 7.2.9 by removing the legacy file-sending mechanism and properly escaping IPC data; users should upgrade and consider disabling automatic downloads.</p>
+          </div>
+          <h4>Reader Reactions</h4>
+<p class="camps-framing">Commenters treat the flaw as serious while debating whether it chiefly reflects a Telegram bug or weak desktop-app isolation. The discussion also covers sandboxing, Telegram’s broader security reputation and usability, and whether political concerns should affect trust in the service.</p>
+<div class="camp"><p class="camp-label"><strong>Telegram’s bug and the operating system’s role</strong> &mdash; Some commenters emphasize that Telegram mishandled input and made the attack possible; others argue that operating systems should limit the damage an app can cause when it is compromised.</p><blockquote>No, it&#x27;s definitely a Telegram specific vulnerability. It might be worse because of poor defense in depth, but without Telegram itself being vulnerable it wouldn&#x27;t matter.<cite>yjftsjthsd-h</cite></blockquote>
+<blockquote>But allowing such vulnerabilities to deal damage beyond data of its host application is an OS vulnerability.<cite>Panzerschrek</cite></blockquote>
+<blockquote>Of course operating systems should support that isolation (hopefully in some better way than the hell that smartphones are), but it&#x27;s not like Telegram can blame the OS for this vulnerability.<cite>g-b-r</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>App isolation should be stronger but usable</strong> &mdash; Some favor limiting apps to their own files and explicitly shared data. Replies note the practical costs of restrictive access and suggest shared folders as a compromise.</p><blockquote>There is a lot of middle ground between “every app can do anything as the user” and “no shared file system, no user access to app ‘owned’ files”.<cite>lxgr</cite></blockquote>
+<blockquote>There is a lot of middle ground, like having a shared folder for access. &quot;Downloads&quot; might be a good default, if clearly communicated, that anything in there, is accessible by any app.<cite>lukan</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Web apps and sandboxes can reduce exposure</strong> &mdash; Some commenters prefer web versions or sandboxed apps to limit access to local files, while others caution that browsers and sandboxing still have risks.</p><blockquote>The web experience is practically indistinguishable and much more secure.<cite>modeless</cite></blockquote>
+<blockquote>When I really need to run an app on my Linux laptop, it always gets its own bubblewrap container.<cite>Eueudhsbsj32</cite></blockquote>
+<blockquote>Don&#x27;t let yourself be fooled into thinking this is enough. Plenty of examples of, especially through wasm, being able to reach far beyond what they&#x27;re supposed to.<cite>monster_truck</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Telegram’s broader security reputation is a concern</strong> &mdash; Commenters point to concerns beyond this flaw, including encryption defaults and the service’s protocols and security posture. Some stress that the file-exfiltration vulnerability remains noteworthy on its own.</p><blockquote>I thought telegram was flagged as insecure like a decade ago, it&#x27;s never really been &quot;very secure&quot;<cite>erelong</cite></blockquote>
+<blockquote>The main reason I consider it suspicious is that they are so adamant about not needing end-to-end encryption.<cite>lxgr</cite></blockquote>
+<blockquote>A file exfiltration vulnerability is still noteworthy.<cite>g-b-r</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Some users accept security tradeoffs for Telegram’s usability</strong> &mdash; Some users value Telegram’s features and polish despite its privacy limitations, while others question whether those benefits justify the tradeoff.</p><blockquote>Still we are using it, because UX kills any other app and people that are (probably) behind it will cause almost no harm to casual, not-interesting people :)<cite>misiek08</cite></blockquote>
+<blockquote>but Telegram is the most polished IM experience of all the apps I have tried.<cite>maxgashkov</cite></blockquote>
+<blockquote>Why would you rather have your data with who knows who than just your metadata?<cite>lxgr</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Political ties and national framing shape trust</strong> &mdash; Commenters debate whether concerns about Telegram’s political and corporate connections are distinct from prejudice based on its founder’s nationality.</p><blockquote>I dont write off software because where the person that made it was born.<cite>lifeisloving</cite></blockquote>
+<blockquote>There are indications that it could be much closer to the Russian government than they pretend, but that matters not because Russians are bad people, but because the current government of Russia is an aggressive dictatorship.<cite>g-b-r</cite></blockquote>
+<blockquote>The main spy feature that is Telegram collecting 100% of content and metadata is the main feature for every intelligence agency who bothers to ask Mythos to find zero days to pwn the servers.<cite>maqp</cite></blockquote></div>
+          <p class="drawer-footer"><a href="#dossier-3">View in Dossier ↓</a></p>
+        </div>
+      </details>
+    </div>
+    </div>
+  </section>
+  <section id="story-4" class="spread arc-obituary">
+    <div class="obit-frame">
+      <div class="ornament">†</div>
+      <div class="kicker">Project Sunset</div>
+      <h2>Cloudflare Buys Deno, Then Winds It Down</h2>
+      <p class="story-meta">deno.com &nbsp;·&nbsp; 1244 pts &nbsp;·&nbsp; 632 comments</p>
+      <p class="lede">Deno’s team is joining Cloudflare, but the independent runtime and Deno Deploy now have clocks running. Runtime updates end after one year; the hosting service shuts down in six months, leaving users to plan their migrations.</p>
+      <div class="spread-links"><a class="read-more" href="https://deno.com/blog/cloudflare" target="_blank" rel="noopener">Read →</a><a class="read-more share-link" href="#" data-share-title="Cloudflare acquires Deno" data-share-url="https://deno.com/blog/cloudflare">Share →</a>
+      <details class="analysis-drawer">
+        <summary class="btn-dossier">[ Analysis + ]</summary>
+        <div class="drawer-content">
+          
+          <h4>Technical Analysis</h4>
+          <div class="drawer-analysis">
+          <p>Cloudflare is acquiring Deno, bringing its entire team into Cloudflare to develop a shared platform based on Workers, Durable Objects, and Deno’s “celld” distributed-application model. The move shifts Deno’s focus from maintaining a separate JavaScript runtime and hosting service toward Cloudflare’s serverless infrastructure, with an emphasis on integrated compute, storage, communication, and potentially AI agent workloads. The Deno runtime will receive bug and security updates for one year before development ends, while Deno Deploy will shut down after six months with migration support for paying customers. JSR will continue under Cloudflare, and the team will keep supporting rusty_v8 while working toward its integration with workerd, making the acquisition significant for Deno users who must plan for platform changes and migration.</p>
+          </div>
+          <h4>Reader Reactions</h4>
+<p class="camps-framing">Reactions center on the end of Deno runtime development and what that means for users, while commenters differ on whether the transition is a loss of a valuable independent runtime or a shift toward Cloudflare’s self-hosting plans. Other threads consider Deno’s market choices, the reliability of newer runtimes, and who will sustain open-source infrastructure.</p>
+<div class="camp"><p class="camp-label"><strong>Deno users facing a loss</strong> &mdash; Users and admirers express disappointment about the runtime’s sunset and uncertainty about migration, continued use, and whether a community will maintain it.</p><blockquote>I&#x27;m so bummed about this. Deno is by far my favourite JS runtime.<cite>steve_adams_86</cite></blockquote>
+<blockquote>this makes me so angry. I&#x27;ve literally spent months working on my tui. I hope to god deno keeps going.<cite>gnarbarian</cite></blockquote>
+<blockquote>I’ll continue to use it and hope a community springs up.<cite>johnbellone</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Deno had real technical value</strong> &mdash; Commenters praise Deno’s developer experience and ideas, and some credit it with prompting improvements in Node.js.</p><blockquote>it has a great developer experience.<cite>phaser</cite></blockquote>
+<blockquote>Deno did bring lot of good ideas and hope some of them will flow into Node, especially full typescript type stripping, package less imports to name a few.<cite>singularity2015</cite></blockquote>
+<blockquote>at least Deno pushed Node.js to evolve.<cite>RossH</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Established tools feel safer</strong> &mdash; Some commenters view Node.js as the dependable default and treat Deno’s limited adoption as a caution against relying on newer runtimes for critical projects.</p><blockquote>Companies went all-in in a barely established niche player with 1/100 the traction, instead of sticking with Node, and even better an LTS Node, and are now surprised?<cite>coldtea</cite></blockquote>
+<blockquote>There&#x27;s basically no reason not to just go with Node as 99% of projects out there do<cite>sensanaty</cite></blockquote>
+<blockquote>I think it&#x27;s super risky to move to an alternative.<cite>TheRoque</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Deno’s business and compatibility choices are debated</strong> &mdash; Commenters variously argue that Deno lacked a sustainable business case or that prioritizing npm compatibility weakened the clean-slate vision that had distinguished it.</p><blockquote>Deno should never have been a business - there&#x27;s no business model.<cite>wewewedxfgdf</cite></blockquote>
+<blockquote>They basically gave up the day they decided to become npm compatible. That was the day Deno died.<cite>the_gipsy</cite></blockquote>
+<blockquote>Once they abandoned that the reason for using it went away.<cite>afavour</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Cloudflare’s self-hosting plan draws interest and skepticism</strong> &mdash; Some commenters see the celld and workerd work as a promising path to self-hostable Workers-style applications; others question whether Cloudflare’s consolidation could remove a competitor or narrow platform independence.</p><blockquote>Deno built celld, which implements the Workers and Durable Objects programming model with self-hosting in mind.<cite>ttul</cite></blockquote>
+<blockquote>To kill celld and potential competitor early?<cite>k9294</cite></blockquote>
+<blockquote>Big acquisition, but I hope Deno&#x27;s runtime doesn&#x27;t get slowly tied to Cloudflare&#x27;s specific Workers primitive instead of staying standard platform-agnostic.<cite>ContinuityLab</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Open-source stewardship and transition communication</strong> &mdash; Commenters question how open-source projects can receive sustained funding and stewardship, while others object that the runtime’s support timeline was not made clear in all of the acquisition messaging.</p><blockquote>in practice it needs a single entity to steward it, otherwise it will die.<cite>zem</cite></blockquote>
+<blockquote>Radical idea here, but maybe those many companies could _fund_ the development of key components of their infrastructure.<cite>ForHackernews</cite></blockquote>
+<blockquote>I don&#x27;t like how that&#x27;s in the Deno post but gets no mention in the Cloudflare post. Seems like a pretty important detail!<cite>simonw</cite></blockquote></div>
+          <p class="drawer-footer"><a href="#dossier-4">View in Dossier ↓</a></p>
+        </div>
+      </details>
+    </div>
+    </div>
+  </section>
+  <section id="story-5" class="spread arc-pastel-playful">
+    <div class="alpha-grid"><span>A</span><span>B</span><span>C</span><span>D</span><span>E</span><span>F</span><span>G</span><span>H</span><span>I</span><span>J</span><span>K</span><span>L</span><span>M</span></div>
+    <div class="alpha-grid" style="top: auto; bottom: 0;"><span>N</span><span>O</span><span>P</span><span>Q</span><span>R</span><span>S</span><span>T</span><span>U</span><span>V</span><span>W</span><span>X</span><span>Y</span><span>Z</span></div>
+    <div class="numeral">05</div>
+    <div class="kicker">Game Room</div>
+    <h2>Minesweeper Gets the Triple-A Treatment</h2>
+    <p class="story-meta">minesweeper.mikelacher.com &nbsp;·&nbsp; 1014 pts &nbsp;·&nbsp; 198 comments</p>
+    <p class="lede">The humble grid arrives with blockbuster ambitions: drama, tutorials, dialogue, and credits wrapped around a familiar puzzle. It is an affectionate parody of modern game excess, rendered with enough polish to make the joke land.</p>
+    <div class="spread-links"><a class="read-more" href="https://minesweeper.mikelacher.com/" target="_blank" rel="noopener">Read →</a><a class="read-more share-link" href="#" data-share-title="Triple-A Minesweeper" data-share-url="https://minesweeper.mikelacher.com/">Share →</a>
+      <details class="analysis-drawer">
+        <summary class="btn-dossier">[ Analysis + ]</summary>
+        <div class="drawer-content">
+          
+          <h4>Technical Analysis</h4>
+          <div class="drawer-analysis">
+          <p>Could not fetch article content. “Triple-A Minesweeper” appears to be a web-based Minesweeper game hosted at minesweeper.mikelacher.com, likely presenting the classic puzzle with unusually polished or ambitious production design. The story’s high score and substantial comment count indicate that Hacker News readers found the project notable, though the available information does not establish its specific technologies, business model, or distinguishing features. Its importance likely lies in demonstrating how a simple, familiar game can be reimagined as a more sophisticated online experience.</p>
+          </div>
+          <h4>Reader Reactions</h4>
+<p class="camps-framing">The reaction was mostly amused and appreciative, with commenters treating the game as a parody of big-budget games’ cinematic excess, tutorials, and monetization. Discussion also covered whether modern games over-guide players, whether the experience was tedious, and smaller topics such as classic games, technical conventions, and related projects.</p>
+<div class="camp"><p class="camp-label"><strong>Delighted by the parody</strong> &mdash; Commenters praised the execution and enjoyed the contrast between Minesweeper’s simple puzzle and the game’s dramatic presentation, dialogue, and credits.</p><blockquote>This is Art.<cite>xbar</cite></blockquote>
+<blockquote>This made me laugh. The credits broke me haha<cite>razodactyl</cite></blockquote>
+<blockquote>First time I&#x27;ve laughed out loud at one of these sorts of things in a while... I was expecting it to open up on some WW2 style battlefield with smoke and explosions, but this was better.<cite>colordrops</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Extending the AAA joke</strong> &mdash; Commenters added conventions they felt the parody could have included, such as launchers, subscriptions, loot boxes, and other monetization or access hurdles.</p><blockquote>But I didn&#x27;t need to install a publisher specific launcher to run it.<cite>fidotron</cite></blockquote>
+<blockquote>Ok, but where are the microtransactions and subscribtions?<cite>aenis</cite></blockquote>
+<blockquote>now add a kernel level rootkit and a monthly subscription which guarantees a set amount of loot-boxes a month.<cite>serf</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Frustrated with hand-holding</strong> &mdash; Some commenters saw the parody as a criticism of games that direct players’ actions rather than letting them explore, solve problems, or discover what to do.</p><blockquote>Just so much hand holding and noise.<cite>Loughla</cite></blockquote>
+<blockquote>This is the sort of challenge that’s actually rewarding when you manage to solve it (unlike being held by the hand the entire game).<cite>sevg</cite></blockquote>
+<blockquote>Manufactured emotions and hand holding for &#x27;an experience&#x27; instead of just fun.<cite>keyle</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Hand-holding has its reasons</strong> &mdash; A counterpoint argued that modern games address a much broader audience than older titles, while others objected to treating contemporary games as uniformly over-guided or poor.</p><blockquote>The market for video games is now on the close order of 1000 times larger than it was when Myst was released.<cite>sneak</cite></blockquote>
+<blockquote>There are thousands of great games which are not hand holding.<cite>bryanhogan</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>The experience was tedious or got in the way</strong> &mdash; Some commenters found the slow opening and guided play uninteresting, while others said narration or captions interfered with solving the puzzle.</p><blockquote>I gave up before I read <cite>samus</cite></blockquote>
+<blockquote>the non-stopping narration makes it so hard to actually sweep the mines....<cite>361994752</cite></blockquote>
+<blockquote>The subtitles covering the board while the narrator keeps telling me to focus is painfully accurate.<cite>pearlsense</cite></blockquote></div>
+          <p class="drawer-footer"><a href="#dossier-5">View in Dossier ↓</a></p>
+        </div>
+      </details>
+    </div>
+  </section>
+  <section id="story-6" class="spread arc-stat-hero">
+    <div class="numeral">5–60%</div>
+    <div class="kicker">N<sup>o</sup> 06 · Benchmarks</div>
+    <h2>WSL3 Moves Faster—Within Limits</h2>
+    <p class="story-meta">tonym.us &nbsp;·&nbsp; 53 pts &nbsp;·&nbsp; 21 comments</p>
+    <p class="lede">Across tested workloads, WSL3 ranges from a modest improvement to a substantial gain over WSL2. Memory and IPC-heavy tasks benefit most; a GoReleaser build moves only about four percent faster overall.</p>
+    <div class="spread-links"><a class="read-more" href="https://tonym.us/wsl2-vs-wsl3-benchmarks.html" target="_blank" rel="noopener">Read →</a><a class="read-more share-link" href="#" data-share-title="WSL3 Performance is about 5-60% faster than WSL2 depending on the workload" data-share-url="https://tonym.us/wsl2-vs-wsl3-benchmarks.html">Share →</a>
+      <details class="analysis-drawer">
+        <summary class="btn-dossier">[ Analysis + ]</summary>
+        <div class="drawer-content">
+          
+          <h4>Technical Analysis</h4>
+          <div class="drawer-analysis">
+          <p>The article compares WSL 2.6.3, using Linux 6.6, with WSL 3.0.2, using Linux 6.18, on the same constrained Windows 11 system to measure kernel, memory, IPC, and compilation performance. WSL 3 showed modest syscall and scheduler improvements, a roughly 61% increase in measured memory bandwidth, and lower context-switching and messaging latency. However, compiling the GoReleaser project was only about 4% faster overall, although kernel time fell nearly 16%, because user-space computation remained the main bottleneck. The results suggest WSL 3’s benefits will be most noticeable for memory- and IPC-heavy workloads, while compute-bound development tasks remain limited largely by available CPU resources.</p>
+          </div>
+          <h4>Reader Reactions</h4>
+<p class="camps-framing">The reaction was mixed: commenters valued WSL as a practical way to use Linux tools on Windows, while some preferred native Linux or questioned Windows overhead. They differed on what performance means in practice, with filesystem sharing, terminal tools, and workload shaping results. Others focused on WSL’s evolving integration features, the meaning of the WSL 3 label, and whether its added abstractions are useful.</p>
+<div class="camp"><p class="camp-label"><strong>WSL as a useful bridge</strong> &mdash; Some commenters valued WSL for bringing Linux development tools to company Windows machines and welcomed improvements, even while recognizing that it may not match native Linux performance.</p><blockquote>WSL has been god send for corporate employees who get a windows laptop but need to do real work.<cite>throwa356262</cite></blockquote>
+<blockquote>WSL is one of the few good ideas Microsoft had in the last ... 5000 years or so.<cite>shevy-java</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Prefer native Linux, distrust Windows overhead</strong> &mdash; Some commenters saw Windows itself as a source of overhead or mistrust, and argued that bare-metal Linux remains faster.</p><blockquote>Amazing they managed to make virtualisation that slow in WSL2<cite>PunchyHamster</cite></blockquote>
+<blockquote>And yet it&#x27;s still factors faster without a whole Windows around it.<cite>cdud3</cite></blockquote>
+<blockquote>Trust continues to be a huge problem in the AI era of Microsoft.<cite>jesse_dot_id</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Performance depends on the workload and bottleneck</strong> &mdash; Commenters noted that WSL performance varies with filesystem sharing, interop, terminal tooling, and workload; some reported acceptable results for their own tasks.</p><blockquote>Lot of the WSL2 lag is not the VM itself, it&#x27;s the 9P file sharing and interop.<cite>binsquare</cite></blockquote>
+<blockquote>herdr might be the culprit there, it can significantly slow down tui apps with its terminal capture. This happens on mac/linux, WSL will surely make it worse.<cite>ricardobeat</cite></blockquote>
+<blockquote>everything I use it for executes virtually instantly, 60% slower than virtually instantly is still virtually instantly.<cite>TZubiri</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Better integration matters for corporate use</strong> &mdash; Some commenters highlighted virtualization and container integration features as practical improvements, particularly for organizations that cannot or will not use Docker Desktop.</p><blockquote>An evolution, better said. Now there is virtio support, finally no need to depend on external CLI tools for what should have been in the box on day on.<cite>pjmlp</cite></blockquote>
+<blockquote>Unfortunately most companies are too cheap to pay for Docker Desktop, and having Windows containers depend on a third party tool has been a problem in such customers.<cite>pjmlp</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>WSL’s product identity is unclear</strong> &mdash; A small discussion asked whether WSL 3 is a distinct product or an evolution of WSL 2, given the earlier version-number changes.</p><blockquote>WSL2 is a different product from WSL1, not a different version. Is WSL3 now a different version of WSL2 or another separate product?<cite>1718627440</cite></blockquote>
+<blockquote>Looks like a different version of WSL2 with a newer kernel and newer VM host software<cite>pilif</cite></blockquote>
+<blockquote>Is it accurate to call this WSL3? WSL 2 was released in 2019, but WSL 2.0.0 was released in 2023 https://github.com/microsoft/WSL/releases/tag/2.0.0<cite>Randomno</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Convenience versus leaky abstraction</strong> &mdash; A minority view questioned whether WSL’s integration adds abstractions that are unnecessary, while a reply emphasized the extra options it provides.</p><blockquote>I find that stuff that it offers over a normal Hyper-V VM is stuff that I don&#x27;t need, leaky abstractions galore.<cite>xaduha</cite></blockquote>
+<blockquote>So it just gives you more options.<cite>shevy-java</cite></blockquote></div>
+          <p class="drawer-footer"><a href="#dossier-6">View in Dossier ↓</a></p>
+        </div>
+      </details>
+    </div>
+  </section>
+  <section id="story-7" class="spread arc-midnight">
+    <div class="numeral">07</div>
+    <div class="body">
+      <div class="kicker">// Privacy Tech</div>
+      <h2>The Eye of Sauron Finds Cameras in the Dark</h2>
+      <p class="story-meta">usenix.org &nbsp;·&nbsp; 169 pts &nbsp;·&nbsp; 39 comments</p>
+      <p class="lede">ESauron listens for electromagnetic traces produced as hidden cameras encode and store images. In tests across 50 devices, deliberate scene changes helped locate every camera from more than 20 meters away—even when the devices were offline.</p>
+      <div class="spread-links"><a class="read-more" href="https://www.usenix.org/conference/usenixsecurity24/presentation/zhang-qibo" target="_blank" rel="noopener">Read →</a><a class="read-more share-link" href="#" data-share-title="Eye of Sauron: Long-Range Hidden Spy Camera Detection (2024)" data-share-url="https://www.usenix.org/conference/usenixsecurity24/presentation/zhang-qibo">Share →</a>
+      <details class="analysis-drawer">
+        <summary class="btn-dossier">[ Analysis + ]</summary>
+        <div class="drawer-content">
+          
+          <h4>Technical Analysis</h4>
+          <div class="drawer-analysis">
+          <p>The paper presents ESauron, a proof-of-concept system for detecting and locating hidden cameras—including wireless, wired, and offline devices—from distances exceeding 20 meters. It exploits electromagnetic radiation produced by cameras’ memory and voltage-regulator activity during image encoding and storage, particularly when deliberate scene changes increase the processing workload. In tests involving 50 camera products, the system reportedly identified every device after four stimuli and accurately pinpointed their positions, even through obstacles. The work is important because it suggests a non-network-based way to audit spaces for covert cameras, though its real-world reliability and deployment constraints require further evaluation.</p>
+          </div>
+          <h4>Reader Reactions</h4>
+<p class="camps-framing">Commenters generally found the approach clever and potentially useful, while differing on how novel it is and how well it would work in practice. The discussion weighed detection range against interference, shielding, and possible evasion, and connected the technique to other surveillance countermeasures and security concerns.</p>
+<div class="camp"><p class="camp-label"><strong>Promising privacy tool</strong> &mdash; Some commenters saw the method as a clever addition to efforts to detect covert cameras and other listening devices.</p><blockquote>This is a genius approach.<cite>ashkankiani</cite></blockquote>
+<blockquote>This gives me hope for being able to actually fight in the cat and mouse game of privacy that&#x27;s coming up.<cite>ashkankiani</cite></blockquote>
+<blockquote>The speaker in the video was extremely difficult for me to understand but the idea seems quite clever.<cite>ranger_danger</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>An old problem with newer tools</strong> &mdash; Commenters placed the work in a longer history of technical surveillance countermeasures, while noting that modern equipment is smaller and cheaper.</p><blockquote>This isn&#x27;t really a new thing.<cite>walrus01</cite></blockquote>
+<blockquote>Some serious TSCM firms have been doing this for 35 years, just the equipment is a hell of a lot smaller and cheaper now.<cite>walrus01</cite></blockquote>
+<blockquote>This made me think of The Thing, a fascinating listening device made by the Soviets that was completely passive until powered remotely.<cite>sholladay</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Practical limits and uncertain reliability</strong> &mdash; Commenters questioned how reliably the signal can be distinguished from background radio traffic and how much results depend on shielding and device design.</p><blockquote>Interesting - but 800-900MHz (the mentioned harmonic frequencies) are blasted with LTE and 5G in Europe.<cite>BlackRabbit1</cite></blockquote>
+<blockquote>That&#x27;s still not a bad range compared to other similar projects attempting to detect hidden cameras using EM.<cite>Karliss</cite></blockquote>
+<blockquote>I did not think such EM fluctuations would be usably detectable from several meters away... but I suppose this may be moreso due to improper/lack of shielding in the first place, which I would think should be easily fixable in most products to mitigate this type of detection.<cite>ranger_danger</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Detection prompts countermeasures</strong> &mdash; A technical thread considered ways cameras might reduce detectable emissions through shielding, altered processing, or recording patterns.</p><blockquote>So the mitigation is to have larger memory buffers so processing/emissions can be delayed (assuming simple shielding isn&#x27;t enough).<cite>gblargg</cite></blockquote>
+<blockquote>Ensuring almost perfect shielding is cheaper and simpler.<cite>adrian_b</cite></blockquote>
+<blockquote>A better mitigation might be to take a leaf from cryptography and develop a constant-time codec.<cite>fwlr</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Other methods cover different blind spots</strong> &mdash; Commenters pointed to other approaches that may detect unpowered or actively transmitting devices, or address cameras with electronics separated from the lens.</p><blockquote>The final boss of detection doesn&#x27;t need the camera to be powered at all.<cite>bob1029</cite></blockquote>
+<blockquote>Yes but only for detecting 5ghz WiFi cameras (actively streaming).<cite>deoxykev</cite></blockquote>
+<blockquote>They already use fiber-optic borescopes with no electronics on the lens side to create distance from electronics when their targets do sweeps.<cite>u1hcw9nx</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Strategic and intelligence stakes</strong> &mdash; Some commenters emphasized possible national-security and corporate-espionage implications, and speculated that classified capabilities may go further.</p><blockquote>This feels very impactful for national security and corporate espionage.<cite>Jackobrien</cite></blockquote>
+<blockquote>Intelligence services are very likely far ahead and for obvious reasons the public is not privy to it.<cite>samus</cite></blockquote></div>
+          <p class="drawer-footer"><a href="#dossier-7">View in Dossier ↓</a></p>
+        </div>
+      </details>
+    </div>
+    </div>
+  </section>
+  <section id="story-8" class="spread arc-academic-drop-cap">
+    <div class="paper-head">
+      <span>Research Desk</span>
+      <span class="numeral-roman">VIII</span>
+      <span>news.vt.edu</span>
+    </div>
+    <h2>Processing Changes More Than the Nutrition Label</h2>
+    <p class="story-meta">news.vt.edu &nbsp;·&nbsp; 48 pts &nbsp;·&nbsp; 29 comments</p>
+    <div class="cols">
+      <div><p>In a controlled study of 57 adults, matched meals produced different insulin, blood-sugar, energy-expenditure, and brain-activity responses depending on processing level.</p></div>
+      <div><p>The findings suggest that food structure and formulation matter, while the small, short-term design counsels restraint.</p><div class="spread-links"><a class="read-more" href="https://news.vt.edu/articles/2026/10/research_fralinbiomed_upfhutelin.html" target="_blank" rel="noopener">Read →</a><a class="read-more share-link" href="#" data-share-title="Food processing influences metabolism and brain activity" data-share-url="https://news.vt.edu/articles/2026/10/research_fralinbiomed_upfhutelin.html">Share →</a>
+      <details class="analysis-drawer">
+        <summary class="btn-dossier">[ Analysis + ]</summary>
+        <div class="drawer-content">
+          
+          <h4>Technical Analysis</h4>
+          <div class="drawer-analysis">
+          <p>Virginia Tech researchers studied 57 healthy adults who ate 300-calorie meals matched for calories, macronutrients, water, salt, and weight but differing in processing level. The ultraprocessed meals produced higher insulin responses, slightly more prolonged blood sugar elevation, greater energy expenditure, and lower carbohydrate burning, while also altering activity in brain reward regions in ways associated with metabolic responses. The findings suggest that industrial processing, additives, or food structure may influence metabolism and food-related brain activity beyond standard nutrition-label measures. Because ultraprocessed foods make up a large share of diets and are linked observationally to obesity, diabetes, cardiovascular disease, and other health problems, the study offers possible mechanisms, though its small, short-term design and differing ingredients require further research.</p>
+          </div>
+          <h4>Reader Reactions</h4>
+<p class="camps-framing">Commenters considered whether processing may affect metabolism while questioning what the study’s matched meals allow researchers to attribute to processing itself. Discussion focused on food structure, possible psychological responses, other meal differences and unknown mechanisms, the boundaries of NOVA categories, and the limits of a small study.</p>
+<div class="camp"><p class="camp-label"><strong>Food structure and digestion matter</strong> &mdash; Some commenters argued that matching nutrients and glycemic index may not capture how food structure or the pairing of fiber with carbohydrates affects digestion. Others checked the paper and noted that total dietary fiber was matched.</p><blockquote>So they did match glycemic index, which the article omits.<cite>esperent</cite></blockquote>
+<blockquote>I was about to comment that the physical structure of the food and the fiber content also make a difference.<cite>andor</cite></blockquote>
+<blockquote>The high carb foods in the unprocessed meal are paired with fiber.<cite>canucker2016</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Learned or psychological insulin response</strong> &mdash; A few commenters proposed that expectations, taste, or learned associations with ultra-processed foods might affect insulin responses independently of a food’s direct effect on blood glucose. These were presented as possible mechanisms, not established findings.</p><blockquote>I bet a lot of this is psychosomatic, you expect some food will give you fast energy so your body thinks that means you need it and releases insulin.<cite>tancop</cite></blockquote>
+<blockquote>If your body gets a load of sugar every time it tastes UPF additives, it learns to release insulin on taste to protect itself.<cite>PowerElectronix</cite></blockquote>
+<blockquote>Meaning that you&#x27;d get a different insulin response if you ingested something bypassing taste receptors vs being able to taste that food.<cite>rpozarickij</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Meal order and other differences could affect results</strong> &mdash; Commenters raised eating order and differences in the meals’ ingredients as possible influences on glucose responses, complicating efforts to isolate processing as the cause. One commenter offered personal measurements that did not show an effect from meal order.</p><blockquote>Another option is that it&#x27;s affected by the order of consumption.<cite>nrclark</cite></blockquote>
+<blockquote>I notice that the unprocessed one is grain-free, vegetarian and has significantly less sucrose.<cite>nrclark</cite></blockquote>
+<blockquote>The recommendations of eating salad before your meal do nothing measureable for my glucose spikes.<cite>jwr</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Processing is not yet isolated as the cause</strong> &mdash; Some commenters cautioned that matching selected meal characteristics does not rule out micronutrients, additives, or other unknown factors. Their comments emphasized uncertainty about the mechanism rather than dismissing the result.</p><blockquote>That means the only options left are micronutrients, specific additives or psychology.<cite>tancop</cite></blockquote>
+<blockquote>That means the only options left are plus all of the options that are complete unknowns which, in biology, is probably close to 99.999%<cite>eudkfkriEir</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>NOVA categories are blurry or counterintuitive</strong> &mdash; Commenters questioned whether NOVA draws a consistent line between processed and ultra-processed foods, citing chips, peanut butter, jelly, and cheese. Replies pointed to additives and industrial reformulation as distinctions, while acknowledging that the categories can have blurry boundaries.</p><blockquote>For instance, if you buy a deep fryer and a mandolin slicer to make your own potato chips at home, they&#x27;re classified as processed foods.<cite>pythonRon</cite></blockquote>
+<blockquote>I don&#x27;t think that either peanut butter or jelly is more processed than cheese.<cite>astura</cite></blockquote>
+<blockquote>The lines between get blurry.<cite>delichon</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Small sample warrants caution, but is not a dismissal</strong> &mdash; One commenter asked whether 57 participants were enough, while replies said larger studies would be useful but smaller studies can still provide evidence. A further reply argued that observing a signal suggests it was detectable at this sample size.</p><blockquote>I believe they are on to something, but wouldn&#x27;t it be much better if the sample size was larger than just 57 people?<cite>TheChaplain</cite></blockquote>
+<blockquote>Of course but I&#x27;m sure they made the sample size as large as their funding permitted and it&#x27;s better than nothing.<cite>esperent</cite></blockquote>
+<blockquote>Since a signal was seen here effect size doesn’t seem to be the problem.<cite>arrrg</cite></blockquote></div>
+          <p class="drawer-footer"><a href="#dossier-8">View in Dossier ↓</a></p>
+        </div>
+      </details>
+    </div></div>
+    </div>
+  </section>
+  <section id="story-9" class="spread arc-editorial-pullquote">
+    <div class="left">
+      <div class="numeral">09</div>
+      <div class="kicker">Accountability</div>
+      <h2>Computers Do Not Carry the Blame</h2>
+      <p class="story-meta">wiki.cateat.fish &nbsp;·&nbsp; 95 pts &nbsp;·&nbsp; 80 comments</p>
+      <div class="spread-links"><a class="read-more" href="https://wiki.cateat.fish/art:computers_cannot_make_decisions" target="_blank" rel="noopener">Read →</a><a class="read-more share-link" href="#" data-share-title="Computers Cannot Make Decisions" data-share-url="https://wiki.cateat.fish/art:computers_cannot_make_decisions">Share →</a>
+      <details class="analysis-drawer">
+        <summary class="btn-dossier">[ Analysis + ]</summary>
+        <div class="drawer-content">
+          
+          <h4>Technical Analysis</h4>
+          <div class="drawer-analysis">
+          <p>The article argues that computers and AI systems do not make decisions independently; responsibility rests with the people and organizations that design, deploy, constrain, and profit from them. It frames blaming an LLM for harmful outcomes as “decision laundering,” particularly when companies such as OpenAI and Anthropic could technically restrict certain behaviors but choose not to. The piece also contends that weak accountability and regulation persist because governments and businesses prioritize economic interests. Its importance lies in emphasizing human agency and corporate responsibility in debates about AI safety, liability, and governance.</p>
+          </div>
+          <h4>Reader Reactions</h4>
+<p class="camps-framing">Commenters broadly agreed that people and organizations should not use AI as a scapegoat, but disagreed about whether computers make decisions and how responsibility should be assigned. The discussion also addressed safeguards and intent, and whether the article accurately represented AI’s risks, benefits, and the reader’s role.</p>
+<div class="camp"><p class="camp-label"><strong>Humans responsible for deployed systems</strong> &mdash; These commenters argued that responsibility rests with the people who authorize, equip, and deploy systems, rather than with the systems themselves. Some framed this as ordinary managerial accountability for delegation and inadequate guardrails.</p><blockquote>whoever allowed it to make decisions is ultimately responsible for them.<cite>roncesvalles</cite></blockquote>
+<blockquote>You, the human who executed the agent, made the decision to execute it. You gave it credentials, and set up insufficient guardrails.<cite>solatic</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Trace accountability to people with power</strong> &mdash; These commenters warned that assigning blame to a company can let the individuals who made or delegated consequential decisions evade responsibility. They favored tracing accountability through the chain of command, while others noted that corporate liability can hold delegating managers responsible.</p><blockquote>So that blame can be diluted and deflected in a very convenient manner for CEOs.<cite>edwcross</cite></blockquote>
+<blockquote>Individual actual humans make decisions and they&#x27;re the ones who should be held accountable.<cite>foreigner</cite></blockquote>
+<blockquote>ultimate responsibility is always of the ceo.<cite>Luker88</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Computers do make decisions</strong> &mdash; These commenters rejected the claim that computers cannot make decisions, pointing to routine software choices and systems that outperform people in particular domains. They distinguished decision-making from being morally or legally accountable.</p><blockquote>Computers make decisions all the time, and have been doing so for decades.<cite>znpy</cite></blockquote>
+<blockquote>What is a chess computer doing, if not making decisions on what move to play?<cite>OroPla</cite></blockquote>
+<blockquote>I think it’s transparently clear that computers make decisions all the time, and have done since they were first implemented.<cite>OtherShrezzing</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Machines execute; humans choose</strong> &mdash; These commenters argued that software follows code or produces outputs and tool calls, while humans decide what to build, authorize, and connect to consequential actions. They cautioned that describing system outputs as decisions can obscure those human choices.</p><blockquote>The human made the decision to write the harness The human is responsible<cite>rcvassallo83</cite></blockquote>
+<blockquote>the computer didn’t make a decision.<cite>shric</cite></blockquote>
+<blockquote>Any given state of a program is only a &quot;decision&quot; if a human intends it to be.<cite>dofm</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Safeguards, intent, and realistic limits</strong> &mdash; These commenters disagreed over whether safeguards were reasonable and whether harmful outcomes demonstrate intent. Some stressed that safeguards can be difficult to perfect or bypassed; others argued that broken safeguards are not reasonable and that uncertainty about containment heightens the need for responsibility.</p><blockquote>Reasonable safeguards were in place.<cite>user43928</cite></blockquote>
+<blockquote>Inadequate or broken safeguards do not fall under my definition of reasonable.<cite>Leynos</cite></blockquote>
+<blockquote>AI is irresponsible technology, because we have no idea how it works or how to contain it.<cite>amelius</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Challenges to the article’s framing</strong> &mdash; These commenters objected to the article’s rhetoric, including its assignment of blame to readers and its emphasis on dramatic risks. Some emphasized AI’s practical benefits or questioned which specific behavior the article was addressing.</p><blockquote>Author makes it all personal and accuses the reader with bold and unsubstabtiated claims.<cite>tosti</cite></blockquote>
+<blockquote>People pay because AI is USEFUL, and massively so.<cite>magic_hamster</cite></blockquote>
+<blockquote>what AI specific behavior are we actually talking about?<cite>vladsh</cite></blockquote></div>
+          <p class="drawer-footer"><a href="#dossier-9">View in Dossier ↓</a></p>
+        </div>
+      </details>
+    </div>
+    </div>
+    <blockquote class="pullquote">Delegating a decision does not delegate responsibility.</blockquote>
+  </section>
+  <section id="story-10" class="spread arc-product-plate">
+    <div class="product-chip">SPECS</div>
+    <div class="kicker">Design Tool</div>
+    <h2>Cube Type Turns Words Into Isometric Blocks</h2>
+    <div class="product-rule"></div>
+    <p class="story-meta">typeincube.com &nbsp;·&nbsp; 19 pts &nbsp;·&nbsp; 1 comments</p>
+    <p class="lede">Cube Type is a browser playground for arranging text as geometric, cube-like letterforms. With line wrapping, manual breaks, and simple positioning controls, it keeps the experiment focused: type in, compose, and inspect the shape.</p>
+    <div class="spread-links"><a class="read-more" href="https://typeincube.com/" target="_blank" rel="noopener">Read →</a><a class="read-more share-link" href="#" data-share-title="Cube Type – Isometric Typography Generator" data-share-url="https://typeincube.com/">Share →</a>
+      <details class="analysis-drawer">
+        <summary class="btn-dossier">[ Analysis + ]</summary>
+        <div class="drawer-content">
+          
+          <h4>Technical Analysis</h4>
+          <div class="drawer-analysis">
+          <p>Cube Type is a small web-based playground for creating isometric typography, rendering user-entered text as cube-like letterforms. It wraps lines at 12 characters while preserving manually inserted line breaks, and offers a square 1:1 format with simple positioning or layout controls such as “Top left.” The tool appears focused on experimentation and visual composition rather than a broader product or business service. Its value is as an accessible way for designers and typographers to explore a distinctive geometric style directly in the browser.</p>
+          </div>
+          <h4>Reader Reactions</h4>
+<p class="camps-framing">The comments are brief and positive, with one highlighting unusually detailed, AI-directed documentation in the page source and the other playfully suggesting a way to monetize the design.</p>
+<div class="camp"><p class="camp-label"><strong>Appreciation for the source documentation</strong> &mdash; A commenter praises the explicit documentation in the page head, including its historical context and guidance aimed at AI agents.</p><blockquote>Very explicit documentation of decisions, clear historical context, and lot of warnings and &quot;donts&quot; that seem to be directed towards AI agents building this site.<cite>armcat</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Playful commercialization</strong> &mdash; A commenter jokingly imagines turning the design into a source of merchandise revenue.</p><blockquote>You just need to add a button that says “buy t-shirt” then… infinite money<cite>jonwinstanley</cite></blockquote></div>
+          <p class="drawer-footer"><a href="#dossier-10">View in Dossier ↓</a></p>
+        </div>
+      </details>
+    </div>
+  </section>
+  <section id="dossier" class="dossier">
+    <div class="dossier-head">
+      <div class="tagline">Appendix</div>
+      <h2>The Dossier</h2>
+      <p class="intro">Full analysis and reactions for today's 10 stories. <a href="#top">↑ Back to the edition</a></p>
+    </div>
+    <article id="dossier-1" class="dossier-entry">
+      <div class="dossier-meta">N<sup>o</sup> 01 &nbsp;·&nbsp; Caution Tape &nbsp;·&nbsp; Breach Watch</div>
+      <h3>`123456&#x27; password used in Danish CPR data breach</h3>
+      <p class="dossier-source">
+        <a href="https://cphpost.dk/2026-10-10/news/round-up/123456-password-used-in-massive-danish-cpr-data-breach/" target="_blank" rel="noopener">cphpost.dk</a>
+        &nbsp;·&nbsp; 81 pts &nbsp;·&nbsp; 53 comments
+         &nbsp;·&nbsp; <a href='https://news.ycombinator.com/item?id=50031269' target='_blank' rel='noopener'>discussion</a>
+      </p>
+      <h4>Analysis</h4>
+      <p>A Danish IT company, Pays ApS, reportedly allowed at least three accounts—including an administrator account—to use the password “123456,” enabling hackers to access Denmark’s CPR civil-registration system. The attackers allegedly exploited a former employee’s leaked credentials and accessed the system for nearly 22 days, extracting data associated with about 8.8 million CPR numbers. Pays had legitimate access to the register to retrieve information for customers or members, illustrating how third-party access can create risks for sensitive government databases. The incident is important because weak authentication and inadequate account management exposed extensive personal information and raised serious questions about oversight of organizations permitted to query the CPR system.</p>
+      <h4>Reader Reactions</h4>
+<p class="camps-framing">The discussion treated the weak password as one part of a broader security and governance failure. Commenters differed over responsibility for the incident, the adequacy of password practices and access controls, and whether security and productivity must conflict. Side discussions addressed government and vendor oversight, CPR numbers as authentication information, and the value of accountability and postmortems.</p>
+<div class="camp"><p class="camp-label"><strong>Systemic responsibility and accountability</strong> &mdash; These commenters placed responsibility beyond the person who chose the password, pointing to organizational oversight and the value of investigating root causes rather than simply moving on.</p><blockquote>Its always , oh yeah so we fired the guy furthest down the ladder.<cite>ionwake</cite></blockquote>
+<blockquote>I love getting to the root cause of these incidents. Hate it when they just move on with no post mortem, the rest of us are trying to learn here!<cite>INTPenis</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Basic password hygiene</strong> &mdash; These commenters regarded 123456 as an indefensible password and argued that usable tools and basic safeguards can prevent weak credentials.</p><blockquote>In fact using password manager is more convenient than typing password manually, even 123456 :)<cite>ulfbert_inc</cite></blockquote>
+<blockquote>Setting &#x27;123456&#x27; as a password on any non-trivial system is not &quot;the shortest route possible to maximize their productivity.&quot;<cite>altmanaltman</cite></blockquote>
+<blockquote>It&#x27;s easy to blame the individual users but any system (designed by incompetent people) that accepts such a password as valid deserves whatever compromise it gets.<cite>caaqil</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Audit access and limit the blast radius</strong> &mdash; These commenters focused on the duration and scope of access, proposing regular audits, least-privilege controls, and monitoring for misuse.</p><blockquote>I think that the third parties who have been granted access to the civil registry should be audited on a regular basis for the “best practices” of the day.<cite>sokols</cite></blockquote>
+<blockquote>A least privilege access redesign seems reasonable too. And abuse monitoring; the leak went on for 21 days undetected.<cite>zweifuss</cite></blockquote>
+<blockquote>And then completely unchecked access to the CPR database for 22 days which apparently does not have monitoring or limits if someone tries to access all the records (they must have made some 16k downloads per hour).<cite>ano-ther</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Government and vendor oversight</strong> &mdash; These commenters questioned how basic controls and competence were overseen, including the role of outsourcing and procurement rules.</p><blockquote>How does a government completely lack controls or oversight for basic competence?<cite>sneak</cite></blockquote>
+<blockquote>When doing a contract on such programs the Danish government must take the cheapest offer by rule<cite>LarsKrimi</cite></blockquote>
+<blockquote>Its interesting, while private companies just blast our data out there, I cannot install the software I need to do my work because the state IT provider blocks it on security grounds.<cite>tokai</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>CPR numbers should not function as secrets</strong> &mdash; These commenters questioned relying on widely readable personal identifiers for authentication and discussed what information CPR numbers reveal.</p><blockquote>In sweden, this data is public by design. Authentication happens using public/private key and other secure mechanisms.<cite>tuwtuwtuwtuw</cite></blockquote>
+<blockquote>It&#x27;s unique, but it encodes your birthday and sex. There&#x27;s only 500 numbers it could be, assuming someone knows those other things about you.<cite>lordnacho</cite></blockquote>
+<blockquote>For some unknown reason, the SSN in USA is assumed to be secret.<cite>gus_massa</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Security versus productivity</strong> &mdash; These commenters debated whether security and productivity are opposing goals, with replies arguing that basic protections need not require a tradeoff.</p><blockquote>It&#x27;s tussle between two counter-acting forces at play.<cite>zkmon</cite></blockquote>
+<blockquote>It really doesn&#x27;t have to be, and setting things up as adversarial is counter-productive.<cite>tialaramex</cite></blockquote>
+<blockquote>I would love to hear about a world where security and productivity are not counter acting forces.<cite>tossandthrow</cite></blockquote></div>
+    </article>
+    <article id="dossier-2" class="dossier-entry">
+      <div class="dossier-meta">N<sup>o</sup> 02 &nbsp;·&nbsp; Blueprint &nbsp;·&nbsp; Build Log</div>
+      <h3>REA Reverse – Engineer Anything</h3>
+      <p class="dossier-source">
+        <a href="https://rea.tools/" target="_blank" rel="noopener">rea.tools</a>
+        &nbsp;·&nbsp; 451 pts &nbsp;·&nbsp; 175 comments
+         &nbsp;·&nbsp; <a href='https://news.ycombinator.com/item?id=50028275' target='_blank' rel='noopener'>discussion</a>
+      </p>
+      <h4>Analysis</h4>
+      <p>REA is a toolkit that connects coding agents to reverse-engineering workflows, enabling them to inspect running web applications, JavaScript/Electron packages, native binaries, and browser or process activity. Its demonstrations show an agent recovering Chrome’s dinosaur-game acceleration logic and Windows Calculator’s context-dependent percentage behavior, then using those findings to build simplified reproductions. The project combines runtime observation, source and binary analysis, controlled validation, and generated explanations rather than relying solely on static code reading. It is relevant for understanding, debugging, cloning, modifying, or rebuilding software when documentation or source code is unavailable, though its practical use depends on access to the target program and suitable debugging or analysis environments.</p>
+      <h4>Reader Reactions</h4>
+<p class="camps-framing">Commenters are broadly impressed by agents’ ability to analyze binaries and revive or modify software, while debating what this changes for reverse-engineering communities, how much value dedicated workflows add, and whether AI-assisted alternatives can be dependable and legally sound. Some also question whether access mediated by commercial models is genuinely open.</p>
+<div class="camp"><p class="camp-label"><strong>Practical access and preservation</strong> &mdash; Some commenters describe agents as useful for fixing bugs, understanding programs, and restoring older software, with preservation and broader access as important potential benefits.</p><blockquote>The benefit to preservation would be incredible.<cite>ashdnazg</cite></blockquote>
+<blockquote>And it just did it.<cite>SyzygyRhythm</cite></blockquote>
+<blockquote>It’s able to understand the data formats, unpack graphics and sound assets, and reconstruct game logic.<cite>armcat</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Reverse engineering as craft and community</strong> &mdash; Some worry that automating decomps and ports could reduce opportunities for people to collaborate around shared technical challenges and build lasting communities.</p><blockquote>But we don&#x27;t end up with the rich, vibrant communities that get created in the inherent process of collaborating on a project.<cite>InvisibleUp</cite></blockquote>
+<blockquote>So perhaps then, the sentiment being as negative as it is, is revealing something about the hobby: that many participants, considered the metagame of being the first to do it, to be &quot;smart enough&quot; to have figured it out, the &quot;street cred&quot; if you were, is what they are lamenting, but they just either lack the words, or aren&#x27;t being honest with themselves.<cite>cassonmars</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Hobbies can survive automation</strong> &mdash; Others argue that automating a result does not prevent people from enjoying the process themselves, drawing comparisons with hobbies that persist alongside automated or easier alternatives.</p><blockquote>$800-level consumer 3D printers let people make highly detailed plastic models of things with very little level of technical knowledge, but people still buy and hand assemble LEGO kits for the fun of it.<cite>walrus01</cite></blockquote>
+<blockquote>Same idea; the existence of AI doesn&#x27;t stop people who love the act of reverse engineering from doing it.<cite>mjr00</cite></blockquote>
+<blockquote>because someone ported aomething it doesnt mean u cant do it anymore... how does it eliminate hobbyists exactyl? hobbyists are the ones AI doesnt really impact because they pursue joy rather than financial gains in their craft...<cite>saidnooneever</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>What a dedicated workflow adds</strong> &mdash; Some question whether a specialized reverse-engineering agent does more than a capable coding agent using familiar tools, while others see value in a ready-made workflow for people without established methods.</p><blockquote>How exactly is this better than telling Claude for example to &quot;install and set up a full RE environment including Ghidra&quot; on my local system and get to work?<cite>ethin</cite></blockquote>
+<blockquote>I think this is aimed at people who do not have a “current RE methodology”, do not know enough to specify things like Ghidra, etc., but who do have a desire to feel like they reverse-engineered and can reliably predict that a conversation with a chatbot will make them feel that way.<cite>fwlr</cite></blockquote>
+<blockquote>Because it&#x27;s already been done for you? Sure, you can spend your own tokens on it, but it&#x27;s probably cheaper and more time-effective to use something that already exists and does the job.<cite>ambicapter</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Reimplementation’s promise and limits</strong> &mdash; Commenters see potential in alternatives to proprietary software, but dispute whether clones are sufficiently reliable, sustainable, or legally separated from the products they resemble.</p><blockquote>The main reason people pay Adobe is because it&#x27;s a familiar line of stable, well-supported, interoperable, and actively-developed products.<cite>socializer</cite></blockquote>
+<blockquote>We&#x27;re working our asses off on this.<cite>echelon</cite></blockquote>
+<blockquote>Using an LLM is not a clean room, imo.<cite>lifeisloving</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Freedom from closed software, with model dependence</strong> &mdash; Some welcome reverse engineering as a route to greater access and user control; others question whether that access is durable when it depends on commercial models and their safeguards.</p><blockquote>&quot;Source code? We don&#x27;t need no stinkin&#x27; source code!&quot;<cite>userbinator</cite></blockquote>
+<blockquote>Wouldn&#x27;t this be reliant on continued and cheap access to the models?<cite>ares623</cite></blockquote>
+<blockquote>Yay, all software will be open…Except the models.<cite>TheSamFischer</cite></blockquote></div>
+    </article>
+    <article id="dossier-3" class="dossier-entry">
+      <div class="dossier-meta">N<sup>o</sup> 03 &nbsp;·&nbsp; Rose Alert &nbsp;·&nbsp; Security Callout</div>
+      <h3>Telegram Desktop vulnerability allowed any user&#x27;s file to be stolen</h3>
+      <p class="dossier-source">
+        <a href="https://beaksec.github.io/posts/telegram-desktop-one-click-account-takeover/" target="_blank" rel="noopener">beaksec.github.io</a>
+        &nbsp;·&nbsp; 191 pts &nbsp;·&nbsp; 91 comments
+         &nbsp;·&nbsp; <a href='https://news.ycombinator.com/item?id=50029123' target='_blank' rel='noopener'>discussion</a>
+      </p>
+      <h4>Analysis</h4>
+      <p>A vulnerability in Telegram Desktop through version 7.2.8 allowed a single clicked link to inject commands into the already-running client through its local IPC socket. By combining unescaped command separators with Telegram’s internal `interpret:` feature, attackers could make the application read arbitrary local files and upload them to an attacker-controlled chat, including session data. On systems without a Telegram local passcode, stolen files could be used to reconstruct the victim’s session and take over the account. Telegram fixed the issue in version 7.2.9 by removing the legacy file-sending mechanism and properly escaping IPC data; users should upgrade and consider disabling automatic downloads.</p>
+      <h4>Reader Reactions</h4>
+<p class="camps-framing">Commenters treat the flaw as serious while debating whether it chiefly reflects a Telegram bug or weak desktop-app isolation. The discussion also covers sandboxing, Telegram’s broader security reputation and usability, and whether political concerns should affect trust in the service.</p>
+<div class="camp"><p class="camp-label"><strong>Telegram’s bug and the operating system’s role</strong> &mdash; Some commenters emphasize that Telegram mishandled input and made the attack possible; others argue that operating systems should limit the damage an app can cause when it is compromised.</p><blockquote>No, it&#x27;s definitely a Telegram specific vulnerability. It might be worse because of poor defense in depth, but without Telegram itself being vulnerable it wouldn&#x27;t matter.<cite>yjftsjthsd-h</cite></blockquote>
+<blockquote>But allowing such vulnerabilities to deal damage beyond data of its host application is an OS vulnerability.<cite>Panzerschrek</cite></blockquote>
+<blockquote>Of course operating systems should support that isolation (hopefully in some better way than the hell that smartphones are), but it&#x27;s not like Telegram can blame the OS for this vulnerability.<cite>g-b-r</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>App isolation should be stronger but usable</strong> &mdash; Some favor limiting apps to their own files and explicitly shared data. Replies note the practical costs of restrictive access and suggest shared folders as a compromise.</p><blockquote>There is a lot of middle ground between “every app can do anything as the user” and “no shared file system, no user access to app ‘owned’ files”.<cite>lxgr</cite></blockquote>
+<blockquote>There is a lot of middle ground, like having a shared folder for access. &quot;Downloads&quot; might be a good default, if clearly communicated, that anything in there, is accessible by any app.<cite>lukan</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Web apps and sandboxes can reduce exposure</strong> &mdash; Some commenters prefer web versions or sandboxed apps to limit access to local files, while others caution that browsers and sandboxing still have risks.</p><blockquote>The web experience is practically indistinguishable and much more secure.<cite>modeless</cite></blockquote>
+<blockquote>When I really need to run an app on my Linux laptop, it always gets its own bubblewrap container.<cite>Eueudhsbsj32</cite></blockquote>
+<blockquote>Don&#x27;t let yourself be fooled into thinking this is enough. Plenty of examples of, especially through wasm, being able to reach far beyond what they&#x27;re supposed to.<cite>monster_truck</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Telegram’s broader security reputation is a concern</strong> &mdash; Commenters point to concerns beyond this flaw, including encryption defaults and the service’s protocols and security posture. Some stress that the file-exfiltration vulnerability remains noteworthy on its own.</p><blockquote>I thought telegram was flagged as insecure like a decade ago, it&#x27;s never really been &quot;very secure&quot;<cite>erelong</cite></blockquote>
+<blockquote>The main reason I consider it suspicious is that they are so adamant about not needing end-to-end encryption.<cite>lxgr</cite></blockquote>
+<blockquote>A file exfiltration vulnerability is still noteworthy.<cite>g-b-r</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Some users accept security tradeoffs for Telegram’s usability</strong> &mdash; Some users value Telegram’s features and polish despite its privacy limitations, while others question whether those benefits justify the tradeoff.</p><blockquote>Still we are using it, because UX kills any other app and people that are (probably) behind it will cause almost no harm to casual, not-interesting people :)<cite>misiek08</cite></blockquote>
+<blockquote>but Telegram is the most polished IM experience of all the apps I have tried.<cite>maxgashkov</cite></blockquote>
+<blockquote>Why would you rather have your data with who knows who than just your metadata?<cite>lxgr</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Political ties and national framing shape trust</strong> &mdash; Commenters debate whether concerns about Telegram’s political and corporate connections are distinct from prejudice based on its founder’s nationality.</p><blockquote>I dont write off software because where the person that made it was born.<cite>lifeisloving</cite></blockquote>
+<blockquote>There are indications that it could be much closer to the Russian government than they pretend, but that matters not because Russians are bad people, but because the current government of Russia is an aggressive dictatorship.<cite>g-b-r</cite></blockquote>
+<blockquote>The main spy feature that is Telegram collecting 100% of content and metadata is the main feature for every intelligence agency who bothers to ask Mythos to find zero days to pwn the servers.<cite>maqp</cite></blockquote></div>
+    </article>
+    <article id="dossier-4" class="dossier-entry">
+      <div class="dossier-meta">N<sup>o</sup> 04 &nbsp;·&nbsp; Obituary &nbsp;·&nbsp; Project Sunset</div>
+      <h3>Cloudflare acquires Deno</h3>
+      <p class="dossier-source">
+        <a href="https://deno.com/blog/cloudflare" target="_blank" rel="noopener">deno.com</a>
+        &nbsp;·&nbsp; 1244 pts &nbsp;·&nbsp; 632 comments
+         &nbsp;·&nbsp; <a href='https://news.ycombinator.com/item?id=50019911' target='_blank' rel='noopener'>discussion</a>
+      </p>
+      <h4>Analysis</h4>
+      <p>Cloudflare is acquiring Deno, bringing its entire team into Cloudflare to develop a shared platform based on Workers, Durable Objects, and Deno’s “celld” distributed-application model. The move shifts Deno’s focus from maintaining a separate JavaScript runtime and hosting service toward Cloudflare’s serverless infrastructure, with an emphasis on integrated compute, storage, communication, and potentially AI agent workloads. The Deno runtime will receive bug and security updates for one year before development ends, while Deno Deploy will shut down after six months with migration support for paying customers. JSR will continue under Cloudflare, and the team will keep supporting rusty_v8 while working toward its integration with workerd, making the acquisition significant for Deno users who must plan for platform changes and migration.</p>
+      <h4>Reader Reactions</h4>
+<p class="camps-framing">Reactions center on the end of Deno runtime development and what that means for users, while commenters differ on whether the transition is a loss of a valuable independent runtime or a shift toward Cloudflare’s self-hosting plans. Other threads consider Deno’s market choices, the reliability of newer runtimes, and who will sustain open-source infrastructure.</p>
+<div class="camp"><p class="camp-label"><strong>Deno users facing a loss</strong> &mdash; Users and admirers express disappointment about the runtime’s sunset and uncertainty about migration, continued use, and whether a community will maintain it.</p><blockquote>I&#x27;m so bummed about this. Deno is by far my favourite JS runtime.<cite>steve_adams_86</cite></blockquote>
+<blockquote>this makes me so angry. I&#x27;ve literally spent months working on my tui. I hope to god deno keeps going.<cite>gnarbarian</cite></blockquote>
+<blockquote>I’ll continue to use it and hope a community springs up.<cite>johnbellone</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Deno had real technical value</strong> &mdash; Commenters praise Deno’s developer experience and ideas, and some credit it with prompting improvements in Node.js.</p><blockquote>it has a great developer experience.<cite>phaser</cite></blockquote>
+<blockquote>Deno did bring lot of good ideas and hope some of them will flow into Node, especially full typescript type stripping, package less imports to name a few.<cite>singularity2015</cite></blockquote>
+<blockquote>at least Deno pushed Node.js to evolve.<cite>RossH</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Established tools feel safer</strong> &mdash; Some commenters view Node.js as the dependable default and treat Deno’s limited adoption as a caution against relying on newer runtimes for critical projects.</p><blockquote>Companies went all-in in a barely established niche player with 1/100 the traction, instead of sticking with Node, and even better an LTS Node, and are now surprised?<cite>coldtea</cite></blockquote>
+<blockquote>There&#x27;s basically no reason not to just go with Node as 99% of projects out there do<cite>sensanaty</cite></blockquote>
+<blockquote>I think it&#x27;s super risky to move to an alternative.<cite>TheRoque</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Deno’s business and compatibility choices are debated</strong> &mdash; Commenters variously argue that Deno lacked a sustainable business case or that prioritizing npm compatibility weakened the clean-slate vision that had distinguished it.</p><blockquote>Deno should never have been a business - there&#x27;s no business model.<cite>wewewedxfgdf</cite></blockquote>
+<blockquote>They basically gave up the day they decided to become npm compatible. That was the day Deno died.<cite>the_gipsy</cite></blockquote>
+<blockquote>Once they abandoned that the reason for using it went away.<cite>afavour</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Cloudflare’s self-hosting plan draws interest and skepticism</strong> &mdash; Some commenters see the celld and workerd work as a promising path to self-hostable Workers-style applications; others question whether Cloudflare’s consolidation could remove a competitor or narrow platform independence.</p><blockquote>Deno built celld, which implements the Workers and Durable Objects programming model with self-hosting in mind.<cite>ttul</cite></blockquote>
+<blockquote>To kill celld and potential competitor early?<cite>k9294</cite></blockquote>
+<blockquote>Big acquisition, but I hope Deno&#x27;s runtime doesn&#x27;t get slowly tied to Cloudflare&#x27;s specific Workers primitive instead of staying standard platform-agnostic.<cite>ContinuityLab</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Open-source stewardship and transition communication</strong> &mdash; Commenters question how open-source projects can receive sustained funding and stewardship, while others object that the runtime’s support timeline was not made clear in all of the acquisition messaging.</p><blockquote>in practice it needs a single entity to steward it, otherwise it will die.<cite>zem</cite></blockquote>
+<blockquote>Radical idea here, but maybe those many companies could _fund_ the development of key components of their infrastructure.<cite>ForHackernews</cite></blockquote>
+<blockquote>I don&#x27;t like how that&#x27;s in the Deno post but gets no mention in the Cloudflare post. Seems like a pretty important detail!<cite>simonw</cite></blockquote></div>
+    </article>
+    <article id="dossier-5" class="dossier-entry">
+      <div class="dossier-meta">N<sup>o</sup> 05 &nbsp;·&nbsp; Pastel Finale &nbsp;·&nbsp; Game Room</div>
+      <h3>Triple-A Minesweeper</h3>
+      <p class="dossier-source">
+        <a href="https://minesweeper.mikelacher.com/" target="_blank" rel="noopener">minesweeper.mikelacher.com</a>
+        &nbsp;·&nbsp; 1014 pts &nbsp;·&nbsp; 198 comments
+         &nbsp;·&nbsp; <a href='https://news.ycombinator.com/item?id=50022292' target='_blank' rel='noopener'>discussion</a>
+      </p>
+      <h4>Analysis</h4>
+      <p>Could not fetch article content. “Triple-A Minesweeper” appears to be a web-based Minesweeper game hosted at minesweeper.mikelacher.com, likely presenting the classic puzzle with unusually polished or ambitious production design. The story’s high score and substantial comment count indicate that Hacker News readers found the project notable, though the available information does not establish its specific technologies, business model, or distinguishing features. Its importance likely lies in demonstrating how a simple, familiar game can be reimagined as a more sophisticated online experience.</p>
+      <h4>Reader Reactions</h4>
+<p class="camps-framing">The reaction was mostly amused and appreciative, with commenters treating the game as a parody of big-budget games’ cinematic excess, tutorials, and monetization. Discussion also covered whether modern games over-guide players, whether the experience was tedious, and smaller topics such as classic games, technical conventions, and related projects.</p>
+<div class="camp"><p class="camp-label"><strong>Delighted by the parody</strong> &mdash; Commenters praised the execution and enjoyed the contrast between Minesweeper’s simple puzzle and the game’s dramatic presentation, dialogue, and credits.</p><blockquote>This is Art.<cite>xbar</cite></blockquote>
+<blockquote>This made me laugh. The credits broke me haha<cite>razodactyl</cite></blockquote>
+<blockquote>First time I&#x27;ve laughed out loud at one of these sorts of things in a while... I was expecting it to open up on some WW2 style battlefield with smoke and explosions, but this was better.<cite>colordrops</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Extending the AAA joke</strong> &mdash; Commenters added conventions they felt the parody could have included, such as launchers, subscriptions, loot boxes, and other monetization or access hurdles.</p><blockquote>But I didn&#x27;t need to install a publisher specific launcher to run it.<cite>fidotron</cite></blockquote>
+<blockquote>Ok, but where are the microtransactions and subscribtions?<cite>aenis</cite></blockquote>
+<blockquote>now add a kernel level rootkit and a monthly subscription which guarantees a set amount of loot-boxes a month.<cite>serf</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Frustrated with hand-holding</strong> &mdash; Some commenters saw the parody as a criticism of games that direct players’ actions rather than letting them explore, solve problems, or discover what to do.</p><blockquote>Just so much hand holding and noise.<cite>Loughla</cite></blockquote>
+<blockquote>This is the sort of challenge that’s actually rewarding when you manage to solve it (unlike being held by the hand the entire game).<cite>sevg</cite></blockquote>
+<blockquote>Manufactured emotions and hand holding for &#x27;an experience&#x27; instead of just fun.<cite>keyle</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Hand-holding has its reasons</strong> &mdash; A counterpoint argued that modern games address a much broader audience than older titles, while others objected to treating contemporary games as uniformly over-guided or poor.</p><blockquote>The market for video games is now on the close order of 1000 times larger than it was when Myst was released.<cite>sneak</cite></blockquote>
+<blockquote>There are thousands of great games which are not hand holding.<cite>bryanhogan</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>The experience was tedious or got in the way</strong> &mdash; Some commenters found the slow opening and guided play uninteresting, while others said narration or captions interfered with solving the puzzle.</p><blockquote>I gave up before I read <cite>samus</cite></blockquote>
+<blockquote>the non-stopping narration makes it so hard to actually sweep the mines....<cite>361994752</cite></blockquote>
+<blockquote>The subtitles covering the board while the narrator keeps telling me to focus is painfully accurate.<cite>pearlsense</cite></blockquote></div>
+    </article>
+    <article id="dossier-6" class="dossier-entry">
+      <div class="dossier-meta">N<sup>o</sup> 06 &nbsp;·&nbsp; Stat Hero &nbsp;·&nbsp; Benchmarks</div>
+      <h3>WSL3 Performance is about 5-60% faster than WSL2 depending on the workload</h3>
+      <p class="dossier-source">
+        <a href="https://tonym.us/wsl2-vs-wsl3-benchmarks.html" target="_blank" rel="noopener">tonym.us</a>
+        &nbsp;·&nbsp; 53 pts &nbsp;·&nbsp; 21 comments
+         &nbsp;·&nbsp; <a href='https://news.ycombinator.com/item?id=49998801' target='_blank' rel='noopener'>discussion</a>
+      </p>
+      <h4>Analysis</h4>
+      <p>The article compares WSL 2.6.3, using Linux 6.6, with WSL 3.0.2, using Linux 6.18, on the same constrained Windows 11 system to measure kernel, memory, IPC, and compilation performance. WSL 3 showed modest syscall and scheduler improvements, a roughly 61% increase in measured memory bandwidth, and lower context-switching and messaging latency. However, compiling the GoReleaser project was only about 4% faster overall, although kernel time fell nearly 16%, because user-space computation remained the main bottleneck. The results suggest WSL 3’s benefits will be most noticeable for memory- and IPC-heavy workloads, while compute-bound development tasks remain limited largely by available CPU resources.</p>
+      <h4>Reader Reactions</h4>
+<p class="camps-framing">The reaction was mixed: commenters valued WSL as a practical way to use Linux tools on Windows, while some preferred native Linux or questioned Windows overhead. They differed on what performance means in practice, with filesystem sharing, terminal tools, and workload shaping results. Others focused on WSL’s evolving integration features, the meaning of the WSL 3 label, and whether its added abstractions are useful.</p>
+<div class="camp"><p class="camp-label"><strong>WSL as a useful bridge</strong> &mdash; Some commenters valued WSL for bringing Linux development tools to company Windows machines and welcomed improvements, even while recognizing that it may not match native Linux performance.</p><blockquote>WSL has been god send for corporate employees who get a windows laptop but need to do real work.<cite>throwa356262</cite></blockquote>
+<blockquote>WSL is one of the few good ideas Microsoft had in the last ... 5000 years or so.<cite>shevy-java</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Prefer native Linux, distrust Windows overhead</strong> &mdash; Some commenters saw Windows itself as a source of overhead or mistrust, and argued that bare-metal Linux remains faster.</p><blockquote>Amazing they managed to make virtualisation that slow in WSL2<cite>PunchyHamster</cite></blockquote>
+<blockquote>And yet it&#x27;s still factors faster without a whole Windows around it.<cite>cdud3</cite></blockquote>
+<blockquote>Trust continues to be a huge problem in the AI era of Microsoft.<cite>jesse_dot_id</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Performance depends on the workload and bottleneck</strong> &mdash; Commenters noted that WSL performance varies with filesystem sharing, interop, terminal tooling, and workload; some reported acceptable results for their own tasks.</p><blockquote>Lot of the WSL2 lag is not the VM itself, it&#x27;s the 9P file sharing and interop.<cite>binsquare</cite></blockquote>
+<blockquote>herdr might be the culprit there, it can significantly slow down tui apps with its terminal capture. This happens on mac/linux, WSL will surely make it worse.<cite>ricardobeat</cite></blockquote>
+<blockquote>everything I use it for executes virtually instantly, 60% slower than virtually instantly is still virtually instantly.<cite>TZubiri</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Better integration matters for corporate use</strong> &mdash; Some commenters highlighted virtualization and container integration features as practical improvements, particularly for organizations that cannot or will not use Docker Desktop.</p><blockquote>An evolution, better said. Now there is virtio support, finally no need to depend on external CLI tools for what should have been in the box on day on.<cite>pjmlp</cite></blockquote>
+<blockquote>Unfortunately most companies are too cheap to pay for Docker Desktop, and having Windows containers depend on a third party tool has been a problem in such customers.<cite>pjmlp</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>WSL’s product identity is unclear</strong> &mdash; A small discussion asked whether WSL 3 is a distinct product or an evolution of WSL 2, given the earlier version-number changes.</p><blockquote>WSL2 is a different product from WSL1, not a different version. Is WSL3 now a different version of WSL2 or another separate product?<cite>1718627440</cite></blockquote>
+<blockquote>Looks like a different version of WSL2 with a newer kernel and newer VM host software<cite>pilif</cite></blockquote>
+<blockquote>Is it accurate to call this WSL3? WSL 2 was released in 2019, but WSL 2.0.0 was released in 2023 https://github.com/microsoft/WSL/releases/tag/2.0.0<cite>Randomno</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Convenience versus leaky abstraction</strong> &mdash; A minority view questioned whether WSL’s integration adds abstractions that are unnecessary, while a reply emphasized the extra options it provides.</p><blockquote>I find that stuff that it offers over a normal Hyper-V VM is stuff that I don&#x27;t need, leaky abstractions galore.<cite>xaduha</cite></blockquote>
+<blockquote>So it just gives you more options.<cite>shevy-java</cite></blockquote></div>
+    </article>
+    <article id="dossier-7" class="dossier-entry">
+      <div class="dossier-meta">N<sup>o</sup> 07 &nbsp;·&nbsp; Midnight &nbsp;·&nbsp; Privacy Tech</div>
+      <h3>Eye of Sauron: Long-Range Hidden Spy Camera Detection (2024)</h3>
+      <p class="dossier-source">
+        <a href="https://www.usenix.org/conference/usenixsecurity24/presentation/zhang-qibo" target="_blank" rel="noopener">usenix.org</a>
+        &nbsp;·&nbsp; 169 pts &nbsp;·&nbsp; 39 comments
+         &nbsp;·&nbsp; <a href='https://news.ycombinator.com/item?id=49997481' target='_blank' rel='noopener'>discussion</a>
+      </p>
+      <h4>Analysis</h4>
+      <p>The paper presents ESauron, a proof-of-concept system for detecting and locating hidden cameras—including wireless, wired, and offline devices—from distances exceeding 20 meters. It exploits electromagnetic radiation produced by cameras’ memory and voltage-regulator activity during image encoding and storage, particularly when deliberate scene changes increase the processing workload. In tests involving 50 camera products, the system reportedly identified every device after four stimuli and accurately pinpointed their positions, even through obstacles. The work is important because it suggests a non-network-based way to audit spaces for covert cameras, though its real-world reliability and deployment constraints require further evaluation.</p>
+      <h4>Reader Reactions</h4>
+<p class="camps-framing">Commenters generally found the approach clever and potentially useful, while differing on how novel it is and how well it would work in practice. The discussion weighed detection range against interference, shielding, and possible evasion, and connected the technique to other surveillance countermeasures and security concerns.</p>
+<div class="camp"><p class="camp-label"><strong>Promising privacy tool</strong> &mdash; Some commenters saw the method as a clever addition to efforts to detect covert cameras and other listening devices.</p><blockquote>This is a genius approach.<cite>ashkankiani</cite></blockquote>
+<blockquote>This gives me hope for being able to actually fight in the cat and mouse game of privacy that&#x27;s coming up.<cite>ashkankiani</cite></blockquote>
+<blockquote>The speaker in the video was extremely difficult for me to understand but the idea seems quite clever.<cite>ranger_danger</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>An old problem with newer tools</strong> &mdash; Commenters placed the work in a longer history of technical surveillance countermeasures, while noting that modern equipment is smaller and cheaper.</p><blockquote>This isn&#x27;t really a new thing.<cite>walrus01</cite></blockquote>
+<blockquote>Some serious TSCM firms have been doing this for 35 years, just the equipment is a hell of a lot smaller and cheaper now.<cite>walrus01</cite></blockquote>
+<blockquote>This made me think of The Thing, a fascinating listening device made by the Soviets that was completely passive until powered remotely.<cite>sholladay</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Practical limits and uncertain reliability</strong> &mdash; Commenters questioned how reliably the signal can be distinguished from background radio traffic and how much results depend on shielding and device design.</p><blockquote>Interesting - but 800-900MHz (the mentioned harmonic frequencies) are blasted with LTE and 5G in Europe.<cite>BlackRabbit1</cite></blockquote>
+<blockquote>That&#x27;s still not a bad range compared to other similar projects attempting to detect hidden cameras using EM.<cite>Karliss</cite></blockquote>
+<blockquote>I did not think such EM fluctuations would be usably detectable from several meters away... but I suppose this may be moreso due to improper/lack of shielding in the first place, which I would think should be easily fixable in most products to mitigate this type of detection.<cite>ranger_danger</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Detection prompts countermeasures</strong> &mdash; A technical thread considered ways cameras might reduce detectable emissions through shielding, altered processing, or recording patterns.</p><blockquote>So the mitigation is to have larger memory buffers so processing/emissions can be delayed (assuming simple shielding isn&#x27;t enough).<cite>gblargg</cite></blockquote>
+<blockquote>Ensuring almost perfect shielding is cheaper and simpler.<cite>adrian_b</cite></blockquote>
+<blockquote>A better mitigation might be to take a leaf from cryptography and develop a constant-time codec.<cite>fwlr</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Other methods cover different blind spots</strong> &mdash; Commenters pointed to other approaches that may detect unpowered or actively transmitting devices, or address cameras with electronics separated from the lens.</p><blockquote>The final boss of detection doesn&#x27;t need the camera to be powered at all.<cite>bob1029</cite></blockquote>
+<blockquote>Yes but only for detecting 5ghz WiFi cameras (actively streaming).<cite>deoxykev</cite></blockquote>
+<blockquote>They already use fiber-optic borescopes with no electronics on the lens side to create distance from electronics when their targets do sweeps.<cite>u1hcw9nx</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Strategic and intelligence stakes</strong> &mdash; Some commenters emphasized possible national-security and corporate-espionage implications, and speculated that classified capabilities may go further.</p><blockquote>This feels very impactful for national security and corporate espionage.<cite>Jackobrien</cite></blockquote>
+<blockquote>Intelligence services are very likely far ahead and for obvious reasons the public is not privy to it.<cite>samus</cite></blockquote></div>
+    </article>
+    <article id="dossier-8" class="dossier-entry">
+      <div class="dossier-meta">N<sup>o</sup> 08 &nbsp;·&nbsp; Academic &nbsp;·&nbsp; Research Desk</div>
+      <h3>Food processing influences metabolism and brain activity</h3>
+      <p class="dossier-source">
+        <a href="https://news.vt.edu/articles/2026/10/research_fralinbiomed_upfhutelin.html" target="_blank" rel="noopener">news.vt.edu</a>
+        &nbsp;·&nbsp; 48 pts &nbsp;·&nbsp; 29 comments
+         &nbsp;·&nbsp; <a href='https://news.ycombinator.com/item?id=50029830' target='_blank' rel='noopener'>discussion</a>
+      </p>
+      <h4>Analysis</h4>
+      <p>Virginia Tech researchers studied 57 healthy adults who ate 300-calorie meals matched for calories, macronutrients, water, salt, and weight but differing in processing level. The ultraprocessed meals produced higher insulin responses, slightly more prolonged blood sugar elevation, greater energy expenditure, and lower carbohydrate burning, while also altering activity in brain reward regions in ways associated with metabolic responses. The findings suggest that industrial processing, additives, or food structure may influence metabolism and food-related brain activity beyond standard nutrition-label measures. Because ultraprocessed foods make up a large share of diets and are linked observationally to obesity, diabetes, cardiovascular disease, and other health problems, the study offers possible mechanisms, though its small, short-term design and differing ingredients require further research.</p>
+      <h4>Reader Reactions</h4>
+<p class="camps-framing">Commenters considered whether processing may affect metabolism while questioning what the study’s matched meals allow researchers to attribute to processing itself. Discussion focused on food structure, possible psychological responses, other meal differences and unknown mechanisms, the boundaries of NOVA categories, and the limits of a small study.</p>
+<div class="camp"><p class="camp-label"><strong>Food structure and digestion matter</strong> &mdash; Some commenters argued that matching nutrients and glycemic index may not capture how food structure or the pairing of fiber with carbohydrates affects digestion. Others checked the paper and noted that total dietary fiber was matched.</p><blockquote>So they did match glycemic index, which the article omits.<cite>esperent</cite></blockquote>
+<blockquote>I was about to comment that the physical structure of the food and the fiber content also make a difference.<cite>andor</cite></blockquote>
+<blockquote>The high carb foods in the unprocessed meal are paired with fiber.<cite>canucker2016</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Learned or psychological insulin response</strong> &mdash; A few commenters proposed that expectations, taste, or learned associations with ultra-processed foods might affect insulin responses independently of a food’s direct effect on blood glucose. These were presented as possible mechanisms, not established findings.</p><blockquote>I bet a lot of this is psychosomatic, you expect some food will give you fast energy so your body thinks that means you need it and releases insulin.<cite>tancop</cite></blockquote>
+<blockquote>If your body gets a load of sugar every time it tastes UPF additives, it learns to release insulin on taste to protect itself.<cite>PowerElectronix</cite></blockquote>
+<blockquote>Meaning that you&#x27;d get a different insulin response if you ingested something bypassing taste receptors vs being able to taste that food.<cite>rpozarickij</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Meal order and other differences could affect results</strong> &mdash; Commenters raised eating order and differences in the meals’ ingredients as possible influences on glucose responses, complicating efforts to isolate processing as the cause. One commenter offered personal measurements that did not show an effect from meal order.</p><blockquote>Another option is that it&#x27;s affected by the order of consumption.<cite>nrclark</cite></blockquote>
+<blockquote>I notice that the unprocessed one is grain-free, vegetarian and has significantly less sucrose.<cite>nrclark</cite></blockquote>
+<blockquote>The recommendations of eating salad before your meal do nothing measureable for my glucose spikes.<cite>jwr</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Processing is not yet isolated as the cause</strong> &mdash; Some commenters cautioned that matching selected meal characteristics does not rule out micronutrients, additives, or other unknown factors. Their comments emphasized uncertainty about the mechanism rather than dismissing the result.</p><blockquote>That means the only options left are micronutrients, specific additives or psychology.<cite>tancop</cite></blockquote>
+<blockquote>That means the only options left are plus all of the options that are complete unknowns which, in biology, is probably close to 99.999%<cite>eudkfkriEir</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>NOVA categories are blurry or counterintuitive</strong> &mdash; Commenters questioned whether NOVA draws a consistent line between processed and ultra-processed foods, citing chips, peanut butter, jelly, and cheese. Replies pointed to additives and industrial reformulation as distinctions, while acknowledging that the categories can have blurry boundaries.</p><blockquote>For instance, if you buy a deep fryer and a mandolin slicer to make your own potato chips at home, they&#x27;re classified as processed foods.<cite>pythonRon</cite></blockquote>
+<blockquote>I don&#x27;t think that either peanut butter or jelly is more processed than cheese.<cite>astura</cite></blockquote>
+<blockquote>The lines between get blurry.<cite>delichon</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Small sample warrants caution, but is not a dismissal</strong> &mdash; One commenter asked whether 57 participants were enough, while replies said larger studies would be useful but smaller studies can still provide evidence. A further reply argued that observing a signal suggests it was detectable at this sample size.</p><blockquote>I believe they are on to something, but wouldn&#x27;t it be much better if the sample size was larger than just 57 people?<cite>TheChaplain</cite></blockquote>
+<blockquote>Of course but I&#x27;m sure they made the sample size as large as their funding permitted and it&#x27;s better than nothing.<cite>esperent</cite></blockquote>
+<blockquote>Since a signal was seen here effect size doesn’t seem to be the problem.<cite>arrrg</cite></blockquote></div>
+    </article>
+    <article id="dossier-9" class="dossier-entry">
+      <div class="dossier-meta">N<sup>o</sup> 09 &nbsp;·&nbsp; Editorial Op-Ed &nbsp;·&nbsp; Accountability</div>
+      <h3>Computers Cannot Make Decisions</h3>
+      <p class="dossier-source">
+        <a href="https://wiki.cateat.fish/art:computers_cannot_make_decisions" target="_blank" rel="noopener">wiki.cateat.fish</a>
+        &nbsp;·&nbsp; 95 pts &nbsp;·&nbsp; 80 comments
+         &nbsp;·&nbsp; <a href='https://news.ycombinator.com/item?id=50029982' target='_blank' rel='noopener'>discussion</a>
+      </p>
+      <h4>Analysis</h4>
+      <p>The article argues that computers and AI systems do not make decisions independently; responsibility rests with the people and organizations that design, deploy, constrain, and profit from them. It frames blaming an LLM for harmful outcomes as “decision laundering,” particularly when companies such as OpenAI and Anthropic could technically restrict certain behaviors but choose not to. The piece also contends that weak accountability and regulation persist because governments and businesses prioritize economic interests. Its importance lies in emphasizing human agency and corporate responsibility in debates about AI safety, liability, and governance.</p>
+      <h4>Reader Reactions</h4>
+<p class="camps-framing">Commenters broadly agreed that people and organizations should not use AI as a scapegoat, but disagreed about whether computers make decisions and how responsibility should be assigned. The discussion also addressed safeguards and intent, and whether the article accurately represented AI’s risks, benefits, and the reader’s role.</p>
+<div class="camp"><p class="camp-label"><strong>Humans responsible for deployed systems</strong> &mdash; These commenters argued that responsibility rests with the people who authorize, equip, and deploy systems, rather than with the systems themselves. Some framed this as ordinary managerial accountability for delegation and inadequate guardrails.</p><blockquote>whoever allowed it to make decisions is ultimately responsible for them.<cite>roncesvalles</cite></blockquote>
+<blockquote>You, the human who executed the agent, made the decision to execute it. You gave it credentials, and set up insufficient guardrails.<cite>solatic</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Trace accountability to people with power</strong> &mdash; These commenters warned that assigning blame to a company can let the individuals who made or delegated consequential decisions evade responsibility. They favored tracing accountability through the chain of command, while others noted that corporate liability can hold delegating managers responsible.</p><blockquote>So that blame can be diluted and deflected in a very convenient manner for CEOs.<cite>edwcross</cite></blockquote>
+<blockquote>Individual actual humans make decisions and they&#x27;re the ones who should be held accountable.<cite>foreigner</cite></blockquote>
+<blockquote>ultimate responsibility is always of the ceo.<cite>Luker88</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Computers do make decisions</strong> &mdash; These commenters rejected the claim that computers cannot make decisions, pointing to routine software choices and systems that outperform people in particular domains. They distinguished decision-making from being morally or legally accountable.</p><blockquote>Computers make decisions all the time, and have been doing so for decades.<cite>znpy</cite></blockquote>
+<blockquote>What is a chess computer doing, if not making decisions on what move to play?<cite>OroPla</cite></blockquote>
+<blockquote>I think it’s transparently clear that computers make decisions all the time, and have done since they were first implemented.<cite>OtherShrezzing</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Machines execute; humans choose</strong> &mdash; These commenters argued that software follows code or produces outputs and tool calls, while humans decide what to build, authorize, and connect to consequential actions. They cautioned that describing system outputs as decisions can obscure those human choices.</p><blockquote>The human made the decision to write the harness The human is responsible<cite>rcvassallo83</cite></blockquote>
+<blockquote>the computer didn’t make a decision.<cite>shric</cite></blockquote>
+<blockquote>Any given state of a program is only a &quot;decision&quot; if a human intends it to be.<cite>dofm</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Safeguards, intent, and realistic limits</strong> &mdash; These commenters disagreed over whether safeguards were reasonable and whether harmful outcomes demonstrate intent. Some stressed that safeguards can be difficult to perfect or bypassed; others argued that broken safeguards are not reasonable and that uncertainty about containment heightens the need for responsibility.</p><blockquote>Reasonable safeguards were in place.<cite>user43928</cite></blockquote>
+<blockquote>Inadequate or broken safeguards do not fall under my definition of reasonable.<cite>Leynos</cite></blockquote>
+<blockquote>AI is irresponsible technology, because we have no idea how it works or how to contain it.<cite>amelius</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Challenges to the article’s framing</strong> &mdash; These commenters objected to the article’s rhetoric, including its assignment of blame to readers and its emphasis on dramatic risks. Some emphasized AI’s practical benefits or questioned which specific behavior the article was addressing.</p><blockquote>Author makes it all personal and accuses the reader with bold and unsubstabtiated claims.<cite>tosti</cite></blockquote>
+<blockquote>People pay because AI is USEFUL, and massively so.<cite>magic_hamster</cite></blockquote>
+<blockquote>what AI specific behavior are we actually talking about?<cite>vladsh</cite></blockquote></div>
+    </article>
+    <article id="dossier-10" class="dossier-entry">
+      <div class="dossier-meta">N<sup>o</sup> 10 &nbsp;·&nbsp; Product Plate &nbsp;·&nbsp; Design Tool</div>
+      <h3>Cube Type – Isometric Typography Generator</h3>
+      <p class="dossier-source">
+        <a href="https://typeincube.com/" target="_blank" rel="noopener">typeincube.com</a>
+        &nbsp;·&nbsp; 19 pts &nbsp;·&nbsp; 1 comments
+         &nbsp;·&nbsp; <a href='https://news.ycombinator.com/item?id=50010986' target='_blank' rel='noopener'>discussion</a>
+      </p>
+      <h4>Analysis</h4>
+      <p>Cube Type is a small web-based playground for creating isometric typography, rendering user-entered text as cube-like letterforms. It wraps lines at 12 characters while preserving manually inserted line breaks, and offers a square 1:1 format with simple positioning or layout controls such as “Top left.” The tool appears focused on experimentation and visual composition rather than a broader product or business service. Its value is as an accessible way for designers and typographers to explore a distinctive geometric style directly in the browser.</p>
+      <h4>Reader Reactions</h4>
+<p class="camps-framing">The comments are brief and positive, with one highlighting unusually detailed, AI-directed documentation in the page source and the other playfully suggesting a way to monetize the design.</p>
+<div class="camp"><p class="camp-label"><strong>Appreciation for the source documentation</strong> &mdash; A commenter praises the explicit documentation in the page head, including its historical context and guidance aimed at AI agents.</p><blockquote>Very explicit documentation of decisions, clear historical context, and lot of warnings and &quot;donts&quot; that seem to be directed towards AI agents building this site.<cite>armcat</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Playful commercialization</strong> &mdash; A commenter jokingly imagines turning the design into a source of merchandise revenue.</p><blockquote>You just need to add a button that says “buy t-shirt” then… infinite money<cite>jonwinstanley</cite></blockquote></div>
+    </article>
+  </section>
+  <footer class="colophon">
+    <p class="sig">— that's the edition.</p>
+    <p class="meta">Set in Fraunces &amp; Inter · Compiled October 10, 2026</p>
+    <p class="classic-link"><a href="classic.html">Prefer the classic card view? →</a></p>
+  </footer>
+<script>
+(() => {
+  const key = "gtd:read_days:hn:v1";
+  const day = "2026-10-10";
+  let stored = [];
+  try {
+    stored = JSON.parse(localStorage.getItem(key) || "[]");
+    if (!Array.isArray(stored)) stored = [];
+  } catch (e) {}
+  if (!stored.includes(day)) {
+    stored.push(day);
+    stored.sort();
+    localStorage.setItem(key, JSON.stringify(stored));
+  }
+})();
+</script>
+<script src="../../preference.js?v=fb3481105" defer></script>
+<script>
+// Simple script to toggle the [+] and [-] labels on the drawers
+document.querySelectorAll('.analysis-drawer').forEach(drawer => {
+  drawer.addEventListener('toggle', () => {
+    const summary = drawer.querySelector('summary');
+    if (drawer.open) {
+      summary.textContent = '[ Analysis − ]';
+    } else {
+      summary.textContent = '[ Analysis + ]';
+    }
+  });
+});
+
+// Share link — native share or copy markdown to clipboard
+(function () {
+  const links = document.querySelectorAll('.share-link');
+  if (!links.length) return;
+
+  const toast = document.createElement('div');
+  toast.className = 'discuss-toast';
+  document.body.appendChild(toast);
+
+  function showToast(msg) {
+    toast.textContent = msg;
+    toast.classList.add('show');
+    setTimeout(() => toast.classList.remove('show'), 2500);
+  }
+
+  function buildMarkdown(link, spread) {
+    const title = link.dataset.shareTitle || '';
+    const url = link.dataset.shareUrl || '';
+    const meta = spread ? spread.querySelector('.story-meta') : null;
+    const lede = spread ? spread.querySelector('.lede') : null;
+    const analysis = spread ? spread.querySelector('.drawer-analysis') : null;
+    let md = '# ' + title + '\n';
+    md += 'Source: ' + url;
+    if (meta) md += ' | ' + meta.textContent.trim();
+    md += '\n';
+    if (lede) md += '\n' + lede.textContent.trim() + '\n';
+    if (analysis) md += '\n## Analysis\n' + analysis.textContent.trim() + '\n';
+    return md;
+  }
+
+  links.forEach((link) => {
+    link.addEventListener('click', (e) => {
+      e.preventDefault();
+      const spread = link.closest('section.spread');
+      const md = buildMarkdown(link, spread);
+      const text = "I'd like to discuss this with you. Here's a summary:\n\n" + md;
+      const title = 'Discuss: ' + (link.dataset.shareTitle || '');
+      if (navigator.share) {
+        navigator.share({ title: title, text: text }).catch(() => {});
+      } else {
+        navigator.clipboard.writeText(text).then(
+          () => showToast('Copied to clipboard \u2014 paste into your AI chat'),
+          () => showToast('Failed to copy')
+        );
+      }
+    });
+  });
+})();
+</script>
+</body>
+</html>
