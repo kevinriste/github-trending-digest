@@ -1,0 +1,623 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hacker News Digest - October 16, 2026</title>
+    <link rel="stylesheet" href="../../style.css?v=cb101175e">
+</head>
+<body data-gtd-edition="hn" data-gtd-date="2026-10-16">
+    <header>
+        <h1>Hacker News Digest - October 16, 2026</h1>
+        <nav>
+            <a href="../">&larr; Hacker News Calendar</a>
+            <a href="../../2026-10-16/">GitHub Trending</a>
+        </nav>
+    </header>
+    <main>
+        <section class="the-take"><details open><summary>The HN Take</summary><h3 class="take-head">Parenthesis-free functions</h3><p>Normally, to invoke a JavaScript function, you use parentheses. But perhaps you have strong objections to parentheses. Fine:</p><p>Object.prototype.message=&#x27;alert\x281337\x29&#x27;;Array.prototype.toString=Error.prototype.toString;Error.prepareStackTrace = Function;const x = new Error;x.valueOf=x.stack;+x;</p><p>This invokes alert(1337) without using parentheses in the code. The parentheses are smuggled into a string as hexadecimal escapes, which is spiritually different.</p><p>The mechanism is that Error.prepareStackTrace is called when an error&#x27;s stack is accessed. It receives an error and an array representing the stack, which happens to resemble the signature of the Function constructor as long as you can turn that array into valid JavaScript. So you overwrite Array.prototype.toString, use Error.prototype.toString to manufacture the desired code, assign the resulting function to valueOf, and coerce the error into a primitive with +x. JavaScript sees a request to convert an error into a number and naturally executes arbitrary code.</p><p>This is not especially useful if you are writing normal JavaScript, where parentheses remain legal and considerably easier. But if someone has built a security filter whose core rule is &quot;functions cannot be called without parentheses,&quot; JavaScript has once again discovered that syntax is more of a suggestion.</p><h3 class="take-head">Scraping consent</h3><p>Here is a content licensing model:</p><p>Meta&#x27;s updated commercial terms say that users authorize it to deploy &quot;web scrapers, bots, robots, spiders, crawlers, and user agents&quot; against websites associated with their businesses, collect content from those sites, and use it to &quot;research, train, and maintain&quot; Meta products.</p><p>Virtually every news organization has a Meta business account, because that is how companies manage Facebook pages, Instagram profiles, WhatsApp channels and other commercial activity. So the arrangement is approximately: A publisher uses Meta to link to its website, and therefore Meta gets permission to copy the website.</p><p>Meta says this language consolidates permissions that were previously scattered across other terms and that publishers can still control access through robots.txt. Legal experts told Nieman Lab that the contract might let Meta argue that its scraping permission supersedes robots.txt. The terms also authorize Meta to create &quot;test credentials,&quot; which James Grimmelmann says could technically let it &quot;sign up as a fake user&quot; to get through registration walls. Meta did not say whether that could include paywalls.</p><p>Publishers cannot opt out while continuing to use the covered business products. The terms instead say: &quot;If you do not agree to the updated terms, please stop all access or use of our Products for business or commercial purposes.&quot; This is consent in the familiar modern sense where you may freely choose between agreeing and abandoning a distribution channel on which your audience is entrenched.</p><p>Also Meta has begun charging some accounts to post more external links. So publishers can pay Meta to link to articles that Meta can then crawl for free. It is vertical integration, if the vertical is &quot;charging at both ends of the same hyperlink.&quot;</p><div class="take-sources"><span>Sources</span><ul><li><a href="https://blog.ikaes.de/yet-another-way-to-invoke-functions-without-parentheses/" target="_blank" rel="noopener noreferrer">Yet another way to invoke functions without parentheses</a></li><li><a href="https://www.niemanlab.org/2026/10/metas-new-commercial-terms-will-allow-the-scraping-of-news-sites-legal-experts-say/" target="_blank" rel="noopener noreferrer">Meta’s new commercial terms will allow the scraping of news sites: experts</a></li></ul></div></details></section>
+        <div class="repo-controls">
+            <button id="collapse-seen-btn" type="button">Collapse Stories Not New Today</button>
+            <button id="expand-all-btn" type="button">Expand All</button>
+        </div>
+        <p class="seen-help">Stories marked "Not new today" appeared on one or more previous daily pages.</p>
+        <article>
+            <div class="repos">
+
+            <section class="repo" data-seen-before="1"
+                     data-share-title="Yet another way to invoke functions without parentheses"
+                     data-share-url="https://blog.ikaes.de/yet-another-way-to-invoke-functions-without-parentheses/"
+                     data-share-points="28"
+                     data-share-comments="7">
+                <div class="repo-header-row">
+                    <h3>1. <a href="https://blog.ikaes.de/yet-another-way-to-invoke-functions-without-parentheses/" target="_blank" rel="noopener noreferrer">Yet another way to invoke functions without parentheses</a> <span class="seen-badge">Not new today</span></h3>
+                    <div class="header-buttons">
+                        <button type="button" class="discuss-btn" aria-label="Discuss with AI" title="Discuss with AI">&#x1F4AC;</button>
+                        <button type="button" class="repo-toggle" aria-expanded="true">Hide details</button>
+                    </div>
+                </div>
+                <div class="repo-body">
+                    <p class="meta">
+                        <span class="language">blog.ikaes.de</span> |
+                        <span>aragonite</span> |
+                        <span>28 points</span> |
+                        <span>7 comments</span> |
+                        <a href="https://news.ycombinator.com/item?id=50077225" target="_blank" rel="noopener noreferrer">discussion</a>
+                    </p>
+                    <p class="history">First seen: October 15, 2026 | Consecutive daily streak: 2 days</p>
+                    <div class="ai-summary">
+                        <h4>Analysis</h4>
+                        <p>The article describes a JavaScript technique for invoking arbitrary functions without visibly using parentheses. It abuses the nonstandard `Error.prepareStackTrace` hook, which can be assigned to the `Function` constructor, and manipulates array/string conversion—potentially through prototype pollution—to turn stack-trace data into executable code. The resulting function is triggered through coercion by overriding an object’s `valueOf` method, with the example ultimately displaying an alert. The technique is mainly relevant to JavaScript security research because it illustrates how obscure language features and prototype manipulation can bypass restrictions on function-call syntax, though it depends on particular runtime behavior.</p>
+                    </div>
+                    
+                <div class="ai-summary">
+                    <h4>Comment Analysis</h4>
+                    <p class="camps-framing">The brief discussion reacts to an unusual JavaScript technique, with one commenter expressing admiration and others explaining how the final expression triggers it. Other comments touch on an AI detector’s authorship claim and the site’s appearance.</p>
+<div class="camp"><p class="camp-label"><strong>Admiration for JavaScript weirdness</strong> &mdash; One commenter sees the technique as an example of JavaScript’s unusual and striking capabilities.</p><blockquote>So many years and JavaScript still can do the most amazing, weird, awesome, scary, obscure, and sexy things in the world of coding.<cite>TheSilva</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>How the trigger works</strong> &mdash; Commenters explain that unary plus converts the expression to a number, implicitly invoking `valueOf`.</p><blockquote>The unary plus implicitly converts an expression to a number, which calls `valueOf` for non-primitive values.<cite>undecidabot</cite></blockquote>
+<blockquote>I think to implicitly trigger the valueOf function.<cite>emaro</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>AI-authorship speculation and detector skepticism</strong> &mdash; One commenter reports an AI detector’s authorship claim, while a reply questions the irony of using AI to identify AI-written text.</p><blockquote>GPTzero says this entire thing is AI generated for those concerned.<cite>CoalitionOfPity</cite></blockquote>
+<blockquote>The irony of using AI to determine if something was written by AI.<cite>LatencyKills</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Criticism of the site’s appearance</strong> &mdash; One commenter criticizes the website’s visual presentation, separately from the JavaScript discussion.</p><blockquote>Off topic: This website looks like a ransom note<cite>pards</cite></blockquote></div>
+                </div>
+
+                </div>
+            </section>
+
+            <section class="repo" data-seen-before="0"
+                     data-share-title="Meta’s new commercial terms will allow the scraping of news sites: experts"
+                     data-share-url="https://www.niemanlab.org/2026/10/metas-new-commercial-terms-will-allow-the-scraping-of-news-sites-legal-experts-say/"
+                     data-share-points="318"
+                     data-share-comments="115">
+                <div class="repo-header-row">
+                    <h3>2. <a href="https://www.niemanlab.org/2026/10/metas-new-commercial-terms-will-allow-the-scraping-of-news-sites-legal-experts-say/" target="_blank" rel="noopener noreferrer">Meta’s new commercial terms will allow the scraping of news sites: experts</a> </h3>
+                    <div class="header-buttons">
+                        <button type="button" class="discuss-btn" aria-label="Discuss with AI" title="Discuss with AI">&#x1F4AC;</button>
+                        <button type="button" class="repo-toggle" aria-expanded="true">Hide details</button>
+                    </div>
+                </div>
+                <div class="repo-body">
+                    <p class="meta">
+                        <span class="language">niemanlab.org</span> |
+                        <span>0in</span> |
+                        <span>318 points</span> |
+                        <span>115 comments</span> |
+                        <a href="https://news.ycombinator.com/item?id=50111852" target="_blank" rel="noopener noreferrer">discussion</a>
+                    </p>
+                    <p class="history">First seen: October 16, 2026 | Consecutive daily streak: 1 day</p>
+                    <div class="ai-summary">
+                        <h4>Analysis</h4>
+                        <p>Meta’s updated commercial terms, taking effect October 30, appear to authorize automated scraping of websites associated with business accounts—including news publishers—and use of the collected material to develop and train Meta products. Legal experts say the language could cover broad archival and AI-training uses, potentially including access through test credentials, though its enforceability, interaction with robots.txt and paywalls, and consistency with copyright and fair-use law remain uncertain. Publishers cannot currently accept the terms selectively, so they may have to trust Meta’s assurances or stop using its business tools. The change matters because it links access to Meta’s distribution and advertising infrastructure with permission to collect publishers’ external content, potentially shifting bargaining power and intensifying disputes over AI licensing and platform “tying.”</p>
+                    </div>
+                    
+                <div class="ai-summary">
+                    <h4>Comment Analysis</h4>
+                    <p class="camps-framing">The discussion was largely critical of Meta, with the central dispute being whether a business’s consent to scraping can authorize later uses of material it may not own. Commenters also differed on whether publicly accessible content can be scraped without consent and whether the terms would be enforceable. Other concerns involved Meta’s existing crawler practices and the practical ability of businesses to resist the change.</p>
+<div class="camp"><p class="camp-label"><strong>A publisher cannot grant rights it does not have</strong> &mdash; These commenters emphasized that publishers may have only limited licenses to third-party material, so agreeing to Meta’s terms cannot necessarily grant Meta rights held by someone else.</p><blockquote>But why is there any presumption that B owns the content or has any right to grant this license?<cite>amluto</cite></blockquote>
+<blockquote>Having a license to publish something on a website does not mean that the publisher has the right to grant sublicenses or transfer the license to someone else.<cite>mopsi</cite></blockquote>
+<blockquote>The problem there is that both B and C are pulley much smaller than Meta. Copyright and other IP law at the scale of meta has become something that only really works for those with significant resources.<cite>dspillett</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Consent to scraping is not a copyright license</strong> &mdash; These commenters read the terms as consent to access or use material, not as a transfer of rights in every item on a business’s site. They distinguished that consent from the rights of third-party copyright holders.</p><blockquote>Also, this is about crawling and has little to do with the license of the contents.<cite>jenadine</cite></blockquote>
+<blockquote>For materials you don&#x27;t own, the consent only covers the activity of scraping; you consenting to the material being used for training simply means nothing.<cite>kazinator</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Meta may be hedging against legal risk</strong> &mdash; Some commenters suspected that Meta may already be scraping and that the terms are intended to improve its position in future disputes. Another suggested the terms could support a broader case for requiring licenses to train on copyrighted material.</p><blockquote>I&#x27;d guess that Meta is going to scrap everything anyway, and this license addition is just something that they think may come in useful if there are future court cases.<cite>incompatible</cite></blockquote>
+<blockquote>I do not want to be cynical, yet my reading is that they are most likely doing it already. This is to provide a legal cover to it.<cite>sandeepkd</cite></blockquote>
+<blockquote>Doesn&#x27;t them requiring a license from partners to train on their content undermine the more general argument that they don&#x27;t need a license from copyright owners to train on copyrighted content -- which I assume most big AI firms would love to make?<cite>nananana9</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Public scraping may not require consent</strong> &mdash; Some commenters argued that publicly accessible pages can be scraped without the site owner’s permission. Others questioned whether public visibility alone establishes consent to every kind of collection or reuse.</p><blockquote>seems to me that scraping must be legal. If you put content online, it is readable by anyone (or anything) who cares to look. Don&#x27;t want it read, put it behind a login or a paywall.<cite>bradley13</cite></blockquote>
+<blockquote>I don&#x27;t think the distinction &quot;public versus private&quot; is the only one that can be applied here.<cite>shevy-java</cite></blockquote>
+<blockquote>I fail to understand how is this different to a google web crawler in practice other than ignoring the robots.txt?<cite>christkv</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>The terms may be unenforceable or unfairly imposed</strong> &mdash; Some commenters doubted that courts would enforce broad clickwrap terms or regarded continued use after a terms change as inadequate consent. Others argued that business accounts involve contracts and that businesses can leave if they reject the terms.</p><blockquote>I am not a lawyer, but I can&#x27;t see how any court would enforce this unconscionable term in a clickwrap license.<cite>SomeHacker44</cite></blockquote>
+<blockquote>If the TOS changes you should be automatically opted out until you explicitly accept the new agreement<cite>bluefirebrand</cite></blockquote>
+<blockquote>This is an agreement between two businesses, not a clickwrap license being forced upon consumers. Businesses have plenty of alternatives to Meta; they can just close their accounts if they don&#x27;t like the terms.<cite>nradov</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Businesses may have limited practical ability to resist</strong> &mdash; Commenters raised concerns about Meta’s existing crawler activity and the leverage it may have over businesses that rely on its services. Some said businesses may already be scraped regardless of the new terms or their ability to detect the traffic.</p><blockquote>And if their gamble pays off, and businesses can&#x27;t afford not to advertise on Meta platforms, then there is probably a good antitrust case for them abusing their oligopoly power.<cite>thayne</cite></blockquote>
+<blockquote>Most are already being scraped by meta and do nothing about it because they lack the technical competency to even notice it.<cite>VladVladikoff</cite></blockquote>
+<blockquote>The most aggressive bot on our website right now is Meta Bot<cite>zenincognito</cite></blockquote></div>
+                </div>
+
+                </div>
+            </section>
+
+            <section class="repo" data-seen-before="1"
+                     data-share-title="Woman who rescued injured crow keeps getting &#x27;thank-you gifts&#x27; from birds [video]"
+                     data-share-url="https://www.youtube.com/watch?v=sjNpfz4UzqU"
+                     data-share-points="358"
+                     data-share-comments="121">
+                <div class="repo-header-row">
+                    <h3>3. <a href="https://www.youtube.com/watch?v=sjNpfz4UzqU" target="_blank" rel="noopener noreferrer">Woman who rescued injured crow keeps getting &#x27;thank-you gifts&#x27; from birds [video]</a> <span class="seen-badge">Not new today</span></h3>
+                    <div class="header-buttons">
+                        <button type="button" class="discuss-btn" aria-label="Discuss with AI" title="Discuss with AI">&#x1F4AC;</button>
+                        <button type="button" class="repo-toggle" aria-expanded="true">Hide details</button>
+                    </div>
+                </div>
+                <div class="repo-body">
+                    <p class="meta">
+                        <span class="language">youtube.com</span> |
+                        <span>johnnyApplePRNG</span> |
+                        <span>358 points</span> |
+                        <span>121 comments</span> |
+                        <a href="https://news.ycombinator.com/item?id=50065859" target="_blank" rel="noopener noreferrer">discussion</a>
+                    </p>
+                    <p class="history">First seen: October 13, 2026 | Consecutive daily streak: 4 days</p>
+                    <div class="ai-summary">
+                        <h4>Analysis</h4>
+                        <p>The story follows Lia Wilson, who helped firefighters rescue an injured crow trapped in an eavestrough and then took it to a wildlife rehabilitation center. After the bird’s release, Wilson began finding feathers and other objects left near her during walks, and she now regularly encounters the crow and others, recognizing the rescued bird by its leg band. The account reflects both organized wildlife rehabilitation and emerging public interest in corvid intelligence, social memory, and object-gifting behavior, though the birds’ motives cannot be scientifically confirmed as gratitude. It is important because it illustrates how individual rescue efforts, community support, and respectful relationships with urban wildlife can encourage conservation and connection with the natural world.</p>
+                    </div>
+                    
+                <div class="ai-summary">
+                    <h4>Comment Analysis</h4>
+                    <p class="camps-framing">The discussion was largely warm and fascinated, with commenters sharing accounts of corvids recognizing people, learning routines, and forming relationships. Others explored animal cognition and research, questioned how strongly anecdotes and demonstrations support claims about intelligence, or warned that feeding and antagonizing birds can have consequences. A separate thread debated selective care for animals alongside meat-eating.</p>
+<div class="camp"><p class="camp-label"><strong>Corvid bonds and everyday encounters</strong> &mdash; Commenters described befriending or feeding corvids and recounted their routines, learning, and relationships with people. Some found the attention delightful; others found it overwhelming, while some focused on the emotional value of such encounters.</p><blockquote>But after a few days I had flock of crows following me everywhere through the city. That was a bit too much.<cite>ngruhn</cite></blockquote>
+<blockquote>There were no gifts but over the years we did witness this crow clearly trying to teach its very dependent growing child how to work the human.<cite>dofm</cite></blockquote>
+<blockquote>There&#x27;s something beautifully eloquent about how a bundle of feathers may be one of this person&#x27;s most cherished gifts they ever receive, no amount of money can match that.<cite>lukeify</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Curiosity about animal intelligence</strong> &mdash; Commenters discussed experiments, social learning, brain organization, and the ways birds and other animals acquire and pass on information.</p><blockquote>Yes! And it also was an intentional study in animal cognition.<cite>rendall</cite></blockquote>
+<blockquote>Crows are somewhat unique as an animal in that they&#x27;ve got the ability to pass information off to other members of the flock, and to continue passing information down through generations as necessary.<cite>kulahan</cite></blockquote>
+<blockquote>Crows reach fabulous levels of (animal) intelligence with a brain that is a fraction of the size of the brain of great apes. I wonder what progress has been made in studying the differences in organisation between the two.<cite>isolli</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Skepticism about intelligence claims</strong> &mdash; Some commenters cautioned that striking stories and demonstrations do not, by themselves, establish that corvids are unusually intelligent or more capable than other animals.</p><blockquote>Whenever I see a story about how clever crows are, I&#x27;m reminded of that guy who gave the TED talk about crows collecting rubbish after sporting events and picking up coins in return for food. Turned out he made it all up.<cite>0898</cite></blockquote>
+<blockquote>Having personally witnessed a group of 5 crows being tricked and driven out of their newly made nest by a pair of bluejays, I have skepticism that they are any smarter than most other birds.<cite>t-3</cite></blockquote>
+<blockquote>Unfortunately that was a flawed study. They paired trained chimps with people who saw the task for the first time. It was later repeated, and if given the same training, humans still outperform chimps in this task.<cite>moi2388</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Corvids can be difficult neighbors</strong> &mdash; Commenters balanced affectionate accounts with warnings about aggressive behavior, remembered grievances, and the practical consequences of attracting birds through regular feeding.</p><blockquote>They are fascinating. I think you understate a little just how aggressive they can be when they are nesting nearby.<cite>brabel</cite></blockquote>
+<blockquote>Once they locked onto this activity I got in trouble for stopping.<cite>bob1029</cite></blockquote>
+<blockquote>Here in Australia, magpies do something similar but in a bad way. During nesting season they&#x27;ll swoop you, remember your face, and keep targeting you.<cite>thedreammachine</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Interest in animal behavior beyond corvids</strong> &mdash; Some commenters broadened the discussion to other species, including bees, hummingbirds, ducks, and chimpanzees, and asked about research and books on animal behavior.</p><blockquote>Does anyone know of any research into this or books identifying behavior like this?<cite>rglover</cite></blockquote>
+<blockquote>the basic idea seems to be that even &quot;small&quot; brains do the same stuff the big brains do - like forming relationships, playing for fun, using tools, etc.<cite>Krei-se</cite></blockquote>
+<blockquote>Our cats were absolutely terrified of it.<cite>secretsatan</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Animal-care and meat-eating ethics</strong> &mdash; Commenters debated whether caring for one animal while eating others reflects selective concern, and whether affection for one species can coexist with meat-eating or concern for the treatment of livestock.</p><blockquote>Its interesting how this woman can go this far for a crow but still eat meat everyday.<cite>simianwords</cite></blockquote>
+<blockquote>You can also really like eating meat and still want cattle to be treated well and like animals.<cite>hobo123</cite></blockquote>
+<blockquote>Have I missed something, how do we know she eats meat?<cite>wgx</cite></blockquote></div>
+                </div>
+
+                </div>
+            </section>
+
+            <section class="repo" data-seen-before="0"
+                     data-share-title="Muse Spark Open"
+                     data-share-url="https://research.meta.ai/blog/muse-spark-open"
+                     data-share-points="827"
+                     data-share-comments="415">
+                <div class="repo-header-row">
+                    <h3>4. <a href="https://research.meta.ai/blog/muse-spark-open" target="_blank" rel="noopener noreferrer">Muse Spark Open</a> </h3>
+                    <div class="header-buttons">
+                        <button type="button" class="discuss-btn" aria-label="Discuss with AI" title="Discuss with AI">&#x1F4AC;</button>
+                        <button type="button" class="repo-toggle" aria-expanded="true">Hide details</button>
+                    </div>
+                </div>
+                <div class="repo-body">
+                    <p class="meta">
+                        <span class="language">research.meta.ai</span> |
+                        <span>bigwheels</span> |
+                        <span>827 points</span> |
+                        <span>415 comments</span> |
+                        <a href="https://news.ycombinator.com/item?id=50107379" target="_blank" rel="noopener noreferrer">discussion</a>
+                    </p>
+                    <p class="history">First seen: October 16, 2026 | Consecutive daily streak: 1 day</p>
+                    <div class="ai-summary">
+                        <h4>Analysis</h4>
+                        <p>Meta has released the open weights for Muse Spark Open, an 816-billion-parameter multimodal model with 42 billion active parameters and a one-million-token context window, aimed at coding, long-horizon software engineering, and agentic tasks. It is offered through multiple hosted inference providers and downloadable from major cloud and model platforms, with support for common inference frameworks and further customization through PyTorch. A notable focus is local deployment: Meta says two Apple M5 Ultra Mac Studios can run the model using MLX and their combined unified memory. The release includes optimized GPU kernels, safety evaluations, and a license with limited commercial terms, making it significant as an attempt to bring a very large, capable model to both developers and desktop users while retaining some open-weight accessibility.</p>
+                    </div>
+                    
+                <div class="ai-summary">
+                    <h4>Comment Analysis</h4>
+                    <p class="camps-framing">Commenters debated Muse Spark Open’s capability and serving costs, how it should be evaluated, and what its license permits. They also discussed the significance of its US origin, the hardware needed to run it locally, and whether Meta’s consumer reach could produce lasting adoption.</p>
+<div class="camp"><p class="camp-label"><strong>Capability and value compared with other open-weight models</strong> &mdash; Many commenters judged the model behind alternatives such as GLM, Qwen, and DeepSeek, and questioned its cost relative to its performance. Some reported useful results or highlighted speed, so assessments were not uniform.</p><blockquote>39 on AA[1], about the same as Deepseek v4.1 flash and Mimo 2.5 Flash. Behind Glm 5.3 flash and Qwen3.8-Flash-Next<cite>GodelNumbering</cite></blockquote>
+<blockquote>Feels dumber than GLM 5.3 (only open model I use extensively). But is really fast (fireworks.ai).<cite>eknkc</cite></blockquote>
+<blockquote>Image-&gt;html test for muse spark open. Original designs: https://diffui.ai/app/canvas/5093e689-1e74-4f26-b632-2a4500f... Muse Spark Open: https://html.non.io/lcars-muse-spark/ Opus 5.5 (sota): https://html.non.io/lcars-opus-5.5/ Overall it actually does pretty solid.<cite>jjcm</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Broader evaluation than headline benchmarks</strong> &mdash; Commenters questioned whether reasoning scores and benchmark rankings capture production usefulness. They called for comparisons across effort levels, time or cost per task, and broader tests, while some cautioned that familiar benchmarks can become overfit.</p><blockquote>A graph of time (or cost) per task against success rate does it. Just include all the different levels.<cite>eli</cite></blockquote>
+<blockquote>I feel like all models are now benchmax&#x27;d on the standard pelican SVG rendering task and we need something more multi-dimensional.<cite>thoughtpeddler</cite></blockquote>
+<blockquote>I feel like reasoning is a useless metric, and we should instead focus on results, and time to achieved said results.<cite>eek2121</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>US-versus-China positioning</strong> &mdash; Some commenters interpreted the emphasis on being the strongest US open-weight model as recognition of Chinese models’ strength. Others saw value in US models for sovereignty or security-conscious users, while some questioned why training location matters when weights are run locally.</p><blockquote>One week ago Mistral advertised their model as &quot;significantly outperforming any open-weight model developed in the US or Europe&quot; and the headline of this new meta model is &quot;The Most Capable US Open‑Weight Model&quot;.<cite>sergdigon</cite></blockquote>
+<blockquote>I think there’s a preference for US models; highlighting that speaks to those looking for sovereignty.<cite>toppa33</cite></blockquote>
+<blockquote>Why should I as a model user care about the location that an open weights model was trained?<cite>lern_too_spel</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Open weights and licensing restrictions</strong> &mdash; The license prompted disagreement over whether the release qualifies as open source and how significant its restrictions are. Some commenters considered the terms workable for many commercial uses; others objected to restrictions on use or disputed whether weights can be licensed this way.</p><blockquote>Still not an open-source license. Means no restrictions on &quot;fields of endeavor&quot;, a.k.a. the free software definition&#x27;s &quot;freedom 0&quot;: the freedom to run the software for any purpose.<cite>isityettime</cite></blockquote>
+<blockquote>They&#x27;re allowing the use of this in commercial products, just not selling the model directly.<cite>seizethecheese</cite></blockquote>
+<blockquote>Not exactly fully open, but not _that_ harsh.<cite>fhd2</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Local use requires expensive hardware</strong> &mdash; Commenters questioned whether the advertised Mac Studio setup makes local access practical for ordinary users. They noted the hardware cost and memory requirements, while some saw a role for running a large model slowly or using smaller models on consumer hardware.</p><blockquote>Finally democratizing AI access to, checks notes, people with no less than two Apple M5 Ultra Studios on their desktop.<cite>octomind</cite></blockquote>
+<blockquote>UD-IQ1_S is 180Gb. UD-Q4_K_XL is 510Gb. Still beyond the average prosumer.<cite>felineflock</cite></blockquote>
+<blockquote>Who is this &quot;everyone&quot;?<cite>brisket_bronson</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Meta’s consumer reach versus unproven stickiness</strong> &mdash; Some commenters argued that Meta could bring an AI product to a broad mainstream audience through its existing services. Others questioned whether Muse had demonstrated lasting appeal, trust, or a durable advantage over competing products.</p><blockquote>I think they&#x27;ve currently got the strongest consumer AI play but we&#x27;ll have to wait and see how the situation evolves.<cite>solyin</cite></blockquote>
+<blockquote>Muse hasn&#x27;t even been around long enough to determine if it is &quot;sticky&quot; in any meaningful way, let alone in the context of competing against frontier models from competitors.<cite>nater5000</cite></blockquote>
+<blockquote>Just because meta can shove stuff in the faces of people doesn&#x27;t mean they can succeed at any random thing.<cite>msabalau</cite></blockquote></div>
+                </div>
+
+                </div>
+            </section>
+
+            <section class="repo" data-seen-before="1"
+                     data-share-title="The Economic Complexity of the Western Roman Empire"
+                     data-share-url="https://www.michelecoscia.com/?p=2613"
+                     data-share-points="26"
+                     data-share-comments="7">
+                <div class="repo-header-row">
+                    <h3>5. <a href="https://www.michelecoscia.com/?p=2613" target="_blank" rel="noopener noreferrer">The Economic Complexity of the Western Roman Empire</a> <span class="seen-badge">Not new today</span></h3>
+                    <div class="header-buttons">
+                        <button type="button" class="discuss-btn" aria-label="Discuss with AI" title="Discuss with AI">&#x1F4AC;</button>
+                        <button type="button" class="repo-toggle" aria-expanded="true">Hide details</button>
+                    </div>
+                </div>
+                <div class="repo-body">
+                    <p class="meta">
+                        <span class="language">michelecoscia.com</span> |
+                        <span>mikk14</span> |
+                        <span>26 points</span> |
+                        <span>7 comments</span> |
+                        <a href="https://news.ycombinator.com/item?id=50084790" target="_blank" rel="noopener noreferrer">discussion</a>
+                    </p>
+                    <p class="history">First seen: October 15, 2026 | Consecutive daily streak: 2 days</p>
+                    <div class="ai-summary">
+                        <h4>Analysis</h4>
+                        <p>Researchers estimate the economic complexity of the Western Roman Empire by analyzing LIST, a geocoded database of Latin inscriptions that records people’s occupations. Because inscriptions disproportionately represent elite men, exclude most farmers and other workers, and reflect preservation and digitization choices, the study applies corrections to estimate occupational distributions across Roman provinces and modern geographic boundaries. These distributions produce Economic Complexity Index (ECI) scores, with Rome’s province of Latium ranking highest. The scores significantly correlate with modern ECI across roughly 23 corresponding countries, suggesting—but not proving—that economic complexity may persist geographically over very long periods.</p>
+                    </div>
+                    
+                <div class="ai-summary">
+                    <h4>Comment Analysis</h4>
+                    <p class="camps-framing">The brief, mostly exploratory thread focuses on whether Latin inscriptions can measure economic complexity across the Roman Empire, given Greek’s prevalence in the East. A reply notes that the study focuses on the Western Empire and discusses limitations in the Greek-inscription data. Other comments express interest in the underlying research and identify a historical allusion.</p>
+<div class="camp"><p class="camp-label"><strong>Data coverage and scope</strong> &mdash; One commenter questions whether an inscription-based measure misses the Greek-speaking East; a reply says the study focuses on the Western Empire and addresses Greek-inscription data limitations.</p><blockquote>So they estimate economic complexity by the number of discovered Latin documents or inscriptions. Wasn&#x27;t Greek prevalent in the East?<cite>robotomir</cite></blockquote>
+<blockquote>Which is why the title explicitly names the Western Roman Empire, and the article briefly discusses data issues with Greek inscriptions near the end.<cite>yorwba</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Interest in the underlying study</strong> &mdash; Two commenters express interest in learning more, with one noting that the article serves as a short introduction to the research paper.</p><blockquote>Wanted to read more on this<cite>geniium</cite></blockquote>
+<blockquote>Same here - I suppose this article did what it was supposed to do - give a short primer introducing the topic and if you want to see how they computed this look at the paper!<cite>justin_dash</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Historical allusion</strong> &mdash; One commenter identifies the article’s closing reference as an allusion to Cato the Elder.</p><blockquote>The last paragraph is a reference to Cato the Elder.<cite>robertacion</cite></blockquote></div>
+                </div>
+
+                </div>
+            </section>
+
+            <section class="repo" data-seen-before="1"
+                     data-share-title="Two-Stack Sliding-Window Aggregation"
+                     data-share-url="https://orlp.net/blog/two-stack-sliding-window-aggregation/"
+                     data-share-points="33"
+                     data-share-comments="1">
+                <div class="repo-header-row">
+                    <h3>6. <a href="https://orlp.net/blog/two-stack-sliding-window-aggregation/" target="_blank" rel="noopener noreferrer">Two-Stack Sliding-Window Aggregation</a> <span class="seen-badge">Not new today</span></h3>
+                    <div class="header-buttons">
+                        <button type="button" class="discuss-btn" aria-label="Discuss with AI" title="Discuss with AI">&#x1F4AC;</button>
+                        <button type="button" class="repo-toggle" aria-expanded="true">Hide details</button>
+                    </div>
+                </div>
+                <div class="repo-body">
+                    <p class="meta">
+                        <span class="language">orlp.net</span> |
+                        <span>surprisetalk</span> |
+                        <span>33 points</span> |
+                        <span>1 comments</span> |
+                        <a href="https://news.ycombinator.com/item?id=50072485" target="_blank" rel="noopener noreferrer">discussion</a>
+                    </p>
+                    <p class="history">First seen: October 15, 2026 | Consecutive daily streak: 2 days</p>
+                    <div class="ai-summary">
+                        <h4>Analysis</h4>
+                        <p>The article presents a simple two-stack algorithm for computing aggregates such as sums, minima, means, quantiles, and approximate cardinalities over a sliding window, even when the aggregation operation has no inverse. It models aggregation with associative `empty`, `unit`, `combine`, and `finalize` functions, maintaining one stack for incoming values and another for cumulative aggregates as items leave the window. The method provides constant-time evaluation, amortized O(1) updates, and O(w) memory for a maximum window size, while supporting dynamically changing windows. It is particularly useful for floating-point or error-prone aggregates because values affect only windows that contain them, preventing stale NaNs, infinities, or accumulated numerical errors from persisting indefinitely.</p>
+                    </div>
+                    
+                <div class="ai-summary">
+                    <h4>Comment Analysis</h4>
+                    <p class="camps-framing">The visible reaction is sparse, with the sole comment focusing on the clarity of the code’s terminology rather than debating the algorithm or its claims.</p>
+<div class="camp"><p class="camp-label"><strong>Naming and API clarity</strong> &mdash; One commenter found `pop` misleading for removing the oldest item from a window and suggested `shift` or `popleft`.</p><blockquote>Popping windows isn&#x27;t really a thing, it made me double take on the code.<cite>tinco</cite></blockquote></div>
+                </div>
+
+                </div>
+            </section>
+
+            <section class="repo" data-seen-before="0"
+                     data-share-title="RPKI now protects 70% of internet routes"
+                     data-share-url="https://ipinfo.io/blog/rpki-protects-70-internet-routes"
+                     data-share-points="168"
+                     data-share-comments="57">
+                <div class="repo-header-row">
+                    <h3>7. <a href="https://ipinfo.io/blog/rpki-protects-70-internet-routes" target="_blank" rel="noopener noreferrer">RPKI now protects 70% of internet routes</a> </h3>
+                    <div class="header-buttons">
+                        <button type="button" class="discuss-btn" aria-label="Discuss with AI" title="Discuss with AI">&#x1F4AC;</button>
+                        <button type="button" class="repo-toggle" aria-expanded="true">Hide details</button>
+                    </div>
+                </div>
+                <div class="repo-body">
+                    <p class="meta">
+                        <span class="language">ipinfo.io</span> |
+                        <span>emot</span> |
+                        <span>168 points</span> |
+                        <span>57 comments</span> |
+                        <a href="https://news.ycombinator.com/item?id=50112330" target="_blank" rel="noopener noreferrer">discussion</a>
+                    </p>
+                    <p class="history">First seen: October 16, 2026 | Consecutive daily streak: 1 day</p>
+                    <div class="ai-summary">
+                        <h4>Analysis</h4>
+                        <p>The article reports that RPKI now validates 70.3% of Internet routing prefixes, up from 54% a year earlier, with much of the increase driven by China and growing IPv6 adoption. RPKI lets address holders authorize specific networks to originate their routes, and the data shows invalid announcements are now barely propagated because many networks reject them. However, RPKI only validates route origin: overly permissive ROAs can still allow valid-looking hijacks, and lost or missing ROAs leave networks unprotected without necessarily causing outages. The article also highlights early growth in ASPA, a complementary system intended to validate routing paths and detect leaks, while urging operators to publish complete ROAs, avoid broad `maxLength` settings, monitor authorization records, and document all upstream providers.</p>
+                    </div>
+                    
+                <div class="ai-summary">
+                    <h4>Comment Analysis</h4>
+                    <p class="camps-framing">Most of the discussion centered on whether RPKI could create a geopolitical choke point. Commenters differed on whether that risk is distinctive to RPKI, whether operators could reject or work around abusive use, and whether cutting Russia off would be an unacceptable consequence. Other comments addressed internet fragmentation and the growth of RPKI adoption.</p>
+<div class="camp"><p class="camp-label"><strong>RPKI as a geopolitical choke point</strong> &mdash; Commenters worried that centralized route authorization could give a registry or government leverage over a country&#x27;s connectivity, including under future political conditions.</p><blockquote>My concern about RPKI is legal pressure on the registries.<cite>cowlevel</cite></blockquote>
+<blockquote>It&#x27;s not about the governments of today, but those of the future.<cite>c16</cite></blockquote>
+<blockquote>Any centralization around the narrow middle IP layer of the internet should be treated with extreme skepticism and pushback.<cite>kortilla</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>The risk is not unique to RPKI</strong> &mdash; Commenters argued that governments and network operators can disrupt connectivity through other means, and that a sustained partition would depend on political choices across networks.</p><blockquote>With or without RPKI, a partitioning of the Internet for a significant period of time was always going to be a political decision.<cite>gizmo686</cite></blockquote>
+<blockquote>RPKI isn&#x27;t necessary for this hypothetical to happen, and there&#x27;s a lot easier ways for various governments to put pressure on network providers to do their bidding.<cite>maxclark</cite></blockquote>
+<blockquote>If that were to happen, everybody in Russia would just turn RPKI enforcement off, so this would only turn off their internet access for a few hours at most.<cite>gucci-on-fleek</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Trust depends on operator consent and alternatives</strong> &mdash; Some commenters emphasized that RPKI depends on operators choosing to honor it, and that abuse could encourage adoption of another trust anchor.</p><blockquote>Its only worth anything so long as people decide to respect it.<cite>bawolff</cite></blockquote>
+<blockquote>If operators overplay their hand, people might stop respecting it.<cite>bawolff</cite></blockquote>
+<blockquote>There&#x27;s no reason an independent entity couldn&#x27;t spin up a new trust anchor, as long as they get RPs to follow it.<cite>greyface-</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Some considered cutting off Russia acceptable</strong> &mdash; A few commenters said that restricting Russia&#x27;s internet access could be justified or desirable, rather than treating it as an overriding harm.</p><blockquote>But … cutting off Russia wouldn’t be such a bad thing.<cite>gigatexal</cite></blockquote>
+<blockquote>I get your broader point, but making it potentially easier to cut Russia specifically off from the Internet might not be the worst thing in the world.<cite>stouset</cite></blockquote>
+<blockquote>And nothing of value would be lost. Quite the opposite in fact.<cite>avazhi</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Internet fragmentation is already a concern</strong> &mdash; Commenters noted that country-based restrictions and certificate requirements already contribute to internet fragmentation, with potential collateral effects beyond RPKI.</p><blockquote>The fragmentation of the Internet is already in motion<cite>usrnm</cite></blockquote>
+<blockquote>A lot of companies already block traffic by country of origin and have since they existed on the internet.<cite>esseph</cite></blockquote>
+<blockquote>Certificate revocation as an act of war... the 2030s are gonna be wild.<cite>aftbit</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Support for adoption and next steps</strong> &mdash; Some commenters welcomed the increase in valid routes and discussed ASPA as a complementary safeguard, while noting that its current coverage is limited.</p><blockquote>It&#x27;s good to see the high adoption rate.<cite>1473-bytes</cite></blockquote>
+<blockquote>Probably should look at adopting ASPA at some point here.<cite>1473-bytes</cite></blockquote>
+<blockquote>Still early, though. So far published records can verify about 3.5% of observed routing.<cite>emot</cite></blockquote></div>
+                </div>
+
+                </div>
+            </section>
+
+            <section class="repo" data-seen-before="0"
+                     data-share-title="The insider trading you&#x27;re allowed to do"
+                     data-share-url="https://coached.com/essays/the-insider-trading-youre-allowed-to-do/"
+                     data-share-points="50"
+                     data-share-comments="30">
+                <div class="repo-header-row">
+                    <h3>8. <a href="https://coached.com/essays/the-insider-trading-youre-allowed-to-do/" target="_blank" rel="noopener noreferrer">The insider trading you&#x27;re allowed to do</a> </h3>
+                    <div class="header-buttons">
+                        <button type="button" class="discuss-btn" aria-label="Discuss with AI" title="Discuss with AI">&#x1F4AC;</button>
+                        <button type="button" class="repo-toggle" aria-expanded="true">Hide details</button>
+                    </div>
+                </div>
+                <div class="repo-body">
+                    <p class="meta">
+                        <span class="language">coached.com</span> |
+                        <span>rohanm93</span> |
+                        <span>50 points</span> |
+                        <span>30 comments</span> |
+                        <a href="https://news.ycombinator.com/item?id=50115144" target="_blank" rel="noopener noreferrer">discussion</a>
+                    </p>
+                    <p class="history">First seen: October 16, 2026 | Consecutive daily streak: 1 day</p>
+                    <div class="ai-summary">
+                        <h4>Analysis</h4>
+                        <p>The article argues that employees can legally act on “insider” knowledge by making career decisions before their company’s strengths or weaknesses become obvious to the public. Using Nokia’s decline after the iPhone as an example, it suggests that workers who recognized the threat early could have retrained or moved to stronger companies before layoffs and a crowded job market followed. Employees can similarly move toward successful internal initiatives, develop skills threatened or amplified by AI, and target growing employers rather than relying on brand reputation. The advice is to treat signals such as customer sentiment, employee departures, slow pivots, leadership’s real AI usage, and project momentum as evidence for small, reversible career moves, while acknowledging that internal judgments can still be wrong.</p>
+                    </div>
+                    
+                <div class="ai-summary">
+                    <h4>Comment Analysis</h4>
+                    <p class="camps-framing">The dominant reaction was that the article stretches “insider trading” beyond recognition: commenters distinguished career decisions made using workplace knowledge from securities trades governed by insider-trading law. Others questioned the Nokia example and the article’s presentation, while a smaller group considered whether the career advice was useful despite its terminology. Side discussions addressed actual legal trading opportunities, uncertainty, and constraints on career mobility.</p>
+<div class="camp"><p class="camp-label"><strong>Career knowledge is not insider trading</strong> &mdash; Commenters argued that changing jobs or negotiating compensation based on workplace knowledge is not securities trading, even if it provides an informational advantage.</p><blockquote>Changing a job is now insider trading? While there&#x27;s no actual trading of anything? No shares being bought or sold. No insider information being leaked out.<cite>killingtime74</cite></blockquote>
+<blockquote>This is not an “insider trading”, it is an insider’s knowledge (affinity to knowledge) and ability to use it.<cite>sixtyj</cite></blockquote>
+<blockquote>This is information asymmetry. The nokia engineers knew something that the rest of the world didn&#x27;t and were able to use it to their advantage.<cite>fai5a1</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>The legal distinction matters</strong> &mdash; Commenters emphasized that US insider-trading law concerns material nonpublic information and duties or obligations, not merely having an information advantage. Some also discussed scheduled trades and the difficulty of proving wrongdoing through inaction.</p><blockquote>Insider trading has nothing to do with having an information advantage.<cite>kasey_junk</cite></blockquote>
+<blockquote>The issue is with trading while having material non public information.<cite>harporoeder</cite></blockquote>
+<blockquote>There’s no way to prove illegality for _not_ placing a trade.<cite>yawaramin</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>The Nokia example is incomplete or misleading</strong> &mdash; Some commenters questioned the article’s account of Nokia’s decline and noted that relocating to another country could make changing employers impractical. A related tangent challenged the relevance of the Dave Mustaine comparison.</p><blockquote>And there is no proof that what killed Nokia was iPhone... I&#x27;ve seen a pretty solid argument that what killed Nokia was Elop / the Microsoft deal.<cite>virgilp</cite></blockquote>
+<blockquote>I think the major reason the Nokia engineers didn&#x27;t jump ship to Apple/Google is that they did not want to move to another country.<cite>silvestrov</cite></blockquote>
+<blockquote>Completely unrelated to the article claims.<cite>elvircrn</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Career advice has some value, but outcomes are uncertain</strong> &mdash; Some commenters related to the article’s career advice, while others cautioned that internal knowledge does not reliably predict outcomes or guarantee individual advancement.</p><blockquote>Good article. I feel this way about my job :/<cite>toppa33</cite></blockquote>
+<blockquote>How many people think this way, jump ship, and end up being wrong?<cite>elil17</cite></blockquote>
+<blockquote>Access to internal data isn&#x27;t a crystal ball<cite>Havoc</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Discussing actual legal trading opportunities</strong> &mdash; A minority shifted the discussion to trades in public markets, including sector-related assets and political-trading trackers. Replies questioned whether cited returns reflected an information edge or exposure to successful technology stocks.</p><blockquote>You can have an edge, it’s not a legal issue.<cite>yieldcrv</cite></blockquote>
+<blockquote>You understand of course that those numbers show a very mediocre trading strategy.<cite>kasey_junk</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Article criticized as AI-generated</strong> &mdash; Some commenters objected that the article appeared AI-written and insufficiently edited, with one also criticizing its use of the term “insider trading.”</p><blockquote>This is not only is obviously AI writing, it feels like it is the output of a single prompt completely unedited.<cite>moofin_men</cite></blockquote>
+<blockquote>Also it reeks of AI.<cite>NoboruWataya</cite></blockquote></div>
+                </div>
+
+                </div>
+            </section>
+
+            <section class="repo" data-seen-before="0"
+                     data-share-title="Neural networks are clean"
+                     data-share-url="https://already-clean.goodfire.com/"
+                     data-share-points="702"
+                     data-share-comments="266">
+                <div class="repo-header-row">
+                    <h3>9. <a href="https://already-clean.goodfire.com/" target="_blank" rel="noopener noreferrer">Neural networks are clean</a> </h3>
+                    <div class="header-buttons">
+                        <button type="button" class="discuss-btn" aria-label="Discuss with AI" title="Discuss with AI">&#x1F4AC;</button>
+                        <button type="button" class="repo-toggle" aria-expanded="true">Hide details</button>
+                    </div>
+                </div>
+                <div class="repo-body">
+                    <p class="meta">
+                        <span class="language">already-clean.goodfire.com</span> |
+                        <span>themgt</span> |
+                        <span>702 points</span> |
+                        <span>266 comments</span> |
+                        <a href="https://news.ycombinator.com/item?id=50105647" target="_blank" rel="noopener noreferrer">discussion</a>
+                    </p>
+                    <p class="history">First seen: October 16, 2026 | Consecutive daily streak: 1 day</p>
+                    <div class="ai-summary">
+                        <h4>Analysis</h4>
+                        <p>The essay argues that neural networks may be substantially more interpretable than the mechanistic-interpretability field has assumed. It revisits classic examples of polysemantic neurons and superposition, claiming they were often caused by architectural weaknesses, inadequate analysis tools, or ordinary hierarchical generalization rather than arbitrary feature entanglement. Drawing on newer vision and language-model studies, the author reports that most neurons appear to have one main function or closely related roles, with apparent mixtures often revealing meaningful shared patterns. This matters because it suggests researchers may be able to study models’ native neurons and circuits directly, rather than first reconstructing them with tools such as sparse autoencoders, potentially making interpretability research more tractable for understanding and auditing large AI systems.</p>
+                    </div>
+                    
+                <div class="ai-summary">
+                    <h4>Comment Analysis</h4>
+                    <p class="camps-framing">Reactions ranged from optimism that neurons may offer a more objective foothold for studying models to skepticism that the examples establish a broad advance in interpretability. Commenters debated whether neuron-level legibility amounts to understanding, whether it could help with alignment, and how much apparent mixing may reflect scale and generalization. Many also criticized the essay’s length or presentation.</p>
+<div class="camp"><p class="camp-label"><strong>A promising turn toward native neurons</strong> &mdash; Some commenters saw studying a model’s own neurons and circuits as a useful alternative to relying first on learned proxy representations. They viewed this as potentially important for interpretability and, in some accounts, alignment.</p><blockquote>This feels like the watershed moment, again if Nick is proven right, as massive as the AlexNet victory in the 2012 ImageNet Large Scale Visual Recognition Challenge, exactly as Nick pointed out.<cite>devy</cite></blockquote>
+<blockquote>Neurons having narrow semantics means you can inspect what a neural network is &quot;thinking&quot; with confidence and even constrain its space of behaviors by activating/suppressing a small set of neurons that have very straightforward effects on its behavior.<cite>hackinthebochs</cite></blockquote>
+<blockquote>Reading this made me recognize that better interpretability yields not just better aligned but more compact models too.<cite>perching_aix</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Interesting, but not yet a field-changing result</strong> &mdash; Skeptics questioned whether the essay’s examples support its broad claims, rule out superposition, or amount to substantial progress toward ambitious reverse engineering. Some still welcomed neuron-level exploratory work.</p><blockquote>This is interesting work, but I don&#x27;t think it&#x27;s a significant update to the big picture of interpretability.<cite>D-Machine</cite></blockquote>
+<blockquote>I don&#x27;t think these have all been considered sufficiently to start claiming we are around the corner from mechanistic interpretation.<cite>bluejay2387</cite></blockquote>
+<blockquote>A kind of hypomanic energy around the idea that we&#x27;ve discovered the key paradigm necessary to understand models, and all that&#x27;s left is to scale it up.<cite>aesthesia</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Legibility is not the same as understanding</strong> &mdash; Commenters argued that identifying a neuron’s apparent role does not settle what it means or how it functions in context. Some also questioned whether human concepts are the right basis for interpreting a model.</p><blockquote>The essay shows neurons are legible, but legibility isn&#x27;t the same as meaning.<cite>Trusteando</cite></blockquote>
+<blockquote>It&#x27;s interesting to observe that human reasoning is still the barometer of what &quot;reasonably adjacent&quot; means in the context of a NN&#x27;s structure.<cite>root_axis</cite></blockquote>
+<blockquote>Can a mind understand a mind much greater than itself?<cite>nahuel0x</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Explanations may not solve alignment</strong> &mdash; Some commenters saw interpretability as a way to inspect or constrain behavior; others argued that predictability is only one step toward alignment, or doubted that human values can be specified and verified through such methods.</p><blockquote>This may help predictability, but alignment is a few steps further along from that.<cite>Animats</cite></blockquote>
+<blockquote>So maybe there is no alignment solution at all.<cite>antics</cite></blockquote>
+<blockquote>What I envision is the ability to find the circuits and neurons evaluating morality and ethics and being able to figure out how they work at the boundaries and ensure safe deferral to human judgement or stopping outside of in-distribution behavior, which further is vetted against actual human values.<cite>benlivengood</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Scale and generalization may explain apparent mixtures</strong> &mdash; Some commenters suggested that smaller models may combine related inputs into broad shared features, while larger models can afford to distinguish them. This offers an account of apparent polysemanticity without settling how broadly it applies.</p><blockquote>A model with a small number of neurons has to compact its concepts in order to fit within the parameter count while reducing loss.<cite>kmeisthax</cite></blockquote>
+<blockquote>When you have small models, they need to compress more by leveraging superposition and polysemanticity.<cite>LarsDu88</cite></blockquote>
+<blockquote>The redundancy can help humans lock onto patterns.<cite>bob1029</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>The essay is hard to follow, and the site gets in the way</strong> &mdash; Many commenters found the essay long, jargon-heavy, or unclear about its central claim. Others objected to the site’s laggy or distracting visual elements.</p><blockquote>Isn&#x27;t it ironic that an article on AI explainability is itself so hard to understand?<cite>smokel</cite></blockquote>
+<blockquote>16,000 words into the essay: &quot;What I mean by clean&quot; ...and it still doesn&#x27;t answer it. What is this actually about?<cite>phyzome</cite></blockquote>
+<blockquote>I&#x27;m not sure I buy the author&#x27;s arguments for mechanistic interpretability being easy, but it sure is a well-made and very interesting post. Would be better without the completely superfluous laggy 3d city model, though.<cite>stratos123</cite></blockquote></div>
+                </div>
+
+                </div>
+            </section>
+
+            <section class="repo" data-seen-before="0"
+                     data-share-title="The Folders Programming Language"
+                     data-share-url="https://danieltemkin.com/esolangs/folders"
+                     data-share-points="84"
+                     data-share-comments="11">
+                <div class="repo-header-row">
+                    <h3>10. <a href="https://danieltemkin.com/esolangs/folders" target="_blank" rel="noopener noreferrer">The Folders Programming Language</a> </h3>
+                    <div class="header-buttons">
+                        <button type="button" class="discuss-btn" aria-label="Discuss with AI" title="Discuss with AI">&#x1F4AC;</button>
+                        <button type="button" class="repo-toggle" aria-expanded="true">Hide details</button>
+                    </div>
+                </div>
+                <div class="repo-body">
+                    <p class="meta">
+                        <span class="language">danieltemkin.com</span> |
+                        <span>gurst</span> |
+                        <span>84 points</span> |
+                        <span>11 comments</span> |
+                        <a href="https://news.ycombinator.com/item?id=50114342" target="_blank" rel="noopener noreferrer">discussion</a>
+                    </p>
+                    <p class="history">First seen: October 16, 2026 | Consecutive daily streak: 1 day</p>
+                    <div class="ai-summary">
+                        <h4>Analysis</h4>
+                        <p>Folders is an esoteric programming language in which programs are represented entirely by the containment and alphabetical order of directories, with folder names otherwise ignored. Its simple imperative syntax encodes commands, expressions, variables, and types through the number and arrangement of child folders, while an interpreter stores temporary data in named folders. Inspired by Whitespace, the project explores code and data as filesystem structure rather than text, and includes Windows and Python implementations plus an online emulator and alternative visualizations. Its claims of effectively infinite storage reflect the conceptual experiment and filesystem behavior behind the language, not a practical replacement for conventional data storage.</p>
+                    </div>
+                    
+                <div class="ai-summary">
+                    <h4>Comment Analysis</h4>
+                    <p class="camps-framing">The comments respond to Folders as an intentionally absurd esolang, balancing amusement at the concept against the imagined effort of writing in it. Some compare it to notoriously difficult languages, while brief reactions focus on its appearance or the title’s association with Rust.</p>
+<div class="camp"><p class="camp-label"><strong>Delighted by the absurdity</strong> &mdash; These commenters appreciate the project’s bizarre, impractical character, including one who recognizes it from an earlier CTF.</p><blockquote>This is so nuts and pointless... I love it! The kind of thing no AI would ever come up with :)<cite>nunodonato</cite></blockquote>
+<blockquote>Oh, I remember that one from a CTF couple of years ago. Absolutely hilarious!<cite>zzril</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Daunted by the effort, with esolang one-upmanship</strong> &mdash; The imagined labor of writing in Folders prompts a visceral reaction, followed by jokes about even more difficult esolangs and their absurdities.</p><blockquote>This is the most truly &quot;WTF is wrong with you&quot; esolang I&#x27;ve ever seen. When I got down to the syntax I imagined the amount of effort it would take to write a single statement and viscerally recoiled.<cite>anonymous908213</cite></blockquote>
+<blockquote>If you enjoy that, allow me to introduce you to the displeasure of WORST and Malbolge. https://esolangs.org/wiki/WORST https://esolangs.org/wiki/Malbolge They’re both a truly bottomless pit of malaise.<cite>_kb</cite></blockquote>
+<blockquote>&gt;The same program translated to normalized Malbolge for *clarity* The audacity<cite>FacelessJim</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Aesthetic admiration</strong> &mdash; A brief reaction praises the project’s appearance and impressiveness.</p><blockquote>My first impression: beautiful and impressive.<cite>elendilm</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Title-triggered association</strong> &mdash; One commenter associates the title with Rust without elaborating further.</p><blockquote>Reading the title I immediately thought of rust<cite>Surac</cite></blockquote></div>
+                </div>
+
+                </div>
+            </section>
+
+            </div>
+        </article>
+    </main>
+    <footer>
+        <p>Generated automatically. Data from <a href="https://news.ycombinator.com/">Hacker News</a>.</p>
+    </footer>
+
+<script>
+(() => {
+    const readKey = "gtd:read_days:hn:v1";
+    const dayStr = "2026-10-16";
+
+    let stored = [];
+    try {
+        stored = JSON.parse(localStorage.getItem(readKey) || "[]");
+        if (!Array.isArray(stored)) {
+            stored = [];
+        }
+    } catch (_err) {
+        stored = [];
+    }
+
+    if (!stored.includes(dayStr)) {
+        stored.push(dayStr);
+        stored.sort();
+        localStorage.setItem(readKey, JSON.stringify(stored));
+    }
+
+    const collapseParam = new URLSearchParams(window.location.search).get("collapse_seen");
+    const collapseSeen = collapseParam === "0" ? false : true;
+
+    function setCollapsed(repoEl, collapsed) {
+        repoEl.classList.toggle("collapsed", collapsed);
+        const button = repoEl.querySelector(".repo-toggle");
+        if (button) {
+            button.textContent = collapsed ? "Show details" : "Hide details";
+            button.setAttribute("aria-expanded", String(!collapsed));
+        }
+    }
+
+    const repos = Array.from(document.querySelectorAll("section.repo[data-seen-before]"));
+
+    repos.forEach((repoEl) => {
+        const toggle = repoEl.querySelector(".repo-toggle");
+        if (!toggle) {
+            return;
+        }
+
+        toggle.addEventListener("click", () => {
+            setCollapsed(repoEl, !repoEl.classList.contains("collapsed"));
+        });
+    });
+
+    const collapseBtn = document.getElementById("collapse-seen-btn");
+    const expandBtn = document.getElementById("expand-all-btn");
+
+    if (collapseBtn) {
+        collapseBtn.addEventListener("click", () => {
+            repos.forEach((repoEl) => {
+                if (repoEl.dataset.seenBefore === "1") {
+                    setCollapsed(repoEl, true);
+                }
+            });
+        });
+    }
+
+    if (expandBtn) {
+        expandBtn.addEventListener("click", () => {
+            repos.forEach((repoEl) => setCollapsed(repoEl, false));
+        });
+    }
+
+    if (collapseSeen) {
+        repos.forEach((repoEl) => {
+            if (repoEl.dataset.seenBefore === "1") {
+                setCollapsed(repoEl, true);
+            }
+        });
+    }
+
+    // Discuss with AI button
+    const toast = document.createElement("div");
+    toast.className = "discuss-toast";
+    document.body.appendChild(toast);
+
+    function showToast(msg) {
+        toast.textContent = msg;
+        toast.classList.add("show");
+        setTimeout(() => toast.classList.remove("show"), 2500);
+    }
+
+    function buildHNMarkdown(card) {
+        const title = card.dataset.shareTitle || "";
+        const url = card.dataset.shareUrl || "";
+        const points = card.dataset.sharePoints || "0";
+        const comments = card.dataset.shareComments || "0";
+        const summaries = card.querySelectorAll(".ai-summary");
+        let md = "# " + title + "\n";
+        md += "Source: " + url + " | " + points + " points | " + comments + " comments\n";
+        summaries.forEach((s) => {
+            const heading = s.querySelector("h4");
+            const label = heading ? heading.textContent.trim() : "Analysis";
+            const content = Array.from(s.querySelectorAll("p"))
+                .map((p) => p.textContent.trim())
+                .join("\n");
+            md += "\n## " + label + "\n" + content + "\n";
+        });
+        return md;
+    }
+
+    document.querySelectorAll(".discuss-btn").forEach((btn) => {
+        btn.addEventListener("click", () => {
+            const card = btn.closest("section.repo");
+            if (!card) return;
+            const md = buildHNMarkdown(card);
+            const text = "I'd like to discuss this article with you. Here's a summary:\n\n" + md;
+            const title = "Discuss: " + (card.dataset.shareTitle || "");
+            if (navigator.share) {
+                navigator.share({ title: title, text: text }).catch(() => {});
+            } else {
+                navigator.clipboard.writeText(text).then(
+                    () => showToast("Copied to clipboard \u2014 paste into your AI chat"),
+                    () => showToast("Failed to copy")
+                );
+            }
+        });
+    });
+})();
+</script>
+
+<script src="../../preference.js?v=cb101175e" defer></script>
+</body>
+</html>
