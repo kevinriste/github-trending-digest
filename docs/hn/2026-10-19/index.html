@@ -1,0 +1,818 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Morning Edition — October 19, 2026</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght,SOFT@0,9..144,300..900,0..100;1,9..144,300..900,0..100&family=Inter:ital,wght@0,100..900;1,100..900&family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../morning.css?v=fe192bedb">
+</head>
+<body id="top" data-gtd-edition="hn" data-gtd-date="2026-10-19">
+  <header class="masthead">
+    <div class="masthead-nav">
+      <a href="../">Hacker News Calendar</a>
+      <span>&nbsp;·&nbsp;</span>
+      <a href="../../2026-10-19/">GitHub Trending &nbsp;·&nbsp; Oct 19</a>
+      <span>&nbsp;·&nbsp;</span>
+      <a href="classic.html">Classic View</a>
+    </div>
+    <div class="tagline">The Morning Edition</div>
+    <h1 class="frnc">Ten stories, before your coffee.</h1>
+    <div class="issue-line">
+      <span>Vol. I</span>
+      <span>October 19, 2026</span>
+      <span>HN Front Page Digest</span>
+    </div>
+  </header>
+<section class="the-take"><details open><summary>The HN Take</summary><h3 class="take-head">Failfs.</h3><p>Linux 7.3 is out:</p><p>&quot;This release is a record-breaker on all fronts; it brought in 18,765 non-merge commits from 3,021 developers, 807 of whom were first-time kernel developers.&quot;</p><p>There are significant group-scheduling improvements, virtual-machine working-set tracking, SMB server improvements and &quot;the new failfs filesystem that fails all operations.&quot;</p><p>Sure. Most filesystems are judged by how reliably they complete operations. Failfs has simplified the problem by deciding in advance that it won&#x27;t. You ask it to read a file, it fails. You ask it to write a file, it fails. There is presumably not much ambiguity about whether it is working correctly. If your normal filesystem fails all operations, you have an outage; if failfs fails all operations, ship it.</p><p>The release itself was similarly uneventful. &quot;Nothing very special seems to have happened this last week,&quot; so version 7.3 arrived on Sunday as expected. The 7.4 merge window opens Monday, except the maintainer is on vacation and plans to spend much of the day &quot;on a boat and under water.&quot;</p><p>This is a reasonable software release process. The record-breaking kernel came out on time because nothing happened, the next one will begin after some scuba diving, and one of the major new features is a filesystem that cannot do anything. Will wonders never cease?</p><h3 class="take-head">Latent agents.</h3><p>Here is one way to make artificial intelligence cheaper: Stop making it explain itself constantly.</p><p>A new paper on &quot;Hybrid Reasoning Agents&quot; proposes agents that alternate between ordinary text and continuous hidden-state reasoning. The agent thinks internally in latent space, then switches back to text when it needs to call a tool or interact with the outside world:</p><p>&quot;HybridAgent shifts more internal reasoning into semantically rich and interpretable latent thoughts, while reserving text for external inspection and tool interaction.&quot;</p><p>This is basically how people work. You do not narrate every intermediate thought aloud while deciding whether to look something up. You silently think for a bit, then type a search query. Modern language-model agents, by contrast, have traditionally had to write themselves a little essay before using the calculator. This is expensive because the calculator does not care about the essay.</p><p>The researchers added a &quot;HybridLink&quot; that maps the model&#x27;s last-layer hidden states back into its input embedding space, allowing it to continue thinking without decoding every step into tokens. They trained versions based on Qwen3 models at three sizes and report an average 10.4% performance improvement, 35.5% to 54.7% lower token usage, 1.8 to 2.6 times faster inference and 2.7 to 3.7 times lower cost across 11 benchmarks.</p><p>Also the latent thoughts are apparently inspectable:</p><p>&quot;Surprisingly, we find that HybridAgent can render its thoughts in latent mode as human-readable pseudo-text.&quot;</p><p>The pitch for latent reasoning is that the model can think in its &quot;own language&quot; without laboriously translating everything into words. The pitch for this particular latent reasoning is that its own language still looks enough like words for humans to read it. The model has developed an efficient private language, but compliance can review the transcripts. Ideal corporate communication technology.</p><div class="take-sources"><span>Sources</span><ul><li><a href="https://lwn.net/Articles/1101143/" target="_blank" rel="noopener noreferrer">Linux 7.3 Released</a></li></ul></div></details></section>
+  <section id="story-1" class="spread arc-mint-pattern">
+    <div class="numeral-block">
+      <div class="numeral">01</div>
+    </div>
+    <div class="kicker">System Core</div>
+    <h2>Linux 7.3 Opens the Next Kernel Cycle</h2>
+    <p class="story-meta">lwn.net &nbsp;·&nbsp; 234 pts &nbsp;·&nbsp; 107 comments</p>
+    <p class="lede">Linux 7.3 lands with 18,765 non-merge commits from 3,021 developers. New system calls, BPF tooling, filesystem work, scheduling changes, and stronger SMB support mark the release before the 7.4 merge window begins.</p>
+    <div class="spread-links"><a class="read-more" href="https://lwn.net/Articles/1101143/" target="_blank" rel="noopener">Read →</a><a class="read-more share-link" href="#" data-share-title="Linux 7.3 Released" data-share-url="https://lwn.net/Articles/1101143/">Share →</a>
+      <details class="analysis-drawer">
+        <summary class="btn-dossier">[ Analysis + ]</summary>
+        <div class="drawer-content">
+          
+          <h4>Technical Analysis</h4>
+          <div class="drawer-analysis">
+          <p>Linux kernel 7.3 has been released, concluding its development cycle and opening the merge window for 7.4. The release set records with 18,765 non-merge commits from 3,021 developers, including 807 first-time contributors. Key additions include expanded `binfmt_misc`, large-system group-scheduling improvements, the experimental failfs filesystem, the `fchroot()` system call, per-CPU BPF data, completed `sched_ext` support, virtual-machine working-set tracking, NTFS3 alternate data streams, and extensive SMB server enhancements. These changes matter because they expand Linux’s system interfaces, filesystem and networking capabilities, and performance tools across servers, virtualized environments, and embedded or desktop systems.</p>
+          </div>
+          <h4>Reader Reactions</h4>
+<p class="camps-framing">Discussion focused on practical features, especially Time Machine support over SMB and failfs as a possible isolation tool. Commenters weighed usefulness against reliability and implementation limits. A separate thread considered whether record contributor numbers might reflect AI-assisted patches and how contributors should be held accountable for their quality.</p>
+<div class="camp"><p class="camp-label"><strong>Hopeful about Time Machine support</strong> &mdash; Some commenters welcomed the new ksmbd compatibility as a reason to reconsider Linux-hosted Mac backups, while others already used Time Machine with network storage.</p><blockquote>I&#x27;ve moved to borg, but depending on how this goes may give time machine another try:<cite>theden</cite></blockquote>
+<blockquote>Yep. My household backs up to a Synology NAS via Time Machine:<cite>robin_reala</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Skeptical of Apple backup and SMB reliability</strong> &mdash; Some commenters described Time Machine over SMB as brittle or argued that mixed Apple and non-Apple setups can be painful. Others noted that SMB is now the remaining option after AFP support was dropped.</p><blockquote>This really makes me sad. They devoted time and effort to support something as locked and as broken as Apple Time Machine. That thing is a bad choice even within a 100% Apple ecosystem.<cite>crossroadsguy</cite></blockquote>
+<blockquote>Works might be a stretch. Every time I hear someone complaining about Time Machine it turns out they are trying to do it over SMB.<cite>tonyedgecombe</cite></blockquote>
+<blockquote>Apple have dropped support for AFP, so SMB is the only game in town.<cite>TheFuzzball</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Clarifying the SMB implementation</strong> &mdash; A technical exchange distinguished the kernel SMB server from Samba and noted that TrueNAS already provides Time Machine support using Samba.</p><blockquote>And basically only used by those allergic to Samba&#x27;s GPLv3.<cite>AshamedCaptain</cite></blockquote>
+<blockquote>Correct. TrueNAS uses Samba, which has supported this for a while.<cite>philjohn</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Concern or suspicion about AI-assisted kernel contributions</strong> &mdash; The unusually high contributor count led some commenters to wonder whether AI-assisted patches contributed to the record, though the comments did not establish that problematic code was submitted.</p><blockquote>I&#x27;m reading that as many new AI assisted code patches. Not everyone does an obviously bad job at submitting AI assisted code. Not a criticism, just an observation.<cite>INTPenis</cite></blockquote>
+<blockquote>hopefully without kernel-slops :P good job everyone btw!<cite>sirnicolaz</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Judge submissions by quality and accountability</strong> &mdash; Commenters argued that submitters remain responsible for patches regardless of the tools used, and that maintainers may stop reviewing contributions that waste their time.</p><blockquote>Basically, you can&#x27;t just post slop and then say, &quot;Oh, sorry, the AI did that.&quot; If the comments are too wordy, or the patch is unnecessary or poorly written or contains errors or doesn&#x27;t follow the style guide, you submitted it, so that&#x27;s on you.<cite>gwd</cite></blockquote>
+<blockquote>If I feel like I would be faster doing the work myself AND this author is not putting effort into it (e.g. they just copy-paste an AI), I will not review that work.<cite>palata</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Failfs as a sandboxing tool</strong> &mdash; Some commenters understood failfs as a way to prevent a process from opening new files and thereby limit its access to the filesystem, while noting that dynamic linking complicates its use.</p><blockquote>A process which is chrooted into failfs cannot open new files. It is limited to the set of filesystem file descriptors it already has open (presumably set up before the chroot or inherited into the process from some container runtime).<cite>rwmj</cite></blockquote>
+<blockquote>It looks like it&#x27;s useful for sandboxing by preventing any possible filesystem movement.<cite>rustyhancock</cite></blockquote></div>
+          <p class="drawer-footer"><a href="#dossier-1">View in Dossier ↓</a></p>
+        </div>
+      </details>
+    </div>
+  </section>
+  <section id="story-2" class="spread arc-academic-drop-cap">
+    <div class="paper-head">
+      <span>Research Desk</span>
+      <span class="numeral-roman">II</span>
+      <span>arxiv.org</span>
+    </div>
+    <h2>Hybrid Agents Reason Quietly, Then Act in Text</h2>
+    <p class="story-meta">arxiv.org &nbsp;·&nbsp; 406 pts &nbsp;·&nbsp; 199 comments</p>
+    <div class="cols">
+      <div><p>A new architecture alternates between latent internal states and visible text-based tool use.</p></div>
+      <div><p>Across 11 benchmarks, the authors report lower token consumption and faster inference while leaving open a scholarly question: how much oversight depends on seeing the reasoning trace?</p><div class="spread-links"><a class="read-more" href="https://arxiv.org/abs/2610.18861" target="_blank" rel="noopener">Read →</a><a class="read-more share-link" href="#" data-share-title="Hybrid Reasoning Agents: LLM agents that think in latent space, act through text" data-share-url="https://arxiv.org/abs/2610.18861">Share →</a>
+      <details class="analysis-drawer">
+        <summary class="btn-dossier">[ Analysis + ]</summary>
+        <div class="drawer-content">
+          
+          <h4>Technical Analysis</h4>
+          <div class="drawer-analysis">
+          <p>The paper introduces HybridAgent, an LLM-agent architecture that alternates between text generation for tool calls and external oversight and continuous latent states for internal reasoning. Its HybridLink adapter maps hidden states back into the model’s input-embedding space, while persistent KV-cache working memory carries mixed text, latent reasoning, and tool observations across turns. HybridSFT and HybridRL train the model to coordinate these modes and decide when to reason silently versus interact visibly. On 4B–14B Qwen3-based models, the authors report improved results across 11 math, science, medical, search, and agentic benchmarks, alongside 35.5%–54.7% fewer tokens, faster inference, and lower estimated cost; the central significance is an attempt to combine latent reasoning’s efficiency with the auditability and tool compatibility of text-based agents.</p>
+          </div>
+          <h4>Reader Reactions</h4>
+<p class="camps-framing">The discussion centers on whether latent reasoning is a useful efficiency and capability improvement or a reduction in visibility that could complicate oversight. Commenters also question how the approach differs from continuous chain-of-thought or looped transformers, whether reported gains translate to practical performance, and how much text traces reveal about a model’s internal process.</p>
+<div class="camp"><p class="camp-label"><strong>Latent reasoning as a natural next step</strong> &mdash; Some commenters see verbal reasoning as an unnecessary constraint and expect latent processing to use computation more efficiently or reduce repetitive text.</p><blockquote>I find this the most natural idea, there is no reason to assume thinking in words is the right granularity, or will stay the right granularity.<cite>ahrzb</cite></blockquote>
+<blockquote>I always thought, sometimes language would be limiting factor for llms, vector embedding based internal reasoning would be key to faster better models.<cite>ajey_ds</cite></blockquote>
+<blockquote>It&#x27;s reasoning output tends to include lots of restatement, which I guess would be more likely to be kept in latent space with this hybrid reasoning.<cite>notnullorvoid</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Loss of oversight is a serious safety concern</strong> &mdash; Some commenters worry that latent reasoning could make models harder to monitor, diagnose, or align, particularly in long-running or more capable systems.</p><blockquote>Enthusiastically racing to remove the only practical way we have to monitor models intentions in exchange of a few tokenmaxxing percent increase. Can’t wait.<cite>sailingparrot</cite></blockquote>
+<blockquote>Which sounds silly when you&#x27;re thinking about chatbots, but is an incredibly important line in the sand for superheavy, longrunning, self-improving agents.<cite>bbor</cite></blockquote>
+<blockquote>If you accept any of the AI-equivalents of Pascal&#x27;s Wager, latent thinking represents an uninterpretable and thus unalignable portion of AI machinery.<cite>kelseyfrog</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Text reasoning is already a weak monitor</strong> &mdash; Others argue that chain-of-thought text is an incomplete or unreliable representation of internal computation, and favor research into monitoring latent states directly.</p><blockquote>CoT monitoring is a mirage and won&#x27;t be useful for long, if it ever was<cite>idiotsecant</cite></blockquote>
+<blockquote>the chain of thought is not auditable.<cite>jlhawn</cite></blockquote>
+<blockquote>In doing this however, you lose meaning where the model is expressing combinations of tokens in a vector, and your logging/monitoring outputs just the closest one.<cite>chabons</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>The novelty and comparison are unclear</strong> &mdash; Commenters ask what HybridAgent adds over continuous chain-of-thought or looped-transformer approaches, and whether its differences from repeated or deeper computation are significant.</p><blockquote>How does this differ from Astra&#x27;s looped transformer? That architecture also reasons in the latent space<cite>incognito124</cite></blockquote>
+<blockquote>I&#x27;m not seeing a win here.<cite>octoberfranklin</cite></blockquote>
+<blockquote>One of the big points is that looped architectures don&#x27;t necessarily remove CoT style reasoning.<cite>calebkaiser</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Practical results need scrutiny</strong> &mdash; Some users report looping or task failures with released weights, while others suggest inference compatibility or model size may explain the results and ask for clearer evidence of accuracy gains.</p><blockquote>and it got stuck in a thinking loop forever and simply could not finish the task.<cite>sinuhe69</cite></blockquote>
+<blockquote>Same looping in BF16. So, probably have to wait on a llama.cpp update.<cite>SwellJoe</cite></blockquote>
+<blockquote>Does it just speed up inference and reduce token usage or does it seem to improve accuracy on certain tasks as well?<cite>44za12</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Human thought is not necessarily verbal</strong> &mdash; A side discussion challenges the assumption that people generally think in words, noting variation in inner monologue and the possibility of nonverbal thought.</p><blockquote>A large fraction of people do not have internal monologues.<cite>chriskanan</cite></blockquote>
+<blockquote>I have no idea what it means to think in words.<cite>kypro</cite></blockquote>
+<blockquote>Volition seems to occur spontaneously and it becomes ambiguous whether narration proceeds volition of volition proceeds narration.<cite>kelseyfrog</cite></blockquote></div>
+          <p class="drawer-footer"><a href="#dossier-2">View in Dossier ↓</a></p>
+        </div>
+      </details>
+    </div></div>
+    </div>
+  </section>
+  <section id="story-3" class="spread arc-notebook">
+    <div class="numeral">03</div>
+    <div class="kicker">Field Notes</div>
+    <h2>Robots Still Need a Data Flywheel</h2>
+    <p class="story-meta">construction-physics.com &nbsp;·&nbsp; 46 pts &nbsp;·&nbsp; 15 comments</p>
+    <p class="lede">Robot learning lacks the abundant, varied examples that made language-model scaling possible. Teleoperation, simulation, reinforcement learning, and human recordings each offer a partial answer, but the path from collected behavior to reliable generalization remains expensive and uncertain.</p>
+    <div class="spread-links"><a class="read-more" href="https://www.construction-physics.com/p/how-to-train-your-robot" target="_blank" rel="noopener">Read →</a><a class="read-more share-link" href="#" data-share-title="How to Train Your Robot" data-share-url="https://www.construction-physics.com/p/how-to-train-your-robot">Share →</a>
+      <details class="analysis-drawer">
+        <summary class="btn-dossier">[ Analysis + ]</summary>
+        <div class="drawer-content">
+          
+          <h4>Technical Analysis</h4>
+          <div class="drawer-analysis">
+          <p>The article examines the central data problem in training capable robots: unlike language models, robotics lacks a vast, readily available corpus of high-quality task examples. It surveys major collection methods—teleoperation, real-world reinforcement learning, simulation, synthetic data, and recordings of humans using cameras or robotic interfaces—along with their trade-offs in cost, realism, scalability, and the sim-to-real gap. Current robot datasets are growing rapidly but remain orders of magnitude smaller and less information-dense than those used for leading language models, potentially implying billions of dollars to collect enough data for comparable scaling. The issue matters because robotics progress may depend on building an effective data flywheel through deployment, while better architectures or general-purpose AI could reduce the amount of task-specific data required.</p>
+          </div>
+          <h4>Reader Reactions</h4>
+<p class="camps-framing">The comments were broadly interested in the article but focused mainly on what makes robots adaptable: their form, sensors, and learning feedback. They differed on whether human-shaped robots are a natural general solution or whether purpose-built machines can work better in settings designed around robotics. A smaller exchange considered whether simulation is shortening robotics’ learning cycle and whether the field is nearing a ChatGPT-like breakthrough.</p>
+<div class="camp"><p class="camp-label"><strong>Humanoid adaptability</strong> &mdash; Some commenters see human-shaped robots as a practical path to general-purpose work because human environments, hands, and bodies support varied tasks and changing conditions.</p><blockquote>I now realise this is almost certainly the most reliable way to solve the general robot problem - not just for the reasons the OP lays out, but because the whole world is already built for human-shaped agents anyway.<cite>alex-moon</cite></blockquote>
+<blockquote>Robot don&#x27;t need to be exactly human shape, but having robot with the same adaptability has human have a huge advantage for companies where adaptability is a core part of the business.<cite>maeln</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Design for robots instead</strong> &mdash; Other commenters argue that high-volume settings can be designed around robotics, while humanoid form is not necessarily required to navigate human spaces.</p><blockquote>The difference is whether or not a factory is designed with robotics as the driving principle or with human labor as the driving principle.<cite>jacquesm</cite></blockquote>
+<blockquote>not really, there&#x27;s several non-humanoid shapes that can easily adapt the human shape and to it but it&#x27;s a little out of the box.<cite>joaquieneCnix</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Missing sensory information</strong> &mdash; These commenters suggest that robot training may lack the rich, fused sensory information and processing that support human movement and control.</p><blockquote>Our eyes and balance also contribute to a very rich picture to enable movement and kinematics.<cite>ilikerashers</cite></blockquote>
+<blockquote>I suspect the problem isn&#x27;t just the amount of training data, but how much of the relevant information is missing from it.<cite>SwtCyber</cite></blockquote>
+<blockquote>There is a ton of pre-processing done on those signals though (for instance: the optical nerve is pretty much an extension of the brain, how is that for a high speed, high bandwidth interface).<cite>jacquesm</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Real-world feedback is too slow</strong> &mdash; One commenter emphasizes that learning through physical-world interaction involves long feedback loops, posing an obstacle to faster robotics progress.</p><blockquote>Feedback loops are too long with anything real worldly<cite>dvh</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Simulation may speed learning</strong> &mdash; In reply, one commenter argues that simulation and realistic generated video are reducing feedback-loop times and changing training prospects.</p><blockquote>The feed back loop is getting reduced by those new ways of training, simulation and video generation with realistic physics is kind of changing the game.<cite>serpicourge</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Is robotics at its ChatGPT moment?</strong> &mdash; A brief exchange asks whether robotics is still waiting for a defining breakthrough or whether one is happening now.</p><blockquote>robotic is waiting for its chatgpt moment<cite>shinnc</cite></blockquote>
+<blockquote>You do not think that the chatgpt moment is happening right now ?<cite>serpicourge</cite></blockquote></div>
+          <p class="drawer-footer"><a href="#dossier-3">View in Dossier ↓</a></p>
+        </div>
+      </details>
+    </div>
+  </section>
+  <section id="story-4" class="spread arc-archive">
+    <div class="archive-head">
+      <span>ARCHIVE</span>
+      <span>N<sup>o</sup> 04</span>
+    </div>
+    <div class="kicker">Archival Desk</div>
+    <h2>How Cyberspace Nearly Became a Trademark</h2>
+    <p class="story-meta">colo.to &nbsp;·&nbsp; 191 pts &nbsp;·&nbsp; 74 comments</p>
+    <p class="lede">In 1989, Autodesk explored commercializing the word cyberspace for an early virtual-reality system. William Gibson objected, the application was abandoned, and a joke about trademarking Eric Gullichsen hardened into a historical myth.</p>
+    <div class="spread-links"><a class="read-more" href="https://colo.to/cyberspace.html" target="_blank" rel="noopener">Read →</a><a class="read-more share-link" href="#" data-share-title="William Gibson and the trademarking of cyberspace" data-share-url="https://colo.to/cyberspace.html">Share →</a>
+      <details class="analysis-drawer">
+        <summary class="btn-dossier">[ Analysis + ]</summary>
+        <div class="drawer-content">
+          
+          <h4>Technical Analysis</h4>
+          <div class="drawer-analysis">
+          <p>The story debunks the long-running rumor that William Gibson tried to trademark “Eric Gullichsen” after Autodesk trademarked “cyberspace.” In 1989, Autodesk’s research lab was developing an early virtual-reality system using specialized graphics hardware, head-mounted displays, motion tracking, and data gloves, and sought to register “cyberspace” as the technology moved toward commercialization. Gibson objected through his lawyers, while Timothy Leary originated the retaliatory-trademark joke, which others later repeated as fact. The episode matters because it illustrates the tension between an author’s cultural creation, companies’ efforts to claim emerging technology terminology, and the way anecdotes can become accepted history.</p>
+          </div>
+          <h4>Reader Reactions</h4>
+<p class="camps-framing">The discussion examines both the history of Autodesk’s cyberspace trademark application and what it meant to seek commercial rights over a culturally influential term. Eric Gullichsen clarifies that the application was abandoned rather than rejected after Gibson’s protest, while commenters continue to differ on the filing’s implications. The thread also considers trademark scope, cultural credit, Autodesk’s historical context, and the practical limits of early VR.</p>
+<div class="camp"><p class="camp-label"><strong>Correcting the record</strong> &mdash; Commenters emphasize firsthand evidence and distinguish the application’s abandonment from a rejection prompted by Gibson. Gullichsen also explains that the “street” line was a deliberate quotation, though readers differ on its effect.</p><blockquote>The CYBERSPACE trademark application wasn&#x27;t rejected. It was abandoned in 1991 after the VR project was cancelled and we developers left Autodesk to start Sense8.<cite>Eric_Gullichsen</cite></blockquote>
+<blockquote>But the &quot;street&quot; line was a deliberately smartass quotation from Gibson in a letter I wrote, not some corporate attempt to pass itself off as counterculture.<cite>Eric_Gullichsen</cite></blockquote>
+<blockquote>I appreciate having your account and the actual letters to separate what happened from the story that grew around it.<cite>DonHopkins</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Corporate overreach</strong> &mdash; Some commenters see the trademark effort as a tone-deaf attempt by a corporation to claim a term associated with an author and a broader culture. The company-letterhead context makes the “street” rhetoric especially jarring to some.</p><blockquote>I&#x27;m glad it failed to trademark.<cite>koolala</cite></blockquote>
+<blockquote>Such a tone deaf response.<cite>davedx</cite></blockquote>
+<blockquote>Perhaps not, but it was sent on Autodesk company letterhead...<cite>YrRight2PushBac</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Historical context for Autodesk</strong> &mdash; Others caution against evaluating the 1989 research lab solely through Autodesk’s later reputation, and note that the filing was connected to a VR project. This contextual view does not necessarily endorse the application.</p><blockquote>This was almost 30 years ago, in 1989. Autodesk was quite alright back then.<cite>abcd_f</cite></blockquote>
+<blockquote>Judging the Autodesk Research Lab of 1989 by the reputation of the company Autodesk later became seems rather ahistorical.<cite>Eric_Gullichsen</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Trademark scope versus generic terms</strong> &mdash; Commenters disagree about whether trademarks for genre terms are ordinary protections limited to particular uses or improper claims over labels that describe the works themselves.</p><blockquote>It doesn&#x27;t stop you from using the word except in the same genre of business<cite>socalgal2</cite></blockquote>
+<blockquote>It&#x27;s like if you breed a new apple cultivar, name it &quot;Apple&quot;, and then register a trademark, to be the only one to name their apple variety &quot;Apple&quot;.<cite>cubefox</cite></blockquote>
+<blockquote>You can&#x27;t make a game called Cyberpunk but you can use it for anything else.<cite>mitxela</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Cultural credit and appropriation</strong> &mdash; The discussion broadens to whether companies adopting culturally influential language should acknowledge its origins. Commenters debate whether such acknowledgment is owed and distinguish Stephenson’s “metaverse” from the older prefix “meta.”</p><blockquote>How many people have you thanked for the words and phrases they originated?<cite>socalgal2</cite></blockquote>
+<blockquote>At least as many as the number of times I&#x27;ve tried to claim someone else&#x27;s words and phrases as my exclusive intellectual property in order to profit, because I believe the latter is zero.<cite>harry8</cite></blockquote>
+<blockquote>It was &#x27;metaverse&#x27; that Neal Stephenson coined (which Meta did take and use in a way that does not, to my untrained eye, seem legally defensible.) &quot;Meta&quot; is a prefix from Ancient Greek, dating back thousands of years.<cite>pryce</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>VR’s promise and practical limits</strong> &mdash; Commenters recall the ambitions of early VR while questioning whether midair hand interaction works for precision tasks. Gullichsen describes visualization as a better fit for him, and another commenter points to tracking and tactile feedback as possible factors.</p><blockquote>But it was like trying to do mechanical drawing while wearing oven mitts.<cite>Animats</cite></blockquote>
+<blockquote>I agree that VR isn&#x27;t the best modality for precision CAD work, although it can be great for visualization.<cite>Eric_Gullichsen</cite></blockquote>
+<blockquote>The main issue is our hands are shaky, get tired quick and we need tactile feedback when doing fine-motor skill work (surgery, etc.)<cite>kroaton</cite></blockquote></div>
+          <p class="drawer-footer"><a href="#dossier-4">View in Dossier ↓</a></p>
+        </div>
+      </details>
+    </div>
+  </section>
+  <section id="story-5" class="spread arc-pastel-playful">
+    <div class="alpha-grid"><span>A</span><span>B</span><span>C</span><span>D</span><span>E</span><span>F</span><span>G</span><span>H</span><span>I</span><span>J</span><span>K</span><span>L</span><span>M</span></div>
+    <div class="alpha-grid" style="top: auto; bottom: 0;"><span>N</span><span>O</span><span>P</span><span>Q</span><span>R</span><span>S</span><span>T</span><span>U</span><span>V</span><span>W</span><span>X</span><span>Y</span><span>Z</span></div>
+    <div class="numeral">05</div>
+    <div class="kicker">Curious History</div>
+    <h2>When Rabbits Were Royalty in England</h2>
+    <p class="story-meta">phys.org &nbsp;·&nbsp; 91 pts &nbsp;·&nbsp; 84 comments</p>
+    <p class="lede">Medieval rabbits were not yet the everyday nuisance or dinner-table staple familiar today. Imported animals, enclosed warrens, and fragile populations made them an elite luxury—until the upheaval of the Black Death changed who could own and eat them.</p>
+    <div class="spread-links"><a class="read-more" href="https://phys.org/news/2026-10-rabbits-medieval-royal-luxury-england.html" target="_blank" rel="noopener">Read →</a><a class="read-more share-link" href="#" data-share-title="Rabbits were a medieval royal luxury in England until the Black Death" data-share-url="https://phys.org/news/2026-10-rabbits-medieval-royal-luxury-england.html">Share →</a>
+      <details class="analysis-drawer">
+        <summary class="btn-dossier">[ Analysis + ]</summary>
+        <div class="drawer-content">
+          
+          <h4>Technical Analysis</h4>
+          <div class="drawer-analysis">
+          <p>The story reports that rabbits were a rare, expensive luxury in medieval England, largely reserved for royalty and wealthy landowners rather than being common food. Their value reflected the difficulty of importing and breeding them, as well as the need to maintain enclosed warrens and manage fragile populations. It argues that the Black Death disrupted this system, likely through demographic and economic upheaval that made rabbits more widely available or less exclusively controlled. The history is important because it shows how disease and social change can reshape the ownership, production, and distribution of food.</p>
+          </div>
+          <h4>Reader Reactions</h4>
+<p class="camps-framing">Most commenters focused on rabbit as food, sharing recipes and regional experiences more often than discussing the medieval history. The main disagreement concerned whether rabbits could have been scarce and expensive; replies pointed to their introduction to Britain and to the effects of ecology, predators, and population density. Other threads considered meat-word etymology, changing prices, and differing attitudes toward rabbit as a delicacy, staple, or pest.</p>
+<div class="camp"><p class="camp-label"><strong>Rabbit and meat-word etymology</strong> &mdash; A language thread explored why rabbit lacks a distinct meat name, including the older term cony, the history of rabbit, and the possible Germanic roots of chicken.</p><blockquote>Yes, cony: https://en.wiktionary.org/wiki/cony#English See also the note at rabbit: https://en.wiktionary.org/wiki/rabbit#English apparently rabbits themselves are all French. &quot;hare is indeed inherited from Proto-Germanic.&quot;<cite>card_zero</cite></blockquote>
+<blockquote>The reason it got &quot;lost&quot;: &gt; the similarity to cunt (and particularly homophony with cunny) led through taboo avoidance both to the word&#x27;s displacement in the main by rabbit and bunny<cite>Chris2048</cite></blockquote>
+<blockquote>Funnily enough in Switzerland they use &quot;Poulet&quot; to mean exclusively chicken meat.<cite>mdurana</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Medieval scarcity and ecological context</strong> &mdash; One commenter questioned how rabbits could have been rare given their reproductive rate. Replies noted that rabbits were not native to Britain and that predators, hunting, and human population density shaped their abundance.</p><blockquote>This sounds like absolute horseshit to me. You&#x27;re trying to say that rabbits - which breed so rapidly that we actually use the phrase &quot;breeds like rabbits&quot; in just about every language across the planet - were somehow a rare luxury?<cite>ErroneousBosh</cite></blockquote>
+<blockquote>You realise that rabbits were once so rare in Australia they had to be introduced to salve the British passion for killing small things?<cite>defrost</cite></blockquote>
+<blockquote>Rabbits also happen to be an excellent source of protein for other animals. This helps keep the rabbit population under control in healthy ecosystems.<cite>kijin</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Rabbit as an appealing food</strong> &mdash; Commenters shared preparations from several cuisines and described rabbit as tasty, often recommending slow cooking or distinctive seasoning.</p><blockquote>Maltese thick rabbit stew (think: ragu) is delicious.<cite>bostik</cite></blockquote>
+<blockquote>In my family we often eat a simpler version from Murcia with no chicken, but more rabbit, called just &quot;rice with rabbit&quot;, and IMHO it&#x27;s even better<cite>Al-Khwarizmi</cite></blockquote>
+<blockquote>I like Sichuan&#x27;s Zigong 冷吃兔 (cold-eaten rabbit)! Fried rabbit, dried chillies and numbing Sichuan pepper. Unforgettable.<cite>xfq</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Regional food traditions and Australian rabbit history</strong> &mdash; Commenters described rabbit as a familiar food in some regions and an uncommon or stigmatized one in others. Australian recollections included both its use as a staple and its ecological effects as an introduced species.</p><blockquote>Rabbits were a depression-era food for Australians and was always considered a poor people&#x27;s food.<cite>NL807</cite></blockquote>
+<blockquote>One of my favourite meals was a sweet rabbit curry with rice that Mum used to make.<cite>phillc73</cite></blockquote>
+<blockquote>Since their introduction for a spot of recreational hunting, European rabbits have had a devastating effect on the ecology of Australia in general.<cite>ButlerianJihad</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Modern price comparisons</strong> &mdash; A smaller discussion compared rabbit prices with chicken and noted how industrial poultry production changed the relative cost and popularity of chicken.</p><blockquote>It&#x27;s says Rabbit was 4-5 times the price of chicken. That seems a reasonable estimate to me even today.<cite>rustyhancock</cite></blockquote>
+<blockquote>Price of chicken dropped steeply (and consumption exploded) in the second half of the 20th century after the introduction of broiler breeds and what’s essentially muscle tissue factories.<cite>Sharlin</cite></blockquote>
+<blockquote>Rabbit is comparatively cheap to produce, and available at low price wherever it is produced in larger quantities. Apparently no significant economies of scale where you live.<cite>handwoven</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Reservations about eating rabbit and nutrition</strong> &mdash; Some commenters expressed reluctance because rabbit resembles a pet or rodent, while another exchange recalled the health risks of relying on its very lean meat.</p><blockquote>Rabbit is very commonplace where I live, but I haven&#x27;t tried it, it just looks to much like a rodent.<cite>throwfaraway135</cite></blockquote>
+<blockquote>I have tried it in a French restaurant and it was delicious. Just don&#x27;t think about how cute it would have been to cuddle instead. :-(<cite>dingdongditchme</cite></blockquote>
+<blockquote>The body can only digest so much protein and rabbits are so lean there is basically no fat to them outside their organs.<cite>tybit</cite></blockquote></div>
+          <p class="drawer-footer"><a href="#dossier-5">View in Dossier ↓</a></p>
+        </div>
+      </details>
+    </div>
+  </section>
+  <section id="story-6" class="spread arc-editorial-pullquote">
+    <div class="left">
+      <div class="numeral">06</div>
+      <div class="kicker">Future Practice</div>
+      <h2>Mathematics Has More Work Ahead, Not Less</h2>
+      <p class="story-meta">youtube.com &nbsp;·&nbsp; 386 pts &nbsp;·&nbsp; 471 comments</p>
+      <div class="spread-links"><a class="read-more" href="https://www.youtube.com/watch?v=LKrwhjOI8Nc" target="_blank" rel="noopener">Read →</a><a class="read-more share-link" href="#" data-share-title="There&#x27;s never been a better time to go into math (by: 3blue1brown) [video]" data-share-url="https://www.youtube.com/watch?v=LKrwhjOI8Nc">Share →</a>
+      <details class="analysis-drawer">
+        <summary class="btn-dossier">[ Analysis + ]</summary>
+        <div class="drawer-content">
+          
+          <h4>Technical Analysis</h4>
+          <div class="drawer-analysis">
+          <p>3Blue1Brown argues that AI’s rapid progress in theorem proving does not make mathematics obsolete, because mathematical value also comes from choosing important questions, building theories, applying them, communicating ideas, and developing transferable problem-solving skills. The video distinguishes these activities from the funding structure behind mathematics, which relies heavily on teaching, public and private research support, and the downstream economic value of mathematically trained people. Even if AI becomes better than humans at generating proofs, the speaker expects applications, education, and the usefulness of mathematical training to remain largely intact, while academic credit, authorship, and mathematicians’ day-to-day work may change substantially. The story matters because it offers students and researchers a framework for deciding whether to pursue mathematics amid uncertainty, emphasizing that AI may accelerate theory-building rather than eliminate the field.</p>
+          </div>
+          <h4>Reader Reactions</h4>
+<p class="camps-framing">Commenters differed over whether AI will expand mathematical work or displace the activities and roles that make the field meaningful. The discussion also raised concerns about understanding, career prospects, the pace of change, and the social consequences of automation.</p>
+<div class="camp"><p class="camp-label"><strong>AI as an accelerator, not an ending</strong> &mdash; Some expect AI to create more mathematical questions and increase the need for people to interpret, connect, teach, and guide the work.</p><blockquote>There&#x27;s going to be so many more connections to evaluate, so much work needed for unification and simplification and pedagogy, and above all there&#x27;s going to be intense demand for mathematical taste.<cite>epistasis</cite></blockquote>
+<blockquote>Science produces knowledge. Knowledge is information made legible to understanding by people.<cite>Barrin92</cite></blockquote>
+<blockquote>If AI means more concepts are discovered the tower gets taller - and we find those joyful moments more often.<cite>cadamsdotcom</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>The craft and discovery are the point</strong> &mdash; Others argue that having a problem solved is not equivalent to personally working through it. They value the process of discovery, not just the result or a new role overseeing AI.</p><blockquote>A craft I enjoy doing has been taken away from me, I should be allowed to mourn, I don&#x27;t care that I can do something else since I never liked doing it in the first place.<cite>PixelForg</cite></blockquote>
+<blockquote>A field can have a bright future while losing what drew people to it.<cite>raz32dust</cite></blockquote>
+<blockquote>Personally, I enjoy the process of solving problems. I do not enjoy wrangling unpredictable AI agents.<cite>rbongers</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>AI may erode understanding, not just jobs</strong> &mdash; Some see the effort of solving problems as essential to building intuition and maintaining a genuine understanding of the results. Faster production may leave people reviewing work they did not develop themselves.</p><blockquote>The effort spent trying to prove theorems and connect theories pays off in deep intuition; removing that struggle significantly impairs our understanding.<cite>rocho</cite></blockquote>
+<blockquote>Reviewing code is not a substitute for writing it, and new contributions to the codebase are essentially bound to LLM usage.<cite>rocho</cite></blockquote>
+<blockquote>The task of breaking down these AI proofs is not translating and analyzing a fuzzy real-world system into a hard logical system (like in biology), but in translating a hard logical system into a simpler hard-logical system we can understand.<cite>tarpitt</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>The career outlook is poor</strong> &mdash; Skeptics question optimistic career advice, citing rapid progress, incentives to automate, and a future with fewer roles for mathematicians and other workers.</p><blockquote>If our economy comes to rely on RSI-enabled AI, most people will simply have no place in any industry it touches.<cite>prohobo</cite></blockquote>
+<blockquote>Sure, math does require people in future, but it can&#x27;t accommodate as many as it does today.<cite>zkmon</cite></blockquote>
+<blockquote>Is mathematics, or software engineering, a promising career path for the next 50 years? No, it&#x27;s most certainly not, and anyone suggesting otherwise is delusional.<cite>zarzavat</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Historical analogy versus a new kind of disruption</strong> &mdash; Commenters disagreed about whether AI will follow earlier technologies that changed work and enabled new roles, or whether its rapid improvement makes those comparisons unreliable. Some remained unsure how capable AI will become.</p><blockquote>History has shown that a very potent tool can improved and changed industry entirely for the better.<cite>teleforce</cite></blockquote>
+<blockquote>AI isn&#x27;t like any other historical tool or technology. Its qualitatively different.<cite>andyjohnson0</cite></blockquote>
+<blockquote>I really don&#x27;t know, so I&#x27;m not &quot;taking sides&quot; in this debate.<cite>hn_throwaway_99</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Automation raises social questions, not just career questions</strong> &mdash; Some commenters emphasize that changes to work affect livelihoods, identity, and meaning, and that advising people to find new interests does not resolve those broader concerns.</p><blockquote>Being upset when what they chose to spend their lives doing either loses value or changes so much it becomes a wholey different job is understandable, and calling it &quot;rent seeking&quot; is very unfair, in my view.<cite>andersource</cite></blockquote>
+<blockquote>No matter how you feel about AI, I think we should all pause and at least think about this and validate those feelings.<cite>lz400</cite></blockquote>
+<blockquote>Then there will be no economy. If anything, if we reach this level of economic automation, more people will have to find ways to occupy themselves and sparking joy through math might be the best way to go about it for some.<cite>suddenlybananas</cite></blockquote></div>
+          <p class="drawer-footer"><a href="#dossier-6">View in Dossier ↓</a></p>
+        </div>
+      </details>
+    </div>
+    </div>
+    <blockquote class="pullquote">Mathematics is not finished when machines can prove theorems.</blockquote>
+  </section>
+  <section id="story-7" class="spread arc-midnight">
+    <div class="numeral">07</div>
+    <div class="body">
+      <div class="kicker">// Agent Visibility</div>
+      <h2>Put an LLM Proxy Between You and the Cloud</h2>
+      <p class="story-meta">jrdsgl.com &nbsp;·&nbsp; 180 pts &nbsp;·&nbsp; 126 comments</p>
+      <p class="lede">A self-hosted proxy turns opaque model traffic into an inspectable system. It can track tokens, route providers, issue virtual keys, and preserve operational control—provided the logging layer earns the trust it is meant to create.</p>
+      <div class="spread-links"><a class="read-more" href="https://jrdsgl.com/if-you-dont-run-your-own-llm-proxy-how-the-fuck-do-you-even-know-whats-going-on/" target="_blank" rel="noopener">Read →</a><a class="read-more share-link" href="#" data-share-title="If you don&#x27;t run your own LLM proxy, how do you know whats going on?" data-share-url="https://jrdsgl.com/if-you-dont-run-your-own-llm-proxy-how-the-fuck-do-you-even-know-whats-going-on/">Share →</a>
+      <details class="analysis-drawer">
+        <summary class="btn-dossier">[ Analysis + ]</summary>
+        <div class="drawer-content">
+          
+          <h4>Technical Analysis</h4>
+          <div class="drawer-analysis">
+          <p>The article argues that developers and businesses should run their own LLM proxy rather than rely solely on provider dashboards or direct API access. A self-hosted proxy can centralize multiple models and providers, record detailed request metadata and token usage, issue virtual keys, support observability and troubleshooting, and make switching providers easier. The author emphasizes that provider-facing analytics and optional telemetry exports often do not offer enough actionable, time-series insight for engineering decisions. Controlling the proxy also gives organizations greater ownership of infrastructure, data routing, logging, customization, and operational visibility.</p>
+          </div>
+          <h4>Reader Reactions</h4>
+<p class="camps-framing">Comments generally saw value in understanding how LLMs are used, but disagreed about whether proxies are the right way to capture that information. Participants compared proxy logging with richer session archives and custom harnesses, debated when monitoring is worthwhile, and weighed API costs against subscriptions. Privacy and proxy reliability also emerged as concerns.</p>
+<div class="camp"><p class="camp-label"><strong>Proxies for visibility and control</strong> &mdash; Some commenters valued proxies for centralized visibility, cost attribution, guardrails, and protecting provider credentials, particularly when orchestrating agents or using sandboxes. Others shared proxy and gateway tools they use or are developing.</p><blockquote>I can&#x27;t orchestrate agents in sandboxes without it.<cite>hoppp</cite></blockquote>
+<blockquote>I agree its so important to proxy and capture all the data.<cite>zaptheimpaler</cite></blockquote>
+<blockquote>Tailscale makes Aperture available for free, and while it&#x27;s not something you own, it is in your tailnet, so at least you have a certain amount of control over how things access it.<cite>passive</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Session logs and custom harnesses instead</strong> &mdash; Others preferred archives of agent sessions or purpose-built harnesses, which can preserve more context than a proxy and work across tools. Some sought practical ways to search or standardize those records.</p><blockquote>They are better organized (e.g., subagents) than what the proxy sees.<cite>jakozaur</cite></blockquote>
+<blockquote>The proxy&#x27;s are generally inconvenient and yet another point of failure.<cite>chopete3</cite></blockquote>
+<blockquote>Well that was one of the reasons why i build my own agent/harness - to have actual full observability of what it is doing and why it is doing what it is doing.<cite>voodooEntity</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Monitoring depends on the user and workload</strong> &mdash; Some commenters found detailed monitoring unnecessary for light or home use, while others considered it valuable for heavy use, cost control, or curiosity. A related view treated setup and inspection as worthwhile for some users even when others prefer a service that abstracts the details.</p><blockquote>A $100 OpenAI subscription feels effectively infinite for my usage at home<cite>variety8675</cite></blockquote>
+<blockquote>You have to be monitoring this unless you want to absolutely torch your company&#x27;s budget.<cite>viccis</cite></blockquote>
+<blockquote>Toyed around with it back when claude code showed up, but never really got any useful actionable insights from it so stopped (Aside from ditching CC &amp; it&#x27;s bloated sys prompts that is)<cite>Havoc</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>API and subscription economics vary, and remain uncertain</strong> &mdash; Commenters described API pricing as attractive for predictable, controlled workloads and subscriptions as safer for intensive or exploratory use. They also disagreed about whether subsidized subscriptions will disappear: some urged preparation for higher costs, while others expected falling token costs or easy provider switching.</p><blockquote>But it only took 2-3 days to hit $200 spend with api keys.<cite>NeutralWanted</cite></blockquote>
+<blockquote>Paying for a subscription would be more expensive because I have a predictable and controllable amount of demand.<cite>bob1029</cite></blockquote>
+<blockquote>Switching models and providers isn’t some huge lift.<cite>Aurornis</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Logging raises privacy and compliance concerns</strong> &mdash; Some warned that stored conversations can include sensitive or medical information and should be handled carefully. Replies debated how personal data differs from PII and whether digitally recording information creates obligations that do not apply to ordinary overhearing.</p><blockquote>So id be very careful with chats and treat them like chats, not like code.<cite>lionkor</cite></blockquote>
+<blockquote>GDPR doesn&#x27;t cover unrecorded human memory, so you&#x27;re fine to overhear whatever in a day-to-day setting.<cite>OtherShrezzing</cite></blockquote>
+<blockquote>GDPR is about digitally recorded information.<cite>mcv</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Proxy reliability and security are concerns</strong> &mdash; Some questioned whether rapidly evolving proxy projects are reliable or secure enough to sit in the request path. Others recommended alternatives or expressed confidence in particular tools, leaving no single option as an agreed standard.</p><blockquote>And with the velocity of updates I feel there has to be vulnerabilities there.<cite>jubilanti</cite></blockquote>
+<blockquote>Bifrost has been decent, despite being partially shareware<cite>hoss1474489</cite></blockquote>
+<blockquote>It&#x27;s a quality piece of software, unlike LiteLLM.<cite>zaptheimpaler</cite></blockquote></div>
+          <p class="drawer-footer"><a href="#dossier-7">View in Dossier ↓</a></p>
+        </div>
+      </details>
+    </div>
+    </div>
+  </section>
+  <section id="story-8" class="spread arc-terminal">
+    <div class="prompt-row">user@morning-edition:~$ cat story_08.md</div>
+    <div class="numeral">08</div>
+    <h2>Tmux Keeps Coding Agents Running, Not Understandable</h2>
+    <p class="story-meta">crystl.dev &nbsp;·&nbsp; 39 pts &nbsp;·&nbsp; 21 comments</p>
+    <p class="lede">Use tmux to persist sessions, split panes, script inputs, and work remotely over SSH. But terminal scraping cannot reliably tell whether an agent is working, waiting, or finished; orchestration needs state, not just screen output.<span class="cursor"></span></p>
+    <div class="spread-links"><a class="read-more" href="https://crystl.dev/guides/tmux-for-ai-agents/" target="_blank" rel="noopener">Read →</a><a class="read-more share-link" href="#" data-share-title="Tmux and Claude Code: Sessions, Send-Keys, and the Ceiling" data-share-url="https://crystl.dev/guides/tmux-for-ai-agents/">Share →</a>
+      <details class="analysis-drawer">
+        <summary class="btn-dossier">[ Analysis + ]</summary>
+        <div class="drawer-content">
+          
+          <h4>Technical Analysis</h4>
+          <div class="drawer-analysis">
+          <p>The article presents a practical tmux setup for running multiple Claude Code or other AI coding agents, covering project-based sessions, worktree integration, pane layouts, scripted input with `send-keys`, output retrieval with `capture-pane`, status monitoring, and remote SSH use. It notes that Claude Code’s `--worktree --tmux` handles basic isolated sessions, while custom tmux configuration is needed for multi-agent orchestration and visibility. The key limitation is that tmux only sees terminal output, so detecting whether an agent is working, finished, or awaiting approval requires brittle screen scraping and provides no structured state, shared coordination, or reboot-persistent history. The article recommends retaining tmux for resilient remote workloads but using agent-aware tooling when managing several interactive agents that need timely human decisions.</p>
+          </div>
+          <h4>Reader Reactions</h4>
+<p class="camps-framing">The discussion compared practical ways to manage multiple coding agents. Commenters weighed tmux’s persistence and remote availability against the visibility and convenience of agent-focused interfaces, while also raising concerns about reliability, security, and how agents should be architected. Several shared tools or workflows they had built or adopted.</p>
+<div class="camp"><p class="camp-label"><strong>Tmux and terminal tradeoffs</strong> &mdash; Some commenters value tmux for persistence, remote availability, or existing workflows, while others prefer a capable terminal with a separate persistence tool rather than an in-band multiplexer.</p><blockquote>tmux and pi is already my preferred way to use LLMs, but the config in the article is sweet.<cite>paweladamczuk</cite></blockquote>
+<blockquote>tmux is great, specially when you need persistence in a remote server where you don&#x27;t want or can&#x27;t install any other software, and when you are stuck with some 2010 terminal emulator.<cite>frangonf</cite></blockquote>
+<blockquote>Then use a separate tool for session persistence (I like zmx but there are more for this).<cite>frangonf</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Agent-focused interfaces offer usability and visibility</strong> &mdash; Commenters described dedicated interfaces as clearer or more convenient than managing many sessions directly in tmux, citing Herdr, Orca IDE, and GUI-based tools.</p><blockquote>I haven&#x27;t found something I can do with tmux/zellij but can&#x27;t do with herdr.<cite>thomas_witt</cite></blockquote>
+<blockquote>herdr does a better job at showing you what’s open.<cite>toppa33</cite></blockquote>
+<blockquote>But since using Orca IDE it feels like a leap in usability and robustness.<cite>Reebz</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Herdr usability is balanced by reliability concerns</strong> &mdash; One commenter praised Herdr’s out-of-the-box workflow, while a reply described crashes that interrupted work and kept important processes in tmux.</p><blockquote>My only problem with herdr is its propensity to randomly crash and take out the whole session.<cite>oefrha</cite></blockquote>
+<blockquote>As a result I still run sessions and processes I really don’t want to lose inside tmux, nested inside herdr.<cite>oefrha</cite></blockquote>
+<blockquote>If you’re mainly just using Claude Code, “$ claude agents” view is a good alternative coupled with tmux.<cite>aranelsurion</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Build or adopt purpose-built agent tools</strong> &mdash; Several commenters shared tools and tailored setups for agent coordination, persistence, remote access, or integration with existing workflows.</p><blockquote>My own tool, Jai, connects to multiple machines, handles multiple agents and enables agent to agent communication.<cite>michaelanckaert</cite></blockquote>
+<blockquote>I&#x27;ve made a terminal that is essentially ghostty + herder, but all natively and has a session persistence.<cite>nklmilojevic</cite></blockquote>
+<blockquote>For a more native integration I have started using Happier[2] which provides a web front-end and iOS app for my sessions too (unified with real Claude Code, so handover is seamless),<cite>petesergeant</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Agents should be detached processes, not scraped terminals</strong> &mdash; A commenter argued that agents should run as headless daemons that can be accessed through different interfaces, rather than as interactive CLI processes controlled through terminal scraping. A reply pointed to possible commercial incentives behind the current pattern.</p><blockquote>Fundamentally, a coding agent should be running as a headless/detached process, a daemon.<cite>teiferer</cite></blockquote>
+<blockquote>Running the agent as an interactive CLI process which you need to stuff into something like tmux is just the wrong approach, and <cite>teiferer</cite></blockquote>
+<blockquote>The tmux send-keys + terminal scrape is the LLM version of the analog hole of DRM&#x27;ed audio.<cite>frumiousirc</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Restrict agents’ access</strong> &mdash; Some commenters described security-conscious workflows that require human authentication for remote access or isolate agents from one another, files, and secrets.</p><blockquote>Paranoid me uses the macbooks secure enclave with fingerprint for the ssh key so claude can&#x27;t ssh into my remote boxes by himself.<cite>littlecranky67</cite></blockquote>
+<blockquote>Firstly, I want to sandbox my agents from each other and from my hard-drive, and partition (and encrypt) secrets,<cite>petesergeant</cite></blockquote></div>
+          <p class="drawer-footer"><a href="#dossier-8">View in Dossier ↓</a></p>
+        </div>
+      </details>
+    </div>
+  </section>
+  <section id="story-9" class="spread arc-notebook">
+    <div class="numeral">09</div>
+    <div class="kicker">Product Craft</div>
+    <h2>Good Software Still Has Someone Behind It</h2>
+    <p class="story-meta">karrisaarinen.com &nbsp;·&nbsp; 456 pts &nbsp;·&nbsp; 167 comments</p>
+    <p class="lede">A product’s character comes from judgment: what its creators notice, choose, omit, and refine. As agents make implementation cheaper, coherent software may depend even more on people with enough ownership and experience to hold a point of view.</p>
+    <div class="spread-links"><a class="read-more" href="https://karrisaarinen.com/posts/someone-behind-the-software/" target="_blank" rel="noopener">Read →</a><a class="read-more share-link" href="#" data-share-title="Someone behind the software" data-share-url="https://karrisaarinen.com/posts/someone-behind-the-software/">Share →</a>
+      <details class="analysis-drawer">
+        <summary class="btn-dossier">[ Analysis + ]</summary>
+        <div class="drawer-content">
+          
+          <h4>Technical Analysis</h4>
+          <div class="drawer-analysis">
+          <p>The essay argues that good software reflects the judgment, experience, and values of its creators rather than emerging mechanically from requirements, metrics, or production processes. Using Linear’s emphasis on experience-informed intuition, it explains that product character comes from understanding customers, making deliberate tradeoffs, and continuing to refine the whole experience—not merely adding features that work in isolation. It warns that agent-driven development and fragmented teams may accelerate output while producing incoherent, additive products that lack a unified point of view. The broader importance is that as software becomes easier to produce, sustained human judgment and product coherence may become more valuable differentiators than raw implementation speed.</p>
+          </div>
+          <h4>Reader Reactions</h4>
+<p class="camps-framing">Commenters broadly agreed that good software reflects choices about what to build and how it should work, not merely code or feature volume. They differed on whether AI can make or acquire those product judgments, how much sound judgment depends on direct user and domain experience, and whether incoherent products are a new AI-era problem or a familiar organizational failure. Some also emphasized that product coherence depends on ownership and room for people to shape work across narrow roles.</p>
+<div class="camp"><p class="camp-label"><strong>Human judgment gives products their character</strong> &mdash; These commenters described product value as coming from human choices about what to build, what to omit, and what experience to create. They characterized this contribution as vision, taste, or a point of view rather than simply implementation.</p><blockquote>It&#x27;s in deciding what to build and what not to build, defining the overall character and vision of the product, looking at each screen and thinking &quot;how does this help my customer do their job&quot;.<cite>jwr</cite></blockquote>
+<blockquote>Even though AI can handle a lot of the development now, a piece of work still needs a person to shape it.<cite>lvyafei</cite></blockquote>
+<blockquote>When you use good software, you can sense the intent in what was made.<cite>allenu</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Judgment comes from knowing the user and the domain</strong> &mdash; These commenters grounded good product decisions in direct experience with customers, the product, or the domain. They noted that teams without that experience should expect to be wrong and remain able to change course.</p><blockquote>When the someone behind the software is its customer they&#x27;ll get loads of judgment calls right first time.<cite>cadamsdotcom</cite></blockquote>
+<blockquote>Nothing beats regular lived experience long enough for the human brain to start its pattern recognition.<cite>paimapi</cite></blockquote>
+<blockquote>Building with a specific user in mind is something I can&#x27;t leave to AI yet.<cite>piro0919</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>AI can contribute, if people give it direction</strong> &mdash; These commenters argued that AI&#x27;s results depend on the project brief, values, and human direction. Some also suggested that AI may develop useful product judgment or reflect a recognizable learned taste.</p><blockquote>Based on my experience using AI to build software for myself, I think this mostly depends on what you ask for, not whether you use AI to implement it.<cite>skybrian</cite></blockquote>
+<blockquote>You can add values to your AGENTS.md and that will affect how the AI works.<cite>pianopatrick</cite></blockquote>
+<blockquote>You could argue that AI has almost nothing but taste.<cite>0c3ca83</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>AI cannot replace human product judgment</strong> &mdash; These commenters argued that product judgment requires capabilities or context that AI does not have, including embodiment, empathy, intuition, or appropriate training data. They distinguished this work from coding and other tasks where performance can be evaluated more directly.</p><blockquote>LLMs are disembodied-the products are ultimately by and for bodies on different ends of a transaction.<cite>reilly3000</cite></blockquote>
+<blockquote>It lacks intuition - passion, love, unexplainable feelings, deep insights, etc. This is the source of what/what not to build.<cite>mllev15</cite></blockquote>
+<blockquote>The training data isn&#x27;t there yet.<cite>teaearlgraycold</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Product incoherence predates AI</strong> &mdash; These commenters saw feature accumulation, bloated products, and loss of focus as longstanding problems driven by product and organizational incentives, rather than problems introduced by AI.</p><blockquote>What I&#x27;m also observing recently also is that pretty much every product tries to expand to do things that completely different products used to do, and become a mega-product-for-everything.<cite>jakub_g</cite></blockquote>
+<blockquote>I look back at the last 20 years or so, and what I see over and over is that one player in a space gets huge, keeps adding features, loses sight of what makes them a good market fit, and then 10 small upstarts swoop in to bring back the opinionated or simple view again.<cite>devin</cite></blockquote>
+<blockquote>AI has nothing to do with it.<cite>solatic</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Coherence needs ownership and room to work broadly</strong> &mdash; These commenters emphasized that a coherent product needs someone or a team able to take responsibility for the whole experience. They also noted that narrow roles and fragmented work can obstruct that responsibility, while broader skill sets may help preserve a unified vision.</p><blockquote>We’ll need more “wide T” shaped people that can exercise good UX, product, and architectural judgement and fewer “long T” shaped technical purists.<cite>pixelready</cite></blockquote>
+<blockquote>But it&#x27;s rare these days to have one person or even a committee that actually takes responsibility for a product as a whole and most importantly has a joint, shared and agreed-upon vision : how should the product look like, what should the product accomplish and how should the product be architected?<cite>mschuster91</cite></blockquote>
+<blockquote>And it&#x27;s not like I&#x27;m uniquely equipped to do it, nor it wouldn&#x27;t be possible to do few years back. But I&#x27;m the one who picked it up and thanks to LLMs I can have progress in days instead of weeks.<cite>xlii</cite></blockquote></div>
+          <p class="drawer-footer"><a href="#dossier-9">View in Dossier ↓</a></p>
+        </div>
+      </details>
+    </div>
+  </section>
+  <section id="story-10" class="spread arc-blueprint">
+    <div class="corner tl">+</div><div class="corner tr">+</div>
+    <div class="corner bl">+</div><div class="corner br">+</div>
+    <div class="numeral">10</div>
+    <div class="kicker">Build Log</div>
+    <h2>A 6502 Laptop Gets Thinner and More Capable</h2>
+    <p class="story-meta">maddox.pro &nbsp;·&nbsp; 139 pts &nbsp;·&nbsp; 61 comments</p>
+    <p class="lede">The LT6502b turns a classic processor into an open, portable computer with a 10.1-inch display, 10 MHz operation, Wi-Fi modem, and SID sound emulation. Its rough edges—custom storage, fragile supports, and a temperamental modem—remain part of the documented build.</p>
+    <div class="spread-links"><a class="read-more" href="https://www.maddox.pro/?p=448" target="_blank" rel="noopener">Read →</a><a class="read-more share-link" href="#" data-share-title="Laptop Based on 6502 CPU" data-share-url="https://www.maddox.pro/?p=448">Share →</a>
+      <details class="analysis-drawer">
+        <summary class="btn-dossier">[ Analysis + ]</summary>
+        <div class="drawer-content">
+          
+          <h4>Technical Analysis</h4>
+          <div class="drawer-analysis">
+          <p>The story presents the completed LT6502b, a DIY laptop built around a 6502 processor and documented with open-source code and PCB files on Codeberg. Compared with the earlier version, it is half as thick, uses a 10.1-inch 1024×600 IPS display, runs at 10 MHz, and adds a SID sound emulator and Wi‑Fi modem, while removing the expansion slot. The project retains a similar battery capacity and runtime but still has limitations, including weak case supports, a slow and unreliable modem, modest audio, limited performance, and a custom rather than FAT16-compatible storage system. Its importance lies in demonstrating a practical, community-oriented retrocomputer design that combines classic 6502 computing with modern hardware features while openly identifying areas for improvement.</p>
+          </div>
+          <h4>Reader Reactions</h4>
+<p class="camps-framing">Commenters were generally appreciative of the build, while discussing its purpose, technical design, and limitations. Some treated it primarily as an experiment in pushing a familiar processor; others considered what it could do for present-day or offline tasks. The discussion also brought in historical comparisons and differing views of what makes a computer portable.</p>
+<div class="camp"><p class="camp-label"><strong>Enthusiasm for the build</strong> &mdash; Commenters praised the design and the effort behind the project, often without presenting it as a replacement for a modern computer.</p><blockquote>Turns out it looks awesome. I wasn&#x27;t expecting such a striking design.<cite>andai</cite></blockquote>
+<blockquote>Either way, it&#x27;s a fun project.<cite>Smith-7831</cite></blockquote>
+<blockquote>As a retro- nerd myself, I hope to see her laptop in action in real life some day.<cite>MomsAVoxell</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Technical curiosity about the design</strong> &mdash; Questions and observations focused on the machine&#x27;s display hardware, memory arrangement, and power use.</p><blockquote>I see the 8 bit data bus is going straight to the LCD thru a buffer IC.<cite>mk_stjames</cite></blockquote>
+<blockquote>Why go for 48K of RAM and not at least 64K (the full address space without paging)?<cite>Lio</cite></blockquote>
+<blockquote>Surely a laptop prototype based on such a tested and well-worn CPU with 48K of RAM would be cool, but shouldn&#x27;t it sip power?<cite>system7rocks</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Practical limits versus simpler computing</strong> &mdash; Commenters differed over whether a 6502 could support useful workloads today, with some emphasizing modern requirements and others pointing to simpler or offline tasks.</p><blockquote>A 6502 is capable of most actual workloads people have, whose profiles actually haven’t changed much.<cite>user3939382</cite></blockquote>
+<blockquote>Most people would like to communicate over the internet without every intermediate hop seeing their traffic (so, their emails, their chats, their credit card number, ...), therefore they want TLS which I don&#x27;t think is practical on a 6502?<cite>yjftsjthsd-h</cite></blockquote>
+<blockquote>I don&#x27;t think anybody would use such a machine full-time, but with a radio and a cabin it would suffice for offline work.<cite>stevekemp</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Experiment first, not a modern replacement</strong> &mdash; Some commenters framed the project as an exploration of what can be done with the 6502, rather than an attempt to maximize performance or everyday utility.</p><blockquote>how much of the design is about making it usable today versus just seeing how far you can push the 6502.<cite>Smith-7831</cite></blockquote>
+<blockquote>The goal of that machine is clearly not performance, she&#x27;s probably just using a chip she&#x27;s fond of<cite>ura_yukimitsu</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Historical context for 6502-era machines</strong> &mdash; Replies supplied historical details about the constraints of older systems and the techniques used to work around them.</p><blockquote>This machine indeed has 128 bytes of RAM, but the code and data live on the cartridges, which can include up to 64 KB of ROM (exposing 4 KB at a time, with bank switching).<cite>t0mek</cite></blockquote>
+<blockquote>All the code is kept in the rom, as are all the assets.<cite>creshal</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>What counts as portable</strong> &mdash; Comparisons with earlier portable and luggable computers prompted disagreement about how portable such machines were and whether the laptop label fit.</p><blockquote>It weighed 23 pounds. It was approximately as portable as a tower PC.<cite>kstrauser</cite></blockquote>
+<blockquote>Beat the heck out of dragging a 1702, a 1541 and a C64 around, though.<cite>classichasclass</cite></blockquote>
+<blockquote>It’s not a laptop! It’s just a desktop in a ugly fat laptop-ishy case.<cite>fatbitch</cite></blockquote></div>
+          <p class="drawer-footer"><a href="#dossier-10">View in Dossier ↓</a></p>
+        </div>
+      </details>
+    </div>
+  </section>
+  <section id="dossier" class="dossier">
+    <div class="dossier-head">
+      <div class="tagline">Appendix</div>
+      <h2>The Dossier</h2>
+      <p class="intro">Full analysis and reactions for today's 10 stories. <a href="#top">↑ Back to the edition</a></p>
+    </div>
+    <article id="dossier-1" class="dossier-entry">
+      <div class="dossier-meta">N<sup>o</sup> 01 &nbsp;·&nbsp; Mint Pattern &nbsp;·&nbsp; System Core</div>
+      <h3>Linux 7.3 Released</h3>
+      <p class="dossier-source">
+        <a href="https://lwn.net/Articles/1101143/" target="_blank" rel="noopener">lwn.net</a>
+        &nbsp;·&nbsp; 234 pts &nbsp;·&nbsp; 107 comments
+         &nbsp;·&nbsp; <a href='https://news.ycombinator.com/item?id=50149392' target='_blank' rel='noopener'>discussion</a>
+      </p>
+      <h4>Analysis</h4>
+      <p>Linux kernel 7.3 has been released, concluding its development cycle and opening the merge window for 7.4. The release set records with 18,765 non-merge commits from 3,021 developers, including 807 first-time contributors. Key additions include expanded `binfmt_misc`, large-system group-scheduling improvements, the experimental failfs filesystem, the `fchroot()` system call, per-CPU BPF data, completed `sched_ext` support, virtual-machine working-set tracking, NTFS3 alternate data streams, and extensive SMB server enhancements. These changes matter because they expand Linux’s system interfaces, filesystem and networking capabilities, and performance tools across servers, virtualized environments, and embedded or desktop systems.</p>
+      <h4>Reader Reactions</h4>
+<p class="camps-framing">Discussion focused on practical features, especially Time Machine support over SMB and failfs as a possible isolation tool. Commenters weighed usefulness against reliability and implementation limits. A separate thread considered whether record contributor numbers might reflect AI-assisted patches and how contributors should be held accountable for their quality.</p>
+<div class="camp"><p class="camp-label"><strong>Hopeful about Time Machine support</strong> &mdash; Some commenters welcomed the new ksmbd compatibility as a reason to reconsider Linux-hosted Mac backups, while others already used Time Machine with network storage.</p><blockquote>I&#x27;ve moved to borg, but depending on how this goes may give time machine another try:<cite>theden</cite></blockquote>
+<blockquote>Yep. My household backs up to a Synology NAS via Time Machine:<cite>robin_reala</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Skeptical of Apple backup and SMB reliability</strong> &mdash; Some commenters described Time Machine over SMB as brittle or argued that mixed Apple and non-Apple setups can be painful. Others noted that SMB is now the remaining option after AFP support was dropped.</p><blockquote>This really makes me sad. They devoted time and effort to support something as locked and as broken as Apple Time Machine. That thing is a bad choice even within a 100% Apple ecosystem.<cite>crossroadsguy</cite></blockquote>
+<blockquote>Works might be a stretch. Every time I hear someone complaining about Time Machine it turns out they are trying to do it over SMB.<cite>tonyedgecombe</cite></blockquote>
+<blockquote>Apple have dropped support for AFP, so SMB is the only game in town.<cite>TheFuzzball</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Clarifying the SMB implementation</strong> &mdash; A technical exchange distinguished the kernel SMB server from Samba and noted that TrueNAS already provides Time Machine support using Samba.</p><blockquote>And basically only used by those allergic to Samba&#x27;s GPLv3.<cite>AshamedCaptain</cite></blockquote>
+<blockquote>Correct. TrueNAS uses Samba, which has supported this for a while.<cite>philjohn</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Concern or suspicion about AI-assisted kernel contributions</strong> &mdash; The unusually high contributor count led some commenters to wonder whether AI-assisted patches contributed to the record, though the comments did not establish that problematic code was submitted.</p><blockquote>I&#x27;m reading that as many new AI assisted code patches. Not everyone does an obviously bad job at submitting AI assisted code. Not a criticism, just an observation.<cite>INTPenis</cite></blockquote>
+<blockquote>hopefully without kernel-slops :P good job everyone btw!<cite>sirnicolaz</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Judge submissions by quality and accountability</strong> &mdash; Commenters argued that submitters remain responsible for patches regardless of the tools used, and that maintainers may stop reviewing contributions that waste their time.</p><blockquote>Basically, you can&#x27;t just post slop and then say, &quot;Oh, sorry, the AI did that.&quot; If the comments are too wordy, or the patch is unnecessary or poorly written or contains errors or doesn&#x27;t follow the style guide, you submitted it, so that&#x27;s on you.<cite>gwd</cite></blockquote>
+<blockquote>If I feel like I would be faster doing the work myself AND this author is not putting effort into it (e.g. they just copy-paste an AI), I will not review that work.<cite>palata</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Failfs as a sandboxing tool</strong> &mdash; Some commenters understood failfs as a way to prevent a process from opening new files and thereby limit its access to the filesystem, while noting that dynamic linking complicates its use.</p><blockquote>A process which is chrooted into failfs cannot open new files. It is limited to the set of filesystem file descriptors it already has open (presumably set up before the chroot or inherited into the process from some container runtime).<cite>rwmj</cite></blockquote>
+<blockquote>It looks like it&#x27;s useful for sandboxing by preventing any possible filesystem movement.<cite>rustyhancock</cite></blockquote></div>
+    </article>
+    <article id="dossier-2" class="dossier-entry">
+      <div class="dossier-meta">N<sup>o</sup> 02 &nbsp;·&nbsp; Academic &nbsp;·&nbsp; Research Desk</div>
+      <h3>Hybrid Reasoning Agents: LLM agents that think in latent space, act through text</h3>
+      <p class="dossier-source">
+        <a href="https://arxiv.org/abs/2610.18861" target="_blank" rel="noopener">arxiv.org</a>
+        &nbsp;·&nbsp; 406 pts &nbsp;·&nbsp; 199 comments
+         &nbsp;·&nbsp; <a href='https://news.ycombinator.com/item?id=50145337' target='_blank' rel='noopener'>discussion</a>
+      </p>
+      <h4>Analysis</h4>
+      <p>The paper introduces HybridAgent, an LLM-agent architecture that alternates between text generation for tool calls and external oversight and continuous latent states for internal reasoning. Its HybridLink adapter maps hidden states back into the model’s input-embedding space, while persistent KV-cache working memory carries mixed text, latent reasoning, and tool observations across turns. HybridSFT and HybridRL train the model to coordinate these modes and decide when to reason silently versus interact visibly. On 4B–14B Qwen3-based models, the authors report improved results across 11 math, science, medical, search, and agentic benchmarks, alongside 35.5%–54.7% fewer tokens, faster inference, and lower estimated cost; the central significance is an attempt to combine latent reasoning’s efficiency with the auditability and tool compatibility of text-based agents.</p>
+      <h4>Reader Reactions</h4>
+<p class="camps-framing">The discussion centers on whether latent reasoning is a useful efficiency and capability improvement or a reduction in visibility that could complicate oversight. Commenters also question how the approach differs from continuous chain-of-thought or looped transformers, whether reported gains translate to practical performance, and how much text traces reveal about a model’s internal process.</p>
+<div class="camp"><p class="camp-label"><strong>Latent reasoning as a natural next step</strong> &mdash; Some commenters see verbal reasoning as an unnecessary constraint and expect latent processing to use computation more efficiently or reduce repetitive text.</p><blockquote>I find this the most natural idea, there is no reason to assume thinking in words is the right granularity, or will stay the right granularity.<cite>ahrzb</cite></blockquote>
+<blockquote>I always thought, sometimes language would be limiting factor for llms, vector embedding based internal reasoning would be key to faster better models.<cite>ajey_ds</cite></blockquote>
+<blockquote>It&#x27;s reasoning output tends to include lots of restatement, which I guess would be more likely to be kept in latent space with this hybrid reasoning.<cite>notnullorvoid</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Loss of oversight is a serious safety concern</strong> &mdash; Some commenters worry that latent reasoning could make models harder to monitor, diagnose, or align, particularly in long-running or more capable systems.</p><blockquote>Enthusiastically racing to remove the only practical way we have to monitor models intentions in exchange of a few tokenmaxxing percent increase. Can’t wait.<cite>sailingparrot</cite></blockquote>
+<blockquote>Which sounds silly when you&#x27;re thinking about chatbots, but is an incredibly important line in the sand for superheavy, longrunning, self-improving agents.<cite>bbor</cite></blockquote>
+<blockquote>If you accept any of the AI-equivalents of Pascal&#x27;s Wager, latent thinking represents an uninterpretable and thus unalignable portion of AI machinery.<cite>kelseyfrog</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Text reasoning is already a weak monitor</strong> &mdash; Others argue that chain-of-thought text is an incomplete or unreliable representation of internal computation, and favor research into monitoring latent states directly.</p><blockquote>CoT monitoring is a mirage and won&#x27;t be useful for long, if it ever was<cite>idiotsecant</cite></blockquote>
+<blockquote>the chain of thought is not auditable.<cite>jlhawn</cite></blockquote>
+<blockquote>In doing this however, you lose meaning where the model is expressing combinations of tokens in a vector, and your logging/monitoring outputs just the closest one.<cite>chabons</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>The novelty and comparison are unclear</strong> &mdash; Commenters ask what HybridAgent adds over continuous chain-of-thought or looped-transformer approaches, and whether its differences from repeated or deeper computation are significant.</p><blockquote>How does this differ from Astra&#x27;s looped transformer? That architecture also reasons in the latent space<cite>incognito124</cite></blockquote>
+<blockquote>I&#x27;m not seeing a win here.<cite>octoberfranklin</cite></blockquote>
+<blockquote>One of the big points is that looped architectures don&#x27;t necessarily remove CoT style reasoning.<cite>calebkaiser</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Practical results need scrutiny</strong> &mdash; Some users report looping or task failures with released weights, while others suggest inference compatibility or model size may explain the results and ask for clearer evidence of accuracy gains.</p><blockquote>and it got stuck in a thinking loop forever and simply could not finish the task.<cite>sinuhe69</cite></blockquote>
+<blockquote>Same looping in BF16. So, probably have to wait on a llama.cpp update.<cite>SwellJoe</cite></blockquote>
+<blockquote>Does it just speed up inference and reduce token usage or does it seem to improve accuracy on certain tasks as well?<cite>44za12</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Human thought is not necessarily verbal</strong> &mdash; A side discussion challenges the assumption that people generally think in words, noting variation in inner monologue and the possibility of nonverbal thought.</p><blockquote>A large fraction of people do not have internal monologues.<cite>chriskanan</cite></blockquote>
+<blockquote>I have no idea what it means to think in words.<cite>kypro</cite></blockquote>
+<blockquote>Volition seems to occur spontaneously and it becomes ambiguous whether narration proceeds volition of volition proceeds narration.<cite>kelseyfrog</cite></blockquote></div>
+    </article>
+    <article id="dossier-3" class="dossier-entry">
+      <div class="dossier-meta">N<sup>o</sup> 03 &nbsp;·&nbsp; Notebook &nbsp;·&nbsp; Field Notes</div>
+      <h3>How to Train Your Robot</h3>
+      <p class="dossier-source">
+        <a href="https://www.construction-physics.com/p/how-to-train-your-robot" target="_blank" rel="noopener">construction-physics.com</a>
+        &nbsp;·&nbsp; 46 pts &nbsp;·&nbsp; 15 comments
+         &nbsp;·&nbsp; <a href='https://news.ycombinator.com/item?id=50104874' target='_blank' rel='noopener'>discussion</a>
+      </p>
+      <h4>Analysis</h4>
+      <p>The article examines the central data problem in training capable robots: unlike language models, robotics lacks a vast, readily available corpus of high-quality task examples. It surveys major collection methods—teleoperation, real-world reinforcement learning, simulation, synthetic data, and recordings of humans using cameras or robotic interfaces—along with their trade-offs in cost, realism, scalability, and the sim-to-real gap. Current robot datasets are growing rapidly but remain orders of magnitude smaller and less information-dense than those used for leading language models, potentially implying billions of dollars to collect enough data for comparable scaling. The issue matters because robotics progress may depend on building an effective data flywheel through deployment, while better architectures or general-purpose AI could reduce the amount of task-specific data required.</p>
+      <h4>Reader Reactions</h4>
+<p class="camps-framing">The comments were broadly interested in the article but focused mainly on what makes robots adaptable: their form, sensors, and learning feedback. They differed on whether human-shaped robots are a natural general solution or whether purpose-built machines can work better in settings designed around robotics. A smaller exchange considered whether simulation is shortening robotics’ learning cycle and whether the field is nearing a ChatGPT-like breakthrough.</p>
+<div class="camp"><p class="camp-label"><strong>Humanoid adaptability</strong> &mdash; Some commenters see human-shaped robots as a practical path to general-purpose work because human environments, hands, and bodies support varied tasks and changing conditions.</p><blockquote>I now realise this is almost certainly the most reliable way to solve the general robot problem - not just for the reasons the OP lays out, but because the whole world is already built for human-shaped agents anyway.<cite>alex-moon</cite></blockquote>
+<blockquote>Robot don&#x27;t need to be exactly human shape, but having robot with the same adaptability has human have a huge advantage for companies where adaptability is a core part of the business.<cite>maeln</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Design for robots instead</strong> &mdash; Other commenters argue that high-volume settings can be designed around robotics, while humanoid form is not necessarily required to navigate human spaces.</p><blockquote>The difference is whether or not a factory is designed with robotics as the driving principle or with human labor as the driving principle.<cite>jacquesm</cite></blockquote>
+<blockquote>not really, there&#x27;s several non-humanoid shapes that can easily adapt the human shape and to it but it&#x27;s a little out of the box.<cite>joaquieneCnix</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Missing sensory information</strong> &mdash; These commenters suggest that robot training may lack the rich, fused sensory information and processing that support human movement and control.</p><blockquote>Our eyes and balance also contribute to a very rich picture to enable movement and kinematics.<cite>ilikerashers</cite></blockquote>
+<blockquote>I suspect the problem isn&#x27;t just the amount of training data, but how much of the relevant information is missing from it.<cite>SwtCyber</cite></blockquote>
+<blockquote>There is a ton of pre-processing done on those signals though (for instance: the optical nerve is pretty much an extension of the brain, how is that for a high speed, high bandwidth interface).<cite>jacquesm</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Real-world feedback is too slow</strong> &mdash; One commenter emphasizes that learning through physical-world interaction involves long feedback loops, posing an obstacle to faster robotics progress.</p><blockquote>Feedback loops are too long with anything real worldly<cite>dvh</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Simulation may speed learning</strong> &mdash; In reply, one commenter argues that simulation and realistic generated video are reducing feedback-loop times and changing training prospects.</p><blockquote>The feed back loop is getting reduced by those new ways of training, simulation and video generation with realistic physics is kind of changing the game.<cite>serpicourge</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Is robotics at its ChatGPT moment?</strong> &mdash; A brief exchange asks whether robotics is still waiting for a defining breakthrough or whether one is happening now.</p><blockquote>robotic is waiting for its chatgpt moment<cite>shinnc</cite></blockquote>
+<blockquote>You do not think that the chatgpt moment is happening right now ?<cite>serpicourge</cite></blockquote></div>
+    </article>
+    <article id="dossier-4" class="dossier-entry">
+      <div class="dossier-meta">N<sup>o</sup> 04 &nbsp;·&nbsp; Archive &nbsp;·&nbsp; Archival Desk</div>
+      <h3>William Gibson and the trademarking of cyberspace</h3>
+      <p class="dossier-source">
+        <a href="https://colo.to/cyberspace.html" target="_blank" rel="noopener">colo.to</a>
+        &nbsp;·&nbsp; 191 pts &nbsp;·&nbsp; 74 comments
+         &nbsp;·&nbsp; <a href='https://news.ycombinator.com/item?id=50146625' target='_blank' rel='noopener'>discussion</a>
+      </p>
+      <h4>Analysis</h4>
+      <p>The story debunks the long-running rumor that William Gibson tried to trademark “Eric Gullichsen” after Autodesk trademarked “cyberspace.” In 1989, Autodesk’s research lab was developing an early virtual-reality system using specialized graphics hardware, head-mounted displays, motion tracking, and data gloves, and sought to register “cyberspace” as the technology moved toward commercialization. Gibson objected through his lawyers, while Timothy Leary originated the retaliatory-trademark joke, which others later repeated as fact. The episode matters because it illustrates the tension between an author’s cultural creation, companies’ efforts to claim emerging technology terminology, and the way anecdotes can become accepted history.</p>
+      <h4>Reader Reactions</h4>
+<p class="camps-framing">The discussion examines both the history of Autodesk’s cyberspace trademark application and what it meant to seek commercial rights over a culturally influential term. Eric Gullichsen clarifies that the application was abandoned rather than rejected after Gibson’s protest, while commenters continue to differ on the filing’s implications. The thread also considers trademark scope, cultural credit, Autodesk’s historical context, and the practical limits of early VR.</p>
+<div class="camp"><p class="camp-label"><strong>Correcting the record</strong> &mdash; Commenters emphasize firsthand evidence and distinguish the application’s abandonment from a rejection prompted by Gibson. Gullichsen also explains that the “street” line was a deliberate quotation, though readers differ on its effect.</p><blockquote>The CYBERSPACE trademark application wasn&#x27;t rejected. It was abandoned in 1991 after the VR project was cancelled and we developers left Autodesk to start Sense8.<cite>Eric_Gullichsen</cite></blockquote>
+<blockquote>But the &quot;street&quot; line was a deliberately smartass quotation from Gibson in a letter I wrote, not some corporate attempt to pass itself off as counterculture.<cite>Eric_Gullichsen</cite></blockquote>
+<blockquote>I appreciate having your account and the actual letters to separate what happened from the story that grew around it.<cite>DonHopkins</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Corporate overreach</strong> &mdash; Some commenters see the trademark effort as a tone-deaf attempt by a corporation to claim a term associated with an author and a broader culture. The company-letterhead context makes the “street” rhetoric especially jarring to some.</p><blockquote>I&#x27;m glad it failed to trademark.<cite>koolala</cite></blockquote>
+<blockquote>Such a tone deaf response.<cite>davedx</cite></blockquote>
+<blockquote>Perhaps not, but it was sent on Autodesk company letterhead...<cite>YrRight2PushBac</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Historical context for Autodesk</strong> &mdash; Others caution against evaluating the 1989 research lab solely through Autodesk’s later reputation, and note that the filing was connected to a VR project. This contextual view does not necessarily endorse the application.</p><blockquote>This was almost 30 years ago, in 1989. Autodesk was quite alright back then.<cite>abcd_f</cite></blockquote>
+<blockquote>Judging the Autodesk Research Lab of 1989 by the reputation of the company Autodesk later became seems rather ahistorical.<cite>Eric_Gullichsen</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Trademark scope versus generic terms</strong> &mdash; Commenters disagree about whether trademarks for genre terms are ordinary protections limited to particular uses or improper claims over labels that describe the works themselves.</p><blockquote>It doesn&#x27;t stop you from using the word except in the same genre of business<cite>socalgal2</cite></blockquote>
+<blockquote>It&#x27;s like if you breed a new apple cultivar, name it &quot;Apple&quot;, and then register a trademark, to be the only one to name their apple variety &quot;Apple&quot;.<cite>cubefox</cite></blockquote>
+<blockquote>You can&#x27;t make a game called Cyberpunk but you can use it for anything else.<cite>mitxela</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Cultural credit and appropriation</strong> &mdash; The discussion broadens to whether companies adopting culturally influential language should acknowledge its origins. Commenters debate whether such acknowledgment is owed and distinguish Stephenson’s “metaverse” from the older prefix “meta.”</p><blockquote>How many people have you thanked for the words and phrases they originated?<cite>socalgal2</cite></blockquote>
+<blockquote>At least as many as the number of times I&#x27;ve tried to claim someone else&#x27;s words and phrases as my exclusive intellectual property in order to profit, because I believe the latter is zero.<cite>harry8</cite></blockquote>
+<blockquote>It was &#x27;metaverse&#x27; that Neal Stephenson coined (which Meta did take and use in a way that does not, to my untrained eye, seem legally defensible.) &quot;Meta&quot; is a prefix from Ancient Greek, dating back thousands of years.<cite>pryce</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>VR’s promise and practical limits</strong> &mdash; Commenters recall the ambitions of early VR while questioning whether midair hand interaction works for precision tasks. Gullichsen describes visualization as a better fit for him, and another commenter points to tracking and tactile feedback as possible factors.</p><blockquote>But it was like trying to do mechanical drawing while wearing oven mitts.<cite>Animats</cite></blockquote>
+<blockquote>I agree that VR isn&#x27;t the best modality for precision CAD work, although it can be great for visualization.<cite>Eric_Gullichsen</cite></blockquote>
+<blockquote>The main issue is our hands are shaky, get tired quick and we need tactile feedback when doing fine-motor skill work (surgery, etc.)<cite>kroaton</cite></blockquote></div>
+    </article>
+    <article id="dossier-5" class="dossier-entry">
+      <div class="dossier-meta">N<sup>o</sup> 05 &nbsp;·&nbsp; Pastel Finale &nbsp;·&nbsp; Curious History</div>
+      <h3>Rabbits were a medieval royal luxury in England until the Black Death</h3>
+      <p class="dossier-source">
+        <a href="https://phys.org/news/2026-10-rabbits-medieval-royal-luxury-england.html" target="_blank" rel="noopener">phys.org</a>
+        &nbsp;·&nbsp; 91 pts &nbsp;·&nbsp; 84 comments
+         &nbsp;·&nbsp; <a href='https://news.ycombinator.com/item?id=50131315' target='_blank' rel='noopener'>discussion</a>
+      </p>
+      <h4>Analysis</h4>
+      <p>The story reports that rabbits were a rare, expensive luxury in medieval England, largely reserved for royalty and wealthy landowners rather than being common food. Their value reflected the difficulty of importing and breeding them, as well as the need to maintain enclosed warrens and manage fragile populations. It argues that the Black Death disrupted this system, likely through demographic and economic upheaval that made rabbits more widely available or less exclusively controlled. The history is important because it shows how disease and social change can reshape the ownership, production, and distribution of food.</p>
+      <h4>Reader Reactions</h4>
+<p class="camps-framing">Most commenters focused on rabbit as food, sharing recipes and regional experiences more often than discussing the medieval history. The main disagreement concerned whether rabbits could have been scarce and expensive; replies pointed to their introduction to Britain and to the effects of ecology, predators, and population density. Other threads considered meat-word etymology, changing prices, and differing attitudes toward rabbit as a delicacy, staple, or pest.</p>
+<div class="camp"><p class="camp-label"><strong>Rabbit and meat-word etymology</strong> &mdash; A language thread explored why rabbit lacks a distinct meat name, including the older term cony, the history of rabbit, and the possible Germanic roots of chicken.</p><blockquote>Yes, cony: https://en.wiktionary.org/wiki/cony#English See also the note at rabbit: https://en.wiktionary.org/wiki/rabbit#English apparently rabbits themselves are all French. &quot;hare is indeed inherited from Proto-Germanic.&quot;<cite>card_zero</cite></blockquote>
+<blockquote>The reason it got &quot;lost&quot;: &gt; the similarity to cunt (and particularly homophony with cunny) led through taboo avoidance both to the word&#x27;s displacement in the main by rabbit and bunny<cite>Chris2048</cite></blockquote>
+<blockquote>Funnily enough in Switzerland they use &quot;Poulet&quot; to mean exclusively chicken meat.<cite>mdurana</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Medieval scarcity and ecological context</strong> &mdash; One commenter questioned how rabbits could have been rare given their reproductive rate. Replies noted that rabbits were not native to Britain and that predators, hunting, and human population density shaped their abundance.</p><blockquote>This sounds like absolute horseshit to me. You&#x27;re trying to say that rabbits - which breed so rapidly that we actually use the phrase &quot;breeds like rabbits&quot; in just about every language across the planet - were somehow a rare luxury?<cite>ErroneousBosh</cite></blockquote>
+<blockquote>You realise that rabbits were once so rare in Australia they had to be introduced to salve the British passion for killing small things?<cite>defrost</cite></blockquote>
+<blockquote>Rabbits also happen to be an excellent source of protein for other animals. This helps keep the rabbit population under control in healthy ecosystems.<cite>kijin</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Rabbit as an appealing food</strong> &mdash; Commenters shared preparations from several cuisines and described rabbit as tasty, often recommending slow cooking or distinctive seasoning.</p><blockquote>Maltese thick rabbit stew (think: ragu) is delicious.<cite>bostik</cite></blockquote>
+<blockquote>In my family we often eat a simpler version from Murcia with no chicken, but more rabbit, called just &quot;rice with rabbit&quot;, and IMHO it&#x27;s even better<cite>Al-Khwarizmi</cite></blockquote>
+<blockquote>I like Sichuan&#x27;s Zigong 冷吃兔 (cold-eaten rabbit)! Fried rabbit, dried chillies and numbing Sichuan pepper. Unforgettable.<cite>xfq</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Regional food traditions and Australian rabbit history</strong> &mdash; Commenters described rabbit as a familiar food in some regions and an uncommon or stigmatized one in others. Australian recollections included both its use as a staple and its ecological effects as an introduced species.</p><blockquote>Rabbits were a depression-era food for Australians and was always considered a poor people&#x27;s food.<cite>NL807</cite></blockquote>
+<blockquote>One of my favourite meals was a sweet rabbit curry with rice that Mum used to make.<cite>phillc73</cite></blockquote>
+<blockquote>Since their introduction for a spot of recreational hunting, European rabbits have had a devastating effect on the ecology of Australia in general.<cite>ButlerianJihad</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Modern price comparisons</strong> &mdash; A smaller discussion compared rabbit prices with chicken and noted how industrial poultry production changed the relative cost and popularity of chicken.</p><blockquote>It&#x27;s says Rabbit was 4-5 times the price of chicken. That seems a reasonable estimate to me even today.<cite>rustyhancock</cite></blockquote>
+<blockquote>Price of chicken dropped steeply (and consumption exploded) in the second half of the 20th century after the introduction of broiler breeds and what’s essentially muscle tissue factories.<cite>Sharlin</cite></blockquote>
+<blockquote>Rabbit is comparatively cheap to produce, and available at low price wherever it is produced in larger quantities. Apparently no significant economies of scale where you live.<cite>handwoven</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Reservations about eating rabbit and nutrition</strong> &mdash; Some commenters expressed reluctance because rabbit resembles a pet or rodent, while another exchange recalled the health risks of relying on its very lean meat.</p><blockquote>Rabbit is very commonplace where I live, but I haven&#x27;t tried it, it just looks to much like a rodent.<cite>throwfaraway135</cite></blockquote>
+<blockquote>I have tried it in a French restaurant and it was delicious. Just don&#x27;t think about how cute it would have been to cuddle instead. :-(<cite>dingdongditchme</cite></blockquote>
+<blockquote>The body can only digest so much protein and rabbits are so lean there is basically no fat to them outside their organs.<cite>tybit</cite></blockquote></div>
+    </article>
+    <article id="dossier-6" class="dossier-entry">
+      <div class="dossier-meta">N<sup>o</sup> 06 &nbsp;·&nbsp; Editorial Op-Ed &nbsp;·&nbsp; Future Practice</div>
+      <h3>There&#x27;s never been a better time to go into math (by: 3blue1brown) [video]</h3>
+      <p class="dossier-source">
+        <a href="https://www.youtube.com/watch?v=LKrwhjOI8Nc" target="_blank" rel="noopener">youtube.com</a>
+        &nbsp;·&nbsp; 386 pts &nbsp;·&nbsp; 471 comments
+         &nbsp;·&nbsp; <a href='https://news.ycombinator.com/item?id=50136150' target='_blank' rel='noopener'>discussion</a>
+      </p>
+      <h4>Analysis</h4>
+      <p>3Blue1Brown argues that AI’s rapid progress in theorem proving does not make mathematics obsolete, because mathematical value also comes from choosing important questions, building theories, applying them, communicating ideas, and developing transferable problem-solving skills. The video distinguishes these activities from the funding structure behind mathematics, which relies heavily on teaching, public and private research support, and the downstream economic value of mathematically trained people. Even if AI becomes better than humans at generating proofs, the speaker expects applications, education, and the usefulness of mathematical training to remain largely intact, while academic credit, authorship, and mathematicians’ day-to-day work may change substantially. The story matters because it offers students and researchers a framework for deciding whether to pursue mathematics amid uncertainty, emphasizing that AI may accelerate theory-building rather than eliminate the field.</p>
+      <h4>Reader Reactions</h4>
+<p class="camps-framing">Commenters differed over whether AI will expand mathematical work or displace the activities and roles that make the field meaningful. The discussion also raised concerns about understanding, career prospects, the pace of change, and the social consequences of automation.</p>
+<div class="camp"><p class="camp-label"><strong>AI as an accelerator, not an ending</strong> &mdash; Some expect AI to create more mathematical questions and increase the need for people to interpret, connect, teach, and guide the work.</p><blockquote>There&#x27;s going to be so many more connections to evaluate, so much work needed for unification and simplification and pedagogy, and above all there&#x27;s going to be intense demand for mathematical taste.<cite>epistasis</cite></blockquote>
+<blockquote>Science produces knowledge. Knowledge is information made legible to understanding by people.<cite>Barrin92</cite></blockquote>
+<blockquote>If AI means more concepts are discovered the tower gets taller - and we find those joyful moments more often.<cite>cadamsdotcom</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>The craft and discovery are the point</strong> &mdash; Others argue that having a problem solved is not equivalent to personally working through it. They value the process of discovery, not just the result or a new role overseeing AI.</p><blockquote>A craft I enjoy doing has been taken away from me, I should be allowed to mourn, I don&#x27;t care that I can do something else since I never liked doing it in the first place.<cite>PixelForg</cite></blockquote>
+<blockquote>A field can have a bright future while losing what drew people to it.<cite>raz32dust</cite></blockquote>
+<blockquote>Personally, I enjoy the process of solving problems. I do not enjoy wrangling unpredictable AI agents.<cite>rbongers</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>AI may erode understanding, not just jobs</strong> &mdash; Some see the effort of solving problems as essential to building intuition and maintaining a genuine understanding of the results. Faster production may leave people reviewing work they did not develop themselves.</p><blockquote>The effort spent trying to prove theorems and connect theories pays off in deep intuition; removing that struggle significantly impairs our understanding.<cite>rocho</cite></blockquote>
+<blockquote>Reviewing code is not a substitute for writing it, and new contributions to the codebase are essentially bound to LLM usage.<cite>rocho</cite></blockquote>
+<blockquote>The task of breaking down these AI proofs is not translating and analyzing a fuzzy real-world system into a hard logical system (like in biology), but in translating a hard logical system into a simpler hard-logical system we can understand.<cite>tarpitt</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>The career outlook is poor</strong> &mdash; Skeptics question optimistic career advice, citing rapid progress, incentives to automate, and a future with fewer roles for mathematicians and other workers.</p><blockquote>If our economy comes to rely on RSI-enabled AI, most people will simply have no place in any industry it touches.<cite>prohobo</cite></blockquote>
+<blockquote>Sure, math does require people in future, but it can&#x27;t accommodate as many as it does today.<cite>zkmon</cite></blockquote>
+<blockquote>Is mathematics, or software engineering, a promising career path for the next 50 years? No, it&#x27;s most certainly not, and anyone suggesting otherwise is delusional.<cite>zarzavat</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Historical analogy versus a new kind of disruption</strong> &mdash; Commenters disagreed about whether AI will follow earlier technologies that changed work and enabled new roles, or whether its rapid improvement makes those comparisons unreliable. Some remained unsure how capable AI will become.</p><blockquote>History has shown that a very potent tool can improved and changed industry entirely for the better.<cite>teleforce</cite></blockquote>
+<blockquote>AI isn&#x27;t like any other historical tool or technology. Its qualitatively different.<cite>andyjohnson0</cite></blockquote>
+<blockquote>I really don&#x27;t know, so I&#x27;m not &quot;taking sides&quot; in this debate.<cite>hn_throwaway_99</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Automation raises social questions, not just career questions</strong> &mdash; Some commenters emphasize that changes to work affect livelihoods, identity, and meaning, and that advising people to find new interests does not resolve those broader concerns.</p><blockquote>Being upset when what they chose to spend their lives doing either loses value or changes so much it becomes a wholey different job is understandable, and calling it &quot;rent seeking&quot; is very unfair, in my view.<cite>andersource</cite></blockquote>
+<blockquote>No matter how you feel about AI, I think we should all pause and at least think about this and validate those feelings.<cite>lz400</cite></blockquote>
+<blockquote>Then there will be no economy. If anything, if we reach this level of economic automation, more people will have to find ways to occupy themselves and sparking joy through math might be the best way to go about it for some.<cite>suddenlybananas</cite></blockquote></div>
+    </article>
+    <article id="dossier-7" class="dossier-entry">
+      <div class="dossier-meta">N<sup>o</sup> 07 &nbsp;·&nbsp; Midnight &nbsp;·&nbsp; Agent Visibility</div>
+      <h3>If you don&#x27;t run your own LLM proxy, how do you know whats going on?</h3>
+      <p class="dossier-source">
+        <a href="https://jrdsgl.com/if-you-dont-run-your-own-llm-proxy-how-the-fuck-do-you-even-know-whats-going-on/" target="_blank" rel="noopener">jrdsgl.com</a>
+        &nbsp;·&nbsp; 180 pts &nbsp;·&nbsp; 126 comments
+         &nbsp;·&nbsp; <a href='https://news.ycombinator.com/item?id=50145507' target='_blank' rel='noopener'>discussion</a>
+      </p>
+      <h4>Analysis</h4>
+      <p>The article argues that developers and businesses should run their own LLM proxy rather than rely solely on provider dashboards or direct API access. A self-hosted proxy can centralize multiple models and providers, record detailed request metadata and token usage, issue virtual keys, support observability and troubleshooting, and make switching providers easier. The author emphasizes that provider-facing analytics and optional telemetry exports often do not offer enough actionable, time-series insight for engineering decisions. Controlling the proxy also gives organizations greater ownership of infrastructure, data routing, logging, customization, and operational visibility.</p>
+      <h4>Reader Reactions</h4>
+<p class="camps-framing">Comments generally saw value in understanding how LLMs are used, but disagreed about whether proxies are the right way to capture that information. Participants compared proxy logging with richer session archives and custom harnesses, debated when monitoring is worthwhile, and weighed API costs against subscriptions. Privacy and proxy reliability also emerged as concerns.</p>
+<div class="camp"><p class="camp-label"><strong>Proxies for visibility and control</strong> &mdash; Some commenters valued proxies for centralized visibility, cost attribution, guardrails, and protecting provider credentials, particularly when orchestrating agents or using sandboxes. Others shared proxy and gateway tools they use or are developing.</p><blockquote>I can&#x27;t orchestrate agents in sandboxes without it.<cite>hoppp</cite></blockquote>
+<blockquote>I agree its so important to proxy and capture all the data.<cite>zaptheimpaler</cite></blockquote>
+<blockquote>Tailscale makes Aperture available for free, and while it&#x27;s not something you own, it is in your tailnet, so at least you have a certain amount of control over how things access it.<cite>passive</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Session logs and custom harnesses instead</strong> &mdash; Others preferred archives of agent sessions or purpose-built harnesses, which can preserve more context than a proxy and work across tools. Some sought practical ways to search or standardize those records.</p><blockquote>They are better organized (e.g., subagents) than what the proxy sees.<cite>jakozaur</cite></blockquote>
+<blockquote>The proxy&#x27;s are generally inconvenient and yet another point of failure.<cite>chopete3</cite></blockquote>
+<blockquote>Well that was one of the reasons why i build my own agent/harness - to have actual full observability of what it is doing and why it is doing what it is doing.<cite>voodooEntity</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Monitoring depends on the user and workload</strong> &mdash; Some commenters found detailed monitoring unnecessary for light or home use, while others considered it valuable for heavy use, cost control, or curiosity. A related view treated setup and inspection as worthwhile for some users even when others prefer a service that abstracts the details.</p><blockquote>A $100 OpenAI subscription feels effectively infinite for my usage at home<cite>variety8675</cite></blockquote>
+<blockquote>You have to be monitoring this unless you want to absolutely torch your company&#x27;s budget.<cite>viccis</cite></blockquote>
+<blockquote>Toyed around with it back when claude code showed up, but never really got any useful actionable insights from it so stopped (Aside from ditching CC &amp; it&#x27;s bloated sys prompts that is)<cite>Havoc</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>API and subscription economics vary, and remain uncertain</strong> &mdash; Commenters described API pricing as attractive for predictable, controlled workloads and subscriptions as safer for intensive or exploratory use. They also disagreed about whether subsidized subscriptions will disappear: some urged preparation for higher costs, while others expected falling token costs or easy provider switching.</p><blockquote>But it only took 2-3 days to hit $200 spend with api keys.<cite>NeutralWanted</cite></blockquote>
+<blockquote>Paying for a subscription would be more expensive because I have a predictable and controllable amount of demand.<cite>bob1029</cite></blockquote>
+<blockquote>Switching models and providers isn’t some huge lift.<cite>Aurornis</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Logging raises privacy and compliance concerns</strong> &mdash; Some warned that stored conversations can include sensitive or medical information and should be handled carefully. Replies debated how personal data differs from PII and whether digitally recording information creates obligations that do not apply to ordinary overhearing.</p><blockquote>So id be very careful with chats and treat them like chats, not like code.<cite>lionkor</cite></blockquote>
+<blockquote>GDPR doesn&#x27;t cover unrecorded human memory, so you&#x27;re fine to overhear whatever in a day-to-day setting.<cite>OtherShrezzing</cite></blockquote>
+<blockquote>GDPR is about digitally recorded information.<cite>mcv</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Proxy reliability and security are concerns</strong> &mdash; Some questioned whether rapidly evolving proxy projects are reliable or secure enough to sit in the request path. Others recommended alternatives or expressed confidence in particular tools, leaving no single option as an agreed standard.</p><blockquote>And with the velocity of updates I feel there has to be vulnerabilities there.<cite>jubilanti</cite></blockquote>
+<blockquote>Bifrost has been decent, despite being partially shareware<cite>hoss1474489</cite></blockquote>
+<blockquote>It&#x27;s a quality piece of software, unlike LiteLLM.<cite>zaptheimpaler</cite></blockquote></div>
+    </article>
+    <article id="dossier-8" class="dossier-entry">
+      <div class="dossier-meta">N<sup>o</sup> 08 &nbsp;·&nbsp; Terminal &nbsp;·&nbsp; Agent Operations</div>
+      <h3>Tmux and Claude Code: Sessions, Send-Keys, and the Ceiling</h3>
+      <p class="dossier-source">
+        <a href="https://crystl.dev/guides/tmux-for-ai-agents/" target="_blank" rel="noopener">crystl.dev</a>
+        &nbsp;·&nbsp; 39 pts &nbsp;·&nbsp; 21 comments
+         &nbsp;·&nbsp; <a href='https://news.ycombinator.com/item?id=50148855' target='_blank' rel='noopener'>discussion</a>
+      </p>
+      <h4>Analysis</h4>
+      <p>The article presents a practical tmux setup for running multiple Claude Code or other AI coding agents, covering project-based sessions, worktree integration, pane layouts, scripted input with `send-keys`, output retrieval with `capture-pane`, status monitoring, and remote SSH use. It notes that Claude Code’s `--worktree --tmux` handles basic isolated sessions, while custom tmux configuration is needed for multi-agent orchestration and visibility. The key limitation is that tmux only sees terminal output, so detecting whether an agent is working, finished, or awaiting approval requires brittle screen scraping and provides no structured state, shared coordination, or reboot-persistent history. The article recommends retaining tmux for resilient remote workloads but using agent-aware tooling when managing several interactive agents that need timely human decisions.</p>
+      <h4>Reader Reactions</h4>
+<p class="camps-framing">The discussion compared practical ways to manage multiple coding agents. Commenters weighed tmux’s persistence and remote availability against the visibility and convenience of agent-focused interfaces, while also raising concerns about reliability, security, and how agents should be architected. Several shared tools or workflows they had built or adopted.</p>
+<div class="camp"><p class="camp-label"><strong>Tmux and terminal tradeoffs</strong> &mdash; Some commenters value tmux for persistence, remote availability, or existing workflows, while others prefer a capable terminal with a separate persistence tool rather than an in-band multiplexer.</p><blockquote>tmux and pi is already my preferred way to use LLMs, but the config in the article is sweet.<cite>paweladamczuk</cite></blockquote>
+<blockquote>tmux is great, specially when you need persistence in a remote server where you don&#x27;t want or can&#x27;t install any other software, and when you are stuck with some 2010 terminal emulator.<cite>frangonf</cite></blockquote>
+<blockquote>Then use a separate tool for session persistence (I like zmx but there are more for this).<cite>frangonf</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Agent-focused interfaces offer usability and visibility</strong> &mdash; Commenters described dedicated interfaces as clearer or more convenient than managing many sessions directly in tmux, citing Herdr, Orca IDE, and GUI-based tools.</p><blockquote>I haven&#x27;t found something I can do with tmux/zellij but can&#x27;t do with herdr.<cite>thomas_witt</cite></blockquote>
+<blockquote>herdr does a better job at showing you what’s open.<cite>toppa33</cite></blockquote>
+<blockquote>But since using Orca IDE it feels like a leap in usability and robustness.<cite>Reebz</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Herdr usability is balanced by reliability concerns</strong> &mdash; One commenter praised Herdr’s out-of-the-box workflow, while a reply described crashes that interrupted work and kept important processes in tmux.</p><blockquote>My only problem with herdr is its propensity to randomly crash and take out the whole session.<cite>oefrha</cite></blockquote>
+<blockquote>As a result I still run sessions and processes I really don’t want to lose inside tmux, nested inside herdr.<cite>oefrha</cite></blockquote>
+<blockquote>If you’re mainly just using Claude Code, “$ claude agents” view is a good alternative coupled with tmux.<cite>aranelsurion</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Build or adopt purpose-built agent tools</strong> &mdash; Several commenters shared tools and tailored setups for agent coordination, persistence, remote access, or integration with existing workflows.</p><blockquote>My own tool, Jai, connects to multiple machines, handles multiple agents and enables agent to agent communication.<cite>michaelanckaert</cite></blockquote>
+<blockquote>I&#x27;ve made a terminal that is essentially ghostty + herder, but all natively and has a session persistence.<cite>nklmilojevic</cite></blockquote>
+<blockquote>For a more native integration I have started using Happier[2] which provides a web front-end and iOS app for my sessions too (unified with real Claude Code, so handover is seamless),<cite>petesergeant</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Agents should be detached processes, not scraped terminals</strong> &mdash; A commenter argued that agents should run as headless daemons that can be accessed through different interfaces, rather than as interactive CLI processes controlled through terminal scraping. A reply pointed to possible commercial incentives behind the current pattern.</p><blockquote>Fundamentally, a coding agent should be running as a headless/detached process, a daemon.<cite>teiferer</cite></blockquote>
+<blockquote>Running the agent as an interactive CLI process which you need to stuff into something like tmux is just the wrong approach, and <cite>teiferer</cite></blockquote>
+<blockquote>The tmux send-keys + terminal scrape is the LLM version of the analog hole of DRM&#x27;ed audio.<cite>frumiousirc</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Restrict agents’ access</strong> &mdash; Some commenters described security-conscious workflows that require human authentication for remote access or isolate agents from one another, files, and secrets.</p><blockquote>Paranoid me uses the macbooks secure enclave with fingerprint for the ssh key so claude can&#x27;t ssh into my remote boxes by himself.<cite>littlecranky67</cite></blockquote>
+<blockquote>Firstly, I want to sandbox my agents from each other and from my hard-drive, and partition (and encrypt) secrets,<cite>petesergeant</cite></blockquote></div>
+    </article>
+    <article id="dossier-9" class="dossier-entry">
+      <div class="dossier-meta">N<sup>o</sup> 09 &nbsp;·&nbsp; Notebook &nbsp;·&nbsp; Product Craft</div>
+      <h3>Someone behind the software</h3>
+      <p class="dossier-source">
+        <a href="https://karrisaarinen.com/posts/someone-behind-the-software/" target="_blank" rel="noopener">karrisaarinen.com</a>
+        &nbsp;·&nbsp; 456 pts &nbsp;·&nbsp; 167 comments
+         &nbsp;·&nbsp; <a href='https://news.ycombinator.com/item?id=50142573' target='_blank' rel='noopener'>discussion</a>
+      </p>
+      <h4>Analysis</h4>
+      <p>The essay argues that good software reflects the judgment, experience, and values of its creators rather than emerging mechanically from requirements, metrics, or production processes. Using Linear’s emphasis on experience-informed intuition, it explains that product character comes from understanding customers, making deliberate tradeoffs, and continuing to refine the whole experience—not merely adding features that work in isolation. It warns that agent-driven development and fragmented teams may accelerate output while producing incoherent, additive products that lack a unified point of view. The broader importance is that as software becomes easier to produce, sustained human judgment and product coherence may become more valuable differentiators than raw implementation speed.</p>
+      <h4>Reader Reactions</h4>
+<p class="camps-framing">Commenters broadly agreed that good software reflects choices about what to build and how it should work, not merely code or feature volume. They differed on whether AI can make or acquire those product judgments, how much sound judgment depends on direct user and domain experience, and whether incoherent products are a new AI-era problem or a familiar organizational failure. Some also emphasized that product coherence depends on ownership and room for people to shape work across narrow roles.</p>
+<div class="camp"><p class="camp-label"><strong>Human judgment gives products their character</strong> &mdash; These commenters described product value as coming from human choices about what to build, what to omit, and what experience to create. They characterized this contribution as vision, taste, or a point of view rather than simply implementation.</p><blockquote>It&#x27;s in deciding what to build and what not to build, defining the overall character and vision of the product, looking at each screen and thinking &quot;how does this help my customer do their job&quot;.<cite>jwr</cite></blockquote>
+<blockquote>Even though AI can handle a lot of the development now, a piece of work still needs a person to shape it.<cite>lvyafei</cite></blockquote>
+<blockquote>When you use good software, you can sense the intent in what was made.<cite>allenu</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Judgment comes from knowing the user and the domain</strong> &mdash; These commenters grounded good product decisions in direct experience with customers, the product, or the domain. They noted that teams without that experience should expect to be wrong and remain able to change course.</p><blockquote>When the someone behind the software is its customer they&#x27;ll get loads of judgment calls right first time.<cite>cadamsdotcom</cite></blockquote>
+<blockquote>Nothing beats regular lived experience long enough for the human brain to start its pattern recognition.<cite>paimapi</cite></blockquote>
+<blockquote>Building with a specific user in mind is something I can&#x27;t leave to AI yet.<cite>piro0919</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>AI can contribute, if people give it direction</strong> &mdash; These commenters argued that AI&#x27;s results depend on the project brief, values, and human direction. Some also suggested that AI may develop useful product judgment or reflect a recognizable learned taste.</p><blockquote>Based on my experience using AI to build software for myself, I think this mostly depends on what you ask for, not whether you use AI to implement it.<cite>skybrian</cite></blockquote>
+<blockquote>You can add values to your AGENTS.md and that will affect how the AI works.<cite>pianopatrick</cite></blockquote>
+<blockquote>You could argue that AI has almost nothing but taste.<cite>0c3ca83</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>AI cannot replace human product judgment</strong> &mdash; These commenters argued that product judgment requires capabilities or context that AI does not have, including embodiment, empathy, intuition, or appropriate training data. They distinguished this work from coding and other tasks where performance can be evaluated more directly.</p><blockquote>LLMs are disembodied-the products are ultimately by and for bodies on different ends of a transaction.<cite>reilly3000</cite></blockquote>
+<blockquote>It lacks intuition - passion, love, unexplainable feelings, deep insights, etc. This is the source of what/what not to build.<cite>mllev15</cite></blockquote>
+<blockquote>The training data isn&#x27;t there yet.<cite>teaearlgraycold</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Product incoherence predates AI</strong> &mdash; These commenters saw feature accumulation, bloated products, and loss of focus as longstanding problems driven by product and organizational incentives, rather than problems introduced by AI.</p><blockquote>What I&#x27;m also observing recently also is that pretty much every product tries to expand to do things that completely different products used to do, and become a mega-product-for-everything.<cite>jakub_g</cite></blockquote>
+<blockquote>I look back at the last 20 years or so, and what I see over and over is that one player in a space gets huge, keeps adding features, loses sight of what makes them a good market fit, and then 10 small upstarts swoop in to bring back the opinionated or simple view again.<cite>devin</cite></blockquote>
+<blockquote>AI has nothing to do with it.<cite>solatic</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Coherence needs ownership and room to work broadly</strong> &mdash; These commenters emphasized that a coherent product needs someone or a team able to take responsibility for the whole experience. They also noted that narrow roles and fragmented work can obstruct that responsibility, while broader skill sets may help preserve a unified vision.</p><blockquote>We’ll need more “wide T” shaped people that can exercise good UX, product, and architectural judgement and fewer “long T” shaped technical purists.<cite>pixelready</cite></blockquote>
+<blockquote>But it&#x27;s rare these days to have one person or even a committee that actually takes responsibility for a product as a whole and most importantly has a joint, shared and agreed-upon vision : how should the product look like, what should the product accomplish and how should the product be architected?<cite>mschuster91</cite></blockquote>
+<blockquote>And it&#x27;s not like I&#x27;m uniquely equipped to do it, nor it wouldn&#x27;t be possible to do few years back. But I&#x27;m the one who picked it up and thanks to LLMs I can have progress in days instead of weeks.<cite>xlii</cite></blockquote></div>
+    </article>
+    <article id="dossier-10" class="dossier-entry">
+      <div class="dossier-meta">N<sup>o</sup> 10 &nbsp;·&nbsp; Blueprint &nbsp;·&nbsp; Build Log</div>
+      <h3>Laptop Based on 6502 CPU</h3>
+      <p class="dossier-source">
+        <a href="https://www.maddox.pro/?p=448" target="_blank" rel="noopener">maddox.pro</a>
+        &nbsp;·&nbsp; 139 pts &nbsp;·&nbsp; 61 comments
+         &nbsp;·&nbsp; <a href='https://news.ycombinator.com/item?id=50111537' target='_blank' rel='noopener'>discussion</a>
+      </p>
+      <h4>Analysis</h4>
+      <p>The story presents the completed LT6502b, a DIY laptop built around a 6502 processor and documented with open-source code and PCB files on Codeberg. Compared with the earlier version, it is half as thick, uses a 10.1-inch 1024×600 IPS display, runs at 10 MHz, and adds a SID sound emulator and Wi‑Fi modem, while removing the expansion slot. The project retains a similar battery capacity and runtime but still has limitations, including weak case supports, a slow and unreliable modem, modest audio, limited performance, and a custom rather than FAT16-compatible storage system. Its importance lies in demonstrating a practical, community-oriented retrocomputer design that combines classic 6502 computing with modern hardware features while openly identifying areas for improvement.</p>
+      <h4>Reader Reactions</h4>
+<p class="camps-framing">Commenters were generally appreciative of the build, while discussing its purpose, technical design, and limitations. Some treated it primarily as an experiment in pushing a familiar processor; others considered what it could do for present-day or offline tasks. The discussion also brought in historical comparisons and differing views of what makes a computer portable.</p>
+<div class="camp"><p class="camp-label"><strong>Enthusiasm for the build</strong> &mdash; Commenters praised the design and the effort behind the project, often without presenting it as a replacement for a modern computer.</p><blockquote>Turns out it looks awesome. I wasn&#x27;t expecting such a striking design.<cite>andai</cite></blockquote>
+<blockquote>Either way, it&#x27;s a fun project.<cite>Smith-7831</cite></blockquote>
+<blockquote>As a retro- nerd myself, I hope to see her laptop in action in real life some day.<cite>MomsAVoxell</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Technical curiosity about the design</strong> &mdash; Questions and observations focused on the machine&#x27;s display hardware, memory arrangement, and power use.</p><blockquote>I see the 8 bit data bus is going straight to the LCD thru a buffer IC.<cite>mk_stjames</cite></blockquote>
+<blockquote>Why go for 48K of RAM and not at least 64K (the full address space without paging)?<cite>Lio</cite></blockquote>
+<blockquote>Surely a laptop prototype based on such a tested and well-worn CPU with 48K of RAM would be cool, but shouldn&#x27;t it sip power?<cite>system7rocks</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Practical limits versus simpler computing</strong> &mdash; Commenters differed over whether a 6502 could support useful workloads today, with some emphasizing modern requirements and others pointing to simpler or offline tasks.</p><blockquote>A 6502 is capable of most actual workloads people have, whose profiles actually haven’t changed much.<cite>user3939382</cite></blockquote>
+<blockquote>Most people would like to communicate over the internet without every intermediate hop seeing their traffic (so, their emails, their chats, their credit card number, ...), therefore they want TLS which I don&#x27;t think is practical on a 6502?<cite>yjftsjthsd-h</cite></blockquote>
+<blockquote>I don&#x27;t think anybody would use such a machine full-time, but with a radio and a cabin it would suffice for offline work.<cite>stevekemp</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Experiment first, not a modern replacement</strong> &mdash; Some commenters framed the project as an exploration of what can be done with the 6502, rather than an attempt to maximize performance or everyday utility.</p><blockquote>how much of the design is about making it usable today versus just seeing how far you can push the 6502.<cite>Smith-7831</cite></blockquote>
+<blockquote>The goal of that machine is clearly not performance, she&#x27;s probably just using a chip she&#x27;s fond of<cite>ura_yukimitsu</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Historical context for 6502-era machines</strong> &mdash; Replies supplied historical details about the constraints of older systems and the techniques used to work around them.</p><blockquote>This machine indeed has 128 bytes of RAM, but the code and data live on the cartridges, which can include up to 64 KB of ROM (exposing 4 KB at a time, with bank switching).<cite>t0mek</cite></blockquote>
+<blockquote>All the code is kept in the rom, as are all the assets.<cite>creshal</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>What counts as portable</strong> &mdash; Comparisons with earlier portable and luggable computers prompted disagreement about how portable such machines were and whether the laptop label fit.</p><blockquote>It weighed 23 pounds. It was approximately as portable as a tower PC.<cite>kstrauser</cite></blockquote>
+<blockquote>Beat the heck out of dragging a 1702, a 1541 and a C64 around, though.<cite>classichasclass</cite></blockquote>
+<blockquote>It’s not a laptop! It’s just a desktop in a ugly fat laptop-ishy case.<cite>fatbitch</cite></blockquote></div>
+    </article>
+  </section>
+  <footer class="colophon">
+    <p class="sig">— that's the edition.</p>
+    <p class="meta">Set in Fraunces &amp; Inter · Compiled October 19, 2026</p>
+    <p class="classic-link"><a href="classic.html">Prefer the classic card view? →</a></p>
+  </footer>
+<script>
+(() => {
+  const key = "gtd:read_days:hn:v1";
+  const day = "2026-10-19";
+  let stored = [];
+  try {
+    stored = JSON.parse(localStorage.getItem(key) || "[]");
+    if (!Array.isArray(stored)) stored = [];
+  } catch (e) {}
+  if (!stored.includes(day)) {
+    stored.push(day);
+    stored.sort();
+    localStorage.setItem(key, JSON.stringify(stored));
+  }
+})();
+</script>
+<script src="../../preference.js?v=fe192bedb" defer></script>
+<script>
+// Simple script to toggle the [+] and [-] labels on the drawers
+document.querySelectorAll('.analysis-drawer').forEach(drawer => {
+  drawer.addEventListener('toggle', () => {
+    const summary = drawer.querySelector('summary');
+    if (drawer.open) {
+      summary.textContent = '[ Analysis − ]';
+    } else {
+      summary.textContent = '[ Analysis + ]';
+    }
+  });
+});
+
+// Share link — native share or copy markdown to clipboard
+(function () {
+  const links = document.querySelectorAll('.share-link');
+  if (!links.length) return;
+
+  const toast = document.createElement('div');
+  toast.className = 'discuss-toast';
+  document.body.appendChild(toast);
+
+  function showToast(msg) {
+    toast.textContent = msg;
+    toast.classList.add('show');
+    setTimeout(() => toast.classList.remove('show'), 2500);
+  }
+
+  function buildMarkdown(link, spread) {
+    const title = link.dataset.shareTitle || '';
+    const url = link.dataset.shareUrl || '';
+    const meta = spread ? spread.querySelector('.story-meta') : null;
+    const lede = spread ? spread.querySelector('.lede') : null;
+    const analysis = spread ? spread.querySelector('.drawer-analysis') : null;
+    let md = '# ' + title + '\n';
+    md += 'Source: ' + url;
+    if (meta) md += ' | ' + meta.textContent.trim();
+    md += '\n';
+    if (lede) md += '\n' + lede.textContent.trim() + '\n';
+    if (analysis) md += '\n## Analysis\n' + analysis.textContent.trim() + '\n';
+    return md;
+  }
+
+  links.forEach((link) => {
+    link.addEventListener('click', (e) => {
+      e.preventDefault();
+      const spread = link.closest('section.spread');
+      const md = buildMarkdown(link, spread);
+      const text = "I'd like to discuss this with you. Here's a summary:\n\n" + md;
+      const title = 'Discuss: ' + (link.dataset.shareTitle || '');
+      if (navigator.share) {
+        navigator.share({ title: title, text: text }).catch(() => {});
+      } else {
+        navigator.clipboard.writeText(text).then(
+          () => showToast('Copied to clipboard \u2014 paste into your AI chat'),
+          () => showToast('Failed to copy')
+        );
+      }
+    });
+  });
+})();
+</script>
+</body>
+</html>
