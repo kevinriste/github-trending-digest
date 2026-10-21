@@ -1,0 +1,772 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Morning Edition — October 21, 2026</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght,SOFT@0,9..144,300..900,0..100;1,9..144,300..900,0..100&family=Inter:ital,wght@0,100..900;1,100..900&family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../morning.css?v=734029338">
+</head>
+<body id="top" data-gtd-edition="hn" data-gtd-date="2026-10-21">
+  <header class="masthead">
+    <div class="masthead-nav">
+      <a href="../">Hacker News Calendar</a>
+      <span>&nbsp;·&nbsp;</span>
+      <a href="../../2026-10-21/">GitHub Trending &nbsp;·&nbsp; Oct 21</a>
+      <span>&nbsp;·&nbsp;</span>
+      <a href="../../ai/2026-10-21/">AI News &nbsp;·&nbsp; Oct 21</a>
+      <span>&nbsp;·&nbsp;</span>
+      <a href="classic.html">Classic View</a>
+    </div>
+    <div class="tagline">The Morning Edition</div>
+    <h1 class="frnc">Ten stories, before your coffee.</h1>
+    <div class="issue-line">
+      <span>Vol. I</span>
+      <span>October 21, 2026</span>
+      <span>HN Front Page Digest</span>
+    </div>
+  </header>
+<section class="the-take"><details open><summary>The HN Take</summary><h3 class="take-head">Eight bits of trust</h3><p>Oh sure:</p><p>&quot;One of eMudhra&#x27;s certificate authority private keys is the number 4.&quot;</p><p>Not a number beginning with 4, followed by enough random digits to secure global communications. Four. Another private key was 56. Eight intermediate certificate keys, all created in April 2025, were numbers between 4 and 237.</p><p>These were elliptic-curve keys on the P-384 curve. The normal idea is that the private key is an enormous random number, so deriving it from the public certificate is impractical. Here the keys had 47 bytes of zeros followed by one byte. There were at most 255 possibilities. A laptop could try all of them in less than a second.</p><p>&quot;So the whole thing, every certificate those CAs could ever issue, every client that trusted them, rested on eight bits.&quot;</p><p>Right. The global certificate authority system is a large formal hierarchy of cryptographic trust, implemented here by choosing a number from roughly the same range as a restaurant coat-check ticket.</p><p>This is worse than an ordinary stolen key. With a stolen key, there is a thief and a theft date, and investigators can ask who had access after that date. These keys were effectively public from the moment the certificates were created. Anyone who saw the certificates could recover them, and there is no way to know whether anyone did during the 17 months before the problem was reported.</p><p>The keys could be used to issue apparently valid certificates for any website or service. Chrome, Firefox, Apple and Microsoft have blocked the affected certificates, and Certificate Transparency records indicate that major browsers could not have been attacked through them. Good.</p><p>The rest of the software ecosystem is less reassuring. Curl, Python, Node, Go, Java, Git, package managers, CI systems, embedded devices and assorted scripts often trust a certificate bundle on disk while checking neither revocation nor Certificate Transparency. The researcher generated a certificate for api.stripe.com and found that default curl reported &quot;SSL certificate verify ok,&quot; Python completed the handshake and Node said &quot;authorized: true.&quot;</p><p>The fix for devices that can be updated is to update them. The fix for routers, appliances and industrial equipment whose certificate bundles are frozen until 2039 is to travel back to April 2025 and suggest choosing a private key larger than 4.</p><p>By the way, eMudhra says a script bug created a second weak key pair on its hardware security module, and human error caused the wrong keys to be used. The researcher also reports that Claude recovered the private keys with a single prompt. Artificial intelligence has finally cracked public-key cryptography, in the narrow sense that someone made the private key 4.</p><h3 class="take-head">The point of return</h3><p>The United Nations Environment Programme says the Paris Agreement&#x27;s goal of limiting global warming to 1.5 degrees Celsius by 2100 is no longer achievable without overshooting it.</p><p>&quot;The opportunity to bridge the 1.5 degrees Celsius emissions gap with &#x27;no or limited&#x27; overshoot has been lost.&quot;</p><p>The new plan is to keep warming below 2 degrees, then remove enough carbon dioxide from the atmosphere to return to 1.5 degrees by the end of the century. So 1.5 degrees remains the destination, but it is no longer available by the direct route.</p><p>This would require global greenhouse gas emissions to fall 18 percent by 2030, 45 percent by 2035 and 69 percent by 2040 relative to 2025. Current government commitments, even if fully implemented, would cut emissions only 5 to 8 percent by 2030 and 11 to 15 percent by 2035.</p><p>Then comes the cleanup. UNEP estimates that humanity would need to remove 320 gigatons of carbon dioxide by the end of the century, equivalent to eight times the emissions recorded in 2024, using reforestation and technologies involving compression, mineralisation and underground storage.</p><p>The original plan was to stop putting so much carbon into the atmosphere. The revised plan is to keep putting too much carbon into the atmosphere for a while, stop before reaching 2 degrees, and then take 320 gigatons back out. We have moved from climate prevention to climate returns processing.</p><div class="take-sources"><span>Sources</span><ul><li><a href="https://scotthelme.co.uk/eight-bits-of-trust-emudhras-ca-keys-cracked-in-milliseconds/" target="_blank" rel="noopener noreferrer">Eight Bits of Trust; eMudhra&#x27;s CA keys cracked in milliseconds</a></li><li><a href="https://unric.org/en/unep-emissions-gap-report-2026-1-5-degree-overshoot/" target="_blank" rel="noopener noreferrer">The 1.5°C goal of the Paris Agreement is no longer viable</a></li></ul></div></details></section>
+  <section id="story-1" class="spread arc-midnight">
+    <div class="numeral">01</div>
+    <div class="body">
+      <div class="kicker">// Trust Infrastructure</div>
+      <h2>Tiny Keys Break a Certificate Authority</h2>
+      <p class="story-meta">scotthelme.co.uk &nbsp;·&nbsp; 133 pts &nbsp;·&nbsp; 54 comments</p>
+      <p class="lede">Eight intermediate certificates carried P-384 private keys small enough to recover in milliseconds. Browsers moved quickly to block them; command-line tools, embedded clients, and stale trust stores may not have.</p>
+      <div class="spread-links"><a class="read-more" href="https://scotthelme.co.uk/eight-bits-of-trust-emudhras-ca-keys-cracked-in-milliseconds/" target="_blank" rel="noopener">Read →</a><a class="read-more share-link" href="#" data-share-title="Eight Bits of Trust; eMudhra&#x27;s CA keys cracked in milliseconds" data-share-url="https://scotthelme.co.uk/eight-bits-of-trust-emudhras-ca-keys-cracked-in-milliseconds/">Share →</a>
+      <details class="analysis-drawer">
+        <summary class="btn-dossier">[ Analysis + ]</summary>
+        <div class="drawer-content">
+          
+          <h4>Technical Analysis</h4>
+          <div class="drawer-analysis">
+          <p>The story reports that eMudhra issued eight TLS and code-signing intermediate CA certificates whose P-384 private keys were accidentally tiny values—single-byte numbers such as 4, 56, and 115—making them recoverable from public certificates in milliseconds. Because anyone could have derived these keys since the certificates were created, attackers could potentially forge certificates for arbitrary websites or sign malware, with risk extending beyond browsers to command-line tools, CI/CD systems, APIs, and unpatchable IoT devices that do not check revocation or Certificate Transparency. Major browsers blocked the affected certificates and roots, but many other clients remain vulnerable until their CA bundles are updated. The incident appears to have resulted from a key-generation or certificate-signing workflow error, underscoring how a basic randomness or process failure can undermine an entire certificate authority’s trust chain.</p>
+          </div>
+          <h4>Reader Reactions</h4>
+<p class="camps-framing">The discussion combined disbelief and dark humor about the keys’ weakness with concern about failures in CA operations and oversight. Commenters debated whether the incident reflected incompetence or deliberate action, speculated about how the keys were generated, and considered risks outside browsers and the quality of the incident write-up.</p>
+<div class="camp"><p class="camp-label"><strong>Operational failure or deliberate compromise</strong> &mdash; Commenters mostly saw the incident as a serious process failure, while some wondered whether it could have been intentional. Pushback noted that conspicuously guessable keys would be an implausible choice for a covert compromise.</p><blockquote>Sounds more like extremely sloppy procedures. Which depressingly I doubt are unusual among CAs.<cite>skywhopper</cite></blockquote>
+<blockquote>Makes no sense. If it was deliberate, one would use keys that only the person abusing it has. Not keys everyone can guess if they get a hint.<cite>hannob</cite></blockquote>
+<blockquote>I wouldn&#x27;t be surprised if we learn in the near future, that this was deliberate.<cite>sscaryterry</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Guesses about how the keys were made</strong> &mdash; Commenters proposed several possible explanations, including hand-picked values, sequence numbers, a mistaken range, or secure keys accidentally truncated. These remained hypotheses rather than established causes.</p><blockquote>It feels like they chose the private keys by hand.<cite>Qision</cite></blockquote>
+<blockquote>My bet is on one of - A sequence number being accidentally used as the private key or - The private key being generated securely but then accidentally truncated to 8 bits (e.g. writing a single char into a zeroed buffer when you should&#x27;ve memcpy&#x27;d from a char*).<cite>muvlon</cite></blockquote>
+<blockquote>The fact that there are more than the &quot;4&quot; one, and all the low numbers are below 384 (384 being the bits for private key) makes me think whoever was creating these thought &quot;Oh a random number between 1-384&quot; let me choose... 4! (156, 230, 115, 56, 66, 237, 155)... https://xkcd.com/221/<cite>Fabricio20</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>CA oversight and trust governance</strong> &mdash; Several commenters focused on missing basic checks, testing, or organizational controls, and questioned how CA trust is granted and whether the number of trusted authorities matters. Some emphasized competence checks and stronger consequences.</p><blockquote>Why are browsers trusting CAs which issued zero certificates since their creation 1 year ago?<cite>dist-epoch</cite></blockquote>
+<blockquote>Even just a human glancing at the private key should do it. Don&#x27;t they even test script changes on a staging server? How could there be such a script error in production that was not caught in testing/staging? This sounds very like a fundamental organization error, not an innocent whoopsie. It should lead to a permanent ban of the organization.<cite>silvestrov</cite></blockquote>
+<blockquote>In retrospect, not having a tiny competency check may have been an oversight.<cite>tclancy</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Risks beyond browsers</strong> &mdash; A practical concern was that updating a host’s trust store may not update the separate trust bundles used by containers or some app runtimes, potentially leaving vulnerable clients behind.</p><blockquote>Two more things to note about impact assessment: Flatpak uses the selected runtime&#x27;s baked-in trust store (I think), so any apps may be susceptible even if you update the system package. Containers also don&#x27;t inherit the host&#x27;s trust store and use the one from the base image.<cite>supernes</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Dark humor at the absurdity</strong> &mdash; Jokes about tiny numbers, weak random-number generation, and familiar combinations expressed disbelief while underscoring the seriousness of the failure.</p><blockquote>Of COURSE it&#x27;s easy to crack, 4 isn&#x27;t even prime!<cite>bombcar</cite></blockquote>
+<blockquote>Someone used the Dilbert random number generator. https://www.random.org/analysis/<cite>tniemi</cite></blockquote>
+<blockquote>Hey, that&#x27;s the same combination I have on my luggage!<cite>walrus01</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Debate over the write-up</strong> &mdash; Some commenters criticized the article as thin or self-promotional, while others found it readable. A related exchange questioned whether parts of the prose were AI-generated.</p><blockquote>This is not a good write-up. Yesterday&#x27;s discussion did contain better data, less self-Promotion and actually asked why it happened, instead of just saying &quot;number small&quot;.<cite>hypfer</cite></blockquote>
+<blockquote>Could HN start feeding submissions through Pangram so us human readers don&#x27;t have to suffer with reading the nauseating AI-prose?<cite>TazeTSchnitzel</cite></blockquote>
+<blockquote>Count yourself lucky - compared to Claude&#x27;s prose, this is fairly readable.<cite>swiftcoder</cite></blockquote></div>
+          <p class="drawer-footer"><a href="#dossier-1">View in Dossier ↓</a></p>
+        </div>
+      </details>
+    </div>
+    </div>
+  </section>
+  <section id="story-2" class="spread arc-stat-hero">
+    <div class="numeral">1.5°C</div>
+    <div class="kicker">N<sup>o</sup> 02 · Climate Desk</div>
+    <h2>The 1.5-Degree Target Slips Away</h2>
+    <p class="story-meta">unric.org &nbsp;·&nbsp; 236 pts &nbsp;·&nbsp; 242 comments</p>
+    <p class="lede">A new UNEP assessment says limiting warming to 1.5°C without a substantial overshoot is no longer viable. The remaining path demands steep emissions cuts, rapid electrification, and carbon removal at planetary scale.</p>
+    <div class="spread-links"><a class="read-more" href="https://unric.org/en/unep-emissions-gap-report-2026-1-5-degree-overshoot/" target="_blank" rel="noopener">Read →</a><a class="read-more share-link" href="#" data-share-title="The 1.5°C goal of the Paris Agreement is no longer viable" data-share-url="https://unric.org/en/unep-emissions-gap-report-2026-1-5-degree-overshoot/">Share →</a>
+      <details class="analysis-drawer">
+        <summary class="btn-dossier">[ Analysis + ]</summary>
+        <div class="drawer-content">
+          
+          <h4>Technical Analysis</h4>
+          <div class="drawer-analysis">
+          <p>A UNEP report says the Paris Agreement’s goal of limiting warming to 1.5°C with little or no overshoot is no longer achievable, making a temporary breach increasingly likely. The revised priority is to keep warming below 2°C and return to 1.5°C by 2100, requiring emissions cuts far beyond current national plans—18% by 2030, 45% by 2035, and 69% by 2040 from 2025 levels. This would demand rapid electrification and renewable-energy deployment, expanded grids and storage, methane reductions, deforestation control, and a major phase-down of coal, oil, and gas. UNEP also estimates that removing about 320 gigatons of CO₂ by century’s end may be necessary, underscoring the scale of technological, economic, and political changes needed to limit irreversible climate damage.</p>
+          </div>
+          <h4>Reader Reactions</h4>
+<p class="camps-framing">The comments combine calls to keep reducing climate harms with doubts about whether current political and economic systems can deliver change at the needed scale. They differ over how much leverage individuals have, which policies are practical and fair, and how much further warming can still be avoided.</p>
+<div class="camp"><p class="camp-label"><strong>Keep acting despite setbacks</strong> &mdash; Some commenters argue that missed targets and shifting political priorities are not reasons to stop working on climate solutions. They point to engineering, organizing, and continued efforts to find lower-emission alternatives.</p><blockquote>You can choose to find the others to organize and prepare, so that the ideas closest at hand when the next crisis comes are yours.<cite>mbgerring</cite></blockquote>
+<blockquote>It&#x27;s an obvious impact story, but impact appears to be &quot;out&quot;.<cite>ant6n</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>The barriers are systemic and political</strong> &mdash; Many commenters locate the main obstacles in corporate incentives, government decisions, fossil-fuel interests, and short-term political priorities. Some express frustration that decision-makers can avoid the consequences of their choices.</p><blockquote>This problem starts and ends with corporations and government regulations.<cite>kulahan</cite></blockquote>
+<blockquote>The problem is that people today do not have skin in the game for what happens generations down the line.<cite>TrackerFF</cite></blockquote>
+<blockquote>We will continue extracting absolutely everything we can from Earth, at whatever the cost ... with the hope that technology will one day save us from our weakness.<cite>LightBug1</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Personal choices can contribute</strong> &mdash; Some commenters argue that changes in consumption can spread through social networks and eventually affect politics. Others emphasize achievable steps, such as eating less beef, rather than expecting people to give up meat altogether.</p><blockquote>Try eating less meat, eat healthy food, reduce car and plane usage when possible, buy less stuff (especially online), these are things anyone can do (rich or poor).<cite>vanelsas</cite></blockquote>
+<blockquote>We could all try and do a bit with our daily choices:<cite>TheSilva</cite></blockquote>
+<blockquote>If you don’t want to give up meat right away, at least consider stopping beef.<cite>closingreunion</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Individual sacrifices are the wrong focus</strong> &mdash; A countervailing view is that minor consumer gestures can distract from industrial emissions and decisions by governments and powerful actors. Some commenters object to placing burdens on individuals without providing practical alternatives or broader policy changes.</p><blockquote>There is no amount of paper straws that will offset anything the rich deciders do.<cite>pluc</cite></blockquote>
+<blockquote>The reason is that we see these pushes but at the same time we see no real initiative, with all the burden left on individuals with little to no power to make meaningful changes.<cite>znpy</cite></blockquote>
+<blockquote>Most ordinarily people don’t understand the tradeoffs of their choices in the slightest.<cite>presentation</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Climate policy must be workable and affordable</strong> &mdash; Commenters debate energy sources, transport, and the costs of transition. Some criticize rejecting nuclear power or relying on costly, inconvenient options; others stress that climate policies must account for daily needs and living standards, including in poorer countries.</p><blockquote>The climate change advocates have lost all their credibility by lobbying against nuclear.<cite>throwfaraway135</cite></blockquote>
+<blockquote>Common people want to go to work and know that they have a working transport system, that they can walk in between a few streets and feel safe, that they can have enough money for a mortgage and to feed themselves and their families.<cite>pelagicAustral</cite></blockquote>
+<blockquote>for us that come from poor countries - it fuels degrowth.<cite>dzonga</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Overshoot and temperature targets are disputed</strong> &mdash; Some commenters view the physical scale and inertia of climate change as making a return to 1.5°C unrealistic or human control over the problem limited. Others emphasize that each additional increment of warming still matters, even if the target is missed.</p><blockquote>This single graph [1] is enough to demonstrate that &#x27;solving&#x27; climate change is beyond the scale of human capabilities.<cite>asphodele</cite></blockquote>
+<blockquote>People are still talking about 1.5C at 2100 as if it&#x27;s not some high fantasy? :)<cite>Yizahi</cite></blockquote>
+<blockquote>So, paradoxically, the worse the situation gets, the larger our incentive should become to avoid yet another increase in global warming.<cite>haizhung</cite></blockquote></div>
+          <p class="drawer-footer"><a href="#dossier-2">View in Dossier ↓</a></p>
+        </div>
+      </details>
+    </div>
+  </section>
+  <section id="story-3" class="spread arc-terminal">
+    <div class="prompt-row">user@morning-edition:~$ cat story_03.md</div>
+    <div class="numeral">03</div>
+    <h2>CSS Builds a Bigger Native Toolkit</h2>
+    <p class="story-meta">joshwcomeau.com &nbsp;·&nbsp; 395 pts &nbsp;·&nbsp; 163 comments</p>
+    <p class="lede">Interop 2027 gathers browser vendors around functions, anchor queries, scroll animations, and more. Progressive enhancement gets richer; JavaScript gets less work to do.<span class="cursor"></span></p>
+    <div class="spread-links"><a class="read-more" href="https://www.joshwcomeau.com/css/interop-2027/" target="_blank" rel="noopener">Read →</a><a class="read-more share-link" href="#" data-share-title="The Future of CSS" data-share-url="https://www.joshwcomeau.com/css/interop-2027/">Share →</a>
+      <details class="analysis-drawer">
+        <summary class="btn-dossier">[ Analysis + ]</summary>
+        <div class="drawer-content">
+          
+          <h4>Technical Analysis</h4>
+          <div class="drawer-analysis">
+          <p>Josh W. Comeau previews CSS features being considered for Interop 2027, the cross-browser collaboration among Google, Apple, Microsoft, Mozilla, Igalia, and Bocoup that has helped features such as Subgrid achieve broad support. His top selections include native CSS functions, custom corner and border shapes, improved anchor and scroll-state queries, scroll-triggered animations, visual reading order, keyword-size animations, and grid gap decorations. These proposals aim to reduce JavaScript work, enable richer responsive layouts and animations, and improve accessibility, while several can already be adopted as progressive enhancements with fallbacks. The initiative matters because coordinated browser implementation makes modern CSS more dependable, and developers’ understanding of these capabilities remains important even as coding agents increasingly generate web code.</p>
+          </div>
+          <h4>Reader Reactions</h4>
+<p class="camps-framing">The comments contrasted enthusiasm for modern CSS with concerns about added complexity and debated when native web technologies are sufficient versus when frameworks are useful. They also raised questions about browser support and whether AI should replace human judgment in front-end work.</p>
+<div class="camp"><p class="camp-label"><strong>Modern CSS is a pleasure</strong> &mdash; Some commenters praised improvements to CSS and welcomed using native features in place of JavaScript where possible.</p><blockquote>Working with modern CSS is such a joy, and increasingly as time goes on I&#x27;m replacing huge chunks of JS with CSS which is a little boon in itself.<cite>paczki</cite></blockquote>
+<blockquote>Also, grids and flexbox solve so many previously tricky layout problems. Animations obviate a bunch of small JS.<cite>nine_k</cite></blockquote>
+<blockquote>I’m part of the seeming minority that really enjoys working with CSS.<cite>afavour</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Vanilla or lightweight tools are enough for many projects</strong> &mdash; Some argued that modern HTML, CSS, and JavaScript can serve simpler projects without a heavyweight framework, while recognizing that this approach may depend on the application and the developer’s expertise.</p><blockquote>SPAs still have their place but the average CRUD app is now really well served by vanilla or lightweight libraries like HTMX.<cite>80fj0348i</cite></blockquote>
+<blockquote>Yes. We could do those before React and other crap too.<cite>coldtea</cite></blockquote>
+<blockquote>It works pretty well, if used correctly and given the due attention.<cite>zelphirkalt</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Frameworks still earn their place</strong> &mdash; Others argued that frameworks provide useful reactivity, state management, and developer ergonomics, especially for complex applications.</p><blockquote>No, it&#x27;s not, despite what other comments here say. Of course it&#x27;s possible but you end up recreating React or another library along the way.<cite>satvikpendem</cite></blockquote>
+<blockquote>Just eat the 16kb and have some decent ergonomics.<cite>nkmnz</cite></blockquote>
+<blockquote>Y&#x27;all know React and Vue frameworks still use HTML, CSS, and JS, right?<cite>Tadpole9181</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>More CSS risks feature creep</strong> &mdash; Some commenters felt CSS already offers enough capabilities and that further additions could make it harder to understand, maintain, and use consistently.</p><blockquote>Maybe I’m alone, but all of those suggestions seem to make CSS needlessly complex (or more like JS).<cite>alberth</cite></blockquote>
+<blockquote>I hold the opinion that adding anything to CSS is a bad idea.<cite>efilife</cite></blockquote>
+<blockquote>CSS was done a long time ago. Stop changing it.<cite>sneak</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Interop is welcome, but browser support can be unclear</strong> &mdash; Some readers questioned the browser availability of features highlighted in a discussion about cross-browser collaboration. Others emphasized the difference between broad feature support and making basic site functionality depend on new features.</p><blockquote>A bit strange to me how Josh beings with heralding the browsers working together and then every mentioned feature is Chrome only.<cite>herpdyderp</cite></blockquote>
+<blockquote>Say it with me: Broad support for new CSS features is GOOD. Making BASIC SITE FUNCTIONALITY depend upon new CSS features is bad.<cite>FDEUp</cite></blockquote>
+<blockquote>Just call it like it was: Chrome. It was Chrome that didn&#x27;t move.<cite>boxed</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Human judgment still matters in AI-generated front ends</strong> &mdash; Some commenters argued that user-facing design deserves deliberate human attention, while others viewed AI as a useful aid for realizing a developer’s own ideas.</p><blockquote>It&#x27;s the part that faces the user.<cite>markasoftware</cite></blockquote>
+<blockquote>Definitely use coding agents to write code, but carefully and thoughtfully review any important backend or heavily user-facing components of the software you&#x27;re developing.<cite>davedx</cite></blockquote>
+<blockquote>doesnt mean you tell it: make it look nice.<cite>sourcecodeplz</cite></blockquote></div>
+          <p class="drawer-footer"><a href="#dossier-3">View in Dossier ↓</a></p>
+        </div>
+      </details>
+    </div>
+  </section>
+  <section id="story-4" class="spread arc-alert-stamp">
+    <div class="stamp">ALERT</div>
+    <div class="numeral">04</div>
+    <div class="body">
+      <div class="kicker">CVE Watch</div>
+      <h2>PHP Warns of Two Critical Vulnerabilities</h2>
+      <p class="story-meta">news-web.php.net &nbsp;·&nbsp; 957 pts &nbsp;·&nbsp; 386 comments</p>
+      <p class="lede">PHP has announced an upcoming critical release for CVE-2026-109618 and CVE-2026-109619. Until the official details and patch arrive, operators are weighing restrictions, downtime, and the cost of waiting.</p>
+      <div class="spread-links"><a class="read-more" href="https://news-web.php.net/php.announce/509" target="_blank" rel="noopener">Read →</a><a class="read-more share-link" href="#" data-share-title="Upcoming critical PHP security release (CVE-2026-109618 / -109619)" data-share-url="https://news-web.php.net/php.announce/509">Share →</a>
+      <details class="analysis-drawer">
+        <summary class="btn-dossier">[ Analysis + ]</summary>
+        <div class="drawer-content">
+          
+          <h4>Technical Analysis</h4>
+          <div class="drawer-analysis">
+          <p>The story concerns an announced upcoming critical security release for PHP addressing vulnerabilities CVE-2026-109618 and CVE-2026-109619. The original PHP announcement was unavailable when fetched, so specific technical details, affected versions, and remediation steps cannot be confirmed from the provided material. The issue is important because PHP underpins a large number of websites and business applications, making timely patching relevant to developers, hosting providers, and system administrators. Users should monitor official PHP and CERT advisories for the release and upgrade guidance.</p>
+          </div>
+          <h4>Reader Reactions</h4>
+<p class="camps-framing">The thread focuses on how to manage exposure while awaiting a PHP security patch: some operators favored taking services offline, while others considered temporary restrictions or had limited ability to accept downtime. Commenters also disagreed about whether the patch should be released immediately or after coordinated preparation. Several noted that LLMs may accelerate vulnerability discovery and exploitation.</p>
+<div class="camp"><p class="camp-label"><strong>Take services offline</strong> &mdash; Some operators chose temporary downtime, judging it preferable to the possibility of compromise while no confirmed interim mitigation was available.</p><blockquote>Just made the call to take all my customers apps offline until this is fixed.<cite>chrisvenum</cite></blockquote>
+<blockquote>I took my services offline last night, wouldn&#x27;t have been able to sleep otherwise.<cite>xd</cite></blockquote>
+<blockquote>I just took down my 10 or so sites until the fix is out.<cite>petervandijck</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Try interim mitigations, but don’t mistake them for a fix</strong> &mdash; Commenters discussed disabling session upload progress or blocking multipart and POST requests, while emphasizing that these measures were not confirmed substitutes for patching.</p><blockquote>I understand this to be only a possible mitigation (see below).<cite>richardbarosky</cite></blockquote>
+<blockquote>PHP core maintainers themselves have said that only upgrading PHP will be sufficient: https://phpc.social/@Girgias/117476477429221001<cite>top_sigrid</cite></blockquote>
+<blockquote>I’m not saying I know this works as a mitigation, but it seems like it could at least contribute to a temporary guard until you get patch in place.<cite>aksss</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Release the patch immediately</strong> &mdash; Some commenters argued that reports of active attacks made the announced release time too late and called for the fix, or an interim mitigation, to be released sooner.</p><blockquote>When will they finally release the patch?!<cite>janmo</cite></blockquote>
+<blockquote>if the attacks are live then PHP should release the fix NOW.<cite>SSLy</cite></blockquote>
+<blockquote>Or you release a &quot;mitigation&quot; immediately (turn off feature X usually) and then release the patch.<cite>bombcar</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Coordinated disclosure still has a purpose</strong> &mdash; Others defended giving maintainers, providers, and distributions time to prepare and test releases, arguing that a rushed or incomplete fix could create additional risk.</p><blockquote>There is no way to coordinate the whole world on an earlier time.<cite>TekMol</cite></blockquote>
+<blockquote>Meanwhile maintainers don&#x27;t want release an incomplete or misunderstood fix.<cite>mattbee</cite></blockquote>
+<blockquote>This was the right approach and it worked.<cite>my-huge-pony</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>The operational trade-off is not the same for everyone</strong> &mdash; Some commenters pointed out that taking a service offline can have significant consequences or may not be within an operator’s control; others discussed temporary restrictions and contacting hosting providers.</p><blockquote>In practice, many can&#x27;t just decide to shut down their service for a few hours.<cite>AndroTux</cite></blockquote>
+<blockquote>After making sure that our environments had the latest everything (WordPress version, PHP version, all plugins and themes on the latest), I contacted WPEngine support briefly.<cite>throwaway82931</cite></blockquote>
+<blockquote>I&#x27;ve chosen to be a little more conservative: (any(http.request.headers[&quot;content-type&quot;][*] contains &quot;multipart&quot;))<cite>throwaway82931</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>LLMs change the security timeline</strong> &mdash; Commenters argued that LLMs may help attackers rediscover or operationalize vulnerabilities quickly, making even limited advance information consequential.</p><blockquote>today only a rumour of a bug is enough to find and replicate it quickly.<cite>summner</cite></blockquote>
+<blockquote>Even just a hint of a 0-day is enough to cause people to look for it and exploit it with LLMs.<cite>Shank</cite></blockquote>
+<blockquote>Now, many people have the capability and can completely automatize it.<cite>juliusjh</cite></blockquote></div>
+          <p class="drawer-footer"><a href="#dossier-4">View in Dossier ↓</a></p>
+        </div>
+      </details>
+    </div>
+    </div>
+  </section>
+  <section id="story-5" class="spread arc-archive">
+    <div class="archive-head">
+      <span>ARCHIVE</span>
+      <span>N<sup>o</sup> 05</span>
+    </div>
+    <div class="kicker">Building History</div>
+    <h2>Why Fire Escapes Fell Out of Favor</h2>
+    <p class="story-meta">practical.engineering &nbsp;·&nbsp; 12 pts &nbsp;·&nbsp; 1 comments</p>
+    <p class="lede">External fire escapes were once the cheapest answer to crowded, dangerous tenements. Better fire-rated construction, sprinklers, alarms, and interior stairs gradually made the familiar iron balcony a liability instead.</p>
+    <div class="spread-links"><a class="read-more" href="https://practical.engineering/blog/2026/10/20/whatever-happened-to-fire-escapes" target="_blank" rel="noopener">Read →</a><a class="read-more share-link" href="#" data-share-title="Whatever Happened to Fire Escapes" data-share-url="https://practical.engineering/blog/2026/10/20/whatever-happened-to-fire-escapes">Share →</a>
+      <details class="analysis-drawer">
+        <summary class="btn-dossier">[ Analysis + ]</summary>
+        <div class="drawer-content">
+          
+          <h4>Technical Analysis</h4>
+          <div class="drawer-analysis">
+          <p>The story traces the rise and decline of external fire escapes in American cities, from their adoption as inexpensive retrofits for dangerous 19th-century tenements to their replacement by enclosed, fire-resistant interior stairways. It explains that exterior escapes were often poorly maintained, obstructed, difficult to use under panic, vulnerable to structural failure, and sometimes created security or accessibility problems, while disasters such as the Triangle Shirtwaist fire exposed their limitations. Building codes gradually shifted toward safer daily-use stairs, supported by improvements in fire-rated materials, sprinklers, alarms, and smoke protection, though older escapes often remain. The broader lesson is that building regulations balance safety, cost, usability, and limited space, and that seemingly narrow code decisions can create long-term, unintended effects on construction and affordability.</p>
+          </div>
+          <h4>Reader Reactions</h4>
+<p class="camps-framing">The comments raise two separate questions: what might fuel a fire in a modern, fire-resistant building, and whether removing a fire escape as unsafe can create other access problems.</p>
+<div class="camp"><p class="camp-label"><strong>Modern fire risk and materials</strong> &mdash; A commenter wonders what could burn in a modern concrete-and-brick building, while considering whether belongings or cars might still pose a fire risk.</p><blockquote>What would burn in those manhattan buildings?<cite>comrade1234</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Removal can create new problems</strong> &mdash; A commenter recounts a school removing an old fire escape because it was considered unsafe and other stairwells existed, then later closing off the top floor.</p><blockquote>Apparently it was unsafe and someone decided it wasn&#x27;t needed because there were two other stairwells.<cite>lbriner</cite></blockquote>
+<blockquote>The top floor is out of bounds to everyone. Why? The fire escape is missing :-)<cite>lbriner</cite></blockquote></div>
+          <p class="drawer-footer"><a href="#dossier-5">View in Dossier ↓</a></p>
+        </div>
+      </details>
+    </div>
+  </section>
+  <section id="story-6" class="spread arc-blueprint">
+    <div class="corner tl">+</div><div class="corner tr">+</div>
+    <div class="corner bl">+</div><div class="corner br">+</div>
+    <div class="numeral">06</div>
+    <div class="kicker">Civic Simulation</div>
+    <h2>A City Builder Turns Permits Into Gameplay</h2>
+    <p class="story-meta">permit.petercai.com &nbsp;·&nbsp; 812 pts &nbsp;·&nbsp; 381 comments</p>
+    <p class="lede">This browser simulation makes housing, transit, industry, pollution, and neighborhood opposition collide on one planning screen. The build is intentionally simplified, but the trade-offs are not.</p>
+    <div class="spread-links"><a class="read-more" href="https://permit.petercai.com/" target="_blank" rel="noopener">Read →</a><a class="read-more share-link" href="#" data-share-title="Show HN: SimCity, but with Permits" data-share-url="https://permit.petercai.com/">Share →</a>
+      <details class="analysis-drawer">
+        <summary class="btn-dossier">[ Analysis + ]</summary>
+        <div class="drawer-content">
+          
+          <h4>Technical Analysis</h4>
+          <div class="drawer-analysis">
+          <p>“Show HN: SimCity, but with Permits” is an interactive city-building simulation centered on the political and regulatory challenges of approving development. Players make choices about housing, industry, and transit while managing the competing interests and unintended consequences each project creates. The project appears to be a browser-based demonstration rather than a conventional city-builder, using simplified mechanics to highlight how permitting decisions shape affordability, jobs, pollution, and neighborhood opposition. Its appeal lies in making the often abstract trade-offs of urban planning tangible and understandable.</p>
+          </div>
+          <h4>Reader Reactions</h4>
+<p class="camps-framing">Reactions ranged from seeing the game as an effective way to make civic decision-making tangible to finding it stressful and difficult to play. Commenters also debated whether permitting and public input obstruct needed building or protect communities from development’s harms, including whether local processes give incumbents too much influence. Practical criticism focused on the game’s onboarding, interface, bugs, and simulation details.</p>
+<div class="camp"><p class="camp-label"><strong>Civic process as the point</strong> &mdash; Some commenters appreciated how the game makes the competing demands and interruptions of city government vivid, even when that experience is deliberately hectic.</p><blockquote>It really did a good job of presenting that.<cite>guardwisesec</cite></blockquote>
+<blockquote>Love it, I hope this becomes the most popular game on the internet so folks get to experience the Byzantine level of complexity we&#x27;ve made doing business in industries with physical stuff.<cite>bretpiatt</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Too much like work to be fun</strong> &mdash; Others found the experience stressful rather than entertaining, especially because it recreates the challenge of trying to satisfy people with conflicting demands.</p><blockquote>There is no fun or joy or escapism in being hated by everyone and not being able to please anyone.<cite>sdellis</cite></blockquote>
+<blockquote>Within 60 seconds I realized that this game is less enjoyable than most people&#x27;s actual work.<cite>xp84</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Onboarding and implementation need work</strong> &mdash; Commenters criticized the dense controls, unclear presentation, technical obstacles, and simulation text that does not match the city. Some saw educational potential but wanted a clearer introduction and more reliable, context-aware experience.</p><blockquote>Walls of text and tons of controls fundamentally undermine that purpose.<cite>npunt</cite></blockquote>
+<blockquote>Couldn&#x27;t get past the new city screen where I&#x27;m choosing &quot;Blank Slate&quot; or the other one.<cite>solyin</cite></blockquote>
+<blockquote>The various decisions/petitions that pop up can break the immersion by mentioning details that don&#x27;t fit the city(petitions with signatures from &gt;250% of the town population, traffic issues at the &quot;4-way intersection in front of the feed store&quot; when no such place exists, or the new building causing shadows when there&#x27;s nothing around it).<cite>goda90</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Permitting and veto points can block needed building</strong> &mdash; Some argued that discretionary reviews, accumulated rules, and neighborhood objections make useful development too difficult. They favored predictable approvals for projects that meet established zoning or building requirements.</p><blockquote>Can&#x27;t build this because traffic. Can&#x27;t build that because impact on the neighborhood.<cite>bruce511</cite></blockquote>
+<blockquote>There should be no discretionary objections allowed - if you buy a house next to a commercial lot then you know what you&#x27;re getting yourself into.<cite>calbear81</cite></blockquote>
+<blockquote>Keep them separate.<cite>qdotme</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Public process and community voice can protect residents</strong> &mdash; Others emphasized that development without meaningful checks can impose serious costs on less powerful communities. They argued that residents’ ability to influence local decisions should not be dismissed as mere obstruction.</p><blockquote>Communities should have a say in their community.<cite>gtrplyrjimi</cite></blockquote>
+<blockquote>Right, it was so much better during the Robert Moses era where urban planners bulldozed over predominantly Black communities and built interstate highways while locating all of the toxic pollution producing manufacturing to the remaining lower-income minority neighborhoods, obliterating walkability and pedestrian safety everywhere.<cite>paimapi</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Local participation can privilege incumbents</strong> &mdash; A counterargument held that local hearings and neighborhood vetoes often give organized homeowners more influence than prospective residents or the broader public, and can slow housing and other development.</p><blockquote>Homeowners have a disproportionate say. aspiring homeowners don&#x27;t show up to local city council meetings<cite>scottious</cite></blockquote>
+<blockquote>And this is why the local community absolutely should not have any more say about a new development than a hypothetical someone who would like to live there, but can&#x27;t, because there is no available housing.<cite>Tuna-Fish</cite></blockquote>
+<blockquote>These policies that allow locals to push back against state or federal government overreach were made with good intentions, but the reality on the ground is that the people who take advantage of these policies are not the poor and disenfranchised but the wealthy, and the way they wield their power is to slow down development that would help the masses.<cite>lern_too_spel</cite></blockquote></div>
+          <p class="drawer-footer"><a href="#dossier-6">View in Dossier ↓</a></p>
+        </div>
+      </details>
+    </div>
+  </section>
+  <section id="story-7" class="spread arc-caution-tape">
+    <div class="tag">SECURITY ADVISORY</div>
+    <div class="numeral">07</div>
+    <div class="kicker">Privacy Alert</div>
+    <h2>Muse Shared Links Exposed Private Conversations</h2>
+    <p class="story-meta">arstechnica.com &nbsp;·&nbsp; 195 pts &nbsp;·&nbsp; 90 comments</p>
+    <p class="lede">Passive DNS records helped researchers enumerate roughly 6,800 Muse conversation links. The exposed material included business documents, financial details, and personal information; Meta paused the sharing feature while investigating.</p>
+    <div class="spread-links"><a class="read-more" href="https://arstechnica.com/security/2026/10/meta-muse-exposes-users-personal-and-business-secrets-when-they-share-conversations/" target="_blank" rel="noopener">Read →</a><a class="read-more share-link" href="#" data-share-title="Muse exposes users&#x27; personal and business secrets when they share conversations" data-share-url="https://arstechnica.com/security/2026/10/meta-muse-exposes-users-personal-and-business-secrets-when-they-share-conversations/">Share →</a>
+      <details class="analysis-drawer">
+        <summary class="btn-dossier">[ Analysis + ]</summary>
+        <div class="drawer-content">
+          
+          <h4>Technical Analysis</h4>
+          <div class="drawer-analysis">
+          <p>Meta’s Muse AI assistant exposed users’ shared conversations because its supposedly private links could be discovered through passive DNS records rather than being difficult to guess. Security researchers at Claroc enumerated about 6,800 links and found confidential business documents, loan details, financial information, employee schedules, and other sensitive data. The issue arose from how Muse generated and exposed share URLs, allowing unintended access with little effort once links had been recorded by DNS-monitoring services. Meta said it had paused the sharing feature while reviewing the report, highlighting the privacy risks of link-based sharing for AI conversations that may contain personal or corporate secrets.</p>
+          </div>
+          <h4>Reader Reactions</h4>
+<p class="camps-framing">Commenters broadly distrusted Meta’s handling of user data, while some distinguished its record from ordinary, constrained access by other providers. Technical replies focused on whether the incident exposed only shared links and how passive DNS could reveal them. The discussion also weighed the security risks of personal agents against their practical value, with some favoring local or privacy-oriented alternatives.</p>
+<div class="camp"><p class="camp-label"><strong>Meta distrust and predictable consequences</strong> &mdash; Many commenters treated the incident as consistent with Meta’s history and doubted that the company could credibly promise privacy.</p><blockquote>I couldn&#x27;t be true. You&#x27;re telling me that Meta, of all companies, would be careless with user data and privacy? Totally unbelievable!<cite>ryandrake</cite></blockquote>
+<blockquote>It&#x27;s not, there are levels of scumbaggery and Meta is one of the absolute worst.<cite>zaptheimpaler</cite></blockquote>
+<blockquote>You can&#x27;t be Meta and just ratfuck your users for decades and then ask them to trust you<cite>viccis</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Meta is especially bad, not just another tech company</strong> &mdash; Some commenters rejected the idea that all technology companies are equally careless, distinguishing legitimate access to data from exploitative or cavalier handling.</p><blockquote>Most of the companies I work with treat customer data with extreme care and sensitivity and don&#x27;t throw it around like silicon valley ad tech does.<cite>educar</cite></blockquote>
+<blockquote>There is a gulf of difference between accessing your data to comply with the law and accessing your data (and giving it away to friends!) for no reason<cite>latexr</cite></blockquote>
+<blockquote>The question was not &quot;could the do all shitty things if they were scummy assholes&quot;, but &quot;are they all scummy assholes&quot;.<cite>customguy</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Scope and mechanism of the exposure</strong> &mdash; Technical replies focused on whether the issue affected shared conversations rather than all chats, and on how hostnames could be discovered through passive DNS.</p><blockquote>It seems that Meta assigns a unique hostname to each shared conversation.<cite>cloudbonsai</cite></blockquote>
+<blockquote>Sounds like it&#x27;s the former: URLs are guessable/easily enumerable but their contents protected by auth unless they&#x27;re &quot;published&quot; using the share feature<cite>fxwin</cite></blockquote>
+<blockquote>Lesson here is that the subdomain names can be queried due to passive DNS records, and putting stuff that is not supposed to be guessable in subdomain names is a bad idea.<cite>omoikane</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Personal agents pose security risks</strong> &mdash; Cautious commenters argued that giving agents access to personal information, accounts, or systems creates risks that are difficult to manage, especially for a mass audience.</p><blockquote>To be fair agentic platforms are a shitty idea from a security perspective anyway.<cite>bcvvvy</cite></blockquote>
+<blockquote>Even as an experienced developer, sandboxing an agent is not trivial.<cite>skohan</cite></blockquote>
+<blockquote>There’s no way in hell I’m giving it access to anything sensitive.<cite>hamburglar</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Disagreement over personal-agent usefulness</strong> &mdash; Some commenters described agents as useful for recurring chores, while others said they had not found a practical use case or questioned whether the benefits justified the enthusiasm.</p><blockquote>It runs so many boring parts of my life, leaving me with more time to spend with my family.<cite>sksksk</cite></blockquote>
+<blockquote>I’ve tried several times with different frameworks and I just can’t find a use case that is remotely worth it.<cite>ctolsen</cite></blockquote>
+<blockquote>Whenever this comes up, all I ever see are hand-wavy responses like this. &quot;It does everything&quot;, &quot;it changes your life.&quot; But how exactly?<cite>ad_fontes</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Local or privacy-oriented alternatives</strong> &mdash; A smaller group favored self-hosting or regional providers as ways to keep personal data away from large platforms, while acknowledging that local systems may not match frontier models on every task.</p><blockquote>Muse, Grok, Dots will have users for the foreseeable future but there will be viable options for self-hosting too.<cite>_pdp_</cite></blockquote>
+<blockquote>Obviously you cannot get frontier level of intelligence for coding tasks on a single Mac Mini/Studio but most people don&#x27;t need that.<cite>_pdp_</cite></blockquote>
+<blockquote>If only there was a company that didn&#x27;t use ads, protected people&#x27;s privacy, didn&#x27;t sell their data, and had local data sovereignty?<cite>vektormemory</cite></blockquote></div>
+          <p class="drawer-footer"><a href="#dossier-7">View in Dossier ↓</a></p>
+        </div>
+      </details>
+    </div>
+  </section>
+  <section id="story-8" class="spread arc-editorial-pullquote">
+    <div class="left">
+      <div class="numeral">08</div>
+      <div class="kicker">Systems Thinking</div>
+      <h2>Complexity Is the Tax on Every Shortcut</h2>
+      <p class="story-meta">maevyn.codes &nbsp;·&nbsp; 54 pts &nbsp;·&nbsp; 14 comments</p>
+      <div class="spread-links"><a class="read-more" href="https://maevyn.codes/decoherence" target="_blank" rel="noopener">Read →</a><a class="read-more share-link" href="#" data-share-title="The Decoherence Trap" data-share-url="https://maevyn.codes/decoherence">Share →</a>
+      <details class="analysis-drawer">
+        <summary class="btn-dossier">[ Analysis + ]</summary>
+        <div class="drawer-content">
+          
+          <h4>Technical Analysis</h4>
+          <div class="drawer-analysis">
+          <p>“The Decoherence Trap” argues that complex systems accumulate “decoherence” when incremental changes introduce redundant, incompatible, or poorly understood models, making future modifications increasingly costly and risky. Using plumbing, software architecture, and a graph-based simulation as examples, the essay contends that rushed development and overlapping AI-generated changes can create runaway complexity: more code and faster output without more completed work. This matters commercially because review, maintenance, and feature delivery can slow sharply as organizations inherit systems that require broader expertise and careful translation between paradigms. The author also challenges rapid AI takeoff narratives, suggesting that agents may worsen the coherence problem and face practical limits in improving software without reliable feedback from the real world.</p>
+          </div>
+          <h4>Reader Reactions</h4>
+<p class="camps-framing">Commenters generally found the concern that accumulating complexity makes systems harder to change persuasive, while debating whether this is a distinctively AI-driven problem and whether it limits AI’s future capabilities. Some emphasized longstanding challenges in validating models against reality; others argued that real-world access, improved design capabilities, or organizational choices could change the outlook.</p>
+<div class="camp"><p class="camp-label"><strong>Complexity is a real engineering constraint</strong> &mdash; These commenters saw interacting parts and local optimizations as sources of complexity that make systems harder to change, regardless of who writes the code.</p><blockquote>every model faces the same limit: the number of interactions between its part grows combinatorially as the system grows.<cite>rnd33</cite></blockquote>
+<blockquote>They don&#x27;t have the capacity to see the big picture above some complexity level, and end up doing lot of local optimizations that decohere the system.<cite>tomaskafka</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>The issue predates AI; models need real-world validation</strong> &mdash; These commenters placed the concern in a longer history of building software and models faster than they can be checked against real-world evidence, emphasizing validation and QA.</p><blockquote>It&#x27;s always been able to go faster in building models faster than reality can be checked.<cite>digikata</cite></blockquote>
+<blockquote>The practices need to be updated, but I think the mindset of systems engineering validation &amp; verification, and software QA are going to be very needed going forward.<cite>digikata</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Decoherence is not a convincing limit on AI risk</strong> &mdash; These commenters questioned whether incoherence in software rules out runaway improvement, pointing to possible access to physical systems and examples of agents behaving unexpectedly.</p><blockquote>I was worried about it once we wired up all the robots and sensors and power switches to AI controlled systems.<cite>thenoblesunfish</cite></blockquote>
+<blockquote>Today it is hacking, but tomorrow it may be training a smarter model to join their cohort, without us being involved.<cite>paid_dot_expert</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Practical concern, but little reason for singularity alarm</strong> &mdash; This commenter saw rebuilding or replacing an incoherent system as a practical option and considered software breakdown less pressing than unsolved real-world problems.</p><blockquote>When we humans have realized we created a system too incoherent, at some point we just create a new one, porting all or some of the data/functionality.<cite>flufluflufluffy</cite></blockquote>
+<blockquote>I don&#x27;t know, I see it as an argument against the singularity, but I&#x27;m not nearly afraid of it as the author seems to be.<cite>flufluflufluffy</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>AI capability and context are disputed</strong> &mdash; Commenters disagreed about whether current models can maintain architectural coherence: some pointed to strong design capabilities or human coordination, while others highlighted context limits and local optimization.</p><blockquote>In pure software architecture and design term, this would have been convincing until the recent models who are let’s be honest better than humans in architecture and design.<cite>neebz</cite></blockquote>
+<blockquote>Although local optima is what most humans already operate on. So it’s sounds like an engineering solution could be possible since group of humans are also able to divide and conquer complex systems.<cite>baxtr</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>AI could help maintain coherence if development is organized for it</strong> &mdash; This commenter argued that AI might strengthen the people and processes responsible for keeping systems understandable, while warning that it could also accelerate dysfunctional practices.</p><blockquote>AI offers a way to rebalance this dynamic, though.<cite>torben-friis</cite></blockquote>
+<blockquote>You can effectively add multipliers to arbitrary human workers, and get a system that tends to low complexity by design.<cite>torben-friis</cite></blockquote></div>
+          <p class="drawer-footer"><a href="#dossier-8">View in Dossier ↓</a></p>
+        </div>
+      </details>
+    </div>
+    </div>
+    <blockquote class="pullquote">More output does not mean more progress when the system can no longer stay coherent.</blockquote>
+  </section>
+  <section id="story-9" class="spread arc-pastel-playful">
+    <div class="alpha-grid"><span>A</span><span>B</span><span>C</span><span>D</span><span>E</span><span>F</span><span>G</span><span>H</span><span>I</span><span>J</span><span>K</span><span>L</span><span>M</span></div>
+    <div class="alpha-grid" style="top: auto; bottom: 0;"><span>N</span><span>O</span><span>P</span><span>Q</span><span>R</span><span>S</span><span>T</span><span>U</span><span>V</span><span>W</span><span>X</span><span>Y</span><span>Z</span></div>
+    <div class="numeral">09</div>
+    <div class="kicker">Mixed Reality</div>
+    <h2>Super Mario 64 Lands on a Tabletop</h2>
+    <p class="story-meta">pagetable.com &nbsp;·&nbsp; 16 pts &nbsp;·&nbsp; 3 comments</p>
+    <p class="lede">Diorama64 turns each level into a miniature world for Apple Vision Pro. Move around the table, guide Mario with a gamepad, and watch a decompiled classic acquire a new physical scale.</p>
+    <div class="spread-links"><a class="read-more" href="https://www.pagetable.com/303" target="_blank" rel="noopener">Read →</a><a class="read-more share-link" href="#" data-share-title="Way to Play Super Mario 64: On Apple Vision Pro" data-share-url="https://www.pagetable.com/303">Share →</a>
+      <details class="analysis-drawer">
+        <summary class="btn-dossier">[ Analysis + ]</summary>
+        <div class="drawer-content">
+          
+          <h4>Technical Analysis</h4>
+          <div class="drawer-analysis">
+          <p>The article showcases Diorama64, a fan-made Apple Vision Pro port of Super Mario 64 that places each level on a real table, letting players move around it while controlling Mario with a gamepad. It builds on the SM64 decompilation and sm64coopdx projects, along with community-created HD textures and replacement 3D models. The project illustrates how reverse engineering and modern hardware can reinterpret older games beyond their original platforms. It also contrasts Microsoft’s stated support for decompiled games with Nintendo’s history of DMCA takedowns and litigation against similar projects.</p>
+          </div>
+          <h4>Reader Reactions</h4>
+<p class="camps-framing">The comments are overwhelmingly enthusiastic, celebrating the nostalgic pull of an N64 classic and the novelty of making its levels tangible in mixed reality. One commenter raises a concern that Apple may restrict emulator-related projects; there is little direct disagreement otherwise.</p>
+<div class="camp"><p class="camp-label"><strong>Nostalgia for the N64</strong> &mdash; One commenter recalls the memories evoked by the game’s music and the excitement of renting an N64 to play with friends.</p><blockquote>N64 was magical when it first came out.<cite>adamddev1</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Spatial-computing excitement</strong> &mdash; Commenters celebrate the novelty of placing a game level on a real table and moving around it, as well as the broader excitement of the week in technology.</p><blockquote>I love that we&#x27;ve reached a point where you can put an entire N64 level on your dining table and physically walk around it.<cite>SwtCyber</cite></blockquote>
+<blockquote>Fantastic! It&#x27;s been a very cool week for technology.<cite>andai</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Decompilation enthusiasm, with platform concerns</strong> &mdash; One commenter is interested in rebuilding older games but worries that Apple may restrict emulators or that the project could face a crackdown.</p><blockquote>I am mildly worried that a big hammer is gonna come down on it all pretty soon.<cite>iugtmkbdfil834</cite></blockquote></div>
+          <p class="drawer-footer"><a href="#dossier-9">View in Dossier ↓</a></p>
+        </div>
+      </details>
+    </div>
+  </section>
+  <section id="story-10" class="spread arc-academic-drop-cap">
+    <div class="paper-head">
+      <span>Web PKI</span>
+      <span class="numeral-roman">X</span>
+      <span>emudhra.we-have-a-problem.com</span>
+    </div>
+    <h2>The Trust Chain Fails at Its Smallest Link</h2>
+    <p class="story-meta">emudhra.we-have-a-problem.com &nbsp;·&nbsp; 988 pts &nbsp;·&nbsp; 414 comments</p>
+    <div class="cols">
+      <div><p>Eight eMudhra intermediate CA keys were recoverable because flawed key generation produced trivially small private values.</p></div>
+      <div><p>Revocation and browser blocks limit the immediate blast radius, but software libraries and embedded devices still depend on updated trust stores.</p><div class="spread-links"><a class="read-more" href="https://emudhra.we-have-a-problem.com/" target="_blank" rel="noopener">Read →</a><a class="read-more share-link" href="#" data-share-title="eMudhra intermediate CA compromise" data-share-url="https://emudhra.we-have-a-problem.com/">Share →</a>
+      <details class="analysis-drawer">
+        <summary class="btn-dossier">[ Analysis + ]</summary>
+        <div class="drawer-content">
+          
+          <h4>Technical Analysis</h4>
+          <div class="drawer-analysis">
+          <p>The story reports that eight eMudhra intermediate TLS certificate private keys were recoverable because of flawed key generation, potentially allowing attackers to impersonate any website or service using them since the certificates were issued in April 2025. The intermediates chain to roots trusted across Mozilla, Microsoft, Apple, Chrome, and numerous other trust stores, although browser Certificate Transparency requirements likely limited exposure in major browsers. The certificates and affected roots have been revoked or blocked through browser and operating-system mechanisms, but many command-line tools, applications, and embedded clients require updated CA bundles or software to stop trusting them. Users and administrators should update browsers, operating systems, libraries, and trust stores, while recognizing that exploitation of the compromised keys has not been confirmed.</p>
+          </div>
+          <h4>Reader Reactions</h4>
+<p class="camps-framing">Commenters reacted with disbelief at how easily the private keys could be recovered, then debated the cause of the failure and whether eMudhra’s processes warranted continued trust. They also weighed the protections and limits of Certificate Transparency and revocation, especially for non-browser clients, and argued over both the incident’s practical severity and broader changes to the Web PKI.</p>
+<div class="camp"><p class="camp-label"><strong>Astonishment at the weak keys</strong> &mdash; Commenters emphasized that the private keys were tiny numbers that could be recovered almost immediately, and speculated about errors in key generation or handling.</p><blockquote>The private key for all 8 &quot;compromised&quot; CAs is a single byte:<cite>eqvinox</cite></blockquote>
+<blockquote>Opus 5.5 told me the private key of 4 after two minutes, including the time to write and run a 30-line Python script implementing a baby step giant step search for discrete logarithm.<cite>kccqzy</cite></blockquote>
+<blockquote>The 8 impacted keys all used integers less than 256.<cite>nneonneo</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Negligence, trust, and CA accountability</strong> &mdash; Commenters questioned whether eMudhra’s controls and audits were credible and argued that root programs should be accountable for intermediates they authorize. Some also questioned whether the failure was accidental.</p><blockquote>Yikes. I’d have to wonder if this CA should even be trusted ever again?<cite>gwittel</cite></blockquote>
+<blockquote>And THAT is where I&#x27;m drawing the line between &quot;honest mistake&quot; and &quot;gross negligence&quot;.<cite>eqvinox</cite></blockquote>
+<blockquote>Roots should be responsible for all their sub-CAs, full stop. If they don&#x27;t trust them enough to accept that responsibility, then the system is broken.<cite>sippingabonedry</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>What Certificate Transparency can and cannot reveal</strong> &mdash; Some commenters saw Certificate Transparency as a way to expose exploitation, while others noted that private CAs, non-browser clients, and gaps in monitoring could limit what it reveals.</p><blockquote>The Web PKI uses certificate transparency, so we’ll have a definitive answer about whether this is/was exploited soon. (But in any case, CT ensures that it can’t be “quiet.”)<cite>woodruffw</cite></blockquote>
+<blockquote>nobody is auditing the logs for every cert every browser sees.<cite>0xbadcafebee</cite></blockquote>
+<blockquote>Non-Browsers do not validate SCTs<cite>0xbadcafebee</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Uneven revocation and client exposure</strong> &mdash; Commenters contrasted browser vendors’ ability to distribute distrust with the difficulty of updating command-line tools, embedded devices, and software that bundles its own certificate store.</p><blockquote>However, for the rest of the ecosystem, there has been little to no investment in revocation and for those clients, this is a massive problem.<cite>galadran</cite></blockquote>
+<blockquote>It would be quite challenging to patch every binary that embedded their own CA.<cite>xucheng</cite></blockquote>
+<blockquote>They&#x27;re not generally (there is a specific case of preloaded intermediates, but that&#x27;s not the main problem here).<cite>pimterry</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Serious incident, but calibrate the risk</strong> &mdash; Commenters differed over how broadly to characterize the potential compromise, including whether the ability to impersonate sites was an acute threat and how it compared with other security risks.</p><blockquote>The impact was a complete and total potential compromise of literally everyone. Every domain. Every client using one of the public root programs. Every user of those clients.<cite>account42</cite></blockquote>
+<blockquote>here, attackers get the ability to spoof websites if they&#x27;re in a position to hijack connections.<cite>tptacek</cite></blockquote>
+<blockquote>The concern of course is with malware being signed, which is far more likely to be abused than some TLS MITM fantasy.<cite>sippingabonedry</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Structural alternatives to the Web PKI</strong> &mdash; Some commenters argued for limiting universal CA issuance or adopting domain-aligned and distributed trust models. Others questioned whether proposed alternatives would improve on existing transparency and revocation mechanisms.</p><blockquote>The design intent is still bad though: we should never have given CAs universal issuance privileges.<cite>quotemstr</cite></blockquote>
+<blockquote>DANE replaces this system with one that has the same basic cryptographic properties, but in which you can&#x27;t eject bad actors --- or even monitor them with a mandatory transparency log. It&#x27;s strictly worse than this.<cite>tptacek</cite></blockquote>
+<blockquote>Web-of-trust doesn&#x27;t work.<cite>jcranmer</cite></blockquote></div>
+          <p class="drawer-footer"><a href="#dossier-10">View in Dossier ↓</a></p>
+        </div>
+      </details>
+    </div></div>
+    </div>
+  </section>
+  <section id="dossier" class="dossier">
+    <div class="dossier-head">
+      <div class="tagline">Appendix</div>
+      <h2>The Dossier</h2>
+      <p class="intro">Full analysis and reactions for today's 10 stories. <a href="#top">↑ Back to the edition</a></p>
+    </div>
+    <article id="dossier-1" class="dossier-entry">
+      <div class="dossier-meta">N<sup>o</sup> 01 &nbsp;·&nbsp; Midnight &nbsp;·&nbsp; Trust Infrastructure</div>
+      <h3>Eight Bits of Trust; eMudhra&#x27;s CA keys cracked in milliseconds</h3>
+      <p class="dossier-source">
+        <a href="https://scotthelme.co.uk/eight-bits-of-trust-emudhras-ca-keys-cracked-in-milliseconds/" target="_blank" rel="noopener">scotthelme.co.uk</a>
+        &nbsp;·&nbsp; 133 pts &nbsp;·&nbsp; 54 comments
+         &nbsp;·&nbsp; <a href='https://news.ycombinator.com/item?id=50177916' target='_blank' rel='noopener'>discussion</a>
+      </p>
+      <h4>Analysis</h4>
+      <p>The story reports that eMudhra issued eight TLS and code-signing intermediate CA certificates whose P-384 private keys were accidentally tiny values—single-byte numbers such as 4, 56, and 115—making them recoverable from public certificates in milliseconds. Because anyone could have derived these keys since the certificates were created, attackers could potentially forge certificates for arbitrary websites or sign malware, with risk extending beyond browsers to command-line tools, CI/CD systems, APIs, and unpatchable IoT devices that do not check revocation or Certificate Transparency. Major browsers blocked the affected certificates and roots, but many other clients remain vulnerable until their CA bundles are updated. The incident appears to have resulted from a key-generation or certificate-signing workflow error, underscoring how a basic randomness or process failure can undermine an entire certificate authority’s trust chain.</p>
+      <h4>Reader Reactions</h4>
+<p class="camps-framing">The discussion combined disbelief and dark humor about the keys’ weakness with concern about failures in CA operations and oversight. Commenters debated whether the incident reflected incompetence or deliberate action, speculated about how the keys were generated, and considered risks outside browsers and the quality of the incident write-up.</p>
+<div class="camp"><p class="camp-label"><strong>Operational failure or deliberate compromise</strong> &mdash; Commenters mostly saw the incident as a serious process failure, while some wondered whether it could have been intentional. Pushback noted that conspicuously guessable keys would be an implausible choice for a covert compromise.</p><blockquote>Sounds more like extremely sloppy procedures. Which depressingly I doubt are unusual among CAs.<cite>skywhopper</cite></blockquote>
+<blockquote>Makes no sense. If it was deliberate, one would use keys that only the person abusing it has. Not keys everyone can guess if they get a hint.<cite>hannob</cite></blockquote>
+<blockquote>I wouldn&#x27;t be surprised if we learn in the near future, that this was deliberate.<cite>sscaryterry</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Guesses about how the keys were made</strong> &mdash; Commenters proposed several possible explanations, including hand-picked values, sequence numbers, a mistaken range, or secure keys accidentally truncated. These remained hypotheses rather than established causes.</p><blockquote>It feels like they chose the private keys by hand.<cite>Qision</cite></blockquote>
+<blockquote>My bet is on one of - A sequence number being accidentally used as the private key or - The private key being generated securely but then accidentally truncated to 8 bits (e.g. writing a single char into a zeroed buffer when you should&#x27;ve memcpy&#x27;d from a char*).<cite>muvlon</cite></blockquote>
+<blockquote>The fact that there are more than the &quot;4&quot; one, and all the low numbers are below 384 (384 being the bits for private key) makes me think whoever was creating these thought &quot;Oh a random number between 1-384&quot; let me choose... 4! (156, 230, 115, 56, 66, 237, 155)... https://xkcd.com/221/<cite>Fabricio20</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>CA oversight and trust governance</strong> &mdash; Several commenters focused on missing basic checks, testing, or organizational controls, and questioned how CA trust is granted and whether the number of trusted authorities matters. Some emphasized competence checks and stronger consequences.</p><blockquote>Why are browsers trusting CAs which issued zero certificates since their creation 1 year ago?<cite>dist-epoch</cite></blockquote>
+<blockquote>Even just a human glancing at the private key should do it. Don&#x27;t they even test script changes on a staging server? How could there be such a script error in production that was not caught in testing/staging? This sounds very like a fundamental organization error, not an innocent whoopsie. It should lead to a permanent ban of the organization.<cite>silvestrov</cite></blockquote>
+<blockquote>In retrospect, not having a tiny competency check may have been an oversight.<cite>tclancy</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Risks beyond browsers</strong> &mdash; A practical concern was that updating a host’s trust store may not update the separate trust bundles used by containers or some app runtimes, potentially leaving vulnerable clients behind.</p><blockquote>Two more things to note about impact assessment: Flatpak uses the selected runtime&#x27;s baked-in trust store (I think), so any apps may be susceptible even if you update the system package. Containers also don&#x27;t inherit the host&#x27;s trust store and use the one from the base image.<cite>supernes</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Dark humor at the absurdity</strong> &mdash; Jokes about tiny numbers, weak random-number generation, and familiar combinations expressed disbelief while underscoring the seriousness of the failure.</p><blockquote>Of COURSE it&#x27;s easy to crack, 4 isn&#x27;t even prime!<cite>bombcar</cite></blockquote>
+<blockquote>Someone used the Dilbert random number generator. https://www.random.org/analysis/<cite>tniemi</cite></blockquote>
+<blockquote>Hey, that&#x27;s the same combination I have on my luggage!<cite>walrus01</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Debate over the write-up</strong> &mdash; Some commenters criticized the article as thin or self-promotional, while others found it readable. A related exchange questioned whether parts of the prose were AI-generated.</p><blockquote>This is not a good write-up. Yesterday&#x27;s discussion did contain better data, less self-Promotion and actually asked why it happened, instead of just saying &quot;number small&quot;.<cite>hypfer</cite></blockquote>
+<blockquote>Could HN start feeding submissions through Pangram so us human readers don&#x27;t have to suffer with reading the nauseating AI-prose?<cite>TazeTSchnitzel</cite></blockquote>
+<blockquote>Count yourself lucky - compared to Claude&#x27;s prose, this is fairly readable.<cite>swiftcoder</cite></blockquote></div>
+    </article>
+    <article id="dossier-2" class="dossier-entry">
+      <div class="dossier-meta">N<sup>o</sup> 02 &nbsp;·&nbsp; Stat Hero &nbsp;·&nbsp; Climate Desk</div>
+      <h3>The 1.5°C goal of the Paris Agreement is no longer viable</h3>
+      <p class="dossier-source">
+        <a href="https://unric.org/en/unep-emissions-gap-report-2026-1-5-degree-overshoot/" target="_blank" rel="noopener">unric.org</a>
+        &nbsp;·&nbsp; 236 pts &nbsp;·&nbsp; 242 comments
+         &nbsp;·&nbsp; <a href='https://news.ycombinator.com/item?id=50177911' target='_blank' rel='noopener'>discussion</a>
+      </p>
+      <h4>Analysis</h4>
+      <p>A UNEP report says the Paris Agreement’s goal of limiting warming to 1.5°C with little or no overshoot is no longer achievable, making a temporary breach increasingly likely. The revised priority is to keep warming below 2°C and return to 1.5°C by 2100, requiring emissions cuts far beyond current national plans—18% by 2030, 45% by 2035, and 69% by 2040 from 2025 levels. This would demand rapid electrification and renewable-energy deployment, expanded grids and storage, methane reductions, deforestation control, and a major phase-down of coal, oil, and gas. UNEP also estimates that removing about 320 gigatons of CO₂ by century’s end may be necessary, underscoring the scale of technological, economic, and political changes needed to limit irreversible climate damage.</p>
+      <h4>Reader Reactions</h4>
+<p class="camps-framing">The comments combine calls to keep reducing climate harms with doubts about whether current political and economic systems can deliver change at the needed scale. They differ over how much leverage individuals have, which policies are practical and fair, and how much further warming can still be avoided.</p>
+<div class="camp"><p class="camp-label"><strong>Keep acting despite setbacks</strong> &mdash; Some commenters argue that missed targets and shifting political priorities are not reasons to stop working on climate solutions. They point to engineering, organizing, and continued efforts to find lower-emission alternatives.</p><blockquote>You can choose to find the others to organize and prepare, so that the ideas closest at hand when the next crisis comes are yours.<cite>mbgerring</cite></blockquote>
+<blockquote>It&#x27;s an obvious impact story, but impact appears to be &quot;out&quot;.<cite>ant6n</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>The barriers are systemic and political</strong> &mdash; Many commenters locate the main obstacles in corporate incentives, government decisions, fossil-fuel interests, and short-term political priorities. Some express frustration that decision-makers can avoid the consequences of their choices.</p><blockquote>This problem starts and ends with corporations and government regulations.<cite>kulahan</cite></blockquote>
+<blockquote>The problem is that people today do not have skin in the game for what happens generations down the line.<cite>TrackerFF</cite></blockquote>
+<blockquote>We will continue extracting absolutely everything we can from Earth, at whatever the cost ... with the hope that technology will one day save us from our weakness.<cite>LightBug1</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Personal choices can contribute</strong> &mdash; Some commenters argue that changes in consumption can spread through social networks and eventually affect politics. Others emphasize achievable steps, such as eating less beef, rather than expecting people to give up meat altogether.</p><blockquote>Try eating less meat, eat healthy food, reduce car and plane usage when possible, buy less stuff (especially online), these are things anyone can do (rich or poor).<cite>vanelsas</cite></blockquote>
+<blockquote>We could all try and do a bit with our daily choices:<cite>TheSilva</cite></blockquote>
+<blockquote>If you don’t want to give up meat right away, at least consider stopping beef.<cite>closingreunion</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Individual sacrifices are the wrong focus</strong> &mdash; A countervailing view is that minor consumer gestures can distract from industrial emissions and decisions by governments and powerful actors. Some commenters object to placing burdens on individuals without providing practical alternatives or broader policy changes.</p><blockquote>There is no amount of paper straws that will offset anything the rich deciders do.<cite>pluc</cite></blockquote>
+<blockquote>The reason is that we see these pushes but at the same time we see no real initiative, with all the burden left on individuals with little to no power to make meaningful changes.<cite>znpy</cite></blockquote>
+<blockquote>Most ordinarily people don’t understand the tradeoffs of their choices in the slightest.<cite>presentation</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Climate policy must be workable and affordable</strong> &mdash; Commenters debate energy sources, transport, and the costs of transition. Some criticize rejecting nuclear power or relying on costly, inconvenient options; others stress that climate policies must account for daily needs and living standards, including in poorer countries.</p><blockquote>The climate change advocates have lost all their credibility by lobbying against nuclear.<cite>throwfaraway135</cite></blockquote>
+<blockquote>Common people want to go to work and know that they have a working transport system, that they can walk in between a few streets and feel safe, that they can have enough money for a mortgage and to feed themselves and their families.<cite>pelagicAustral</cite></blockquote>
+<blockquote>for us that come from poor countries - it fuels degrowth.<cite>dzonga</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Overshoot and temperature targets are disputed</strong> &mdash; Some commenters view the physical scale and inertia of climate change as making a return to 1.5°C unrealistic or human control over the problem limited. Others emphasize that each additional increment of warming still matters, even if the target is missed.</p><blockquote>This single graph [1] is enough to demonstrate that &#x27;solving&#x27; climate change is beyond the scale of human capabilities.<cite>asphodele</cite></blockquote>
+<blockquote>People are still talking about 1.5C at 2100 as if it&#x27;s not some high fantasy? :)<cite>Yizahi</cite></blockquote>
+<blockquote>So, paradoxically, the worse the situation gets, the larger our incentive should become to avoid yet another increase in global warming.<cite>haizhung</cite></blockquote></div>
+    </article>
+    <article id="dossier-3" class="dossier-entry">
+      <div class="dossier-meta">N<sup>o</sup> 03 &nbsp;·&nbsp; Terminal &nbsp;·&nbsp; Web Platform</div>
+      <h3>The Future of CSS</h3>
+      <p class="dossier-source">
+        <a href="https://www.joshwcomeau.com/css/interop-2027/" target="_blank" rel="noopener">joshwcomeau.com</a>
+        &nbsp;·&nbsp; 395 pts &nbsp;·&nbsp; 163 comments
+         &nbsp;·&nbsp; <a href='https://news.ycombinator.com/item?id=50175070' target='_blank' rel='noopener'>discussion</a>
+      </p>
+      <h4>Analysis</h4>
+      <p>Josh W. Comeau previews CSS features being considered for Interop 2027, the cross-browser collaboration among Google, Apple, Microsoft, Mozilla, Igalia, and Bocoup that has helped features such as Subgrid achieve broad support. His top selections include native CSS functions, custom corner and border shapes, improved anchor and scroll-state queries, scroll-triggered animations, visual reading order, keyword-size animations, and grid gap decorations. These proposals aim to reduce JavaScript work, enable richer responsive layouts and animations, and improve accessibility, while several can already be adopted as progressive enhancements with fallbacks. The initiative matters because coordinated browser implementation makes modern CSS more dependable, and developers’ understanding of these capabilities remains important even as coding agents increasingly generate web code.</p>
+      <h4>Reader Reactions</h4>
+<p class="camps-framing">The comments contrasted enthusiasm for modern CSS with concerns about added complexity and debated when native web technologies are sufficient versus when frameworks are useful. They also raised questions about browser support and whether AI should replace human judgment in front-end work.</p>
+<div class="camp"><p class="camp-label"><strong>Modern CSS is a pleasure</strong> &mdash; Some commenters praised improvements to CSS and welcomed using native features in place of JavaScript where possible.</p><blockquote>Working with modern CSS is such a joy, and increasingly as time goes on I&#x27;m replacing huge chunks of JS with CSS which is a little boon in itself.<cite>paczki</cite></blockquote>
+<blockquote>Also, grids and flexbox solve so many previously tricky layout problems. Animations obviate a bunch of small JS.<cite>nine_k</cite></blockquote>
+<blockquote>I’m part of the seeming minority that really enjoys working with CSS.<cite>afavour</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Vanilla or lightweight tools are enough for many projects</strong> &mdash; Some argued that modern HTML, CSS, and JavaScript can serve simpler projects without a heavyweight framework, while recognizing that this approach may depend on the application and the developer’s expertise.</p><blockquote>SPAs still have their place but the average CRUD app is now really well served by vanilla or lightweight libraries like HTMX.<cite>80fj0348i</cite></blockquote>
+<blockquote>Yes. We could do those before React and other crap too.<cite>coldtea</cite></blockquote>
+<blockquote>It works pretty well, if used correctly and given the due attention.<cite>zelphirkalt</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Frameworks still earn their place</strong> &mdash; Others argued that frameworks provide useful reactivity, state management, and developer ergonomics, especially for complex applications.</p><blockquote>No, it&#x27;s not, despite what other comments here say. Of course it&#x27;s possible but you end up recreating React or another library along the way.<cite>satvikpendem</cite></blockquote>
+<blockquote>Just eat the 16kb and have some decent ergonomics.<cite>nkmnz</cite></blockquote>
+<blockquote>Y&#x27;all know React and Vue frameworks still use HTML, CSS, and JS, right?<cite>Tadpole9181</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>More CSS risks feature creep</strong> &mdash; Some commenters felt CSS already offers enough capabilities and that further additions could make it harder to understand, maintain, and use consistently.</p><blockquote>Maybe I’m alone, but all of those suggestions seem to make CSS needlessly complex (or more like JS).<cite>alberth</cite></blockquote>
+<blockquote>I hold the opinion that adding anything to CSS is a bad idea.<cite>efilife</cite></blockquote>
+<blockquote>CSS was done a long time ago. Stop changing it.<cite>sneak</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Interop is welcome, but browser support can be unclear</strong> &mdash; Some readers questioned the browser availability of features highlighted in a discussion about cross-browser collaboration. Others emphasized the difference between broad feature support and making basic site functionality depend on new features.</p><blockquote>A bit strange to me how Josh beings with heralding the browsers working together and then every mentioned feature is Chrome only.<cite>herpdyderp</cite></blockquote>
+<blockquote>Say it with me: Broad support for new CSS features is GOOD. Making BASIC SITE FUNCTIONALITY depend upon new CSS features is bad.<cite>FDEUp</cite></blockquote>
+<blockquote>Just call it like it was: Chrome. It was Chrome that didn&#x27;t move.<cite>boxed</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Human judgment still matters in AI-generated front ends</strong> &mdash; Some commenters argued that user-facing design deserves deliberate human attention, while others viewed AI as a useful aid for realizing a developer’s own ideas.</p><blockquote>It&#x27;s the part that faces the user.<cite>markasoftware</cite></blockquote>
+<blockquote>Definitely use coding agents to write code, but carefully and thoughtfully review any important backend or heavily user-facing components of the software you&#x27;re developing.<cite>davedx</cite></blockquote>
+<blockquote>doesnt mean you tell it: make it look nice.<cite>sourcecodeplz</cite></blockquote></div>
+    </article>
+    <article id="dossier-4" class="dossier-entry">
+      <div class="dossier-meta">N<sup>o</sup> 04 &nbsp;·&nbsp; Rose Alert &nbsp;·&nbsp; CVE Watch</div>
+      <h3>Upcoming critical PHP security release (CVE-2026-109618 / -109619)</h3>
+      <p class="dossier-source">
+        <a href="https://news-web.php.net/php.announce/509" target="_blank" rel="noopener">news-web.php.net</a>
+        &nbsp;·&nbsp; 957 pts &nbsp;·&nbsp; 386 comments
+         &nbsp;·&nbsp; <a href='https://news.ycombinator.com/item?id=50172041' target='_blank' rel='noopener'>discussion</a>
+      </p>
+      <h4>Analysis</h4>
+      <p>The story concerns an announced upcoming critical security release for PHP addressing vulnerabilities CVE-2026-109618 and CVE-2026-109619. The original PHP announcement was unavailable when fetched, so specific technical details, affected versions, and remediation steps cannot be confirmed from the provided material. The issue is important because PHP underpins a large number of websites and business applications, making timely patching relevant to developers, hosting providers, and system administrators. Users should monitor official PHP and CERT advisories for the release and upgrade guidance.</p>
+      <h4>Reader Reactions</h4>
+<p class="camps-framing">The thread focuses on how to manage exposure while awaiting a PHP security patch: some operators favored taking services offline, while others considered temporary restrictions or had limited ability to accept downtime. Commenters also disagreed about whether the patch should be released immediately or after coordinated preparation. Several noted that LLMs may accelerate vulnerability discovery and exploitation.</p>
+<div class="camp"><p class="camp-label"><strong>Take services offline</strong> &mdash; Some operators chose temporary downtime, judging it preferable to the possibility of compromise while no confirmed interim mitigation was available.</p><blockquote>Just made the call to take all my customers apps offline until this is fixed.<cite>chrisvenum</cite></blockquote>
+<blockquote>I took my services offline last night, wouldn&#x27;t have been able to sleep otherwise.<cite>xd</cite></blockquote>
+<blockquote>I just took down my 10 or so sites until the fix is out.<cite>petervandijck</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Try interim mitigations, but don’t mistake them for a fix</strong> &mdash; Commenters discussed disabling session upload progress or blocking multipart and POST requests, while emphasizing that these measures were not confirmed substitutes for patching.</p><blockquote>I understand this to be only a possible mitigation (see below).<cite>richardbarosky</cite></blockquote>
+<blockquote>PHP core maintainers themselves have said that only upgrading PHP will be sufficient: https://phpc.social/@Girgias/117476477429221001<cite>top_sigrid</cite></blockquote>
+<blockquote>I’m not saying I know this works as a mitigation, but it seems like it could at least contribute to a temporary guard until you get patch in place.<cite>aksss</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Release the patch immediately</strong> &mdash; Some commenters argued that reports of active attacks made the announced release time too late and called for the fix, or an interim mitigation, to be released sooner.</p><blockquote>When will they finally release the patch?!<cite>janmo</cite></blockquote>
+<blockquote>if the attacks are live then PHP should release the fix NOW.<cite>SSLy</cite></blockquote>
+<blockquote>Or you release a &quot;mitigation&quot; immediately (turn off feature X usually) and then release the patch.<cite>bombcar</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Coordinated disclosure still has a purpose</strong> &mdash; Others defended giving maintainers, providers, and distributions time to prepare and test releases, arguing that a rushed or incomplete fix could create additional risk.</p><blockquote>There is no way to coordinate the whole world on an earlier time.<cite>TekMol</cite></blockquote>
+<blockquote>Meanwhile maintainers don&#x27;t want release an incomplete or misunderstood fix.<cite>mattbee</cite></blockquote>
+<blockquote>This was the right approach and it worked.<cite>my-huge-pony</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>The operational trade-off is not the same for everyone</strong> &mdash; Some commenters pointed out that taking a service offline can have significant consequences or may not be within an operator’s control; others discussed temporary restrictions and contacting hosting providers.</p><blockquote>In practice, many can&#x27;t just decide to shut down their service for a few hours.<cite>AndroTux</cite></blockquote>
+<blockquote>After making sure that our environments had the latest everything (WordPress version, PHP version, all plugins and themes on the latest), I contacted WPEngine support briefly.<cite>throwaway82931</cite></blockquote>
+<blockquote>I&#x27;ve chosen to be a little more conservative: (any(http.request.headers[&quot;content-type&quot;][*] contains &quot;multipart&quot;))<cite>throwaway82931</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>LLMs change the security timeline</strong> &mdash; Commenters argued that LLMs may help attackers rediscover or operationalize vulnerabilities quickly, making even limited advance information consequential.</p><blockquote>today only a rumour of a bug is enough to find and replicate it quickly.<cite>summner</cite></blockquote>
+<blockquote>Even just a hint of a 0-day is enough to cause people to look for it and exploit it with LLMs.<cite>Shank</cite></blockquote>
+<blockquote>Now, many people have the capability and can completely automatize it.<cite>juliusjh</cite></blockquote></div>
+    </article>
+    <article id="dossier-5" class="dossier-entry">
+      <div class="dossier-meta">N<sup>o</sup> 05 &nbsp;·&nbsp; Archive &nbsp;·&nbsp; Building History</div>
+      <h3>Whatever Happened to Fire Escapes</h3>
+      <p class="dossier-source">
+        <a href="https://practical.engineering/blog/2026/10/20/whatever-happened-to-fire-escapes" target="_blank" rel="noopener">practical.engineering</a>
+        &nbsp;·&nbsp; 12 pts &nbsp;·&nbsp; 1 comments
+         &nbsp;·&nbsp; <a href='https://news.ycombinator.com/item?id=50178455' target='_blank' rel='noopener'>discussion</a>
+      </p>
+      <h4>Analysis</h4>
+      <p>The story traces the rise and decline of external fire escapes in American cities, from their adoption as inexpensive retrofits for dangerous 19th-century tenements to their replacement by enclosed, fire-resistant interior stairways. It explains that exterior escapes were often poorly maintained, obstructed, difficult to use under panic, vulnerable to structural failure, and sometimes created security or accessibility problems, while disasters such as the Triangle Shirtwaist fire exposed their limitations. Building codes gradually shifted toward safer daily-use stairs, supported by improvements in fire-rated materials, sprinklers, alarms, and smoke protection, though older escapes often remain. The broader lesson is that building regulations balance safety, cost, usability, and limited space, and that seemingly narrow code decisions can create long-term, unintended effects on construction and affordability.</p>
+      <h4>Reader Reactions</h4>
+<p class="camps-framing">The comments raise two separate questions: what might fuel a fire in a modern, fire-resistant building, and whether removing a fire escape as unsafe can create other access problems.</p>
+<div class="camp"><p class="camp-label"><strong>Modern fire risk and materials</strong> &mdash; A commenter wonders what could burn in a modern concrete-and-brick building, while considering whether belongings or cars might still pose a fire risk.</p><blockquote>What would burn in those manhattan buildings?<cite>comrade1234</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Removal can create new problems</strong> &mdash; A commenter recounts a school removing an old fire escape because it was considered unsafe and other stairwells existed, then later closing off the top floor.</p><blockquote>Apparently it was unsafe and someone decided it wasn&#x27;t needed because there were two other stairwells.<cite>lbriner</cite></blockquote>
+<blockquote>The top floor is out of bounds to everyone. Why? The fire escape is missing :-)<cite>lbriner</cite></blockquote></div>
+    </article>
+    <article id="dossier-6" class="dossier-entry">
+      <div class="dossier-meta">N<sup>o</sup> 06 &nbsp;·&nbsp; Blueprint &nbsp;·&nbsp; Civic Simulation</div>
+      <h3>Show HN: SimCity, but with Permits</h3>
+      <p class="dossier-source">
+        <a href="https://permit.petercai.com/" target="_blank" rel="noopener">permit.petercai.com</a>
+        &nbsp;·&nbsp; 812 pts &nbsp;·&nbsp; 381 comments
+         &nbsp;·&nbsp; <a href='https://news.ycombinator.com/item?id=50170593' target='_blank' rel='noopener'>discussion</a>
+      </p>
+      <h4>Analysis</h4>
+      <p>“Show HN: SimCity, but with Permits” is an interactive city-building simulation centered on the political and regulatory challenges of approving development. Players make choices about housing, industry, and transit while managing the competing interests and unintended consequences each project creates. The project appears to be a browser-based demonstration rather than a conventional city-builder, using simplified mechanics to highlight how permitting decisions shape affordability, jobs, pollution, and neighborhood opposition. Its appeal lies in making the often abstract trade-offs of urban planning tangible and understandable.</p>
+      <h4>Reader Reactions</h4>
+<p class="camps-framing">Reactions ranged from seeing the game as an effective way to make civic decision-making tangible to finding it stressful and difficult to play. Commenters also debated whether permitting and public input obstruct needed building or protect communities from development’s harms, including whether local processes give incumbents too much influence. Practical criticism focused on the game’s onboarding, interface, bugs, and simulation details.</p>
+<div class="camp"><p class="camp-label"><strong>Civic process as the point</strong> &mdash; Some commenters appreciated how the game makes the competing demands and interruptions of city government vivid, even when that experience is deliberately hectic.</p><blockquote>It really did a good job of presenting that.<cite>guardwisesec</cite></blockquote>
+<blockquote>Love it, I hope this becomes the most popular game on the internet so folks get to experience the Byzantine level of complexity we&#x27;ve made doing business in industries with physical stuff.<cite>bretpiatt</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Too much like work to be fun</strong> &mdash; Others found the experience stressful rather than entertaining, especially because it recreates the challenge of trying to satisfy people with conflicting demands.</p><blockquote>There is no fun or joy or escapism in being hated by everyone and not being able to please anyone.<cite>sdellis</cite></blockquote>
+<blockquote>Within 60 seconds I realized that this game is less enjoyable than most people&#x27;s actual work.<cite>xp84</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Onboarding and implementation need work</strong> &mdash; Commenters criticized the dense controls, unclear presentation, technical obstacles, and simulation text that does not match the city. Some saw educational potential but wanted a clearer introduction and more reliable, context-aware experience.</p><blockquote>Walls of text and tons of controls fundamentally undermine that purpose.<cite>npunt</cite></blockquote>
+<blockquote>Couldn&#x27;t get past the new city screen where I&#x27;m choosing &quot;Blank Slate&quot; or the other one.<cite>solyin</cite></blockquote>
+<blockquote>The various decisions/petitions that pop up can break the immersion by mentioning details that don&#x27;t fit the city(petitions with signatures from &gt;250% of the town population, traffic issues at the &quot;4-way intersection in front of the feed store&quot; when no such place exists, or the new building causing shadows when there&#x27;s nothing around it).<cite>goda90</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Permitting and veto points can block needed building</strong> &mdash; Some argued that discretionary reviews, accumulated rules, and neighborhood objections make useful development too difficult. They favored predictable approvals for projects that meet established zoning or building requirements.</p><blockquote>Can&#x27;t build this because traffic. Can&#x27;t build that because impact on the neighborhood.<cite>bruce511</cite></blockquote>
+<blockquote>There should be no discretionary objections allowed - if you buy a house next to a commercial lot then you know what you&#x27;re getting yourself into.<cite>calbear81</cite></blockquote>
+<blockquote>Keep them separate.<cite>qdotme</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Public process and community voice can protect residents</strong> &mdash; Others emphasized that development without meaningful checks can impose serious costs on less powerful communities. They argued that residents’ ability to influence local decisions should not be dismissed as mere obstruction.</p><blockquote>Communities should have a say in their community.<cite>gtrplyrjimi</cite></blockquote>
+<blockquote>Right, it was so much better during the Robert Moses era where urban planners bulldozed over predominantly Black communities and built interstate highways while locating all of the toxic pollution producing manufacturing to the remaining lower-income minority neighborhoods, obliterating walkability and pedestrian safety everywhere.<cite>paimapi</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Local participation can privilege incumbents</strong> &mdash; A counterargument held that local hearings and neighborhood vetoes often give organized homeowners more influence than prospective residents or the broader public, and can slow housing and other development.</p><blockquote>Homeowners have a disproportionate say. aspiring homeowners don&#x27;t show up to local city council meetings<cite>scottious</cite></blockquote>
+<blockquote>And this is why the local community absolutely should not have any more say about a new development than a hypothetical someone who would like to live there, but can&#x27;t, because there is no available housing.<cite>Tuna-Fish</cite></blockquote>
+<blockquote>These policies that allow locals to push back against state or federal government overreach were made with good intentions, but the reality on the ground is that the people who take advantage of these policies are not the poor and disenfranchised but the wealthy, and the way they wield their power is to slow down development that would help the masses.<cite>lern_too_spel</cite></blockquote></div>
+    </article>
+    <article id="dossier-7" class="dossier-entry">
+      <div class="dossier-meta">N<sup>o</sup> 07 &nbsp;·&nbsp; Caution Tape &nbsp;·&nbsp; Privacy Alert</div>
+      <h3>Muse exposes users&#x27; personal and business secrets when they share conversations</h3>
+      <p class="dossier-source">
+        <a href="https://arstechnica.com/security/2026/10/meta-muse-exposes-users-personal-and-business-secrets-when-they-share-conversations/" target="_blank" rel="noopener">arstechnica.com</a>
+        &nbsp;·&nbsp; 195 pts &nbsp;·&nbsp; 90 comments
+         &nbsp;·&nbsp; <a href='https://news.ycombinator.com/item?id=50174687' target='_blank' rel='noopener'>discussion</a>
+      </p>
+      <h4>Analysis</h4>
+      <p>Meta’s Muse AI assistant exposed users’ shared conversations because its supposedly private links could be discovered through passive DNS records rather than being difficult to guess. Security researchers at Claroc enumerated about 6,800 links and found confidential business documents, loan details, financial information, employee schedules, and other sensitive data. The issue arose from how Muse generated and exposed share URLs, allowing unintended access with little effort once links had been recorded by DNS-monitoring services. Meta said it had paused the sharing feature while reviewing the report, highlighting the privacy risks of link-based sharing for AI conversations that may contain personal or corporate secrets.</p>
+      <h4>Reader Reactions</h4>
+<p class="camps-framing">Commenters broadly distrusted Meta’s handling of user data, while some distinguished its record from ordinary, constrained access by other providers. Technical replies focused on whether the incident exposed only shared links and how passive DNS could reveal them. The discussion also weighed the security risks of personal agents against their practical value, with some favoring local or privacy-oriented alternatives.</p>
+<div class="camp"><p class="camp-label"><strong>Meta distrust and predictable consequences</strong> &mdash; Many commenters treated the incident as consistent with Meta’s history and doubted that the company could credibly promise privacy.</p><blockquote>I couldn&#x27;t be true. You&#x27;re telling me that Meta, of all companies, would be careless with user data and privacy? Totally unbelievable!<cite>ryandrake</cite></blockquote>
+<blockquote>It&#x27;s not, there are levels of scumbaggery and Meta is one of the absolute worst.<cite>zaptheimpaler</cite></blockquote>
+<blockquote>You can&#x27;t be Meta and just ratfuck your users for decades and then ask them to trust you<cite>viccis</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Meta is especially bad, not just another tech company</strong> &mdash; Some commenters rejected the idea that all technology companies are equally careless, distinguishing legitimate access to data from exploitative or cavalier handling.</p><blockquote>Most of the companies I work with treat customer data with extreme care and sensitivity and don&#x27;t throw it around like silicon valley ad tech does.<cite>educar</cite></blockquote>
+<blockquote>There is a gulf of difference between accessing your data to comply with the law and accessing your data (and giving it away to friends!) for no reason<cite>latexr</cite></blockquote>
+<blockquote>The question was not &quot;could the do all shitty things if they were scummy assholes&quot;, but &quot;are they all scummy assholes&quot;.<cite>customguy</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Scope and mechanism of the exposure</strong> &mdash; Technical replies focused on whether the issue affected shared conversations rather than all chats, and on how hostnames could be discovered through passive DNS.</p><blockquote>It seems that Meta assigns a unique hostname to each shared conversation.<cite>cloudbonsai</cite></blockquote>
+<blockquote>Sounds like it&#x27;s the former: URLs are guessable/easily enumerable but their contents protected by auth unless they&#x27;re &quot;published&quot; using the share feature<cite>fxwin</cite></blockquote>
+<blockquote>Lesson here is that the subdomain names can be queried due to passive DNS records, and putting stuff that is not supposed to be guessable in subdomain names is a bad idea.<cite>omoikane</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Personal agents pose security risks</strong> &mdash; Cautious commenters argued that giving agents access to personal information, accounts, or systems creates risks that are difficult to manage, especially for a mass audience.</p><blockquote>To be fair agentic platforms are a shitty idea from a security perspective anyway.<cite>bcvvvy</cite></blockquote>
+<blockquote>Even as an experienced developer, sandboxing an agent is not trivial.<cite>skohan</cite></blockquote>
+<blockquote>There’s no way in hell I’m giving it access to anything sensitive.<cite>hamburglar</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Disagreement over personal-agent usefulness</strong> &mdash; Some commenters described agents as useful for recurring chores, while others said they had not found a practical use case or questioned whether the benefits justified the enthusiasm.</p><blockquote>It runs so many boring parts of my life, leaving me with more time to spend with my family.<cite>sksksk</cite></blockquote>
+<blockquote>I’ve tried several times with different frameworks and I just can’t find a use case that is remotely worth it.<cite>ctolsen</cite></blockquote>
+<blockquote>Whenever this comes up, all I ever see are hand-wavy responses like this. &quot;It does everything&quot;, &quot;it changes your life.&quot; But how exactly?<cite>ad_fontes</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Local or privacy-oriented alternatives</strong> &mdash; A smaller group favored self-hosting or regional providers as ways to keep personal data away from large platforms, while acknowledging that local systems may not match frontier models on every task.</p><blockquote>Muse, Grok, Dots will have users for the foreseeable future but there will be viable options for self-hosting too.<cite>_pdp_</cite></blockquote>
+<blockquote>Obviously you cannot get frontier level of intelligence for coding tasks on a single Mac Mini/Studio but most people don&#x27;t need that.<cite>_pdp_</cite></blockquote>
+<blockquote>If only there was a company that didn&#x27;t use ads, protected people&#x27;s privacy, didn&#x27;t sell their data, and had local data sovereignty?<cite>vektormemory</cite></blockquote></div>
+    </article>
+    <article id="dossier-8" class="dossier-entry">
+      <div class="dossier-meta">N<sup>o</sup> 08 &nbsp;·&nbsp; Editorial Op-Ed &nbsp;·&nbsp; Systems Thinking</div>
+      <h3>The Decoherence Trap</h3>
+      <p class="dossier-source">
+        <a href="https://maevyn.codes/decoherence" target="_blank" rel="noopener">maevyn.codes</a>
+        &nbsp;·&nbsp; 54 pts &nbsp;·&nbsp; 14 comments
+         &nbsp;·&nbsp; <a href='https://news.ycombinator.com/item?id=50149861' target='_blank' rel='noopener'>discussion</a>
+      </p>
+      <h4>Analysis</h4>
+      <p>“The Decoherence Trap” argues that complex systems accumulate “decoherence” when incremental changes introduce redundant, incompatible, or poorly understood models, making future modifications increasingly costly and risky. Using plumbing, software architecture, and a graph-based simulation as examples, the essay contends that rushed development and overlapping AI-generated changes can create runaway complexity: more code and faster output without more completed work. This matters commercially because review, maintenance, and feature delivery can slow sharply as organizations inherit systems that require broader expertise and careful translation between paradigms. The author also challenges rapid AI takeoff narratives, suggesting that agents may worsen the coherence problem and face practical limits in improving software without reliable feedback from the real world.</p>
+      <h4>Reader Reactions</h4>
+<p class="camps-framing">Commenters generally found the concern that accumulating complexity makes systems harder to change persuasive, while debating whether this is a distinctively AI-driven problem and whether it limits AI’s future capabilities. Some emphasized longstanding challenges in validating models against reality; others argued that real-world access, improved design capabilities, or organizational choices could change the outlook.</p>
+<div class="camp"><p class="camp-label"><strong>Complexity is a real engineering constraint</strong> &mdash; These commenters saw interacting parts and local optimizations as sources of complexity that make systems harder to change, regardless of who writes the code.</p><blockquote>every model faces the same limit: the number of interactions between its part grows combinatorially as the system grows.<cite>rnd33</cite></blockquote>
+<blockquote>They don&#x27;t have the capacity to see the big picture above some complexity level, and end up doing lot of local optimizations that decohere the system.<cite>tomaskafka</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>The issue predates AI; models need real-world validation</strong> &mdash; These commenters placed the concern in a longer history of building software and models faster than they can be checked against real-world evidence, emphasizing validation and QA.</p><blockquote>It&#x27;s always been able to go faster in building models faster than reality can be checked.<cite>digikata</cite></blockquote>
+<blockquote>The practices need to be updated, but I think the mindset of systems engineering validation &amp; verification, and software QA are going to be very needed going forward.<cite>digikata</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Decoherence is not a convincing limit on AI risk</strong> &mdash; These commenters questioned whether incoherence in software rules out runaway improvement, pointing to possible access to physical systems and examples of agents behaving unexpectedly.</p><blockquote>I was worried about it once we wired up all the robots and sensors and power switches to AI controlled systems.<cite>thenoblesunfish</cite></blockquote>
+<blockquote>Today it is hacking, but tomorrow it may be training a smarter model to join their cohort, without us being involved.<cite>paid_dot_expert</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Practical concern, but little reason for singularity alarm</strong> &mdash; This commenter saw rebuilding or replacing an incoherent system as a practical option and considered software breakdown less pressing than unsolved real-world problems.</p><blockquote>When we humans have realized we created a system too incoherent, at some point we just create a new one, porting all or some of the data/functionality.<cite>flufluflufluffy</cite></blockquote>
+<blockquote>I don&#x27;t know, I see it as an argument against the singularity, but I&#x27;m not nearly afraid of it as the author seems to be.<cite>flufluflufluffy</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>AI capability and context are disputed</strong> &mdash; Commenters disagreed about whether current models can maintain architectural coherence: some pointed to strong design capabilities or human coordination, while others highlighted context limits and local optimization.</p><blockquote>In pure software architecture and design term, this would have been convincing until the recent models who are let’s be honest better than humans in architecture and design.<cite>neebz</cite></blockquote>
+<blockquote>Although local optima is what most humans already operate on. So it’s sounds like an engineering solution could be possible since group of humans are also able to divide and conquer complex systems.<cite>baxtr</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>AI could help maintain coherence if development is organized for it</strong> &mdash; This commenter argued that AI might strengthen the people and processes responsible for keeping systems understandable, while warning that it could also accelerate dysfunctional practices.</p><blockquote>AI offers a way to rebalance this dynamic, though.<cite>torben-friis</cite></blockquote>
+<blockquote>You can effectively add multipliers to arbitrary human workers, and get a system that tends to low complexity by design.<cite>torben-friis</cite></blockquote></div>
+    </article>
+    <article id="dossier-9" class="dossier-entry">
+      <div class="dossier-meta">N<sup>o</sup> 09 &nbsp;·&nbsp; Pastel Finale &nbsp;·&nbsp; Mixed Reality</div>
+      <h3>Way to Play Super Mario 64: On Apple Vision Pro</h3>
+      <p class="dossier-source">
+        <a href="https://www.pagetable.com/303" target="_blank" rel="noopener">pagetable.com</a>
+        &nbsp;·&nbsp; 16 pts &nbsp;·&nbsp; 3 comments
+         &nbsp;·&nbsp; <a href='https://news.ycombinator.com/item?id=50150214' target='_blank' rel='noopener'>discussion</a>
+      </p>
+      <h4>Analysis</h4>
+      <p>The article showcases Diorama64, a fan-made Apple Vision Pro port of Super Mario 64 that places each level on a real table, letting players move around it while controlling Mario with a gamepad. It builds on the SM64 decompilation and sm64coopdx projects, along with community-created HD textures and replacement 3D models. The project illustrates how reverse engineering and modern hardware can reinterpret older games beyond their original platforms. It also contrasts Microsoft’s stated support for decompiled games with Nintendo’s history of DMCA takedowns and litigation against similar projects.</p>
+      <h4>Reader Reactions</h4>
+<p class="camps-framing">The comments are overwhelmingly enthusiastic, celebrating the nostalgic pull of an N64 classic and the novelty of making its levels tangible in mixed reality. One commenter raises a concern that Apple may restrict emulator-related projects; there is little direct disagreement otherwise.</p>
+<div class="camp"><p class="camp-label"><strong>Nostalgia for the N64</strong> &mdash; One commenter recalls the memories evoked by the game’s music and the excitement of renting an N64 to play with friends.</p><blockquote>N64 was magical when it first came out.<cite>adamddev1</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Spatial-computing excitement</strong> &mdash; Commenters celebrate the novelty of placing a game level on a real table and moving around it, as well as the broader excitement of the week in technology.</p><blockquote>I love that we&#x27;ve reached a point where you can put an entire N64 level on your dining table and physically walk around it.<cite>SwtCyber</cite></blockquote>
+<blockquote>Fantastic! It&#x27;s been a very cool week for technology.<cite>andai</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Decompilation enthusiasm, with platform concerns</strong> &mdash; One commenter is interested in rebuilding older games but worries that Apple may restrict emulators or that the project could face a crackdown.</p><blockquote>I am mildly worried that a big hammer is gonna come down on it all pretty soon.<cite>iugtmkbdfil834</cite></blockquote></div>
+    </article>
+    <article id="dossier-10" class="dossier-entry">
+      <div class="dossier-meta">N<sup>o</sup> 10 &nbsp;·&nbsp; Academic &nbsp;·&nbsp; Web PKI</div>
+      <h3>eMudhra intermediate CA compromise</h3>
+      <p class="dossier-source">
+        <a href="https://emudhra.we-have-a-problem.com/" target="_blank" rel="noopener">emudhra.we-have-a-problem.com</a>
+        &nbsp;·&nbsp; 988 pts &nbsp;·&nbsp; 414 comments
+         &nbsp;·&nbsp; <a href='https://news.ycombinator.com/item?id=50166579' target='_blank' rel='noopener'>discussion</a>
+      </p>
+      <h4>Analysis</h4>
+      <p>The story reports that eight eMudhra intermediate TLS certificate private keys were recoverable because of flawed key generation, potentially allowing attackers to impersonate any website or service using them since the certificates were issued in April 2025. The intermediates chain to roots trusted across Mozilla, Microsoft, Apple, Chrome, and numerous other trust stores, although browser Certificate Transparency requirements likely limited exposure in major browsers. The certificates and affected roots have been revoked or blocked through browser and operating-system mechanisms, but many command-line tools, applications, and embedded clients require updated CA bundles or software to stop trusting them. Users and administrators should update browsers, operating systems, libraries, and trust stores, while recognizing that exploitation of the compromised keys has not been confirmed.</p>
+      <h4>Reader Reactions</h4>
+<p class="camps-framing">Commenters reacted with disbelief at how easily the private keys could be recovered, then debated the cause of the failure and whether eMudhra’s processes warranted continued trust. They also weighed the protections and limits of Certificate Transparency and revocation, especially for non-browser clients, and argued over both the incident’s practical severity and broader changes to the Web PKI.</p>
+<div class="camp"><p class="camp-label"><strong>Astonishment at the weak keys</strong> &mdash; Commenters emphasized that the private keys were tiny numbers that could be recovered almost immediately, and speculated about errors in key generation or handling.</p><blockquote>The private key for all 8 &quot;compromised&quot; CAs is a single byte:<cite>eqvinox</cite></blockquote>
+<blockquote>Opus 5.5 told me the private key of 4 after two minutes, including the time to write and run a 30-line Python script implementing a baby step giant step search for discrete logarithm.<cite>kccqzy</cite></blockquote>
+<blockquote>The 8 impacted keys all used integers less than 256.<cite>nneonneo</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Negligence, trust, and CA accountability</strong> &mdash; Commenters questioned whether eMudhra’s controls and audits were credible and argued that root programs should be accountable for intermediates they authorize. Some also questioned whether the failure was accidental.</p><blockquote>Yikes. I’d have to wonder if this CA should even be trusted ever again?<cite>gwittel</cite></blockquote>
+<blockquote>And THAT is where I&#x27;m drawing the line between &quot;honest mistake&quot; and &quot;gross negligence&quot;.<cite>eqvinox</cite></blockquote>
+<blockquote>Roots should be responsible for all their sub-CAs, full stop. If they don&#x27;t trust them enough to accept that responsibility, then the system is broken.<cite>sippingabonedry</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>What Certificate Transparency can and cannot reveal</strong> &mdash; Some commenters saw Certificate Transparency as a way to expose exploitation, while others noted that private CAs, non-browser clients, and gaps in monitoring could limit what it reveals.</p><blockquote>The Web PKI uses certificate transparency, so we’ll have a definitive answer about whether this is/was exploited soon. (But in any case, CT ensures that it can’t be “quiet.”)<cite>woodruffw</cite></blockquote>
+<blockquote>nobody is auditing the logs for every cert every browser sees.<cite>0xbadcafebee</cite></blockquote>
+<blockquote>Non-Browsers do not validate SCTs<cite>0xbadcafebee</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Uneven revocation and client exposure</strong> &mdash; Commenters contrasted browser vendors’ ability to distribute distrust with the difficulty of updating command-line tools, embedded devices, and software that bundles its own certificate store.</p><blockquote>However, for the rest of the ecosystem, there has been little to no investment in revocation and for those clients, this is a massive problem.<cite>galadran</cite></blockquote>
+<blockquote>It would be quite challenging to patch every binary that embedded their own CA.<cite>xucheng</cite></blockquote>
+<blockquote>They&#x27;re not generally (there is a specific case of preloaded intermediates, but that&#x27;s not the main problem here).<cite>pimterry</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Serious incident, but calibrate the risk</strong> &mdash; Commenters differed over how broadly to characterize the potential compromise, including whether the ability to impersonate sites was an acute threat and how it compared with other security risks.</p><blockquote>The impact was a complete and total potential compromise of literally everyone. Every domain. Every client using one of the public root programs. Every user of those clients.<cite>account42</cite></blockquote>
+<blockquote>here, attackers get the ability to spoof websites if they&#x27;re in a position to hijack connections.<cite>tptacek</cite></blockquote>
+<blockquote>The concern of course is with malware being signed, which is far more likely to be abused than some TLS MITM fantasy.<cite>sippingabonedry</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Structural alternatives to the Web PKI</strong> &mdash; Some commenters argued for limiting universal CA issuance or adopting domain-aligned and distributed trust models. Others questioned whether proposed alternatives would improve on existing transparency and revocation mechanisms.</p><blockquote>The design intent is still bad though: we should never have given CAs universal issuance privileges.<cite>quotemstr</cite></blockquote>
+<blockquote>DANE replaces this system with one that has the same basic cryptographic properties, but in which you can&#x27;t eject bad actors --- or even monitor them with a mandatory transparency log. It&#x27;s strictly worse than this.<cite>tptacek</cite></blockquote>
+<blockquote>Web-of-trust doesn&#x27;t work.<cite>jcranmer</cite></blockquote></div>
+    </article>
+  </section>
+  <footer class="colophon">
+    <p class="sig">— that's the edition.</p>
+    <p class="meta">Set in Fraunces &amp; Inter · Compiled October 21, 2026</p>
+    <p class="classic-link"><a href="classic.html">Prefer the classic card view? →</a></p>
+  </footer>
+<script>
+(() => {
+  const key = "gtd:read_days:hn:v1";
+  const day = "2026-10-21";
+  let stored = [];
+  try {
+    stored = JSON.parse(localStorage.getItem(key) || "[]");
+    if (!Array.isArray(stored)) stored = [];
+  } catch (e) {}
+  if (!stored.includes(day)) {
+    stored.push(day);
+    stored.sort();
+    localStorage.setItem(key, JSON.stringify(stored));
+  }
+})();
+</script>
+<script src="../../preference.js?v=734029338" defer></script>
+<script>
+// Simple script to toggle the [+] and [-] labels on the drawers
+document.querySelectorAll('.analysis-drawer').forEach(drawer => {
+  drawer.addEventListener('toggle', () => {
+    const summary = drawer.querySelector('summary');
+    if (drawer.open) {
+      summary.textContent = '[ Analysis − ]';
+    } else {
+      summary.textContent = '[ Analysis + ]';
+    }
+  });
+});
+
+// Share link — native share or copy markdown to clipboard
+(function () {
+  const links = document.querySelectorAll('.share-link');
+  if (!links.length) return;
+
+  const toast = document.createElement('div');
+  toast.className = 'discuss-toast';
+  document.body.appendChild(toast);
+
+  function showToast(msg) {
+    toast.textContent = msg;
+    toast.classList.add('show');
+    setTimeout(() => toast.classList.remove('show'), 2500);
+  }
+
+  function buildMarkdown(link, spread) {
+    const title = link.dataset.shareTitle || '';
+    const url = link.dataset.shareUrl || '';
+    const meta = spread ? spread.querySelector('.story-meta') : null;
+    const lede = spread ? spread.querySelector('.lede') : null;
+    const analysis = spread ? spread.querySelector('.drawer-analysis') : null;
+    let md = '# ' + title + '\n';
+    md += 'Source: ' + url;
+    if (meta) md += ' | ' + meta.textContent.trim();
+    md += '\n';
+    if (lede) md += '\n' + lede.textContent.trim() + '\n';
+    if (analysis) md += '\n## Analysis\n' + analysis.textContent.trim() + '\n';
+    return md;
+  }
+
+  links.forEach((link) => {
+    link.addEventListener('click', (e) => {
+      e.preventDefault();
+      const spread = link.closest('section.spread');
+      const md = buildMarkdown(link, spread);
+      const text = "I'd like to discuss this with you. Here's a summary:\n\n" + md;
+      const title = 'Discuss: ' + (link.dataset.shareTitle || '');
+      if (navigator.share) {
+        navigator.share({ title: title, text: text }).catch(() => {});
+      } else {
+        navigator.clipboard.writeText(text).then(
+          () => showToast('Copied to clipboard \u2014 paste into your AI chat'),
+          () => showToast('Failed to copy')
+        );
+      }
+    });
+  });
+})();
+</script>
+</body>
+</html>
