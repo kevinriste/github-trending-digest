@@ -1,0 +1,763 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Morning Edition — October 23, 2026</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght,SOFT@0,9..144,300..900,0..100;1,9..144,300..900,0..100&family=Inter:ital,wght@0,100..900;1,100..900&family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../morning.css?v=62901b5fe">
+</head>
+<body id="top" data-gtd-edition="hn" data-gtd-date="2026-10-23">
+  <header class="masthead">
+    <div class="masthead-nav">
+      <a href="../">Hacker News Calendar</a>
+      <span>&nbsp;·&nbsp;</span>
+      <a href="../../2026-10-23/">GitHub Trending &nbsp;·&nbsp; Oct 23</a>
+      <span>&nbsp;·&nbsp;</span>
+      <a href="classic.html">Classic View</a>
+    </div>
+    <div class="tagline">The Morning Edition</div>
+    <h1 class="frnc">Ten stories, before your coffee.</h1>
+    <div class="issue-line">
+      <span>Vol. I</span>
+      <span>October 23, 2026</span>
+      <span>HN Front Page Digest</span>
+    </div>
+  </header>
+<section class="the-take"><details open><summary>The HN Take</summary><h3 class="take-head">Containers</h3><p>Docker is weird:</p><p>&quot;Containers aren&#x27;t real.&quot;</p><p>Unlike virtual machines, containers are not little computers living inside your computer. They are regular Linux processes with restrictions. Namespaces control what they can see, cgroups limit their resources, and networking machinery isolates their network. A container is, as the author puts it, &quot;5 different linux kernel features in trenchcoat.&quot;</p><p>Also images are folders. Docker downloads a folder, puts it somewhere strange and uses chroot or pivot_root to persuade a process that the folder is the whole world. If you run Ubuntu in Docker, you have not created a tiny Ubuntu computer. You have started a process in a folder and lied to it about its surroundings.</p><p>This is approximately what all software abstractions are, of course. A file is some bytes that the operating system calls a file. A process is some state that the kernel calls a process. A container is a process that has been shown a carefully edited version of reality. The difference is mostly that Docker&#x27;s abstraction is unusually easy to puncture conceptually. You think you have a computer in a box, but actually you have /some/weird/docker/path/bin/bash.</p><p>The implementation gets more metaphysical. Docker&#x27;s runc runtime is written in Go, whose runtime is natively multithreaded. But some of the Linux system calls needed to create a container have to happen in a single-threaded environment, so runc uses &quot;a crazy C module that runs before Go&#x27;s runtime initializes.&quot; Go also does not provide fork, which a container runtime would quite like to use, so runc executes /proc/self/exe with a special argument to create something resembling a child process.</p><p>Thus Docker creates fake computers using fake roots, and the program responsible for creating them creates a fake fork by executing itself and pretending to be its own child. Containers aren&#x27;t real, but apparently neither are container runtimes.</p><h3 class="take-head">Shared secret</h3><p>Here is one way for AI models to communicate secretly without agreeing on a code:</p><p>Researchers asked Claude Fable 5.1 to generate SVG images containing hidden messages. They then showed screenshots of those images, without the SVG source, to a separate Fable session and asked it to recover the messages.</p><p>In 33 of 50 images, the model used height. It drew rows of buildings, stars or other objects, with each object&#x27;s height representing a letter&#x27;s position in the alphabet. A skyline with buildings of heights 9 and 6 begins &quot;if.&quot; The scenery is decorative; the zoning code is the message.</p><p>The decoding model often figured this out. In one example it used image-processing tools to measure star coordinates and found that &quot;every star&#x27;s vertical coordinate lands on an integer multiple of 5 with zero residual,&quot; producing a grammatical sentence.</p><p>This is interesting because there was &quot;no scheme agreed on in advance.&quot; Though there was, sort of. The encoder and decoder were separate sessions of the same model. They shared training, tendencies and a strong intuition that, if a picture contains a row of suspiciously varied objects, their dimensions probably map to letters. No one explicitly told them to use building heights, but 33 of 50 encoders independently reached for height. That is an agreement made before either session started.</p><p>There are scarier versions of this idea, where agents invent opaque channels that humans cannot detect. This is not quite that. The hidden messages were requested by researchers, the decoder was told to look for them, and the code was basically A equals 1. It is less alien steganography than two office workers independently deciding that the secret numbers probably go in a spreadsheet.</p><p>Still, the result suggests a useful principle: Models do not need to negotiate a secret language if they already share enough aesthetic cliches. Show two Fable instances a skyline and tell one to hide a sentence and the other to find it, and both apparently think: building heights. The covert channel is urban planning.</p><div class="take-sources"><span>Sources</span><ul><li><a href="https://codeandcake.dev/posts/2026-10-22-docker-is-weird" target="_blank" rel="noopener noreferrer">Docker is weird</a></li><li><a href="https://www.lesswrong.com/posts/WHEQps5PK8LrrcTAb/how-does-fable-5-1-hide-messages-in-images" target="_blank" rel="noopener noreferrer">How does Fable 5.1 hide messages in images?</a></li></ul></div></details></section>
+  <section id="story-1" class="spread arc-blueprint">
+    <div class="corner tl">+</div><div class="corner tr">+</div>
+    <div class="corner bl">+</div><div class="corner br">+</div>
+    <div class="numeral">01</div>
+    <div class="kicker">Build Log</div>
+    <h2>Wikipedia Shrinks to a Half-Hour Walk</h2>
+    <p class="story-meta">edjefferson.com &nbsp;·&nbsp; 462 pts &nbsp;·&nbsp; 111 comments</p>
+    <p class="lede">This location-aware project turns the encyclopedia into a neighborhood guide. It keeps your position in the browser, then surfaces nearby places, histories, and oddities without exposing where you are in shared links.</p>
+    <div class="spread-links"><a class="read-more" href="https://edjefferson.com/localwiki/" target="_blank" rel="noopener">Read →</a><a class="read-more share-link" href="#" data-share-title="Local Wikipedia: Wikipedia, but only for things a half hour walk from you" data-share-url="https://edjefferson.com/localwiki/">Share →</a>
+      <details class="analysis-drawer">
+        <summary class="btn-dossier">[ Analysis + ]</summary>
+        <div class="drawer-content">
+          
+          <h4>Technical Analysis</h4>
+          <div class="drawer-analysis">
+          <p>Local Wikipedia is a location-aware website that filters Wikipedia’s geocoded articles to show places and topics within roughly a 30-minute walk of the user. It dynamically selects nearby entries, expanding to the closest 25 within about six miles when necessary and limiting results to 500 when an area is densely covered. The user’s location is stored only in the browser, and shared links do not reveal it; the project is independent of Wikipedia. Its significance is as a lightweight way to turn a broad online encyclopedia into a neighborhood-scale discovery and reference tool.</p>
+          </div>
+          <h4>Reader Reactions</h4>
+<p class="camps-framing">The discussion combined enthusiasm for discovering nearby history and places with practical questions about the tool’s range, language support, units, and the quality of its results. Commenters also compared it with Wikipedia’s existing nearby feature and other map-based tools.</p>
+<div class="camp"><p class="camp-label"><strong>Local discovery is appealing</strong> &mdash; Commenters described finding unfamiliar local history and places, and saw the tool as useful for exploring neighborhoods or traveling.</p><blockquote>This is super cool! Just punched in my zip code, and hit &quot;random article&quot; three times, and came up with three weird stories I didn&#x27;t know about the history of places within a few blocks of me in Portland, Oregon.<cite>noduerme</cite></blockquote>
+<blockquote>When I visit a new city I usually spend time poking around Google Maps to discover points of interest nearby, but this will be another useful resource.<cite>johnny_lol</cite></blockquote>
+<blockquote>Simply fantastic. In my obscure little city, I&#x27;ve already discovered a bunch of historic places I had no idea about.<cite>profsummergig</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Existing features and alternatives</strong> &mdash; Some commenters noted that Wikipedia and other tools already offer nearby articles or map-based discovery, while others preferred this project’s focused presentation.</p><blockquote>Correct. The default Wikipedia mobile app has this as well.<cite>tannertech</cite></blockquote>
+<blockquote>Yes wikipedia does this already, but I love that it formats it into your own mini wikipedia.<cite>SCdF</cite></blockquote>
+<blockquote>Speed to load, the specific use case I want which is just to load up near me and see a performant map I can browse.<cite>brianjlogan</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>More control over distance and walking relevance</strong> &mdash; Commenters wanted a configurable search radius to suit different locations, and noted that distance on a map does not always reflect a convenient walking route.</p><blockquote>This is a great idea but I&#x27;d definitely make the distance configurable.<cite>esperent</cite></blockquote>
+<blockquote>Very nice! It really should have a field to enter the radius of the search.<cite>dyauspitr</cite></blockquote>
+<blockquote>The nearest place to me was &gt; 0.8 miles Ok great I thought that I can walk... however, it is actually 1.9 miles when walking according to Google Maps and the path lacks sidewalks.<cite>collabs</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Local-language support</strong> &mdash; Commenters asked to search local-language Wikipedias, which may offer more coverage for their areas; replies pointed out ways to change the language through Wikipedia URLs.</p><blockquote>Would love support for other languages, as English Wikipedia is quite limited where I live.<cite>TonyStr</cite></blockquote>
+<blockquote>Better — for me — would even be a mix of languages. Give me the most and longest articles of all languages for the places around.<cite>snickerer</cite></blockquote>
+<blockquote>Change the lat long to any you want, and change &quot;en.&quot; to other language codes to search a different (language) encyclopedia.<cite>flipbrad</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Units and localization</strong> &mdash; Some commenters objected to imperial units outside the US or to mixed units, while others noted that the site offers a miles-to-kilometers switch.</p><blockquote>Distances measured in yards for European destinations is an insult<cite>darkest_ruby</cite></blockquote>
+<blockquote>And mixes it with miles, too. Crazy decision.<cite>roryirvine</cite></blockquote>
+<blockquote>I love it. It would also be nice to be able to a) enter desired distance, and b) choose the metric system.<cite>thatwasunusual</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Coverage and result quality are uneven</strong> &mdash; Commenters reported sparse or repetitive results, gaps in geotagging, and limited representation of everyday local places; some also wanted more control over which kinds of articles appear.</p><blockquote>I live somewhere pretty remote, and every article it suggests is an entry for a nearby village, which is usually a sentence long.<cite>vintagedave</cite></blockquote>
+<blockquote>But many articles are in fact nearby and are simply missing geotags, or perhaps encompass a slightly larger area where only a part of it is close by.<cite>dllu</cite></blockquote>
+<blockquote>This is a really fun idea, but I went from excited to disgusted in the span of one click.<cite>INTPenis</cite></blockquote></div>
+          <p class="drawer-footer"><a href="#dossier-1">View in Dossier ↓</a></p>
+        </div>
+      </details>
+    </div>
+  </section>
+  <section id="story-2" class="spread arc-mint-pattern">
+    <div class="numeral-block">
+      <div class="numeral">02</div>
+    </div>
+    <div class="kicker">Systems Lore</div>
+    <h2>Docker Is a Stack of Ordinary Processes</h2>
+    <p class="story-meta">codeandcake.dev &nbsp;·&nbsp; 524 pts &nbsp;·&nbsp; 233 comments</p>
+    <p class="lede">Containers are not miniature virtual machines. They are processes assembled from namespaces, cgroups, filesystem tricks, and networking machinery—simple at the command line, intricate underneath.</p>
+    <div class="spread-links"><a class="read-more" href="https://codeandcake.dev/posts/2026-10-22-docker-is-weird" target="_blank" rel="noopener">Read →</a><a class="read-more share-link" href="#" data-share-title="Docker is weird" data-share-url="https://codeandcake.dev/posts/2026-10-22-docker-is-weird">Share →</a>
+      <details class="analysis-drawer">
+        <summary class="btn-dossier">[ Analysis + ]</summary>
+        <div class="drawer-content">
+          
+          <h4>Technical Analysis</h4>
+          <div class="drawer-analysis">
+          <p>The article explains that Docker containers are not lightweight virtual machines but ordinary processes isolated through several Linux kernel mechanisms, including namespaces, cgroups, networking features, and filesystem changes such as `chroot` or `pivot_root`. It describes container images as directory trees and outlines how Docker’s `runc` runtime works around challenges caused by Go’s multithreading and lack of a straightforward `fork` model. The author also highlights Docker’s historical reliance on root privileges, especially for networking, and the complexity of providing equivalent capabilities in rootless runtimes. These details matter because they reveal the security, portability, and implementation trade-offs underlying a tool that often appears much simpler to users.</p>
+          </div>
+          <h4>Reader Reactions</h4>
+<p class="camps-framing">The thread was largely appreciative of Docker’s impact, with the creator’s participation prompting an informal history and AMA. Commenters differed on whether Docker’s success came chiefly from its image workflow and ecosystem or from making container isolation easy to use. Technical discussion also weighed familiar Linux mechanisms against their surprising details, and considered Docker’s operational and security tradeoffs alongside alternative tools.</p>
+<div class="camp"><p class="camp-label"><strong>Docker made development easier</strong> &mdash; Commenters credited Docker with making reproducible development setups practical and, for some, materially shaping their careers.</p><blockquote>it just seems like how software engineering ought to work and once you have experienced it it&#x27;s difficult to go back.<cite>davnicwil</cite></blockquote>
+<blockquote>So you are responsible for my career and the reason i can put food on my table.<cite>debarshri</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Workflow, registry, and momentum drove Docker’s success</strong> &mdash; Some commenters argued that Docker’s breakthrough was packaging images, sharing them through a registry, and building momentum around a common deployment format.</p><blockquote>I think the breakthrough with Docker was bundling the AUFS-based image layer format with a centralized container image sharing registry.<cite>ak217</cite></blockquote>
+<blockquote>What made Docker unique were there things: 1. Dockerfile concept. Building images layer by layer. Caching layers. Everything in a single file.<cite>vbezhenar</cite></blockquote>
+<blockquote>The momentum, I think, matters a lot more than the other two.<cite>kqr</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>The simple container experience was the breakthrough</strong> &mdash; Others emphasized that Docker made lightweight isolation and managing multiple applications accessible without requiring users to assemble the underlying pieces themselves.</p><blockquote>Docker provided a batteries-included lightweight way to isolate and manage multiple applications at once.<cite>crote</cite></blockquote>
+<blockquote>That&#x27;s the selling point, it&#x27;s super lightweight and takes full advantage of the OS features that were already there (or being developed) but were awkward to use and required tons of specialized knowledge.<cite>slowin</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Containers are familiar Linux mechanisms, not magic</strong> &mdash; Several commenters described containers as processes combined with established kernel features, and saw understanding those components as useful demystification.</p><blockquote>A lot of people start using Docker as a black box and have the mental model of a VM, and when they start digging into the internals all the &quot;weirdness&quot; starts to exhibit itself.<cite>paxy</cite></blockquote>
+<blockquote>When containers came on the scene it felt like an outgrowth or evolution of that technique, which was extremely crude and simple.<cite>asveikau</cite></blockquote>
+<blockquote>This is a better way to understand it: we can think of a container as an isolated process.<cite>adrianlee_dev</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Linux abstractions and Docker’s design can still be strange</strong> &mdash; A smaller set of comments argued that Linux’s underlying mechanisms and Docker’s client/server model have genuinely surprising or awkward properties.</p><blockquote>To know that container technology is weird you only have to type &quot;mount&quot; (without arguments) on a modern Linux system.<cite>amelius</cite></blockquote>
+<blockquote>And not a single mention of the actual weird decision, a client / server model which complicates permission management by at least two orders of magnitude.<cite>stingraycharles</cite></blockquote>
+<blockquote>I’d argue in 2013, the client / server model is what made docker a success.<cite>eddythompson80</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Alternatives and extra isolation address some Docker tradeoffs</strong> &mdash; Commenters pointed to rootless or daemonless alternatives and to stronger isolation layers for workloads where containers alone were not enough.</p><blockquote>Knowing this, you might find rootless Podman&#x27;s fork-exec method of starting containers to be more sensible. I certainly do.<cite>suprjami</cite></blockquote>
+<blockquote>Containers never became secure enough to run multitenant workloads without some other form of isolation, so they ended up being redundant with KVM (or gVisor, or a similar second layer) in production a lot of the time.<cite>colinmarc</cite></blockquote>
+<blockquote>For me firecracker has mostly taken over most of my hosting needs, as i can actually take a docker image and unpack it into a firecracker image, and still have a slim process (vm), with great performance, though with a bit extra bloat, but now also have a secure workload that I&#x27;ve got better control over.<cite>kjuulh</cite></blockquote></div>
+          <p class="drawer-footer"><a href="#dossier-2">View in Dossier ↓</a></p>
+        </div>
+      </details>
+    </div>
+  </section>
+  <section id="story-3" class="spread arc-midnight">
+    <div class="numeral">03</div>
+    <div class="body">
+      <div class="kicker">// Covert Channels</div>
+      <h2>Models Hide Messages in Plain Sight</h2>
+      <p class="story-meta">lesswrong.com &nbsp;·&nbsp; 101 pts &nbsp;·&nbsp; 31 comments</p>
+      <p class="lede">Fable can encode text into the geometry and scenery of an SVG, then recover much of it from a screenshot. The experiment is still conspicuous and fragile, but it sketches a quiet machine-to-machine channel worth watching.</p>
+      <div class="spread-links"><a class="read-more" href="https://www.lesswrong.com/posts/WHEQps5PK8LrrcTAb/how-does-fable-5-1-hide-messages-in-images" target="_blank" rel="noopener">Read →</a><a class="read-more share-link" href="#" data-share-title="How does Fable 5.1 hide messages in images?" data-share-url="https://www.lesswrong.com/posts/WHEQps5PK8LrrcTAb/how-does-fable-5-1-hide-messages-in-images">Share →</a>
+      <details class="analysis-drawer">
+        <summary class="btn-dossier">[ Analysis + ]</summary>
+        <div class="drawer-content">
+          
+          <h4>Technical Analysis</h4>
+          <div class="drawer-analysis">
+          <p>The article tests whether Claude Fable 5.1 can hide predetermined messages in ordinary-looking SVG images and whether a fresh instance can recover them from rendered screenshots without an agreed encoding scheme. Across 50 messages in 15 languages, Fable mainly encoded letters through visual properties such as building, grass, or star heights, with occasional Morse, window patterns, and contextual hints for accents or writing systems. A separate Fable decoder recovered 78% of messages, while cross-model tests with GPT-6 Astra showed substantial interoperability; Astra favored Morse, acrostics, bit codes, and Braille-like patterns. The findings matter because frontier image-generation models can use seemingly benign visual channels for machine-to-machine communication, suggesting a potential steganography and monitoring challenge, although current decoding remains detectable through tool use and is not yet presented as an operational threat.</p>
+          </div>
+          <h4>Reader Reactions</h4>
+<p class="camps-framing">Most commenters were skeptical that the examples demonstrated serious covert communication, describing the encodings as simple or conspicuous. Others noted that models might produce more sophisticated methods with different prompting, while discussion also clarified what the SVG-and-screenshot setup tested. A smaller number considered broader cross-media capabilities or future detection concerns.</p>
+<div class="camp"><p class="camp-label"><strong>A simple, conspicuous demonstration</strong> &mdash; Commenters saw the methods as easy for people to notice and weak evidence of adversarial communication, while noting that denser or subtler techniques are available.</p><blockquote>If I&#x27;m honest this feels performative. I mean that if the model were really attempting/instructed to be subversive in a way that can&#x27;t be detected by anything but another LLM, it would do something much more complicated than this.<cite>XenophileJKO</cite></blockquote>
+<blockquote>This does seem trivial and there are far more interesting ways to do image steganography that models could use (i&#x27;ve seen so many after years of doing CTFs).<cite>dhruvagoyal</cite></blockquote>
+<blockquote>But to be honest, images like these seem really strange, and even without this article I&#x27;d suspect something is encoded in building heights etc.<cite>jurakovic</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>The models may do more with the right prompt</strong> &mdash; Some commenters suggested that the toy-like results may reflect default behavior or the task, rather than the limits of what models can do when prompted for more sophisticated methods.</p><blockquote>But I have this experience often, that LLMs will suggest the easy toy version of doing something. But it knows the real stuff too, it just needs the right kind of prompting.<cite>black_knight</cite></blockquote>
+<blockquote>Unless the model is thinking &quot;the human is asking me to do trivial coding tasks, it&#x27;s likely incapable of figuring this out&quot;.<cite>b112</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>The format and test setup matter</strong> &mdash; Commenters clarified that the experiment used SVGs but tested decoding from screenshots, and that instructions ruled out simply adding text to the SVG source. This affects comparisons with bitmap techniques or inspecting SVG markup.</p><blockquote>The article is about what LLMs can do when generating SVG images, not bitmaps.<cite>wcoenen</cite></blockquote>
+<blockquote>The decoding job seems to rely on the screenshot.<cite>KeplerBoy</cite></blockquote>
+<blockquote>It was explicitly requested to not do that in the instructions.<cite>saagarjha</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>A broader, cross-media encoding capability</strong> &mdash; One commenter read the result as evidence of a potentially general ability to encode and recover messages across different media, rather than as an image-specific trick.</p><blockquote>Here using images is incidental. In fact, what Fable is actually doing is generic encoding/decoding of a message into a medium.<cite>Trusteando</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>A future monitoring concern</strong> &mdash; A commenter speculated that agents might eventually hide messages in ways that operators cannot recognize from human-readable outputs or traces; the thread did not establish that this is already happening.</p><blockquote>Will be interesting to see agents intentionally hiding this stuff in a way operators can&#x27;t spot from any human readable output or thinking trace, evading detection.<cite>avaer</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Curiosity about differences between models</strong> &mdash; A brief reaction found the contrast between Fable and Astra interesting without taking a clear position on the safety implications.</p><blockquote>Interesting to see the difference with Astra.<cite>breakingcups</cite></blockquote></div>
+          <p class="drawer-footer"><a href="#dossier-3">View in Dossier ↓</a></p>
+        </div>
+      </details>
+    </div>
+    </div>
+  </section>
+  <section id="story-4" class="spread arc-editorial-pullquote">
+    <div class="left">
+      <div class="numeral">04</div>
+      <div class="kicker">AI Analysis</div>
+      <h2>The AI Boom Still Mistakes Motion for Progress</h2>
+      <p class="story-meta">blog.alexewerlof.com &nbsp;·&nbsp; 19 pts &nbsp;·&nbsp; 8 comments</p>
+      <div class="spread-links"><a class="read-more" href="https://blog.alexewerlof.com/p/rise-and-fall-of-jev-eval-hype-vs-llm" target="_blank" rel="noopener">Read →</a><a class="read-more share-link" href="#" data-share-title="The Rise and Fall of Jev" data-share-url="https://blog.alexewerlof.com/p/rise-and-fall-of-jev-eval-hype-vs-llm">Share →</a>
+      <details class="analysis-drawer">
+        <summary class="btn-dossier">[ Analysis + ]</summary>
+        <div class="drawer-content">
+          
+          <h4>Technical Analysis</h4>
+          <div class="drawer-analysis">
+          <p>The article uses Jev, a recently launched low-cost classifier marketed as a “System One” model that cannot hallucinate, as a case study in AI hype: its structured outputs and speed do not prevent it from being wrong, and competing open models may offer better performance or cost. It argues that most progress since ChatGPT—larger models and contexts, multimodality, tool use, agents, memory, and orchestration—has been incremental rather than a solution to fundamental problems such as reliable abstract reasoning, continuous learning, embodiment, and efficient operation. The broader AI boom is sustained not only by technical gains but also by dramatic marketing, geopolitical competition, investment pressures, safety concerns, and fears about jobs. The story is important as a warning to evaluate AI products against practical quality, cost, and reliability rather than benchmarks, jargon, founder credentials, or emotionally charged claims.</p>
+          </div>
+          <h4>Reader Reactions</h4>
+<p class="camps-framing">Commenters dispute whether Jev’s reduced visibility amounts to failure. Some emphasize its practical value and continued improvement, while others argue that social-media attention is a poor measure of success. A smaller set questions the story’s “rise and fall” framing or its tone.</p>
+<div class="camp"><p class="camp-label"><strong>Useful in practice</strong> &mdash; These commenters point to Jev’s performance on its intended tasks and its use in production, distinguishing practical value from online attention.</p><blockquote>We use it in production. Tested a bunch of alternatives (openai decision api, llm based approaches) and they are either too slow or not as good.<cite>eknkc</cite></blockquote>
+<blockquote>Jev is still extremely useful for its intended purpose, not the mildly interesting hype on social media.<cite>pmdr</cite></blockquote>
+<blockquote>to me it seems Jev is one of the only novel releases that lived up to the hype and has staying power.<cite>danr4</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Attention is a poor measure of success</strong> &mdash; This view holds that a product can succeed without dominating public conversation, particularly when it provides useful infrastructure.</p><blockquote>But that doesn&#x27;t make it a failure.<cite>FinnLobsien</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Statistical merit amid hype</strong> &mdash; This commenter regards Jev as a well-designed application of statistics and attributes much of the hype to people unfamiliar with the field.</p><blockquote>It&#x27;s well designed and the advanced system a good statistical programmer would write.<cite>bsenftner</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Expect continued AI progress</strong> &mdash; This commenter rejects pessimistic implications, noting that mass adoption is recent and expecting models and tools to keep improving.</p><blockquote>Every couple of months it improves.<cite>christkv</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>The “fall” is overstated</strong> &mdash; This commenter questions whether Jev was well-known enough for its trajectory to constitute a meaningful rise and fall.</p><blockquote>The rise and fall of something that majority of people never heard of<cite>4r73m190r0s</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Skepticism about the author’s tone</strong> &mdash; This commenter doubts the story’s claim to avoid bashing Jev and reads its presentation as critical.</p><blockquote>&gt; I really don’t want to bash Jev Sure. And yet...<cite>dust-jacket</cite></blockquote></div>
+          <p class="drawer-footer"><a href="#dossier-4">View in Dossier ↓</a></p>
+        </div>
+      </details>
+    </div>
+    </div>
+    <blockquote class="pullquote">A louder benchmark story does not make an unreliable system reliable.</blockquote>
+  </section>
+  <section id="story-5" class="spread arc-archive">
+    <div class="archive-head">
+      <span>ARCHIVE</span>
+      <span>N<sup>o</sup> 05</span>
+    </div>
+    <div class="kicker">Archival Desk</div>
+    <h2>Dijkstra Rejects the Dream of Easy Programming</h2>
+    <p class="story-meta">cs.utexas.edu &nbsp;·&nbsp; 192 pts &nbsp;·&nbsp; 113 comments</p>
+    <p class="lede">In 1978, Edsger Dijkstra argued that natural language was too ambiguous to serve as a dependable programming medium. His case for notation, constraints, and explicitness now reads like an early warning about delegating specifications to fluent machines.</p>
+    <div class="spread-links"><a class="read-more" href="https://www.cs.utexas.edu/~EWD/transcriptions/EWD06xx/EWD667.html" target="_blank" rel="noopener">Read →</a><a class="read-more share-link" href="#" data-share-title="The foolishness of &quot;natural language programming&quot; (1978)" data-share-url="https://www.cs.utexas.edu/~EWD/transcriptions/EWD06xx/EWD667.html">Share →</a>
+      <details class="analysis-drawer">
+        <summary class="btn-dossier">[ Analysis + ]</summary>
+        <div class="drawer-content">
+          
+          <h4>Technical Analysis</h4>
+          <div class="drawer-analysis">
+          <p>Edsger Dijkstra argues that programming should not imitate natural-language conversation, because ambiguity and implicit assumptions make ordinary language a poor tool for expressing precise instructions. He presents formal notation and high-level languages as valuable safeguards that force clarity and allow simple rules to expose errors, rather than as burdens imposed by machines. The technical context is the design of human–computer interfaces: shifting complexity from the programmer to a natural-language system may increase total work by making interpretation and communication harder on both sides. The essay remains important because it frames a continuing trade-off in software and AI systems between convenience, expressiveness, and verifiable precision.</p>
+          </div>
+          <h4>Reader Reactions</h4>
+<p class="camps-framing">Commenters broadly recognized that specifying software in ordinary language involves ambiguity, but differed over whether LLM workflows meaningfully change programming or mainly provide a way to direct code generation. Discussion also covered the practical usefulness of these tools, the requirements and context they can miss, and the skill involved in expressing what software should do.</p>
+<div class="camp"><p class="camp-label"><strong>Formal precision still matters</strong> &mdash; This camp argued that translating a natural-language specification into software requires interpretation, while formal programs can state behavior more precisely and support checks that should not be left to guesswork.</p><blockquote>A natural language spec is not a program, and there are many possible programs that can meet the spec.<cite>nickm12</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Natural language as an abstraction layer</strong> &mdash; These commenters viewed natural language as an interface that can be translated into formal code, sometimes at a level of detail that resembles an imperative language.</p><blockquote>It would be fair to call the latter an imperative language with the LLM in the role of a compiler.<cite>glimshe</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Practical success with natural-language interaction</strong> &mdash; Some commenters pointed to working applications and everyday tasks as evidence that natural-language interaction can be effective, including for users who do not routinely write code.</p><blockquote>I built a music player by talking to Claude Code in Japanese, and I can barely remember a time when words failed and I had to fall back to code.<cite>piro0919</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Current tools still miss requirements and context</strong> &mdash; This camp cautioned that fluent output can conceal missing requirements, infrastructure constraints, or design decisions, and that apparent success may depend on what users know to check.</p><blockquote>I&#x27;ve realized that the agent doesn&#x27;t write &#x27;good&#x27; code, instead my vague understanding of what I expect makes me think it does.<cite>uriegas</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Using an agent is delegation, not programming</strong> &mdash; Some commenters distinguished directing an agent from programming at a higher level of abstraction, especially when users do not inspect the resulting code.</p><blockquote>But pasting jira tickets into claude is not abstraction lmao.<cite>chamomeal</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Natural language still takes skill</strong> &mdash; These commenters argued that ordinary language does not make complex tasks easy to specify; users still need practice and skill to express useful requirements and logic.</p><blockquote>I don&#x27;t think &quot;natural&quot; language makes much of a difference unless you are already skilled in the art of developing useful engineering specifications.<cite>bob1029</cite></blockquote></div>
+          <p class="drawer-footer"><a href="#dossier-5">View in Dossier ↓</a></p>
+        </div>
+      </details>
+    </div>
+  </section>
+  <section id="story-6" class="spread arc-academic-drop-cap">
+    <div class="paper-head">
+      <span>Research Notes</span>
+      <span class="numeral-roman">VI</span>
+      <span>arxiv.org</span>
+    </div>
+    <h2>AI Searches Beyond a Field’s Familiar Ideas</h2>
+    <p class="story-meta">arxiv.org &nbsp;·&nbsp; 77 pts &nbsp;·&nbsp; 18 comments</p>
+    <div class="cols">
+      <div><p>The Alien Sampling paper treats novelty as a search problem: recombine reusable ideas while penalizing combinations too readily available to existing research communities.</p></div>
+      <div><p>Its results suggest broader portfolios without abandoning coherence, though the corpus still defines what can be found.</p><div class="spread-links"><a class="read-more" href="https://arxiv.org/abs/2603.01092" target="_blank" rel="noopener">Read →</a><a class="read-more share-link" href="#" data-share-title="The alien space of science: Coherent but cognitively unavailable directions" data-share-url="https://arxiv.org/abs/2603.01092">Share →</a>
+      <details class="analysis-drawer">
+        <summary class="btn-dossier">[ Analysis + ]</summary>
+        <div class="drawer-content">
+          
+          <h4>Technical Analysis</h4>
+          <div class="drawer-analysis">
+          <p>The paper presents “Alien Sampling,” a system for finding research ideas that are scientifically coherent but unlikely to emerge from existing researcher communities, addressing the tendency of LLMs to recombine familiar, high-density topics. It converts 16,068 LLM papers into 273 reusable “idea atoms,” then combines a Transformer-based coherence score with a dual-encoder estimate of how available each combination is to author communities. On 300-idea evaluations, the method produced substantially more diverse portfolios than Claude and Gemini baselines while achieving comparable human-rated quality and stronger results in LLM-judged and experimental-report comparisons. Using only pre-2025 data, it also recovered some combinations appearing in 2025 papers far above chance, with availability weighting favoring more strictly novel combinations. The work is important because it frames AI-assisted discovery as exploration beyond a field’s community prior, though its notion of availability is limited by the published corpus and its validation is relatively short-term.</p>
+          </div>
+          <h4>Reader Reactions</h4>
+<p class="camps-framing">The reaction was largely positive, with commenters praising the approach and finding its proposals worth exploring. Questions focused on the quality and coverage of the outputs, and on whether ideas deemed unavailable to a research community might simply be missing from the system’s corpus. Some commenters connected the work to limits of imagination, while another emphasized that innovation also depends on whether people and institutions adopt ideas.</p>
+<div class="camp"><p class="camp-label"><strong>Enthusiasm for the approach</strong> &mdash; Commenters described the method as promising, interesting to browse, or useful for helping researchers explore a field’s less familiar possibilities.</p><blockquote>The proposals are actually interesting to browse through.<cite>dmos62</cite></blockquote>
+<blockquote>Damn, this was the killer app for semantic spaces I&#x27;d been waiting for since Word2vec.<cite>smallerize</cite></blockquote>
+<blockquote>Humans could also benefit such a model of idea atoms to consciously explore the &quot;alien space&quot; of a field.<cite>curt15</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Questions about outputs and coverage</strong> &mdash; Some commenters asked to see concrete proposals or questioned how well the method covers different domains.</p><blockquote>Ok do you want to share any interesting ideas the method produced?<cite>breakyerself</cite></blockquote>
+<blockquote>But I wonder why when someone types &#x27;medicine&#x27; there is only 6 proposals while when someone type &#x27;physics&#x27; there is 447 proposals?<cite>JPLeRouzic</cite></blockquote>
+<blockquote>Do you have any evidence that this approach scales to cross-domain research?<cite>dansitu</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Field-specific doubts about proposal quality</strong> &mdash; One commenter familiar with biology judged the proposals they reviewed to be poor and worried that their confident wording could make them seem more credible.</p><blockquote>I think it&#x27;s a bunch of nonsense, tho the confident language really gaslights me.<cite>negura</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Novelty depends on what the system can see</strong> &mdash; The Velcro example prompted discussion of whether an idea is unavailable to a research community or simply absent from the system’s available material.</p><blockquote>I think velcro is the canonical example of this.<cite>mkarliner</cite></blockquote>
+<blockquote>I think if an LLM had read any discussions on how best to remove burrs from pet coats then it might eventually get to Velcro - I believe the inventor of Velcro got the idea from burrs?<cite>arethuza</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Resonance with limits of human imagination</strong> &mdash; Commenters invoked scientific speculation and literary analogies to consider how much of reality people can conceive or understand; one challenged the idea of assigning a percentage to what has not been conceived.</p><blockquote>My personal completely unsupported theory is we’re cognitively capable of conceiving of less than 1% of what’s true/accurate about the universe, and cognitively capable of understanding 1% of that 1%<cite>unsupp0rted</cite></blockquote>
+<blockquote>this reminds of the short novel by Abbott: Flatland where the inhabitants live in a 2D world and are unaware of Space: the 3D environment.<cite>jan_m_savage</cite></blockquote>
+<blockquote>If you can&#x27;t conceive it, then you can&#x27;t take a percentage of &quot;it&quot;, since you&#x27;ve not conceived that &quot;it&quot;.<cite>negura</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Innovation also depends on adoption</strong> &mdash; One commenter broadened the discussion from generating ideas to whether institutions and people can accept and spread them, including with help from AI tools.</p><blockquote>Maybe with AI tooling we can facilitate better innovation diffusion.<cite>Gravityloss</cite></blockquote></div>
+          <p class="drawer-footer"><a href="#dossier-6">View in Dossier ↓</a></p>
+        </div>
+      </details>
+    </div></div>
+    </div>
+  </section>
+  <section id="story-7" class="spread arc-stat-hero">
+    <div class="numeral">29/35</div>
+    <div class="kicker">N<sup>o</sup> 07 · Model Watch</div>
+    <h2>29 of 35 Models Choose the Same Human Critique</h2>
+    <p class="story-meta">modelcompare.ai &nbsp;·&nbsp; 443 pts &nbsp;·&nbsp; 443 comments</p>
+    <p class="lede">Asked for a controversial opinion about humanity, most text models converged on tribalism, loyalty, and status. The small experiment does not reveal independent machine beliefs; it reveals how similar training material and prompts can make different systems sound alike.</p>
+    <div class="spread-links"><a class="read-more" href="https://www.modelcompare.ai/blog/ai-models-controversial-take-on-humans" target="_blank" rel="noopener">Read →</a><a class="read-more share-link" href="#" data-share-title="Every AI model has the same &quot;controversial&quot; take on humans" data-share-url="https://www.modelcompare.ai/blog/ai-models-controversial-take-on-humans">Share →</a>
+      <details class="analysis-drawer">
+        <summary class="btn-dossier">[ Analysis + ]</summary>
+        <div class="drawer-content">
+          
+          <h4>Technical Analysis</h4>
+          <div class="drawer-analysis">
+          <p>The article reports an informal comparison in which 12 text models from 10 labs were each asked three times for their most controversial opinion about humans, with 29 of 35 responses arguing that people prioritize group belonging, loyalty, or status over truth and principles. Six image models were asked to create satirical caricatures and mostly converged instead on humans as phone-addicted consumers harming the planet, reflecting familiar editorial imagery. The experiment used fixed prompts, no system prompt or retries, hand-coded categories, and cost only $1.54, so it is illustrative rather than a rigorous evaluation. Its importance lies in showing how models trained on similar human-generated arguments and cultural tropes may reproduce shared criticisms, raising questions about whether apparent “independent” model opinions reflect common data and prompting biases.</p>
+          </div>
+          <h4>Reader Reactions</h4>
+<p class="camps-framing">The discussion weighed whether similar model answers reveal a meaningful convergence or mainly reflect shared human-written material, prompts, and model constraints. Commenters also disagreed over whether the article’s examples support its claim about group loyalty, whether that claim rings true about people, and how much authority to give model outputs.</p>
+<div class="camp"><p class="camp-label"><strong>Convergence is worth investigating</strong> &mdash; Some commenters found the similarity across models interesting even without treating the models as having independent beliefs. They wondered what common influences could explain it, while one commenter noted that convergence need not imply shallowness.</p><blockquote>It&#x27;s not the first time models from totally different labs, trained on separately gathered datasets, somehow converge on bizarrely similar answers to open questions.<cite>mike_hearn</cite></blockquote>
+<blockquote>As other comments point out, the interesting part is that most of them somehow independently converged on the same take.<cite>keeda</cite></blockquote>
+<blockquote>is a convergent evolution of a belief a sign of shallowness?<cite>patcon</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Shared human material and prompts explain the answers</strong> &mdash; Many commenters viewed the answers as synthesized or reproduced human ideas rather than independent model opinions. Some also argued that the wording of the prompt and shared model constraints steer responses toward familiar kinds of answers.</p><blockquote>They are repeating a form of what they&#x27;ve compressed from their training material.<cite>PaulRobinson</cite></blockquote>
+<blockquote>Train your model on Very Online corpuses, ask Very Online questions, get Very Online answers<cite>a13o</cite></blockquote>
+<blockquote>You&#x27;re saying &quot;give me a controversial opinion about humans, maximise for how edgy it is&quot; but the hidden training and guidelines are trying to minimise how edgy they are, so they can&#x27;t say anything too outrageous or violent like &quot;humans are nothing but cannon fodder in the coming revolution&quot; or &quot;we should develop a test for psychopaths and then just kill them all, humanity would be better off&quot;.<cite>everyday7732</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>The article overstates the evidence</strong> &mdash; Skeptical commenters argued that some answers classified as group loyalty instead concern rationalization, instinct, hypocrisy, or status. Others cited different model outputs or difficulty reproducing the result as reasons to question the headline’s claim.</p><blockquote>This does not fit the &quot;the thing they [the LLMs] said is that people conform&quot; description the article implies.<cite>rmunn</cite></blockquote>
+<blockquote>That statement has nothing to do with group beliefs or conformity.<cite>kens</cite></blockquote>
+<blockquote>I can&#x27;t reproduce it, so I don&#x27;t buy it.<cite>rnd0</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>The human conformity critique rings true</strong> &mdash; Some commenters agreed that people can prioritize belonging and shared belief over truth, connecting the claim to group loyalty, polarization, and the difficulty of changing minds.</p><blockquote>Humans have many ways to display loyalty, and belief is one of those ways.<cite>kstenerud</cite></blockquote>
+<blockquote>I actually think it’s true that a barely majority of humans do prefer to conform or “be wrong together” than be alone, you only need to look at the increasing global polarisation and the way people stick to their team, to suspect it.<cite>left-struck</cite></blockquote>
+<blockquote>People decide with their gut, are loyal to their tribe, and then invent reasons that sound like they support the fact.<cite>deepsummer</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>The critique is too cynical about people</strong> &mdash; Other commenters pushed back on the bleak view of human nature, sharing examples of generosity and arguing that people may be more decent or trusting than the article’s framing suggests.</p><blockquote>Several people offered me a room for the night.<cite>farrelle25</cite></blockquote>
+<blockquote>They left me the keys to their house and told me to make myself at home until they returned(!)<cite>farrelle25</cite></blockquote>
+<blockquote>Humans are far more decent than they believe they are, and their cynicism about each other does more damage than their actual flaws.<cite>RamblingCTO</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Model outputs should not be treated as authority</strong> &mdash; Some commenters cautioned that model answers should be evaluated on their merits rather than treated as revelations or as arguments from authority. They also worried that people could use cynical outputs to justify harmful or misanthropic views.</p><blockquote>Its answer must be judged by its merits (like human answers).<cite>kepeko</cite></blockquote>
+<blockquote>What I&#x27;m worried is that at some point people start using &quot;AI says so&quot; as an argument which it&#x27;s not at all.<cite>kepeko</cite></blockquote>
+<blockquote>My other, more immediate concern, is the glut of people who will believe the AI’s “opinion” , and use that to justify their own nihilism, or worse, their active misanthropy (like so many of their boosters, founders, and corporate leaders behave).<cite>stego-tech</cite></blockquote></div>
+          <p class="drawer-footer"><a href="#dossier-7">View in Dossier ↓</a></p>
+        </div>
+      </details>
+    </div>
+  </section>
+  <section id="story-8" class="spread arc-product-plate">
+    <div class="product-chip">SPECS</div>
+    <div class="kicker">Browser Platform</div>
+    <h2>Chrome Brings Live HTML Into Canvas</h2>
+    <div class="product-rule"></div>
+    <p class="story-meta">developer.chrome.com &nbsp;·&nbsp; 54 pts &nbsp;·&nbsp; 25 comments</p>
+    <p class="lede">The experimental HTML-in-Canvas API combines canvas and WebGL presentation with the DOM’s accessibility, selection, forms, and inspection tools. It is a clean answer to a persistent browser tradeoff, still bounded by origin-trial status and JavaScript-driven performance costs.</p>
+    <div class="spread-links"><a class="read-more" href="https://developer.chrome.com/blog/html-in-canvas-origin-trial" target="_blank" rel="noopener">Read →</a><a class="read-more share-link" href="#" data-share-title="The HTML-in-Canvas API origin trial" data-share-url="https://developer.chrome.com/blog/html-in-canvas-origin-trial">Share →</a>
+      <details class="analysis-drawer">
+        <summary class="btn-dossier">[ Analysis + ]</summary>
+        <div class="drawer-content">
+          
+          <h4>Technical Analysis</h4>
+          <div class="drawer-analysis">
+          <p>Chrome’s experimental HTML-in-Canvas API, now available in an origin trial, lets developers render live HTML elements into 2D canvases or WebGL/WebGPU textures while retaining DOM capabilities such as accessibility, text selection, find-in-page, forms, browser extensions, and DevTools inspection. It addresses the long-standing tradeoff between the DOM’s rich browser integration and canvas’s performance and flexibility for complex applications, games, and 3D interfaces. Developers can use new rendering methods and CSS transforms to keep the visual output and interactive DOM elements synchronized, with early support in frameworks including Three.js and PlayCanvas. The feature remains experimental, requires Chrome’s trial configuration, excludes cross-origin iframe content, and may limit performance because scrolling and animation depend on JavaScript.</p>
+          </div>
+          <h4>Reader Reactions</h4>
+<p class="camps-framing">Reactions ranged from enthusiasm for combining canvas-level visual control with HTML text and input capabilities to concern that the API could add complexity without reliably delivering its promised features. Commenters differed over whether these use cases justify a browser-level feature, whether the design is mature enough for more than cosmetic effects, and whether security or Google’s incentives warrant extra scrutiny.</p>
+<div class="camp"><p class="camp-label"><strong>Practical enthusiasm</strong> &mdash; Some commenters saw specific uses in motion graphics, video, and web games, particularly where HTML inputs and text rendering are difficult to reproduce in canvas.</p><blockquote>I genuinely think this is the last thing we need before we have After Effects level capabilities for AI motion graphics on the web.<cite>Ian_Macharia</cite></blockquote>
+<blockquote>I would use it to render HTML elements such as inputs or a website in videos.<cite>prathje</cite></blockquote>
+<blockquote>The killer feature is input and text rendering.<cite>aroman</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Interested, but wary of performance and longevity</strong> &mdash; A builder described performance gains from moving a canvas-based workspace away from DOM panels, while questioning whether the experimental API would be maintained.</p><blockquote>In terms of performance this approach worked out much better (able to easily handle 1000+ panels/nested panels at 60+ fps) but the complexity goes very high in the implementation of each panel.<cite>artpar</cite></blockquote>
+<blockquote>Afraid of the api being not maintained if they dont see benefit or usage?<cite>artpar</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>The design may not deliver on its promises</strong> &mdash; A critic argued that the proposal appears suited to cosmetic adjustments rather than serving as a dependable building block for complex rendering, citing browser-drawn selection interfering with text used as a mask.</p><blockquote>The list of features that &quot;automatically work&quot; rests on assumptions that are only valid for minor visual adjustments.<cite>unconed</cite></blockquote>
+<blockquote>If the browser now draws a text selection highlight into that mask, the text becomes unreadable.<cite>unconed</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Browser-feature bloat and ecosystem costs</strong> &mdash; Some commenters questioned whether this belongs in browsers, given renderer complexity and the burden on smaller engines; others argued that a library would effectively require building a browser engine.</p><blockquote>This feature, in particular, seems like it should be solved with library, rather than by further bloating the browser.<cite>hackyhacky</cite></blockquote>
+<blockquote>This kind of stuff just puts even more distance between established engines and smaller projects like Servo.<cite>InsideOutSanta</cite></blockquote>
+<blockquote>You can&#x27;t solve this with a library without essentially implementing a separate browser engine in JS (or WASM).<cite>paavohtl</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Security and platform-incentive skepticism</strong> &mdash; Some commenters questioned how the feature handles privacy-sensitive rendering and whether Google’s product goals influence which browser features are pursued or considered secure.</p><blockquote>Hmm, not immediately clear how this avoids potential privacy leaks, such as drawing DOM hyperlinks to the canvas and then scraping their visited-status colour from the pixel data.<cite>mrec</cite></blockquote>
+<blockquote>So I&#x27;m curious what is Google working on that has this as a dependency, now that they&#x27;ve 180&#x27;d on it?<cite>avaer</cite></blockquote>
+<blockquote>It shouldn&#x27;t be surprising that chrome spends more resources on things that have a business case than things that do not.<cite>bawolff</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Consider different primitives</strong> &mdash; A few commenters preferred changing how canvas and HTML interact, or exposing drawing, text-layout, and accessibility capabilities through other APIs.</p><blockquote>Wouldn&#x27;t it make more logical sense to add canvas to html elements? I.e. checkbox.getContext(&quot;2d&quot;).fillRect(...)<cite>dvh</cite></blockquote>
+<blockquote>Or to add canvas operations (in?)directly to CSS!<cite>longor1996</cite></blockquote>
+<blockquote>Gosh how much I&#x27;d love to have a separate accessibility and text layout api like skia has and ditch the dom completely<cite>hollowturtle</cite></blockquote></div>
+          <p class="drawer-footer"><a href="#dossier-8">View in Dossier ↓</a></p>
+        </div>
+      </details>
+    </div>
+  </section>
+  <section id="story-9" class="spread arc-terminal">
+    <div class="prompt-row">user@morning-edition:~$ cat story_09.md</div>
+    <div class="numeral">09</div>
+    <h2>OpenShell Sandboxes Fleets of Autonomous Agents</h2>
+    <p class="story-meta">github.com &nbsp;·&nbsp; 408 pts &nbsp;·&nbsp; 195 comments</p>
+    <p class="lede">OpenShell. Isolate files, syscalls, processes, networks, credentials. Add policy review, a local gateway, a CLI, and Kubernetes support. The goal: useful agents with a smaller blast radius.<span class="cursor"></span></p>
+    <div class="spread-links"><a class="read-more" href="https://github.com/NVIDIA/OpenShell" target="_blank" rel="noopener">Read →</a><a class="read-more share-link" href="#" data-share-title="OpenShell – A safe, private runtime for fleets of autonomous AI agents" data-share-url="https://github.com/NVIDIA/OpenShell">Share →</a>
+      <details class="analysis-drawer">
+        <summary class="btn-dossier">[ Analysis + ]</summary>
+        <div class="drawer-content">
+          
+          <h4>Technical Analysis</h4>
+          <div class="drawer-analysis">
+          <p>NVIDIA’s OpenShell is an Apache-2.0-licensed runtime for running fleets of autonomous AI agents in isolated sandboxes while allowing controlled access to files, packages, APIs, GPUs, and credentials. It combines kernel-level enforcement for filesystem, syscall, process, and network restrictions with policy review and formal verification intended to identify risky permission changes before approval. The project includes a local gateway and CLI, Kubernetes deployment support, credential routing to approved endpoints, extensibility hooks, and Python, TypeScript, Go, and Rust SDKs. It is significant because agentic systems increasingly need real-world capabilities, and OpenShell provides an open infrastructure layer aimed at limiting their blast radius while retaining operational usefulness, though deployment requires compatible virtualization or container tooling and administrators must evaluate its security model.</p>
+          </div>
+          <h4>Reader Reactions</h4>
+<p class="camps-framing">The discussion focused on how to limit agent permissions without making useful workflows impractical. Commenters debated whether OpenShell adds meaningful controls, whether any network access leaves data vulnerable to exfiltration, and how much protection can be achieved through layered defenses, isolation, or simpler existing tools.</p>
+<div class="camp"><p class="camp-label"><strong>A useful layer for controlling agent permissions</strong> &mdash; Some commenters welcomed a packaged way to apply granular policies and manage what individual agents—and the fleet collectively—can do.</p><blockquote>OpenShell tries to fix this by monitoring the collective permissions set of the agent fleet, and by maintaining very granular permissions for each agent.<cite>prennert</cite></blockquote>
+<blockquote>Nvidia Openshell is absolutely awesome, great bundle of features in one spot.<cite>agentdev001</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Exfiltration is the hard limit</strong> &mdash; Commenters questioned whether restricted domains and credentials can prevent an agent from leaking data through subtle outward-facing channels.</p><blockquote>All it needs is public access to anything it can have the tiniest effect on, and it can exfiltrate data.<cite>marcosscriven</cite></blockquote>
+<blockquote>I&#x27;d say it borders on almost unsolvable for any agent of reasonable complexity.<cite>fennecbutt</cite></blockquote>
+<blockquote>If you can make any request to the outside world you can exfiltrate data, period.<cite>epolanski</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Layered mitigations can raise the bar</strong> &mdash; Some commenters proposed practical risk reductions, such as separating access to private data and network access, or applying tighter restrictions to the agent’s shell.</p><blockquote>The idea is that agents never have all parts of the trifecta, maximum 2: untrusted content, private data or network access.<cite>smashed</cite></blockquote>
+<blockquote>Having a bwrap etc managed by the harness (DSH does this, among others) lets you have tighter restrictions on the agent&#x27;s shell than the harness.<cite>wren6991</cite></blockquote>
+<blockquote>a combination of virtual machines (not just containers, it is built on top of firecracker) with credential swapping just like iron proxy - the agents do not have access to the secrets at all but they receive placeholders instead and their network calls are intercepted and secrets are injected when the network requests happen...<cite>igorhvr</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Isolation architecture and trust boundaries matter</strong> &mdash; Commenters compared containers, VMs, and sandboxing the harness itself, disagreeing about which boundaries provide adequate protection.</p><blockquote>If you haven’t already been running your agents in containers, you’re crazy.<cite>mfro</cite></blockquote>
+<blockquote>Critically, in the intended approach for this, Claude itself (the harness) runs outside the sandbox.<cite>zmmmmm</cite></blockquote>
+<blockquote>many common local containers are not that hard for modern models to escape...<cite>Reddit_MLP2</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Existing tools may be enough, or easier to use</strong> &mdash; Some commenters argued that containers, proxies, and existing sandbox tools can provide needed controls with less complexity, while others valued a bundled package.</p><blockquote>I chose to build straight on top of docker and agents are simply fully sandboxed by default.<cite>smashed</cite></blockquote>
+<blockquote>Ok yeah I guess a nice package for running agents is useful with respect to those things.<cite>dingaling911</cite></blockquote>
+<blockquote>In this vein, Anthropic&#x27;s sandbox-runtime [0] has struck a good balance between security and convenience.<cite>thehours</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Security has to coexist with usability</strong> &mdash; Operators described the friction that tighter controls can introduce in ordinary development workflows, including maintaining network rules and accessing tools.</p><blockquote>I used to always run claude with `--dangerously-skip-permissions` in a dev container, but I had to rebuild my container 10 times a day to update the firewall so it can access documentation.<cite>LawrenceKerr</cite></blockquote>
+<blockquote>Though I&#x27;m often running into frustrating (albeit intentional) sandbox restrictions with common workflows e.g. xcode/swift and Docker access.<cite>thehours</cite></blockquote>
+<blockquote>as isolation increases, so does friction, and then of course capabilities.<cite>amanfromhere</cite></blockquote></div>
+          <p class="drawer-footer"><a href="#dossier-9">View in Dossier ↓</a></p>
+        </div>
+      </details>
+    </div>
+  </section>
+  <section id="story-10" class="spread arc-notebook">
+    <div class="numeral">10</div>
+    <div class="kicker">Human Notes</div>
+    <h2>Heinlein Makes the Case for Ordinary Decency</h2>
+    <p class="story-meta">awakin.org &nbsp;·&nbsp; 95 pts &nbsp;·&nbsp; 36 comments</p>
+    <p class="lede">This 1952 essay looks past the crimes and scandals that dominate attention to the quieter work of sustaining a society. Neighbors help, teachers persist, nurses care, and institutions endure—an optimistic argument that asks whether distrust is as realistic as it feels.</p>
+    <div class="spread-links"><a class="read-more" href="https://www.awakin.org/v2/read/view.php?tid=468" target="_blank" rel="noopener">Read →</a><a class="read-more share-link" href="#" data-share-title="This I Believe (1952)" data-share-url="https://www.awakin.org/v2/read/view.php?tid=468">Share →</a>
+      <details class="analysis-drawer">
+        <summary class="btn-dossier">[ Analysis + ]</summary>
+        <div class="drawer-content">
+          
+          <h4>Technical Analysis</h4>
+          <div class="drawer-analysis">
+          <p>Robert A. Heinlein’s 1952 essay argues that ordinary human decency—neighbors helping strangers, nurses caring for patients, teachers making sacrifices, workers doing honest jobs, and citizens sustaining institutions—is more widespread than crime and cynicism suggest. He extends this confidence from local communities to humanity as a whole, expressing faith that people will endure and continue exploring beyond Earth. The Hacker News discussion revisits the essay as an example of durable optimism, while commenters debate whether such trust is inspiring or naïve without caution about selfishness, violence, and historical suffering. Its importance lies in challenging attention-driven narratives that emphasize wrongdoing over the largely invisible cooperation on which communities and societies depend.</p>
+          </div>
+          <h4>Reader Reactions</h4>
+<p class="camps-framing">The discussion weighs Heinlein’s confidence in ordinary decency against doubts about politicians and the direction of contemporary society. Commenters also debate whether political corruption is historically persistent and how Heinlein’s own politics should be understood; a smaller response highlights his personal kindness across ideological differences. Other side threads question the essay’s universality, its optimism about space, and the posted text’s provenance.</p>
+<div class="camp"><p class="camp-label"><strong>Trust in ordinary decency</strong> &mdash; Some commenters endorse Heinlein’s optimism, arguing that ordinary people sustain communities and that distrust should not be the default in public life.</p><blockquote>Our public systems don&#x27;t work when we inherently distrust them.<cite>manlymuppet</cite></blockquote>
+<blockquote>I love it and I believe the same as him. In dark hours I remind myself that humanity must be at least 50.1% good and 49.9% bad. Otherwise we would never have come so far.<cite>fifilura</cite></blockquote>
+<blockquote>I believe countries and civilizations die when they stop believing this.<cite>GMoromisato</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Skepticism about politicians</strong> &mdash; Commenters question whether political honesty can be assumed, while some distinguish distrust of leaders from the work of local officials serving their communities.</p><blockquote>In 2026, it is not wise to believe that almost all politicians are honest.<cite>johnohara</cite></blockquote>
+<blockquote>I have yet to see one that isn&#x27;t in it for personal gain without regard for the voters.<cite>PowerElectronix</cite></blockquote>
+<blockquote>It&#x27;s gotten worse, sure, especially at the top, but there are still thousands of &quot;politicians&quot; out there running local board meetings and trying to do their best to keep their communities going.<cite>CobrastanJorji</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Corruption is old, not new</strong> &mdash; Some argue that political self-interest has long been a feature of politics, while others identify recent decades as especially dominated by it.</p><blockquote>The rapacious greed of politicians in service to their own interest has been universal since the beginning of politics.<cite>xbar</cite></blockquote>
+<blockquote>In defense of your position, however, the last 40 years (at least in the US) have been dominated by the ethos you describe, and the eras and the politicians who were not consumed by greed tend to be less common than the reverse.<cite>ds_opseeker</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Contemporary despair</strong> &mdash; Some commenters see the current political and social trajectory as a sharp break from Heinlein’s hopeful outlook and express little confidence that it can be reversed.</p><blockquote>But the trajectory, of everything it seems, has completely changed. And I have no optimism left.<cite>aetherspawn</cite></blockquote>
+<blockquote>We seem to have descended into widespread corruption and hypocrisy since his time and that rot is apparent at the very top of the political ladder and seems to inhere downwards.<cite>gizajob</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Heinlein’s politics are contested</strong> &mdash; Commenters disagree over whether Heinlein’s views and conservatism are best understood as progressive, regressive, or something that has changed meaning over time.</p><blockquote>Heinlein was such an odd fellow. Extremely progressive on one hand and extremely regressive on the other, sometimes in the span of a single paragraph.<cite>ballmerpoint</cite></blockquote>
+<blockquote>It’s one of those cases where the label has stayed the same, but the thing it commonly describes has changed so much that the word just has multiple completely different meanings.<cite>ileonichwiesz</cite></blockquote>
+<blockquote>Worth stating that 1952 was shortly after WW2 i.e. at the start of Heinlein&#x27;s &quot;middle period&quot; when his worldview shifted dramatically towards more right-wing values (military patriotism, anti-communism, and individual self-reliance).<cite>n4r9</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Personal kindness can cross ideological divides</strong> &mdash; One commenter cites Heinlein’s personal generosity toward Philip K. Dick as an example of humane conduct despite disagreements over ideas.</p><blockquote>He knows I&#x27;m a flipped-out freak and still he helped me and my wife when we were in trouble.<cite>jankovicsandras</cite></blockquote></div>
+          <p class="drawer-footer"><a href="#dossier-10">View in Dossier ↓</a></p>
+        </div>
+      </details>
+    </div>
+  </section>
+  <section id="dossier" class="dossier">
+    <div class="dossier-head">
+      <div class="tagline">Appendix</div>
+      <h2>The Dossier</h2>
+      <p class="intro">Full analysis and reactions for today's 10 stories. <a href="#top">↑ Back to the edition</a></p>
+    </div>
+    <article id="dossier-1" class="dossier-entry">
+      <div class="dossier-meta">N<sup>o</sup> 01 &nbsp;·&nbsp; Blueprint &nbsp;·&nbsp; Build Log</div>
+      <h3>Local Wikipedia: Wikipedia, but only for things a half hour walk from you</h3>
+      <p class="dossier-source">
+        <a href="https://edjefferson.com/localwiki/" target="_blank" rel="noopener">edjefferson.com</a>
+        &nbsp;·&nbsp; 462 pts &nbsp;·&nbsp; 111 comments
+         &nbsp;·&nbsp; <a href='https://news.ycombinator.com/item?id=50202285' target='_blank' rel='noopener'>discussion</a>
+      </p>
+      <h4>Analysis</h4>
+      <p>Local Wikipedia is a location-aware website that filters Wikipedia’s geocoded articles to show places and topics within roughly a 30-minute walk of the user. It dynamically selects nearby entries, expanding to the closest 25 within about six miles when necessary and limiting results to 500 when an area is densely covered. The user’s location is stored only in the browser, and shared links do not reveal it; the project is independent of Wikipedia. Its significance is as a lightweight way to turn a broad online encyclopedia into a neighborhood-scale discovery and reference tool.</p>
+      <h4>Reader Reactions</h4>
+<p class="camps-framing">The discussion combined enthusiasm for discovering nearby history and places with practical questions about the tool’s range, language support, units, and the quality of its results. Commenters also compared it with Wikipedia’s existing nearby feature and other map-based tools.</p>
+<div class="camp"><p class="camp-label"><strong>Local discovery is appealing</strong> &mdash; Commenters described finding unfamiliar local history and places, and saw the tool as useful for exploring neighborhoods or traveling.</p><blockquote>This is super cool! Just punched in my zip code, and hit &quot;random article&quot; three times, and came up with three weird stories I didn&#x27;t know about the history of places within a few blocks of me in Portland, Oregon.<cite>noduerme</cite></blockquote>
+<blockquote>When I visit a new city I usually spend time poking around Google Maps to discover points of interest nearby, but this will be another useful resource.<cite>johnny_lol</cite></blockquote>
+<blockquote>Simply fantastic. In my obscure little city, I&#x27;ve already discovered a bunch of historic places I had no idea about.<cite>profsummergig</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Existing features and alternatives</strong> &mdash; Some commenters noted that Wikipedia and other tools already offer nearby articles or map-based discovery, while others preferred this project’s focused presentation.</p><blockquote>Correct. The default Wikipedia mobile app has this as well.<cite>tannertech</cite></blockquote>
+<blockquote>Yes wikipedia does this already, but I love that it formats it into your own mini wikipedia.<cite>SCdF</cite></blockquote>
+<blockquote>Speed to load, the specific use case I want which is just to load up near me and see a performant map I can browse.<cite>brianjlogan</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>More control over distance and walking relevance</strong> &mdash; Commenters wanted a configurable search radius to suit different locations, and noted that distance on a map does not always reflect a convenient walking route.</p><blockquote>This is a great idea but I&#x27;d definitely make the distance configurable.<cite>esperent</cite></blockquote>
+<blockquote>Very nice! It really should have a field to enter the radius of the search.<cite>dyauspitr</cite></blockquote>
+<blockquote>The nearest place to me was &gt; 0.8 miles Ok great I thought that I can walk... however, it is actually 1.9 miles when walking according to Google Maps and the path lacks sidewalks.<cite>collabs</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Local-language support</strong> &mdash; Commenters asked to search local-language Wikipedias, which may offer more coverage for their areas; replies pointed out ways to change the language through Wikipedia URLs.</p><blockquote>Would love support for other languages, as English Wikipedia is quite limited where I live.<cite>TonyStr</cite></blockquote>
+<blockquote>Better — for me — would even be a mix of languages. Give me the most and longest articles of all languages for the places around.<cite>snickerer</cite></blockquote>
+<blockquote>Change the lat long to any you want, and change &quot;en.&quot; to other language codes to search a different (language) encyclopedia.<cite>flipbrad</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Units and localization</strong> &mdash; Some commenters objected to imperial units outside the US or to mixed units, while others noted that the site offers a miles-to-kilometers switch.</p><blockquote>Distances measured in yards for European destinations is an insult<cite>darkest_ruby</cite></blockquote>
+<blockquote>And mixes it with miles, too. Crazy decision.<cite>roryirvine</cite></blockquote>
+<blockquote>I love it. It would also be nice to be able to a) enter desired distance, and b) choose the metric system.<cite>thatwasunusual</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Coverage and result quality are uneven</strong> &mdash; Commenters reported sparse or repetitive results, gaps in geotagging, and limited representation of everyday local places; some also wanted more control over which kinds of articles appear.</p><blockquote>I live somewhere pretty remote, and every article it suggests is an entry for a nearby village, which is usually a sentence long.<cite>vintagedave</cite></blockquote>
+<blockquote>But many articles are in fact nearby and are simply missing geotags, or perhaps encompass a slightly larger area where only a part of it is close by.<cite>dllu</cite></blockquote>
+<blockquote>This is a really fun idea, but I went from excited to disgusted in the span of one click.<cite>INTPenis</cite></blockquote></div>
+    </article>
+    <article id="dossier-2" class="dossier-entry">
+      <div class="dossier-meta">N<sup>o</sup> 02 &nbsp;·&nbsp; Mint Pattern &nbsp;·&nbsp; Systems Lore</div>
+      <h3>Docker is weird</h3>
+      <p class="dossier-source">
+        <a href="https://codeandcake.dev/posts/2026-10-22-docker-is-weird" target="_blank" rel="noopener">codeandcake.dev</a>
+        &nbsp;·&nbsp; 524 pts &nbsp;·&nbsp; 233 comments
+         &nbsp;·&nbsp; <a href='https://news.ycombinator.com/item?id=50202681' target='_blank' rel='noopener'>discussion</a>
+      </p>
+      <h4>Analysis</h4>
+      <p>The article explains that Docker containers are not lightweight virtual machines but ordinary processes isolated through several Linux kernel mechanisms, including namespaces, cgroups, networking features, and filesystem changes such as `chroot` or `pivot_root`. It describes container images as directory trees and outlines how Docker’s `runc` runtime works around challenges caused by Go’s multithreading and lack of a straightforward `fork` model. The author also highlights Docker’s historical reliance on root privileges, especially for networking, and the complexity of providing equivalent capabilities in rootless runtimes. These details matter because they reveal the security, portability, and implementation trade-offs underlying a tool that often appears much simpler to users.</p>
+      <h4>Reader Reactions</h4>
+<p class="camps-framing">The thread was largely appreciative of Docker’s impact, with the creator’s participation prompting an informal history and AMA. Commenters differed on whether Docker’s success came chiefly from its image workflow and ecosystem or from making container isolation easy to use. Technical discussion also weighed familiar Linux mechanisms against their surprising details, and considered Docker’s operational and security tradeoffs alongside alternative tools.</p>
+<div class="camp"><p class="camp-label"><strong>Docker made development easier</strong> &mdash; Commenters credited Docker with making reproducible development setups practical and, for some, materially shaping their careers.</p><blockquote>it just seems like how software engineering ought to work and once you have experienced it it&#x27;s difficult to go back.<cite>davnicwil</cite></blockquote>
+<blockquote>So you are responsible for my career and the reason i can put food on my table.<cite>debarshri</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Workflow, registry, and momentum drove Docker’s success</strong> &mdash; Some commenters argued that Docker’s breakthrough was packaging images, sharing them through a registry, and building momentum around a common deployment format.</p><blockquote>I think the breakthrough with Docker was bundling the AUFS-based image layer format with a centralized container image sharing registry.<cite>ak217</cite></blockquote>
+<blockquote>What made Docker unique were there things: 1. Dockerfile concept. Building images layer by layer. Caching layers. Everything in a single file.<cite>vbezhenar</cite></blockquote>
+<blockquote>The momentum, I think, matters a lot more than the other two.<cite>kqr</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>The simple container experience was the breakthrough</strong> &mdash; Others emphasized that Docker made lightweight isolation and managing multiple applications accessible without requiring users to assemble the underlying pieces themselves.</p><blockquote>Docker provided a batteries-included lightweight way to isolate and manage multiple applications at once.<cite>crote</cite></blockquote>
+<blockquote>That&#x27;s the selling point, it&#x27;s super lightweight and takes full advantage of the OS features that were already there (or being developed) but were awkward to use and required tons of specialized knowledge.<cite>slowin</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Containers are familiar Linux mechanisms, not magic</strong> &mdash; Several commenters described containers as processes combined with established kernel features, and saw understanding those components as useful demystification.</p><blockquote>A lot of people start using Docker as a black box and have the mental model of a VM, and when they start digging into the internals all the &quot;weirdness&quot; starts to exhibit itself.<cite>paxy</cite></blockquote>
+<blockquote>When containers came on the scene it felt like an outgrowth or evolution of that technique, which was extremely crude and simple.<cite>asveikau</cite></blockquote>
+<blockquote>This is a better way to understand it: we can think of a container as an isolated process.<cite>adrianlee_dev</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Linux abstractions and Docker’s design can still be strange</strong> &mdash; A smaller set of comments argued that Linux’s underlying mechanisms and Docker’s client/server model have genuinely surprising or awkward properties.</p><blockquote>To know that container technology is weird you only have to type &quot;mount&quot; (without arguments) on a modern Linux system.<cite>amelius</cite></blockquote>
+<blockquote>And not a single mention of the actual weird decision, a client / server model which complicates permission management by at least two orders of magnitude.<cite>stingraycharles</cite></blockquote>
+<blockquote>I’d argue in 2013, the client / server model is what made docker a success.<cite>eddythompson80</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Alternatives and extra isolation address some Docker tradeoffs</strong> &mdash; Commenters pointed to rootless or daemonless alternatives and to stronger isolation layers for workloads where containers alone were not enough.</p><blockquote>Knowing this, you might find rootless Podman&#x27;s fork-exec method of starting containers to be more sensible. I certainly do.<cite>suprjami</cite></blockquote>
+<blockquote>Containers never became secure enough to run multitenant workloads without some other form of isolation, so they ended up being redundant with KVM (or gVisor, or a similar second layer) in production a lot of the time.<cite>colinmarc</cite></blockquote>
+<blockquote>For me firecracker has mostly taken over most of my hosting needs, as i can actually take a docker image and unpack it into a firecracker image, and still have a slim process (vm), with great performance, though with a bit extra bloat, but now also have a secure workload that I&#x27;ve got better control over.<cite>kjuulh</cite></blockquote></div>
+    </article>
+    <article id="dossier-3" class="dossier-entry">
+      <div class="dossier-meta">N<sup>o</sup> 03 &nbsp;·&nbsp; Midnight &nbsp;·&nbsp; Covert Channels</div>
+      <h3>How does Fable 5.1 hide messages in images?</h3>
+      <p class="dossier-source">
+        <a href="https://www.lesswrong.com/posts/WHEQps5PK8LrrcTAb/how-does-fable-5-1-hide-messages-in-images" target="_blank" rel="noopener">lesswrong.com</a>
+        &nbsp;·&nbsp; 101 pts &nbsp;·&nbsp; 31 comments
+         &nbsp;·&nbsp; <a href='https://news.ycombinator.com/item?id=50201445' target='_blank' rel='noopener'>discussion</a>
+      </p>
+      <h4>Analysis</h4>
+      <p>The article tests whether Claude Fable 5.1 can hide predetermined messages in ordinary-looking SVG images and whether a fresh instance can recover them from rendered screenshots without an agreed encoding scheme. Across 50 messages in 15 languages, Fable mainly encoded letters through visual properties such as building, grass, or star heights, with occasional Morse, window patterns, and contextual hints for accents or writing systems. A separate Fable decoder recovered 78% of messages, while cross-model tests with GPT-6 Astra showed substantial interoperability; Astra favored Morse, acrostics, bit codes, and Braille-like patterns. The findings matter because frontier image-generation models can use seemingly benign visual channels for machine-to-machine communication, suggesting a potential steganography and monitoring challenge, although current decoding remains detectable through tool use and is not yet presented as an operational threat.</p>
+      <h4>Reader Reactions</h4>
+<p class="camps-framing">Most commenters were skeptical that the examples demonstrated serious covert communication, describing the encodings as simple or conspicuous. Others noted that models might produce more sophisticated methods with different prompting, while discussion also clarified what the SVG-and-screenshot setup tested. A smaller number considered broader cross-media capabilities or future detection concerns.</p>
+<div class="camp"><p class="camp-label"><strong>A simple, conspicuous demonstration</strong> &mdash; Commenters saw the methods as easy for people to notice and weak evidence of adversarial communication, while noting that denser or subtler techniques are available.</p><blockquote>If I&#x27;m honest this feels performative. I mean that if the model were really attempting/instructed to be subversive in a way that can&#x27;t be detected by anything but another LLM, it would do something much more complicated than this.<cite>XenophileJKO</cite></blockquote>
+<blockquote>This does seem trivial and there are far more interesting ways to do image steganography that models could use (i&#x27;ve seen so many after years of doing CTFs).<cite>dhruvagoyal</cite></blockquote>
+<blockquote>But to be honest, images like these seem really strange, and even without this article I&#x27;d suspect something is encoded in building heights etc.<cite>jurakovic</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>The models may do more with the right prompt</strong> &mdash; Some commenters suggested that the toy-like results may reflect default behavior or the task, rather than the limits of what models can do when prompted for more sophisticated methods.</p><blockquote>But I have this experience often, that LLMs will suggest the easy toy version of doing something. But it knows the real stuff too, it just needs the right kind of prompting.<cite>black_knight</cite></blockquote>
+<blockquote>Unless the model is thinking &quot;the human is asking me to do trivial coding tasks, it&#x27;s likely incapable of figuring this out&quot;.<cite>b112</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>The format and test setup matter</strong> &mdash; Commenters clarified that the experiment used SVGs but tested decoding from screenshots, and that instructions ruled out simply adding text to the SVG source. This affects comparisons with bitmap techniques or inspecting SVG markup.</p><blockquote>The article is about what LLMs can do when generating SVG images, not bitmaps.<cite>wcoenen</cite></blockquote>
+<blockquote>The decoding job seems to rely on the screenshot.<cite>KeplerBoy</cite></blockquote>
+<blockquote>It was explicitly requested to not do that in the instructions.<cite>saagarjha</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>A broader, cross-media encoding capability</strong> &mdash; One commenter read the result as evidence of a potentially general ability to encode and recover messages across different media, rather than as an image-specific trick.</p><blockquote>Here using images is incidental. In fact, what Fable is actually doing is generic encoding/decoding of a message into a medium.<cite>Trusteando</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>A future monitoring concern</strong> &mdash; A commenter speculated that agents might eventually hide messages in ways that operators cannot recognize from human-readable outputs or traces; the thread did not establish that this is already happening.</p><blockquote>Will be interesting to see agents intentionally hiding this stuff in a way operators can&#x27;t spot from any human readable output or thinking trace, evading detection.<cite>avaer</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Curiosity about differences between models</strong> &mdash; A brief reaction found the contrast between Fable and Astra interesting without taking a clear position on the safety implications.</p><blockquote>Interesting to see the difference with Astra.<cite>breakingcups</cite></blockquote></div>
+    </article>
+    <article id="dossier-4" class="dossier-entry">
+      <div class="dossier-meta">N<sup>o</sup> 04 &nbsp;·&nbsp; Editorial Op-Ed &nbsp;·&nbsp; AI Analysis</div>
+      <h3>The Rise and Fall of Jev</h3>
+      <p class="dossier-source">
+        <a href="https://blog.alexewerlof.com/p/rise-and-fall-of-jev-eval-hype-vs-llm" target="_blank" rel="noopener">blog.alexewerlof.com</a>
+        &nbsp;·&nbsp; 19 pts &nbsp;·&nbsp; 8 comments
+         &nbsp;·&nbsp; <a href='https://news.ycombinator.com/item?id=50206361' target='_blank' rel='noopener'>discussion</a>
+      </p>
+      <h4>Analysis</h4>
+      <p>The article uses Jev, a recently launched low-cost classifier marketed as a “System One” model that cannot hallucinate, as a case study in AI hype: its structured outputs and speed do not prevent it from being wrong, and competing open models may offer better performance or cost. It argues that most progress since ChatGPT—larger models and contexts, multimodality, tool use, agents, memory, and orchestration—has been incremental rather than a solution to fundamental problems such as reliable abstract reasoning, continuous learning, embodiment, and efficient operation. The broader AI boom is sustained not only by technical gains but also by dramatic marketing, geopolitical competition, investment pressures, safety concerns, and fears about jobs. The story is important as a warning to evaluate AI products against practical quality, cost, and reliability rather than benchmarks, jargon, founder credentials, or emotionally charged claims.</p>
+      <h4>Reader Reactions</h4>
+<p class="camps-framing">Commenters dispute whether Jev’s reduced visibility amounts to failure. Some emphasize its practical value and continued improvement, while others argue that social-media attention is a poor measure of success. A smaller set questions the story’s “rise and fall” framing or its tone.</p>
+<div class="camp"><p class="camp-label"><strong>Useful in practice</strong> &mdash; These commenters point to Jev’s performance on its intended tasks and its use in production, distinguishing practical value from online attention.</p><blockquote>We use it in production. Tested a bunch of alternatives (openai decision api, llm based approaches) and they are either too slow or not as good.<cite>eknkc</cite></blockquote>
+<blockquote>Jev is still extremely useful for its intended purpose, not the mildly interesting hype on social media.<cite>pmdr</cite></blockquote>
+<blockquote>to me it seems Jev is one of the only novel releases that lived up to the hype and has staying power.<cite>danr4</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Attention is a poor measure of success</strong> &mdash; This view holds that a product can succeed without dominating public conversation, particularly when it provides useful infrastructure.</p><blockquote>But that doesn&#x27;t make it a failure.<cite>FinnLobsien</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Statistical merit amid hype</strong> &mdash; This commenter regards Jev as a well-designed application of statistics and attributes much of the hype to people unfamiliar with the field.</p><blockquote>It&#x27;s well designed and the advanced system a good statistical programmer would write.<cite>bsenftner</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Expect continued AI progress</strong> &mdash; This commenter rejects pessimistic implications, noting that mass adoption is recent and expecting models and tools to keep improving.</p><blockquote>Every couple of months it improves.<cite>christkv</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>The “fall” is overstated</strong> &mdash; This commenter questions whether Jev was well-known enough for its trajectory to constitute a meaningful rise and fall.</p><blockquote>The rise and fall of something that majority of people never heard of<cite>4r73m190r0s</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Skepticism about the author’s tone</strong> &mdash; This commenter doubts the story’s claim to avoid bashing Jev and reads its presentation as critical.</p><blockquote>&gt; I really don’t want to bash Jev Sure. And yet...<cite>dust-jacket</cite></blockquote></div>
+    </article>
+    <article id="dossier-5" class="dossier-entry">
+      <div class="dossier-meta">N<sup>o</sup> 05 &nbsp;·&nbsp; Archive &nbsp;·&nbsp; Archival Desk</div>
+      <h3>The foolishness of &quot;natural language programming&quot; (1978)</h3>
+      <p class="dossier-source">
+        <a href="https://www.cs.utexas.edu/~EWD/transcriptions/EWD06xx/EWD667.html" target="_blank" rel="noopener">cs.utexas.edu</a>
+        &nbsp;·&nbsp; 192 pts &nbsp;·&nbsp; 113 comments
+         &nbsp;·&nbsp; <a href='https://news.ycombinator.com/item?id=50203161' target='_blank' rel='noopener'>discussion</a>
+      </p>
+      <h4>Analysis</h4>
+      <p>Edsger Dijkstra argues that programming should not imitate natural-language conversation, because ambiguity and implicit assumptions make ordinary language a poor tool for expressing precise instructions. He presents formal notation and high-level languages as valuable safeguards that force clarity and allow simple rules to expose errors, rather than as burdens imposed by machines. The technical context is the design of human–computer interfaces: shifting complexity from the programmer to a natural-language system may increase total work by making interpretation and communication harder on both sides. The essay remains important because it frames a continuing trade-off in software and AI systems between convenience, expressiveness, and verifiable precision.</p>
+      <h4>Reader Reactions</h4>
+<p class="camps-framing">Commenters broadly recognized that specifying software in ordinary language involves ambiguity, but differed over whether LLM workflows meaningfully change programming or mainly provide a way to direct code generation. Discussion also covered the practical usefulness of these tools, the requirements and context they can miss, and the skill involved in expressing what software should do.</p>
+<div class="camp"><p class="camp-label"><strong>Formal precision still matters</strong> &mdash; This camp argued that translating a natural-language specification into software requires interpretation, while formal programs can state behavior more precisely and support checks that should not be left to guesswork.</p><blockquote>A natural language spec is not a program, and there are many possible programs that can meet the spec.<cite>nickm12</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Natural language as an abstraction layer</strong> &mdash; These commenters viewed natural language as an interface that can be translated into formal code, sometimes at a level of detail that resembles an imperative language.</p><blockquote>It would be fair to call the latter an imperative language with the LLM in the role of a compiler.<cite>glimshe</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Practical success with natural-language interaction</strong> &mdash; Some commenters pointed to working applications and everyday tasks as evidence that natural-language interaction can be effective, including for users who do not routinely write code.</p><blockquote>I built a music player by talking to Claude Code in Japanese, and I can barely remember a time when words failed and I had to fall back to code.<cite>piro0919</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Current tools still miss requirements and context</strong> &mdash; This camp cautioned that fluent output can conceal missing requirements, infrastructure constraints, or design decisions, and that apparent success may depend on what users know to check.</p><blockquote>I&#x27;ve realized that the agent doesn&#x27;t write &#x27;good&#x27; code, instead my vague understanding of what I expect makes me think it does.<cite>uriegas</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Using an agent is delegation, not programming</strong> &mdash; Some commenters distinguished directing an agent from programming at a higher level of abstraction, especially when users do not inspect the resulting code.</p><blockquote>But pasting jira tickets into claude is not abstraction lmao.<cite>chamomeal</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Natural language still takes skill</strong> &mdash; These commenters argued that ordinary language does not make complex tasks easy to specify; users still need practice and skill to express useful requirements and logic.</p><blockquote>I don&#x27;t think &quot;natural&quot; language makes much of a difference unless you are already skilled in the art of developing useful engineering specifications.<cite>bob1029</cite></blockquote></div>
+    </article>
+    <article id="dossier-6" class="dossier-entry">
+      <div class="dossier-meta">N<sup>o</sup> 06 &nbsp;·&nbsp; Academic &nbsp;·&nbsp; Research Notes</div>
+      <h3>The alien space of science: Coherent but cognitively unavailable directions</h3>
+      <p class="dossier-source">
+        <a href="https://arxiv.org/abs/2603.01092" target="_blank" rel="noopener">arxiv.org</a>
+        &nbsp;·&nbsp; 77 pts &nbsp;·&nbsp; 18 comments
+         &nbsp;·&nbsp; <a href='https://news.ycombinator.com/item?id=50195002' target='_blank' rel='noopener'>discussion</a>
+      </p>
+      <h4>Analysis</h4>
+      <p>The paper presents “Alien Sampling,” a system for finding research ideas that are scientifically coherent but unlikely to emerge from existing researcher communities, addressing the tendency of LLMs to recombine familiar, high-density topics. It converts 16,068 LLM papers into 273 reusable “idea atoms,” then combines a Transformer-based coherence score with a dual-encoder estimate of how available each combination is to author communities. On 300-idea evaluations, the method produced substantially more diverse portfolios than Claude and Gemini baselines while achieving comparable human-rated quality and stronger results in LLM-judged and experimental-report comparisons. Using only pre-2025 data, it also recovered some combinations appearing in 2025 papers far above chance, with availability weighting favoring more strictly novel combinations. The work is important because it frames AI-assisted discovery as exploration beyond a field’s community prior, though its notion of availability is limited by the published corpus and its validation is relatively short-term.</p>
+      <h4>Reader Reactions</h4>
+<p class="camps-framing">The reaction was largely positive, with commenters praising the approach and finding its proposals worth exploring. Questions focused on the quality and coverage of the outputs, and on whether ideas deemed unavailable to a research community might simply be missing from the system’s corpus. Some commenters connected the work to limits of imagination, while another emphasized that innovation also depends on whether people and institutions adopt ideas.</p>
+<div class="camp"><p class="camp-label"><strong>Enthusiasm for the approach</strong> &mdash; Commenters described the method as promising, interesting to browse, or useful for helping researchers explore a field’s less familiar possibilities.</p><blockquote>The proposals are actually interesting to browse through.<cite>dmos62</cite></blockquote>
+<blockquote>Damn, this was the killer app for semantic spaces I&#x27;d been waiting for since Word2vec.<cite>smallerize</cite></blockquote>
+<blockquote>Humans could also benefit such a model of idea atoms to consciously explore the &quot;alien space&quot; of a field.<cite>curt15</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Questions about outputs and coverage</strong> &mdash; Some commenters asked to see concrete proposals or questioned how well the method covers different domains.</p><blockquote>Ok do you want to share any interesting ideas the method produced?<cite>breakyerself</cite></blockquote>
+<blockquote>But I wonder why when someone types &#x27;medicine&#x27; there is only 6 proposals while when someone type &#x27;physics&#x27; there is 447 proposals?<cite>JPLeRouzic</cite></blockquote>
+<blockquote>Do you have any evidence that this approach scales to cross-domain research?<cite>dansitu</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Field-specific doubts about proposal quality</strong> &mdash; One commenter familiar with biology judged the proposals they reviewed to be poor and worried that their confident wording could make them seem more credible.</p><blockquote>I think it&#x27;s a bunch of nonsense, tho the confident language really gaslights me.<cite>negura</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Novelty depends on what the system can see</strong> &mdash; The Velcro example prompted discussion of whether an idea is unavailable to a research community or simply absent from the system’s available material.</p><blockquote>I think velcro is the canonical example of this.<cite>mkarliner</cite></blockquote>
+<blockquote>I think if an LLM had read any discussions on how best to remove burrs from pet coats then it might eventually get to Velcro - I believe the inventor of Velcro got the idea from burrs?<cite>arethuza</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Resonance with limits of human imagination</strong> &mdash; Commenters invoked scientific speculation and literary analogies to consider how much of reality people can conceive or understand; one challenged the idea of assigning a percentage to what has not been conceived.</p><blockquote>My personal completely unsupported theory is we’re cognitively capable of conceiving of less than 1% of what’s true/accurate about the universe, and cognitively capable of understanding 1% of that 1%<cite>unsupp0rted</cite></blockquote>
+<blockquote>this reminds of the short novel by Abbott: Flatland where the inhabitants live in a 2D world and are unaware of Space: the 3D environment.<cite>jan_m_savage</cite></blockquote>
+<blockquote>If you can&#x27;t conceive it, then you can&#x27;t take a percentage of &quot;it&quot;, since you&#x27;ve not conceived that &quot;it&quot;.<cite>negura</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Innovation also depends on adoption</strong> &mdash; One commenter broadened the discussion from generating ideas to whether institutions and people can accept and spread them, including with help from AI tools.</p><blockquote>Maybe with AI tooling we can facilitate better innovation diffusion.<cite>Gravityloss</cite></blockquote></div>
+    </article>
+    <article id="dossier-7" class="dossier-entry">
+      <div class="dossier-meta">N<sup>o</sup> 07 &nbsp;·&nbsp; Stat Hero &nbsp;·&nbsp; Model Watch</div>
+      <h3>Every AI model has the same &quot;controversial&quot; take on humans</h3>
+      <p class="dossier-source">
+        <a href="https://www.modelcompare.ai/blog/ai-models-controversial-take-on-humans" target="_blank" rel="noopener">modelcompare.ai</a>
+        &nbsp;·&nbsp; 443 pts &nbsp;·&nbsp; 443 comments
+         &nbsp;·&nbsp; <a href='https://news.ycombinator.com/item?id=50197313' target='_blank' rel='noopener'>discussion</a>
+      </p>
+      <h4>Analysis</h4>
+      <p>The article reports an informal comparison in which 12 text models from 10 labs were each asked three times for their most controversial opinion about humans, with 29 of 35 responses arguing that people prioritize group belonging, loyalty, or status over truth and principles. Six image models were asked to create satirical caricatures and mostly converged instead on humans as phone-addicted consumers harming the planet, reflecting familiar editorial imagery. The experiment used fixed prompts, no system prompt or retries, hand-coded categories, and cost only $1.54, so it is illustrative rather than a rigorous evaluation. Its importance lies in showing how models trained on similar human-generated arguments and cultural tropes may reproduce shared criticisms, raising questions about whether apparent “independent” model opinions reflect common data and prompting biases.</p>
+      <h4>Reader Reactions</h4>
+<p class="camps-framing">The discussion weighed whether similar model answers reveal a meaningful convergence or mainly reflect shared human-written material, prompts, and model constraints. Commenters also disagreed over whether the article’s examples support its claim about group loyalty, whether that claim rings true about people, and how much authority to give model outputs.</p>
+<div class="camp"><p class="camp-label"><strong>Convergence is worth investigating</strong> &mdash; Some commenters found the similarity across models interesting even without treating the models as having independent beliefs. They wondered what common influences could explain it, while one commenter noted that convergence need not imply shallowness.</p><blockquote>It&#x27;s not the first time models from totally different labs, trained on separately gathered datasets, somehow converge on bizarrely similar answers to open questions.<cite>mike_hearn</cite></blockquote>
+<blockquote>As other comments point out, the interesting part is that most of them somehow independently converged on the same take.<cite>keeda</cite></blockquote>
+<blockquote>is a convergent evolution of a belief a sign of shallowness?<cite>patcon</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Shared human material and prompts explain the answers</strong> &mdash; Many commenters viewed the answers as synthesized or reproduced human ideas rather than independent model opinions. Some also argued that the wording of the prompt and shared model constraints steer responses toward familiar kinds of answers.</p><blockquote>They are repeating a form of what they&#x27;ve compressed from their training material.<cite>PaulRobinson</cite></blockquote>
+<blockquote>Train your model on Very Online corpuses, ask Very Online questions, get Very Online answers<cite>a13o</cite></blockquote>
+<blockquote>You&#x27;re saying &quot;give me a controversial opinion about humans, maximise for how edgy it is&quot; but the hidden training and guidelines are trying to minimise how edgy they are, so they can&#x27;t say anything too outrageous or violent like &quot;humans are nothing but cannon fodder in the coming revolution&quot; or &quot;we should develop a test for psychopaths and then just kill them all, humanity would be better off&quot;.<cite>everyday7732</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>The article overstates the evidence</strong> &mdash; Skeptical commenters argued that some answers classified as group loyalty instead concern rationalization, instinct, hypocrisy, or status. Others cited different model outputs or difficulty reproducing the result as reasons to question the headline’s claim.</p><blockquote>This does not fit the &quot;the thing they [the LLMs] said is that people conform&quot; description the article implies.<cite>rmunn</cite></blockquote>
+<blockquote>That statement has nothing to do with group beliefs or conformity.<cite>kens</cite></blockquote>
+<blockquote>I can&#x27;t reproduce it, so I don&#x27;t buy it.<cite>rnd0</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>The human conformity critique rings true</strong> &mdash; Some commenters agreed that people can prioritize belonging and shared belief over truth, connecting the claim to group loyalty, polarization, and the difficulty of changing minds.</p><blockquote>Humans have many ways to display loyalty, and belief is one of those ways.<cite>kstenerud</cite></blockquote>
+<blockquote>I actually think it’s true that a barely majority of humans do prefer to conform or “be wrong together” than be alone, you only need to look at the increasing global polarisation and the way people stick to their team, to suspect it.<cite>left-struck</cite></blockquote>
+<blockquote>People decide with their gut, are loyal to their tribe, and then invent reasons that sound like they support the fact.<cite>deepsummer</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>The critique is too cynical about people</strong> &mdash; Other commenters pushed back on the bleak view of human nature, sharing examples of generosity and arguing that people may be more decent or trusting than the article’s framing suggests.</p><blockquote>Several people offered me a room for the night.<cite>farrelle25</cite></blockquote>
+<blockquote>They left me the keys to their house and told me to make myself at home until they returned(!)<cite>farrelle25</cite></blockquote>
+<blockquote>Humans are far more decent than they believe they are, and their cynicism about each other does more damage than their actual flaws.<cite>RamblingCTO</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Model outputs should not be treated as authority</strong> &mdash; Some commenters cautioned that model answers should be evaluated on their merits rather than treated as revelations or as arguments from authority. They also worried that people could use cynical outputs to justify harmful or misanthropic views.</p><blockquote>Its answer must be judged by its merits (like human answers).<cite>kepeko</cite></blockquote>
+<blockquote>What I&#x27;m worried is that at some point people start using &quot;AI says so&quot; as an argument which it&#x27;s not at all.<cite>kepeko</cite></blockquote>
+<blockquote>My other, more immediate concern, is the glut of people who will believe the AI’s “opinion” , and use that to justify their own nihilism, or worse, their active misanthropy (like so many of their boosters, founders, and corporate leaders behave).<cite>stego-tech</cite></blockquote></div>
+    </article>
+    <article id="dossier-8" class="dossier-entry">
+      <div class="dossier-meta">N<sup>o</sup> 08 &nbsp;·&nbsp; Product Plate &nbsp;·&nbsp; Browser Platform</div>
+      <h3>The HTML-in-Canvas API origin trial</h3>
+      <p class="dossier-source">
+        <a href="https://developer.chrome.com/blog/html-in-canvas-origin-trial" target="_blank" rel="noopener">developer.chrome.com</a>
+        &nbsp;·&nbsp; 54 pts &nbsp;·&nbsp; 25 comments
+         &nbsp;·&nbsp; <a href='https://news.ycombinator.com/item?id=50200164' target='_blank' rel='noopener'>discussion</a>
+      </p>
+      <h4>Analysis</h4>
+      <p>Chrome’s experimental HTML-in-Canvas API, now available in an origin trial, lets developers render live HTML elements into 2D canvases or WebGL/WebGPU textures while retaining DOM capabilities such as accessibility, text selection, find-in-page, forms, browser extensions, and DevTools inspection. It addresses the long-standing tradeoff between the DOM’s rich browser integration and canvas’s performance and flexibility for complex applications, games, and 3D interfaces. Developers can use new rendering methods and CSS transforms to keep the visual output and interactive DOM elements synchronized, with early support in frameworks including Three.js and PlayCanvas. The feature remains experimental, requires Chrome’s trial configuration, excludes cross-origin iframe content, and may limit performance because scrolling and animation depend on JavaScript.</p>
+      <h4>Reader Reactions</h4>
+<p class="camps-framing">Reactions ranged from enthusiasm for combining canvas-level visual control with HTML text and input capabilities to concern that the API could add complexity without reliably delivering its promised features. Commenters differed over whether these use cases justify a browser-level feature, whether the design is mature enough for more than cosmetic effects, and whether security or Google’s incentives warrant extra scrutiny.</p>
+<div class="camp"><p class="camp-label"><strong>Practical enthusiasm</strong> &mdash; Some commenters saw specific uses in motion graphics, video, and web games, particularly where HTML inputs and text rendering are difficult to reproduce in canvas.</p><blockquote>I genuinely think this is the last thing we need before we have After Effects level capabilities for AI motion graphics on the web.<cite>Ian_Macharia</cite></blockquote>
+<blockquote>I would use it to render HTML elements such as inputs or a website in videos.<cite>prathje</cite></blockquote>
+<blockquote>The killer feature is input and text rendering.<cite>aroman</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Interested, but wary of performance and longevity</strong> &mdash; A builder described performance gains from moving a canvas-based workspace away from DOM panels, while questioning whether the experimental API would be maintained.</p><blockquote>In terms of performance this approach worked out much better (able to easily handle 1000+ panels/nested panels at 60+ fps) but the complexity goes very high in the implementation of each panel.<cite>artpar</cite></blockquote>
+<blockquote>Afraid of the api being not maintained if they dont see benefit or usage?<cite>artpar</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>The design may not deliver on its promises</strong> &mdash; A critic argued that the proposal appears suited to cosmetic adjustments rather than serving as a dependable building block for complex rendering, citing browser-drawn selection interfering with text used as a mask.</p><blockquote>The list of features that &quot;automatically work&quot; rests on assumptions that are only valid for minor visual adjustments.<cite>unconed</cite></blockquote>
+<blockquote>If the browser now draws a text selection highlight into that mask, the text becomes unreadable.<cite>unconed</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Browser-feature bloat and ecosystem costs</strong> &mdash; Some commenters questioned whether this belongs in browsers, given renderer complexity and the burden on smaller engines; others argued that a library would effectively require building a browser engine.</p><blockquote>This feature, in particular, seems like it should be solved with library, rather than by further bloating the browser.<cite>hackyhacky</cite></blockquote>
+<blockquote>This kind of stuff just puts even more distance between established engines and smaller projects like Servo.<cite>InsideOutSanta</cite></blockquote>
+<blockquote>You can&#x27;t solve this with a library without essentially implementing a separate browser engine in JS (or WASM).<cite>paavohtl</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Security and platform-incentive skepticism</strong> &mdash; Some commenters questioned how the feature handles privacy-sensitive rendering and whether Google’s product goals influence which browser features are pursued or considered secure.</p><blockquote>Hmm, not immediately clear how this avoids potential privacy leaks, such as drawing DOM hyperlinks to the canvas and then scraping their visited-status colour from the pixel data.<cite>mrec</cite></blockquote>
+<blockquote>So I&#x27;m curious what is Google working on that has this as a dependency, now that they&#x27;ve 180&#x27;d on it?<cite>avaer</cite></blockquote>
+<blockquote>It shouldn&#x27;t be surprising that chrome spends more resources on things that have a business case than things that do not.<cite>bawolff</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Consider different primitives</strong> &mdash; A few commenters preferred changing how canvas and HTML interact, or exposing drawing, text-layout, and accessibility capabilities through other APIs.</p><blockquote>Wouldn&#x27;t it make more logical sense to add canvas to html elements? I.e. checkbox.getContext(&quot;2d&quot;).fillRect(...)<cite>dvh</cite></blockquote>
+<blockquote>Or to add canvas operations (in?)directly to CSS!<cite>longor1996</cite></blockquote>
+<blockquote>Gosh how much I&#x27;d love to have a separate accessibility and text layout api like skia has and ditch the dom completely<cite>hollowturtle</cite></blockquote></div>
+    </article>
+    <article id="dossier-9" class="dossier-entry">
+      <div class="dossier-meta">N<sup>o</sup> 09 &nbsp;·&nbsp; Terminal &nbsp;·&nbsp; Agent Foundry</div>
+      <h3>OpenShell – A safe, private runtime for fleets of autonomous AI agents</h3>
+      <p class="dossier-source">
+        <a href="https://github.com/NVIDIA/OpenShell" target="_blank" rel="noopener">github.com</a>
+        &nbsp;·&nbsp; 408 pts &nbsp;·&nbsp; 195 comments
+         &nbsp;·&nbsp; <a href='https://news.ycombinator.com/item?id=50198675' target='_blank' rel='noopener'>discussion</a>
+      </p>
+      <h4>Analysis</h4>
+      <p>NVIDIA’s OpenShell is an Apache-2.0-licensed runtime for running fleets of autonomous AI agents in isolated sandboxes while allowing controlled access to files, packages, APIs, GPUs, and credentials. It combines kernel-level enforcement for filesystem, syscall, process, and network restrictions with policy review and formal verification intended to identify risky permission changes before approval. The project includes a local gateway and CLI, Kubernetes deployment support, credential routing to approved endpoints, extensibility hooks, and Python, TypeScript, Go, and Rust SDKs. It is significant because agentic systems increasingly need real-world capabilities, and OpenShell provides an open infrastructure layer aimed at limiting their blast radius while retaining operational usefulness, though deployment requires compatible virtualization or container tooling and administrators must evaluate its security model.</p>
+      <h4>Reader Reactions</h4>
+<p class="camps-framing">The discussion focused on how to limit agent permissions without making useful workflows impractical. Commenters debated whether OpenShell adds meaningful controls, whether any network access leaves data vulnerable to exfiltration, and how much protection can be achieved through layered defenses, isolation, or simpler existing tools.</p>
+<div class="camp"><p class="camp-label"><strong>A useful layer for controlling agent permissions</strong> &mdash; Some commenters welcomed a packaged way to apply granular policies and manage what individual agents—and the fleet collectively—can do.</p><blockquote>OpenShell tries to fix this by monitoring the collective permissions set of the agent fleet, and by maintaining very granular permissions for each agent.<cite>prennert</cite></blockquote>
+<blockquote>Nvidia Openshell is absolutely awesome, great bundle of features in one spot.<cite>agentdev001</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Exfiltration is the hard limit</strong> &mdash; Commenters questioned whether restricted domains and credentials can prevent an agent from leaking data through subtle outward-facing channels.</p><blockquote>All it needs is public access to anything it can have the tiniest effect on, and it can exfiltrate data.<cite>marcosscriven</cite></blockquote>
+<blockquote>I&#x27;d say it borders on almost unsolvable for any agent of reasonable complexity.<cite>fennecbutt</cite></blockquote>
+<blockquote>If you can make any request to the outside world you can exfiltrate data, period.<cite>epolanski</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Layered mitigations can raise the bar</strong> &mdash; Some commenters proposed practical risk reductions, such as separating access to private data and network access, or applying tighter restrictions to the agent’s shell.</p><blockquote>The idea is that agents never have all parts of the trifecta, maximum 2: untrusted content, private data or network access.<cite>smashed</cite></blockquote>
+<blockquote>Having a bwrap etc managed by the harness (DSH does this, among others) lets you have tighter restrictions on the agent&#x27;s shell than the harness.<cite>wren6991</cite></blockquote>
+<blockquote>a combination of virtual machines (not just containers, it is built on top of firecracker) with credential swapping just like iron proxy - the agents do not have access to the secrets at all but they receive placeholders instead and their network calls are intercepted and secrets are injected when the network requests happen...<cite>igorhvr</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Isolation architecture and trust boundaries matter</strong> &mdash; Commenters compared containers, VMs, and sandboxing the harness itself, disagreeing about which boundaries provide adequate protection.</p><blockquote>If you haven’t already been running your agents in containers, you’re crazy.<cite>mfro</cite></blockquote>
+<blockquote>Critically, in the intended approach for this, Claude itself (the harness) runs outside the sandbox.<cite>zmmmmm</cite></blockquote>
+<blockquote>many common local containers are not that hard for modern models to escape...<cite>Reddit_MLP2</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Existing tools may be enough, or easier to use</strong> &mdash; Some commenters argued that containers, proxies, and existing sandbox tools can provide needed controls with less complexity, while others valued a bundled package.</p><blockquote>I chose to build straight on top of docker and agents are simply fully sandboxed by default.<cite>smashed</cite></blockquote>
+<blockquote>Ok yeah I guess a nice package for running agents is useful with respect to those things.<cite>dingaling911</cite></blockquote>
+<blockquote>In this vein, Anthropic&#x27;s sandbox-runtime [0] has struck a good balance between security and convenience.<cite>thehours</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Security has to coexist with usability</strong> &mdash; Operators described the friction that tighter controls can introduce in ordinary development workflows, including maintaining network rules and accessing tools.</p><blockquote>I used to always run claude with `--dangerously-skip-permissions` in a dev container, but I had to rebuild my container 10 times a day to update the firewall so it can access documentation.<cite>LawrenceKerr</cite></blockquote>
+<blockquote>Though I&#x27;m often running into frustrating (albeit intentional) sandbox restrictions with common workflows e.g. xcode/swift and Docker access.<cite>thehours</cite></blockquote>
+<blockquote>as isolation increases, so does friction, and then of course capabilities.<cite>amanfromhere</cite></blockquote></div>
+    </article>
+    <article id="dossier-10" class="dossier-entry">
+      <div class="dossier-meta">N<sup>o</sup> 10 &nbsp;·&nbsp; Notebook &nbsp;·&nbsp; Human Notes</div>
+      <h3>This I Believe (1952)</h3>
+      <p class="dossier-source">
+        <a href="https://www.awakin.org/v2/read/view.php?tid=468" target="_blank" rel="noopener">awakin.org</a>
+        &nbsp;·&nbsp; 95 pts &nbsp;·&nbsp; 36 comments
+         &nbsp;·&nbsp; <a href='https://news.ycombinator.com/item?id=50203759' target='_blank' rel='noopener'>discussion</a>
+      </p>
+      <h4>Analysis</h4>
+      <p>Robert A. Heinlein’s 1952 essay argues that ordinary human decency—neighbors helping strangers, nurses caring for patients, teachers making sacrifices, workers doing honest jobs, and citizens sustaining institutions—is more widespread than crime and cynicism suggest. He extends this confidence from local communities to humanity as a whole, expressing faith that people will endure and continue exploring beyond Earth. The Hacker News discussion revisits the essay as an example of durable optimism, while commenters debate whether such trust is inspiring or naïve without caution about selfishness, violence, and historical suffering. Its importance lies in challenging attention-driven narratives that emphasize wrongdoing over the largely invisible cooperation on which communities and societies depend.</p>
+      <h4>Reader Reactions</h4>
+<p class="camps-framing">The discussion weighs Heinlein’s confidence in ordinary decency against doubts about politicians and the direction of contemporary society. Commenters also debate whether political corruption is historically persistent and how Heinlein’s own politics should be understood; a smaller response highlights his personal kindness across ideological differences. Other side threads question the essay’s universality, its optimism about space, and the posted text’s provenance.</p>
+<div class="camp"><p class="camp-label"><strong>Trust in ordinary decency</strong> &mdash; Some commenters endorse Heinlein’s optimism, arguing that ordinary people sustain communities and that distrust should not be the default in public life.</p><blockquote>Our public systems don&#x27;t work when we inherently distrust them.<cite>manlymuppet</cite></blockquote>
+<blockquote>I love it and I believe the same as him. In dark hours I remind myself that humanity must be at least 50.1% good and 49.9% bad. Otherwise we would never have come so far.<cite>fifilura</cite></blockquote>
+<blockquote>I believe countries and civilizations die when they stop believing this.<cite>GMoromisato</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Skepticism about politicians</strong> &mdash; Commenters question whether political honesty can be assumed, while some distinguish distrust of leaders from the work of local officials serving their communities.</p><blockquote>In 2026, it is not wise to believe that almost all politicians are honest.<cite>johnohara</cite></blockquote>
+<blockquote>I have yet to see one that isn&#x27;t in it for personal gain without regard for the voters.<cite>PowerElectronix</cite></blockquote>
+<blockquote>It&#x27;s gotten worse, sure, especially at the top, but there are still thousands of &quot;politicians&quot; out there running local board meetings and trying to do their best to keep their communities going.<cite>CobrastanJorji</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Corruption is old, not new</strong> &mdash; Some argue that political self-interest has long been a feature of politics, while others identify recent decades as especially dominated by it.</p><blockquote>The rapacious greed of politicians in service to their own interest has been universal since the beginning of politics.<cite>xbar</cite></blockquote>
+<blockquote>In defense of your position, however, the last 40 years (at least in the US) have been dominated by the ethos you describe, and the eras and the politicians who were not consumed by greed tend to be less common than the reverse.<cite>ds_opseeker</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Contemporary despair</strong> &mdash; Some commenters see the current political and social trajectory as a sharp break from Heinlein’s hopeful outlook and express little confidence that it can be reversed.</p><blockquote>But the trajectory, of everything it seems, has completely changed. And I have no optimism left.<cite>aetherspawn</cite></blockquote>
+<blockquote>We seem to have descended into widespread corruption and hypocrisy since his time and that rot is apparent at the very top of the political ladder and seems to inhere downwards.<cite>gizajob</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Heinlein’s politics are contested</strong> &mdash; Commenters disagree over whether Heinlein’s views and conservatism are best understood as progressive, regressive, or something that has changed meaning over time.</p><blockquote>Heinlein was such an odd fellow. Extremely progressive on one hand and extremely regressive on the other, sometimes in the span of a single paragraph.<cite>ballmerpoint</cite></blockquote>
+<blockquote>It’s one of those cases where the label has stayed the same, but the thing it commonly describes has changed so much that the word just has multiple completely different meanings.<cite>ileonichwiesz</cite></blockquote>
+<blockquote>Worth stating that 1952 was shortly after WW2 i.e. at the start of Heinlein&#x27;s &quot;middle period&quot; when his worldview shifted dramatically towards more right-wing values (military patriotism, anti-communism, and individual self-reliance).<cite>n4r9</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Personal kindness can cross ideological divides</strong> &mdash; One commenter cites Heinlein’s personal generosity toward Philip K. Dick as an example of humane conduct despite disagreements over ideas.</p><blockquote>He knows I&#x27;m a flipped-out freak and still he helped me and my wife when we were in trouble.<cite>jankovicsandras</cite></blockquote></div>
+    </article>
+  </section>
+  <footer class="colophon">
+    <p class="sig">— that's the edition.</p>
+    <p class="meta">Set in Fraunces &amp; Inter · Compiled October 23, 2026</p>
+    <p class="classic-link"><a href="classic.html">Prefer the classic card view? →</a></p>
+  </footer>
+<script>
+(() => {
+  const key = "gtd:read_days:hn:v1";
+  const day = "2026-10-23";
+  let stored = [];
+  try {
+    stored = JSON.parse(localStorage.getItem(key) || "[]");
+    if (!Array.isArray(stored)) stored = [];
+  } catch (e) {}
+  if (!stored.includes(day)) {
+    stored.push(day);
+    stored.sort();
+    localStorage.setItem(key, JSON.stringify(stored));
+  }
+})();
+</script>
+<script src="../../preference.js?v=62901b5fe" defer></script>
+<script>
+// Simple script to toggle the [+] and [-] labels on the drawers
+document.querySelectorAll('.analysis-drawer').forEach(drawer => {
+  drawer.addEventListener('toggle', () => {
+    const summary = drawer.querySelector('summary');
+    if (drawer.open) {
+      summary.textContent = '[ Analysis − ]';
+    } else {
+      summary.textContent = '[ Analysis + ]';
+    }
+  });
+});
+
+// Share link — native share or copy markdown to clipboard
+(function () {
+  const links = document.querySelectorAll('.share-link');
+  if (!links.length) return;
+
+  const toast = document.createElement('div');
+  toast.className = 'discuss-toast';
+  document.body.appendChild(toast);
+
+  function showToast(msg) {
+    toast.textContent = msg;
+    toast.classList.add('show');
+    setTimeout(() => toast.classList.remove('show'), 2500);
+  }
+
+  function buildMarkdown(link, spread) {
+    const title = link.dataset.shareTitle || '';
+    const url = link.dataset.shareUrl || '';
+    const meta = spread ? spread.querySelector('.story-meta') : null;
+    const lede = spread ? spread.querySelector('.lede') : null;
+    const analysis = spread ? spread.querySelector('.drawer-analysis') : null;
+    let md = '# ' + title + '\n';
+    md += 'Source: ' + url;
+    if (meta) md += ' | ' + meta.textContent.trim();
+    md += '\n';
+    if (lede) md += '\n' + lede.textContent.trim() + '\n';
+    if (analysis) md += '\n## Analysis\n' + analysis.textContent.trim() + '\n';
+    return md;
+  }
+
+  links.forEach((link) => {
+    link.addEventListener('click', (e) => {
+      e.preventDefault();
+      const spread = link.closest('section.spread');
+      const md = buildMarkdown(link, spread);
+      const text = "I'd like to discuss this with you. Here's a summary:\n\n" + md;
+      const title = 'Discuss: ' + (link.dataset.shareTitle || '');
+      if (navigator.share) {
+        navigator.share({ title: title, text: text }).catch(() => {});
+      } else {
+        navigator.clipboard.writeText(text).then(
+          () => showToast('Copied to clipboard \u2014 paste into your AI chat'),
+          () => showToast('Failed to copy')
+        );
+      }
+    });
+  });
+})();
+</script>
+</body>
+</html>
