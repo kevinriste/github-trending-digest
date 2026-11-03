@@ -1,0 +1,647 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hacker News Digest - November 03, 2026</title>
+    <link rel="stylesheet" href="../../style.css?v=eddd7abe6">
+</head>
+<body data-gtd-edition="hn" data-gtd-date="2026-11-03">
+    <header>
+        <h1>Hacker News Digest - November 03, 2026</h1>
+        <nav>
+            <a href="../">&larr; Hacker News Calendar</a>
+            <a href="../../2026-11-03/">GitHub Trending</a>
+        </nav>
+    </header>
+    <main>
+        <section class="the-take"><details open><summary>The HN Take</summary><h3 class="take-head">Weight-space programming</h3><p>The normal way to improve a neural network is to train it. You give it examples or rewards, calculate how wrong it was, use an optimizer to adjust millions or billions of inscrutable numbers, and repeat until it becomes useful or the electricity bill becomes embarrassing.</p><p>Here is a different approach: Ask another neural network to look at the inscrutable numbers and fix them.</p><p>Researchers report that GPT-6 Astra can inspect raw network weights and infer what the network does, without running it. Given four identically shaped policies trained on different games, it correctly named each game. Given the middle layers of small language models, with the input and output layers removed, it identified whether they had been trained on Python, romaji or English, and found every copying head without falsely naming any others.</p><p>Then they let it edit the weights:</p><p>&quot;Asked to make Qwen3.5-0.8B better at math without gradients, Astra identifies an issue in its weights causing reasoning loops that Qwen&#x27;s own model card warns about, and fixes this by natively editing 0.016% of the weights.&quot;</p><p>With the same sampling settings, the edited model&#x27;s MATH-500 score reportedly rose from 7.9% to 48.1%, while its IFEval score tripled. This was not conventional fine-tuning. Astra was not allowed to write a training loop. It apparently inspected Qwen&#x27;s brain, found the part that made it pace around muttering the same reasoning, and adjusted a few neurons until it stopped.</p><p>The authors call this &quot;Weight-Space Programming.&quot; The idea is that neural-network weights are not merely an enormous pile of numbers to be nudged statistically by Adam or Muon. They are a program, and a sufficiently capable language model can read and write that program directly.</p><p>On small games, Astra reportedly wrote entire networks from scratch. Its one-shot Breakout network scored 517.4, versus 15.8 for a PPO network trained for 100 million steps and 25.3 for one trained for 500 million steps. The explanation is reasonably intuitive: Instead of spending 500 million steps discovering that the paddle should move toward where the ball will land, Astra programmed one layer to estimate where the ball would land and another to move the paddle there.</p><p>This is cheating only in the sense that understanding the assignment is cheating.</p><p>The results are early, and the small-network experiments are particularly friendly to direct inspection: Astra could find spatial patterns in first-layer weights or see shapes drawn in output-layer weights. But the Qwen result is the interesting escalation. If it generalizes, the future of model training could involve less blind optimization and more model management. One model notices that another model has a bad habit, opens its skull, changes 0.016% of its personality and sends it back to work.</p><p>For years, the concern has been that humans cannot understand what neural networks are doing internally. One possible solution, apparently, is to hire a neural network to explain the neural network. If it cannot explain it, it can just repair it.</p><h3 class="take-head">Auto Ontology</h3><p>Nvidia has open-sourced Auto Ontology, a system for teaching AI agents what a company&#x27;s data means.</p><p>This is an actual problem. An agent can generate SQL quickly, but if one database defines &quot;revenue&quot; as booked revenue, another defines it as collected cash and a third includes something maintained by Craig in a spreadsheet, then faster answers merely produce wrong numbers more efficiently. Nvidia puts it nicely:</p><p>&quot;A revenue metric answered faster is worth nothing if the number is wrong.&quot;</p><p>Auto Ontology builds a semantic layer from enterprise metadata, reconciles definitions across systems, checks generated queries against certified definitions and lineage, and returns provenance with answers. It tells agents &quot;where data lives, what it means, whether to use it, how to use it, where it came from, and what is similar.&quot;</p><p>This is roughly a corporate dictionary, except the dictionary is connected to Snowflake and allowed to execute queries.</p><p>The library is distributed under Apache 2.0 and exposes its context through MCP, CLI and API. It is open source, though the repository notes that it is &quot;currently not accepting external contributions.&quot; Anyone can inspect and use the corporate dictionary; Nvidia is not presently accepting suggested definitions.</p><p>There is also an excellent operational detail. Connections added through the user interface need credentials. If Vault is configured, those credentials go into Vault. If Vault is not configured:</p><p>&quot;The full connection object (including the password) is JSON-serialized and stored, unencrypted, on the catalog&#x27;s database row.&quot;</p><p>And if Vault is only partly configured, the partial configuration is ignored with a warning and the system falls back to plaintext storage.</p><p>This is disclosed clearly, and there are perfectly reasonable local-development uses for it. Still, there is something very enterprise-software about building an elaborate knowledge layer so that every answer has certified meaning and provenance, while storing the password to the source database in plaintext unless the user successfully fills in every Vault environment variable.</p><p>The agent will know exactly what revenue means. Whoever reads the Postgres row will know exactly where revenue lives.</p><div class="take-sources"><span>Sources</span><ul><li><a href="https://rikiyat.github.io/blog/weight-space-programming/" target="_blank" rel="noopener noreferrer">Astra can read and write weights to improve Qwen</a></li><li><a href="https://github.com/NVIDIA/auto-ontology" target="_blank" rel="noopener noreferrer">Nvidia – open-source auto-ontology</a></li></ul></div></details></section>
+        <div class="repo-controls">
+            <button id="collapse-seen-btn" type="button">Collapse Stories Not New Today</button>
+            <button id="expand-all-btn" type="button">Expand All</button>
+        </div>
+        <p class="seen-help">Stories marked "Not new today" appeared on one or more previous daily pages.</p>
+        <article>
+            <div class="repos">
+
+            <section class="repo" data-seen-before="0"
+                     data-share-title="Astra can read and write weights to improve Qwen"
+                     data-share-url="https://rikiyat.github.io/blog/weight-space-programming/"
+                     data-share-points="2749"
+                     data-share-comments="834">
+                <div class="repo-header-row">
+                    <h3>1. <a href="https://rikiyat.github.io/blog/weight-space-programming/" target="_blank" rel="noopener noreferrer">Astra can read and write weights to improve Qwen</a> </h3>
+                    <div class="header-buttons">
+                        <button type="button" class="discuss-btn" aria-label="Discuss with AI" title="Discuss with AI">&#x1F4AC;</button>
+                        <button type="button" class="repo-toggle" aria-expanded="true">Hide details</button>
+                    </div>
+                </div>
+                <div class="repo-body">
+                    <p class="meta">
+                        <span class="language">rikiyat.github.io</span> |
+                        <span>dbreunig</span> |
+                        <span>2749 points</span> |
+                        <span>834 comments</span> |
+                        <a href="https://news.ycombinator.com/item?id=50341174" target="_blank" rel="noopener noreferrer">discussion</a>
+                    </p>
+                    <p class="history">First seen: November 03, 2026 | Consecutive daily streak: 1 day</p>
+                    <div class="ai-summary">
+                        <h4>Analysis</h4>
+                        <p>The article presents early experiments in “Weight-Space Programming,” in which a frontier LLM directly inspects and edits neural-network weights using natural-language goals rather than gradient descent or conventional training loops. The model reportedly inferred what small networks had learned, generated game-playing networks from scratch, diagnosed behavioral traits, and improved Qwen3.5-0.8B by changing just 0.016% of its weights, substantially raising math and instruction-following scores by reducing reasoning loops. However, it could not reliably identify sycophancy from weights alone or improve a smaller model whose limitations reflected missing reasoning ability rather than a localized defect. The work is important because it suggests a possible future tool for targeted model debugging, interpretability, capability editing, and lower-cost optimization, though the results are preliminary and depend on specialized prompts, harnesses, and evaluation setups.</p>
+                    </div>
+                    
+                <div class="ai-summary">
+                    <h4>Comment Analysis</h4>
+                    <p class="camps-framing">Reactions ranged from amazement at an LLM working directly with opaque neural-network weights to skepticism that the demonstrations establish a broadly new capability. Commenters disagreed about how much the results reflect prior techniques, specialized training, or general reasoning, and about whether weight editing is evidence of recursive self-improvement. Many found the work intriguing while treating its implications as unsettled.</p>
+<div class="camp"><p class="camp-label"><strong>A surprising capability with opaque weights</strong> &mdash; Some commenters saw the ability to infer behavior from raw weights and make targeted edits as striking, even if they remained cautious about the broader implications.</p><blockquote>The fact you can give an LLM a raw dump of neural weights and it will hand-wire a bunch of changes on the fly is quite something.<cite>youareundersell</cite></blockquote>
+<blockquote>This is insane.<cite>vessenes</cite></blockquote>
+<blockquote>Now that&#x27;s cool.<cite>NitpickLawyer</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Impressive, but narrower than the headline</strong> &mdash; Commenters in this camp emphasized prior work on weight editing and interpretability, and noted that the Qwen demonstration repaired a looping failure rather than adding new mathematical ability.</p><blockquote>For Qwen, the model fixed a looping bug that may have been known apriori, and it is basically a steering vector, a very established technique.<cite>yurimo</cite></blockquote>
+<blockquote>Qwen already knew math, but it was bugging out and getting into an infinite loop when it tried to solve the problems (85 of its first 96 answers hit the token limit).<cite>l9o</cite></blockquote>
+<blockquote>the exps on actual llms remove looping behaviour and that’s it<cite>itkovian_</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Claims need stronger evidence</strong> &mdash; Skeptics questioned whether the experiments establish broad ability across arbitrary networks and pointed to possible prompt guidance, shallow patterns, or limited evaluation.</p><blockquote>If not, we can only conclude that GPT-6 Astra is good at reading and writing weights of Qwen (a public LLM), not just any neutral network.<cite>BrokenCogs</cite></blockquote>
+<blockquote>It&#x27;s a neat result, but I think the introduction overstates the significance.<cite>qnleigh</cite></blockquote>
+<blockquote>the prompt veeery much hints that looping is the issue and to find neurons that fix this.<cite>swazzy</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Trained expertise or general reasoning?</strong> &mdash; Commenters debated whether Astra’s performance is best explained by training on neural-network weights and interpretability material or by reasoning that generalizes beyond task-specific examples.</p><blockquote>I don&#x27;t think this is an emergent capability. I think Astra was trained on neural weights data as an attempt by OpenAI to get to recursive self improvement.<cite>vanyle</cite></blockquote>
+<blockquote>At some point we have to accept that there is enough training data on &quot;being good at thinking&quot; and that being good at thinking generalises really well.<cite>jstanley</cite></blockquote>
+<blockquote>Couldn&#x27;t this just be a result of Astra training on massive amounts of circuit theory or mechanistic interpretability literature or other related topics?<cite>davesque</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Recursive self-improvement is contested</strong> &mdash; Some commenters viewed weight editing as a possible step toward rapid self-improvement, while others stressed that the experiments involved a much larger model editing smaller targets and did not demonstrate self-improvement.</p><blockquote>This is the &quot;recursive self-improvement&quot; they&#x27;ve been warning about.<cite>Buttons840</cite></blockquote>
+<blockquote>It&#x27;s worth pointing out that this is a multi-trillion (probably) parameter model optimizing an 800 million parameter model. There is no indication that it can improve itself with this same methodology.<cite>Wheen</cite></blockquote>
+<blockquote>Intuitive speculation: Astra can only improve weights to its own level, so can&#x27;t train itself via this method.<cite>armchairhacker</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>A practical tool for interpretability and engineering</strong> &mdash; Some commenters focused on potential applications in debugging and understanding model behavior, and on creating reproducible benchmarks or testing weight edits in practice.</p><blockquote>We believe this will provide a standardized evaluation to measure and accelerate progress in Weight-Space Programming, turning what currently seems like black magic into a rigorous, reproducible engineering discipline.<cite>AlexErrant</cite></blockquote>
+<blockquote>Editing 1,920 weights fixed some grep mistakes but broke other commands.<cite>GodelNumbering</cite></blockquote>
+<blockquote>Potentially, it could reveal interpretability tools much better than the ones we use today.<cite>porridgeraisin</cite></blockquote></div>
+                </div>
+
+                </div>
+            </section>
+
+            <section class="repo" data-seen-before="0"
+                     data-share-title="Nvidia – open-source auto-ontology"
+                     data-share-url="https://github.com/NVIDIA/auto-ontology"
+                     data-share-points="104"
+                     data-share-comments="32">
+                <div class="repo-header-row">
+                    <h3>2. <a href="https://github.com/NVIDIA/auto-ontology" target="_blank" rel="noopener noreferrer">Nvidia – open-source auto-ontology</a> </h3>
+                    <div class="header-buttons">
+                        <button type="button" class="discuss-btn" aria-label="Discuss with AI" title="Discuss with AI">&#x1F4AC;</button>
+                        <button type="button" class="repo-toggle" aria-expanded="true">Hide details</button>
+                    </div>
+                </div>
+                <div class="repo-body">
+                    <p class="meta">
+                        <span class="language">github.com</span> |
+                        <span>campervans</span> |
+                        <span>104 points</span> |
+                        <span>32 comments</span> |
+                        <a href="https://news.ycombinator.com/item?id=50348962" target="_blank" rel="noopener noreferrer">discussion</a>
+                    </p>
+                    <p class="history">First seen: November 03, 2026 | Consecutive daily streak: 1 day</p>
+                    <div class="ai-summary">
+                        <h4>Analysis</h4>
+                        <p>NVIDIA’s open-source Auto Ontology is a platform for building an enterprise semantic layer from database metadata, reconciling inconsistent business definitions, and providing agents with trusted context for analytics. It supports natural-language-to-SQL querying, lineage and provenance, validation against certified metrics, and continual learning from corrections, exposing these capabilities through a web UI, API, CLI, and MCP server. The stack uses FastAPI, Next.js, Postgres/pgvector, LangChain, and NVIDIA NIM models, and can run via Docker Compose or Kubernetes against systems such as Postgres, Snowflake, Databricks, and DuckDB. It is Apache 2.0 licensed but currently closed to external contributions, requires NVIDIA model access by default, and should be deployed carefully because UI-added database credentials are stored in plaintext unless Vault is configured.</p>
+                    </div>
+                    
+                <div class="ai-summary">
+                    <h4>Comment Analysis</h4>
+                    <p class="camps-framing">The discussion considered whether an explicit ontology can make LLM-assisted analytics more consistent and governable, while questioning the reliability of LLM-based methods and how this approach compares with existing tools. Commenters also raised practical interest and concerns about the project’s presentation, NVIDIA dependencies, and openness.</p>
+<div class="camp"><p class="camp-label"><strong>Skepticism about LLM reliability</strong> &mdash; Some commenters argued that adding an LLM-generated layer may not constrain confabulation or prevent errors from compounding. Others suggested that separating ontology construction from later querying could reduce repeated interpretation errors.</p><blockquote>Fixing unreliable agents by adding more unreliable agents.<cite>grey-area</cite></blockquote>
+<blockquote>I&#x27;m not sure that this particular effort is going to help because it doesn&#x27;t change or constrain the behaviour of the actual machines and the behaviour is the problem, not the data they are fed.<cite>grey-area</cite></blockquote>
+<blockquote>By splitting the task into two distinct phases, you can both interpret and fix the middle step, and remove a large class of mistakes and/or differences caused by different interpretations of the same documents.<cite>IanCal</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Ontology as an explicit, governed semantic layer</strong> &mdash; Commenters described an ontology as a way to make definitions, relationships, and implicit business rules explicit, reviewable, and consistent for both people and analytics systems.</p><blockquote>Ontology is a so-called white-box approach for AI: all dependencies are clearly stated and formalised.<cite>ForgotMyUUID</cite></blockquote>
+<blockquote>The ontology forces you to choose one, or to state when to use each.<cite>matthieu_bl</cite></blockquote>
+<blockquote>An ontology in this kind of context means a more precise machine readable spec of this and how it all relates to each other.<cite>IanCal</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Questions about what this adds over existing documentation or memory</strong> &mdash; Some commenters asked how the approach differs from agent memory, code, API documentation, or domain-modeling practices. Replies pointed to tacit knowledge and conflicting definitions as possible gaps that an ontology could address.</p><blockquote>I don&#x27;t understand this ontology thing. What&#x27;s the difference between this and a memory system plus skills to collect your enterprise&#x27;s APIs and CLIs etc?<cite>podocarp</cite></blockquote>
+<blockquote>What is not in the codebase.<cite>matthieu_bl</cite></blockquote>
+<blockquote>I&#x27;m not clear on how the Nvidia tool here improves on this, or how it is more reliable?<cite>gb2d_hn</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Interest in formal and alternative knowledge tools</strong> &mdash; A smaller thread explored symbolic rules and semantic technologies as possible alternatives or complements, including questions about reviewable rules and comparisons with RDF, OWL, and SPARQL.</p><blockquote>Why can’t we use LLMs to write as many symbolic rules as needed to fit the data while keeping the ruleset reviewable and maintainable?<cite>HexDecOctBin</cite></blockquote>
+<blockquote>it&#x27;s local first, agent-friendly tooling;<cite>mirekrusin</cite></blockquote>
+<blockquote>why would i use this over some rdf / owl / sparql thing?<cite>timini</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Hope for practical enterprise value</strong> &mdash; Some commenters expressed interest in whether ontology tooling could help address the cost and difficulty of enterprise ontology work or reduce technical debt; they described potential rather than reporting results from using the tool.</p><blockquote>We spend a small fortune trying to get ontology right as it&#x27;s so critical to real world success of enterprise AI. Curious if this could actually help us.<cite>monkeydust</cite></blockquote>
+<blockquote>Game changer for entreprise (technical) debt<cite>campervans</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Questions about presentation and NVIDIA dependencies or openness</strong> &mdash; Commenters raised concerns about jargon-heavy introductory language, the apparent NVIDIA API-key requirement, and the significance of NVIDIA’s open-source claims. These comments focused on communication and the surrounding ecosystem rather than the ontology’s features.</p><blockquote>If a tool is worth building and sharing, surely it’s also worth writing a brief summary of what it’s supposed to achieve in your own words?<cite>dstu</cite></blockquote>
+<blockquote>Was interested... but then realized it needs an NVIDIA api key?<cite>igleria</cite></blockquote>
+<blockquote>Open Source? How about we start by open-sourcing the NVIDIA user-space libraries: libcuda, libcudart, libOpenCL, libnvtx, as well as nvidia-smi and the CUDA and OpenCL profilers.<cite>einpoklum</cite></blockquote></div>
+                </div>
+
+                </div>
+            </section>
+
+            <section class="repo" data-seen-before="0"
+                     data-share-title="Toit v2.0.0"
+                     data-share-url="https://toit.io/blog/toit-v2-0-0/"
+                     data-share-points="116"
+                     data-share-comments="37">
+                <div class="repo-header-row">
+                    <h3>3. <a href="https://toit.io/blog/toit-v2-0-0/" target="_blank" rel="noopener noreferrer">Toit v2.0.0</a> </h3>
+                    <div class="header-buttons">
+                        <button type="button" class="discuss-btn" aria-label="Discuss with AI" title="Discuss with AI">&#x1F4AC;</button>
+                        <button type="button" class="repo-toggle" aria-expanded="true">Hide details</button>
+                    </div>
+                </div>
+                <div class="repo-body">
+                    <p class="meta">
+                        <span class="language">toit.io</span> |
+                        <span>floitsch</span> |
+                        <span>116 points</span> |
+                        <span>37 comments</span> |
+                        <a href="https://news.ycombinator.com/item?id=50321605" target="_blank" rel="noopener noreferrer">discussion</a>
+                    </p>
+                    <p class="history">First seen: November 03, 2026 | Consecutive daily streak: 1 day</p>
+                    <div class="ai-summary">
+                        <h4>Analysis</h4>
+                        <p>Toit has released v2.0.0 after more than four years of alpha development, over 2,000 commits, and more than 200 releases. The open-source programming language, originally developed commercially by Toitware before the company shut down in 2024, has continued evolving through community contributions. The release follows a final planned breaking change that lets peripheral APIs use pin numbers directly rather than `gpio.Pin` objects, while acknowledging that additional features will arrive later. Major progress includes wider ESP32 and Arm hardware support, a unified command-line tool, a rewritten package manager, mixins, firmware envelopes, compiler/runtime improvements, and better testing, making the project a more mature option for embedded and desktop scripting.</p>
+                    </div>
+                    
+                <div class="ai-summary">
+                    <h4>Comment Analysis</h4>
+                    <p class="camps-framing">The discussion is curious but divided: some commenters value Toit’s design and report positive experience, while others question its use case, advantages over familiar languages, or evidence of adoption. The thread also touches on the project’s history and the founders’ technical background.</p>
+<div class="camp"><p class="camp-label"><strong>Positive hands-on experience</strong> &mdash; A commenter with practical experience describes Toit as clean and easy to use, and says its bytecode approach caused no noticeable performance problems.</p><blockquote>The tools just work and I got used to the language really quickly.<cite>close2</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Purpose-built for constrained hardware</strong> &mdash; Supporters argue that Toit was designed for resource-constrained devices, where familiar languages and runtimes may have trade-offs.</p><blockquote>The problem with them is that they weren&#x27;t designed with constrained resources in mind and it shows.<cite>floitsch</cite></blockquote>
+<blockquote>Think of it as a runtime + scheduler that you deploy programs to ESP32 devices.<cite>self</cite></blockquote>
+<blockquote>Good luck running (micro)python on an ESP32.<cite>ricardobeat</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Unclear use case and weak presentation</strong> &mdash; Some commenters struggled to understand Toit’s intended uses or wanted clearer explanations of its purpose and practical requirements.</p><blockquote>Even after reading that (and more of the homepage) I have no idea what this is.<cite>skrebbel</cite></blockquote>
+<blockquote>I can&#x27;t tell really from the docs the untended use case though. It says &quot;scripts&quot;, but also &quot; applications&quot;.<cite>benrutter</cite></blockquote>
+<blockquote>Is there some kind of an advertising blurb for why you’d want to use Toit, especially for scripting?<cite>Hamuko</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Adoption and “another language” skepticism</strong> &mdash; Commenters questioned whether Toit has enough users to justify a new language; its developer acknowledged limited adoption while arguing that it is used in production.</p><blockquote>Who is using this? The company originally behind it has shut down<cite>mi_lk</cite></blockquote>
+<blockquote>No one, it&#x27;s just a toy language<cite>qweqwe14</cite></blockquote>
+<blockquote>Toit doesn&#x27;t have a lot of users, but it is used in production (for example by Consibio) and is definitely developed for production environments.<cite>floitsch</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Interest in the language design</strong> &mdash; Some commenters liked Toit’s syntax or found aspects of its argument notation distinctive, without necessarily claiming it would replace established alternatives.</p><blockquote>Nice syntax. It looks like how we&#x27;d design programming if C had never existed.<cite>maxloh</cite></blockquote>
+<blockquote>It almost looks/feels like Pythonic Go.<cite>heavensteeth</cite></blockquote>
+<blockquote>Arguments like --greeting are the named arguments:<cite>kasperl</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Project history, trust, and founder credentials</strong> &mdash; The discussion includes concerns about the former company and the project’s presentation, alongside recognition of the founders’ experience and a clarification that development continues as a community project.</p><blockquote>The people behind Toit are the original people behind the V8 VM in Chrome. They know their stuff.<cite>jacobgorm</cite></blockquote>
+<blockquote>Seems unlikely to be a bait and switch at this point<cite>unsnap_biceps</cite></blockquote>
+<blockquote>They should write this prominently on their website. It doesn’t radiate trustworthiness/substance/reputation.<cite>MrBuddyCasino</cite></blockquote></div>
+                </div>
+
+                </div>
+            </section>
+
+            <section class="repo" data-seen-before="0"
+                     data-share-title="DiscImageStudio: burn visible artwork onto CDs, DVDs and Blu-ray discs"
+                     data-share-url="https://github.com/JiaFeiMiao-K-Cat/DiscImageStudio"
+                     data-share-points="253"
+                     data-share-comments="51">
+                <div class="repo-header-row">
+                    <h3>4. <a href="https://github.com/JiaFeiMiao-K-Cat/DiscImageStudio" target="_blank" rel="noopener noreferrer">DiscImageStudio: burn visible artwork onto CDs, DVDs and Blu-ray discs</a> </h3>
+                    <div class="header-buttons">
+                        <button type="button" class="discuss-btn" aria-label="Discuss with AI" title="Discuss with AI">&#x1F4AC;</button>
+                        <button type="button" class="repo-toggle" aria-expanded="true">Hide details</button>
+                    </div>
+                </div>
+                <div class="repo-body">
+                    <p class="meta">
+                        <span class="language">github.com</span> |
+                        <span>bpierre</span> |
+                        <span>253 points</span> |
+                        <span>51 comments</span> |
+                        <a href="https://news.ycombinator.com/item?id=50346849" target="_blank" rel="noopener noreferrer">discussion</a>
+                    </p>
+                    <p class="history">First seen: November 03, 2026 | Consecutive daily streak: 1 day</p>
+                    <div class="ai-summary">
+                        <h4>Analysis</h4>
+                        <p>DiscImageStudio is an open-source GPL-licensed C# tool that converts images into data conforming to the physical recording constraints of CD-R, DVD-R, and single-layer BD-R media, producing visible artwork when burned. Its Windows GUI supports layered design, tone and dithering adjustments, calibration, previews, ISO/RAW/WAV+CUE export, and experimental direct burning, while Linux and macOS offer experimental command-line image generation. The project also supports mixed data discs, disc-specific presets, readback simulation, and detailed modeling of optical-disc encoding, geometry, error correction, and file systems. It is notable because it turns ordinary recordable media into a low-resolution physical display, though results depend heavily on the disc, burner, firmware, calibration, and still-limited validation of its experimental burning features.</p>
+                    </div>
+                    
+                <div class="ai-summary">
+                    <h4>Comment Analysis</h4>
+                    <p class="camps-framing">Commenters responded with curiosity and appreciation for the project, while also discussing the technical challenges of disc imaging, earlier ways of labeling optical media, current drive availability, and whether images can coexist with stored data. Some also speculated about other possible uses.</p>
+<div class="camp"><p class="camp-label"><strong>Technical achievement and calibration</strong> &mdash; A technically informed commenter described how sensitive disc calibration can be and welcomed a project that may make the process more repeatable.</p><blockquote>The challenge took me a few weeks to make because &quot;calibrating&quot; a disk (determining the geometry of the pregroove) is incredibly sensitive.<cite>bmenrigh</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Tactile nostalgia and creative appeal</strong> &mdash; Some commenters appreciated the project as a playful, tactile form of media with an early-2000s feel.</p><blockquote>This is exactly the sort of thing the 2020&#x27;s are missing. Something tactile and artsy, reminiscent of the early 2000s! Well done to the author<cite>kixpanganiban</cite></blockquote>
+<blockquote>I had one of these as well... What a trip down memory lane, thanks for sharing.<cite>Breakthrough</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Earlier disc-labeling technologies</strong> &mdash; Commenters recalled earlier disc-imaging and labeling technologies, with mixed assessments of LightScribe’s speed and results.</p><blockquote>DiscT@2 (1), the granddaddy of them all. This was followed up by Labelflash in 2007(2). (1) https://en.wikipedia.org/wiki/DiscT@2 (2) https://en.wikipedia.org/wiki/Labelflash<cite>xattt</cite></blockquote>
+<blockquote>You didn&#x27;t miss much. It took 20-30 minutes each pass, plus the extra cost for the discs.<cite>sam1714</cite></blockquote>
+<blockquote>I mean, it absolutely was slow especially with sufficiently complex labels, but they generally came out fine.<cite>TurkTurkleton</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Optical media’s present-day availability</strong> &mdash; Commenters asked whether optical drives and discs remain available and pointed to continuing uses for the medium.</p><blockquote>Lots of new USB DVD drives are available from brands I&#x27;ve never heard of. But the availability of Bluray drives is so low I suspect they&#x27;re only new old stock.<cite>mrob</cite></blockquote>
+<blockquote>I had an x-ray recently and asked them to give me the image so I could take it to a different clinic, and they burned it onto a CD. So I suppose optical media is sort of irreplaceable for medical applications at least.<cite>grishka</cite></blockquote>
+<blockquote>Probably. Bluray still exists, still a popular medium for selling games on PS/Xbox and to certain extent movies to people who like to watch on their high-end equipment.<cite>truncate</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Whether discs can also store data</strong> &mdash; Commenters discussed placing data and imagery in separate regions and whether a shared image-data format could compromise error recovery.</p><blockquote>It supports putting data files either at the inner or outer rim, but it&#x27;s at the cost of image space. So yes it can play, but not much storage.<cite>krige</cite></blockquote>
+<blockquote>A given region of the disc cannot be both image and data, but the disc can contain an inner region of data and imagery in the outer unused portion.<cite>sourweasel</cite></blockquote>
+<blockquote>Even if that is possible for a pristine disc, you really do want that error recovery for discs people are actually expected to use.<cite>account42</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Speculation about other uses</strong> &mdash; A few commenters extrapolated from disc-based imaging to holograms or to printing electronic components.</p><blockquote>I&#x27;ve always wondered if this could be used to create 3d holograms.<cite>FriedPickles</cite></blockquote>
+<blockquote>Imagine printing not just a capacitor but a whole PCB and soldered components, putting the innards of like a Raspberry Pi on top of a specially crafted DVD that has said single-board on one side and a readable DVD surface on the opposite side! :D<cite>QuantumNomad_</cite></blockquote></div>
+                </div>
+
+                </div>
+            </section>
+
+            <section class="repo" data-seen-before="0"
+                     data-share-title="Katamari Damacy but it&#x27;s The Met collection"
+                     data-share-url="https://katamari.vaguespac.es/"
+                     data-share-points="24"
+                     data-share-comments="5">
+                <div class="repo-header-row">
+                    <h3>5. <a href="https://katamari.vaguespac.es/" target="_blank" rel="noopener noreferrer">Katamari Damacy but it&#x27;s The Met collection</a> </h3>
+                    <div class="header-buttons">
+                        <button type="button" class="discuss-btn" aria-label="Discuss with AI" title="Discuss with AI">&#x1F4AC;</button>
+                        <button type="button" class="repo-toggle" aria-expanded="true">Hide details</button>
+                    </div>
+                </div>
+                <div class="repo-body">
+                    <p class="meta">
+                        <span class="language">katamari.vaguespac.es</span> |
+                        <span>thebigship</span> |
+                        <span>24 points</span> |
+                        <span>5 comments</span> |
+                        <a href="https://news.ycombinator.com/item?id=50332342" target="_blank" rel="noopener noreferrer">discussion</a>
+                    </p>
+                    <p class="history">First seen: November 03, 2026 | Consecutive daily streak: 1 day</p>
+                    <div class="ai-summary">
+                        <h4>Analysis</h4>
+                        <p>KatamariMet is a browser game inspired by *Katamari Damacy* in which players roll through a gallery, collecting objects until they can absorb larger items such as the Temple of Dendur. It uses real artifacts from the Metropolitan Museum of Art’s Open Access collection, rendered at their actual sizes, with simple keyboard controls and a short timed run. The project, created by Jay Mollica, relies on the Met’s CC0-licensed data and imagery rather than a commercial catalog or proprietary asset set. It is notable as an accessible example of how open cultural-heritage collections can support playful, interactive experiences.</p>
+                    </div>
+                    
+                <div class="ai-summary">
+                    <h4>Comment Analysis</h4>
+                    <p class="camps-framing">The reaction was mixed but generally receptive to the idea: commenters found the game fun or promising, while focusing more on what could be improved than on the premise itself. The main disagreements were about whether rolling up artifacts helps people appreciate them, and whether the experience delivers the polish and sense of scale that make Katamari distinctive.</p>
+<div class="camp"><p class="camp-label"><strong>Promising use of open collections</strong> &mdash; A small positive camp saw the project as an enjoyable starting point and wanted to see the idea extended to other collections or places.</p><blockquote>Great work! Would love to see this extended to other museums and maybe architectural sites<cite>feerfreeflight</cite></blockquote>
+<blockquote>Nice job~~<cite>vunderba</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Artifacts deserve more than being collected</strong> &mdash; One commenter questioned whether turning cultural artifacts into things to squash into a ball supports appreciation of them. They liked the idea while doubting that this particular mechanic serves its apparent educational aim.</p><blockquote>building a game that actually minimizes the importance of the artifacts, and literally just drives the player to squash them up into a great big ball might not be the best way to help people actually appreciate the items.<cite>codingdave</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Missing Katamari’s sense of scale</strong> &mdash; One commenter argued that the defining pleasure of Katamari is the dramatic transition from collecting small objects to absorbing much larger things, and felt the clones do not reproduce it.</p><blockquote>Every Katamari Damacy clone misses what made it so great: the transition between zoom levels.<cite>thepuglor</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Needs more polish</strong> &mdash; Several commenters reported control, camera, loading, or scenery problems, and suggested practical improvements such as a music toggle and better directional controls. One also disliked the music’s apparent lack of the original’s charm.</p><blockquote>Provide a toggle for the music. It sounds like it was procedurally generated by Claude Code.<cite>vunderba</cite></blockquote>
+<blockquote>The down key should move backwards<cite>frereubu</cite></blockquote>
+<blockquote>The loading is extremely slow - I&#x27;m not sure I need all the objects loaded before selecting the first level.<cite>viraptor</cite></blockquote></div>
+                </div>
+
+                </div>
+            </section>
+
+            <section class="repo" data-seen-before="0"
+                     data-share-title="Show HN: Hacker Times, a New York Times-inspired version of Hacker News"
+                     data-share-url="https://hackertimes.ca/"
+                     data-share-points="312"
+                     data-share-comments="95">
+                <div class="repo-header-row">
+                    <h3>6. <a href="https://hackertimes.ca/" target="_blank" rel="noopener noreferrer">Show HN: Hacker Times, a New York Times-inspired version of Hacker News</a> </h3>
+                    <div class="header-buttons">
+                        <button type="button" class="discuss-btn" aria-label="Discuss with AI" title="Discuss with AI">&#x1F4AC;</button>
+                        <button type="button" class="repo-toggle" aria-expanded="true">Hide details</button>
+                    </div>
+                </div>
+                <div class="repo-body">
+                    <p class="meta">
+                        <span class="language">hackertimes.ca</span> |
+                        <span>polpenn</span> |
+                        <span>312 points</span> |
+                        <span>95 comments</span> |
+                        <a href="https://news.ycombinator.com/item?id=50346981" target="_blank" rel="noopener noreferrer">discussion</a>
+                    </p>
+                    <p class="history">First seen: November 03, 2026 | Consecutive daily streak: 1 day</p>
+                    <div class="ai-summary">
+                        <h4>Analysis</h4>
+                        <p>Hacker Times is a site that presents Hacker News in a New York Times-inspired newspaper format, refreshing its content hourly. Its featured report describes early MIT CSAIL experiments in which GPT-6 Astra allegedly interpreted and directly modified neural-network weights without a conventional training loop. In one Qwen test, researchers reported that a small weight adjustment improved math and instruction-following scores, though the results are preliminary. If validated, the approach could offer a more direct way to edit model behavior, but its reliability and broader applicability remain uncertain.</p>
+                    </div>
+                    
+                <div class="ai-summary">
+                    <h4>Comment Analysis</h4>
+                    <p class="camps-framing">The discussion was largely positive about the site’s readability and presentation, while raising questions about whether a newspaper-style redesign offers enough beyond HN’s compact feed and comment culture. It also touched on repeated HN remixes, the quality of AI-assisted work, slower curated reading, and the implications of borrowing the NYT’s visual identity.</p>
+<div class="camp"><p class="camp-label"><strong>A more readable way to browse HN</strong> &mdash; Some commenters valued the clearer headlines, summaries, and presentation as a way to make HN submissions easier to assess and browse.</p><blockquote>The instant value I got from this is actually something that resembles journalism and editing, even if it’s just an LLM doing the job: the rewriting of headlines along with a half-decent editorial summary paragraph gives me a clear overview of what each link is actually about without the usual puzzling over what the cryptic HN headline is trying to say.<cite>FearNotDaniel</cite></blockquote>
+<blockquote>This is great! Very readable and feels like a nice way to browse articles.<cite>duckkg5</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>HN’s density and discussion still matter</strong> &mdash; Others preferred the original feed’s compactness or emphasized that HN’s discussions are a central part of the experience.</p><blockquote>The tradeoff of the Hacker Times design is increased information for each story but lower density of stories compared to the HN homepage.<cite>rectang</cite></blockquote>
+<blockquote>not sure, do the have comments &amp; discussions? Lot of people come just for comments<cite>KellyCriterion</cite></blockquote>
+<blockquote>i&#x27;m pretty happy with the existing way of browsing HN. i hope it never changes.<cite>latchkey</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Another HN remix, and what makes it worth building?</strong> &mdash; Commenters noted the many earlier HN newspaper and reader projects, while debating whether a new version needs a distinctive contribution or can simply be built for personal use.</p><blockquote>No shame in doing something that already exists for yourself.<cite>emaro</cite></blockquote>
+<blockquote>HN keeps reinventing HN-flavored things.<cite>yewenjie</cite></blockquote>
+<blockquote>I built this to aggregate all the aggregators (like HackerTube, Hackerbooks etc.) that were popular a few days ago (they go back to 2011, at least).<cite>yewenjie</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>AI-assisted projects: quality matters more than the tool</strong> &mdash; The discussion contrasted complaints about generic or careless AI-generated work with the view that these shortcomings are not inherent to the tools.</p><blockquote>There&#x27;s no intrinsic reason why generated software should look bad or work poorly.<cite>dang</cite></blockquote>
+<blockquote>But that&#x27;s an artefact of how the author is using the tool and presenting the results. It&#x27;s not an inherent property of AI use itself.<cite>lagrange77</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>The newspaper as a slower, curated reading habit</strong> &mdash; Some commenters wanted a daily or weekly collection of worthwhile reading, potentially in a physical format, as an alternative to constant updates and broad news feeds.</p><blockquote>it would be nice if I could receive a paper daily/weekly of interesting articles, updates in the world, think pieces, etc. that weren&#x27;t as broad as daily news or as opinionated.<cite>havik772</cite></blockquote>
+<blockquote>FOMO is the drug. The tech industry is the dealer.<cite>reaperducer</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>NYT styling, pastiche, and paywall jokes</strong> &mdash; The NYT association prompted jokes about paywalls as well as criticism of borrowing a publication’s visual identity without its editorial process.</p><blockquote>Somehow this particular formulation makes me scream internally. It&#x27;s not the classic print edition of the NYT that everybody grew up with, it&#x27;s the click-maxing online version...<cite>swiftcoder</cite></blockquote>
+<blockquote>For me I’m thinking about the postmodern pastiche of it, as in Jameson’s Late Capitalism, wherein the NYT (while in many ways not a fair and trustworthy entity) earns its credibility through the measure it takes of risk before publication— this project would reproduce the aesthetic identity of such carefulness without actually containing it.<cite>alexgoodhart</cite></blockquote>
+<blockquote>That looks so convincing, I was expecting the paywall popup to appear any second...<cite>rob74</cite></blockquote></div>
+                </div>
+
+                </div>
+            </section>
+
+            <section class="repo" data-seen-before="0"
+                     data-share-title="European RISC-V Industrial Computing Initiative"
+                     data-share-url="https://erici.eu"
+                     data-share-points="136"
+                     data-share-comments="72">
+                <div class="repo-header-row">
+                    <h3>7. <a href="https://erici.eu" target="_blank" rel="noopener noreferrer">European RISC-V Industrial Computing Initiative</a> </h3>
+                    <div class="header-buttons">
+                        <button type="button" class="discuss-btn" aria-label="Discuss with AI" title="Discuss with AI">&#x1F4AC;</button>
+                        <button type="button" class="repo-toggle" aria-expanded="true">Hide details</button>
+                    </div>
+                </div>
+                <div class="repo-body">
+                    <p class="meta">
+                        <span class="language">erici.eu</span> |
+                        <span>ymz5</span> |
+                        <span>136 points</span> |
+                        <span>72 comments</span> |
+                        <a href="https://news.ycombinator.com/item?id=50334523" target="_blank" rel="noopener noreferrer">discussion</a>
+                    </p>
+                    <p class="history">First seen: November 03, 2026 | Consecutive daily streak: 1 day</p>
+                    <div class="ai-summary">
+                        <h4>Analysis</h4>
+                        <p>The European RISC-V Industrial Computing Initiative (ERICI) is a non-commercial, Europe-based effort to create an open reference platform for long-lived industrial computers using the RVA23 RISC-V profile. It aims to connect firmware, boot loaders, a partitioning hypervisor, real-time software, and Linux into a verified stack that can run side-by-side on compliant hardware, while defining open interfaces between layers. The initiative addresses the gap between newly available RVA23 development boards and industrial systems that also require rugged hardware, fieldbus and real-time I/O, certifications, watchdogs, and 10–15 years of availability. Its importance is reducing dependence on x86 and Arm licensing and vendor roadmaps, while breaking the cycle in which hardware makers wait for software and software developers wait for suitable hardware.</p>
+                    </div>
+                    
+                <div class="ai-summary">
+                    <h4>Comment Analysis</h4>
+                    <p class="camps-framing">Commenters saw open RISC-V as a possible step toward greater architectural independence, while questioning whether the initiative has the backing and supply chain to deliver a supportable European industrial computer. Discussion also covered the distinction between low-cost development boards and industrial-capable processors, the longevity needs of industrial systems, and whether the site’s presentation strengthened or weakened confidence.</p>
+<div class="camp"><p class="camp-label"><strong>Open RISC-V as a strategic opportunity</strong> &mdash; Supportive commenters viewed an open instruction set and wider RISC-V adoption as worthwhile groundwork for European industry and computing beyond microcontrollers.</p><blockquote>Neat. This seems like exactly the sort of thing Europe should be pushing<cite>Havoc</cite></blockquote>
+<blockquote>Open ISA is the best ISA<cite>perarneng</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Ambitious idea, unclear institutional backing</strong> &mdash; Some commenters questioned whether the initiative has an established organization, company, or government sponsor, while a reply noted that a non-commercial project could still seek funding.</p><blockquote>This is just a webpage some individual put up, right? I mean as far as I can see there&#x27;s no institute, no company, no government behind this.<cite>cbolton</cite></blockquote>
+<blockquote>This seems to be run by a random dude looking for funding:<cite>dragoncrab</cite></blockquote>
+<blockquote>non-commercial doesn&#x27;t mean not looking for funding (neither does it mean looking for funding)<cite>dathinab</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>An open ISA does not ensure European supply-chain independence</strong> &mdash; Commenters welcomed open standards but pointed out that the featured chips are Chinese-made, and questioned whether the initiative could provide a trusted European hardware supply chain.</p><blockquote>I like RISC-V as a concept but still only Chinese are focused on manufacturing those today.<cite>hollowonepl</cite></blockquote>
+<blockquote>Wake me up when someone can actually build a computer from scratch with EU-made parts.<cite>ur-whale</cite></blockquote>
+<blockquote>Very sad that the silicon itself is not made in EU.<cite>PowerElectronix</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Industrial longevity and maintainability</strong> &mdash; Commenters debated whether long-lived industrial machines already meet the need, and whether proprietary parts and software can make repairs and maintenance difficult over time.</p><blockquote>Has this been a problem for industrial machines? Can&#x27;t they already run for 30 years and more?<cite>ShadowOfThePit</cite></blockquote>
+<blockquote>They can run, but if one of the computer-related parts breaks down your only choice is scrounging eBay for replacement parts because (as an example) the software is proprietary and it runs on a weird MCA card with really precise timing and strong anti-piracy measures.<cite>InvisibleUp</cite></blockquote>
+<blockquote>Yeah, open source isn’t all that’s required<cite>rurifi33</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Skepticism about the site&#x27;s presentation</strong> &mdash; Some commenters described the site&#x27;s writing and design as formulaic or AI-generated, while others considered the content readable and the style unimportant.</p><blockquote>Pure model slop. When I read this I get a headache and feel repulsed.<cite>orbifold</cite></blockquote>
+<blockquote>Likewise. I&#x27;m a RISC-V fan but a slop page like this is not a good look.<cite>IshKebab</cite></blockquote>
+<blockquote>Is it content-free? I don&#x27;t think so. Is it hard to read? I don&#x27;t think so either.<cite>nine_k</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>RISC-V maturity and prospects are contested</strong> &mdash; Commenters disputed how quickly RISC-V can deliver competitive high-performance processors, with one response distinguishing delays in complex cores from broader success and investment.</p><blockquote>How long do we keep RISCV going without facing that it has failed?<cite>mosura</cite></blockquote>
+<blockquote>The ISA is successful in the low end and is seeing huge investment on large cores, though most of the promising companies are now focusing on AI or getting bought by large players like Qualcomm.<cite>cbolton</cite></blockquote>
+<blockquote>Such development boards are a completeley different thing compared to RVA23-profile RISC-V CPUs.<cite>myrmidon</cite></blockquote></div>
+                </div>
+
+                </div>
+            </section>
+
+            <section class="repo" data-seen-before="0"
+                     data-share-title="Show HN: Subvocal – Talk to your computer without making noise"
+                     data-share-url="https://news.ycombinator.com/item?id=50340088"
+                     data-share-points="722"
+                     data-share-comments="345">
+                <div class="repo-header-row">
+                    <h3>8. <a href="https://news.ycombinator.com/item?id=50340088" target="_blank" rel="noopener noreferrer">Show HN: Subvocal – Talk to your computer without making noise</a> </h3>
+                    <div class="header-buttons">
+                        <button type="button" class="discuss-btn" aria-label="Discuss with AI" title="Discuss with AI">&#x1F4AC;</button>
+                        <button type="button" class="repo-toggle" aria-expanded="true">Hide details</button>
+                    </div>
+                </div>
+                <div class="repo-body">
+                    <p class="meta">
+                        <span class="language">news.ycombinator.com</span> |
+                        <span>aarushyadav</span> |
+                        <span>722 points</span> |
+                        <span>345 comments</span> |
+                        <a href="https://news.ycombinator.com/item?id=50340088" target="_blank" rel="noopener noreferrer">discussion</a>
+                    </p>
+                    <p class="history">First seen: November 03, 2026 | Consecutive daily streak: 1 day</p>
+                    <div class="ai-summary">
+                        <h4>Analysis</h4>
+                        <p>Subvocal is developing smart glasses that use radio-frequency sensing to detect silent mouthing—or limited internal articulation—and convert it into text at speaking speed without audible speech. Founded by two Georgia Tech students inspired by silent-speech research, the company moved from face-mounted EMG electrodes to embedded antennas and trains models on data from many users to address anatomical differences. The YC-backed startup says it is refining the prototype, expanding its dataset, and plans to ship in Q1 2027, with preorders open for an initial 500 units. The technology could make voice-dictation-style computer input usable in libraries, offices, and public settings, though calibration, accuracy, privacy, and practical product readiness remain important questions.</p>
+                    </div>
+                    
+                <div class="ai-summary">
+                    <h4>Comment Analysis</h4>
+                    <p class="camps-framing">The discussion combined strong interest in silent, hands-free input with questions about whether the prototype can become accurate and comfortable enough for everyday use. Commenters also debated cloud processing and privacy, the need to wear dedicated glasses, and whether speaking or silently mouthing words would feel more useful than typing or socially comfortable in public.</p>
+<div class="camp"><p class="camp-label"><strong>Excited early adopters</strong> &mdash; Some commenters saw the device as a compelling new way to interact with computers, particularly where speaking aloud is inconvenient. Several expressed strong interest, including interest in preordering.</p><blockquote>I think this is incredibly cool and straight out of a sci-fi novel!<cite>sourpanda</cite></blockquote>
+<blockquote>Super excited to see more products in this area.<cite>joshstrange</cite></blockquote>
+<blockquote>this is one of the first product demos I&#x27;ve seen in a while where I thought to myself &quot;this could actually solve a big problem of mine&quot;.<cite>cpan22</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Accessibility and hands-free use</strong> &mdash; Commenters highlighted possible value for people who cannot type comfortably or cannot use ordinary voice dictation. They also pointed to potential applications for speech impairments and mutism.</p><blockquote>A product like this is literally what I have been looking for over the past few years.<cite>Xevi</cite></blockquote>
+<blockquote>This is also neat thing to have with people struggling with typing (RSI, injuries, disabilities) but want to do more than just dictation, eg Talon Voice.<cite>makmanalp</cite></blockquote>
+<blockquote>Combined with TTS, this can give a voice to people with certain types of mutism.<cite>oever</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Accuracy and evidence skeptics</strong> &mdash; Some commenters wanted clearer benchmarks and evidence that the system works across users and languages. Others questioned how far the current prototype is from a reliable product.</p><blockquote>Accuracy is the sales objection.<cite>edmundsauto</cite></blockquote>
+<blockquote>Are there any associated benchmarks with this? Like how accurate is this technology for different types of facial structures, sentences or languages?<cite>joshdavham</cite></blockquote>
+<blockquote>Could you clarify what you meant?<cite>ghusbands</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Privacy and offline processing</strong> &mdash; Commenters objected to sending sensor data or interpreted speech to the cloud, especially given the possibility of capturing private thoughts or workplace material. Some asked for local processing or offline use.</p><blockquote>Cool tech, but I don’t want my internal thoughts anywhere near the cloud.<cite>IHLayman</cite></blockquote>
+<blockquote>Can this be made to work offline, without a cloud server?<cite>aftbit</cite></blockquote>
+<blockquote>You need to be crystal clear what information people are potentially sharing with you before they purchase your devices.<cite>tallanvor</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Glasses as a limiting form factor</strong> &mdash; Some commenters questioned making dedicated glasses a requirement, citing prescription needs, fit, comfort, and personal preference. Others suggested alternative mounts or wearables.</p><blockquote>If the tech is mostly in the glasses temples, I would prefer to have something that attaches to my existing glasses.<cite>growt</cite></blockquote>
+<blockquote>My only wish is that all this kind of work didn&#x27;t gravitate toward glasses or assume glasses are the default thing-on-your-face now.<cite>rdiddly</cite></blockquote>
+<blockquote>Yeah it is, because now the typing glasses are an appliance, not just your regular glasses.<cite>OJFord</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Typing, speech, and social comfort</strong> &mdash; Commenters differed on whether speech is faster or more natural than typing, with some preferring typing for precision and deliberation. Others questioned whether silently mouthing words would feel intuitive or comfortable in public.</p><blockquote>Typing feels much more &quot;deliberate&quot;, and of course you can hit backspace but you can&#x27;t un-speak a word.<cite>achandra03</cite></blockquote>
+<blockquote>I don&#x27;t think it is an intuitive action at all and I became self-conscious about not making a sound rather than talking like I normally would.<cite>0x4e</cite></blockquote>
+<blockquote>If no one wants to dictate to their phones or computers in public, surely they don&#x27;t want to do this (looking like they are talking without making any noise) in public?<cite>BrokenCogs</cite></blockquote></div>
+                </div>
+
+                </div>
+            </section>
+
+            <section class="repo" data-seen-before="0"
+                     data-share-title="Vathographs: Photographic depth maps as creative expression"
+                     data-share-url="https://vathography.com/"
+                     data-share-points="28"
+                     data-share-comments="6">
+                <div class="repo-header-row">
+                    <h3>9. <a href="https://vathography.com/" target="_blank" rel="noopener noreferrer">Vathographs: Photographic depth maps as creative expression</a> </h3>
+                    <div class="header-buttons">
+                        <button type="button" class="discuss-btn" aria-label="Discuss with AI" title="Discuss with AI">&#x1F4AC;</button>
+                        <button type="button" class="repo-toggle" aria-expanded="true">Hide details</button>
+                    </div>
+                </div>
+                <div class="repo-body">
+                    <p class="meta">
+                        <span class="language">vathography.com</span> |
+                        <span>hankbond</span> |
+                        <span>28 points</span> |
+                        <span>6 comments</span> |
+                        <a href="https://news.ycombinator.com/item?id=50331800" target="_blank" rel="noopener noreferrer">discussion</a>
+                    </p>
+                    <p class="history">First seen: November 03, 2026 | Consecutive daily streak: 1 day</p>
+                    <div class="ai-summary">
+                        <h4>Analysis</h4>
+                        <p>Vathography is a proposed photographic art practice that turns a single image into a standalone artwork based on its inferred depth map rather than its light, color, or conventional focus. It uses the newly released Marigold V2 monocular depth-estimation model to estimate scene volume, then lets artists remap depth to tones, colors, and focus after capture. The approach requires only an ordinary photograph and offers open, commercially usable tools through ComfyUI and a Blender add-on, contrasting with 3D scanning or multi-image reconstruction. Its significance is conceptual as well as technical: depth, normally an invisible post-processing intermediate, becomes the finished medium and changes how photographers compose scenes.</p>
+                    </div>
+                    
+                <div class="ai-summary">
+                    <h4>Comment Analysis</h4>
+                    <p class="camps-framing">Commenters were intrigued by depth maps as an artistic medium while debating how inferred depth differs from captured data, what the maps represent, and whether the examples adequately protected privacy.</p>
+<div class="camp"><p class="camp-label"><strong>Depth as an artistic medium</strong> &mdash; One commenter welcomed making depth the focus of an artwork rather than treating it as a transient processing step.</p><blockquote>I&#x27;m big on photography and thought this was a really neat use of what is normally a transient image into the point of the creation.<cite>hankbond</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Inferred depth changes the photographic claim</strong> &mdash; One commenter argued that model-inferred depth crosses a line from photographic editing into AI image-making because the depth was not recorded by the camera.</p><blockquote>The data isnt really there, in short, the depth is hallucinated.<cite>burnoutdv</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Inference is not necessarily hallucination</strong> &mdash; A brief reply distinguished inferred depth from hallucinated depth.</p><blockquote>No, no, the depth is _inferred_, not hallucinated. See? There&#x27;s a difference.<cite>ares623</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Prefer or compare against captured depth</strong> &mdash; Commenters pointed to motion-derived phone depth, stereo camera arrays, and other capture methods as more grounded or verifiable alternatives, while noting limitations.</p><blockquote>Phones (Google Pixels at least) use sensor data from inertial sensors and slight hand movement as part of their depth calculation: https://research.google/pubs/depth-from-motion-for-smartphon...<cite>xnx</cite></blockquote>
+<blockquote>An ML model is necessary for optimal results with stereo cameras, but it&#x27;s more grounded in reality and verifiable versus a mono capture.<cite>joefourier</cite></blockquote>
+<blockquote>More things on there about ways to capture depth maps instead of generating them from a single image<cite>ear7h</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Accuracy and what the map represents</strong> &mdash; Commenters questioned whether the maps encode brightness or subject recognition in addition to depth, and how their accuracy could be measured.</p><blockquote>The vatograph images shown seem to also be mostly about subject recognition, not depth. How accurate are these inferred depth maps?<cite>difosfor</cite></blockquote>
+<blockquote>It&#x27;s not accurate at all. Measuring accuracy would require some sort of calibration.<cite>Valgrim</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Privacy oversight</strong> &mdash; One commenter noted that faces obscured in the color photograph remained visible in the depth-map version.</p><blockquote>Faces are blocked in the original color image but not in the black-and-white depth image.<cite>sandworm101</cite></blockquote></div>
+                </div>
+
+                </div>
+            </section>
+
+            <section class="repo" data-seen-before="0"
+                     data-share-title="Efficient algorithms, the Exponential Time Hypothesis, and losing the plot"
+                     data-share-url="https://www.argmin.net/p/galactus-the-devourer"
+                     data-share-points="69"
+                     data-share-comments="46">
+                <div class="repo-header-row">
+                    <h3>10. <a href="https://www.argmin.net/p/galactus-the-devourer" target="_blank" rel="noopener noreferrer">Efficient algorithms, the Exponential Time Hypothesis, and losing the plot</a> </h3>
+                    <div class="header-buttons">
+                        <button type="button" class="discuss-btn" aria-label="Discuss with AI" title="Discuss with AI">&#x1F4AC;</button>
+                        <button type="button" class="repo-toggle" aria-expanded="true">Hide details</button>
+                    </div>
+                </div>
+                <div class="repo-body">
+                    <p class="meta">
+                        <span class="language">argmin.net</span> |
+                        <span>sebg</span> |
+                        <span>69 points</span> |
+                        <span>46 comments</span> |
+                        <a href="https://news.ycombinator.com/item?id=50320904" target="_blank" rel="noopener noreferrer">discussion</a>
+                    </p>
+                    <p class="history">First seen: November 03, 2026 | Consecutive daily streak: 1 day</p>
+                    <div class="ai-summary">
+                        <h4>Analysis</h4>
+                        <p>The article critiques computer science’s reliance on asymptotic complexity—especially the classification of polynomial time as “efficient” and exponential time as “inefficient”—arguing that it often diverges sharply from practical performance. It uses OpenAI’s reported subexponential algorithm for SAT as a case study, noting that its enormous crossover threshold means it behaves exponentially for any realistically sized problem. The author contrasts this result with practical SAT solvers and algorithms such as the simplex method, which may have poor worst-case guarantees but perform effectively on large real-world instances. The broader point is that decades of theoretical work may have optimized an abstract definition of efficiency rather than answering the practically important question of which algorithms work well.</p>
+                    </div>
+                    
+                <div class="ai-summary">
+                    <h4>Comment Analysis</h4>
+                    <p class="camps-framing">The reaction mostly challenges the article’s framing: many commenters argue that asymptotic complexity is a useful mathematical framework, not a promise that every polynomial-time algorithm is practical. Others agree that worst-case labels can obscure real-world performance and that enormous crossover thresholds deserve clearer explanation. The technical debate is narrower: how much the new SAT result changes about ETH, and whether its galactic-scale running time is a problem, a normal feature of asymptotic analysis, or both.</p>
+<div class="camp"><p class="camp-label"><strong>Practical performance matters</strong> &mdash; Some commenters emphasize that engineers need to know how an algorithm performs at relevant input sizes, and that big-O can hide consequential constants and crossover points. They see the practical concern as valid even if the broader critique is overstated.</p><blockquote>I guess in engineering what you care about is: how fast is it on given input size X relevant for the practical problem.<cite>Aardwolf</cite></blockquote>
+<blockquote>It&#x27;s just a tool and we shouldn&#x27;t miss the trees for the forest.<cite>podocarp</cite></blockquote>
+<blockquote>The article makes the point that not all polynomial algorithms are created equal.<cite>layer8</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Asymptotic complexity remains useful</strong> &mdash; These commenters argue that polynomial-versus-exponential distinctions capture meaningful structure and offer a tractable way to compare problems. Galactic runtimes may be impractical, but that does not make the underlying results or framework misguided.</p><blockquote>The choice of exponential = bad and polynomial = good may have been quasi-arbitrary initially, but it since found a much more solid footing.<cite>simiones</cite></blockquote>
+<blockquote>Polynomials are closed under multiplication, so you can do a poly algorithms poly number of times and still have a poly algorithm.<cite>karmakurtisaani</cite></blockquote>
+<blockquote>Complexity theory is interesting and fun. Isn&#x27;t that enough?<cite>npinsker</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>The astronomical threshold deserves scrutiny</strong> &mdash; Some commenters say a huge brute-force crossover does not invalidate an asymptotic result and may be reducible. Others argue that understanding and clearly explaining the threshold matters for mathematical understanding and communication.</p><blockquote>It&#x27;s a bit weird to dismiss the subexponential algorithm just because it&#x27;s leaving an obvious optimization on the table... it can only get faster from here.<cite>yorwba</cite></blockquote>
+<blockquote>So, proving the correctness of an algorithm which is doing brute-force search for all instances below some super-astronomic threshold is typically just the first step towards getting an understanding of the complexity-theoretic phenomenon.<cite>aleph_minus_one</cite></blockquote>
+<blockquote>I hate to use absolutely but it absolutely does matter from an education perspective.<cite>calf</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>The SAT result is significant but limited</strong> &mdash; Technical commenters note that subexponential algorithms for some NP-complete problems were already known, so the new result does not by itself upend complexity theory. They also point to consequences for other problems, while some expect ETH’s formulation to be adjusted rather than abandoned.</p><blockquote>About ETH: Many people say now that ETH was simply stated in a too strong manner, and that the correct exponential time hypothesis is SH, the Satisfiability Hypothesis .<cite>emil-lp</cite></blockquote>
+<blockquote>Moreover, it was already known that some NP-complete problems admit sub-exponential algorithms.<cite>isaacfrond</cite></blockquote>
+<blockquote>For example, we now have now have a deterministic interger factoring algorithm with run time N^o(1), where N is the integer being factored.<cite>isaacfrond</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Critique the article’s treatment of theory</strong> &mdash; Several commenters object to the article’s portrayal of complexity theory, arguing that it understates what the field claims or should already understand. Others criticize its presentation of the OpenAI result and its rhetorical tone.</p><blockquote>This author seems to really mis-understand complexity theory and in what ways it matters.<cite>simiones</cite></blockquote>
+<blockquote>Author is a math professor who somehow wants you to believe that he didn&#x27;t know what a computational model is until OpenAI&#x27;s manuscript dump a few days ago.<cite>perching_aix</cite></blockquote>
+<blockquote>One point of the article is that much of what falls under complexity theory is indeed useless pure math masquerading as useful applied math.<cite>cubefox</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>No clear replacement framework</strong> &mdash; One commenter argues that criticism of time complexity is incomplete without an alternative that preserves its simplicity, structure, and usefulness. A reply points to implicit computational complexity as a less-known candidate.</p><blockquote>I’ve seen quite a few critiques of the practicality of time complexity analysis but I’ve never seen an article describe what we should replace it with.<cite>inkysigma</cite></blockquote>
+<blockquote>Implicit Computational Complexity deserves to be more well known.<cite>qazxcvbnm</cite></blockquote></div>
+                </div>
+
+                </div>
+            </section>
+
+            </div>
+        </article>
+    </main>
+    <footer>
+        <p>Generated automatically. Data from <a href="https://news.ycombinator.com/">Hacker News</a>.</p>
+    </footer>
+
+<script>
+(() => {
+    const readKey = "gtd:read_days:hn:v1";
+    const dayStr = "2026-11-03";
+
+    let stored = [];
+    try {
+        stored = JSON.parse(localStorage.getItem(readKey) || "[]");
+        if (!Array.isArray(stored)) {
+            stored = [];
+        }
+    } catch (_err) {
+        stored = [];
+    }
+
+    if (!stored.includes(dayStr)) {
+        stored.push(dayStr);
+        stored.sort();
+        localStorage.setItem(readKey, JSON.stringify(stored));
+    }
+
+    const collapseParam = new URLSearchParams(window.location.search).get("collapse_seen");
+    const collapseSeen = collapseParam === "0" ? false : true;
+
+    function setCollapsed(repoEl, collapsed) {
+        repoEl.classList.toggle("collapsed", collapsed);
+        const button = repoEl.querySelector(".repo-toggle");
+        if (button) {
+            button.textContent = collapsed ? "Show details" : "Hide details";
+            button.setAttribute("aria-expanded", String(!collapsed));
+        }
+    }
+
+    const repos = Array.from(document.querySelectorAll("section.repo[data-seen-before]"));
+
+    repos.forEach((repoEl) => {
+        const toggle = repoEl.querySelector(".repo-toggle");
+        if (!toggle) {
+            return;
+        }
+
+        toggle.addEventListener("click", () => {
+            setCollapsed(repoEl, !repoEl.classList.contains("collapsed"));
+        });
+    });
+
+    const collapseBtn = document.getElementById("collapse-seen-btn");
+    const expandBtn = document.getElementById("expand-all-btn");
+
+    if (collapseBtn) {
+        collapseBtn.addEventListener("click", () => {
+            repos.forEach((repoEl) => {
+                if (repoEl.dataset.seenBefore === "1") {
+                    setCollapsed(repoEl, true);
+                }
+            });
+        });
+    }
+
+    if (expandBtn) {
+        expandBtn.addEventListener("click", () => {
+            repos.forEach((repoEl) => setCollapsed(repoEl, false));
+        });
+    }
+
+    if (collapseSeen) {
+        repos.forEach((repoEl) => {
+            if (repoEl.dataset.seenBefore === "1") {
+                setCollapsed(repoEl, true);
+            }
+        });
+    }
+
+    // Discuss with AI button
+    const toast = document.createElement("div");
+    toast.className = "discuss-toast";
+    document.body.appendChild(toast);
+
+    function showToast(msg) {
+        toast.textContent = msg;
+        toast.classList.add("show");
+        setTimeout(() => toast.classList.remove("show"), 2500);
+    }
+
+    function buildHNMarkdown(card) {
+        const title = card.dataset.shareTitle || "";
+        const url = card.dataset.shareUrl || "";
+        const points = card.dataset.sharePoints || "0";
+        const comments = card.dataset.shareComments || "0";
+        const summaries = card.querySelectorAll(".ai-summary");
+        let md = "# " + title + "\n";
+        md += "Source: " + url + " | " + points + " points | " + comments + " comments\n";
+        summaries.forEach((s) => {
+            const heading = s.querySelector("h4");
+            const label = heading ? heading.textContent.trim() : "Analysis";
+            const content = Array.from(s.querySelectorAll("p"))
+                .map((p) => p.textContent.trim())
+                .join("\n");
+            md += "\n## " + label + "\n" + content + "\n";
+        });
+        return md;
+    }
+
+    document.querySelectorAll(".discuss-btn").forEach((btn) => {
+        btn.addEventListener("click", () => {
+            const card = btn.closest("section.repo");
+            if (!card) return;
+            const md = buildHNMarkdown(card);
+            const text = "I'd like to discuss this article with you. Here's a summary:\n\n" + md;
+            const title = "Discuss: " + (card.dataset.shareTitle || "");
+            if (navigator.share) {
+                navigator.share({ title: title, text: text }).catch(() => {});
+            } else {
+                navigator.clipboard.writeText(text).then(
+                    () => showToast("Copied to clipboard \u2014 paste into your AI chat"),
+                    () => showToast("Failed to copy")
+                );
+            }
+        });
+    });
+})();
+</script>
+
+<script src="../../preference.js?v=eddd7abe6" defer></script>
+</body>
+</html>
