@@ -1,0 +1,794 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Morning Edition — November 4, 2026</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght,SOFT@0,9..144,300..900,0..100;1,9..144,300..900,0..100&family=Inter:ital,wght@0,100..900;1,100..900&family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../morning.css?v=ccadacde0">
+</head>
+<body id="top" data-gtd-edition="hn" data-gtd-date="2026-11-04">
+  <header class="masthead">
+    <div class="masthead-nav">
+      <a href="../">Hacker News Calendar</a>
+      <span>&nbsp;·&nbsp;</span>
+      <a href="../../2026-11-04/">GitHub Trending &nbsp;·&nbsp; Nov 4</a>
+      <span>&nbsp;·&nbsp;</span>
+      <a href="../../ai/2026-11-04/">AI News &nbsp;·&nbsp; Nov 4</a>
+      <span>&nbsp;·&nbsp;</span>
+      <a href="classic.html">Classic View</a>
+    </div>
+    <div class="tagline">The Morning Edition</div>
+    <h1 class="frnc">Ten stories, before your coffee.</h1>
+    <div class="issue-line">
+      <span>Vol. I</span>
+      <span>November 4, 2026</span>
+      <span>HN Front Page Digest</span>
+    </div>
+  </header>
+<section class="the-take"><details open><summary>The HN Take</summary><h3 class="take-head">Plugged in.</h3><p>Here is a laptop power-management strategy:</p><p>The Nvidia RTX Spark laptop runs AI models quickly on Windows. It runs them about as quickly through Windows Subsystem for Linux. It also runs them quickly on native Linux, as long as you unplug it from the wall. If you plug it in, it slows down dramatically.</p><p>In one benchmark using GPT-OSS-120B, Windows generated 65.4 tokens per second, WSL generated 65.1 and Nvidia&#x27;s DGX Spark desktop generated 61. Native Linux on the same laptop managed 13.9. A longer test took about eight minutes on Windows and 37 minutes on Linux.</p><p>This was not thermal throttling. The GPU stayed between 40 and 47 degrees Celsius. It was not running too hot; it was running too politely. On Windows, its clock held near 2.2 GHz. On plugged-in Linux, it sat around 790 MHz.</p><p>Oddly, disconnecting the laptop from external power mostly fixed it:</p><p>&quot;Unplugged, Linux hit around 61 to 67 tokens per second on LM Studio, comparable to Windows. Plugged in, that same test dropped to about 15 tokens per second.&quot;</p><p>Sure. Normally a laptop has a battery-saving mode in which it sacrifices performance when unplugged. The RTX Spark apparently has a Linux-saving mode in which it sacrifices performance when plugged in. If your large language model is taking too long to answer, pull the power cord. The electricity was getting in the way.</p><p>The explanation is that Windows includes something called the Nvidia Platform Controllers and Framework, which manages the shared power budget between the CPU and GPU. Linux does not have an equivalent. The controller reads an encrypted table of power settings from the firmware; the Windows software can decrypt it, while Linux cannot. Disabling the controller in Windows reproduced the Linux behavior, dropping performance and locking the GPU near the same 786 MHz clock speed. Re-enabling it restored performance.</p><p>This is a pleasingly literal version of vendor lock-in. The computer contains plenty of power, and Linux contains a working open-source Nvidia driver, but the instructions for combining those things are encrypted. Windows has the key. Linux can use the GPU, just not with enthusiasm.</p><p>There is a similar issue with memory. The laptop has 128GB of unified memory and reserves 96GB for the GPU by default. Native Linux initially saw only 28GB, and the allocation setting was available only in Windows. The fix was to boot into Windows, lower the GPU reservation to 4GB, and then boot back into Linux, which could see 120GB. Thus Windows is required to configure the memory for Linux, and Windows is required to unlock full GPU performance for Linux. The most practical way to run Linux is consequently WSL, meaning Windows.</p><p>This is not ideal if you bought an unusually powerful AI laptop because much of the AI software ecosystem is Linux-first. But it does produce a coherent product architecture. Nvidia sells a Windows-on-ARM laptop whose special appeal is running Linux AI tools, and the best way to do that is to keep Windows running underneath them. Native Linux also works, provided you configure it from Windows and operate the laptop on battery. Portable computing, in the strict sense.</p><div class="take-sources"><span>Sources</span><ul><li><a href="https://www.mindstudio.ai/blog/linux-nvidia-rtx-spark-laptop" target="_blank" rel="noopener noreferrer">Nvidia RTX Spark encrypted firmware slows inference speed to 35% on Linux</a></li></ul></div></details></section>
+  <section id="story-1" class="spread arc-stat-hero">
+    <div class="numeral">35%</div>
+    <div class="kicker">N<sup>o</sup> 01 · Performance Gap</div>
+    <h2>Linux Leaves RTX Spark Running on Empty</h2>
+    <p class="story-meta">mindstudio.ai &nbsp;·&nbsp; 137 pts &nbsp;·&nbsp; 68 comments</p>
+    <p class="lede">On native Linux, Nvidia’s RTX Spark laptop delivers just a fraction of its plugged-in inference speed. An encrypted Windows-only power-management table holds the GPU near 780 MHz, while WSL approaches Windows performance.</p>
+    <div class="spread-links"><a class="read-more" href="https://www.mindstudio.ai/blog/linux-nvidia-rtx-spark-laptop" target="_blank" rel="noopener">Read →</a><a class="read-more share-link" href="#" data-share-title="Nvidia RTX Spark encrypted firmware slows inference speed to 35% on Linux" data-share-url="https://www.mindstudio.ai/blog/linux-nvidia-rtx-spark-laptop">Share →</a>
+      <details class="analysis-drawer">
+        <summary class="btn-dossier">[ Analysis + ]</summary>
+        <div class="drawer-content">
+          
+          <h4>Technical Analysis</h4>
+          <div class="drawer-analysis">
+          <p>The story examines Linux support on Nvidia RTX Spark laptops, finding that installation, display, peripherals, CUDA, and AI tools can work but require distribution-specific fixes and Windows configuration to expose the laptop’s unified memory. Native Linux suffers a major performance penalty when plugged in because a Windows-only Nvidia Platform Controllers and Framework component manages CPU/GPU power sharing using an encrypted firmware table that Linux cannot access, locking the GPU near 780 MHz instead of roughly 2.2 GHz. In testing, a large-model workload achieved about 13.9 tokens per second on native Linux versus 65.4 on Windows and 65.1 in WSL, while battery operation largely removed the disparity. The practical takeaway is that WSL currently offers Linux tooling with near-Windows performance, while a proper native-Linux solution requires Nvidia to provide equivalent power-management support.</p>
+          </div>
+          <h4>Reader Reactions</h4>
+<p class="camps-framing">The discussion centered on reports of poor native-Linux performance on Nvidia’s RTX Spark laptop. Some commenters suspected proprietary lock-in or future limits on local AI, while others saw a fixable implementation gap or ordinary market segmentation. The thread also considered Linux support, reverse engineering, laptop inference, and confusion over the product named in the article’s title.</p>
+<div class="camp"><p class="camp-label"><strong>Suspicion of lock-in and rent-seeking</strong> &mdash; Commenters connected the performance gap to concerns about proprietary controls, paywalled capabilities, and dependence on centralized AI services. These were suspicions and worries, not established explanations for the issue.</p><blockquote>Are we actually seeing a push towards being 100percent dependent on the cloud?<cite>K0balt</cite></blockquote>
+<blockquote>NVIDIA probably already figured out that local will be massive part and are preparing to do DRM for AI.<cite>InsidiousWombat</cite></blockquote>
+<blockquote>This one is allegedly/hopefully a bug but just waiting for it to become a revenue stream / paywall.<cite>rich_sasha</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Caution against assuming deliberate throttling</strong> &mdash; Some commenters suggested the issue could reflect unfinished software or market segmentation, rather than an intentional effort to prevent Linux use or force customers into cloud services.</p><blockquote>It sounds more like it hasn&#x27;t been properly implemented yet<cite>sva_</cite></blockquote>
+<blockquote>It is just classic market segmentation, the thing Nvidia and just about every company that can benefit from it has done for decades.<cite>GuB-42</cite></blockquote>
+<blockquote>much ado about nothing, it&#x27;ll probably come out in some time.<cite>villgax</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Frustration with Nvidia’s Linux support</strong> &mdash; Some commenters treated the problem as consistent with a history of poor Linux support and proprietary drivers; a reply pointed to Nvidia’s newer open-source kernel modules.</p><blockquote>Nvidia was already a bad choice for Linux because of closed drivers.<cite>laughing_man</cite></blockquote>
+<blockquote>As always, nothing has changed, Nvidia is always shit in supporting Linux.<cite>alerighi</cite></blockquote>
+<blockquote>New generations such as Blackwell have open source kernel modules, there is not even a proprietary option.<cite>afarah1</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Reverse engineering as a remedy</strong> &mdash; Some commenters expected community reverse engineering to produce a Linux fix, while others emphasized that this would add to the already difficult work of setting up local AI.</p><blockquote>Fortunately that&#x27;s just a matter of weeks until someone revengs and publishes the fix... even if we need to wait a while for a proper upstreamed solution.<cite>viraptor</cite></blockquote>
+<blockquote>Even if this is &quot;just&quot; another step you have to find, it&#x27;s toxic.<cite>OsrsNeedsf2P</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Why run inference on a laptop?</strong> &mdash; A side discussion weighed the cost and practicality of laptop inference against using a home machine remotely, with replies citing privacy, local data, travel, and convenience.</p><blockquote>If you really want to do DIY inference, plug it in at home and set up tailscale so you can access it on the go.<cite>barrkel</cite></blockquote>
+<blockquote>Because maybe you don&#x27;t want to send your private data to a company that could use it for whatever it wants?<cite>alerighi</cite></blockquote>
+<blockquote>If you do any travel whatsoever a laptop is usually not optional.<cite>dumberquestions</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Correcting the product and title</strong> &mdash; Commenters pointed out that the article concerned the RTX Spark laptop, not the DGX Spark, and noted that the title was later changed.</p><blockquote>The article is about the RTX Spark, not the DGX Spark. The title should be changed.<cite>schaefer</cite></blockquote>
+<blockquote>Looks like the site has fixed the title.<cite>sampo</cite></blockquote>
+<blockquote>Why does the title say DGX spark when the link is the RTX Spark laptop?<cite>hypfer</cite></blockquote></div>
+          <p class="drawer-footer"><a href="#dossier-1">View in Dossier ↓</a></p>
+        </div>
+      </details>
+    </div>
+  </section>
+  <section id="story-2" class="spread arc-terminal">
+    <div class="prompt-row">user@morning-edition:~$ cat story_02.md</div>
+    <div class="numeral">02</div>
+    <h2>Kitty 0.50 Restores the Terminal Session</h2>
+    <p class="story-meta">sw.kovidgoyal.net &nbsp;·&nbsp; 179 pts &nbsp;·&nbsp; 98 comments</p>
+    <p class="lede">Release 0.50 adds docked windows, persistent sessions, workspace-style tabs, and richer graphics controls. The terminal grows into a programmable desktop workspace: fast, stateful, and still sharply configurable.<span class="cursor"></span></p>
+    <div class="spread-links"><a class="read-more" href="https://sw.kovidgoyal.net/kitty/changelog/#" target="_blank" rel="noopener">Read →</a><a class="read-more share-link" href="#" data-share-title="Kitty 0.50" data-share-url="https://sw.kovidgoyal.net/kitty/changelog/#">Share →</a>
+      <details class="analysis-drawer">
+        <summary class="btn-dossier">[ Analysis + ]</summary>
+        <div class="drawer-content">
+          
+          <h4>Technical Analysis</h4>
+          <div class="drawer-analysis">
+          <p>Kitty 0.50 is a major release of the GPU-accelerated, cross-platform terminal emulator, centered on docked windows that can attach to tabs or other windows for status bars, file trees, and persistent shells. It also adds session restoration after logout or shutdown, including scrollback, improved workspace-style tab management, touchscreen support on Wayland, richer shader controls, and expanded graphics and program-status protocols. The release continues kitty’s focus on high-performance rendering and terminal features, with SIMD and GPU optimizations, layout and input improvements, and extensive fixes across remote control, drag-and-drop, SSH, graphics, and platform integrations. These changes make kitty more suitable as a persistent, programmable desktop workspace rather than just a terminal window.</p>
+          </div>
+          <h4>Reader Reactions</h4>
+<p class="camps-framing">The reaction is broadly positive toward Kitty’s continued development, with commenters especially welcoming workflow features such as session restoration and layouts. Comparisons with Ghostty focus on Kitty’s feature depth versus Ghostty’s perceived polish and platform feel; some Linux users also report startup and stability problems with Ghostty. A substantial Calibre tangent debates whether its dense, unconventional interface is a strength or a barrier to usability. Smaller discussions touch on shaders, SSH, performance, and platform support.</p>
+<div class="camp"><p class="camp-label"><strong>Longtime Kitty supporters</strong> &mdash; Some longtime users praise Kitty’s speed, configurability, and active development, and welcome the release even without pointing to a specific new feature.</p><blockquote>I love Kitty. I&#x27;ve used it since discovering it in about 2019 and it strikes the right balance of things.<cite>petepete</cite></blockquote>
+<blockquote>Kitty is my go-to for the Linux desktop. I discovered it in an early stage and really liked it from the beginning.<cite>jfsebastian</cite></blockquote>
+<blockquote>I love that we&#x27;re seeing innovation in the VT100 compatibles space still.<cite>kar1181</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Kitty features and workflow</strong> &mdash; Some commenters choose Kitty for built-in sessions, predefined layouts, or other workflow features, rather than relying on a multiplexer.</p><blockquote>However, I&#x27;ve moved to Kitty mainly because of its native session support.<cite>azuanrb</cite></blockquote>
+<blockquote>Automated session restore might make me go back to Kitty from Ghostty.<cite>darkwater</cite></blockquote>
+<blockquote>Awesome. I built a janky version of this for myself but I’m glad it’s supported natively now.<cite>janalsncm</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Ghostty’s polish and platform feel</strong> &mdash; Some users prefer Ghostty’s defaults or feel it is more polished or native, particularly on macOS; others point to particular rendering differences.</p><blockquote>Ghostty UX feels more polished compared to Kitty.<cite>sumedh</cite></blockquote>
+<blockquote>Decided to go with Ghostty as it feels more native than Kitty.<cite>paaloeye</cite></blockquote>
+<blockquote>Kitty renders some icons badly but ghostty doesn&#x27;t.<cite>ArchD</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Linux Ghostty friction</strong> &mdash; Some Linux users report that Ghostty’s startup time, crashes, or pane glitches have led them to consider or switch back to Kitty. Replies differ on whether startup time is a meaningful drawback.</p><blockquote>It keeps segfaulting, takes a long time to actually start, I keep getting weird glitches whenever I have multiple panes open in a window<cite>quibono</cite></blockquote>
+<blockquote>Not OP, but I&#x27;ve moved back to kitty because of ghostty horrendous startup time on linux<cite>ssernikk</cite></blockquote>
+<blockquote>When I use the terminal, I spawn and kill a lot of instances for quick tasks. Having a longer startup times is definitely noticeable.<cite>przmk</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Calibre’s dense interface as a strength</strong> &mdash; Some commenters appreciate Calibre’s feature-dense, unconventional interface, valuing access to options and capability over conventional visual polish.</p><blockquote>Over time I learned to appreciate the vision: it’s not the stereotypical modern streamlined app, it’s the cockpit of a spaceship.<cite>vconnor</cite></blockquote>
+<blockquote>Some people prefer to just see everything at once and I think it’s a valid way to do it.<cite>brabel</cite></blockquote>
+<blockquote>Napster had even worst GUI, yet it has become popular as it just did the job people wanted.<cite>piokoch</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Calibre’s design as a usability barrier</strong> &mdash; Other commenters argue that Calibre’s appearance and organization can undermine usability or discourage adoption, while still valuing its functionality.</p><blockquote>Calibre is very ugly and I have no doubt that limits its adoption.<cite>latexr</cite></blockquote>
+<blockquote>Works amazingly well. Looks amazingly bad.<cite>Alien1Being</cite></blockquote>
+<blockquote>I would still be quite excited about an official visual overhaul, though<cite>lowdude</cite></blockquote></div>
+          <p class="drawer-footer"><a href="#dossier-2">View in Dossier ↓</a></p>
+        </div>
+      </details>
+    </div>
+  </section>
+  <section id="story-3" class="spread arc-editorial-pullquote">
+    <div class="left">
+      <div class="numeral">03</div>
+      <div class="kicker">Science &amp; Judgment</div>
+      <h2>Verified Answers Still Need Human Judgment</h2>
+      <p class="story-meta">blog.cosmos-institute.org &nbsp;·&nbsp; 66 pts &nbsp;·&nbsp; 35 comments</p>
+      <div class="spread-links"><a class="read-more" href="https://blog.cosmos-institute.org/p/verification-is-not-knowledge" target="_blank" rel="noopener">Read →</a><a class="read-more share-link" href="#" data-share-title="Verification Is Not Knowledge: Science needs more than answers" data-share-url="https://blog.cosmos-institute.org/p/verification-is-not-knowledge">Share →</a>
+      <details class="analysis-drawer">
+        <summary class="btn-dossier">[ Analysis + ]</summary>
+        <div class="drawer-content">
+          
+          <h4>Technical Analysis</h4>
+          <div class="drawer-analysis">
+          <p>Jessica Hullman argues that verified AI-generated proofs, treatments, or research findings are not equivalent to scientific knowledge, because science also depends on understanding, accountability, interpretation, and criticism. The article critiques the “value-free” view that reliable procedures and correct outputs can replace human judgment, noting that researchers must be able to explain claims, respond when assumptions fail, and decide which results matter. Peer review and scientific progress are presented as social processes in which accountable people challenge, revise, and build on one another’s work. This matters as AI agents increasingly generate and validate research: without preserving human expertise and judgment, science could accumulate technically correct answers that communities cannot meaningfully evaluate, use, or connect to human goals.</p>
+          </div>
+          <h4>Reader Reactions</h4>
+<p class="camps-framing">The discussion considers whether verified results are enough for science, or whether understanding is also needed to explain, interpret, and build on them. Commenters differ on the practical value of results without understanding, the potential for AI to support human inquiry, and whether AI can explain its work. They also discuss how progress may vary across scientific fields and how capable current AI systems are.</p>
+<div class="camp"><p class="camp-label"><strong>Understanding is essential to science</strong> &mdash; Some commenters argue that results alone do not provide the abstractions, legibility, and insight needed to make predictions or build further knowledge.</p><blockquote>And in many cases it is not really the new solution that is important. It is the new techniques, abstractions, or other sense-making or investigative tools that made the solution possible that matter.<cite>jrumbut</cite></blockquote>
+<blockquote>It&#x27;s much more difficult to build on top of something you don&#x27;t understand.<cite>loveparade</cite></blockquote>
+<blockquote>answers are great; understanding is even better.<cite>specialist</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Answers can be useful without full understanding</strong> &mdash; Commenters point to practical benefits that may follow from correct results even when people do not fully understand how they were obtained.</p><blockquote>One could argue that their practical impact can be independent of whether humans fully understand how they were reached.<cite>davexxxx</cite></blockquote>
+<blockquote>You can have very sophisticated technology based on zero actual knowledge or understanding, like roman concrete or borosillicate glass.<cite>PowerElectronix</cite></blockquote>
+<blockquote>See: most of pharma<cite>piker</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>AI results as a starting point for human understanding</strong> &mdash; This position treats AI-generated results as useful inputs to human inquiry, while recognizing that their trustworthiness matters.</p><blockquote>Knowing that something is true or false will at least stop humans wasting time trying to prove or disprove it, and allow them to find a more elegant proof, or investigate the implications of the true/false result.<cite>My_Name</cite></blockquote>
+<blockquote>Assuming you can trust it<cite>Insimwytim</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Verification and explanation may be enough</strong> &mdash; Some commenters regard verification as a form of knowledge and expect systems to improve at explaining results; others doubt current systems explain or abstract reliably.</p><blockquote>Thing is, though, verification is knowledge itself.<cite>A_D_E_P_T</cite></blockquote>
+<blockquote>LLMs are capable of amazing feats of reverse engineering but are terrible at explaining and abstracting things well.<cite>RugnirViking</cite></blockquote>
+<blockquote>I&#x27;ve often enough with 5.5 still run into cases where it confidently explained something, at the surface it kinda made sense, but the more I dug and verified, the more it became apparent that it was entirely wrong with the most crucial core concepts.<cite>teiferer</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>The fields will differ</strong> &mdash; Commenters suggest that AI may advance more quickly in formal fields where results can be checked rapidly, while experimental constraints may slow progress in other sciences.</p><blockquote>Perhaps for math proofs, but that&#x27;s a very different domain ultimately since we know the rules of the game in a way we don&#x27;t with science.<cite>suddenlybananas</cite></blockquote>
+<blockquote>A big difference is that in mathematics, you can do all your experimentation purely in theory and at arbitrary speed, while for example chemistry needs a lab and plenty of time.<cite>kaffekaka</cite></blockquote>
+<blockquote>What makes you believe that it will be such a progression?<cite>teiferer</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Current AI is not superhuman science</strong> &mdash; Skeptics reject claims that current systems are broadly intelligent or inevitably destined to surpass human understanding; a counterposition warns that humans may eventually fall behind.</p><blockquote>All of the intelligence &quot;AI&quot; has right now comes from the human data that it was trained on.<cite>autoexec</cite></blockquote>
+<blockquote>When in doubt about where AI stands, ask it to create a poem, a joke or a riddle. And see how little actual intelligence it has.<cite>PowerElectronix</cite></blockquote>
+<blockquote>We are going to be several steps behind AI as it reaches a level of intelligence far beyond human capabilities, and we are not going to be able to catch up with it.<cite>mcklaw</cite></blockquote></div>
+          <p class="drawer-footer"><a href="#dossier-3">View in Dossier ↓</a></p>
+        </div>
+      </details>
+    </div>
+    </div>
+    <blockquote class="pullquote">A correct answer is not yet scientific knowledge.</blockquote>
+  </section>
+  <section id="story-4" class="spread arc-alert-stamp">
+    <div class="stamp">ALERT</div>
+    <div class="numeral">04</div>
+    <div class="body">
+      <div class="kicker">Platform Watch</div>
+      <h2>GitHub Stumbles Across the Development Stack</h2>
+      <p class="story-meta">githubstatus.com &nbsp;·&nbsp; 94 pts &nbsp;·&nbsp; 49 comments</p>
+      <p class="lede">Git operations, Issues, Pull Requests, APIs, and Actions all suffered elevated errors and intermittent failure. GitHub applied mitigations, but the incident again asks how much of a team’s workflow should depend on one forge.</p>
+      <div class="spread-links"><a class="read-more" href="https://www.githubstatus.com/incidents/smtdswd1h2w4" target="_blank" rel="noopener">Read →</a><a class="read-more share-link" href="#" data-share-title="Incident with Pull Requests, Git Operations and Issues" data-share-url="https://www.githubstatus.com/incidents/smtdswd1h2w4">Share →</a>
+      <details class="analysis-drawer">
+        <summary class="btn-dossier">[ Analysis + ]</summary>
+        <div class="drawer-content">
+          
+          <h4>Technical Analysis</h4>
+          <div class="drawer-analysis">
+          <p>GitHub reported an incident causing elevated errors, intermittent failures, and degraded performance across Git operations, API requests, Issues, Pull Requests, and Actions. Users may have experienced failed or delayed requests and reduced availability while the company investigated and applied mitigations. GitHub said the affected services had stabilized and that it was monitoring the platform after resolving the incident. A detailed root-cause analysis was still to be published, making the event relevant to teams relying on GitHub for source control, collaboration, and CI/CD.</p>
+          </div>
+          <h4>Reader Reactions</h4>
+<p class="camps-framing">The comments move from diagnosing SSH failures and sharing workarounds to debating GitHub’s reliability and whether development workflows should depend on it. Participants propose alternatives ranging from separate CI providers and caching to self-hosted forges. They disagree about the causes of the instability, including capacity and AI-related demand, and whether some reported problems may be specific to local connectivity or routing.</p>
+<div class="camp"><p class="camp-label"><strong>SSH diagnosis and workarounds</strong> &mdash; Commenters report failed pulls and pushes, confusing permission errors, and concerns that their SSH keys may be broken. Others share ways to use HTTPS as a workaround.</p><blockquote>I was thinking I&#x27;m going crazy with me ssh keys not working on both of my machines.<cite>cashbreaker</cite></blockquote>
+<blockquote>https is working still! git -c credential.helper= -c &#x27;credential.helper=!gh auth git-credential&#x27; pull https://github.com/myorg/my-repo.git<cite>techterrier</cite></blockquote>
+<blockquote>Can&#x27;t even pull no more using my key. That&#x27;s a new low, I&#x27;m used to the website being janky nowadays but this is seriously essential<cite>sognetic</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Planned SSH change as a possible cause</strong> &mdash; One commenter suggests scheduled SSH algorithm deprecation may be related to the incident, while explicitly noting that the explanation is speculative.</p><blockquote>nothing :) hope they&#x27;ll release a statement soon, this is was an assumption on my side, it might be totally wrong.<cite>a-squirrel-comm</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Reliability, capacity, and customer impact</strong> &mdash; Some commenters describe recurring failures as damaging trust and disrupting work. Others attribute instability to growing demand or insufficient capacity, while one commenter suggests that connectivity or routing may explain some reports.</p><blockquote>At this point, even when there isn&#x27;t an incident, push/pull have been so unreliable as to fail about 30% of the time.<cite>misnome</cite></blockquote>
+<blockquote>I feel there is a problem with your connectivity or with the Github datacenter you are being routed to. That has not been my experience.<cite>w3ll_w3ll_w3ll</cite></blockquote>
+<blockquote>They just aren’t keeping up with increasing capacity or rate limiting people<cite>anon7000</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Keep GitHub, move CI elsewhere</strong> &mdash; Some commenters want to keep repositories on GitHub while using other hosted services for tests, previews, deployments, or runners, reducing reliance on GitHub Actions without taking on full self-hosting.</p><blockquote>Our deploys are tied to GitHub actions and it is becoming a liability at this point.<cite>eknkc</cite></blockquote>
+<blockquote>Git itself usually works, but we gave up on GHA and use https://www.rwx.com/ for tests, previews, and deployments.<cite>jelder</cite></blockquote>
+<blockquote>+1 for Blacksmith.<cite>michaelbuckbee</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Self-host or move to another forge</strong> &mdash; Commenters suggest self-hosted Gitea or Forgejo, Gitolite, and other deployment setups as ways to regain control. Some endorse the practicality of these options, while others prefer paying for a managed service or note restrictions on alternative platforms.</p><blockquote>Just set up a Gitea instance, pushed my code and switched my deployment script to it. Took 30 minutes.<cite>fredsted</cite></blockquote>
+<blockquote>Self-hosted Forgejo with a bunch of runners might also be interesting for you. The workflow syntax is _almost_ identical to the github one.<cite>saturn_vk</cite></blockquote>
+<blockquote>Honestly, not really wanna deal with self hosting it. Would rather pay for a decent service at this point.<cite>eknkc</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Resilience through caching</strong> &mdash; A commenter recommends caching files or artifacts retrieved from GitHub so builds can continue during outages without requiring a full migration.</p><blockquote>If your stack is pulling artifacts from GitHub, and this consistently fails during GitHub outage, you can consider having a file-cache in between.<cite>malikolivier</cite></blockquote></div>
+          <p class="drawer-footer"><a href="#dossier-4">View in Dossier ↓</a></p>
+        </div>
+      </details>
+    </div>
+    </div>
+  </section>
+  <section id="story-5" class="spread arc-pastel-playful">
+    <div class="alpha-grid"><span>A</span><span>B</span><span>C</span><span>D</span><span>E</span><span>F</span><span>G</span><span>H</span><span>I</span><span>J</span><span>K</span><span>L</span><span>M</span></div>
+    <div class="alpha-grid" style="top: auto; bottom: 0;"><span>N</span><span>O</span><span>P</span><span>Q</span><span>R</span><span>S</span><span>T</span><span>U</span><span>V</span><span>W</span><span>X</span><span>Y</span><span>Z</span></div>
+    <div class="numeral">05</div>
+    <div class="kicker">Creative Code</div>
+    <h2>A Browser Sheet Bends Like Jelly</h2>
+    <p class="story-meta">mrdoob.github.io &nbsp;·&nbsp; 284 pts &nbsp;·&nbsp; 73 comments</p>
+    <p class="lede">Drag the surface, pause the simulation, and watch a digital sheet fold through space. This compact Codevember experiment turns browser graphics and cloth physics into a small, tactile curiosity.</p>
+    <div class="spread-links"><a class="read-more" href="https://mrdoob.github.io/codevember-2026/01/" target="_blank" rel="noopener">Read →</a><a class="read-more share-link" href="#" data-share-title="Jelly Sheet" data-share-url="https://mrdoob.github.io/codevember-2026/01/">Share →</a>
+      <details class="analysis-drawer">
+        <summary class="btn-dossier">[ Analysis + ]</summary>
+        <div class="drawer-content">
+          
+          <h4>Technical Analysis</h4>
+          <div class="drawer-analysis">
+          <p>“Jelly Sheet” is an interactive Codevember experiment featuring a deformable cloth or sheet that users can drag and pause with the spacebar. The page appears to demonstrate real-time graphics and physics simulation, likely using browser-based rendering and a cloth-folding model. In the fetched environment, however, it fails to start because the application encounters a null object while calling `getSupportedExtensions`, suggesting a graphics or WebGL initialization problem. The project is technically notable as a compact browser-based simulation demo, though it has no evident business context.</p>
+          </div>
+          <h4>Reader Reactions</h4>
+<p class="camps-framing">Reactions split over whether AI-assisted work fits a creativity challenge: some value hands-on craft and community, while others see creativity in the creator’s vision, judgment, or the finished experience. Many commenters enjoyed the visual demo, and a smaller set discussed browser support and performance. A long side thread debated pronoun choice and inclusive language.</p>
+<div class="camp"><p class="camp-label"><strong>The demo is delightful and creatively inspiring</strong> &mdash; Commenters praised the visual effect and its ability to run in a browser, with some saying it made them curious about creating similar visualizations.</p><blockquote>I see plenty of creativity on display here.<cite>prodigycorp</cite></blockquote>
+<blockquote>Awesome! Not only that one can build this in JavaScript, but also that your browser on a mobile phone can render this.<cite>robinvdvleuten</cite></blockquote>
+<blockquote>Definitely kept me on the page, very cool.<cite>dengsauve</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Codevember should preserve the human craft</strong> &mdash; Some commenters felt that challenges like Codevember are about developing skills, enjoying the act of making, and connecting with a community of people who share that interest.</p><blockquote>To me these little challenges are about improving programming skills, showing creativity, and mostly just for fun.<cite>plastic041</cite></blockquote>
+<blockquote>To me personally it&#x27;s super sad to see.<cite>sevenzero</cite></blockquote>
+<blockquote>i do care about the community of like-minded people that comes with these kinds of competitions, which AI larpers totally eliminate<cite>derpyzza</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>AI can be a tool for creative work</strong> &mdash; Others argued that AI use does not eliminate a creator’s taste or contribution, and that deciding what to make and guiding its implementation can itself be satisfying creative work.</p><blockquote>Creativity is about coming up with your vision with the tools at hand in my eyes.<cite>ktallett</cite></blockquote>
+<blockquote>To me, it is pretty much human creativity.<cite>altmanaltman</cite></blockquote>
+<blockquote>Seeing the solutions manifest is thrilling frankly.<cite>JoshuaRogers</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>A categorical dismissal of AI-assisted work</strong> &mdash; One commenter rejected the project outright as AI-generated work, rather than debating whether AI tools belong in a creative challenge.</p><blockquote>AI slop on the front page of Hacker News.<cite>Alien1Being</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Pronoun choice and inclusive language</strong> &mdash; Commenters disagreed over whether singular they is suitable for Mr Doob, weighing inclusive or assumption-avoiding language against preferences for specificity and concerns about ambiguity.</p><blockquote>It is inoffensive, a drop-in-replacement, doesn&#x27;t elongate sentences or any other such negative side effects.<cite>hypfer</cite></blockquote>
+<blockquote>There&#x27;s nothing arbitrary to use &quot;he&quot; for somebody who calls himself &quot;mr&quot;.<cite>dakom</cite></blockquote>
+<blockquote>Far from it, it only creates confusion and injects ideologically charged &quot;pronoun language&quot; into the discussion.<cite>Leonard_of_Q</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Browser support and behavior vary</strong> &mdash; Commenters reported inconsistent browser support and noted performance or behavior issues while using the demo.</p><blockquote>`Unable to start: can&#x27;t access property &quot;getSupportedExtensions&quot;, this.gl is null` Doesn&#x27;t work on Firefox Mobile.<cite>TechPlasma</cite></blockquote>
+<blockquote>This is fun, but boy it gets heavy/laggy as it accumulates.<cite>storch</cite></blockquote>
+<blockquote>If you pause and the unpause after a while you get very pretty color bands! :)<cite>sandos</cite></blockquote></div>
+          <p class="drawer-footer"><a href="#dossier-5">View in Dossier ↓</a></p>
+        </div>
+      </details>
+    </div>
+  </section>
+  <section id="story-6" class="spread arc-midnight">
+    <div class="numeral">06</div>
+    <div class="body">
+      <div class="kicker">// Privacy Layer</div>
+      <h2>Gemini’s Paid Chats Still Feed the Machine</h2>
+      <p class="story-meta">news.ycombinator.com &nbsp;·&nbsp; 69 pts &nbsp;·&nbsp; 25 comments</p>
+      <p class="lede">A personal Gemini account may send saved conversations into Google’s service-improvement and training processes, even behind a paid subscription. Keeping history on preserves convenience; turning it off limits retention but changes the bargain.</p>
+      <div class="spread-links"><a class="read-more" href="https://news.ycombinator.com/item?id=50363461" target="_blank" rel="noopener">Read →</a><a class="read-more share-link" href="#" data-share-title="Tell HN: Gemini trains on chat history, even for subscribers (personal accounts)" data-share-url="https://news.ycombinator.com/item?id=50363461">Share →</a>
+      <details class="analysis-drawer">
+        <summary class="btn-dossier">[ Analysis + ]</summary>
+        <div class="drawer-content">
+          
+          <h4>Technical Analysis</h4>
+          <div class="drawer-analysis">
+          <p>The story warns that personal Google Gemini accounts, including paid AI subscribers, may use saved chats to improve Google’s services and train generative AI models when “Keep Activity” is enabled. Google says some conversations can be reviewed by human evaluators, with reviewed chats retained for up to three years even after users delete their activity, and advises users not to submit confidential information. Users can disable this use only by turning off chat history, which limits retention and causes new chats to be deleted after 72 hours, or by using temporary sessions. The issue is significant because a paid subscription does not provide the privacy many users might expect, creating a trade-off between persistent chat history and participation in data collection and review.</p>
+          </div>
+          <h4>Reader Reactions</h4>
+<p class="camps-framing">Comments focused on whether providers may retain or use prompts, but differed on how to interpret this policy and what practical options it leaves users. One exchange clarified that human review can support service and model improvement as well as safety and legal purposes. Other branches considered feature trade-offs, data uses beyond training, and differences between products and account types.</p>
+<div class="camp"><p class="camp-label"><strong>Assume prompts may be stored or used</strong> &mdash; Some commenters advised treating anything entered into an AI service as potentially stored or used, regardless of payment or stated policy.</p><blockquote>imho you should act as if everything you type, not even send, is stored forever and might be used for training whenever they decide to retro actively change their TOS, no matter how much money you pay<cite>233mhz</cite></blockquote>
+<blockquote>I assume that everyone does this no matter what they say. Seems like too juicy a target<cite>icantevenhold</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Human review can serve improvement purposes</strong> &mdash; A reply challenged the view that human review and retention are mainly for liability, noting that reviewers also assess response quality and help improve services and models.</p><blockquote>A subset of chats are reviewed by human reviewers (including Google’s trained service providers) to help improve Google services.<cite>jameslk</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Turning off history is a workable option</strong> &mdash; One commenter argued that users concerned about retention can disable chat history, which they said limits retention and prevents chats from being used for training.</p><blockquote>Just disable chat history; in this mode Gemini has the shortest retention among the three major LLM chats, and the chats are not used for training.<cite>mortehu</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Privacy comes at a feature cost</strong> &mdash; Some commenters said that disabling activity can impair useful features or persistent memory, while keeping it enabled allows Google to use chats.</p><blockquote>What&#x27;s worse is if you have a Pixel phone then Gemini is completely useless without enabling this setting.<cite>richrichardsson</cite></blockquote>
+<blockquote>if you want persistant memory you should enable keep activity, but keeping activity allows google to use your chats.<cite>advenn</cite></blockquote>
+<blockquote>This is one of the reason I unsubscribed from Gemini Pro, apart from the fact that the experience with Gemini has been underwhelming.<cite>EbNar</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Data use can extend beyond model training</strong> &mdash; Some commenters argued that opting out of model training does not resolve privacy concerns because service terms may permit other uses of data, and expressed skepticism about what companies can do without customers knowing.</p><blockquote>Even if they don&#x27;t train on your content, Google reserves the right to use it for improving their services in other ways:<cite>fweimer</cite></blockquote>
+<blockquote>If a company can do something that benefits them, and there is no way the customer can find out or prove that, the company will do it.<cite>frevib</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Policies differ by product and account type</strong> &mdash; A broad claim that every AI trains on its inputs was challenged with the example of Gemini Enterprise, illustrating that protections may vary by product.</p><blockquote>Every AI trains on the input given to it<cite>jbrooks84</cite></blockquote>
+<blockquote>This is false. eg Gemini enterprise has a note under each chat session explicitly saying it’s not used to improve the models<cite>Havoc</cite></blockquote></div>
+          <p class="drawer-footer"><a href="#dossier-6">View in Dossier ↓</a></p>
+        </div>
+      </details>
+    </div>
+    </div>
+  </section>
+  <section id="story-7" class="spread arc-blueprint">
+    <div class="corner tl">+</div><div class="corner tr">+</div>
+    <div class="corner bl">+</div><div class="corner br">+</div>
+    <div class="numeral">07</div>
+    <div class="kicker">Build Log</div>
+    <h2>A Car Clock Yields to the Jailbreak</h2>
+    <p class="story-meta">blog.nns.ee &nbsp;·&nbsp; 854 pts &nbsp;·&nbsp; 325 comments</p>
+    <p class="lede">A 2014 Renault made changing the time depend on a licensed navigation card. Reverse-engineering its Linux-based unit, the author combined a path traversal with crash-handler execution to reclaim a simple setting from proprietary software.</p>
+    <div class="spread-links"><a class="read-more" href="https://blog.nns.ee/2026/11/02/renault-hack/" target="_blank" rel="noopener">Read →</a><a class="read-more share-link" href="#" data-share-title="Jailbreaking my car&#x27;s navigation system just so I can change the time" data-share-url="https://blog.nns.ee/2026/11/02/renault-hack/">Share →</a>
+      <details class="analysis-drawer">
+        <summary class="btn-dossier">[ Analysis + ]</summary>
+        <div class="drawer-content">
+          
+          <h4>Technical Analysis</h4>
+          <div class="drawer-analysis">
+          <p>The author describes reverse-engineering and jailbreaking a 2014 Renault Latitude’s TomTom Carminat navigation unit after discovering that changing the clock required a licensed navigation SD card, even though maps were unnecessary. The device used an old Linux-based system with signed, DRM-protected updates and restrictive mounts, so the author built an emulator and investigated its scripts, binaries, and filesystem. They eventually combined a path-traversal file-write flaw with Linux’s `core_pattern` crash-handler mechanism to execute a payload as root from an SD card. After backing up the internal storage and reverse-engineering its settings format, they changed the GPS timezone offset directly, illustrating how proprietary automotive design and anti-piracy controls can make trivial maintenance tasks dependent on obsolete software and expensive hardware.</p>
+          </div>
+          <h4>Reader Reactions</h4>
+<p class="camps-framing">Readers appreciated the reverse-engineering project while debating the consequences of tying a basic clock setting to proprietary map data. The discussion also covered clock synchronization, the tradeoffs between replaceable and integrated head units, and a substantial Subaru and AWD tangent.</p>
+<div class="camp"><p class="camp-label"><strong>Admiration for the hack and renewed hardware hacking</strong> &mdash; Commenters praised the investigation and write-up, and some saw it as part of a broader return to jailbreaking and taking control of hardware.</p><blockquote>That must be one of the most iconic HN sentences ever.<cite>bambax</cite></blockquote>
+<blockquote>It warms my heart seeing the jailbreak movement finally resurging under AI. Happy to see we&#x27;re finally taking back our hardware.<cite>JeppyG</cite></blockquote>
+<blockquote>The revolution against shitty locked down software has begun and I LOVE IT<cite>zodwick</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Basic clock controls should not depend on proprietary data</strong> &mdash; Some readers objected to making a simple clock adjustment impossible without a specific SD card, treating it as an example of unnecessarily restrictive design.</p><blockquote>The clock setting being impossible without a proprietary and easily lost or destroyed SD card is pretty good, but we can do better.<cite>jerf</cite></blockquote>
+<blockquote>Add to falsehoods programmers believe about time: It can be changed without the SD card in the car radio.<cite>RajT88</cite></blockquote>
+<blockquote>Why do you even need a car with an SD card slot in order to change the time?<cite>warkdarrior</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>The missing card and simpler workarounds</strong> &mdash; Readers debated whether keeping or retrieving the original map card would have avoided the investigation, while others pointed to less involved ways to address the problem.</p><blockquote>You should have just gotten the SD card and trusted the previous owner. Sometimes &quot;simple users&quot; do know. ^^<cite>tom1337890</cite></blockquote>
+<blockquote>I said that it&#x27;s no worries and I&#x27;ll figure it out. Just didn&#x27;t expect that this would be the way I&#x27;d do it.<cite>xx_ns</cite></blockquote>
+<blockquote>Usually you can just get a modern OBDII scanner and set it via the diagnostics or hot functions.<cite>1970-01-01</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Clock synchronization and time-zone rules remain tricky</strong> &mdash; Commenters shared concerns about clocks that fail to update and discussed the limits of GPS, radio, and cellular signals for setting local time.</p><blockquote>It seems absurd to me that cars needs a cellular connection to automatically set time, meanwhile 10$ clocks can get the time correctly from the radio signal that are broadcasted.<cite>alerighi</cite></blockquote>
+<blockquote>GPS doesn&#x27;t transmit timezone information, nor does it transmit leap seconds.<cite>phire</cite></blockquote>
+<blockquote>I live in a region that changed time zones just 2 days ago and my brand new 6-month old car now as an incorrect rule set and presents the wrong time when synced with GPS.<cite>wvenable</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Replaceable stereos versus integrated infotainment</strong> &mdash; Some readers valued the choice and repairability of older standardized head units, while others argued that modern systems can benefit from updates; update support and aging hardware remained concerns.</p><blockquote>It’s the cars which can’t have their head unit replaced with a simple stereo which worry me.<cite>strenholme</cite></blockquote>
+<blockquote>The counter argument to that is well designed modern cars have great info-tainment systems which get regular updates.<cite>guywithahat</cite></blockquote>
+<blockquote>Teslas from four years ago with Intel Atom processors and HW3 are already getting different and lesser updates than new Teslas, without any hardware upgrade plan in place.<cite>jerlam</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Subaru, reliability, and the AWD debate</strong> &mdash; A discussion of Subaru clocks and infotainment broadened into competing views of the brand and a divided debate over AWD’s benefits and risks in winter driving.</p><blockquote>In most reasonable scenarios (not doing anything dumb like accelerating through the curve), you&#x27;re more likely to fly off a winter curve with AWD than FWD.<cite>hansvm</cite></blockquote>
+<blockquote>AWD provides more traction while accelerating, which makes it safer, which is why people use it in winter... Saying it&#x27;s less safe is ridiculous.<cite>0xbadcafebee</cite></blockquote>
+<blockquote>Just the benefit of driving AWD is enough for me. It&#x27;s hard to go back...<cite>stronglikedan</cite></blockquote></div>
+          <p class="drawer-footer"><a href="#dossier-7">View in Dossier ↓</a></p>
+        </div>
+      </details>
+    </div>
+  </section>
+  <section id="story-8" class="spread arc-product-plate">
+    <div class="product-chip">SPECS</div>
+    <div class="kicker">Open Hardware</div>
+    <h2>Stringman Puts a Room-Scale Robot on Cables</h2>
+    <div class="product-rule"></div>
+    <p class="story-meta">neufangled.com &nbsp;·&nbsp; 632 pts &nbsp;·&nbsp; 208 comments</p>
+    <p class="lede">Four ceiling-mounted motors suspend an open-source gripper across a workspace, with printed parts, software, datasets, and APIs released for builders. The $800 design favors reach and coverage over payload, dexterity, and easy household installation.</p>
+    <div class="spread-links"><a class="read-more" href="https://neufangled.com/" target="_blank" rel="noopener">Read →</a><a class="read-more share-link" href="#" data-share-title="Stringman, an $800 open-source room scale gripper robot" data-share-url="https://neufangled.com/">Share →</a>
+      <details class="analysis-drawer">
+        <summary class="btn-dossier">[ Analysis + ]</summary>
+        <div class="drawer-content">
+          
+          <h4>Technical Analysis</h4>
+          <div class="drawer-analysis">
+          <p>Stringman is an $800 open-source cable-driven robot that suspends a two-finger gripper from four ceiling-mounted motors, giving it room-scale reach while handling about 1.9 kg on average. Its printed hardware, electronics, control software, datasets, and APIs are publicly available, with local-network operation and optional cloud access, positioning it for home labs, education, and moving parts between workcells. The design trades dexterity and portability for broad coverage, low actuator count, and a claimed 185 cubic meters of workspace per $1,000—far beyond conventional robotic arms—while requiring suitable ceiling mounts and clearances. Its significance is demonstrating how a relatively simple, inexpensive cable architecture can make large-volume robotic manipulation accessible, though installation, limited payload, and safety constraints remain practical considerations.</p>
+          </div>
+          <h4>Reader Reactions</h4>
+<p class="camps-framing">The discussion was broadly appreciative of the project’s ingenuity and low cost, but divided over whether a cable robot spanning a room could fit ordinary household life or was better suited to controlled workspaces and specific tasks. Safety and household fit were recurring concerns, alongside engineering suggestions and a side debate about specialized robots versus humanoids. Smaller threads highlighted possible applications, the project’s openness, and the value of knowledgeable builders engaging with it.</p>
+<div class="camp"><p class="camp-label"><strong>Enthusiastic maker appeal</strong> &mdash; Some commenters found the project exciting and unusually accessible, and imagined building or adapting it themselves. The low cost and openness added to its appeal.</p><blockquote>$800 is already super cheap, and the openness makes it likely you could implement even cheaper options yourself.<cite>passive</cite></blockquote>
+<blockquote>Awesome!!! I love projects like this.<cite>monkmartinez</cite></blockquote>
+<blockquote>I love this so much.<cite>jauntywundrkind</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Home-use practicality skeptics</strong> &mdash; Commenters questioned whether cables crossing a room, limited clear space, and household clutter would make the system impractical in many homes. Some saw it as more suitable for empty rooms or controlled settings.</p><blockquote>In reality though, I think the cables will never work in a household situation.<cite>conductr</cite></blockquote>
+<blockquote>Seems to work for people who basically have very empty rooms, and very orderly piles of things.<cite>nlitsme</cite></blockquote>
+<blockquote>It seems like it will work well if you know you have a situation that fits well with the setup.<cite>3RTB297</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Safety concerns and precautions</strong> &mdash; Commenters raised risks of lines catching around people or pets, particularly children, and questioned whether a motor tension limit addresses hazards involving cables anchored to the walls. Others suggested limiting when or where the robot is used.</p><blockquote>The gripper in the middle of the room unwinding some line won&#x27;t prevent you, your child, or a pet from hanging themselves from the anchored end.<cite>R1D3R</cite></blockquote>
+<blockquote>it shows it picking up toys but imho this looks dangerous for kids. could get tangled up in those wires...<cite>sourcecodeplz</cite></blockquote>
+<blockquote>So only start it when the kids are at school or at dinner?<cite>Gasp0de</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Specialized robots versus humanoids</strong> &mdash; A side discussion contrasted task-specific machines with humanoids that could operate in spaces and use tools designed for people. Commenters differed on whether human-shaped robots are inefficient or useful for general-purpose work in existing environments.</p><blockquote>The desire for humanoid robots is purely aesthetic and almost certainly suboptimal.<cite>tootie</cite></blockquote>
+<blockquote>Their benefit is they can operate in any space designed for a human without custom modification.<cite>kevin_thibedeau</cite></blockquote>
+<blockquote>We built the world for us, not for the most sensible robot. So for generalized solutions, a good biped will have some advantages.<cite>onlyrealcuzzo</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Engineering alternatives and improvements</strong> &mdash; Commenters proposed changes to cable count, cable routing, and storage to reduce obstruction or alter the robot’s range of motion. These were exploratory suggestions rather than settled conclusions.</p><blockquote>HI, I am sure you considered it, but wouldn&#x27;t the design be better with a 5th cable going straight up and down from the moving point?<cite>dandare</cite></blockquote>
+<blockquote>This really needs a way to pull the strings and bot out of the way when not in use.<cite>rao-v</cite></blockquote>
+<blockquote>This allows you to pick a point on the ceiling.<cite>swid</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Possible niches and new applications</strong> &mdash; Commenters imagined applications beyond household cleanup, including garden work and theatrical or promotional displays. These suggestions were exploratory and prompted discussion of practical constraints and alternative setups.</p><blockquote>I kind of want to try something like this for garden weeding.<cite>goda90</cite></blockquote>
+<blockquote>Makes me wonder what commercial application this would work for, I&#x27;m sure there&#x27;s something out there that would benefit from this over waiting on humanoid tech<cite>conductr</cite></blockquote>
+<blockquote>can see how this could be usefull for theater, advertising, dyoramas, promotional displays, where the kind of chunky movement will be a feature and not a detractor<cite>metalman</cite></blockquote></div>
+          <p class="drawer-footer"><a href="#dossier-8">View in Dossier ↓</a></p>
+        </div>
+      </details>
+    </div>
+  </section>
+  <section id="story-9" class="spread arc-archive">
+    <div class="archive-head">
+      <span>ARCHIVE</span>
+      <span>N<sup>o</sup> 09</span>
+    </div>
+    <div class="kicker">Systems History</div>
+    <h2>Before Malloc, Memory Had a Map</h2>
+    <p class="story-meta">napcakes.nekoweb.org &nbsp;·&nbsp; 63 pts &nbsp;·&nbsp; 20 comments</p>
+    <p class="lede">Recovered Unix sources show early allocators working directly against core and swap maps, using first-fit placement, coalescing, and rollback. Their arena-oriented design offers an old answer to modern questions about ownership, isolation, and lifetime.</p>
+    <div class="spread-links"><a class="read-more" href="https://napcakes.nekoweb.org/posts/malloc/" target="_blank" rel="noopener">Read →</a><a class="read-more share-link" href="#" data-share-title="The lost malloc()" data-share-url="https://napcakes.nekoweb.org/posts/malloc/">Share →</a>
+      <details class="analysis-drawer">
+        <summary class="btn-dossier">[ Analysis + ]</summary>
+        <div class="drawer-content">
+          
+          <h4>Technical Analysis</h4>
+          <div class="drawer-analysis">
+          <p>The article explores early Unix memory allocation by examining recovered Version 4–8 source code, showing how simple linear allocators, explicit core and swap memory maps, first-fit allocation, coalescing, and rollback handled constrained PDP-era hardware. It contrasts these region-based designs with modern `malloc`/`free`, arguing that passing an allocation arena could provide better isolation, bulk reclamation, lifetime management, and limits for libraries or subsystems. The author traces how these ideas evolved into conventional heap allocation, convenience macros resembling `new`, and early garbage-collection experiments, while connecting C++’s `new` to Simula rather than directly to Unix code. The story matters because it illustrates how hardware limits shaped foundational APIs, how useful allocation strategies were overlooked or simplified over time, and why explicit arenas and lifetime-aware allocation remain relevant to software reliability and performance.</p>
+          </div>
+          <h4>Reader Reactions</h4>
+<p class="camps-framing">The discussion centers on whether deallocation should require an allocation size, with participants weighing allocator efficiency against interface safety and flexibility. Other comments reflect on the history and constraints of early systems programming, and on practices modern programmers might learn from it.</p>
+<div class="camp"><p class="camp-label"><strong>Pass the size to deallocate</strong> &mdash; Some commenters argue that callers generally know an allocation’s size, so requiring it can avoid redundant bookkeeping in the allocator.</p><blockquote>There&#x27;s virtually no sensible case where the person calling free() doesn&#x27;t know the size of the allocation, so now we&#x27;re keeping that book-keeping twice, in &quot;user-space&quot; and inside the memory allocator.<cite>OskarS</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Size should be a hint, not a requirement</strong> &mdash; Others argue that allocator boundaries and varied runtimes can make a mandatory size parameter fragile, so size should guide optimization rather than determine correctness.</p><blockquote>Size should be an optimization hint, not a correctness requirement.<cite>0xdeafbeef</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Arenas have tradeoffs; simple interfaces have value</strong> &mdash; One commenter cautions that arena allocators can simplify some tasks and sometimes improve performance, but can also use more memory or increase fragmentation; simpler interfaces can hide complexity and remain flexible.</p><blockquote>That is one of the many reasons why we slowly evolved away from the old linear allocators, but also because we just wanted a simple and flexible interface to hide complexity.<cite>veltas</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Historical admiration for early systems work</strong> &mdash; Some readers are surprised that techniques now considered modern were explored decades ago, and reflect on the depth behind C’s apparently simple syntax.</p><blockquote>It&#x27;s surprising that the concepts I thought were modern techniques today were already being tried decades ago—that is, before I was even born.<cite>jdw64</cite></blockquote>
+<blockquote>I have always thought about C being a language with &quot;simple&quot; syntax (but things like type declarations are hell), but very complicated semantics.<cite>ahoka</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Constraints and fundamentals fostered invention</strong> &mdash; Several commenters explain early systems techniques through simpler systems, closer-to-the-metal work, theoretical interests, and hardware constraints.</p><blockquote>Lastly at that time &quot;programming&quot; was closer to the metal so a average computer scientist at that time would likely have more knowledge of the deep internals compared to an average programmer today.<cite>trashb</cite></blockquote>
+<blockquote>They came up with bump allocators because they had a blank mind, devoid of today&#x27;s complexity.<cite>momocowcow</cite></blockquote>
+<blockquote>Smart people + system constraints =&gt; ingenuity.<cite>Anon4Now</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Programming deliberately, including on paper</strong> &mdash; A small practical branch recommends planning programs on paper before coding; another commenter recalls that the practice helped with writing less buggy first drafts.</p><blockquote>still in more modern languages i&#x27;d recommend starting with pencil and paper, write most of it if not the whole thing out.<cite>saidnooneever</cite></blockquote>
+<blockquote>Because of it, I find myself writing mostly bug-free code on my first try these days (my bugs tend to happen on interactions between parts of a system I designed separately).<cite>lieks</cite></blockquote></div>
+          <p class="drawer-footer"><a href="#dossier-9">View in Dossier ↓</a></p>
+        </div>
+      </details>
+    </div>
+  </section>
+  <section id="story-10" class="spread arc-caution-tape">
+    <div class="tag">SECURITY ADVISORY</div>
+    <div class="numeral">10</div>
+    <div class="kicker">Risk Register</div>
+    <h2>Hinton Warns Against an Unchecked AI Race</h2>
+    <p class="story-meta">theguardian.com &nbsp;·&nbsp; 55 pts &nbsp;·&nbsp; 27 comments</p>
+    <p class="lede">Geoffrey Hinton sees possible gains from AI, but also risks to power grids, financial infrastructure, and public trust. He calls for independent testing, mandatory evaluations, and international standards before competition outruns restraint.</p>
+    <div class="spread-links"><a class="read-more" href="https://www.theguardian.com/uk-news/2026/nov/03/ai-godfather-geoffrey-hinton-better-off-without-ai" target="_blank" rel="noopener">Read →</a><a class="read-more share-link" href="#" data-share-title="Geoffrey Hinton: it might turn out we were better off without AI" data-share-url="https://www.theguardian.com/uk-news/2026/nov/03/ai-godfather-geoffrey-hinton-better-off-without-ai">Share →</a>
+      <details class="analysis-drawer">
+        <summary class="btn-dossier">[ Analysis + ]</summary>
+        <div class="drawer-content">
+          
+          <h4>Technical Analysis</h4>
+          <div class="drawer-analysis">
+          <p>AI pioneer Geoffrey Hinton says society may ultimately have been better off without AI, warning that poorly controlled systems could soon cause serious disruptions such as attacks on power grids or temporary failures in financial infrastructure. He remains cautiously optimistic that AI could deliver broad prosperity, but fears rapid competition among companies and countries is encouraging the release of increasingly capable models without adequate safeguards. Hinton criticizes leaders including Sam Altman, Mark Zuckerberg, and Elon Musk for prioritizing commercial advantage, and advocates independent testing, mandatory evaluations, and international standards similar to drug regulation. The story matters because it highlights the tension between AI’s potential economic benefits and the need for governance before a major incident forces policymakers to act.</p>
+          </div>
+          <h4>Reader Reactions</h4>
+<p class="camps-framing">The comments weigh AI’s practical benefits against its current social costs and uncertain risks. Several focus on profit-driven incentives and the harms of deployment; others value AI’s role in expanding access to knowledge. The thread also debates whether a serious incident could prompt caution, includes skepticism about Hinton’s warning, and features a smaller reformist view that favors a different development path.</p>
+<div class="camp"><p class="camp-label"><strong>Profit incentives and reckless rollout</strong> &mdash; This critique sees rapid growth and large returns as stronger priorities for AI companies than careful development or responsibility for downstream harms.</p><blockquote>The goal is a very large payout in a very short period of time, it&#x27;s not to make anything better, or worse, either is just a side effect.<cite>mrweasel</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>AI’s present costs outweigh its promised benefits</strong> &mdash; Some commenters point to unwanted AI content, added effort, unreliable outputs, environmental costs, and frustrating automated services as evidence that AI is making everyday life worse.</p><blockquote>The good is being smothered by the absolutely soul-crushing pointless.<cite>bvan</cite></blockquote>
+<blockquote>I have to spend extra time just trying to find AI-free things, AI-free writing, AI-free communities, and people who aren&#x27;t addicted to AI.<cite>bemtevi</cite></blockquote>
+<blockquote>And having to interact with AI-based customer service agents that take 10x as long to resolve the problem as a human being.<cite>bemtevi</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>AI improves access to knowledge</strong> &mdash; A counterpoint is that AI can serve as an accessible teacher, especially for people who previously had difficulty getting answers from knowledgeable people.</p><blockquote>But AI, in that respect, is the best teacher I can think of.<cite>jdw64</cite></blockquote>
+<blockquote>But considering what access to knowledge was like before AI came along, I think having AI is better.<cite>jdw64</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>High-impact risks and the human cost of a crisis</strong> &mdash; Some commenters treat severe disruption as a plausible risk that is difficult to evaluate in advance. A dispute arises over whether an incident might force society to change course, given that people could be harmed in the process.</p><blockquote>No way to tell until after, though.<cite>sneak</cite></blockquote>
+<blockquote>Whether it&#x27;s a power outage, financial crisis, or something else people will die.<cite>_heimdall</cite></blockquote>
+<blockquote>But if we DON&#x27;T do anything, then even more poeple are likely to suffer.<cite>bemtevi</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>A better development path rather than abandoning AI</strong> &mdash; A small reformist position favors continuing with AI while pursuing a different approach to its development; replies question claims that it will eliminate boring work or provide more free time.</p><blockquote>We are not but we need a better approach, https://www.ethicalacceleration.org<cite>perarneng</cite></blockquote>
+<blockquote>Seriously? It seems to be causing more problems, giving us more boring work, and less free time.... sounds like absolute bullshit.<cite>bemtevi</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Hinton’s warning is dismissed as outdated or familiar hype</strong> &mdash; Some replies argue that the field has moved beyond Hinton or treat warnings about an AI winter as recurring predictions.</p><blockquote>The field has long since left this guy behind.<cite>xnx</cite></blockquote>
+<blockquote>Said AI &quot;experts&quot; for the last 10 years.<cite>yewenjie</cite></blockquote></div>
+          <p class="drawer-footer"><a href="#dossier-10">View in Dossier ↓</a></p>
+        </div>
+      </details>
+    </div>
+  </section>
+  <section id="dossier" class="dossier">
+    <div class="dossier-head">
+      <div class="tagline">Appendix</div>
+      <h2>The Dossier</h2>
+      <p class="intro">Full analysis and reactions for today's 10 stories. <a href="#top">↑ Back to the edition</a></p>
+    </div>
+    <article id="dossier-1" class="dossier-entry">
+      <div class="dossier-meta">N<sup>o</sup> 01 &nbsp;·&nbsp; Stat Hero &nbsp;·&nbsp; Performance Gap</div>
+      <h3>Nvidia RTX Spark encrypted firmware slows inference speed to 35% on Linux</h3>
+      <p class="dossier-source">
+        <a href="https://www.mindstudio.ai/blog/linux-nvidia-rtx-spark-laptop" target="_blank" rel="noopener">mindstudio.ai</a>
+        &nbsp;·&nbsp; 137 pts &nbsp;·&nbsp; 68 comments
+         &nbsp;·&nbsp; <a href='https://news.ycombinator.com/item?id=50362905' target='_blank' rel='noopener'>discussion</a>
+      </p>
+      <h4>Analysis</h4>
+      <p>The story examines Linux support on Nvidia RTX Spark laptops, finding that installation, display, peripherals, CUDA, and AI tools can work but require distribution-specific fixes and Windows configuration to expose the laptop’s unified memory. Native Linux suffers a major performance penalty when plugged in because a Windows-only Nvidia Platform Controllers and Framework component manages CPU/GPU power sharing using an encrypted firmware table that Linux cannot access, locking the GPU near 780 MHz instead of roughly 2.2 GHz. In testing, a large-model workload achieved about 13.9 tokens per second on native Linux versus 65.4 on Windows and 65.1 in WSL, while battery operation largely removed the disparity. The practical takeaway is that WSL currently offers Linux tooling with near-Windows performance, while a proper native-Linux solution requires Nvidia to provide equivalent power-management support.</p>
+      <h4>Reader Reactions</h4>
+<p class="camps-framing">The discussion centered on reports of poor native-Linux performance on Nvidia’s RTX Spark laptop. Some commenters suspected proprietary lock-in or future limits on local AI, while others saw a fixable implementation gap or ordinary market segmentation. The thread also considered Linux support, reverse engineering, laptop inference, and confusion over the product named in the article’s title.</p>
+<div class="camp"><p class="camp-label"><strong>Suspicion of lock-in and rent-seeking</strong> &mdash; Commenters connected the performance gap to concerns about proprietary controls, paywalled capabilities, and dependence on centralized AI services. These were suspicions and worries, not established explanations for the issue.</p><blockquote>Are we actually seeing a push towards being 100percent dependent on the cloud?<cite>K0balt</cite></blockquote>
+<blockquote>NVIDIA probably already figured out that local will be massive part and are preparing to do DRM for AI.<cite>InsidiousWombat</cite></blockquote>
+<blockquote>This one is allegedly/hopefully a bug but just waiting for it to become a revenue stream / paywall.<cite>rich_sasha</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Caution against assuming deliberate throttling</strong> &mdash; Some commenters suggested the issue could reflect unfinished software or market segmentation, rather than an intentional effort to prevent Linux use or force customers into cloud services.</p><blockquote>It sounds more like it hasn&#x27;t been properly implemented yet<cite>sva_</cite></blockquote>
+<blockquote>It is just classic market segmentation, the thing Nvidia and just about every company that can benefit from it has done for decades.<cite>GuB-42</cite></blockquote>
+<blockquote>much ado about nothing, it&#x27;ll probably come out in some time.<cite>villgax</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Frustration with Nvidia’s Linux support</strong> &mdash; Some commenters treated the problem as consistent with a history of poor Linux support and proprietary drivers; a reply pointed to Nvidia’s newer open-source kernel modules.</p><blockquote>Nvidia was already a bad choice for Linux because of closed drivers.<cite>laughing_man</cite></blockquote>
+<blockquote>As always, nothing has changed, Nvidia is always shit in supporting Linux.<cite>alerighi</cite></blockquote>
+<blockquote>New generations such as Blackwell have open source kernel modules, there is not even a proprietary option.<cite>afarah1</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Reverse engineering as a remedy</strong> &mdash; Some commenters expected community reverse engineering to produce a Linux fix, while others emphasized that this would add to the already difficult work of setting up local AI.</p><blockquote>Fortunately that&#x27;s just a matter of weeks until someone revengs and publishes the fix... even if we need to wait a while for a proper upstreamed solution.<cite>viraptor</cite></blockquote>
+<blockquote>Even if this is &quot;just&quot; another step you have to find, it&#x27;s toxic.<cite>OsrsNeedsf2P</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Why run inference on a laptop?</strong> &mdash; A side discussion weighed the cost and practicality of laptop inference against using a home machine remotely, with replies citing privacy, local data, travel, and convenience.</p><blockquote>If you really want to do DIY inference, plug it in at home and set up tailscale so you can access it on the go.<cite>barrkel</cite></blockquote>
+<blockquote>Because maybe you don&#x27;t want to send your private data to a company that could use it for whatever it wants?<cite>alerighi</cite></blockquote>
+<blockquote>If you do any travel whatsoever a laptop is usually not optional.<cite>dumberquestions</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Correcting the product and title</strong> &mdash; Commenters pointed out that the article concerned the RTX Spark laptop, not the DGX Spark, and noted that the title was later changed.</p><blockquote>The article is about the RTX Spark, not the DGX Spark. The title should be changed.<cite>schaefer</cite></blockquote>
+<blockquote>Looks like the site has fixed the title.<cite>sampo</cite></blockquote>
+<blockquote>Why does the title say DGX spark when the link is the RTX Spark laptop?<cite>hypfer</cite></blockquote></div>
+    </article>
+    <article id="dossier-2" class="dossier-entry">
+      <div class="dossier-meta">N<sup>o</sup> 02 &nbsp;·&nbsp; Terminal &nbsp;·&nbsp; Release Notes</div>
+      <h3>Kitty 0.50</h3>
+      <p class="dossier-source">
+        <a href="https://sw.kovidgoyal.net/kitty/changelog/#" target="_blank" rel="noopener">sw.kovidgoyal.net</a>
+        &nbsp;·&nbsp; 179 pts &nbsp;·&nbsp; 98 comments
+         &nbsp;·&nbsp; <a href='https://news.ycombinator.com/item?id=50362980' target='_blank' rel='noopener'>discussion</a>
+      </p>
+      <h4>Analysis</h4>
+      <p>Kitty 0.50 is a major release of the GPU-accelerated, cross-platform terminal emulator, centered on docked windows that can attach to tabs or other windows for status bars, file trees, and persistent shells. It also adds session restoration after logout or shutdown, including scrollback, improved workspace-style tab management, touchscreen support on Wayland, richer shader controls, and expanded graphics and program-status protocols. The release continues kitty’s focus on high-performance rendering and terminal features, with SIMD and GPU optimizations, layout and input improvements, and extensive fixes across remote control, drag-and-drop, SSH, graphics, and platform integrations. These changes make kitty more suitable as a persistent, programmable desktop workspace rather than just a terminal window.</p>
+      <h4>Reader Reactions</h4>
+<p class="camps-framing">The reaction is broadly positive toward Kitty’s continued development, with commenters especially welcoming workflow features such as session restoration and layouts. Comparisons with Ghostty focus on Kitty’s feature depth versus Ghostty’s perceived polish and platform feel; some Linux users also report startup and stability problems with Ghostty. A substantial Calibre tangent debates whether its dense, unconventional interface is a strength or a barrier to usability. Smaller discussions touch on shaders, SSH, performance, and platform support.</p>
+<div class="camp"><p class="camp-label"><strong>Longtime Kitty supporters</strong> &mdash; Some longtime users praise Kitty’s speed, configurability, and active development, and welcome the release even without pointing to a specific new feature.</p><blockquote>I love Kitty. I&#x27;ve used it since discovering it in about 2019 and it strikes the right balance of things.<cite>petepete</cite></blockquote>
+<blockquote>Kitty is my go-to for the Linux desktop. I discovered it in an early stage and really liked it from the beginning.<cite>jfsebastian</cite></blockquote>
+<blockquote>I love that we&#x27;re seeing innovation in the VT100 compatibles space still.<cite>kar1181</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Kitty features and workflow</strong> &mdash; Some commenters choose Kitty for built-in sessions, predefined layouts, or other workflow features, rather than relying on a multiplexer.</p><blockquote>However, I&#x27;ve moved to Kitty mainly because of its native session support.<cite>azuanrb</cite></blockquote>
+<blockquote>Automated session restore might make me go back to Kitty from Ghostty.<cite>darkwater</cite></blockquote>
+<blockquote>Awesome. I built a janky version of this for myself but I’m glad it’s supported natively now.<cite>janalsncm</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Ghostty’s polish and platform feel</strong> &mdash; Some users prefer Ghostty’s defaults or feel it is more polished or native, particularly on macOS; others point to particular rendering differences.</p><blockquote>Ghostty UX feels more polished compared to Kitty.<cite>sumedh</cite></blockquote>
+<blockquote>Decided to go with Ghostty as it feels more native than Kitty.<cite>paaloeye</cite></blockquote>
+<blockquote>Kitty renders some icons badly but ghostty doesn&#x27;t.<cite>ArchD</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Linux Ghostty friction</strong> &mdash; Some Linux users report that Ghostty’s startup time, crashes, or pane glitches have led them to consider or switch back to Kitty. Replies differ on whether startup time is a meaningful drawback.</p><blockquote>It keeps segfaulting, takes a long time to actually start, I keep getting weird glitches whenever I have multiple panes open in a window<cite>quibono</cite></blockquote>
+<blockquote>Not OP, but I&#x27;ve moved back to kitty because of ghostty horrendous startup time on linux<cite>ssernikk</cite></blockquote>
+<blockquote>When I use the terminal, I spawn and kill a lot of instances for quick tasks. Having a longer startup times is definitely noticeable.<cite>przmk</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Calibre’s dense interface as a strength</strong> &mdash; Some commenters appreciate Calibre’s feature-dense, unconventional interface, valuing access to options and capability over conventional visual polish.</p><blockquote>Over time I learned to appreciate the vision: it’s not the stereotypical modern streamlined app, it’s the cockpit of a spaceship.<cite>vconnor</cite></blockquote>
+<blockquote>Some people prefer to just see everything at once and I think it’s a valid way to do it.<cite>brabel</cite></blockquote>
+<blockquote>Napster had even worst GUI, yet it has become popular as it just did the job people wanted.<cite>piokoch</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Calibre’s design as a usability barrier</strong> &mdash; Other commenters argue that Calibre’s appearance and organization can undermine usability or discourage adoption, while still valuing its functionality.</p><blockquote>Calibre is very ugly and I have no doubt that limits its adoption.<cite>latexr</cite></blockquote>
+<blockquote>Works amazingly well. Looks amazingly bad.<cite>Alien1Being</cite></blockquote>
+<blockquote>I would still be quite excited about an official visual overhaul, though<cite>lowdude</cite></blockquote></div>
+    </article>
+    <article id="dossier-3" class="dossier-entry">
+      <div class="dossier-meta">N<sup>o</sup> 03 &nbsp;·&nbsp; Editorial Op-Ed &nbsp;·&nbsp; Science &amp; Judgment</div>
+      <h3>Verification Is Not Knowledge: Science needs more than answers</h3>
+      <p class="dossier-source">
+        <a href="https://blog.cosmos-institute.org/p/verification-is-not-knowledge" target="_blank" rel="noopener">blog.cosmos-institute.org</a>
+        &nbsp;·&nbsp; 66 pts &nbsp;·&nbsp; 35 comments
+         &nbsp;·&nbsp; <a href='https://news.ycombinator.com/item?id=50363019' target='_blank' rel='noopener'>discussion</a>
+      </p>
+      <h4>Analysis</h4>
+      <p>Jessica Hullman argues that verified AI-generated proofs, treatments, or research findings are not equivalent to scientific knowledge, because science also depends on understanding, accountability, interpretation, and criticism. The article critiques the “value-free” view that reliable procedures and correct outputs can replace human judgment, noting that researchers must be able to explain claims, respond when assumptions fail, and decide which results matter. Peer review and scientific progress are presented as social processes in which accountable people challenge, revise, and build on one another’s work. This matters as AI agents increasingly generate and validate research: without preserving human expertise and judgment, science could accumulate technically correct answers that communities cannot meaningfully evaluate, use, or connect to human goals.</p>
+      <h4>Reader Reactions</h4>
+<p class="camps-framing">The discussion considers whether verified results are enough for science, or whether understanding is also needed to explain, interpret, and build on them. Commenters differ on the practical value of results without understanding, the potential for AI to support human inquiry, and whether AI can explain its work. They also discuss how progress may vary across scientific fields and how capable current AI systems are.</p>
+<div class="camp"><p class="camp-label"><strong>Understanding is essential to science</strong> &mdash; Some commenters argue that results alone do not provide the abstractions, legibility, and insight needed to make predictions or build further knowledge.</p><blockquote>And in many cases it is not really the new solution that is important. It is the new techniques, abstractions, or other sense-making or investigative tools that made the solution possible that matter.<cite>jrumbut</cite></blockquote>
+<blockquote>It&#x27;s much more difficult to build on top of something you don&#x27;t understand.<cite>loveparade</cite></blockquote>
+<blockquote>answers are great; understanding is even better.<cite>specialist</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Answers can be useful without full understanding</strong> &mdash; Commenters point to practical benefits that may follow from correct results even when people do not fully understand how they were obtained.</p><blockquote>One could argue that their practical impact can be independent of whether humans fully understand how they were reached.<cite>davexxxx</cite></blockquote>
+<blockquote>You can have very sophisticated technology based on zero actual knowledge or understanding, like roman concrete or borosillicate glass.<cite>PowerElectronix</cite></blockquote>
+<blockquote>See: most of pharma<cite>piker</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>AI results as a starting point for human understanding</strong> &mdash; This position treats AI-generated results as useful inputs to human inquiry, while recognizing that their trustworthiness matters.</p><blockquote>Knowing that something is true or false will at least stop humans wasting time trying to prove or disprove it, and allow them to find a more elegant proof, or investigate the implications of the true/false result.<cite>My_Name</cite></blockquote>
+<blockquote>Assuming you can trust it<cite>Insimwytim</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Verification and explanation may be enough</strong> &mdash; Some commenters regard verification as a form of knowledge and expect systems to improve at explaining results; others doubt current systems explain or abstract reliably.</p><blockquote>Thing is, though, verification is knowledge itself.<cite>A_D_E_P_T</cite></blockquote>
+<blockquote>LLMs are capable of amazing feats of reverse engineering but are terrible at explaining and abstracting things well.<cite>RugnirViking</cite></blockquote>
+<blockquote>I&#x27;ve often enough with 5.5 still run into cases where it confidently explained something, at the surface it kinda made sense, but the more I dug and verified, the more it became apparent that it was entirely wrong with the most crucial core concepts.<cite>teiferer</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>The fields will differ</strong> &mdash; Commenters suggest that AI may advance more quickly in formal fields where results can be checked rapidly, while experimental constraints may slow progress in other sciences.</p><blockquote>Perhaps for math proofs, but that&#x27;s a very different domain ultimately since we know the rules of the game in a way we don&#x27;t with science.<cite>suddenlybananas</cite></blockquote>
+<blockquote>A big difference is that in mathematics, you can do all your experimentation purely in theory and at arbitrary speed, while for example chemistry needs a lab and plenty of time.<cite>kaffekaka</cite></blockquote>
+<blockquote>What makes you believe that it will be such a progression?<cite>teiferer</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Current AI is not superhuman science</strong> &mdash; Skeptics reject claims that current systems are broadly intelligent or inevitably destined to surpass human understanding; a counterposition warns that humans may eventually fall behind.</p><blockquote>All of the intelligence &quot;AI&quot; has right now comes from the human data that it was trained on.<cite>autoexec</cite></blockquote>
+<blockquote>When in doubt about where AI stands, ask it to create a poem, a joke or a riddle. And see how little actual intelligence it has.<cite>PowerElectronix</cite></blockquote>
+<blockquote>We are going to be several steps behind AI as it reaches a level of intelligence far beyond human capabilities, and we are not going to be able to catch up with it.<cite>mcklaw</cite></blockquote></div>
+    </article>
+    <article id="dossier-4" class="dossier-entry">
+      <div class="dossier-meta">N<sup>o</sup> 04 &nbsp;·&nbsp; Rose Alert &nbsp;·&nbsp; Platform Watch</div>
+      <h3>Incident with Pull Requests, Git Operations and Issues</h3>
+      <p class="dossier-source">
+        <a href="https://www.githubstatus.com/incidents/smtdswd1h2w4" target="_blank" rel="noopener">githubstatus.com</a>
+        &nbsp;·&nbsp; 94 pts &nbsp;·&nbsp; 49 comments
+         &nbsp;·&nbsp; <a href='https://news.ycombinator.com/item?id=50363378' target='_blank' rel='noopener'>discussion</a>
+      </p>
+      <h4>Analysis</h4>
+      <p>GitHub reported an incident causing elevated errors, intermittent failures, and degraded performance across Git operations, API requests, Issues, Pull Requests, and Actions. Users may have experienced failed or delayed requests and reduced availability while the company investigated and applied mitigations. GitHub said the affected services had stabilized and that it was monitoring the platform after resolving the incident. A detailed root-cause analysis was still to be published, making the event relevant to teams relying on GitHub for source control, collaboration, and CI/CD.</p>
+      <h4>Reader Reactions</h4>
+<p class="camps-framing">The comments move from diagnosing SSH failures and sharing workarounds to debating GitHub’s reliability and whether development workflows should depend on it. Participants propose alternatives ranging from separate CI providers and caching to self-hosted forges. They disagree about the causes of the instability, including capacity and AI-related demand, and whether some reported problems may be specific to local connectivity or routing.</p>
+<div class="camp"><p class="camp-label"><strong>SSH diagnosis and workarounds</strong> &mdash; Commenters report failed pulls and pushes, confusing permission errors, and concerns that their SSH keys may be broken. Others share ways to use HTTPS as a workaround.</p><blockquote>I was thinking I&#x27;m going crazy with me ssh keys not working on both of my machines.<cite>cashbreaker</cite></blockquote>
+<blockquote>https is working still! git -c credential.helper= -c &#x27;credential.helper=!gh auth git-credential&#x27; pull https://github.com/myorg/my-repo.git<cite>techterrier</cite></blockquote>
+<blockquote>Can&#x27;t even pull no more using my key. That&#x27;s a new low, I&#x27;m used to the website being janky nowadays but this is seriously essential<cite>sognetic</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Planned SSH change as a possible cause</strong> &mdash; One commenter suggests scheduled SSH algorithm deprecation may be related to the incident, while explicitly noting that the explanation is speculative.</p><blockquote>nothing :) hope they&#x27;ll release a statement soon, this is was an assumption on my side, it might be totally wrong.<cite>a-squirrel-comm</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Reliability, capacity, and customer impact</strong> &mdash; Some commenters describe recurring failures as damaging trust and disrupting work. Others attribute instability to growing demand or insufficient capacity, while one commenter suggests that connectivity or routing may explain some reports.</p><blockquote>At this point, even when there isn&#x27;t an incident, push/pull have been so unreliable as to fail about 30% of the time.<cite>misnome</cite></blockquote>
+<blockquote>I feel there is a problem with your connectivity or with the Github datacenter you are being routed to. That has not been my experience.<cite>w3ll_w3ll_w3ll</cite></blockquote>
+<blockquote>They just aren’t keeping up with increasing capacity or rate limiting people<cite>anon7000</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Keep GitHub, move CI elsewhere</strong> &mdash; Some commenters want to keep repositories on GitHub while using other hosted services for tests, previews, deployments, or runners, reducing reliance on GitHub Actions without taking on full self-hosting.</p><blockquote>Our deploys are tied to GitHub actions and it is becoming a liability at this point.<cite>eknkc</cite></blockquote>
+<blockquote>Git itself usually works, but we gave up on GHA and use https://www.rwx.com/ for tests, previews, and deployments.<cite>jelder</cite></blockquote>
+<blockquote>+1 for Blacksmith.<cite>michaelbuckbee</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Self-host or move to another forge</strong> &mdash; Commenters suggest self-hosted Gitea or Forgejo, Gitolite, and other deployment setups as ways to regain control. Some endorse the practicality of these options, while others prefer paying for a managed service or note restrictions on alternative platforms.</p><blockquote>Just set up a Gitea instance, pushed my code and switched my deployment script to it. Took 30 minutes.<cite>fredsted</cite></blockquote>
+<blockquote>Self-hosted Forgejo with a bunch of runners might also be interesting for you. The workflow syntax is _almost_ identical to the github one.<cite>saturn_vk</cite></blockquote>
+<blockquote>Honestly, not really wanna deal with self hosting it. Would rather pay for a decent service at this point.<cite>eknkc</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Resilience through caching</strong> &mdash; A commenter recommends caching files or artifacts retrieved from GitHub so builds can continue during outages without requiring a full migration.</p><blockquote>If your stack is pulling artifacts from GitHub, and this consistently fails during GitHub outage, you can consider having a file-cache in between.<cite>malikolivier</cite></blockquote></div>
+    </article>
+    <article id="dossier-5" class="dossier-entry">
+      <div class="dossier-meta">N<sup>o</sup> 05 &nbsp;·&nbsp; Pastel Finale &nbsp;·&nbsp; Creative Code</div>
+      <h3>Jelly Sheet</h3>
+      <p class="dossier-source">
+        <a href="https://mrdoob.github.io/codevember-2026/01/" target="_blank" rel="noopener">mrdoob.github.io</a>
+        &nbsp;·&nbsp; 284 pts &nbsp;·&nbsp; 73 comments
+         &nbsp;·&nbsp; <a href='https://news.ycombinator.com/item?id=50361268' target='_blank' rel='noopener'>discussion</a>
+      </p>
+      <h4>Analysis</h4>
+      <p>“Jelly Sheet” is an interactive Codevember experiment featuring a deformable cloth or sheet that users can drag and pause with the spacebar. The page appears to demonstrate real-time graphics and physics simulation, likely using browser-based rendering and a cloth-folding model. In the fetched environment, however, it fails to start because the application encounters a null object while calling `getSupportedExtensions`, suggesting a graphics or WebGL initialization problem. The project is technically notable as a compact browser-based simulation demo, though it has no evident business context.</p>
+      <h4>Reader Reactions</h4>
+<p class="camps-framing">Reactions split over whether AI-assisted work fits a creativity challenge: some value hands-on craft and community, while others see creativity in the creator’s vision, judgment, or the finished experience. Many commenters enjoyed the visual demo, and a smaller set discussed browser support and performance. A long side thread debated pronoun choice and inclusive language.</p>
+<div class="camp"><p class="camp-label"><strong>The demo is delightful and creatively inspiring</strong> &mdash; Commenters praised the visual effect and its ability to run in a browser, with some saying it made them curious about creating similar visualizations.</p><blockquote>I see plenty of creativity on display here.<cite>prodigycorp</cite></blockquote>
+<blockquote>Awesome! Not only that one can build this in JavaScript, but also that your browser on a mobile phone can render this.<cite>robinvdvleuten</cite></blockquote>
+<blockquote>Definitely kept me on the page, very cool.<cite>dengsauve</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Codevember should preserve the human craft</strong> &mdash; Some commenters felt that challenges like Codevember are about developing skills, enjoying the act of making, and connecting with a community of people who share that interest.</p><blockquote>To me these little challenges are about improving programming skills, showing creativity, and mostly just for fun.<cite>plastic041</cite></blockquote>
+<blockquote>To me personally it&#x27;s super sad to see.<cite>sevenzero</cite></blockquote>
+<blockquote>i do care about the community of like-minded people that comes with these kinds of competitions, which AI larpers totally eliminate<cite>derpyzza</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>AI can be a tool for creative work</strong> &mdash; Others argued that AI use does not eliminate a creator’s taste or contribution, and that deciding what to make and guiding its implementation can itself be satisfying creative work.</p><blockquote>Creativity is about coming up with your vision with the tools at hand in my eyes.<cite>ktallett</cite></blockquote>
+<blockquote>To me, it is pretty much human creativity.<cite>altmanaltman</cite></blockquote>
+<blockquote>Seeing the solutions manifest is thrilling frankly.<cite>JoshuaRogers</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>A categorical dismissal of AI-assisted work</strong> &mdash; One commenter rejected the project outright as AI-generated work, rather than debating whether AI tools belong in a creative challenge.</p><blockquote>AI slop on the front page of Hacker News.<cite>Alien1Being</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Pronoun choice and inclusive language</strong> &mdash; Commenters disagreed over whether singular they is suitable for Mr Doob, weighing inclusive or assumption-avoiding language against preferences for specificity and concerns about ambiguity.</p><blockquote>It is inoffensive, a drop-in-replacement, doesn&#x27;t elongate sentences or any other such negative side effects.<cite>hypfer</cite></blockquote>
+<blockquote>There&#x27;s nothing arbitrary to use &quot;he&quot; for somebody who calls himself &quot;mr&quot;.<cite>dakom</cite></blockquote>
+<blockquote>Far from it, it only creates confusion and injects ideologically charged &quot;pronoun language&quot; into the discussion.<cite>Leonard_of_Q</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Browser support and behavior vary</strong> &mdash; Commenters reported inconsistent browser support and noted performance or behavior issues while using the demo.</p><blockquote>`Unable to start: can&#x27;t access property &quot;getSupportedExtensions&quot;, this.gl is null` Doesn&#x27;t work on Firefox Mobile.<cite>TechPlasma</cite></blockquote>
+<blockquote>This is fun, but boy it gets heavy/laggy as it accumulates.<cite>storch</cite></blockquote>
+<blockquote>If you pause and the unpause after a while you get very pretty color bands! :)<cite>sandos</cite></blockquote></div>
+    </article>
+    <article id="dossier-6" class="dossier-entry">
+      <div class="dossier-meta">N<sup>o</sup> 06 &nbsp;·&nbsp; Midnight &nbsp;·&nbsp; Privacy Layer</div>
+      <h3>Tell HN: Gemini trains on chat history, even for subscribers (personal accounts)</h3>
+      <p class="dossier-source">
+        <a href="https://news.ycombinator.com/item?id=50363461" target="_blank" rel="noopener">news.ycombinator.com</a>
+        &nbsp;·&nbsp; 69 pts &nbsp;·&nbsp; 25 comments
+         &nbsp;·&nbsp; <a href='https://news.ycombinator.com/item?id=50363461' target='_blank' rel='noopener'>discussion</a>
+      </p>
+      <h4>Analysis</h4>
+      <p>The story warns that personal Google Gemini accounts, including paid AI subscribers, may use saved chats to improve Google’s services and train generative AI models when “Keep Activity” is enabled. Google says some conversations can be reviewed by human evaluators, with reviewed chats retained for up to three years even after users delete their activity, and advises users not to submit confidential information. Users can disable this use only by turning off chat history, which limits retention and causes new chats to be deleted after 72 hours, or by using temporary sessions. The issue is significant because a paid subscription does not provide the privacy many users might expect, creating a trade-off between persistent chat history and participation in data collection and review.</p>
+      <h4>Reader Reactions</h4>
+<p class="camps-framing">Comments focused on whether providers may retain or use prompts, but differed on how to interpret this policy and what practical options it leaves users. One exchange clarified that human review can support service and model improvement as well as safety and legal purposes. Other branches considered feature trade-offs, data uses beyond training, and differences between products and account types.</p>
+<div class="camp"><p class="camp-label"><strong>Assume prompts may be stored or used</strong> &mdash; Some commenters advised treating anything entered into an AI service as potentially stored or used, regardless of payment or stated policy.</p><blockquote>imho you should act as if everything you type, not even send, is stored forever and might be used for training whenever they decide to retro actively change their TOS, no matter how much money you pay<cite>233mhz</cite></blockquote>
+<blockquote>I assume that everyone does this no matter what they say. Seems like too juicy a target<cite>icantevenhold</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Human review can serve improvement purposes</strong> &mdash; A reply challenged the view that human review and retention are mainly for liability, noting that reviewers also assess response quality and help improve services and models.</p><blockquote>A subset of chats are reviewed by human reviewers (including Google’s trained service providers) to help improve Google services.<cite>jameslk</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Turning off history is a workable option</strong> &mdash; One commenter argued that users concerned about retention can disable chat history, which they said limits retention and prevents chats from being used for training.</p><blockquote>Just disable chat history; in this mode Gemini has the shortest retention among the three major LLM chats, and the chats are not used for training.<cite>mortehu</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Privacy comes at a feature cost</strong> &mdash; Some commenters said that disabling activity can impair useful features or persistent memory, while keeping it enabled allows Google to use chats.</p><blockquote>What&#x27;s worse is if you have a Pixel phone then Gemini is completely useless without enabling this setting.<cite>richrichardsson</cite></blockquote>
+<blockquote>if you want persistant memory you should enable keep activity, but keeping activity allows google to use your chats.<cite>advenn</cite></blockquote>
+<blockquote>This is one of the reason I unsubscribed from Gemini Pro, apart from the fact that the experience with Gemini has been underwhelming.<cite>EbNar</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Data use can extend beyond model training</strong> &mdash; Some commenters argued that opting out of model training does not resolve privacy concerns because service terms may permit other uses of data, and expressed skepticism about what companies can do without customers knowing.</p><blockquote>Even if they don&#x27;t train on your content, Google reserves the right to use it for improving their services in other ways:<cite>fweimer</cite></blockquote>
+<blockquote>If a company can do something that benefits them, and there is no way the customer can find out or prove that, the company will do it.<cite>frevib</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Policies differ by product and account type</strong> &mdash; A broad claim that every AI trains on its inputs was challenged with the example of Gemini Enterprise, illustrating that protections may vary by product.</p><blockquote>Every AI trains on the input given to it<cite>jbrooks84</cite></blockquote>
+<blockquote>This is false. eg Gemini enterprise has a note under each chat session explicitly saying it’s not used to improve the models<cite>Havoc</cite></blockquote></div>
+    </article>
+    <article id="dossier-7" class="dossier-entry">
+      <div class="dossier-meta">N<sup>o</sup> 07 &nbsp;·&nbsp; Blueprint &nbsp;·&nbsp; Build Log</div>
+      <h3>Jailbreaking my car&#x27;s navigation system just so I can change the time</h3>
+      <p class="dossier-source">
+        <a href="https://blog.nns.ee/2026/11/02/renault-hack/" target="_blank" rel="noopener">blog.nns.ee</a>
+        &nbsp;·&nbsp; 854 pts &nbsp;·&nbsp; 325 comments
+         &nbsp;·&nbsp; <a href='https://news.ycombinator.com/item?id=50339288' target='_blank' rel='noopener'>discussion</a>
+      </p>
+      <h4>Analysis</h4>
+      <p>The author describes reverse-engineering and jailbreaking a 2014 Renault Latitude’s TomTom Carminat navigation unit after discovering that changing the clock required a licensed navigation SD card, even though maps were unnecessary. The device used an old Linux-based system with signed, DRM-protected updates and restrictive mounts, so the author built an emulator and investigated its scripts, binaries, and filesystem. They eventually combined a path-traversal file-write flaw with Linux’s `core_pattern` crash-handler mechanism to execute a payload as root from an SD card. After backing up the internal storage and reverse-engineering its settings format, they changed the GPS timezone offset directly, illustrating how proprietary automotive design and anti-piracy controls can make trivial maintenance tasks dependent on obsolete software and expensive hardware.</p>
+      <h4>Reader Reactions</h4>
+<p class="camps-framing">Readers appreciated the reverse-engineering project while debating the consequences of tying a basic clock setting to proprietary map data. The discussion also covered clock synchronization, the tradeoffs between replaceable and integrated head units, and a substantial Subaru and AWD tangent.</p>
+<div class="camp"><p class="camp-label"><strong>Admiration for the hack and renewed hardware hacking</strong> &mdash; Commenters praised the investigation and write-up, and some saw it as part of a broader return to jailbreaking and taking control of hardware.</p><blockquote>That must be one of the most iconic HN sentences ever.<cite>bambax</cite></blockquote>
+<blockquote>It warms my heart seeing the jailbreak movement finally resurging under AI. Happy to see we&#x27;re finally taking back our hardware.<cite>JeppyG</cite></blockquote>
+<blockquote>The revolution against shitty locked down software has begun and I LOVE IT<cite>zodwick</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Basic clock controls should not depend on proprietary data</strong> &mdash; Some readers objected to making a simple clock adjustment impossible without a specific SD card, treating it as an example of unnecessarily restrictive design.</p><blockquote>The clock setting being impossible without a proprietary and easily lost or destroyed SD card is pretty good, but we can do better.<cite>jerf</cite></blockquote>
+<blockquote>Add to falsehoods programmers believe about time: It can be changed without the SD card in the car radio.<cite>RajT88</cite></blockquote>
+<blockquote>Why do you even need a car with an SD card slot in order to change the time?<cite>warkdarrior</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>The missing card and simpler workarounds</strong> &mdash; Readers debated whether keeping or retrieving the original map card would have avoided the investigation, while others pointed to less involved ways to address the problem.</p><blockquote>You should have just gotten the SD card and trusted the previous owner. Sometimes &quot;simple users&quot; do know. ^^<cite>tom1337890</cite></blockquote>
+<blockquote>I said that it&#x27;s no worries and I&#x27;ll figure it out. Just didn&#x27;t expect that this would be the way I&#x27;d do it.<cite>xx_ns</cite></blockquote>
+<blockquote>Usually you can just get a modern OBDII scanner and set it via the diagnostics or hot functions.<cite>1970-01-01</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Clock synchronization and time-zone rules remain tricky</strong> &mdash; Commenters shared concerns about clocks that fail to update and discussed the limits of GPS, radio, and cellular signals for setting local time.</p><blockquote>It seems absurd to me that cars needs a cellular connection to automatically set time, meanwhile 10$ clocks can get the time correctly from the radio signal that are broadcasted.<cite>alerighi</cite></blockquote>
+<blockquote>GPS doesn&#x27;t transmit timezone information, nor does it transmit leap seconds.<cite>phire</cite></blockquote>
+<blockquote>I live in a region that changed time zones just 2 days ago and my brand new 6-month old car now as an incorrect rule set and presents the wrong time when synced with GPS.<cite>wvenable</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Replaceable stereos versus integrated infotainment</strong> &mdash; Some readers valued the choice and repairability of older standardized head units, while others argued that modern systems can benefit from updates; update support and aging hardware remained concerns.</p><blockquote>It’s the cars which can’t have their head unit replaced with a simple stereo which worry me.<cite>strenholme</cite></blockquote>
+<blockquote>The counter argument to that is well designed modern cars have great info-tainment systems which get regular updates.<cite>guywithahat</cite></blockquote>
+<blockquote>Teslas from four years ago with Intel Atom processors and HW3 are already getting different and lesser updates than new Teslas, without any hardware upgrade plan in place.<cite>jerlam</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Subaru, reliability, and the AWD debate</strong> &mdash; A discussion of Subaru clocks and infotainment broadened into competing views of the brand and a divided debate over AWD’s benefits and risks in winter driving.</p><blockquote>In most reasonable scenarios (not doing anything dumb like accelerating through the curve), you&#x27;re more likely to fly off a winter curve with AWD than FWD.<cite>hansvm</cite></blockquote>
+<blockquote>AWD provides more traction while accelerating, which makes it safer, which is why people use it in winter... Saying it&#x27;s less safe is ridiculous.<cite>0xbadcafebee</cite></blockquote>
+<blockquote>Just the benefit of driving AWD is enough for me. It&#x27;s hard to go back...<cite>stronglikedan</cite></blockquote></div>
+    </article>
+    <article id="dossier-8" class="dossier-entry">
+      <div class="dossier-meta">N<sup>o</sup> 08 &nbsp;·&nbsp; Product Plate &nbsp;·&nbsp; Open Hardware</div>
+      <h3>Stringman, an $800 open-source room scale gripper robot</h3>
+      <p class="dossier-source">
+        <a href="https://neufangled.com/" target="_blank" rel="noopener">neufangled.com</a>
+        &nbsp;·&nbsp; 632 pts &nbsp;·&nbsp; 208 comments
+         &nbsp;·&nbsp; <a href='https://news.ycombinator.com/item?id=50354358' target='_blank' rel='noopener'>discussion</a>
+      </p>
+      <h4>Analysis</h4>
+      <p>Stringman is an $800 open-source cable-driven robot that suspends a two-finger gripper from four ceiling-mounted motors, giving it room-scale reach while handling about 1.9 kg on average. Its printed hardware, electronics, control software, datasets, and APIs are publicly available, with local-network operation and optional cloud access, positioning it for home labs, education, and moving parts between workcells. The design trades dexterity and portability for broad coverage, low actuator count, and a claimed 185 cubic meters of workspace per $1,000—far beyond conventional robotic arms—while requiring suitable ceiling mounts and clearances. Its significance is demonstrating how a relatively simple, inexpensive cable architecture can make large-volume robotic manipulation accessible, though installation, limited payload, and safety constraints remain practical considerations.</p>
+      <h4>Reader Reactions</h4>
+<p class="camps-framing">The discussion was broadly appreciative of the project’s ingenuity and low cost, but divided over whether a cable robot spanning a room could fit ordinary household life or was better suited to controlled workspaces and specific tasks. Safety and household fit were recurring concerns, alongside engineering suggestions and a side debate about specialized robots versus humanoids. Smaller threads highlighted possible applications, the project’s openness, and the value of knowledgeable builders engaging with it.</p>
+<div class="camp"><p class="camp-label"><strong>Enthusiastic maker appeal</strong> &mdash; Some commenters found the project exciting and unusually accessible, and imagined building or adapting it themselves. The low cost and openness added to its appeal.</p><blockquote>$800 is already super cheap, and the openness makes it likely you could implement even cheaper options yourself.<cite>passive</cite></blockquote>
+<blockquote>Awesome!!! I love projects like this.<cite>monkmartinez</cite></blockquote>
+<blockquote>I love this so much.<cite>jauntywundrkind</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Home-use practicality skeptics</strong> &mdash; Commenters questioned whether cables crossing a room, limited clear space, and household clutter would make the system impractical in many homes. Some saw it as more suitable for empty rooms or controlled settings.</p><blockquote>In reality though, I think the cables will never work in a household situation.<cite>conductr</cite></blockquote>
+<blockquote>Seems to work for people who basically have very empty rooms, and very orderly piles of things.<cite>nlitsme</cite></blockquote>
+<blockquote>It seems like it will work well if you know you have a situation that fits well with the setup.<cite>3RTB297</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Safety concerns and precautions</strong> &mdash; Commenters raised risks of lines catching around people or pets, particularly children, and questioned whether a motor tension limit addresses hazards involving cables anchored to the walls. Others suggested limiting when or where the robot is used.</p><blockquote>The gripper in the middle of the room unwinding some line won&#x27;t prevent you, your child, or a pet from hanging themselves from the anchored end.<cite>R1D3R</cite></blockquote>
+<blockquote>it shows it picking up toys but imho this looks dangerous for kids. could get tangled up in those wires...<cite>sourcecodeplz</cite></blockquote>
+<blockquote>So only start it when the kids are at school or at dinner?<cite>Gasp0de</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Specialized robots versus humanoids</strong> &mdash; A side discussion contrasted task-specific machines with humanoids that could operate in spaces and use tools designed for people. Commenters differed on whether human-shaped robots are inefficient or useful for general-purpose work in existing environments.</p><blockquote>The desire for humanoid robots is purely aesthetic and almost certainly suboptimal.<cite>tootie</cite></blockquote>
+<blockquote>Their benefit is they can operate in any space designed for a human without custom modification.<cite>kevin_thibedeau</cite></blockquote>
+<blockquote>We built the world for us, not for the most sensible robot. So for generalized solutions, a good biped will have some advantages.<cite>onlyrealcuzzo</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Engineering alternatives and improvements</strong> &mdash; Commenters proposed changes to cable count, cable routing, and storage to reduce obstruction or alter the robot’s range of motion. These were exploratory suggestions rather than settled conclusions.</p><blockquote>HI, I am sure you considered it, but wouldn&#x27;t the design be better with a 5th cable going straight up and down from the moving point?<cite>dandare</cite></blockquote>
+<blockquote>This really needs a way to pull the strings and bot out of the way when not in use.<cite>rao-v</cite></blockquote>
+<blockquote>This allows you to pick a point on the ceiling.<cite>swid</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Possible niches and new applications</strong> &mdash; Commenters imagined applications beyond household cleanup, including garden work and theatrical or promotional displays. These suggestions were exploratory and prompted discussion of practical constraints and alternative setups.</p><blockquote>I kind of want to try something like this for garden weeding.<cite>goda90</cite></blockquote>
+<blockquote>Makes me wonder what commercial application this would work for, I&#x27;m sure there&#x27;s something out there that would benefit from this over waiting on humanoid tech<cite>conductr</cite></blockquote>
+<blockquote>can see how this could be usefull for theater, advertising, dyoramas, promotional displays, where the kind of chunky movement will be a feature and not a detractor<cite>metalman</cite></blockquote></div>
+    </article>
+    <article id="dossier-9" class="dossier-entry">
+      <div class="dossier-meta">N<sup>o</sup> 09 &nbsp;·&nbsp; Archive &nbsp;·&nbsp; Systems History</div>
+      <h3>The lost malloc()</h3>
+      <p class="dossier-source">
+        <a href="https://napcakes.nekoweb.org/posts/malloc/" target="_blank" rel="noopener">napcakes.nekoweb.org</a>
+        &nbsp;·&nbsp; 63 pts &nbsp;·&nbsp; 20 comments
+         &nbsp;·&nbsp; <a href='https://news.ycombinator.com/item?id=50362466' target='_blank' rel='noopener'>discussion</a>
+      </p>
+      <h4>Analysis</h4>
+      <p>The article explores early Unix memory allocation by examining recovered Version 4–8 source code, showing how simple linear allocators, explicit core and swap memory maps, first-fit allocation, coalescing, and rollback handled constrained PDP-era hardware. It contrasts these region-based designs with modern `malloc`/`free`, arguing that passing an allocation arena could provide better isolation, bulk reclamation, lifetime management, and limits for libraries or subsystems. The author traces how these ideas evolved into conventional heap allocation, convenience macros resembling `new`, and early garbage-collection experiments, while connecting C++’s `new` to Simula rather than directly to Unix code. The story matters because it illustrates how hardware limits shaped foundational APIs, how useful allocation strategies were overlooked or simplified over time, and why explicit arenas and lifetime-aware allocation remain relevant to software reliability and performance.</p>
+      <h4>Reader Reactions</h4>
+<p class="camps-framing">The discussion centers on whether deallocation should require an allocation size, with participants weighing allocator efficiency against interface safety and flexibility. Other comments reflect on the history and constraints of early systems programming, and on practices modern programmers might learn from it.</p>
+<div class="camp"><p class="camp-label"><strong>Pass the size to deallocate</strong> &mdash; Some commenters argue that callers generally know an allocation’s size, so requiring it can avoid redundant bookkeeping in the allocator.</p><blockquote>There&#x27;s virtually no sensible case where the person calling free() doesn&#x27;t know the size of the allocation, so now we&#x27;re keeping that book-keeping twice, in &quot;user-space&quot; and inside the memory allocator.<cite>OskarS</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Size should be a hint, not a requirement</strong> &mdash; Others argue that allocator boundaries and varied runtimes can make a mandatory size parameter fragile, so size should guide optimization rather than determine correctness.</p><blockquote>Size should be an optimization hint, not a correctness requirement.<cite>0xdeafbeef</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Arenas have tradeoffs; simple interfaces have value</strong> &mdash; One commenter cautions that arena allocators can simplify some tasks and sometimes improve performance, but can also use more memory or increase fragmentation; simpler interfaces can hide complexity and remain flexible.</p><blockquote>That is one of the many reasons why we slowly evolved away from the old linear allocators, but also because we just wanted a simple and flexible interface to hide complexity.<cite>veltas</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Historical admiration for early systems work</strong> &mdash; Some readers are surprised that techniques now considered modern were explored decades ago, and reflect on the depth behind C’s apparently simple syntax.</p><blockquote>It&#x27;s surprising that the concepts I thought were modern techniques today were already being tried decades ago—that is, before I was even born.<cite>jdw64</cite></blockquote>
+<blockquote>I have always thought about C being a language with &quot;simple&quot; syntax (but things like type declarations are hell), but very complicated semantics.<cite>ahoka</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Constraints and fundamentals fostered invention</strong> &mdash; Several commenters explain early systems techniques through simpler systems, closer-to-the-metal work, theoretical interests, and hardware constraints.</p><blockquote>Lastly at that time &quot;programming&quot; was closer to the metal so a average computer scientist at that time would likely have more knowledge of the deep internals compared to an average programmer today.<cite>trashb</cite></blockquote>
+<blockquote>They came up with bump allocators because they had a blank mind, devoid of today&#x27;s complexity.<cite>momocowcow</cite></blockquote>
+<blockquote>Smart people + system constraints =&gt; ingenuity.<cite>Anon4Now</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Programming deliberately, including on paper</strong> &mdash; A small practical branch recommends planning programs on paper before coding; another commenter recalls that the practice helped with writing less buggy first drafts.</p><blockquote>still in more modern languages i&#x27;d recommend starting with pencil and paper, write most of it if not the whole thing out.<cite>saidnooneever</cite></blockquote>
+<blockquote>Because of it, I find myself writing mostly bug-free code on my first try these days (my bugs tend to happen on interactions between parts of a system I designed separately).<cite>lieks</cite></blockquote></div>
+    </article>
+    <article id="dossier-10" class="dossier-entry">
+      <div class="dossier-meta">N<sup>o</sup> 10 &nbsp;·&nbsp; Caution Tape &nbsp;·&nbsp; Risk Register</div>
+      <h3>Geoffrey Hinton: it might turn out we were better off without AI</h3>
+      <p class="dossier-source">
+        <a href="https://www.theguardian.com/uk-news/2026/nov/03/ai-godfather-geoffrey-hinton-better-off-without-ai" target="_blank" rel="noopener">theguardian.com</a>
+        &nbsp;·&nbsp; 55 pts &nbsp;·&nbsp; 27 comments
+         &nbsp;·&nbsp; <a href='https://news.ycombinator.com/item?id=50363554' target='_blank' rel='noopener'>discussion</a>
+      </p>
+      <h4>Analysis</h4>
+      <p>AI pioneer Geoffrey Hinton says society may ultimately have been better off without AI, warning that poorly controlled systems could soon cause serious disruptions such as attacks on power grids or temporary failures in financial infrastructure. He remains cautiously optimistic that AI could deliver broad prosperity, but fears rapid competition among companies and countries is encouraging the release of increasingly capable models without adequate safeguards. Hinton criticizes leaders including Sam Altman, Mark Zuckerberg, and Elon Musk for prioritizing commercial advantage, and advocates independent testing, mandatory evaluations, and international standards similar to drug regulation. The story matters because it highlights the tension between AI’s potential economic benefits and the need for governance before a major incident forces policymakers to act.</p>
+      <h4>Reader Reactions</h4>
+<p class="camps-framing">The comments weigh AI’s practical benefits against its current social costs and uncertain risks. Several focus on profit-driven incentives and the harms of deployment; others value AI’s role in expanding access to knowledge. The thread also debates whether a serious incident could prompt caution, includes skepticism about Hinton’s warning, and features a smaller reformist view that favors a different development path.</p>
+<div class="camp"><p class="camp-label"><strong>Profit incentives and reckless rollout</strong> &mdash; This critique sees rapid growth and large returns as stronger priorities for AI companies than careful development or responsibility for downstream harms.</p><blockquote>The goal is a very large payout in a very short period of time, it&#x27;s not to make anything better, or worse, either is just a side effect.<cite>mrweasel</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>AI’s present costs outweigh its promised benefits</strong> &mdash; Some commenters point to unwanted AI content, added effort, unreliable outputs, environmental costs, and frustrating automated services as evidence that AI is making everyday life worse.</p><blockquote>The good is being smothered by the absolutely soul-crushing pointless.<cite>bvan</cite></blockquote>
+<blockquote>I have to spend extra time just trying to find AI-free things, AI-free writing, AI-free communities, and people who aren&#x27;t addicted to AI.<cite>bemtevi</cite></blockquote>
+<blockquote>And having to interact with AI-based customer service agents that take 10x as long to resolve the problem as a human being.<cite>bemtevi</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>AI improves access to knowledge</strong> &mdash; A counterpoint is that AI can serve as an accessible teacher, especially for people who previously had difficulty getting answers from knowledgeable people.</p><blockquote>But AI, in that respect, is the best teacher I can think of.<cite>jdw64</cite></blockquote>
+<blockquote>But considering what access to knowledge was like before AI came along, I think having AI is better.<cite>jdw64</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>High-impact risks and the human cost of a crisis</strong> &mdash; Some commenters treat severe disruption as a plausible risk that is difficult to evaluate in advance. A dispute arises over whether an incident might force society to change course, given that people could be harmed in the process.</p><blockquote>No way to tell until after, though.<cite>sneak</cite></blockquote>
+<blockquote>Whether it&#x27;s a power outage, financial crisis, or something else people will die.<cite>_heimdall</cite></blockquote>
+<blockquote>But if we DON&#x27;T do anything, then even more poeple are likely to suffer.<cite>bemtevi</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>A better development path rather than abandoning AI</strong> &mdash; A small reformist position favors continuing with AI while pursuing a different approach to its development; replies question claims that it will eliminate boring work or provide more free time.</p><blockquote>We are not but we need a better approach, https://www.ethicalacceleration.org<cite>perarneng</cite></blockquote>
+<blockquote>Seriously? It seems to be causing more problems, giving us more boring work, and less free time.... sounds like absolute bullshit.<cite>bemtevi</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Hinton’s warning is dismissed as outdated or familiar hype</strong> &mdash; Some replies argue that the field has moved beyond Hinton or treat warnings about an AI winter as recurring predictions.</p><blockquote>The field has long since left this guy behind.<cite>xnx</cite></blockquote>
+<blockquote>Said AI &quot;experts&quot; for the last 10 years.<cite>yewenjie</cite></blockquote></div>
+    </article>
+  </section>
+  <footer class="colophon">
+    <p class="sig">— that's the edition.</p>
+    <p class="meta">Set in Fraunces &amp; Inter · Compiled November 4, 2026</p>
+    <p class="classic-link"><a href="classic.html">Prefer the classic card view? →</a></p>
+  </footer>
+<script>
+(() => {
+  const key = "gtd:read_days:hn:v1";
+  const day = "2026-11-04";
+  let stored = [];
+  try {
+    stored = JSON.parse(localStorage.getItem(key) || "[]");
+    if (!Array.isArray(stored)) stored = [];
+  } catch (e) {}
+  if (!stored.includes(day)) {
+    stored.push(day);
+    stored.sort();
+    localStorage.setItem(key, JSON.stringify(stored));
+  }
+})();
+</script>
+<script src="../../preference.js?v=ccadacde0" defer></script>
+<script>
+// Simple script to toggle the [+] and [-] labels on the drawers
+document.querySelectorAll('.analysis-drawer').forEach(drawer => {
+  drawer.addEventListener('toggle', () => {
+    const summary = drawer.querySelector('summary');
+    if (drawer.open) {
+      summary.textContent = '[ Analysis − ]';
+    } else {
+      summary.textContent = '[ Analysis + ]';
+    }
+  });
+});
+
+// Share link — native share or copy markdown to clipboard
+(function () {
+  const links = document.querySelectorAll('.share-link');
+  if (!links.length) return;
+
+  const toast = document.createElement('div');
+  toast.className = 'discuss-toast';
+  document.body.appendChild(toast);
+
+  function showToast(msg) {
+    toast.textContent = msg;
+    toast.classList.add('show');
+    setTimeout(() => toast.classList.remove('show'), 2500);
+  }
+
+  function buildMarkdown(link, spread) {
+    const title = link.dataset.shareTitle || '';
+    const url = link.dataset.shareUrl || '';
+    const meta = spread ? spread.querySelector('.story-meta') : null;
+    const lede = spread ? spread.querySelector('.lede') : null;
+    const analysis = spread ? spread.querySelector('.drawer-analysis') : null;
+    let md = '# ' + title + '\n';
+    md += 'Source: ' + url;
+    if (meta) md += ' | ' + meta.textContent.trim();
+    md += '\n';
+    if (lede) md += '\n' + lede.textContent.trim() + '\n';
+    if (analysis) md += '\n## Analysis\n' + analysis.textContent.trim() + '\n';
+    return md;
+  }
+
+  links.forEach((link) => {
+    link.addEventListener('click', (e) => {
+      e.preventDefault();
+      const spread = link.closest('section.spread');
+      const md = buildMarkdown(link, spread);
+      const text = "I'd like to discuss this with you. Here's a summary:\n\n" + md;
+      const title = 'Discuss: ' + (link.dataset.shareTitle || '');
+      if (navigator.share) {
+        navigator.share({ title: title, text: text }).catch(() => {});
+      } else {
+        navigator.clipboard.writeText(text).then(
+          () => showToast('Copied to clipboard \u2014 paste into your AI chat'),
+          () => showToast('Failed to copy')
+        );
+      }
+    });
+  });
+})();
+</script>
+</body>
+</html>
