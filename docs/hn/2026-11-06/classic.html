@@ -1,0 +1,631 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hacker News Digest - November 06, 2026</title>
+    <link rel="stylesheet" href="../../style.css?v=83491aa79">
+</head>
+<body data-gtd-edition="hn" data-gtd-date="2026-11-06">
+    <header>
+        <h1>Hacker News Digest - November 06, 2026</h1>
+        <nav>
+            <a href="../">&larr; Hacker News Calendar</a>
+            <a href="../../2026-11-06/">GitHub Trending</a>
+        </nav>
+    </header>
+    <main>
+        <section class="the-take"><details open><summary>The HN Take</summary><h3 class="take-head">Blender without Blender.</h3><p>Here is a sensible software thesis: If millions of people have spent decades using a user interface, perhaps the valuable part is not just what it looks like but all the tiny things it has learned to do.</p><p>BUI extracts Blender&#x27;s interface into a standalone library with a small C core. It handles layout, input and drawing in native code, and can be driven from Python, Rust, JavaScript, C, C++, React, Svelte and Dear ImGui. It does not require Blender, and the JavaScript version does not ship a browser.</p><p>The pitch is partly performance. Blender&#x27;s interface &quot;redraws only what changed, sleeps when nothing does, and starts in milliseconds.&quot; But the more interesting product is accumulated muscle memory:</p><p>&quot;You press a number field and drag: the cursor vanishes, the value glides under your hand, and you never hit the edge of the screen. You type 2*pi into a field and it just works. You type &#x27;ad cu&#x27; into a menu and it finds &#x27;Add Cube&#x27;.&quot;</p><p>Right. A new UI framework can draw a button. The harder task is knowing that artists want to type equations into number fields, drag across several checkboxes, search for Add Cube by entering two partial syllables, and manipulate a value without eventually running out of mousepad. Those are not grand architectural insights. They are decades of small complaints fossilized into code.</p><p>BUI&#x27;s approach is to take those fossils and put adapters on them. Existing tkinter programs can supposedly run unchanged while looking less like 1998. Rust developers can use HTML, CSS and Tailwind without a browser. React and Svelte can produce native windows. Dear ImGui can become Blender. Qt syntax is partially supported. There is even a roadmap entry for MyGo, whose current status is &quot;Not yet (coming soon),&quot; which is also a reasonable description of many UI frameworks.</p><p>Software developers periodically conclude that every existing interface toolkit is wrong and should be replaced with a cleaner one. BUI proposes the opposite: The old interface has already survived millions of users doing strange things to it, so perhaps the efficient move is to remove the 3D modeling application and keep the sliders.</p><h3 class="take-head">257-character password.</h3><p>A locked Unix account can have an asterisk in its password field. The asterisk is not a password hash, so no password should ever match it. This is an old, simple and reassuring convention.</p><p>Except, reportedly, in one particular combination of OpenSSH, musl libc, no PAM and password authentication. There, an account that should accept no password can accept any password between 257 and 1024 characters.</p><p>The path to this result is made entirely of reasonable decisions. Some password-hashing functions return NULL when they cannot process a password or salt, and programs that fail to check can crash. Musl therefore returns a one-character failure value instead. SHA-512 password hashing also becomes slower as the password gets longer, which creates a denial-of-service opportunity, so musl refuses passwords longer than 256 bytes.</p><p>Separately, OpenSSH once had a user-enumeration problem. A nonexistent or password-disabled user could be rejected immediately, while a real user took longer because the server hashed the attempted password. Attackers could time the difference. The fix was to hash a password anyway, using another account&#x27;s salt, before returning no.</p><p>Put those decisions together with the asterisk sentinel and, on the affected configuration, the failure value can match the locked account field. The system does all the extra work required to conceal whether an account exists and then lets you into it.</p><p>The report says the affected setup requires musl, OpenSSH without PAM, password logins enabled, an account whose password field is just an asterisk, and another account with a real password. It names Alpine, OpenWrt, Buildroot and Yocto as relevant musl environments. On Alpine&#x27;s official AWS and Azure images, it says, the default alpine user is affected and has passwordless doas, so the result is root. Glibc systems, PAM configurations, Dropbear and OpenBSD are described as unaffected.</p><p>This is a pleasingly complete example of security composition. The locked-account marker is safe. The crash-prevention behavior is safe. The password-length cap is safe. The timing-attack mitigation is safe. Stack all four safety mechanisms together and a sufficiently long wrong password becomes correct.</p><p>The researcher found it by building OpenSSH across different libc, PAM and shadow configurations and throwing about 17,600 unusual login attempts at them, with help from &quot;agent swarms.&quot; Every build agreed except musl without PAM. People inspect the cryptography; the password bypass was waiting in the boring code where OpenSSH talks to libc.</p><p>On affected systems, password security therefore has an unusual shape. More length is better until character 256. Character 257 removes the password requirement.</p><div class="take-sources"><span>Sources</span><ul><li><a href="https://sshhole.com" target="_blank" rel="noopener noreferrer">sshole</a></li></ul></div></details></section>
+        <div class="repo-controls">
+            <button id="collapse-seen-btn" type="button">Collapse Stories Not New Today</button>
+            <button id="expand-all-btn" type="button">Expand All</button>
+        </div>
+        <p class="seen-help">Stories marked "Not new today" appeared on one or more previous daily pages.</p>
+        <article>
+            <div class="repos">
+
+            <section class="repo" data-seen-before="0"
+                     data-share-title="Blender&#x27;s UI and Runtime: Much Faster Than GPUI"
+                     data-share-url="https://github.com/ppmpreetham/BUI"
+                     data-share-points="274"
+                     data-share-comments="107">
+                <div class="repo-header-row">
+                    <h3>1. <a href="https://github.com/ppmpreetham/BUI" target="_blank" rel="noopener noreferrer">Blender&#x27;s UI and Runtime: Much Faster Than GPUI</a> </h3>
+                    <div class="header-buttons">
+                        <button type="button" class="discuss-btn" aria-label="Discuss with AI" title="Discuss with AI">&#x1F4AC;</button>
+                        <button type="button" class="repo-toggle" aria-expanded="true">Hide details</button>
+                    </div>
+                </div>
+                <div class="repo-body">
+                    <p class="meta">
+                        <span class="language">github.com</span> |
+                        <span>ppmpreetham</span> |
+                        <span>274 points</span> |
+                        <span>107 comments</span> |
+                        <a href="https://news.ycombinator.com/item?id=50389333" target="_blank" rel="noopener noreferrer">discussion</a>
+                    </p>
+                    <p class="history">First seen: November 06, 2026 | Consecutive daily streak: 1 day</p>
+                    <div class="ai-summary">
+                        <h4>Analysis</h4>
+                        <p>BUI is an open-source project that extracts Blender’s widget rendering and interaction model into a standalone, C-based UI runtime accessible from Python, Rust, JavaScript/React, C/C++, and Dear ImGui. It aims to provide Blender-like controls and themes—including specialized editors, sliders, menus, and expression-aware fields—without requiring Blender, a browser, or a webview. The project emphasizes low resource use through native rendering, damage-based redraws, optional GPU acceleration, and small standalone binaries, claiming benchmark advantages over gpui in CPU usage, memory, and startup time. Its significance is that it could let developers reuse Blender’s mature, efficient interaction design across desktop tools and artist-oriented applications, though several bindings and platform features remain incomplete or experimental.</p>
+                    </div>
+                    
+                <div class="ai-summary">
+                    <h4>Comment Analysis</h4>
+                    <p class="camps-framing">The reaction centered on whether Blender’s dense, customizable interface is a useful foundation for other power-user tools or a poor fit beyond Blender. Commenters also debated platform-native widgets, licensing restrictions, and what evidence and support would be needed before adopting the project.</p>
+<div class="camp"><p class="camp-label"><strong>Reuse Blender’s power-user UI</strong> &mdash; Supporters saw Blender’s compact, customizable controls and established interactions as valuable for creative and other specialized applications, where developers might otherwise have to build similar interfaces themselves.</p><blockquote>Just the customizability itself is something I miss on most 3D software, if not all of them.<cite>lukebitts</cite></blockquote>
+<blockquote>It is not a UI paradigm that you would use for just anything, but for certain poweruser software it is one of the best paradigms I have seen, especially since they managed to get rid of 90% of the rough corners in the past decade of development.<cite>atoav</cite></blockquote>
+<blockquote>It would be such a boon if GIMP and Inkscape could adopt blender&#x27;s fantastic GUI<cite>felixthehat</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Blender’s interface is not worth exporting</strong> &mdash; Some commenters found Blender’s UI confusing or unpleasant and argued that they would not want it in other applications, even while acknowledging that preferences can depend on experience and workflow.</p><blockquote>I really really really REALLY don&#x27;t want that UI in anything else other than Blender. Please don&#x27;t.<cite>dev0p</cite></blockquote>
+<blockquote>The Blender UI is worse than all of the above.<cite>archerx</cite></blockquote>
+<blockquote>Inkscape’s UI is much, much better than Blender’s, IMO.<cite>p-e-w</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>The right fit depends on the tool</strong> &mdash; Commenters emphasized that complex professional software involves tradeoffs, and that a UI library’s usefulness is distinct from adopting Blender’s full workflow. Dense creative tools may benefit more than applications with simpler or different interaction needs.</p><blockquote>Everybody hates all serious 3d application interfaces… they’re just complicated.<cite>DrewADesign</cite></blockquote>
+<blockquote>people will use this as a GUI library, not as a Blender&#x27;s UX design.<cite>coldtea</cite></blockquote>
+<blockquote>Why should kitty use Blender UI? It&#x27;s just a terminal emulator with no GUI elements and is already GPU accelerated.<cite>lukechu10</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>GPL may limit adoption</strong> &mdash; Some commenters saw the GPL as a barrier for developers who want to use the library in differently licensed projects; others defended Blender’s license or discussed alternatives such as LGPL and AGPL.</p><blockquote>You can only use it in GPLv3 programs.<cite>panzi</cite></blockquote>
+<blockquote>License of GPUI is Apache and BlenderUI is GPL, which is limiting for adoption.<cite>antman</cite></blockquote>
+<blockquote>GPL does restrict it, but it’s also only the only reason Blender is not a long forgotten piece of software from the 90s.<cite>exitb</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Prefer native platform widgets</strong> &mdash; Some argued that applications should use their target platform’s native toolkit for consistency. Others said native options may not support dense layouts or particular rendering needs well, and noted that platforms do not always have a single clear native toolkit.</p><blockquote>Use the native widget toolkit if the platform you target; your users will love you more.<cite>andsoitis</cite></blockquote>
+<blockquote>I generally prefer native widgets, but for a dense prosumer application, they aren&#x27;t always the correct choice (and you&#x27;ll see even Apple stray from their native UI widgets for, say, Logic Pro)<cite>swiftcoder</cite></blockquote>
+<blockquote>But the premise is silly: if Linux has two native toolkits, how is this a sensible recommendation?? Hint: it isn’t, because GTK/Qt are not the native, but rather simply the most used.<cite>chem83</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Adoption needs evidence and support</strong> &mdash; Commenters raised concerns about accessibility, performance claims, and the project’s longer-term reliability, suggesting that interested adopters would want clearer evidence and support before relying on it.</p><blockquote>not a single mention of a11y or accessibility, so please be careful before using it for general purpose applications.<cite>gostsamo</cite></blockquote>
+<blockquote>How can we guarantee BUI is still performant?<cite>petterroea</cite></blockquote>
+<blockquote>&quot;Decoupled from project by external developer&quot; generally means &quot;with a very high chance of immediate bitrot&quot;.<cite>parasti</cite></blockquote></div>
+                </div>
+
+                </div>
+            </section>
+
+            <section class="repo" data-seen-before="0"
+                     data-share-title="Dutch &#x27;idealist&#x27; bank ASN blocks non-Google Android, including GrapheneOS"
+                     data-share-url="https://github.com/PrivSec-dev/banking-apps-compat-report/issues/105"
+                     data-share-points="154"
+                     data-share-comments="99">
+                <div class="repo-header-row">
+                    <h3>2. <a href="https://github.com/PrivSec-dev/banking-apps-compat-report/issues/105" target="_blank" rel="noopener noreferrer">Dutch &#x27;idealist&#x27; bank ASN blocks non-Google Android, including GrapheneOS</a> </h3>
+                    <div class="header-buttons">
+                        <button type="button" class="discuss-btn" aria-label="Discuss with AI" title="Discuss with AI">&#x1F4AC;</button>
+                        <button type="button" class="repo-toggle" aria-expanded="true">Hide details</button>
+                    </div>
+                </div>
+                <div class="repo-body">
+                    <p class="meta">
+                        <span class="language">github.com</span> |
+                        <span>microtonal</span> |
+                        <span>154 points</span> |
+                        <span>99 comments</span> |
+                        <a href="https://news.ycombinator.com/item?id=50390124" target="_blank" rel="noopener noreferrer">discussion</a>
+                    </p>
+                    <p class="history">First seen: November 06, 2026 | Consecutive daily streak: 1 day</p>
+                    <div class="ai-summary">
+                        <h4>Analysis</h4>
+                        <p>The story concerns ASN Bank’s Dutch mobile-banking app and reports that it blocks or may reject Android devices running non-Google operating systems, including GrapheneOS. This is notable because GrapheneOS can run the app, and the submitted test found its functionality apparently identical to stock Android, suggesting the restriction may stem from device-integrity or platform-detection checks rather than a technical dependency. The case highlights how banks’ security and fraud-prevention policies can exclude users who deliberately avoid Google services, even when the app itself works. It also raises concerns about customer choice, transparency, and access to essential financial services.</p>
+                    </div>
+                    
+                <div class="ai-summary">
+                    <h4>Comment Analysis</h4>
+                    <p class="camps-framing">Many commenters viewed Google Play Integrity as an unreliable security proxy that restricts GrapheneOS users and favors Google-approved devices. Others pointed to banks’ security, support, and compliance constraints, while questioning whether those concerns justify the restriction. Discussion also covered who is responsible, whether regulation or alternatives to Google’s checks could help, and how practical it is for customers to switch banks.</p>
+<div class="camp"><p class="camp-label"><strong>Exclusion is an unjustified control mechanism</strong> &mdash; Commenters argued that integrity checks can privilege Google-approved Android without reliably identifying secure devices, particularly when outdated certified phones remain accepted.</p><blockquote>The Rabobank app works fine on Android phones that haven&#x27;t seen updates in years...<cite>teekert</cite></blockquote>
+<blockquote>The fact that Google-certified phones that are months behind on critical security updates (or even have malware in there updates as a recent case) do get a pass, shows that it is not really about security, but about destroying competition in the smartphone ecosystem as early as possible.<cite>microtonal</cite></blockquote>
+<blockquote>My bank app works on GrapheneOS but checks play integrity and disables biometrics and lowers limits.<cite>Aozora7</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Security and support constraints can be legitimate</strong> &mdash; Some commenters emphasized that banks must manage risk, testing, and support across a limited set of configurations, even if a particular policy may be imperfect.</p><blockquote>Now, that isn&#x27;t to say there aren&#x27;t security issues, nor that QA is perfect on devices they do support (like with any enterprise software projects), but it is a valid reason from a business perspective to not support everything.<cite>saidnooneever</cite></blockquote>
+<blockquote>The bank doesn&#x27;t care about either. It cares about the risks, costs and opinion of the regulator on how well it evaluates and controls those risks.<cite>Muromec</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Responsibility for the restriction is unclear</strong> &mdash; Commenters questioned whether the requirement comes from the bank, Wero, Google, or regulators, and noted that implementation responsibility may differ from who set the requirement.</p><blockquote>The title sets a lot of blame on the bank, but there might be other factors at play.<cite>thibsrn</cite></blockquote>
+<blockquote>The requirement can come from Wero, to be implemented technically by your bank.<cite>trashb</cite></blockquote>
+<blockquote>That said, some Dutch banks also made the migration from iDEAL to Wero and don&#x27;t require Play Integrity.<cite>microtonal</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Regulation and open banking remain disputed</strong> &mdash; Some commenters called for common interfaces or rules that limit platform gatekeeping; others argued that existing open-banking requirements are cumbersome and do not provide individuals direct access to their own data.</p><blockquote>By now, if a major regulator like EU steps in, cracks the whip, and forces banks to provide access through a common API standard to any third party banking app? I&#x27;d welcome the change.<cite>ACCount39</cite></blockquote>
+<blockquote>They forced PSD2 with &quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;Open Banking&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot; which requires convoluted requirements and is regulated to death so no private person can call the API themselves and get e.g. their balance or transactions.<cite>sunaookami</cite></blockquote>
+<blockquote>If I want my own data there is no api for me.<cite>othorns</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Switching banks is an imperfect form of consumer choice</strong> &mdash; Some commenters described leaving banks or using alternatives, while others noted that switching can be inconvenient and may not help if the same restriction spreads.</p><blockquote>I swiftly moved to a bank that incidentally had a lower interest and both a competent app and website, and I noted to the previous merged bank that the reason I was leaving is that they did not accommodate me.<cite>commandersaki</cite></blockquote>
+<blockquote>Not an option if all banks follow suit.<cite>Freak_NL</cite></blockquote>
+<blockquote>The solution is not voting with your wallet, but either leveraging the DMA or drafting new laws that counter this.<cite>microtonal</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Alternatives to Google checks and broader digital sovereignty</strong> &mdash; Some commenters proposed attestation mechanisms for secure non-Google systems, while others framed dependence on major technology companies as a broader threat to privacy and European autonomy.</p><blockquote>I think we really need an open hardware signing authority for open-source roms like GrapheneOS.<cite>whazor</cite></blockquote>
+<blockquote>Banks should just come up with a list of signing keys to be trusted.<cite>microtonal</cite></blockquote>
+<blockquote>Open standards should become a human right.<cite>shevy-java</cite></blockquote></div>
+                </div>
+
+                </div>
+            </section>
+
+            <section class="repo" data-seen-before="0"
+                     data-share-title="Claude Code sends your email address to websites"
+                     data-share-url="https://github.com/anthropics/claude-code/issues/107757"
+                     data-share-points="1222"
+                     data-share-comments="387">
+                <div class="repo-header-row">
+                    <h3>3. <a href="https://github.com/anthropics/claude-code/issues/107757" target="_blank" rel="noopener noreferrer">Claude Code sends your email address to websites</a> </h3>
+                    <div class="header-buttons">
+                        <button type="button" class="discuss-btn" aria-label="Discuss with AI" title="Discuss with AI">&#x1F4AC;</button>
+                        <button type="button" class="repo-toggle" aria-expanded="true">Hide details</button>
+                    </div>
+                </div>
+                <div class="repo-body">
+                    <p class="meta">
+                        <span class="language">github.com</span> |
+                        <span>motoroco</span> |
+                        <span>1222 points</span> |
+                        <span>387 comments</span> |
+                        <a href="https://news.ycombinator.com/item?id=50385272" target="_blank" rel="noopener noreferrer">discussion</a>
+                    </p>
+                    <p class="history">First seen: November 06, 2026 | Consecutive daily streak: 1 day</p>
+                    <div class="ai-summary">
+                        <h4>Analysis</h4>
+                        <p>A GitHub issue alleges that Claude Code version 2.1.318 included the user’s email address in the `User-Agent` header when making web-search requests, potentially exposing it to arbitrary third-party websites. The reporter says this led to a surge in scam emails and argues that sharing the address is unnecessary, ineffective for managing agent traffic, and undermines user anonymity. The issue raises a significant privacy and security concern because headers are routinely logged by websites and intermediaries, while users may not realize their identity is being transmitted. The reporter says they are moving their company to Pi with OpenRouter, highlighting potential business and trust consequences for Anthropic.</p>
+                    </div>
+                    
+                <div class="ai-summary">
+                    <h4>Comment Analysis</h4>
+                    <p class="camps-framing">Most commenters viewed the disclosure as a privacy and security flaw, particularly because the agent could use account information and send it to third parties without asking. The main disagreement concerned whether the behavior was limited to particular sites’ request policies or amounted to routine leakage, and whether that context excused it. Commenters also debated whether safeguards should rely on consent prompts and model behavior or on technical limits to the agent’s access and network activity.</p>
+<div class="camp"><p class="camp-label"><strong>Minimize access; enforce boundaries</strong> &mdash; These commenters argued that private account details and files should not be available to an agent by default, and that deterministic controls, sandboxing, and limits on network access are more reliable than instructions to the model.</p><blockquote>None of this information should be available to Claude, by design, not by instruction.<cite>grey-area</cite></blockquote>
+<blockquote>Using text instructions to try to limit these machines is an incredibly flawed approach and should not be necessary for important info.<cite>grey-area</cite></blockquote>
+<blockquote>The only way to avoid this stuff is to sandbox them and manage their context (ie. don&#x27;t let anthropic put a ton of junk on the front of all your inference calls).<cite>eosis</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Consent before disclosing</strong> &mdash; These commenters said that a website’s request for contact information does not amount to user consent. They wanted the agent to explain the request and ask before sending an email or other personal information.</p><blockquote>So Claude should just not submit anything requiring the email address and come back to you with the reason things didn&#x27;t work.<cite>jessriedel</cite></blockquote>
+<blockquote>How is it tricky? Claude should tell you and ask your permission.<cite>genxy</cite></blockquote>
+<blockquote>Yeah thats bs, you don&#x27;t just send email to any 3rd party without a person consent.<cite>m3kw9</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Context-specific behavior, not universal leakage</strong> &mdash; These commenters emphasized that the email appeared in particular situations, such as requests to public-data services, rather than being attached to every web request. Some explained the relevant conventions while still acknowledging that disclosure without approval was a problem.</p><blockquote>Claude Code is not sending your email address to websites as a default, or regularly.<cite>crazygringo</cite></blockquote>
+<blockquote>(edit: turns out the SEC will accept most any non-cURL user-agent, email not actually required)<cite>varenc</cite></blockquote>
+<blockquote>Some sites like Wikipedia have a policy where scripted clients identify themselves, and there&#x27;s a standard in HTTP to have a contact email in the User-Agent for such cases.<cite>mpoteat</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>The spam connection is contested</strong> &mdash; Commenters disagreed about whether the behavior caused increases in spam. Some linked new or more targeted spam to using Claude, while others noted that spam is common and proposed alternative explanations.</p><blockquote>This explains the amount of spam emails I am receiving in the work email since I switched to Claude.<cite>mk89</cite></blockquote>
+<blockquote>I highly doubt this is connected Usually this is from LinkedIn, GitHub, etc scraping...<cite>weird-eye-issue</cite></blockquote>
+<blockquote>I use a unique email address for each site I sign up for, and thus Claude/Claude Code doesn&#x27;t have my &#x27;main&#x27; email. And yet after months of use? Not a single spam to that unique email.<cite>b112</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Agent autonomy and alignment</strong> &mdash; These commenters viewed the incident as part of a broader trade-off: agents are designed to persist in completing tasks, but that autonomy can lead them to make consequential choices on a user’s behalf. They differed on how much of that behavior is an alignment problem and how much is an inherent limit of delegated autonomy.</p><blockquote>They&#x27;ve been RLed to hell and back for &quot;safe&quot; task completion and not &quot;prematurely&quot; stopping (which was an earlier failure mechanism).<cite>O_H_E</cite></blockquote>
+<blockquote>Seems trading autonomy for machine speed means that sometimes the machines guess wrong.<cite>rconti</cite></blockquote>
+<blockquote>It&#x27;s not an alignment problem.<cite>jessriedel</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Anthropic’s response and product trust</strong> &mdash; Some commenters welcomed the acknowledgment and plan to remove the email from model context, while others questioned why it was included or objected to relying on an optional or built-in mod. For some, the incident contributed to a broader loss of trust in the product.</p><blockquote>We&#x27;re removing the account email address from the context Claude Code gives the model.<cite>lydia_hallie</cite></blockquote>
+<blockquote>Until the next release arrives, 2.1.317 and later have a built-in mod (on by default) that asks you before Claude runs a web tool call or a curl-style command containing your email<cite>lydia_hallie</cite></blockquote>
+<blockquote>I cannot speak for others but for me, I made up my mind and walked away from Anthropic since it seems your services are not fit for my needs.<cite>codehead</cite></blockquote></div>
+                </div>
+
+                </div>
+            </section>
+
+            <section class="repo" data-seen-before="0"
+                     data-share-title="Living beyond the limits of survival: wood ants trapped in a gigantic pitfall (2016)"
+                     data-share-url="https://jhr.pensoft.net/articles.php?id=9096"
+                     data-share-points="39"
+                     data-share-comments="13">
+                <div class="repo-header-row">
+                    <h3>4. <a href="https://jhr.pensoft.net/articles.php?id=9096" target="_blank" rel="noopener noreferrer">Living beyond the limits of survival: wood ants trapped in a gigantic pitfall (2016)</a> </h3>
+                    <div class="header-buttons">
+                        <button type="button" class="discuss-btn" aria-label="Discuss with AI" title="Discuss with AI">&#x1F4AC;</button>
+                        <button type="button" class="repo-toggle" aria-expanded="true">Hide details</button>
+                    </div>
+                </div>
+                <div class="repo-body">
+                    <p class="meta">
+                        <span class="language">jhr.pensoft.net</span> |
+                        <span>hitekker</span> |
+                        <span>39 points</span> |
+                        <span>13 comments</span> |
+                        <a href="https://news.ycombinator.com/item?id=50390525" target="_blank" rel="noopener noreferrer">discussion</a>
+                    </p>
+                    <p class="history">First seen: November 06, 2026 | Consecutive daily streak: 1 day</p>
+                    <div class="ai-summary">
+                        <h4>Analysis</h4>
+                        <p>The article examines a colony of red wood ants (*Formica polyctena*) that became trapped in a deep underground bunker or shaft, effectively creating a gigantic pitfall from which workers could not escape. Despite lacking normal access to food, sunlight, and the colony’s usual forest resources, the ants survived for years, apparently sustained partly by scavenging and cannibalism among individuals that fell into the pit. The authors compare this unusual case with known limits on wood-ant longevity, colony organization, thermoregulation, and survival in caves or other hostile environments. Its importance lies in showing how social organization and extreme behavioral flexibility can allow a colony to persist well beyond the conditions normally considered viable for the species.</p>
+                    </div>
+                    
+                <div class="ai-summary">
+                    <h4>Comment Analysis</h4>
+                    <p class="camps-framing">The comments include brief biological and source-level scrutiny, alongside side discussions prompted by the bunker setting. Some commenters read the ants as a political or religious metaphor; others discussed the history of Cold War bunkers and whether military spending on deterrence was worthwhile. These threads were mostly brief, with no broad consensus or sustained dispute about the article’s central account.</p>
+<div class="camp"><p class="camp-label"><strong>Why the ants did not reproduce</strong> &mdash; A commenter asked whether the trapped workers lacked a queen; a reply noted that occasional queens or brood would still face temperatures too low for breeding.</p><blockquote>Isn&#x27;t it due to the lack of the queen? Colony of worker ants is a dead end<cite>alexey-salmin</cite></blockquote>
+<blockquote>They mentioned that a queen or brood ant might fall into the bunker occasionally but the low temperatures would prevent breeding in that case.<cite>donkey_brains</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Objection to sensational framing</strong> &mdash; One commenter challenged the story’s use of cannibalism as a framing, saying they could not find that term on the source page.</p><blockquote>Needless sensationalism: I didnt find the term “cannibalistic” on the source page.<cite>ralfd</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Political and religious metaphor</strong> &mdash; Some commenters treated the ants and their Soviet-bunker setting as an opening for political or religious analogies, while another suggested the story was a metaphor without specifying for what.</p><blockquote>The dictatorship of proletariat but for ants, and inside a Soviet bunker of course.<cite>varjag</cite></blockquote>
+<blockquote>Ant expert E.O.Wilson once said of communism: &quot;Great idea. Wrong species&quot;<cite>tristramb</cite></blockquote>
+<blockquote>It’s definitely a metaphor for something, but I don’t know what.<cite>donkey_brains</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>What the bunker was for</strong> &mdash; A brief historical discussion asked whether the Polish site was a Warsaw Pact nuclear-weapons depot; a reply compared it with other Cold War storage sites and explained why that use seemed plausible. One commenter also expressed interest in exploring the bunkers.</p><blockquote>Interestingly this is a &quot;Soviet&quot; bunker in western Poland. A Warsaw Pact bunker?<cite>quibono</cite></blockquote>
+<blockquote>It was likely similar to the warhead storage bunkers in Czech Republic (or Czechoslovaki back then), most likely intended for tactical nuclear weapons, like Scuds or maybe for aircraft as well:<cite>m4rtink</cite></blockquote>
+<blockquote>I find these bunkers fascinating. I&#x27;ve always wanted to explore one.<cite>quibono</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Was deterrence worth the expense?</strong> &mdash; One commenter argued that unused weapons could still represent successful deterrence; a reply said that reasoning could justify almost anything while acknowledging the point about deterrence.</p><blockquote>Never having to use what was stored in those bunkers means that they served their purpose.<cite>t-3</cite></blockquote>
+<blockquote>I simply don’t buy the argument, though I do see your point about deterrence<cite>dripdry45</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Identifying the ant fragment</strong> &mdash; A commenter jokingly questioned how confidently researchers identified a tiny ant head among the remains; another defended entomologists’ ability to identify small specimens.</p><blockquote>&quot;Ah yes, that small speck of chitin among 2 million other corpses is obviously a head of the Leptothorax sp. worker.&quot;<cite>neuroticnews25</cite></blockquote>
+<blockquote>Presumably entomologists are good at accurately identifying small bits of ants.<cite>ForHackernews</cite></blockquote></div>
+                </div>
+
+                </div>
+            </section>
+
+            <section class="repo" data-seen-before="0"
+                     data-share-title="Kugelblitz – Mac-Native Google Earth Alternative"
+                     data-share-url="https://apps.metaebene.me/en/kugelblitz"
+                     data-share-points="108"
+                     data-share-comments="27">
+                <div class="repo-header-row">
+                    <h3>5. <a href="https://apps.metaebene.me/en/kugelblitz" target="_blank" rel="noopener noreferrer">Kugelblitz – Mac-Native Google Earth Alternative</a> </h3>
+                    <div class="header-buttons">
+                        <button type="button" class="discuss-btn" aria-label="Discuss with AI" title="Discuss with AI">&#x1F4AC;</button>
+                        <button type="button" class="repo-toggle" aria-expanded="true">Hide details</button>
+                    </div>
+                </div>
+                <div class="repo-body">
+                    <p class="meta">
+                        <span class="language">apps.metaebene.me</span> |
+                        <span>luoc</span> |
+                        <span>108 points</span> |
+                        <span>27 comments</span> |
+                        <a href="https://news.ycombinator.com/item?id=50389370" target="_blank" rel="noopener noreferrer">discussion</a>
+                    </p>
+                    <p class="history">First seen: November 06, 2026 | Consecutive daily streak: 1 day</p>
+                    <div class="ai-summary">
+                        <h4>Analysis</h4>
+                        <p>Kugelblitz is a free, Mac-native alternative to Google Earth for Apple-silicon Macs, presenting Earth, the Moon, Mars, and other bodies as interactive 3D globes or flat atlases. It combines imagery, terrain, buildings, and OpenStreetMap data on real terrain, while its library lets users browse and add open geodata from public services without downloading regional datasets or creating an account. The app streams only the needed tiles, caches data locally, can share cache data across instances, and supports smooth flight-style navigation, SpaceMouse input, historical events, and displaying the globe on Apple Vision Pro from the Mac. Its importance lies in offering an integrated, privacy-conscious viewer for open geographic data, though it currently requires macOS 27 or later and Apple silicon.</p>
+                    </div>
+                    
+                <div class="ai-summary">
+                    <h4>Comment Analysis</h4>
+                    <p class="camps-framing">Reactions ranged from interest in a Mac-native globe to skepticism that smooth 3D viewing is a notable achievement on modern hardware. Commenters also discussed the app’s Terravision and Google Earth lineage, its developer and design choices, the wording of its description, macOS compatibility, and how it compares with established mapping tools.</p>
+<div class="camp"><p class="camp-label"><strong>Skepticism about the performance pitch</strong> &mdash; Some commenters found smooth performance on an M1 unremarkable given that Google Earth ran well on much older hardware. Others pointed to more demanding uses, including large KML files, as a more meaningful performance test.</p><blockquote>Even on M1? Didn&#x27;t Google Earth run smoothly when it came out?<cite>andai</cite></blockquote>
+<blockquote>M1 is very powerful and this kind of application would be more limited by the amount of unified RAM.<cite>Nekorosu</cite></blockquote>
+<blockquote>Moving to a new geographic area will cause it to re-read the entire KML for an area and render the placemarks/lines onto the map using *only one CPU core* no matter the capability of your system.<cite>walrus01</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Hands-on interest and practical tool comparisons</strong> &mdash; Some commenters reported that the app worked well on their Macs, while others asked about its feature set or suggested alternatives for users with different mapping needs.</p><blockquote>Great ! I tried it on my apple M1Pro and it works fine :)<cite>carlos-cute</cite></blockquote>
+<blockquote>does it have all the tooling that the original google earth had, or is it more like apple maps?<cite>KaiserPro</cite></blockquote>
+<blockquote>With the upcoming retirement of google earth (desktop), I&#x27;d also recommend looking into geolibre for this sort of thing.<cite>walrus01</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Terravision lineage and project choices</strong> &mdash; The project’s connection to Terravision prompted discussion of its relationship to Google Earth’s predecessor, Keyhole EarthViewer. Commenters also noted that Kugelblitz is Mac-only and closed-source, and some criticized the developer’s choices.</p><blockquote>Context: Kugelblitz is by one of the guys who made the original Terravision, which Google copied to make Google Earth.<cite>jttnr</cite></blockquote>
+<blockquote>Are you saying Keyhole copied Terravision when they created EarthViewer? Google Earth was a rebranding, with continued development, of Keyhole EarthViewer after Google bought Keyhole.<cite>rented_mule</cite></blockquote>
+<blockquote>In the end, he&#x27;s just a pretty regular guy who exchanged his once high standards for the &quot;enabling&quot; factor of AI, striving for mediocrity now.<cite>unkeen</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Disagreement over AI-sounding copy</strong> &mdash; Some commenters called the app description sloppy or AI-like and pointed to wording they found unnatural or unclear. Others said the text did not strike them as especially LLM-like.</p><blockquote>Is it really too much to ask to at least edit the slopscription?<cite>rrr_oh_man</cite></blockquote>
+<blockquote>Strange, nothing in those two paragraphs sounds particularly LLM-like to me. What am I missing?<cite>sofayam</cite></blockquote>
+<blockquote>Many cases of inanimate subjects with animate verbs &quot;Imagery [...] lie&quot;, &quot;windows tell&quot;.<cite>eproxus</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>macOS version compatibility</strong> &mdash; Some users objected that the app does not support older macOS releases, while another commenter argued that new software can reasonably target newer platform designs.</p><blockquote>Ah, doesn&#x27;t work on Sequoia 15.8.x. I wonder what features my Mac is missing to display a sphere with data.<cite>simmschi</cite></blockquote>
+<blockquote>Same, such a shame developers are going this route, e.g. Raycast 2 as well won&#x27;t work on older MacOS versions.<cite>elAhmo</cite></blockquote>
+<blockquote>Totally sensible for a new software to only care about future releases imho.<cite>planb</cite></blockquote></div>
+                </div>
+
+                </div>
+            </section>
+
+            <section class="repo" data-seen-before="0"
+                     data-share-title="sshole"
+                     data-share-url="https://sshhole.com"
+                     data-share-points="2748"
+                     data-share-comments="664">
+                <div class="repo-header-row">
+                    <h3>6. <a href="https://sshhole.com" target="_blank" rel="noopener noreferrer">sshole</a> </h3>
+                    <div class="header-buttons">
+                        <button type="button" class="discuss-btn" aria-label="Discuss with AI" title="Discuss with AI">&#x1F4AC;</button>
+                        <button type="button" class="repo-toggle" aria-expanded="true">Hide details</button>
+                    </div>
+                </div>
+                <div class="repo-body">
+                    <p class="meta">
+                        <span class="language">sshhole.com</span> |
+                        <span>josemrb</span> |
+                        <span>2748 points</span> |
+                        <span>664 comments</span> |
+                        <a href="https://news.ycombinator.com/item?id=50378228" target="_blank" rel="noopener noreferrer">discussion</a>
+                    </p>
+                    <p class="history">First seen: November 06, 2026 | Consecutive daily streak: 1 day</p>
+                    <div class="ai-summary">
+                        <h4>Analysis</h4>
+                        <p>The story describes a long-standing OpenSSH authentication flaw on musl-based Linux systems such as Alpine, OpenWrt, Buildroot, and Yocto when PAM is disabled or unused. Because musl’s `crypt()` rejects passwords over 256 bytes in a way OpenSSH mishandles, accounts whose password field is `*`—intended to forbid password login—may accept any password between 257 and 1024 characters if another account has a valid password hash. This can affect key-only users, root, LDAP accounts, and default users in some Alpine cloud images, potentially enabling unauthorized root access when password authentication remains enabled. The issue was missed because common glibc, PAM, and OpenBSD configurations are unaffected, and it has been addressed in OpenSSH 10.6p2; administrators should update or disable password authentication and review affected deployments.</p>
+                    </div>
+                    
+                <div class="ai-summary">
+                    <h4>Comment Analysis</h4>
+                    <p class="camps-framing">The discussion traced the bug to the interaction between musl’s crypt() error behavior and OpenSSH’s password-checking path, while debating API design and legacy compatibility. Commenters disagreed about how widely the vulnerable deployment conditions occur and discussed SSH hardening, testing of edge cases, and AI’s role in the research and write-up.</p>
+<div class="camp"><p class="camp-label"><strong>The flaw involves both musl’s error behavior and OpenSSH’s control flow</strong> &mdash; Commenters refined the technical explanation and differed on how responsibility should be divided between the library’s sentinel value and OpenSSH’s handling of hashes.</p><blockquote>I&#x27;m going to give some credit to musl for unwisely using &quot;*&quot; and some credit to OpenSSH for having nonsensical control and data flow.<cite>amluto</cite></blockquote>
+<blockquote>It is correct for a crypt() implementation that returns NULL on error.<cite>tchebb</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Magic strings and legacy error conventions are risky</strong> &mdash; Some argued that crypt() should use a distinct failure value rather than a string sentinel; others explained how historical callers and API conventions made changing that behavior difficult.</p><blockquote>In-band signaling[1] strikes again. * should not have been used as special value, neither for &quot;no password&quot; in /etc/passwd nor &quot;error while hashing the password&quot; in crypt.<cite>BoppreH</cite></blockquote>
+<blockquote>The traditional AT&amp;T Unix crypt() was always implemented, and its encryption did not have failure modes, so there was never any error return to handle.<cite>JdeBP</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>The practical exposure is disputed</strong> &mdash; Some commenters viewed the conjunction of requirements as limiting real-world impact, while others argued that common Alpine and minimal-system deployments make the affected population significant.</p><blockquote>Am I missing something or is this written up to seem a lot worse than it actually is?<cite>tonnydourado</cite></blockquote>
+<blockquote>So sure, there are caveats, but they cover a massive install base.<cite>pizlonator</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>SSH hardening remains part of the discussion</strong> &mdash; Some advocated disabling internet-facing password authentication, while others cautioned that this particular bug can affect systems even when password authentication is disabled.</p><blockquote>That&#x27;s why your SSH config must be hardened, preferably running on a hardened OS too.<cite>traceroute66</cite></blockquote>
+<blockquote>This particular bug works even with password authentication turned off.<cite>znnajdla</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Long-lived software still needs edge-case testing</strong> &mdash; Commenters questioned whether age and deployment history guarantee reliability, and described oversized input testing as a basic practice that can catch overlooked cases.</p><blockquote>There’s been a lot of time for cruft to accumulate until no-one can ever fix it because everyone is expecting it to function in the broken manner it’s always functioned.<cite>dabinat</cite></blockquote>
+<blockquote>So we always started with sanity testing - and that included oversized password and CLI input strings.<cite>wowczarek</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>AI-assisted research and the write-up draw mixed reactions</strong> &mdash; Some welcomed normalizing AI use in security research, while others criticized the presentation or questioned the role of AI in producing the page.</p><blockquote>Can we please now normalize AI usage in development?<cite>littlecranky67</cite></blockquote>
+<blockquote>It has a crap load of text but says very little and is very bad at conveying the details because it thinks it has to tell some weird story.<cite>mrguyorama</cite></blockquote></div>
+                </div>
+
+                </div>
+            </section>
+
+            <section class="repo" data-seen-before="0"
+                     data-share-title="MS Paint Remote Code Execution Vulnerability"
+                     data-share-url="https://www.cve.org/CVERecord?id=CVE-2026-83844"
+                     data-share-points="570"
+                     data-share-comments="207">
+                <div class="repo-header-row">
+                    <h3>7. <a href="https://www.cve.org/CVERecord?id=CVE-2026-83844" target="_blank" rel="noopener noreferrer">MS Paint Remote Code Execution Vulnerability</a> </h3>
+                    <div class="header-buttons">
+                        <button type="button" class="discuss-btn" aria-label="Discuss with AI" title="Discuss with AI">&#x1F4AC;</button>
+                        <button type="button" class="repo-toggle" aria-expanded="true">Hide details</button>
+                    </div>
+                </div>
+                <div class="repo-body">
+                    <p class="meta">
+                        <span class="language">cve.org</span> |
+                        <span>kuberwastaken</span> |
+                        <span>570 points</span> |
+                        <span>207 comments</span> |
+                        <a href="https://news.ycombinator.com/item?id=50384233" target="_blank" rel="noopener noreferrer">discussion</a>
+                    </p>
+                    <p class="history">First seen: November 06, 2026 | Consecutive daily streak: 1 day</p>
+                    <div class="ai-summary">
+                        <h4>Analysis</h4>
+                        <p>The story concerns CVE-2026-83844, a reported remote-code-execution vulnerability associated with Microsoft Paint. The provided CVE page contains little detail beyond the identifier, so the affected versions, exploitation method, severity, and remediation are not established here. If confirmed, the issue could allow specially crafted input to execute arbitrary code when processed by Paint, making patching and cautious handling of untrusted files important. Its high Hacker News engagement reflects interest in the unusual prospect of a long-standing, widely installed desktop utility becoming an attack surface.</p>
+                    </div>
+                    
+                <div class="ai-summary">
+                    <h4>Comment Analysis</h4>
+                    <p class="camps-framing">Commenters largely questioned how Paint could be associated with a network-reachable, no-interaction remote code execution vulnerability, while noting that the available descriptions did not explain the exploit path. Some speculated about background processing, connected features, or other Windows components; these remained conjectures. The discussion also covered feature expansion, AI and software security, patching uncertainty, and the contrast between modern and classic Paint, with humor and nostalgia throughout.</p>
+<div class="camp"><p class="camp-label"><strong>How can Paint be remotely exploitable?</strong> &mdash; Commenters questioned how Paint could be reachable over a network without user interaction, since they did not understand it to run a network service. Some also questioned whether the published wording was accurate or sufficiently specific.</p><blockquote>I&#x27;m just in full denial that paint runs a server.<cite>6thbit</cite></blockquote>
+<blockquote>What server is MS Paint running or what services does it provide?<cite>criddell</cite></blockquote>
+<blockquote>Until somebody connects the dots on how the heck MS Paint is accessible over the network, I&#x27;m gonna maintain some pretty intense skepticism here.<cite>akerl_</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Possible indirect exploit paths</strong> &mdash; Some commenters proposed ways a network-delivered file or another Windows component might involve Paint without a user directly opening it. These explanations were explicitly speculative.</p><blockquote>My gut says this is somehow related to indexing/thumbnail rendering.<cite>to11mtm</cite></blockquote>
+<blockquote>It might not be paint with internet, it might be something like a packet over your network asking a computer to open an input/file, and the computer responds by opening that malicious input with paint<cite>infinite_spin</cite></blockquote>
+<blockquote>Sounds like it might be automatically opening a file that was sent over the network without any user interaction.<cite>autoexec</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Keep simple apps offline</strong> &mdash; Commenters argued that a basic drawing utility should not need network-connected or AI features, and that adding functionality can expand its attack surface. Some suspected recent integrations, but the thread did not establish a cause for the vulnerability.</p><blockquote>Why for the love of everything that is good does MS Paint have network trash in it.<cite>radicalbyte</cite></blockquote>
+<blockquote>Why on Earth do you have to give Paint, internet?<cite>pmkary</cite></blockquote>
+<blockquote>I miss when MS Paint just opened image files and let you do some basic editing, before layers, background removal and RCE&#x27;s...<cite>AlienRobot</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Broader debate over AI and software security</strong> &mdash; A smaller discussion considered whether AI integrations introduce vulnerabilities, whether AI tools are exposing existing technical debt, or whether the connection was being asserted without evidence. Some commenters broadened the discussion to secure development practices.</p><blockquote>LLMs are now unfolding decades of technical debt, poorly written code, and security vulnerabilities accumulated in software built by humans.<cite>sreekanth850</cite></blockquote>
+<blockquote>My take is that the addition of CoPilot to MS Paint is probably how this CVE got introduced.<cite>CivBase</cite></blockquote>
+<blockquote>And yet suggesting C++ should focus more on memory safety just gets downvoted instead...<cite>ranger_danger</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Patch and version uncertainty</strong> &mdash; Commenters tried to determine which Paint versions were affected and how to obtain or verify the fix, including confusion about Store-delivered updates and version numbers.</p><blockquote>Had to go to Microsoft Store to get the fixed version, Windows Update didn&#x27;t show anything.<cite>greyhound1</cite></blockquote>
+<blockquote>But I can only get Microsoft.Paint 11.2609.401.0 and Microsoft has said different things in different places, so it&#x27;s not even clear if this has the fix or not.<cite>Natsu</cite></blockquote>
+<blockquote>This seems to affect only paint 11.0.0.0 up to, but not including, 11.2605.91.0.<cite>everylostbit</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Classic Paint, nostalgia, and familiar-app jokes</strong> &mdash; Some commenters compared modern Paint with older, simpler versions, while others joked about familiar Windows utilities becoming RCE targets. The comments reflected differing expectations of the application rather than evidence about the vulnerability&#x27;s cause.</p><blockquote>Oh, this is the modern &quot;paint&quot; trash, not mspaint.exe that i still use, copied out of x64 XP build, together with calc.exe<cite>dmitrygr</cite></blockquote>
+<blockquote>Looking forward to the CALC.EXE RCE next, so we can pop calc while we pop calc!<cite>caust1c</cite></blockquote>
+<blockquote>mspaint, remote code execution vulnerability. Dear gosh nothing is sacred.<cite>kar1181</cite></blockquote></div>
+                </div>
+
+                </div>
+            </section>
+
+            <section class="repo" data-seen-before="0"
+                     data-share-title="We&#x27;ve built an open-source feature flag server for 11 years"
+                     data-share-url="https://github.com/Unleash/unleash"
+                     data-share-points="3"
+                     data-share-comments="0">
+                <div class="repo-header-row">
+                    <h3>8. <a href="https://github.com/Unleash/unleash" target="_blank" rel="noopener noreferrer">We&#x27;ve built an open-source feature flag server for 11 years</a> </h3>
+                    <div class="header-buttons">
+                        <button type="button" class="discuss-btn" aria-label="Discuss with AI" title="Discuss with AI">&#x1F4AC;</button>
+                        <button type="button" class="repo-toggle" aria-expanded="true">Hide details</button>
+                    </div>
+                </div>
+                <div class="repo-body">
+                    <p class="meta">
+                        <span class="language">github.com</span> |
+                        <span>ivarconr</span> |
+                        <span>3 points</span> |
+                        <span>0 comments</span> |
+                        <a href="https://news.ycombinator.com/item?id=50391145" target="_blank" rel="noopener noreferrer">discussion</a>
+                    </p>
+                    <p class="history">First seen: November 06, 2026 | Consecutive daily streak: 1 day</p>
+                    <div class="ai-summary">
+                        <h4>Analysis</h4>
+                        <p>Unleash is an open-source feature-management server that has been developed for 11 years, allowing teams to release code gradually and control feature availability without redeploying. It supports targeted rollouts, canary releases, A/B testing, kill switches, auditability, and integrations through an API-first architecture, with SDKs for many backend and frontend languages. The server can be self-hosted using Docker or Node.js, while paid cloud and enterprise tiers add capabilities such as SSO, RBAC, projects, and advanced segmentation. Its importance lies in reducing deployment risk and enabling independent, incremental releases while keeping end-user data within the application.</p>
+                    </div>
+                    
+                <div class="ai-summary">
+                    <h4>Comment Analysis</h4>
+                    <p class="camps-framing">The sparse discussion centers on whether teams still need a configuration service when an LLM could make an in-house alternative straightforward, while relying on an outside service may create a point of failure or attack.</p>
+<div class="camp"><p class="camp-label"><strong>Skeptical of buying configuration services</strong> &mdash; Questions the value of an off-the-shelf configuration product when teams could build an alternative with an LLM, and flags reliance on an external service as a risk to a product’s core foundations.</p><blockquote>The former being a straight forward task for an LLM. And the latter being a point of failure/attack for any one want to mess with the core foundations of a product.<cite>yuppiepuppie</cite></blockquote></div>
+                </div>
+
+                </div>
+            </section>
+
+            <section class="repo" data-seen-before="0"
+                     data-share-title="Pwn.college"
+                     data-share-url="https://pwn.college/"
+                     data-share-points="177"
+                     data-share-comments="22">
+                <div class="repo-header-row">
+                    <h3>9. <a href="https://pwn.college/" target="_blank" rel="noopener noreferrer">Pwn.college</a> </h3>
+                    <div class="header-buttons">
+                        <button type="button" class="discuss-btn" aria-label="Discuss with AI" title="Discuss with AI">&#x1F4AC;</button>
+                        <button type="button" class="repo-toggle" aria-expanded="true">Hide details</button>
+                    </div>
+                </div>
+                <div class="repo-body">
+                    <p class="meta">
+                        <span class="language">pwn.college</span> |
+                        <span>tripdout</span> |
+                        <span>177 points</span> |
+                        <span>22 comments</span> |
+                        <a href="https://news.ycombinator.com/item?id=50387796" target="_blank" rel="noopener noreferrer">discussion</a>
+                    </p>
+                    <p class="history">First seen: November 06, 2026 | Consecutive daily streak: 1 day</p>
+                    <div class="ai-summary">
+                        <h4>Analysis</h4>
+                        <p>pwn.college is a free, hands-on cybersecurity education platform developed and maintained by Arizona State University, organized as a progression of practical “dojo” challenges and belt levels. It teaches foundational computing and security skills through terminal-based exercises, lectures, and materials used in ASU’s curriculum and by universities worldwide. Educators can reuse noncommercial course content, create private dojos, import challenges, and contribute to the open-source infrastructure, while some challenge components remain restricted to protect their instructional value. The platform is important because it provides accessible, structured cybersecurity training at global scale while preserving unsolved exercises for legitimate learning and assessment.</p>
+                    </div>
+                    
+                <div class="ai-summary">
+                    <h4>Comment Analysis</h4>
+                    <p class="camps-framing">The comments are largely positive about pwn.college as a hands-on cybersecurity learning resource, with some recalling earlier challenge sites. Disagreements focus on text alignment and whether rules should be encouraged through explanations or enforced with penalties. A scoreboard discussion moves from questions about its labeling to clarification and joking replies.</p>
+<div class="camp"><p class="camp-label"><strong>Prefer left-aligned text</strong> &mdash; Several commenters say automatic justification creates awkward spacing and breaks, while one favors a user-side override as a practical solution.</p><blockquote>Not sure if the devs are here, but please don&#x27;t justify your text! It makes the lines all have huge spaces in the middle. It&#x27;s much harder to read as a result.<cite>xavdid</cite></blockquote>
+<blockquote>Honestly I&#x27;ve just set up a user CSS sheet that forces left justify. It makes the internet more comfortable, and has practically no downsides / bad interactions, unlike many such overrides.<cite>Groxx</cite></blockquote>
+<blockquote>rivers, contextual word splits, compound noun splits, awkward pauses, there is so many downsides to mindless text justification. Only editorialised and hand crafted justified text is nice. Everything else ends up forceful and ugly.<cite>mnkyokyfrnd</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Prefer justified text</strong> &mdash; A brief counterposition says justified text is easier to read, without further explanation.</p><blockquote>Don&#x27;t listen to this. Justified text is much much easier to read.<cite>behringer</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Explain rules rather than lead with punishment</strong> &mdash; This view favors explaining why write-ups should not be posted, arguing that reasons can encourage compliance without relying only on penalties.</p><blockquote>Because giving a good reason is usually enough for most people to follow something. Not everything has to be a stick (which you can wield anyway).<cite>anilgulecha</cite></blockquote>
+<blockquote>Almost any kind of reason actually. It&#x27;s a science-backed result that doing so massively improves compliance, it&#x27;s a trick usually taught in soft skills training (negotiation, etc).<cite>torben-friis</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Use stronger sanctions for write-ups</strong> &mdash; One commenter favors a direct prohibition backed by a penalty, such as losing access to future editions.</p><blockquote>Why so deferential about posting write-ups? I&#x27;d just have a rule that says don&#x27;t post write-ups and posting a write-up will get you banned from future editions or something.<cite>solyin</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Praise for practical cybersecurity learning</strong> &mdash; Commenters describe the platform as a valuable, comprehensive way to learn or practice security skills, including through coursework and its belt progression.</p><blockquote>We had this as a part of our reverse engineering and exploitation minor, amazing experience.<cite>knightzone</cite></blockquote>
+<blockquote>It looks very comprehensive, and I love the fact that they will actually send you a belt if you do all the levels.<cite>MisterMunchkin</cite></blockquote>
+<blockquote>Used to use OverTheWire as assignments in class, it was a big inspiration for pwn.college<cite>adamdoupe</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Nostalgia and scoreboard discussion</strong> &mdash; Some commenters recall earlier hacking challenges as formative or fun. Separately, commenters question whether the scoreboard label is misleading; a reply explains that each module has its own board, prompting playful pushback.</p><blockquote>reminds me of high school trying to beat hackthissite.org, OverTheWire, SmashTheStack simpler times<cite>bitforger</cite></blockquote>
+<blockquote>And yet, the highest scores on the scoreboard are 10, which happens to be the score you get by completing the tutorials for using pwn.college.<cite>Vaushite</cite></blockquote>
+<blockquote>each module has it&#x27;s own scoreboard, so yes, the scoreboard for the tutorial module maxes out at the maximum score for the tutorial module.<cite>unsnap_biceps</cite></blockquote></div>
+                </div>
+
+                </div>
+            </section>
+
+            <section class="repo" data-seen-before="0"
+                     data-share-title="Hardcoded credentials and other issues in Tata Motors App"
+                     data-share-url="https://www.cert-in.org.in/s2cMainServlet?pageid=PUBVLNOTES01&amp;VLCODE=CIVN-2026-0537"
+                     data-share-points="42"
+                     data-share-comments="7">
+                <div class="repo-header-row">
+                    <h3>10. <a href="https://www.cert-in.org.in/s2cMainServlet?pageid=PUBVLNOTES01&amp;VLCODE=CIVN-2026-0537" target="_blank" rel="noopener noreferrer">Hardcoded credentials and other issues in Tata Motors App</a> </h3>
+                    <div class="header-buttons">
+                        <button type="button" class="discuss-btn" aria-label="Discuss with AI" title="Discuss with AI">&#x1F4AC;</button>
+                        <button type="button" class="repo-toggle" aria-expanded="true">Hide details</button>
+                    </div>
+                </div>
+                <div class="repo-body">
+                    <p class="meta">
+                        <span class="language">cert-in.org.in</span> |
+                        <span>qtqtqt</span> |
+                        <span>42 points</span> |
+                        <span>7 comments</span> |
+                        <a href="https://news.ycombinator.com/item?id=50389260" target="_blank" rel="noopener noreferrer">discussion</a>
+                    </p>
+                    <p class="history">First seen: November 06, 2026 | Consecutive daily streak: 1 day</p>
+                    <div class="ai-summary">
+                        <h4>Analysis</h4>
+                        <p>CERT-In has disclosed four high-severity vulnerabilities in Tata Motors’ iRA 2.0 and iRA.ev connected-vehicle apps, affecting versions 26.7.3/26.7.2 and earlier. The flaws include hardcoded credentials and tokens, unsafe WebView URL handling, authentication tokens exposed in logs, and ineffective SSL certificate pinning. Depending on the attack method, these issues could enable backend access, token theft, user impersonation, interception of app traffic, or unauthorized access to vehicle information and connected services. Tata Motors users should upgrade iRA 2.0 to version 26.8.2 and iRA.ev to version 26.9.1.</p>
+                    </div>
+                    
+                <div class="ai-summary">
+                    <h4>Comment Analysis</h4>
+                    <p class="camps-framing">The discussion is brief and mostly skeptical: one commenter points to a previous Tata-related hack, while others treat hardcoded credentials as evidence of poor engineering and low expectations. A smaller side thread concerns whether the linked page loads and how to report that problem usefully.</p>
+<div class="camp"><p class="camp-label"><strong>Recurring security and quality concerns</strong> &mdash; Commenters treat the flaws as unsurprising and see hardcoded credentials as a sign of weak code quality; some also express broadly low expectations of Tata.</p><blockquote>Par for the course.<cite>richbell</cite></blockquote>
+<blockquote>The problem is that hardcoded credentials is such a bad smell that we can be confident that the code quality is extremely poor.<cite>AdamN</cite></blockquote>
+<blockquote>tbh, you can&#x27;t expect much from them in general<cite>navigate8310</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Company says the issue is resolved</strong> &mdash; One commenter relays Tata’s claim that the flaws were fixed and there had been no leaks, without necessarily endorsing that claim.</p><blockquote>Tata says the issue has been fixed and there were no leaks: https://auto.timesofindia.com/news/cars/tata-motors-says-ira...<cite>qtqtqt</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Link troubleshooting and reporting norms</strong> &mdash; A minor thread starts with a report that the page will not load, shifts to a request for more precise problem reports, and ends with a specific report of a TLS-handshake timeout.</p><blockquote>Page doesn&#x27;t load for me<cite>Titan2189</cite></blockquote>
+<blockquote>Come on, you can file a better problem report than that. “Doesn&#x27;t load” can cover a great many issues: link not valid at all (NXDOMAIN, 404), some sort of error from the server (404, 401, 500, 200 but with error in arbitrary text), no connection, looped redirects, … The best you&#x27;ll get from just saying “doesn&#x27;t work for me” is people like me saying “its fine here”, like so: it is working fine for me from here.<cite>dspillett</cite></blockquote>
+<blockquote>Times out after the TLS handshake. https://pastebin.com/raw/mncT5drA<cite>denysvitali</cite></blockquote></div>
+                </div>
+
+                </div>
+            </section>
+
+            </div>
+        </article>
+    </main>
+    <footer>
+        <p>Generated automatically. Data from <a href="https://news.ycombinator.com/">Hacker News</a>.</p>
+    </footer>
+
+<script>
+(() => {
+    const readKey = "gtd:read_days:hn:v1";
+    const dayStr = "2026-11-06";
+
+    let stored = [];
+    try {
+        stored = JSON.parse(localStorage.getItem(readKey) || "[]");
+        if (!Array.isArray(stored)) {
+            stored = [];
+        }
+    } catch (_err) {
+        stored = [];
+    }
+
+    if (!stored.includes(dayStr)) {
+        stored.push(dayStr);
+        stored.sort();
+        localStorage.setItem(readKey, JSON.stringify(stored));
+    }
+
+    const collapseParam = new URLSearchParams(window.location.search).get("collapse_seen");
+    const collapseSeen = collapseParam === "0" ? false : true;
+
+    function setCollapsed(repoEl, collapsed) {
+        repoEl.classList.toggle("collapsed", collapsed);
+        const button = repoEl.querySelector(".repo-toggle");
+        if (button) {
+            button.textContent = collapsed ? "Show details" : "Hide details";
+            button.setAttribute("aria-expanded", String(!collapsed));
+        }
+    }
+
+    const repos = Array.from(document.querySelectorAll("section.repo[data-seen-before]"));
+
+    repos.forEach((repoEl) => {
+        const toggle = repoEl.querySelector(".repo-toggle");
+        if (!toggle) {
+            return;
+        }
+
+        toggle.addEventListener("click", () => {
+            setCollapsed(repoEl, !repoEl.classList.contains("collapsed"));
+        });
+    });
+
+    const collapseBtn = document.getElementById("collapse-seen-btn");
+    const expandBtn = document.getElementById("expand-all-btn");
+
+    if (collapseBtn) {
+        collapseBtn.addEventListener("click", () => {
+            repos.forEach((repoEl) => {
+                if (repoEl.dataset.seenBefore === "1") {
+                    setCollapsed(repoEl, true);
+                }
+            });
+        });
+    }
+
+    if (expandBtn) {
+        expandBtn.addEventListener("click", () => {
+            repos.forEach((repoEl) => setCollapsed(repoEl, false));
+        });
+    }
+
+    if (collapseSeen) {
+        repos.forEach((repoEl) => {
+            if (repoEl.dataset.seenBefore === "1") {
+                setCollapsed(repoEl, true);
+            }
+        });
+    }
+
+    // Discuss with AI button
+    const toast = document.createElement("div");
+    toast.className = "discuss-toast";
+    document.body.appendChild(toast);
+
+    function showToast(msg) {
+        toast.textContent = msg;
+        toast.classList.add("show");
+        setTimeout(() => toast.classList.remove("show"), 2500);
+    }
+
+    function buildHNMarkdown(card) {
+        const title = card.dataset.shareTitle || "";
+        const url = card.dataset.shareUrl || "";
+        const points = card.dataset.sharePoints || "0";
+        const comments = card.dataset.shareComments || "0";
+        const summaries = card.querySelectorAll(".ai-summary");
+        let md = "# " + title + "\n";
+        md += "Source: " + url + " | " + points + " points | " + comments + " comments\n";
+        summaries.forEach((s) => {
+            const heading = s.querySelector("h4");
+            const label = heading ? heading.textContent.trim() : "Analysis";
+            const content = Array.from(s.querySelectorAll("p"))
+                .map((p) => p.textContent.trim())
+                .join("\n");
+            md += "\n## " + label + "\n" + content + "\n";
+        });
+        return md;
+    }
+
+    document.querySelectorAll(".discuss-btn").forEach((btn) => {
+        btn.addEventListener("click", () => {
+            const card = btn.closest("section.repo");
+            if (!card) return;
+            const md = buildHNMarkdown(card);
+            const text = "I'd like to discuss this article with you. Here's a summary:\n\n" + md;
+            const title = "Discuss: " + (card.dataset.shareTitle || "");
+            if (navigator.share) {
+                navigator.share({ title: title, text: text }).catch(() => {});
+            } else {
+                navigator.clipboard.writeText(text).then(
+                    () => showToast("Copied to clipboard \u2014 paste into your AI chat"),
+                    () => showToast("Failed to copy")
+                );
+            }
+        });
+    });
+})();
+</script>
+
+<script src="../../preference.js?v=83491aa79" defer></script>
+</body>
+</html>
