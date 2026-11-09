@@ -1,0 +1,762 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Morning Edition — November 9, 2026</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght,SOFT@0,9..144,300..900,0..100;1,9..144,300..900,0..100&family=Inter:ital,wght@0,100..900;1,100..900&family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../morning.css?v=ebef484c1">
+</head>
+<body id="top" data-gtd-edition="hn" data-gtd-date="2026-11-09">
+  <header class="masthead">
+    <div class="masthead-nav">
+      <a href="../">Hacker News Calendar</a>
+      <span>&nbsp;·&nbsp;</span>
+      <a href="../../2026-11-09/">GitHub Trending &nbsp;·&nbsp; Nov 9</a>
+      <span>&nbsp;·&nbsp;</span>
+      <a href="classic.html">Classic View</a>
+    </div>
+    <div class="tagline">The Morning Edition</div>
+    <h1 class="frnc">Ten stories, before your coffee.</h1>
+    <div class="issue-line">
+      <span>Vol. I</span>
+      <span>November 9, 2026</span>
+      <span>HN Front Page Digest</span>
+    </div>
+  </header>
+<section class="the-take"><details open><summary>The HN Take</summary><h3 class="take-head">Mainframe in a container</h3><p>Here is a modern way to own a 1970s mainframe:</p><p>docker run -it --name vm370 -p 3270:3270 rbanffy/vm370ce</p><p>This launches VM/370 Community Edition, an extensively improved version of the last VM/370 release that IBM made available without a restrictive license. It runs on an emulated mainframe with one CPU and 16 megabytes of memory, or &quot;storage,&quot; because even the terminology requires emulation.</p><p>You then connect through a 3270 terminal emulator, log in as CMSUSER with the password &quot;CMSUSER,&quot; and begin computing. The guide notes that putting the password after the username &quot;horrifies me even more than having the username as the password,&quot; and advises against exposing the machine directly to the internet. The late 1960s had already invented virtual machines and browser-like screen forms, but had not fully developed the concept of people on the internet stealing your mainframe.</p><p>There is something pleasingly recursive here. VM/370 creates a virtual machine in which it starts CMS. The whole mainframe is itself emulated inside a Docker container on your ordinary computer. You use a modern virtualization system to run an old virtualization system so that the old virtualization system can create a virtual computer for you. Eventually you reach the actual BASIC program, which prints &quot;HELLO WORLD.&quot;</p><p>The FORTRAN program is more demanding. It writes &quot;HELLO WORLD FROM FORTRAN&quot; to an oddly named file rather than the terminal, so you redirect file 6 with FILEDEF. Then the first character disappears, apparently because it is being interpreted as a line-printer control character. Nobody is entirely sure. This is authentic vintage computing: The computer works, the output is somewhere, and the missing letter is probably a printer.</p><h3 class="take-head">Next concepts</h3><p>The traditional way for a language model to generate text is one token at a time. This is intuitive, but slow: To produce a thousand tokens, the model has to make a thousand sequential decisions. Diffusion language models can work on many positions in parallel, but repeatedly process the whole sequence and lose quality when you reduce the number of sampling steps.</p><p>Researchers at Stanford propose a third approach, Next-Concept Modeling. A VQ-VAE first represents text as a hierarchy of discrete codes, from coarse to fine. A transformer generates one level at a time, predicting all the codes within that level in parallel, and the final hierarchy is decoded back into text.</p><p>At matched parameter scales, the paper says the method achieved better generative perplexity than its strongest diffusion baseline on the One Billion Word benchmark while running 21 times faster. On OpenWebText it was competitive while running 10 times faster, and on XSum it matched the strongest diffusion model&#x27;s ROUGE-L score while running 31 times faster. It also beat autoregressive and diffusion baselines on Sudoku while using fewer function evaluations.</p><p>The branding is slightly ambitious. The model&#x27;s &quot;concepts&quot; are learned discrete codes, not necessarily concepts in the sense of &quot;justice,&quot; &quot;mortality&quot; or &quot;where did I leave my keys.&quot; But the basic idea is appealing: Instead of writing the sentence from left to right, first generate a crude latent plan and then fill in progressively finer detail.</p><p>This is also approximately how people are told to write. Start with an outline, refine the structure, add the sentences, fix the words. The important breakthrough is doing all the words in each stage simultaneously, which remains difficult for people unless they are writing a committee report.</p><div class="take-sources"><span>Sources</span><ul><li><a href="https://rbanffy.github.io/fun-with-big-computers/fun-with-vm370/" target="_blank" rel="noopener noreferrer">Fun things to do with your VM/370 CE machine – Fun with big computers</a></li><li><a href="https://arxiv.org/abs/2610.14162" target="_blank" rel="noopener noreferrer">Next-Concept Modeling: Fast, Parallel Coarse-to-Fine Text Generation</a></li></ul></div></details></section>
+  <section id="story-1" class="spread arc-archive">
+    <div class="archive-head">
+      <span>ARCHIVE</span>
+      <span>N<sup>o</sup> 01</span>
+    </div>
+    <div class="kicker">Archival Desk</div>
+    <h2>A Mainframe Playground Opens Again</h2>
+    <p class="story-meta">rbanffy.github.io &nbsp;·&nbsp; 36 pts &nbsp;·&nbsp; 2 comments</p>
+    <p class="lede">VM/370 Community Edition brings IBM’s virtual-machine world within reach of an emulator and a 3270 terminal. The guide moves from minidisks and CMS commands to old languages, games, and the peculiar pleasures of a system built for many machines at once.</p>
+    <div class="spread-links"><a class="read-more" href="https://rbanffy.github.io/fun-with-big-computers/fun-with-vm370/" target="_blank" rel="noopener">Read →</a><a class="read-more share-link" href="#" data-share-title="Fun things to do with your VM/370 CE machine – Fun with big computers" data-share-url="https://rbanffy.github.io/fun-with-big-computers/fun-with-vm370/">Share →</a>
+      <details class="analysis-drawer">
+        <summary class="btn-dossier">[ Analysis + ]</summary>
+        <div class="drawer-content">
+          
+          <h4>Technical Analysis</h4>
+          <div class="drawer-analysis">
+          <p>The article is a hands-on guide to running IBM’s VM/370 Community Edition mainframe operating system, most conveniently through Docker or an emulator, and connecting with a 3270 terminal emulator. It explains VM/370’s architecture, where users log into virtual machines rather than conventional accounts, and demonstrates CMS basics such as editing files, managing virtual disks, compiling BASIC, FORTRAN, PL/I, and other programs, and configuring terminal I/O. It also covers transferring and running games, exploring historical software, and customizing or renaming virtual machines, while warning against exposing the system to the internet and noting the complexity and cost of real IBM mainframes. The article is important as an accessible introduction to open, community-maintained mainframe software and the distinctive computing concepts behind legacy IBM systems.</p>
+          </div>
+          <h4>Reader Reactions</h4>
+<p class="camps-framing">The reaction is small and constructive. One commenter describes VM/370 as approachable once users understand a few mainframe-specific concepts, while another sees the guide as an introduction to a system with more capabilities and possibilities to explore.</p>
+<div class="camp"><p class="camp-label"><strong>Approachable entry point</strong> &mdash; VM/370 is presented as manageable once users understand minidisks and s390 device addressing, and as a useful way to explore legacy software.</p><blockquote>Out of all mainframe OSes, VM is the most approachable imo, as long as you grasp minidisks and how s390 device addressing works, it becomes just a somewhat clunky DOS.<cite>AKSF_Ackermann</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>More to explore</strong> &mdash; The guide is seen as incomplete, with additional Community Edition features and setup possibilities that could be demonstrated to newcomers.</p><blockquote>This document has a lot of things left to add - the machines can really be a lot more interesting.<cite>rbanffy</cite></blockquote>
+<blockquote>I also know there are a lot of other interesting things on the base CE image that can be super cool to show a newcomer.<cite>rbanffy</cite></blockquote></div>
+          <p class="drawer-footer"><a href="#dossier-1">View in Dossier ↓</a></p>
+        </div>
+      </details>
+    </div>
+  </section>
+  <section id="story-2" class="spread arc-academic-drop-cap">
+    <div class="paper-head">
+      <span>Research Desk</span>
+      <span class="numeral-roman">II</span>
+      <span>arxiv.org</span>
+    </div>
+    <h2>A Faster Route Through Text Generation</h2>
+    <p class="story-meta">arxiv.org &nbsp;·&nbsp; 109 pts &nbsp;·&nbsp; 13 comments</p>
+    <div class="cols">
+      <div><p>Next-Concept Modeling replaces repeated diffusion sampling with a hierarchy of coarse-to-fine codes predicted in parallel.</p></div>
+      <div><p>On modest models and selected benchmarks, the paper reports substantially fewer function evaluations and faster generation, while leaving scale and generality open to question.</p><div class="spread-links"><a class="read-more" href="https://arxiv.org/abs/2610.14162" target="_blank" rel="noopener">Read →</a><a class="read-more share-link" href="#" data-share-title="Next-Concept Modeling: Fast, Parallel Coarse-to-Fine Text Generation" data-share-url="https://arxiv.org/abs/2610.14162">Share →</a>
+      <details class="analysis-drawer">
+        <summary class="btn-dossier">[ Analysis + ]</summary>
+        <div class="drawer-content">
+          
+          <h4>Technical Analysis</h4>
+          <div class="drawer-analysis">
+          <p>The paper introduces Next-Concept Modeling (NCM), a non-autoregressive text-generation approach designed to address diffusion language models’ many expensive sampling passes. It first compresses text into a hierarchy of coarse-to-fine discrete residual VQ-VAE codes, then uses a transformer to predict all codes at each level in parallel before decoding the completed representation into tokens. In experiments with roughly 100M-parameter models, NCM reportedly matches or exceeds diffusion baselines while using 4–16× fewer function evaluations, running 10–31× faster on tasks such as LM1B, OpenWebText, XSum, and Sudoku, and requiring 4–5× fewer training tokens; MBR sampling can further improve quality. The main significance is a different quality–latency tradeoff for serving language models, though the results are early, benchmark-specific, and rely on a separately trained tokenizer and relatively small models.</p>
+          </div>
+          <h4>Reader Reactions</h4>
+<p class="camps-framing">The discussion is brief and exploratory rather than focused on disputing the paper’s reported results. One thread considers whether the approach can justify the effort and compute required to scale; another debates what NCM changes about language-model architecture and how it should be named. Other comments raise possible inspiration from compression methods and discuss mathematical notation and writing style.</p>
+<div class="camp"><p class="camp-label"><strong>Adoption and scaling concerns</strong> &mdash; Commenters note that a new tokenizer and training method would make retraining costly, and that broader adoption depends on reaching frontier-model performance. A related exchange expresses interest in a coding model built this way while pointing to compute limitations and the gap between Apple Silicon and Nvidia GPUs.</p><blockquote>Whether it will be widely implemented depends on real frontier performance it can reach.<cite>pinyen_cheng</cite></blockquote>
+<blockquote>Who&#x27;s going to train a nice big coding model based on this? I don&#x27;t have the GPUs to do it...<cite>swiftcoder</cite></blockquote>
+<blockquote>I hope Apple Silicon will one day be competitive with GPUs.<cite>LoganDark</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Architecture and terminology</strong> &mdash; One commenter argues that NCM is better understood as a hierarchical generation or evaluation strategy than as a replacement for LLMs, and objects to the name’s implications about ordering. A reply jokes about how people may form their definitions of LLMs.</p><blockquote>NCM is basically a hierarchical diffusion transformer where the further layers take one big token and then generate two smaller tokens.<cite>imtringued</cite></blockquote>
+<blockquote>I personally think the name NCM itself is terrible because it contains the word &quot;next&quot; which inherently implies an ordering and somehow we are supposed to think that &quot;LLM&quot; which contains no mention of ordering, is constrained to ordered token production.<cite>imtringued</cite></blockquote>
+<blockquote>I think they think an LLM is just whatever another LLM tells them it is when they ask it to generate a script.<cite>hsuduebc2</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Compression-inspired research curiosity</strong> &mdash; A commenter asks whether ideas from image and video compression or partitioning could inform the method’s dimensional masking, without expressing a broader endorsement or critique.</p><blockquote>Can we apply any insights from image and video compression and partitioning to this kind of dimensional masking ?<cite>totetsu</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Notation and writing-style tangent</strong> &mdash; A small thread shifts from annoyance at using a multiplication sign in prose to questions and corrections about grammar and punctuation. It concerns presentation rather than the paper’s method or results.</p><blockquote>I&#x27;m not sure why but using X instead of the word &quot;times&quot; annoys me.<cite>shiandow</cite></blockquote>
+<blockquote>But what about “got taught” instead of “was taught” and the missing comma before “but”?<cite>spiderfarmer</cite></blockquote>
+<blockquote>I wonder whether &quot;10&quot; in &quot;10×&quot; also counts as mathematical notation.<cite>cubefox</cite></blockquote></div>
+          <p class="drawer-footer"><a href="#dossier-2">View in Dossier ↓</a></p>
+        </div>
+      </details>
+    </div></div>
+    </div>
+  </section>
+  <section id="story-3" class="spread arc-blueprint">
+    <div class="corner tl">+</div><div class="corner tr">+</div>
+    <div class="corner bl">+</div><div class="corner br">+</div>
+    <div class="numeral">03</div>
+    <div class="kicker">Build Log</div>
+    <h2>A Local SketchUp Alternative Takes Shape</h2>
+    <p class="story-meta">ketchup3d.github.io &nbsp;·&nbsp; 543 pts &nbsp;·&nbsp; 160 comments</p>
+    <p class="lede">KetchUp brings Rust, WebGPU, and a familiar Push/Pull workflow to an open-source 3D modeling tool. Models stay local, move through portable files, and remain useful for the practical work of planning furniture, woodworking, and other builds.</p>
+    <div class="spread-links"><a class="read-more" href="https://ketchup3d.github.io/app/" target="_blank" rel="noopener">Read →</a><a class="read-more share-link" href="#" data-share-title="KetchUp – Open-source SketchUp alternative built with Rust and WebGPU" data-share-url="https://ketchup3d.github.io/app/">Share →</a>
+      <details class="analysis-drawer">
+        <summary class="btn-dossier">[ Analysis + ]</summary>
+        <div class="drawer-content">
+          
+          <h4>Technical Analysis</h4>
+          <div class="drawer-analysis">
+          <p>BenchUp is a free, open-source 3D modeling application positioned as a SketchUp alternative for woodworking, furniture design, and DIY projects. Built in Rust with WebGPU/WebGL2 support, it runs in desktop browsers and as native Windows, macOS, and Linux apps, offering familiar tools such as drawing, Push/Pull, snapping, measurements, groups, components, and tags. Models are autosaved locally, can be downloaded as portable `.ketchup` files, imported from SketchUp, or exported as OBJ, with no account or cloud service required. Its MIT license and local-first design make it notable as an accessible, privacy-friendly option for planning precise builds and extending or inspecting the software.</p>
+          </div>
+          <h4>Reader Reactions</h4>
+<p class="camps-framing">Commenters welcomed an open, local-first alternative to SketchUp, particularly those frustrated with its licensing and desktop product changes. Reactions to the app’s current usability were mixed, while the broader discussion weighed the appeal of AI-assisted personal software against the testing and maintenance demands of complex tools and the advantages of building on established projects.</p>
+<div class="camp"><p class="camp-label"><strong>A welcome successor to SketchUp</strong> &mdash; Some users welcomed a free, locally controlled alternative for occasional hobby use and simple projects, citing frustration with SketchUp’s pricing, licensing, and web-based direction.</p><blockquote>I&#x27;m very possessive of my SketchUp models, and so the idea of storing them on any kind of cloud server I don&#x27;t have control over is abhorrent to me.<cite>ayaros</cite></blockquote>
+<blockquote>So the free web app is not an option for me.<cite>sergio</cite></blockquote>
+<blockquote>finally! I do simple woodworking projects and this was exactly what I was looking for!<cite>lapinovski</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Familiar workflow and ecosystem matter</strong> &mdash; Some commenters valued SketchUp’s ease of use and model library, or continued using older free versions; they noted that switching to alternatives could mean losing familiar workflows or taking on a learning curve.</p><blockquote>SketchUp 8 was the easiest software for me to learn, and it just clicks with me.<cite>4ff618</cite></blockquote>
+<blockquote>I’ve just built a kitchen that was 100% modelled in Sketchup 2017 - the free forever (AAUI?) version still available in a few places.<cite>mft_</cite></blockquote>
+<blockquote>I have used it extensively over the years for trialing furniture; IKEA seems to have most of their models designed to scale there.<cite>jphorism</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Promising idea, rough execution</strong> &mdash; Hands-on feedback pointed to friction in basic interactions and missing polish, including object naming, extrusion, snapping, and precise input.</p><blockquote>Yeah, this falls well short of Sketchup&#x27;s intuitiveness.<cite>LinguaBrowse</cite></blockquote>
+<blockquote>Great work! Feedback : every time I draw a rectangle it asks me to name the object; seems like the wrong default behavior.<cite>yboris</cite></blockquote>
+<blockquote>I&#x27;m about 40 minutes in trying to figure out how to scale a rectangle to a certain dimension.<cite>sakopov</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Optimism about personal software</strong> &mdash; Some commenters saw AI-assisted development as a way to build or adapt tools around individual workflows, rather than accepting every decision made by general-purpose software.</p><blockquote>Now I can just build only the software I need, for the thing I need it for<cite>nico</cite></blockquote>
+<blockquote>I think we are entering into a new era where we don’t need to accept fully featured software with all of its decisions should they not fit ours.<cite>dyarosla</cite></blockquote>
+<blockquote>This right here is a new age of personal computing.<cite>reacharavindh</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Complexity makes maintenance a real burden</strong> &mdash; Others argued that a usable prototype is not the same as a dependable, polished application: edge cases, interaction details, and testing can make complex software time-consuming to finish and maintain.</p><blockquote>I have several personal tools I’ve built and maintained. It’s always more work than it looks.<cite>Aurornis</cite></blockquote>
+<blockquote>My experience is it&#x27;s short to get a working tool and long to finish.<cite>socalgal2</cite></blockquote>
+<blockquote>The vibecoded apps all rely on an army of users exploring the program and reporting all the bugs and edge cases.<cite>Gigachad</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Build on established tools and shared projects</strong> &mdash; Some favored customizing mature software or contributing to shared projects, emphasizing the value of proven foundations and collaboration over starting another standalone tool.</p><blockquote>I&#x27;m coming to think that a hybrid of vibe-coding but with an existing substrate is the right way to go.<cite>Teever</cite></blockquote>
+<blockquote>Not necessarily. But only if what you need is not available in open source or not achievable by forking open source.<cite>geraneum</cite></blockquote>
+<blockquote>people used to search for already existing projects on some git-hosters, maybe fork them or put effort into the existing thing.<cite>4ggr0</cite></blockquote></div>
+          <p class="drawer-footer"><a href="#dossier-3">View in Dossier ↓</a></p>
+        </div>
+      </details>
+    </div>
+  </section>
+  <section id="story-4" class="spread arc-caution-tape">
+    <div class="tag">SECURITY ADVISORY</div>
+    <div class="numeral">04</div>
+    <div class="kicker">Security Alert</div>
+    <h2>A License Plate Could Open the Door</h2>
+    <p class="story-meta">shubs.io &nbsp;·&nbsp; 411 pts &nbsp;·&nbsp; 183 comments</p>
+    <p class="lede">A chain of exposed services, hardcoded credentials, authorization failures, and an MFA bypass turned a car’s license plate into a starting point for account takeover. The resulting tokens could unlock vehicles and start engines across multiple countries. Fix the identity stack, not just the dashboard.</p>
+    <div class="spread-links"><a class="read-more" href="https://shubs.io/unlocking-any-car-from-x-brand-in-most-of-the-world/" target="_blank" rel="noopener">Read →</a><a class="read-more share-link" href="#" data-share-title="Unlocking any car from X brand in most of the world" data-share-url="https://shubs.io/unlocking-any-car-from-x-brand-in-most-of-the-world/">Share →</a>
+      <details class="analysis-drawer">
+        <summary class="btn-dossier">[ Analysis + ]</summary>
+        <div class="drawer-content">
+          
+          <h4>Technical Analysis</h4>
+          <div class="drawer-analysis">
+          <p>Security researchers found a chain of vulnerabilities in an automaker’s connected-car infrastructure that could let an attacker control vehicles by starting with only a license plate. Publicly exposed admin and identity services, hardcoded credentials in JavaScript, insufficient API authorization, a WAF bypass, and an authentication flow that allowed MFA to be skipped enabled account takeover and the minting of valid mobile-app tokens. Those tokens could then issue commands such as unlocking doors or starting engines through the telematics API; related research extended the impact to vehicles in Australia, the United States, and Canada. The incident highlights how weaknesses across vendor tools, identity management, deployment configuration, and connected-car APIs can combine into a serious real-world safety and privacy risk.</p>
+          </div>
+          <h4>Reader Reactions</h4>
+<p class="camps-framing">Commenters debated whether remote vehicle features offer enough practical value to justify the added attack surface. They also differed on whether the security failures were preventable implementation mistakes or reflected deeper organizational priorities, and on how much the exploit changes the real-world risk of vehicle theft. Broader concerns included manufacturer control over connected cars and owners’ data.</p>
+<div class="camp"><p class="camp-label"><strong>Remote access has practical uses</strong> &mdash; Some commenters described app-based unlocking, remote start, climate control, and related features as useful conveniences, while recognizing that consumers may weigh their security tradeoffs differently.</p><blockquote>There are use cases: you want to give a family member some item. They&#x27;re at work and in a meeting. Get them to remote unlock their car and place the item in it.<cite>dboreham</cite></blockquote>
+<blockquote>But really I think it&#x27;s an extension of remote start which is very necessary in cold climates.<cite>dboreham</cite></blockquote>
+<blockquote>its just more convenient, say im outside my home, theres something i need in the car, i can either go back inside to get the keys, or just open the car from the app (not to mention turning on heater / AC remotely) you can argue that the security tradeoff is not worth it, but claiming the demand is not there is just silly<cite>inferniac</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Remote convenience does not justify the attack surface</strong> &mdash; Other commenters questioned the need to route vehicle commands through remote services, arguing that physical keys or more local approaches could provide access with less added complexity and risk.</p><blockquote>This sort of tech is both a vulnerability and a waste of human resources and ingenuity.<cite>everdrive</cite></blockquote>
+<blockquote>And the &quot;did I remember to lock my car&quot; remote-check functionality doesn&#x27;t seem nearly worth the &quot;now a hacker can remote-unlock my car&quot; tradeoff.<cite>majormajor</cite></blockquote>
+<blockquote>All remote unlock is doing is adding an unnecessary insecure remote layer on top of that for convenience.<cite>alt227</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Connected-car concerns extend to privacy, control, and incentives</strong> &mdash; Some commenters situated the incident within broader concerns about manufacturer control, data collection, and reliance on connected services. They also argued that companies’ priorities and organizational structures can make security improvements difficult to achieve.</p><blockquote>The problem is control. Who has control of what, when? It should be us in control of what data is used, when, for what purposes.<cite>0xbadcafebee</cite></blockquote>
+<blockquote>The need isn&#x27;t for the user, it&#x27;s for government surveillance and corporate data collection.<cite>trombuance</cite></blockquote>
+<blockquote>Yeah, the problem isn&#x27;t a dearth of technical security expertise, the problem is turning that technical expertise into meaningful organizational changes, which requires a rather different skillset (as far as I can tell: people-skills and managing/navigating bureaucracy).<cite>nimih</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>The security failures were basic and preventable</strong> &mdash; Commenters pointed to exposed credentials and weak development safeguards as failures that could have been caught through ordinary security practices, rather than requiring unusually advanced expertise to prevent.</p><blockquote>Admin password/credentials compiled into a JavaScript SPA bundle, freely accesible to the internet. Twice. Classic rookie mistake.<cite>littlecranky67</cite></blockquote>
+<blockquote>And that first rule, in particular, you can (and should) very easily enforce with static analysis tools.<cite>jaza</cite></blockquote>
+<blockquote>There&#x27;s no reason why the car manufacturers server should even be allowed to send commands to the car just based on a user account anyway.<cite>maistho</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>The scale and practical significance of theft risk are disputed</strong> &mdash; Some commenters emphasized that a reusable exploit could enable quiet, brand-wide access, while others noted that unlocking a car is not the same as starting it or driving it away and that ordinary theft may be easier.</p><blockquote>Difference is that now you develop the hack once and you can just steal all the cars from the brand without it being obvious that you’re doing anything wrong.<cite>pta2002</cite></blockquote>
+<blockquote>I don&#x27;t see any indication here that&#x27;s the case - opening the doors is very different than being able to start the engine and drive off.<cite>gambiting</cite></blockquote>
+<blockquote>Honestly the “common criminal” walks up and down blocks trying handles until they find someone who didn’t lock up. Easiest targets by far.<cite>Forgeties79</cite></blockquote></div>
+          <p class="drawer-footer"><a href="#dossier-4">View in Dossier ↓</a></p>
+        </div>
+      </details>
+    </div>
+  </section>
+  <section id="story-5" class="spread arc-stat-hero">
+    <div class="numeral">1 in 11</div>
+    <div class="kicker">N<sup>o</sup> 05 · Market Signals</div>
+    <h2>Nvidia Appeared in One Round in Eleven</h2>
+    <p class="story-meta">datahyena.com &nbsp;·&nbsp; 16 pts &nbsp;·&nbsp; 7 comments</p>
+    <p class="lede">Nvidia or its venture arm joined 79 of 949 private-company funding rounds worth at least $100 million. The count makes the chipmaker a conspicuous strategic investor in the startups building around its stack.</p>
+    <div class="spread-links"><a class="read-more" href="https://datahyena.com/research/a-chipmaker-was-in-one-of-every-eleven-100m-rounds/" target="_blank" rel="noopener">Read →</a><a class="read-more share-link" href="#" data-share-title="Nvidia was in 1 in 11 startup rounds over $100M last year" data-share-url="https://datahyena.com/research/a-chipmaker-was-in-one-of-every-eleven-100m-rounds/">Share →</a>
+      <details class="analysis-drawer">
+        <summary class="btn-dossier">[ Analysis + ]</summary>
+        <div class="drawer-content">
+          
+          <h4>Technical Analysis</h4>
+          <div class="drawer-analysis">
+          <p>Datahyena analyzes 949 private-company venture equity rounds of at least $100 million announced between October 2025 and September 2026, finding that 903 disclosed investors. NVIDIA or its venture arm, NVentures, participated in 79 rounds—about one in eleven—placing it ahead of every venture firm when combined; NVIDIA alone appeared in 65, behind only Sequoia and Andreessen Horowitz. The data distinguishes participation frequency from deal size: Fidelity-backed rounds averaged $7.7 billion, compared with $3.5 billion for Sequoia-backed rounds. The findings also show corporates becoming more prominent, with 38% of large rounds involving at least one corporate investor, underscoring NVIDIA’s role as a strategic investor in the financing of major technology startups.</p>
+          </div>
+          <h4>Reader Reactions</h4>
+<p class="camps-framing">The discussion centered on whether Nvidia’s investments in startups that use its products count as circular financing, or instead represent strategic influence distinct from efforts to inflate financial results. Other comments pointed to customer demand, practical investment choices, the scale of Nvidia’s investing, and Jensen Huang’s apparent dealmaking activity.</p>
+<div class="camp"><p class="camp-label"><strong>Strategic influence, not financial engineering</strong> &mdash; These commenters viewed Nvidia’s investments as a way to influence startups’ technology choices, not as a meaningful way to boost its reported revenue. One also rejected describing the practice as advertising or lock-in.</p><blockquote>It&#x27;s almost certainly about making sure that these startups use Nvidia stack.<cite>aurareturn</cite></blockquote>
+<blockquote>When people accuse AI companies of circular financing, they meant it as a way to juice up their financial reports. This is not the case. This is just having influence.<cite>aurareturn</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Circular in the broader economic sense</strong> &mdash; These commenters argued that Nvidia investing in a company that then pays for Nvidia’s stack is circular in an economic sense, even if the arrangement is legitimate and not intended to manipulate financial results.</p><blockquote>If I invest in you and you use my stack and pay me for it. It&#x27;s circular.<cite>wesammikhail</cite></blockquote>
+<blockquote>None of this refutes the circular nature of it all, though.<cite>serial_dev</cite></blockquote>
+<blockquote>Yes so advertising and vendor locking. Which brings money back to them. Hence circular.<cite>throwaway_new_1</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Real demand and practical investment choices</strong> &mdash; Some comments pointed to customers’ willingness to pay for Nvidia hardware as evidence of underlying demand. Another noted that investing cash can offer more flexibility than providing GPUs directly, particularly when hardware is scarce.</p><blockquote>I paid real money for the 4090. Real $2000<cite>origini</cite></blockquote>
+<blockquote>But investing in pure cash gives more flexibility especially in time where there may not even been spare GPUs able to be given away.<cite>charcircuit</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Expected at Nvidia’s scale, but worth quantifying</strong> &mdash; One commenter considered the investing unsurprising for a company of Nvidia’s size, while another welcomed concrete numbers on the trend.</p><blockquote>For what was until a few days ago the largest public company in the US, that doesn&#x27;t sound unusual?<cite>rwmj</cite></blockquote>
+<blockquote>Still interesting to have concrete numbers on the phenomenon, I’d say.<cite>msdz</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Jensen’s dealmaking presence</strong> &mdash; A brief aside noted that Jensen Huang seemed to be personally active in making the rounds.</p><blockquote>Looks like Jensen Huang has been making the rounds...<cite>glimshe</cite></blockquote></div>
+          <p class="drawer-footer"><a href="#dossier-5">View in Dossier ↓</a></p>
+        </div>
+      </details>
+    </div>
+  </section>
+  <section id="story-6" class="spread arc-editorial-pullquote">
+    <div class="left">
+      <div class="numeral">06</div>
+      <div class="kicker">Market Argument</div>
+      <h2>The AI Boom May Be Real—and Fragile</h2>
+      <p class="story-meta">matteoraso.github.io &nbsp;·&nbsp; 344 pts &nbsp;·&nbsp; 573 comments</p>
+      <div class="spread-links"><a class="read-more" href="https://matteoraso.github.io/im-not-convinced-the-ai-bubble-exists.html#im-not-convinced-the-ai-bubble-exists" target="_blank" rel="noopener">Read →</a><a class="read-more share-link" href="#" data-share-title="I&#x27;m not convinced the AI bubble exists" data-share-url="https://matteoraso.github.io/im-not-convinced-the-ai-bubble-exists.html#im-not-convinced-the-ai-bubble-exists">Share →</a>
+      <details class="analysis-drawer">
+        <summary class="btn-dossier">[ Analysis + ]</summary>
+        <div class="drawer-content">
+          
+          <h4>Technical Analysis</h4>
+          <div class="drawer-analysis">
+          <p>The article challenges the widespread assumption that the AI industry is an imminent financial bubble, arguing that its enormous infrastructure spending is largely a one-time investment rather than an ongoing operating cost. It points to rapidly growing revenues, positive compute-level margins, established companies’ comparatively modest price-to-earnings ratios, and potential future demand from software, professional services, and autonomous systems as evidence that valuations may be defensible. The author acknowledges substantial risks, including debt, opaque financing, infrastructure opposition, regulation, slowing growth, and possible public backlash, while noting that weak companies could fail without bringing down the entire industry. The broader importance is that even a market correction would probably not eliminate AI’s underlying economic impact, and debate about a “bubble” may partly reflect anxiety about how quickly AI is changing society.</p>
+          </div>
+          <h4>Reader Reactions</h4>
+<p class="camps-framing">Many commenters accepted that AI has meaningful utility while questioning whether current companies and infrastructure investments can earn enough to justify their costs. The debate centered on how quickly adoption and revenue might grow, whether providers can sustain pricing power, and whether ongoing infrastructure needs and financing commitments make the investment case fragile. A smaller thread challenged the article’s evidence and accounting.</p>
+<div class="camp"><p class="camp-label"><strong>Real technology, risky investment cycle</strong> &mdash; These commenters saw real and potentially transformative utility in AI, but argued that overinvestment, high expectations, and the time needed for commercial maturity could still leave investors and companies with losses.</p><blockquote>As always, reality is likely a muddled mix: there is real utility and there is wasted investment that will never pay itself back.<cite>motionlessveloc</cite></blockquote>
+<blockquote>These bubbles aren&#x27;t about potential, they&#x27;re about timing .<cite>swatcoder</cite></blockquote>
+<blockquote>The technology isn&#x27;t going away, obviously, but the valuations of these companies like OpenAI and Anthropic feels divorced from reality.<cite>stego-tech</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Adoption and future applications may support more upside</strong> &mdash; These commenters argued that rapid adoption, falling costs, and new applications could generate more demand and value than skeptics expect, even if the path takes time.</p><blockquote>The reality is that the adoption is incredibly fast and that revenues of the AI labs are like doubling by the quarter.<cite>user43928</cite></blockquote>
+<blockquote>AI adoption is entirely a people problem now.<cite>bob1029</cite></blockquote>
+<blockquote>The only thing that can pop this bubble is if we&#x27;re not smart enough.<cite>noosphr</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Valuations and financing look fragile</strong> &mdash; Skeptics questioned whether cash flows can support company valuations and infrastructure commitments, pointing to losses, debt, circular financing, and risks to broader markets.</p><blockquote>The company can still make money, just not at a pace that has a chance to pay off the investments.<cite>viktorcode</cite></blockquote>
+<blockquote>The <cite>vannevar</cite></blockquote>
+<blockquote>The AI bubble doesn&#x27;t have to pop at all for the global market to plunge.<cite>NBJack</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Demand and pricing power may fall short</strong> &mdash; These commenters doubted that enough customers will pay enough for frontier AI to cover the buildout, especially as cheaper or open models offer alternatives and many tasks require less compute.</p><blockquote>I&#x27;m not imaginative enough to see more use cases and who will pay.<cite>xscott</cite></blockquote>
+<blockquote>I just don&#x27;t see why I&#x27;d spend more on AI than I need to do the things I want.<cite>Panzer04</cite></blockquote>
+<blockquote>I just don’t see this growth curve going for 20 years for these companies to pay off their dept<cite>hmontazeri</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Data centers require continuing investment</strong> &mdash; These commenters disputed the view that infrastructure spending is mostly a one-time cost, noting hardware depreciation, replacement, maintenance, electricity, and the risk that newer systems make existing capacity less competitive.</p><blockquote>Hardware doesn&#x27;t last forever especially in a data center, maintenance isn&#x27;t free, electricity is not going to get significantly cheaper.<cite>AngryData</cite></blockquote>
+<blockquote>Data centre costs are not one-off.<cite>noodlesUK</cite></blockquote>
+<blockquote>The only modification I&#x27;d make is to amortize the investments over 5-6 years instead of 20 because most of the cost is GPUs not the buildings.<cite>wmf</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>The financial case needs closer scrutiny</strong> &mdash; Some commenters challenged the article’s inputs and accounting, including its treatment of training costs, compute margins, and company-specific figures, and argued that broader evidence is needed.</p><blockquote>Unless I misread it, this article simply doesn’t mention training or the cost of it.<cite>dofm</cite></blockquote>
+<blockquote>You can’t ignore the other costs and no they don’t magically go away.<cite>etempleton</cite></blockquote>
+<blockquote>You want to understand the eco system. Got to flyover the jungle, not just stare at one elephant herd.<cite>sjdh76</cite></blockquote></div>
+          <p class="drawer-footer"><a href="#dossier-6">View in Dossier ↓</a></p>
+        </div>
+      </details>
+    </div>
+    </div>
+    <blockquote class="pullquote">Real utility does not make every AI investment a good one.</blockquote>
+  </section>
+  <section id="story-7" class="spread arc-mint-pattern">
+    <div class="numeral-block">
+      <div class="numeral">07</div>
+    </div>
+    <div class="kicker">Interface Theory</div>
+    <h2>Dragging Becomes a State-Transition Problem</h2>
+    <p class="story-meta">declarative-dragging.github.io &nbsp;·&nbsp; 586 pts &nbsp;·&nbsp; 76 comments</p>
+    <p class="lede">Declarative Dragging asks authors to describe the states an object may reach, then lets the system synthesize geometry, feedback, and animation. Its demos show how a model-driven approach can make intricate interactions composable rather than hand-coded one gesture at a time.</p>
+    <div class="spread-links"><a class="read-more" href="https://declarative-dragging.github.io/" target="_blank" rel="noopener">Read →</a><a class="read-more share-link" href="#" data-share-title="Declarative Dragging" data-share-url="https://declarative-dragging.github.io/">Share →</a>
+      <details class="analysis-drawer">
+        <summary class="btn-dossier">[ Analysis + ]</summary>
+        <div class="drawer-content">
+          
+          <h4>Technical Analysis</h4>
+          <div class="drawer-analysis">
+          <p>“Declarative Dragging” presents D2, a model-driven approach that lets interface authors define which application states an object can reach when dragged, rather than manually coding geometry, feedback, and animation. The system speculatively renders those future states, determines where the dragged element would appear, and synthesizes the interaction, with composable modifiers for behaviors such as snapping, floating, and transitions. Its Dragology web library implements the approach for SVG interfaces, with demonstrations including mathematical and diagrammatic tools whose linked representations update during a drag. The work is important because it could make sophisticated, domain-specific drag interactions easier to build, particularly for educational, creative, and programming interfaces where conventional custom interaction code is costly.</p>
+          </div>
+          <h4>Reader Reactions</h4>
+<p class="camps-framing">The reaction was broadly positive about the demos and the idea of describing drag behavior declaratively, with some readers seeing potential beyond this particular library. The main practical disagreement was whether the approach addresses a difficult class of interactions or adds complexity where custom code would suffice. Readers also raised questions about usability, generality, scale, and novelty. A smaller discussion concerned how to interpret the PM’s response in the opening anecdote.</p>
+<div class="camp"><p class="camp-label"><strong>Enthusiasm for the work and its HCI potential</strong> &mdash; Many commenters found the demos compelling and welcomed more exploration of interface design and human-computer interaction.</p><blockquote>The interactive demos are incredibly satisfying to play with, visually delightful, and genuinely educational.<cite>Darky</cite></blockquote>
+<blockquote>We are sorely in need of of more exploration into UX/UI, HCI of the current era of digital tools.<cite>cootsnuck</cite></blockquote>
+<blockquote>This could create a renaissance of drag n drop interactions for the web<cite>gitgud</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Promise of the declarative model</strong> &mdash; Some commenters focused on specifying possible future states and letting the system derive the interaction, connecting the approach to broader dataflow, planning, and visualization ideas.</p><blockquote>I think the Dragology stuff actually gets to the nub of what makes interactive drag-and-drop challenging: it&#x27;s speculative live editing of a view into your model data.<cite>nielsbot</cite></blockquote>
+<blockquote>We will continue to reinvent dataflow and planning problems until the end of time; you will be surprised how many fundamental pieces of software use this paradigm<cite>nostrebored</cite></blockquote>
+<blockquote>Very cool demo! One idea I had in the back of my mind is extending grammar of graphics for interactive visualisations.<cite>michalsustr</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Drag-and-drop can involve substantial complexity</strong> &mdash; Commenters described the state handling, events, visual feedback, browser behavior, and persistence involved in polished drag interactions.</p><blockquote>It&#x27;s not insurmountable by any means, but it does have enormous inherent complexity compared to almost every other UI action there is.<cite>Xirdus</cite></blockquote>
+<blockquote>It becomes a massive state chart and web of complexity<cite>gavinray</cite></blockquote>
+<blockquote>The other issue is more UX than technical, there are lots of questions to answer.<cite>ehnto</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Basic requirements may not justify the complexity</strong> &mdash; Some commenters argued that ordinary drag-and-drop can be quick to implement and that estimates may depend on whether elaborate animation and polish are actually required.</p><blockquote>Hit-test where the mouse-down event is fired, hit-test where the mouse-up event is fired. What the hell do you need a library for?<cite>anonymous908213</cite></blockquote>
+<blockquote>If he was asking for functional drag-and-drop and the team was implementing top 1% cosmetic drag-and-drop, that&#x27;s certainly one avenue for a mismatch in expectations.<cite>anonymous908213</cite></blockquote>
+<blockquote>But of course, if your use case was outside of the basic ones easily handled by a jQuery plugin, good luck!<cite>pcthrowaway</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Questions about usability, scope, and technical limits</strong> &mdash; Readers asked whether the concepts would be harder to learn than custom code, how broadly the system applies, and whether it handles many targets or scales efficiently. Others raised questions about prior art and framework availability.</p><blockquote>Probably writing custom code for Drag-and-drop would be easier that figuring out how this works.<cite>codedokode</cite></blockquote>
+<blockquote>Is there any hope this could be turned into a vanilla js library and not attached to a particular SPA framework?<cite>ramblurr</cite></blockquote>
+<blockquote>Appreciable, but what is the novelty exactly?<cite>gobdovan</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Nuance about the PM anecdote</strong> &mdash; Some commenters agreed that drag-and-drop work is often underestimated, while others cautioned against assuming the PM intended an insult rather than asking for clarification.</p><blockquote>While it&#x27;s a wrong assumption, I don&#x27;t really think it&#x27;s dumb for a non-technical person to assume this is fast to implement, and I don&#x27;t think it&#x27;s some epic own that he offered pushback on this even though he was wrong.<cite>cosmic-dancer</cite></blockquote>
+<blockquote>If said this way he was a jerk.<cite>polarsanel</cite></blockquote>
+<blockquote>You&#x27;re giving 0 benefit of doubt to a PM who in my opinion was right to push back because for a non-technical person it&#x27;s not easy to grasp why drag and drop should be so much harder than other similar impact features.<cite>cosmic-dancer</cite></blockquote></div>
+          <p class="drawer-footer"><a href="#dossier-7">View in Dossier ↓</a></p>
+        </div>
+      </details>
+    </div>
+  </section>
+  <section id="story-8" class="spread arc-terminal">
+    <div class="prompt-row">user@morning-edition:~$ cat story_08.md</div>
+    <div class="numeral">08</div>
+    <h2>Psalm 7 Makes PHP Analysis Sharper</h2>
+    <p class="story-meta">psalm.dev &nbsp;·&nbsp; 39 pts &nbsp;·&nbsp; 20 comments</p>
+    <p class="lede">Psalm 7 folds type checking, dead-code detection, and taint analysis into one faster pass. Security tracking expands across frameworks and language features, with support for newer PHP syntax and a capability-based purity model.<span class="cursor"></span></p>
+    <div class="spread-links"><a class="read-more" href="https://psalm.dev/articles/psalm-7" target="_blank" rel="noopener">Read →</a><a class="read-more share-link" href="#" data-share-title="Psalm 7 release: PHP security&amp;static analysis software" data-share-url="https://psalm.dev/articles/psalm-7">Share →</a>
+      <details class="analysis-drawer">
+        <summary class="btn-dossier">[ Analysis + ]</summary>
+        <div class="drawer-content">
+          
+          <h4>Technical Analysis</h4>
+          <div class="drawer-analysis">
+          <p>Psalm 7 is a major release of the PHP static-analysis tool, combining type checking, dead-code detection, and security analysis in a single run with taint analysis enabled by default. It significantly expands security coverage, tracking risks such as NoSQL, URL, SSRF, and LLM prompt injection across more language features and popular libraries, while improving performance by up to 10x. The release also introduces a capability-based purity model, graph-based unreachable-code detection, default generic template types, and support for newer PHP features including the pipe operator and partial function application. Bundled framework plugins, daily releases, CI integrations, and broader maintenance support aim to reduce setup costs for teams, though projects should review new security and optional purity diagnostics when upgrading.</p>
+          </div>
+          <h4>Reader Reactions</h4>
+<p class="camps-framing">The discussion largely shifts from Psalm 7 to PHP’s type system: commenters debate whether static analysis is necessary, how much native typing PHP already provides, and whether typed arrays remain a significant gap. A smaller exchange disputes claims that PHP has changed little while also criticizing persistent language limitations. The release’s security and performance changes receive little direct attention.</p>
+<div class="camp"><p class="camp-label"><strong>Static analysis is a practical necessity</strong> &mdash; PHPDoc-based types and analysis tools are presented as useful for catching errors and supporting IDEs, even at low strictness.</p><blockquote>Psalm has various levels of strictness, and even at a very lax level, it can help detect errors or code smells.<cite>idoubtit</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>PHP has improved, with typed arrays the main gap</strong> &mdash; Commenters point to native typing features such as union and return types, while identifying the inability to express array element types as a remaining limitation.</p><blockquote>PHP type system is lacking but I wouldn&#x27;t call it minimal. PHP even has union types, just like TypeScript.<cite>bel8</cite></blockquote>
+<blockquote>I haven&#x27;t actually run into a single issue with PHP&#x27;s type system in the last few years. Literally the only thing that remains is typed arrays but that seems to be ways off due to fragmentation in how the core devs want it handled.<cite>wesammikhail</cite></blockquote>
+<blockquote>It&#x27;s had return type declarations since 7. There&#x27;s even intersection and literal types now.<cite>monster_truck</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Core PHP limitations remain frustrating</strong> &mdash; Some commenters argue that missing typed arrays are part of broader shortcomings in PHP’s type system and other language features.</p><blockquote>Core issues have not been fixed.<cite>origini</cite></blockquote>
+<blockquote>Type declarations are still quite limited, though. For example, you can declare that a function returns an array or a string, but not an array of strings.<cite>bakugo</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Rust-based alternatives may displace current tools</strong> &mdash; A commenter speculates that the Rust-written Mago analyzer could replace established PHP analysis tools, while another advocates a Rust rewrite of PHP.</p><blockquote>My guess is that a new contender, Mago, written in Rust, will probably soon replace those other tools.<cite>idoubtit</cite></blockquote>
+<blockquote>Thou shall use the Rust rewrite of PHP.<cite>anthk</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Pushback on recycled language-war and rewrite rhetoric</strong> &mdash; Some replies object to recurring PHP criticism and Rust-rewrite proposals, arguing that the language has evolved or questioning the practicality of a rewrite.</p><blockquote>&quot;Cool! A PHP article on HN, let&#x27;s rehash some of my comments that got lots of upvotes 11 years ago!&quot;<cite>spiderfarmer</cite></blockquote>
+<blockquote>”Rewrite in Rust” fanboys are more annoying than crypto bros. How is such a feat even possible?<cite>Y-bar</cite></blockquote>
+<blockquote>Hmmm not much changed you say... Lets take a look at https://wiki.php.net/rfc ooh wait, you couldn&#x27;t be more wrong. Pikachuface.png<cite>wesammikhail</cite></blockquote></div>
+          <p class="drawer-footer"><a href="#dossier-8">View in Dossier ↓</a></p>
+        </div>
+      </details>
+    </div>
+  </section>
+  <section id="story-9" class="spread arc-pastel-playful">
+    <div class="alpha-grid"><span>A</span><span>B</span><span>C</span><span>D</span><span>E</span><span>F</span><span>G</span><span>H</span><span>I</span><span>J</span><span>K</span><span>L</span><span>M</span></div>
+    <div class="alpha-grid" style="top: auto; bottom: 0;"><span>N</span><span>O</span><span>P</span><span>Q</span><span>R</span><span>S</span><span>T</span><span>U</span><span>V</span><span>W</span><span>X</span><span>Y</span><span>Z</span></div>
+    <div class="numeral">09</div>
+    <div class="kicker">Playable Science</div>
+    <h2>A Browser Learns to Sing Through Physics</h2>
+    <p class="story-meta">chimera-vocal-synth.vercel.app &nbsp;·&nbsp; 244 pts &nbsp;·&nbsp; 36 comments</p>
+    <p class="lede">Chimera Vocal Synth models airflow through the throat, mouth, and nose instead of replaying recorded samples. Move the tongue, lips, and jaw, and the instrument exposes the resonances, formants, and pressure behind the sound.</p>
+    <div class="spread-links"><a class="read-more" href="https://chimera-vocal-synth.vercel.app/" target="_blank" rel="noopener">Read →</a><a class="read-more share-link" href="#" data-share-title="Chimera Vocal Synth" data-share-url="https://chimera-vocal-synth.vercel.app/">Share →</a>
+      <details class="analysis-drawer">
+        <summary class="btn-dossier">[ Analysis + ]</summary>
+        <div class="drawer-content">
+          
+          <h4>Technical Analysis</h4>
+          <div class="drawer-analysis">
+          <p>Chimera Vocal Synth is an interactive web-based vocal synthesizer that generates sounds by physically modeling airflow through the throat, mouth, and nose rather than playing recorded samples. Users can manipulate the tongue, lips, and jaw or play a keyboard, while visualizations expose the vocal folds, tube geometry, resonances, vowel formants, spectrum, and pressure. The project appears to be an experimental educational and musical tool, with no stated commercial context in the provided material. It is notable because it makes the connection between vocal anatomy, acoustic physics, and synthesized speech directly observable and playable in a browser.</p>
+          </div>
+          <h4>Reader Reactions</h4>
+<p class="camps-framing">The discussion is largely enthusiastic about Chimera as a playful vocal instrument and as a way to explore how speech and singing are produced. Commenters also connect it to earlier vocal synthesizers and consider possible uses in learning and music-making. Reservations focus on unusual configurations and mobile performance.</p>
+<div class="camp"><p class="camp-label"><strong>Creative play and sharing</strong> &mdash; Commenters share and discuss unusual demos, ask how particular effects were made, and joke about the generated voices’ timbre.</p><blockquote>There are a bunch of fun examples on Twitter of things people are doing with Chimera:<cite>ykl</cite></blockquote>
+<blockquote>That&#x27;s awesome. Did you do that &quot;by hand&quot;, or did you script Chimera to produce it?<cite>JoshTriplett</cite></blockquote>
+<blockquote>Yes but why do they all sound Indian? It&#x27;s like hearing Apu singing :)<cite>throw310822</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Learning, phonetics, and voice applications</strong> &mdash; Commenters see potential for voice-affirmation training, singing, and language learning, and use the tool to explore pronunciation and phonetics.</p><blockquote>Being trans, of course voice affirmation training. Then singing comes to mind, followed by language learning.<cite>goodmythical</cite></blockquote>
+<blockquote>A solid visual demo like this would help give people more than &quot;okay now more like the a in aunt&quot;<cite>goodmythical</cite></blockquote>
+<blockquote>Time to figure out that damn Australian &quot;o&quot; by flapping the tongue about...<cite>nxobject</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Exploring vocal techniques</strong> &mdash; Some commenters use the synthesizer to investigate throat-singing sounds, reporting successes with certain styles while noting sounds they could not reproduce.</p><blockquote>I&#x27;m having fun trying to figure out what all the shapes of the different mouth/throat components I make to get the same sound in the synth.<cite>hankbond</cite></blockquote>
+<blockquote>I wasn&#x27;t able to find the Kargyraa range, but I managed a decent Sygyt.<cite>EA-3167</cite></blockquote>
+<blockquote>Looks like there is no distortion in this simulation.<cite>murkt</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Vocal-synth lineage and references</strong> &mdash; Commenters compare Chimera to Pink Trombone and trace vocal synthesis back to earlier speech-synthesis research. One also asks whether the name references a vocal-synth character.</p><blockquote>I guess this is like a modern version of pink trombone - https://dood.al/pinktrombone/ Also is the name a Teto reference?<cite>starshadowx2</cite></blockquote>
+<blockquote>which is itself a version of research going back nearly 100 years. e.g. the &quot;Voder&quot; by Homer Dudley - Bell Labs, 1939: https://www.youtube.com/watch?v=5hyI_dM5cGo<cite>ks2048</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Technical limits, mobile usability, and future music tools</strong> &mdash; Commenters report a physically inaccurate sound in an extreme configuration and a problem on a phone, while imagining connections to vocoders and music-production tools.</p><blockquote>the synthesizer starts making some kind of inhuman screeching sound (which is definitely not physically accurate).<cite>odo1242</cite></blockquote>
+<blockquote>All I hear is noise and engine keeps loading beyond 100%<cite>smusamashah</cite></blockquote>
+<blockquote>Will make a great vocoder, once a mic is connected to it.<cite>minimaxa</cite></blockquote></div>
+          <p class="drawer-footer"><a href="#dossier-9">View in Dossier ↓</a></p>
+        </div>
+      </details>
+    </div>
+  </section>
+  <section id="story-10" class="spread arc-alert-stamp">
+    <div class="stamp">ALERT</div>
+    <div class="numeral">10</div>
+    <div class="body">
+      <div class="kicker">Delivery Desk</div>
+      <h2>Outlook Raises the DMARC Gate</h2>
+      <p class="story-meta">mailroute.net &nbsp;·&nbsp; 426 pts &nbsp;·&nbsp; 302 comments</p>
+      <p class="lede">Outlook.com is rejecting some mail from domains without a DMARC record, even when SPF and DKIM are present. For small senders, one `v=DMARC1; p=none` TXT record may be the first step toward keeping invoices, applications, and ordinary replies out of the bounce queue.</p>
+      <div class="spread-links"><a class="read-more" href="https://mailroute.net/blog/outlook-rejecting-email-without-dmarc" target="_blank" rel="noopener">Read →</a><a class="read-more share-link" href="#" data-share-title="Outlook.com is rejecting email from domains without DMARC" data-share-url="https://mailroute.net/blog/outlook-rejecting-email-without-dmarc">Share →</a>
+      <details class="analysis-drawer">
+        <summary class="btn-dossier">[ Analysis + ]</summary>
+        <div class="drawer-content">
+          
+          <h4>Technical Analysis</h4>
+          <div class="drawer-analysis">
+          <p>Microsoft’s consumer email services—Outlook.com, Hotmail, Live, and MSN—are reportedly rejecting some messages from domains that lack a DMARC DNS record, including mail from small, low-volume senders. The intermittent bounces can occur even when SPF and DKIM are configured, because DMARC links those authentication mechanisms to the visible From address. Affected domain owners can typically start by publishing the TXT record `v=DMARC1; p=none`, while ensuring their sending service passes aligned SPF or DKIM. The change matters because missed invoices, applications, replies, or appointment notices may go unnoticed, and it reflects DMARC becoming a baseline requirement for reliable email delivery and protection against spoofing.</p>
+          </div>
+          <h4>Reader Reactions</h4>
+<p class="camps-framing">Many commenters accepted DMARC as a reasonable baseline, while others focused on opaque filtering and messages accepted by Microsoft but never delivered. The discussion also turned on who should bear the burden of configuration, whether small senders had fair notice, and what DMARC adds beyond SPF and DKIM. Commenters disputed whether the change was announced and whether a bounced message counts as a quiet rejection.</p>
+<div class="camp"><p class="camp-label"><strong>DMARC is a reasonable baseline</strong> &mdash; Some commenters saw authentication records as a justified, overdue measure to reduce spoofing and abuse, even while acknowledging shortcomings in Microsoft’s communication or delivery practices.</p><blockquote>There&#x27;s too much risk involved with scams disguised as legitimate services because the developers of said service couldn&#x27;t be bothered to add 1 or 2 dns records.<cite>himata4113</cite></blockquote>
+<blockquote>Mail admins had 20+ years to fix config.<cite>alrtd82</cite></blockquote>
+<blockquote>DMARC has been around for a while now.<cite>cloudie78</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Microsoft’s delivery practices are the real problem</strong> &mdash; Commenters objected to opaque blocklists and messages that were accepted by Outlook’s servers but later went missing, leaving senders with little explanation or recourse.</p><blockquote>Outlook.com is also rejecting mail based on blocklists that are not public and you essentialy cannot get yourself out.<cite>Neikius</cite></blockquote>
+<blockquote>Outlook.com has quietly dropped[0] emails from certain domains/IPs for years, even with SPF/DKIM/DMARC all properly set up and no history of spam.<cite>codethief</cite></blockquote>
+<blockquote>We regularly get issues where we sent an email it was accepted by O365 but was never delivered to the mailbox.<cite>Ungh</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Centralized providers undermine open email</strong> &mdash; Some commenters argued that the influence of major providers lets them impose private rules on a supposedly federated protocol, making independent hosting and open communication more difficult.</p><blockquote>In a federated / pseudo-decentralized network, any provider with 10+% of captive users has an outsized leverage on the entire ecosystem.<cite>miki123211</cite></blockquote>
+<blockquote>More people should run their own mail servers so that centralized players cannot control what should be a decentralized communication protocol.<cite>0xpgm</cite></blockquote>
+<blockquote>Why are we so willingly ceding one of the few widely used free and open protocols to a handful of $mega-billion providers?<cite>SoftTalker</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Senders should meet the standard or use a relay</strong> &mdash; Other commenters treated correct mail authentication as the sender’s responsibility, given the age of the standards, and suggested checking configuration or using a delivery service.</p><blockquote>You&#x27;re supposed to understand how mail works on the Internet, and configure it correctly so that everyone else accepts it.<cite>caymanjim</cite></blockquote>
+<blockquote>There&#x27;s no burden whatsoever. It&#x27;s a one time setup that takes like 15 minutes.<cite>esikich</cite></blockquote>
+<blockquote>I&#x27;ve been running my own mail server for over 20 years and outlook.com is literally the only domain I have had problems with, and this is the only reason that I now send via Scaleway&#x27;s free transactional email service.<cite>ulrikrasmussen</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Low-volume senders deserve clearer notice</strong> &mdash; Some commenters accepted the rationale for authentication but said personal-domain owners and small businesses may not know a new requirement applies, especially when SPF and DKIM are already configured.</p><blockquote>I only heard about this because a customer complained. Am I supposed to go around the Internet, checking what each mail server will allow or deny?<cite>stavros</cite></blockquote>
+<blockquote>My email is setup via Fastmail and I followed all the recommendations they provided (which didn’t include DMARC)<cite>datfrojo</cite></blockquote>
+<blockquote>I already had DKIM and SPF, but not DMARC.<cite>stavros</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>DMARC’s value and the “quietly” framing are disputed</strong> &mdash; Commenters disagreed about DMARC’s security contribution and usefulness as a spam signal. They also noted that Microsoft had announced requirements and that a 5xx bounce is different from accepting a message and later discarding it.</p><blockquote>Don&#x27;t confuse DMARC with DKIM or SPF; DMARC doesn&#x27;t actually do anything for email security.<cite>0c3ca83</cite></blockquote>
+<blockquote>But for small personal domains the value isn&#x27;t that high.<cite>mike_hearn</cite></blockquote>
+<blockquote>They&#x27;re not rejecting them quietly. They&#x27;re sending 5xx permanent delivery failures.<cite>dwm</cite></blockquote></div>
+          <p class="drawer-footer"><a href="#dossier-10">View in Dossier ↓</a></p>
+        </div>
+      </details>
+    </div>
+    </div>
+  </section>
+  <section id="dossier" class="dossier">
+    <div class="dossier-head">
+      <div class="tagline">Appendix</div>
+      <h2>The Dossier</h2>
+      <p class="intro">Full analysis and reactions for today's 10 stories. <a href="#top">↑ Back to the edition</a></p>
+    </div>
+    <article id="dossier-1" class="dossier-entry">
+      <div class="dossier-meta">N<sup>o</sup> 01 &nbsp;·&nbsp; Archive &nbsp;·&nbsp; Archival Desk</div>
+      <h3>Fun things to do with your VM/370 CE machine – Fun with big computers</h3>
+      <p class="dossier-source">
+        <a href="https://rbanffy.github.io/fun-with-big-computers/fun-with-vm370/" target="_blank" rel="noopener">rbanffy.github.io</a>
+        &nbsp;·&nbsp; 36 pts &nbsp;·&nbsp; 2 comments
+         &nbsp;·&nbsp; <a href='https://news.ycombinator.com/item?id=50423569' target='_blank' rel='noopener'>discussion</a>
+      </p>
+      <h4>Analysis</h4>
+      <p>The article is a hands-on guide to running IBM’s VM/370 Community Edition mainframe operating system, most conveniently through Docker or an emulator, and connecting with a 3270 terminal emulator. It explains VM/370’s architecture, where users log into virtual machines rather than conventional accounts, and demonstrates CMS basics such as editing files, managing virtual disks, compiling BASIC, FORTRAN, PL/I, and other programs, and configuring terminal I/O. It also covers transferring and running games, exploring historical software, and customizing or renaming virtual machines, while warning against exposing the system to the internet and noting the complexity and cost of real IBM mainframes. The article is important as an accessible introduction to open, community-maintained mainframe software and the distinctive computing concepts behind legacy IBM systems.</p>
+      <h4>Reader Reactions</h4>
+<p class="camps-framing">The reaction is small and constructive. One commenter describes VM/370 as approachable once users understand a few mainframe-specific concepts, while another sees the guide as an introduction to a system with more capabilities and possibilities to explore.</p>
+<div class="camp"><p class="camp-label"><strong>Approachable entry point</strong> &mdash; VM/370 is presented as manageable once users understand minidisks and s390 device addressing, and as a useful way to explore legacy software.</p><blockquote>Out of all mainframe OSes, VM is the most approachable imo, as long as you grasp minidisks and how s390 device addressing works, it becomes just a somewhat clunky DOS.<cite>AKSF_Ackermann</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>More to explore</strong> &mdash; The guide is seen as incomplete, with additional Community Edition features and setup possibilities that could be demonstrated to newcomers.</p><blockquote>This document has a lot of things left to add - the machines can really be a lot more interesting.<cite>rbanffy</cite></blockquote>
+<blockquote>I also know there are a lot of other interesting things on the base CE image that can be super cool to show a newcomer.<cite>rbanffy</cite></blockquote></div>
+    </article>
+    <article id="dossier-2" class="dossier-entry">
+      <div class="dossier-meta">N<sup>o</sup> 02 &nbsp;·&nbsp; Academic &nbsp;·&nbsp; Research Desk</div>
+      <h3>Next-Concept Modeling: Fast, Parallel Coarse-to-Fine Text Generation</h3>
+      <p class="dossier-source">
+        <a href="https://arxiv.org/abs/2610.14162" target="_blank" rel="noopener">arxiv.org</a>
+        &nbsp;·&nbsp; 109 pts &nbsp;·&nbsp; 13 comments
+         &nbsp;·&nbsp; <a href='https://news.ycombinator.com/item?id=50422168' target='_blank' rel='noopener'>discussion</a>
+      </p>
+      <h4>Analysis</h4>
+      <p>The paper introduces Next-Concept Modeling (NCM), a non-autoregressive text-generation approach designed to address diffusion language models’ many expensive sampling passes. It first compresses text into a hierarchy of coarse-to-fine discrete residual VQ-VAE codes, then uses a transformer to predict all codes at each level in parallel before decoding the completed representation into tokens. In experiments with roughly 100M-parameter models, NCM reportedly matches or exceeds diffusion baselines while using 4–16× fewer function evaluations, running 10–31× faster on tasks such as LM1B, OpenWebText, XSum, and Sudoku, and requiring 4–5× fewer training tokens; MBR sampling can further improve quality. The main significance is a different quality–latency tradeoff for serving language models, though the results are early, benchmark-specific, and rely on a separately trained tokenizer and relatively small models.</p>
+      <h4>Reader Reactions</h4>
+<p class="camps-framing">The discussion is brief and exploratory rather than focused on disputing the paper’s reported results. One thread considers whether the approach can justify the effort and compute required to scale; another debates what NCM changes about language-model architecture and how it should be named. Other comments raise possible inspiration from compression methods and discuss mathematical notation and writing style.</p>
+<div class="camp"><p class="camp-label"><strong>Adoption and scaling concerns</strong> &mdash; Commenters note that a new tokenizer and training method would make retraining costly, and that broader adoption depends on reaching frontier-model performance. A related exchange expresses interest in a coding model built this way while pointing to compute limitations and the gap between Apple Silicon and Nvidia GPUs.</p><blockquote>Whether it will be widely implemented depends on real frontier performance it can reach.<cite>pinyen_cheng</cite></blockquote>
+<blockquote>Who&#x27;s going to train a nice big coding model based on this? I don&#x27;t have the GPUs to do it...<cite>swiftcoder</cite></blockquote>
+<blockquote>I hope Apple Silicon will one day be competitive with GPUs.<cite>LoganDark</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Architecture and terminology</strong> &mdash; One commenter argues that NCM is better understood as a hierarchical generation or evaluation strategy than as a replacement for LLMs, and objects to the name’s implications about ordering. A reply jokes about how people may form their definitions of LLMs.</p><blockquote>NCM is basically a hierarchical diffusion transformer where the further layers take one big token and then generate two smaller tokens.<cite>imtringued</cite></blockquote>
+<blockquote>I personally think the name NCM itself is terrible because it contains the word &quot;next&quot; which inherently implies an ordering and somehow we are supposed to think that &quot;LLM&quot; which contains no mention of ordering, is constrained to ordered token production.<cite>imtringued</cite></blockquote>
+<blockquote>I think they think an LLM is just whatever another LLM tells them it is when they ask it to generate a script.<cite>hsuduebc2</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Compression-inspired research curiosity</strong> &mdash; A commenter asks whether ideas from image and video compression or partitioning could inform the method’s dimensional masking, without expressing a broader endorsement or critique.</p><blockquote>Can we apply any insights from image and video compression and partitioning to this kind of dimensional masking ?<cite>totetsu</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Notation and writing-style tangent</strong> &mdash; A small thread shifts from annoyance at using a multiplication sign in prose to questions and corrections about grammar and punctuation. It concerns presentation rather than the paper’s method or results.</p><blockquote>I&#x27;m not sure why but using X instead of the word &quot;times&quot; annoys me.<cite>shiandow</cite></blockquote>
+<blockquote>But what about “got taught” instead of “was taught” and the missing comma before “but”?<cite>spiderfarmer</cite></blockquote>
+<blockquote>I wonder whether &quot;10&quot; in &quot;10×&quot; also counts as mathematical notation.<cite>cubefox</cite></blockquote></div>
+    </article>
+    <article id="dossier-3" class="dossier-entry">
+      <div class="dossier-meta">N<sup>o</sup> 03 &nbsp;·&nbsp; Blueprint &nbsp;·&nbsp; Build Log</div>
+      <h3>KetchUp – Open-source SketchUp alternative built with Rust and WebGPU</h3>
+      <p class="dossier-source">
+        <a href="https://ketchup3d.github.io/app/" target="_blank" rel="noopener">ketchup3d.github.io</a>
+        &nbsp;·&nbsp; 543 pts &nbsp;·&nbsp; 160 comments
+         &nbsp;·&nbsp; <a href='https://news.ycombinator.com/item?id=50418176' target='_blank' rel='noopener'>discussion</a>
+      </p>
+      <h4>Analysis</h4>
+      <p>BenchUp is a free, open-source 3D modeling application positioned as a SketchUp alternative for woodworking, furniture design, and DIY projects. Built in Rust with WebGPU/WebGL2 support, it runs in desktop browsers and as native Windows, macOS, and Linux apps, offering familiar tools such as drawing, Push/Pull, snapping, measurements, groups, components, and tags. Models are autosaved locally, can be downloaded as portable `.ketchup` files, imported from SketchUp, or exported as OBJ, with no account or cloud service required. Its MIT license and local-first design make it notable as an accessible, privacy-friendly option for planning precise builds and extending or inspecting the software.</p>
+      <h4>Reader Reactions</h4>
+<p class="camps-framing">Commenters welcomed an open, local-first alternative to SketchUp, particularly those frustrated with its licensing and desktop product changes. Reactions to the app’s current usability were mixed, while the broader discussion weighed the appeal of AI-assisted personal software against the testing and maintenance demands of complex tools and the advantages of building on established projects.</p>
+<div class="camp"><p class="camp-label"><strong>A welcome successor to SketchUp</strong> &mdash; Some users welcomed a free, locally controlled alternative for occasional hobby use and simple projects, citing frustration with SketchUp’s pricing, licensing, and web-based direction.</p><blockquote>I&#x27;m very possessive of my SketchUp models, and so the idea of storing them on any kind of cloud server I don&#x27;t have control over is abhorrent to me.<cite>ayaros</cite></blockquote>
+<blockquote>So the free web app is not an option for me.<cite>sergio</cite></blockquote>
+<blockquote>finally! I do simple woodworking projects and this was exactly what I was looking for!<cite>lapinovski</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Familiar workflow and ecosystem matter</strong> &mdash; Some commenters valued SketchUp’s ease of use and model library, or continued using older free versions; they noted that switching to alternatives could mean losing familiar workflows or taking on a learning curve.</p><blockquote>SketchUp 8 was the easiest software for me to learn, and it just clicks with me.<cite>4ff618</cite></blockquote>
+<blockquote>I’ve just built a kitchen that was 100% modelled in Sketchup 2017 - the free forever (AAUI?) version still available in a few places.<cite>mft_</cite></blockquote>
+<blockquote>I have used it extensively over the years for trialing furniture; IKEA seems to have most of their models designed to scale there.<cite>jphorism</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Promising idea, rough execution</strong> &mdash; Hands-on feedback pointed to friction in basic interactions and missing polish, including object naming, extrusion, snapping, and precise input.</p><blockquote>Yeah, this falls well short of Sketchup&#x27;s intuitiveness.<cite>LinguaBrowse</cite></blockquote>
+<blockquote>Great work! Feedback : every time I draw a rectangle it asks me to name the object; seems like the wrong default behavior.<cite>yboris</cite></blockquote>
+<blockquote>I&#x27;m about 40 minutes in trying to figure out how to scale a rectangle to a certain dimension.<cite>sakopov</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Optimism about personal software</strong> &mdash; Some commenters saw AI-assisted development as a way to build or adapt tools around individual workflows, rather than accepting every decision made by general-purpose software.</p><blockquote>Now I can just build only the software I need, for the thing I need it for<cite>nico</cite></blockquote>
+<blockquote>I think we are entering into a new era where we don’t need to accept fully featured software with all of its decisions should they not fit ours.<cite>dyarosla</cite></blockquote>
+<blockquote>This right here is a new age of personal computing.<cite>reacharavindh</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Complexity makes maintenance a real burden</strong> &mdash; Others argued that a usable prototype is not the same as a dependable, polished application: edge cases, interaction details, and testing can make complex software time-consuming to finish and maintain.</p><blockquote>I have several personal tools I’ve built and maintained. It’s always more work than it looks.<cite>Aurornis</cite></blockquote>
+<blockquote>My experience is it&#x27;s short to get a working tool and long to finish.<cite>socalgal2</cite></blockquote>
+<blockquote>The vibecoded apps all rely on an army of users exploring the program and reporting all the bugs and edge cases.<cite>Gigachad</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Build on established tools and shared projects</strong> &mdash; Some favored customizing mature software or contributing to shared projects, emphasizing the value of proven foundations and collaboration over starting another standalone tool.</p><blockquote>I&#x27;m coming to think that a hybrid of vibe-coding but with an existing substrate is the right way to go.<cite>Teever</cite></blockquote>
+<blockquote>Not necessarily. But only if what you need is not available in open source or not achievable by forking open source.<cite>geraneum</cite></blockquote>
+<blockquote>people used to search for already existing projects on some git-hosters, maybe fork them or put effort into the existing thing.<cite>4ggr0</cite></blockquote></div>
+    </article>
+    <article id="dossier-4" class="dossier-entry">
+      <div class="dossier-meta">N<sup>o</sup> 04 &nbsp;·&nbsp; Caution Tape &nbsp;·&nbsp; Security Alert</div>
+      <h3>Unlocking any car from X brand in most of the world</h3>
+      <p class="dossier-source">
+        <a href="https://shubs.io/unlocking-any-car-from-x-brand-in-most-of-the-world/" target="_blank" rel="noopener">shubs.io</a>
+        &nbsp;·&nbsp; 411 pts &nbsp;·&nbsp; 183 comments
+         &nbsp;·&nbsp; <a href='https://news.ycombinator.com/item?id=50419215' target='_blank' rel='noopener'>discussion</a>
+      </p>
+      <h4>Analysis</h4>
+      <p>Security researchers found a chain of vulnerabilities in an automaker’s connected-car infrastructure that could let an attacker control vehicles by starting with only a license plate. Publicly exposed admin and identity services, hardcoded credentials in JavaScript, insufficient API authorization, a WAF bypass, and an authentication flow that allowed MFA to be skipped enabled account takeover and the minting of valid mobile-app tokens. Those tokens could then issue commands such as unlocking doors or starting engines through the telematics API; related research extended the impact to vehicles in Australia, the United States, and Canada. The incident highlights how weaknesses across vendor tools, identity management, deployment configuration, and connected-car APIs can combine into a serious real-world safety and privacy risk.</p>
+      <h4>Reader Reactions</h4>
+<p class="camps-framing">Commenters debated whether remote vehicle features offer enough practical value to justify the added attack surface. They also differed on whether the security failures were preventable implementation mistakes or reflected deeper organizational priorities, and on how much the exploit changes the real-world risk of vehicle theft. Broader concerns included manufacturer control over connected cars and owners’ data.</p>
+<div class="camp"><p class="camp-label"><strong>Remote access has practical uses</strong> &mdash; Some commenters described app-based unlocking, remote start, climate control, and related features as useful conveniences, while recognizing that consumers may weigh their security tradeoffs differently.</p><blockquote>There are use cases: you want to give a family member some item. They&#x27;re at work and in a meeting. Get them to remote unlock their car and place the item in it.<cite>dboreham</cite></blockquote>
+<blockquote>But really I think it&#x27;s an extension of remote start which is very necessary in cold climates.<cite>dboreham</cite></blockquote>
+<blockquote>its just more convenient, say im outside my home, theres something i need in the car, i can either go back inside to get the keys, or just open the car from the app (not to mention turning on heater / AC remotely) you can argue that the security tradeoff is not worth it, but claiming the demand is not there is just silly<cite>inferniac</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Remote convenience does not justify the attack surface</strong> &mdash; Other commenters questioned the need to route vehicle commands through remote services, arguing that physical keys or more local approaches could provide access with less added complexity and risk.</p><blockquote>This sort of tech is both a vulnerability and a waste of human resources and ingenuity.<cite>everdrive</cite></blockquote>
+<blockquote>And the &quot;did I remember to lock my car&quot; remote-check functionality doesn&#x27;t seem nearly worth the &quot;now a hacker can remote-unlock my car&quot; tradeoff.<cite>majormajor</cite></blockquote>
+<blockquote>All remote unlock is doing is adding an unnecessary insecure remote layer on top of that for convenience.<cite>alt227</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Connected-car concerns extend to privacy, control, and incentives</strong> &mdash; Some commenters situated the incident within broader concerns about manufacturer control, data collection, and reliance on connected services. They also argued that companies’ priorities and organizational structures can make security improvements difficult to achieve.</p><blockquote>The problem is control. Who has control of what, when? It should be us in control of what data is used, when, for what purposes.<cite>0xbadcafebee</cite></blockquote>
+<blockquote>The need isn&#x27;t for the user, it&#x27;s for government surveillance and corporate data collection.<cite>trombuance</cite></blockquote>
+<blockquote>Yeah, the problem isn&#x27;t a dearth of technical security expertise, the problem is turning that technical expertise into meaningful organizational changes, which requires a rather different skillset (as far as I can tell: people-skills and managing/navigating bureaucracy).<cite>nimih</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>The security failures were basic and preventable</strong> &mdash; Commenters pointed to exposed credentials and weak development safeguards as failures that could have been caught through ordinary security practices, rather than requiring unusually advanced expertise to prevent.</p><blockquote>Admin password/credentials compiled into a JavaScript SPA bundle, freely accesible to the internet. Twice. Classic rookie mistake.<cite>littlecranky67</cite></blockquote>
+<blockquote>And that first rule, in particular, you can (and should) very easily enforce with static analysis tools.<cite>jaza</cite></blockquote>
+<blockquote>There&#x27;s no reason why the car manufacturers server should even be allowed to send commands to the car just based on a user account anyway.<cite>maistho</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>The scale and practical significance of theft risk are disputed</strong> &mdash; Some commenters emphasized that a reusable exploit could enable quiet, brand-wide access, while others noted that unlocking a car is not the same as starting it or driving it away and that ordinary theft may be easier.</p><blockquote>Difference is that now you develop the hack once and you can just steal all the cars from the brand without it being obvious that you’re doing anything wrong.<cite>pta2002</cite></blockquote>
+<blockquote>I don&#x27;t see any indication here that&#x27;s the case - opening the doors is very different than being able to start the engine and drive off.<cite>gambiting</cite></blockquote>
+<blockquote>Honestly the “common criminal” walks up and down blocks trying handles until they find someone who didn’t lock up. Easiest targets by far.<cite>Forgeties79</cite></blockquote></div>
+    </article>
+    <article id="dossier-5" class="dossier-entry">
+      <div class="dossier-meta">N<sup>o</sup> 05 &nbsp;·&nbsp; Stat Hero &nbsp;·&nbsp; Market Signals</div>
+      <h3>Nvidia was in 1 in 11 startup rounds over $100M last year</h3>
+      <p class="dossier-source">
+        <a href="https://datahyena.com/research/a-chipmaker-was-in-one-of-every-eleven-100m-rounds/" target="_blank" rel="noopener">datahyena.com</a>
+        &nbsp;·&nbsp; 16 pts &nbsp;·&nbsp; 7 comments
+         &nbsp;·&nbsp; <a href='https://news.ycombinator.com/item?id=50392256' target='_blank' rel='noopener'>discussion</a>
+      </p>
+      <h4>Analysis</h4>
+      <p>Datahyena analyzes 949 private-company venture equity rounds of at least $100 million announced between October 2025 and September 2026, finding that 903 disclosed investors. NVIDIA or its venture arm, NVentures, participated in 79 rounds—about one in eleven—placing it ahead of every venture firm when combined; NVIDIA alone appeared in 65, behind only Sequoia and Andreessen Horowitz. The data distinguishes participation frequency from deal size: Fidelity-backed rounds averaged $7.7 billion, compared with $3.5 billion for Sequoia-backed rounds. The findings also show corporates becoming more prominent, with 38% of large rounds involving at least one corporate investor, underscoring NVIDIA’s role as a strategic investor in the financing of major technology startups.</p>
+      <h4>Reader Reactions</h4>
+<p class="camps-framing">The discussion centered on whether Nvidia’s investments in startups that use its products count as circular financing, or instead represent strategic influence distinct from efforts to inflate financial results. Other comments pointed to customer demand, practical investment choices, the scale of Nvidia’s investing, and Jensen Huang’s apparent dealmaking activity.</p>
+<div class="camp"><p class="camp-label"><strong>Strategic influence, not financial engineering</strong> &mdash; These commenters viewed Nvidia’s investments as a way to influence startups’ technology choices, not as a meaningful way to boost its reported revenue. One also rejected describing the practice as advertising or lock-in.</p><blockquote>It&#x27;s almost certainly about making sure that these startups use Nvidia stack.<cite>aurareturn</cite></blockquote>
+<blockquote>When people accuse AI companies of circular financing, they meant it as a way to juice up their financial reports. This is not the case. This is just having influence.<cite>aurareturn</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Circular in the broader economic sense</strong> &mdash; These commenters argued that Nvidia investing in a company that then pays for Nvidia’s stack is circular in an economic sense, even if the arrangement is legitimate and not intended to manipulate financial results.</p><blockquote>If I invest in you and you use my stack and pay me for it. It&#x27;s circular.<cite>wesammikhail</cite></blockquote>
+<blockquote>None of this refutes the circular nature of it all, though.<cite>serial_dev</cite></blockquote>
+<blockquote>Yes so advertising and vendor locking. Which brings money back to them. Hence circular.<cite>throwaway_new_1</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Real demand and practical investment choices</strong> &mdash; Some comments pointed to customers’ willingness to pay for Nvidia hardware as evidence of underlying demand. Another noted that investing cash can offer more flexibility than providing GPUs directly, particularly when hardware is scarce.</p><blockquote>I paid real money for the 4090. Real $2000<cite>origini</cite></blockquote>
+<blockquote>But investing in pure cash gives more flexibility especially in time where there may not even been spare GPUs able to be given away.<cite>charcircuit</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Expected at Nvidia’s scale, but worth quantifying</strong> &mdash; One commenter considered the investing unsurprising for a company of Nvidia’s size, while another welcomed concrete numbers on the trend.</p><blockquote>For what was until a few days ago the largest public company in the US, that doesn&#x27;t sound unusual?<cite>rwmj</cite></blockquote>
+<blockquote>Still interesting to have concrete numbers on the phenomenon, I’d say.<cite>msdz</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Jensen’s dealmaking presence</strong> &mdash; A brief aside noted that Jensen Huang seemed to be personally active in making the rounds.</p><blockquote>Looks like Jensen Huang has been making the rounds...<cite>glimshe</cite></blockquote></div>
+    </article>
+    <article id="dossier-6" class="dossier-entry">
+      <div class="dossier-meta">N<sup>o</sup> 06 &nbsp;·&nbsp; Editorial Op-Ed &nbsp;·&nbsp; Market Argument</div>
+      <h3>I&#x27;m not convinced the AI bubble exists</h3>
+      <p class="dossier-source">
+        <a href="https://matteoraso.github.io/im-not-convinced-the-ai-bubble-exists.html#im-not-convinced-the-ai-bubble-exists" target="_blank" rel="noopener">matteoraso.github.io</a>
+        &nbsp;·&nbsp; 344 pts &nbsp;·&nbsp; 573 comments
+         &nbsp;·&nbsp; <a href='https://news.ycombinator.com/item?id=50418975' target='_blank' rel='noopener'>discussion</a>
+      </p>
+      <h4>Analysis</h4>
+      <p>The article challenges the widespread assumption that the AI industry is an imminent financial bubble, arguing that its enormous infrastructure spending is largely a one-time investment rather than an ongoing operating cost. It points to rapidly growing revenues, positive compute-level margins, established companies’ comparatively modest price-to-earnings ratios, and potential future demand from software, professional services, and autonomous systems as evidence that valuations may be defensible. The author acknowledges substantial risks, including debt, opaque financing, infrastructure opposition, regulation, slowing growth, and possible public backlash, while noting that weak companies could fail without bringing down the entire industry. The broader importance is that even a market correction would probably not eliminate AI’s underlying economic impact, and debate about a “bubble” may partly reflect anxiety about how quickly AI is changing society.</p>
+      <h4>Reader Reactions</h4>
+<p class="camps-framing">Many commenters accepted that AI has meaningful utility while questioning whether current companies and infrastructure investments can earn enough to justify their costs. The debate centered on how quickly adoption and revenue might grow, whether providers can sustain pricing power, and whether ongoing infrastructure needs and financing commitments make the investment case fragile. A smaller thread challenged the article’s evidence and accounting.</p>
+<div class="camp"><p class="camp-label"><strong>Real technology, risky investment cycle</strong> &mdash; These commenters saw real and potentially transformative utility in AI, but argued that overinvestment, high expectations, and the time needed for commercial maturity could still leave investors and companies with losses.</p><blockquote>As always, reality is likely a muddled mix: there is real utility and there is wasted investment that will never pay itself back.<cite>motionlessveloc</cite></blockquote>
+<blockquote>These bubbles aren&#x27;t about potential, they&#x27;re about timing .<cite>swatcoder</cite></blockquote>
+<blockquote>The technology isn&#x27;t going away, obviously, but the valuations of these companies like OpenAI and Anthropic feels divorced from reality.<cite>stego-tech</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Adoption and future applications may support more upside</strong> &mdash; These commenters argued that rapid adoption, falling costs, and new applications could generate more demand and value than skeptics expect, even if the path takes time.</p><blockquote>The reality is that the adoption is incredibly fast and that revenues of the AI labs are like doubling by the quarter.<cite>user43928</cite></blockquote>
+<blockquote>AI adoption is entirely a people problem now.<cite>bob1029</cite></blockquote>
+<blockquote>The only thing that can pop this bubble is if we&#x27;re not smart enough.<cite>noosphr</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Valuations and financing look fragile</strong> &mdash; Skeptics questioned whether cash flows can support company valuations and infrastructure commitments, pointing to losses, debt, circular financing, and risks to broader markets.</p><blockquote>The company can still make money, just not at a pace that has a chance to pay off the investments.<cite>viktorcode</cite></blockquote>
+<blockquote>The <cite>vannevar</cite></blockquote>
+<blockquote>The AI bubble doesn&#x27;t have to pop at all for the global market to plunge.<cite>NBJack</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Demand and pricing power may fall short</strong> &mdash; These commenters doubted that enough customers will pay enough for frontier AI to cover the buildout, especially as cheaper or open models offer alternatives and many tasks require less compute.</p><blockquote>I&#x27;m not imaginative enough to see more use cases and who will pay.<cite>xscott</cite></blockquote>
+<blockquote>I just don&#x27;t see why I&#x27;d spend more on AI than I need to do the things I want.<cite>Panzer04</cite></blockquote>
+<blockquote>I just don’t see this growth curve going for 20 years for these companies to pay off their dept<cite>hmontazeri</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Data centers require continuing investment</strong> &mdash; These commenters disputed the view that infrastructure spending is mostly a one-time cost, noting hardware depreciation, replacement, maintenance, electricity, and the risk that newer systems make existing capacity less competitive.</p><blockquote>Hardware doesn&#x27;t last forever especially in a data center, maintenance isn&#x27;t free, electricity is not going to get significantly cheaper.<cite>AngryData</cite></blockquote>
+<blockquote>Data centre costs are not one-off.<cite>noodlesUK</cite></blockquote>
+<blockquote>The only modification I&#x27;d make is to amortize the investments over 5-6 years instead of 20 because most of the cost is GPUs not the buildings.<cite>wmf</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>The financial case needs closer scrutiny</strong> &mdash; Some commenters challenged the article’s inputs and accounting, including its treatment of training costs, compute margins, and company-specific figures, and argued that broader evidence is needed.</p><blockquote>Unless I misread it, this article simply doesn’t mention training or the cost of it.<cite>dofm</cite></blockquote>
+<blockquote>You can’t ignore the other costs and no they don’t magically go away.<cite>etempleton</cite></blockquote>
+<blockquote>You want to understand the eco system. Got to flyover the jungle, not just stare at one elephant herd.<cite>sjdh76</cite></blockquote></div>
+    </article>
+    <article id="dossier-7" class="dossier-entry">
+      <div class="dossier-meta">N<sup>o</sup> 07 &nbsp;·&nbsp; Mint Pattern &nbsp;·&nbsp; Interface Theory</div>
+      <h3>Declarative Dragging</h3>
+      <p class="dossier-source">
+        <a href="https://declarative-dragging.github.io/" target="_blank" rel="noopener">declarative-dragging.github.io</a>
+        &nbsp;·&nbsp; 586 pts &nbsp;·&nbsp; 76 comments
+         &nbsp;·&nbsp; <a href='https://news.ycombinator.com/item?id=50368481' target='_blank' rel='noopener'>discussion</a>
+      </p>
+      <h4>Analysis</h4>
+      <p>“Declarative Dragging” presents D2, a model-driven approach that lets interface authors define which application states an object can reach when dragged, rather than manually coding geometry, feedback, and animation. The system speculatively renders those future states, determines where the dragged element would appear, and synthesizes the interaction, with composable modifiers for behaviors such as snapping, floating, and transitions. Its Dragology web library implements the approach for SVG interfaces, with demonstrations including mathematical and diagrammatic tools whose linked representations update during a drag. The work is important because it could make sophisticated, domain-specific drag interactions easier to build, particularly for educational, creative, and programming interfaces where conventional custom interaction code is costly.</p>
+      <h4>Reader Reactions</h4>
+<p class="camps-framing">The reaction was broadly positive about the demos and the idea of describing drag behavior declaratively, with some readers seeing potential beyond this particular library. The main practical disagreement was whether the approach addresses a difficult class of interactions or adds complexity where custom code would suffice. Readers also raised questions about usability, generality, scale, and novelty. A smaller discussion concerned how to interpret the PM’s response in the opening anecdote.</p>
+<div class="camp"><p class="camp-label"><strong>Enthusiasm for the work and its HCI potential</strong> &mdash; Many commenters found the demos compelling and welcomed more exploration of interface design and human-computer interaction.</p><blockquote>The interactive demos are incredibly satisfying to play with, visually delightful, and genuinely educational.<cite>Darky</cite></blockquote>
+<blockquote>We are sorely in need of of more exploration into UX/UI, HCI of the current era of digital tools.<cite>cootsnuck</cite></blockquote>
+<blockquote>This could create a renaissance of drag n drop interactions for the web<cite>gitgud</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Promise of the declarative model</strong> &mdash; Some commenters focused on specifying possible future states and letting the system derive the interaction, connecting the approach to broader dataflow, planning, and visualization ideas.</p><blockquote>I think the Dragology stuff actually gets to the nub of what makes interactive drag-and-drop challenging: it&#x27;s speculative live editing of a view into your model data.<cite>nielsbot</cite></blockquote>
+<blockquote>We will continue to reinvent dataflow and planning problems until the end of time; you will be surprised how many fundamental pieces of software use this paradigm<cite>nostrebored</cite></blockquote>
+<blockquote>Very cool demo! One idea I had in the back of my mind is extending grammar of graphics for interactive visualisations.<cite>michalsustr</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Drag-and-drop can involve substantial complexity</strong> &mdash; Commenters described the state handling, events, visual feedback, browser behavior, and persistence involved in polished drag interactions.</p><blockquote>It&#x27;s not insurmountable by any means, but it does have enormous inherent complexity compared to almost every other UI action there is.<cite>Xirdus</cite></blockquote>
+<blockquote>It becomes a massive state chart and web of complexity<cite>gavinray</cite></blockquote>
+<blockquote>The other issue is more UX than technical, there are lots of questions to answer.<cite>ehnto</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Basic requirements may not justify the complexity</strong> &mdash; Some commenters argued that ordinary drag-and-drop can be quick to implement and that estimates may depend on whether elaborate animation and polish are actually required.</p><blockquote>Hit-test where the mouse-down event is fired, hit-test where the mouse-up event is fired. What the hell do you need a library for?<cite>anonymous908213</cite></blockquote>
+<blockquote>If he was asking for functional drag-and-drop and the team was implementing top 1% cosmetic drag-and-drop, that&#x27;s certainly one avenue for a mismatch in expectations.<cite>anonymous908213</cite></blockquote>
+<blockquote>But of course, if your use case was outside of the basic ones easily handled by a jQuery plugin, good luck!<cite>pcthrowaway</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Questions about usability, scope, and technical limits</strong> &mdash; Readers asked whether the concepts would be harder to learn than custom code, how broadly the system applies, and whether it handles many targets or scales efficiently. Others raised questions about prior art and framework availability.</p><blockquote>Probably writing custom code for Drag-and-drop would be easier that figuring out how this works.<cite>codedokode</cite></blockquote>
+<blockquote>Is there any hope this could be turned into a vanilla js library and not attached to a particular SPA framework?<cite>ramblurr</cite></blockquote>
+<blockquote>Appreciable, but what is the novelty exactly?<cite>gobdovan</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Nuance about the PM anecdote</strong> &mdash; Some commenters agreed that drag-and-drop work is often underestimated, while others cautioned against assuming the PM intended an insult rather than asking for clarification.</p><blockquote>While it&#x27;s a wrong assumption, I don&#x27;t really think it&#x27;s dumb for a non-technical person to assume this is fast to implement, and I don&#x27;t think it&#x27;s some epic own that he offered pushback on this even though he was wrong.<cite>cosmic-dancer</cite></blockquote>
+<blockquote>If said this way he was a jerk.<cite>polarsanel</cite></blockquote>
+<blockquote>You&#x27;re giving 0 benefit of doubt to a PM who in my opinion was right to push back because for a non-technical person it&#x27;s not easy to grasp why drag and drop should be so much harder than other similar impact features.<cite>cosmic-dancer</cite></blockquote></div>
+    </article>
+    <article id="dossier-8" class="dossier-entry">
+      <div class="dossier-meta">N<sup>o</sup> 08 &nbsp;·&nbsp; Terminal &nbsp;·&nbsp; Toolchain</div>
+      <h3>Psalm 7 release: PHP security&amp;static analysis software</h3>
+      <p class="dossier-source">
+        <a href="https://psalm.dev/articles/psalm-7" target="_blank" rel="noopener">psalm.dev</a>
+        &nbsp;·&nbsp; 39 pts &nbsp;·&nbsp; 20 comments
+         &nbsp;·&nbsp; <a href='https://news.ycombinator.com/item?id=50406107' target='_blank' rel='noopener'>discussion</a>
+      </p>
+      <h4>Analysis</h4>
+      <p>Psalm 7 is a major release of the PHP static-analysis tool, combining type checking, dead-code detection, and security analysis in a single run with taint analysis enabled by default. It significantly expands security coverage, tracking risks such as NoSQL, URL, SSRF, and LLM prompt injection across more language features and popular libraries, while improving performance by up to 10x. The release also introduces a capability-based purity model, graph-based unreachable-code detection, default generic template types, and support for newer PHP features including the pipe operator and partial function application. Bundled framework plugins, daily releases, CI integrations, and broader maintenance support aim to reduce setup costs for teams, though projects should review new security and optional purity diagnostics when upgrading.</p>
+      <h4>Reader Reactions</h4>
+<p class="camps-framing">The discussion largely shifts from Psalm 7 to PHP’s type system: commenters debate whether static analysis is necessary, how much native typing PHP already provides, and whether typed arrays remain a significant gap. A smaller exchange disputes claims that PHP has changed little while also criticizing persistent language limitations. The release’s security and performance changes receive little direct attention.</p>
+<div class="camp"><p class="camp-label"><strong>Static analysis is a practical necessity</strong> &mdash; PHPDoc-based types and analysis tools are presented as useful for catching errors and supporting IDEs, even at low strictness.</p><blockquote>Psalm has various levels of strictness, and even at a very lax level, it can help detect errors or code smells.<cite>idoubtit</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>PHP has improved, with typed arrays the main gap</strong> &mdash; Commenters point to native typing features such as union and return types, while identifying the inability to express array element types as a remaining limitation.</p><blockquote>PHP type system is lacking but I wouldn&#x27;t call it minimal. PHP even has union types, just like TypeScript.<cite>bel8</cite></blockquote>
+<blockquote>I haven&#x27;t actually run into a single issue with PHP&#x27;s type system in the last few years. Literally the only thing that remains is typed arrays but that seems to be ways off due to fragmentation in how the core devs want it handled.<cite>wesammikhail</cite></blockquote>
+<blockquote>It&#x27;s had return type declarations since 7. There&#x27;s even intersection and literal types now.<cite>monster_truck</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Core PHP limitations remain frustrating</strong> &mdash; Some commenters argue that missing typed arrays are part of broader shortcomings in PHP’s type system and other language features.</p><blockquote>Core issues have not been fixed.<cite>origini</cite></blockquote>
+<blockquote>Type declarations are still quite limited, though. For example, you can declare that a function returns an array or a string, but not an array of strings.<cite>bakugo</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Rust-based alternatives may displace current tools</strong> &mdash; A commenter speculates that the Rust-written Mago analyzer could replace established PHP analysis tools, while another advocates a Rust rewrite of PHP.</p><blockquote>My guess is that a new contender, Mago, written in Rust, will probably soon replace those other tools.<cite>idoubtit</cite></blockquote>
+<blockquote>Thou shall use the Rust rewrite of PHP.<cite>anthk</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Pushback on recycled language-war and rewrite rhetoric</strong> &mdash; Some replies object to recurring PHP criticism and Rust-rewrite proposals, arguing that the language has evolved or questioning the practicality of a rewrite.</p><blockquote>&quot;Cool! A PHP article on HN, let&#x27;s rehash some of my comments that got lots of upvotes 11 years ago!&quot;<cite>spiderfarmer</cite></blockquote>
+<blockquote>”Rewrite in Rust” fanboys are more annoying than crypto bros. How is such a feat even possible?<cite>Y-bar</cite></blockquote>
+<blockquote>Hmmm not much changed you say... Lets take a look at https://wiki.php.net/rfc ooh wait, you couldn&#x27;t be more wrong. Pikachuface.png<cite>wesammikhail</cite></blockquote></div>
+    </article>
+    <article id="dossier-9" class="dossier-entry">
+      <div class="dossier-meta">N<sup>o</sup> 09 &nbsp;·&nbsp; Pastel Finale &nbsp;·&nbsp; Playable Science</div>
+      <h3>Chimera Vocal Synth</h3>
+      <p class="dossier-source">
+        <a href="https://chimera-vocal-synth.vercel.app/" target="_blank" rel="noopener">chimera-vocal-synth.vercel.app</a>
+        &nbsp;·&nbsp; 244 pts &nbsp;·&nbsp; 36 comments
+         &nbsp;·&nbsp; <a href='https://news.ycombinator.com/item?id=50418182' target='_blank' rel='noopener'>discussion</a>
+      </p>
+      <h4>Analysis</h4>
+      <p>Chimera Vocal Synth is an interactive web-based vocal synthesizer that generates sounds by physically modeling airflow through the throat, mouth, and nose rather than playing recorded samples. Users can manipulate the tongue, lips, and jaw or play a keyboard, while visualizations expose the vocal folds, tube geometry, resonances, vowel formants, spectrum, and pressure. The project appears to be an experimental educational and musical tool, with no stated commercial context in the provided material. It is notable because it makes the connection between vocal anatomy, acoustic physics, and synthesized speech directly observable and playable in a browser.</p>
+      <h4>Reader Reactions</h4>
+<p class="camps-framing">The discussion is largely enthusiastic about Chimera as a playful vocal instrument and as a way to explore how speech and singing are produced. Commenters also connect it to earlier vocal synthesizers and consider possible uses in learning and music-making. Reservations focus on unusual configurations and mobile performance.</p>
+<div class="camp"><p class="camp-label"><strong>Creative play and sharing</strong> &mdash; Commenters share and discuss unusual demos, ask how particular effects were made, and joke about the generated voices’ timbre.</p><blockquote>There are a bunch of fun examples on Twitter of things people are doing with Chimera:<cite>ykl</cite></blockquote>
+<blockquote>That&#x27;s awesome. Did you do that &quot;by hand&quot;, or did you script Chimera to produce it?<cite>JoshTriplett</cite></blockquote>
+<blockquote>Yes but why do they all sound Indian? It&#x27;s like hearing Apu singing :)<cite>throw310822</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Learning, phonetics, and voice applications</strong> &mdash; Commenters see potential for voice-affirmation training, singing, and language learning, and use the tool to explore pronunciation and phonetics.</p><blockquote>Being trans, of course voice affirmation training. Then singing comes to mind, followed by language learning.<cite>goodmythical</cite></blockquote>
+<blockquote>A solid visual demo like this would help give people more than &quot;okay now more like the a in aunt&quot;<cite>goodmythical</cite></blockquote>
+<blockquote>Time to figure out that damn Australian &quot;o&quot; by flapping the tongue about...<cite>nxobject</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Exploring vocal techniques</strong> &mdash; Some commenters use the synthesizer to investigate throat-singing sounds, reporting successes with certain styles while noting sounds they could not reproduce.</p><blockquote>I&#x27;m having fun trying to figure out what all the shapes of the different mouth/throat components I make to get the same sound in the synth.<cite>hankbond</cite></blockquote>
+<blockquote>I wasn&#x27;t able to find the Kargyraa range, but I managed a decent Sygyt.<cite>EA-3167</cite></blockquote>
+<blockquote>Looks like there is no distortion in this simulation.<cite>murkt</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Vocal-synth lineage and references</strong> &mdash; Commenters compare Chimera to Pink Trombone and trace vocal synthesis back to earlier speech-synthesis research. One also asks whether the name references a vocal-synth character.</p><blockquote>I guess this is like a modern version of pink trombone - https://dood.al/pinktrombone/ Also is the name a Teto reference?<cite>starshadowx2</cite></blockquote>
+<blockquote>which is itself a version of research going back nearly 100 years. e.g. the &quot;Voder&quot; by Homer Dudley - Bell Labs, 1939: https://www.youtube.com/watch?v=5hyI_dM5cGo<cite>ks2048</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Technical limits, mobile usability, and future music tools</strong> &mdash; Commenters report a physically inaccurate sound in an extreme configuration and a problem on a phone, while imagining connections to vocoders and music-production tools.</p><blockquote>the synthesizer starts making some kind of inhuman screeching sound (which is definitely not physically accurate).<cite>odo1242</cite></blockquote>
+<blockquote>All I hear is noise and engine keeps loading beyond 100%<cite>smusamashah</cite></blockquote>
+<blockquote>Will make a great vocoder, once a mic is connected to it.<cite>minimaxa</cite></blockquote></div>
+    </article>
+    <article id="dossier-10" class="dossier-entry">
+      <div class="dossier-meta">N<sup>o</sup> 10 &nbsp;·&nbsp; Rose Alert &nbsp;·&nbsp; Delivery Desk</div>
+      <h3>Outlook.com is rejecting email from domains without DMARC</h3>
+      <p class="dossier-source">
+        <a href="https://mailroute.net/blog/outlook-rejecting-email-without-dmarc" target="_blank" rel="noopener">mailroute.net</a>
+        &nbsp;·&nbsp; 426 pts &nbsp;·&nbsp; 302 comments
+         &nbsp;·&nbsp; <a href='https://news.ycombinator.com/item?id=50416158' target='_blank' rel='noopener'>discussion</a>
+      </p>
+      <h4>Analysis</h4>
+      <p>Microsoft’s consumer email services—Outlook.com, Hotmail, Live, and MSN—are reportedly rejecting some messages from domains that lack a DMARC DNS record, including mail from small, low-volume senders. The intermittent bounces can occur even when SPF and DKIM are configured, because DMARC links those authentication mechanisms to the visible From address. Affected domain owners can typically start by publishing the TXT record `v=DMARC1; p=none`, while ensuring their sending service passes aligned SPF or DKIM. The change matters because missed invoices, applications, replies, or appointment notices may go unnoticed, and it reflects DMARC becoming a baseline requirement for reliable email delivery and protection against spoofing.</p>
+      <h4>Reader Reactions</h4>
+<p class="camps-framing">Many commenters accepted DMARC as a reasonable baseline, while others focused on opaque filtering and messages accepted by Microsoft but never delivered. The discussion also turned on who should bear the burden of configuration, whether small senders had fair notice, and what DMARC adds beyond SPF and DKIM. Commenters disputed whether the change was announced and whether a bounced message counts as a quiet rejection.</p>
+<div class="camp"><p class="camp-label"><strong>DMARC is a reasonable baseline</strong> &mdash; Some commenters saw authentication records as a justified, overdue measure to reduce spoofing and abuse, even while acknowledging shortcomings in Microsoft’s communication or delivery practices.</p><blockquote>There&#x27;s too much risk involved with scams disguised as legitimate services because the developers of said service couldn&#x27;t be bothered to add 1 or 2 dns records.<cite>himata4113</cite></blockquote>
+<blockquote>Mail admins had 20+ years to fix config.<cite>alrtd82</cite></blockquote>
+<blockquote>DMARC has been around for a while now.<cite>cloudie78</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Microsoft’s delivery practices are the real problem</strong> &mdash; Commenters objected to opaque blocklists and messages that were accepted by Outlook’s servers but later went missing, leaving senders with little explanation or recourse.</p><blockquote>Outlook.com is also rejecting mail based on blocklists that are not public and you essentialy cannot get yourself out.<cite>Neikius</cite></blockquote>
+<blockquote>Outlook.com has quietly dropped[0] emails from certain domains/IPs for years, even with SPF/DKIM/DMARC all properly set up and no history of spam.<cite>codethief</cite></blockquote>
+<blockquote>We regularly get issues where we sent an email it was accepted by O365 but was never delivered to the mailbox.<cite>Ungh</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Centralized providers undermine open email</strong> &mdash; Some commenters argued that the influence of major providers lets them impose private rules on a supposedly federated protocol, making independent hosting and open communication more difficult.</p><blockquote>In a federated / pseudo-decentralized network, any provider with 10+% of captive users has an outsized leverage on the entire ecosystem.<cite>miki123211</cite></blockquote>
+<blockquote>More people should run their own mail servers so that centralized players cannot control what should be a decentralized communication protocol.<cite>0xpgm</cite></blockquote>
+<blockquote>Why are we so willingly ceding one of the few widely used free and open protocols to a handful of $mega-billion providers?<cite>SoftTalker</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Senders should meet the standard or use a relay</strong> &mdash; Other commenters treated correct mail authentication as the sender’s responsibility, given the age of the standards, and suggested checking configuration or using a delivery service.</p><blockquote>You&#x27;re supposed to understand how mail works on the Internet, and configure it correctly so that everyone else accepts it.<cite>caymanjim</cite></blockquote>
+<blockquote>There&#x27;s no burden whatsoever. It&#x27;s a one time setup that takes like 15 minutes.<cite>esikich</cite></blockquote>
+<blockquote>I&#x27;ve been running my own mail server for over 20 years and outlook.com is literally the only domain I have had problems with, and this is the only reason that I now send via Scaleway&#x27;s free transactional email service.<cite>ulrikrasmussen</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Low-volume senders deserve clearer notice</strong> &mdash; Some commenters accepted the rationale for authentication but said personal-domain owners and small businesses may not know a new requirement applies, especially when SPF and DKIM are already configured.</p><blockquote>I only heard about this because a customer complained. Am I supposed to go around the Internet, checking what each mail server will allow or deny?<cite>stavros</cite></blockquote>
+<blockquote>My email is setup via Fastmail and I followed all the recommendations they provided (which didn’t include DMARC)<cite>datfrojo</cite></blockquote>
+<blockquote>I already had DKIM and SPF, but not DMARC.<cite>stavros</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>DMARC’s value and the “quietly” framing are disputed</strong> &mdash; Commenters disagreed about DMARC’s security contribution and usefulness as a spam signal. They also noted that Microsoft had announced requirements and that a 5xx bounce is different from accepting a message and later discarding it.</p><blockquote>Don&#x27;t confuse DMARC with DKIM or SPF; DMARC doesn&#x27;t actually do anything for email security.<cite>0c3ca83</cite></blockquote>
+<blockquote>But for small personal domains the value isn&#x27;t that high.<cite>mike_hearn</cite></blockquote>
+<blockquote>They&#x27;re not rejecting them quietly. They&#x27;re sending 5xx permanent delivery failures.<cite>dwm</cite></blockquote></div>
+    </article>
+  </section>
+  <footer class="colophon">
+    <p class="sig">— that's the edition.</p>
+    <p class="meta">Set in Fraunces &amp; Inter · Compiled November 9, 2026</p>
+    <p class="classic-link"><a href="classic.html">Prefer the classic card view? →</a></p>
+  </footer>
+<script>
+(() => {
+  const key = "gtd:read_days:hn:v1";
+  const day = "2026-11-09";
+  let stored = [];
+  try {
+    stored = JSON.parse(localStorage.getItem(key) || "[]");
+    if (!Array.isArray(stored)) stored = [];
+  } catch (e) {}
+  if (!stored.includes(day)) {
+    stored.push(day);
+    stored.sort();
+    localStorage.setItem(key, JSON.stringify(stored));
+  }
+})();
+</script>
+<script src="../../preference.js?v=ebef484c1" defer></script>
+<script>
+// Simple script to toggle the [+] and [-] labels on the drawers
+document.querySelectorAll('.analysis-drawer').forEach(drawer => {
+  drawer.addEventListener('toggle', () => {
+    const summary = drawer.querySelector('summary');
+    if (drawer.open) {
+      summary.textContent = '[ Analysis − ]';
+    } else {
+      summary.textContent = '[ Analysis + ]';
+    }
+  });
+});
+
+// Share link — native share or copy markdown to clipboard
+(function () {
+  const links = document.querySelectorAll('.share-link');
+  if (!links.length) return;
+
+  const toast = document.createElement('div');
+  toast.className = 'discuss-toast';
+  document.body.appendChild(toast);
+
+  function showToast(msg) {
+    toast.textContent = msg;
+    toast.classList.add('show');
+    setTimeout(() => toast.classList.remove('show'), 2500);
+  }
+
+  function buildMarkdown(link, spread) {
+    const title = link.dataset.shareTitle || '';
+    const url = link.dataset.shareUrl || '';
+    const meta = spread ? spread.querySelector('.story-meta') : null;
+    const lede = spread ? spread.querySelector('.lede') : null;
+    const analysis = spread ? spread.querySelector('.drawer-analysis') : null;
+    let md = '# ' + title + '\n';
+    md += 'Source: ' + url;
+    if (meta) md += ' | ' + meta.textContent.trim();
+    md += '\n';
+    if (lede) md += '\n' + lede.textContent.trim() + '\n';
+    if (analysis) md += '\n## Analysis\n' + analysis.textContent.trim() + '\n';
+    return md;
+  }
+
+  links.forEach((link) => {
+    link.addEventListener('click', (e) => {
+      e.preventDefault();
+      const spread = link.closest('section.spread');
+      const md = buildMarkdown(link, spread);
+      const text = "I'd like to discuss this with you. Here's a summary:\n\n" + md;
+      const title = 'Discuss: ' + (link.dataset.shareTitle || '');
+      if (navigator.share) {
+        navigator.share({ title: title, text: text }).catch(() => {});
+      } else {
+        navigator.clipboard.writeText(text).then(
+          () => showToast('Copied to clipboard \u2014 paste into your AI chat'),
+          () => showToast('Failed to copy')
+        );
+      }
+    });
+  });
+})();
+</script>
+</body>
+</html>
