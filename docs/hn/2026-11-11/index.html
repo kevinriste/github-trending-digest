@@ -1,0 +1,818 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Morning Edition — November 11, 2026</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght,SOFT@0,9..144,300..900,0..100;1,9..144,300..900,0..100&family=Inter:ital,wght@0,100..900;1,100..900&family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../morning.css?v=98be1f57e">
+</head>
+<body id="top" data-gtd-edition="hn" data-gtd-date="2026-11-11">
+  <header class="masthead">
+    <div class="masthead-nav">
+      <a href="../">Hacker News Calendar</a>
+      <span>&nbsp;·&nbsp;</span>
+      <a href="../../2026-11-11/">GitHub Trending &nbsp;·&nbsp; Nov 11</a>
+      <span>&nbsp;·&nbsp;</span>
+      <a href="../../ai/2026-11-11/">AI News &nbsp;·&nbsp; Nov 11</a>
+      <span>&nbsp;·&nbsp;</span>
+      <a href="classic.html">Classic View</a>
+    </div>
+    <div class="tagline">The Morning Edition</div>
+    <h1 class="frnc">Ten stories, before your coffee.</h1>
+    <div class="issue-line">
+      <span>Vol. I</span>
+      <span>November 11, 2026</span>
+      <span>HN Front Page Digest</span>
+    </div>
+  </header>
+<section class="the-take"><details open><summary>The HN Take</summary><h3 class="take-head">Going nowhere</h3><p>A programming language has two main customers. One is the people designing the language, who want to keep improving it. The other is the people using the language, who would like it to stop improving quite so much.</p><p>Here is a critique of Zig:</p><p>Zig has been under development for more than a decade. It remains at version 0.x, without a firm date for a stable 1.0 release.</p><p>There is nothing inherently wrong with a long development cycle or a version number below 1.0. Plenty of useful software operates under so-called 0ver.</p><p>But Zig is a programming language, not a bundler.</p><p>Right. If you are building a programming language, you want to discover the best possible syntax, standard library, compiler and build system. If you are building software in that programming language, you want the syntax, standard library, compiler and build system that you used yesterday. These goals are not perfectly aligned.</p><p>Zig&#x27;s solution has largely been to prioritize the first group. Releases keep changing interfaces, and users keep rewriting their code. This is all properly documented, which is useful in the sense that the project tells you exactly why your program no longer works.</p><p>There is a reasonable argument that this is what version 0.x means. Zig has not promised stability, so users cannot complain that it is unstable. But after more than a decade, that becomes less of a versioning policy and more of a business model. Zig&#x27;s maintainers get a perpetual language-design laboratory, while Zig&#x27;s users provide free regression testing and repeatedly migrate their applications.</p><p>There is also an unusually broad ban on AI-assisted contributions. No generated code, editing, translation, brainstorming or bug finding. The maintainers explain their approach with the poker maxim: &quot;You play the person, not the cards.&quot; They want long-term contributors who deeply understand the project, not drive-by patches produced with tools they distrust.</p><p>This is coherent if Zig is a community for developing compiler engineers. It is less coherent if Zig is infrastructure. Sometimes a person finds a bug, fixes the bug and then goes back to the unrelated thing she was trying to accomplish before the programming language assigned her a character-building exercise.</p><p>And then Bun left. Bun had been a prominent production user of Zig, but in July rewrote its Zig codebase in Rust, citing memory-safety concerns and the burden of maintaining compiler modifications. Zig&#x27;s leadership responded with a lengthy public attack on Bun&#x27;s engineering, management and culture, later revising the post and acknowledging resentment in the original framing.</p><p>A programming language cannot prevent users from leaving. It can, however, make leaving socially unpleasant, which is perhaps a form of retention strategy. If your code keeps breaking, your contributions are judged partly by your approved development habits, and your departure may inspire an official denunciation, you will certainly think carefully before adopting the language. Very carefully.</p><h3 class="take-head">Secure enclave</h3><p>Here is a successful security project:</p><p>I have decided to NOT go with the native macOS Secure Enclave approach (using only out-of-the-box tools) because it ended up plain ugly and I can&#x27;t live with that. However, it is a fully functional, working solution that I would definitely use otherwise.</p><p>The author wanted SSH private keys that malware could not copy from his filesystem. Recent versions of macOS can create a non-exportable key inside the Secure Enclave, require Touch ID for every signing operation and expose only a reference file to SSH. The private key never appears on disk or in ordinary memory. This is, from a security perspective, pretty good.</p><p>Unfortunately the Touch ID dialog says &quot;ctccardtoken needs to authenticate to continue.&quot;</p><p>There are many possible threat models in computer security. An attacker might steal your laptop, compromise your account, read your files or execute malicious code. Apple built a hardware-backed system that can protect an SSH key even if the Mac is compromised. It did not protect the user from an ugly low-level framework name.</p><p>The setup is also not exactly invisible. You create a CryptoTokenKit identity with sc_auth, export a key handle with ssh-keygen, set SSH_SK_PROVIDER to Apple&#x27;s provider library and explicitly tell SSH about the resulting identity file because it does not automatically discover that filename. Then every connection produces the unlovely biometric prompt. The cryptography is polished; the product is several shell commands wearing a trench coat.</p><p>There is one other catch: The key cannot be backed up. If the Mac dies, the key dies with it. That is not a bug but the direct consequence of making the key impossible to extract. Perfect protection against theft is also perfect protection against recovery. The suggested solution is to enroll another key from another Mac or a YubiKey on every server.</p><p>So the final architecture is: Keep an unextractable key on your Mac, keep another unextractable key somewhere else in case the first unextractable key becomes permanently inaccessible, and reject the whole native setup because the authentication dialog lacks Apple&#x27;s usual aesthetic standards. Security succeeded at every level except typography.</p><div class="take-sources"><span>Sources</span><ul><li><a href="https://bytecode.news/posts/2026/10/the-zig-project-is-going-nowhere" target="_blank" rel="noopener noreferrer">The Zig project is going nowhere</a></li><li><a href="https://gatezh.com/posts/macos-secure-enclave-ssh-keys/" target="_blank" rel="noopener noreferrer">Protecting SSH Keys with macOS Secure Enclave</a></li></ul></div></details></section>
+  <section id="story-1" class="spread arc-editorial-pullquote">
+    <div class="left">
+      <div class="numeral">01</div>
+      <div class="kicker">Language Politics</div>
+      <h2>Zig’s Governance Is Becoming the Breaking Change</h2>
+      <p class="story-meta">bytecode.news &nbsp;·&nbsp; 28 pts &nbsp;·&nbsp; 16 comments</p>
+      <div class="spread-links"><a class="read-more" href="https://bytecode.news/posts/2026/10/the-zig-project-is-going-nowhere" target="_blank" rel="noopener">Read →</a><a class="read-more share-link" href="#" data-share-title="The Zig project is going nowhere" data-share-url="https://bytecode.news/posts/2026/10/the-zig-project-is-going-nowhere">Share →</a>
+      <details class="analysis-drawer">
+        <summary class="btn-dossier">[ Analysis + ]</summary>
+        <div class="drawer-content">
+          
+          <h4>Technical Analysis</h4>
+          <div class="drawer-analysis">
+          <p>The article argues that Zig’s technical progress is being undermined by project-management decisions that make it increasingly difficult to depend on. It criticizes Zig’s ongoing breaking changes without a firm 1.0 timeline, restrictive anti-AI contribution rules, hostile response to Bun’s decision to rewrite its runtime in Rust, and migration from GitHub to the allegedly less reliable Codeberg. These choices reflect, in the author’s view, a preference for enforcing maintainers’ development philosophy over stability, accessibility, and user needs. The issue matters because programming languages are infrastructure, and continued churn or governance friction can discourage contributors, businesses, and donors from investing in the ecosystem even if the language itself improves.</p>
+          </div>
+          <h4>Reader Reactions</h4>
+<p class="camps-framing">The reaction was mixed: some commenters treated Zig’s churn and governance choices as genuine risks to its usefulness and adoption, while others argued that an unfinished language is entitled to prioritize its own design vision over popularity or stability. Disagreement also centered on whether the article’s examples—especially Bun’s move to Rust and Zig’s AI rules—actually show that the project is failing. A smaller thread questioned the article’s quality and apparent authorship.</p>
+<div class="camp"><p class="camp-label"><strong>Vision over adoption</strong> &mdash; Some commenters argued that Zig’s maintainers need not optimize for popularity, rapid shipping, or users’ expectations; pursuing a particular language design is a legitimate choice, and a language need not become indispensable to have value.</p><blockquote>It&#x27;s their choice to make.<cite>rbr94</cite></blockquote>
+<blockquote>Programming languages don’t need to go anywhere, add more features or adopt political causes. It’s fine for them to just be.<cite>callamdelaney</cite></blockquote>
+<blockquote>Meh, Zig doesn&#x27;t owe anyone anything.<cite>ForHackernews</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Pre-1.0 churn is expected</strong> &mdash; Commenters argued that breaking changes are normal during language development and may lead to better abstractions. Some saw the eventual stability commitment after 1.0 as the more important test, with AI assistance potentially easing migrations.</p><blockquote>The important question is when/whether it will hit 1.0 and what its commitment to stability looks like _afterwards_.<cite>lewdwig</cite></blockquote>
+<blockquote>The whole point of not being stable yet is so that you can try things out and see what actually makes sense before committing to it for all time.<cite>andai</cite></blockquote>
+<blockquote>that&#x27;s not inherently a bad thing if it leads to better abstractions, also easier w/ ai assistance now to adapt when there are changes<cite>tosh</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Stability and project conduct are real concerns</strong> &mdash; Some commenters remained concerned about Zig’s trajectory, citing the Bun migration, the tone of project communications, or the move away from LLVM.</p><blockquote>The writing has been on the wall since Bun migrated.<cite>raincole</cite></blockquote>
+<blockquote>it was written like an emotionally charged personal blog post.<cite>cedws</cite></blockquote>
+<blockquote>personally, I&#x27;m more alarmed that they&#x27;re dropping LLVM in favor of their own backend.<cite>oddIdentities</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>The article overstates the case</strong> &mdash; Some commenters rejected the article’s use of Bun’s move as evidence against Zig or argued that its criticism overlooked continued improvement in the language and ecosystem.</p><blockquote>Clearly their &quot;no AI contributions&quot; policy is not preventing the language and ecosystem from improving.<cite>skrebbel</cite></blockquote>
+<blockquote>using Bun moving to Rust as evidence that Zig is doing it wrong is hilariously backward.<cite>gorjusborg</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>AI policy is contested</strong> &mdash; Some commenters viewed restrictions on AI tools as a practical liability for security work or adoption, while another argued that AI-generated contributions should be judged by whether their authors take responsibility for them.</p><blockquote>Good luck with that in the era of using LLMs to find security vulnerabilities.<cite>adwn</cite></blockquote>
+<blockquote>A language without a framework or software product that makes it unavoidable, hardly takes off beyond early adoption curve bump.<cite>pjmlp</cite></blockquote>
+<blockquote>I couldn&#x27;t give less of a shit if you use AI if nobody in the world could possibly tell.<cite>conartist6</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Skepticism about the article itself</strong> &mdash; A smaller group questioned the article’s quality, apparent authorship, or presentation, while one commenter still considered its overall treatment balanced.</p><blockquote>Why is this slop article on the frontpage ?<cite>disiplus</cite></blockquote>
+<blockquote>zig project not going to AI, so &quot;author&quot; (claude) says its going nowhere<cite>NoDodgeQuestion</cite></blockquote>
+<blockquote>A rather balanced take, I admit, though fairly critical of Zig.<cite>N_Lens</cite></blockquote></div>
+          <p class="drawer-footer"><a href="#dossier-1">View in Dossier ↓</a></p>
+        </div>
+      </details>
+    </div>
+    </div>
+    <blockquote class="pullquote">A language can pursue its vision and still lose the confidence of the people asked to build on it.</blockquote>
+  </section>
+  <section id="story-2" class="spread arc-midnight">
+    <div class="numeral">02</div>
+    <div class="body">
+      <div class="kicker">// Key Security</div>
+      <h2>Keep SSH Keys Inside the Mac</h2>
+      <p class="story-meta">gatezh.com &nbsp;·&nbsp; 229 pts &nbsp;·&nbsp; 85 comments</p>
+      <p class="lede">Apple’s Secure Enclave can hold an SSH private key beyond the reach of disk theft and ordinary malware. Touch ID adds a human gate, but non-exportability turns recovery into an operational responsibility.</p>
+      <div class="spread-links"><a class="read-more" href="https://gatezh.com/posts/macos-secure-enclave-ssh-keys/" target="_blank" rel="noopener">Read →</a><a class="read-more share-link" href="#" data-share-title="Protecting SSH Keys with macOS Secure Enclave" data-share-url="https://gatezh.com/posts/macos-secure-enclave-ssh-keys/">Share →</a>
+      <details class="analysis-drawer">
+        <summary class="btn-dossier">[ Analysis + ]</summary>
+        <div class="drawer-content">
+          
+          <h4>Technical Analysis</h4>
+          <div class="drawer-analysis">
+          <p>The article describes how to create hardware-backed SSH keys on macOS using the Secure Enclave, so private keys never appear on disk or in memory and each use can require Touch ID. It explains the setup with `sc_auth`, OpenSSH’s Secure Enclave provider, SSH configuration, and public-key installation, while noting pitfalls such as outdated instructions, key-discovery issues, and conflicts with other SSH agents. The approach improves protection against malware or filesystem theft without requiring third-party software, but its CryptoTokenKit authentication prompt is poorly polished and the keys cannot be exported or backed up. Because losing the Mac also loses the key, users should maintain an additional key on another device or hardware token; the author may instead use Secretive for a better interface.</p>
+          </div>
+          <h4>Reader Reactions</h4>
+<p class="camps-framing">Commenters generally agreed that hardware-backed keys can provide security benefits, but differed on whether those benefits justify the usability and operational costs. They discussed conventional SSH protections, human approval requirements, alternative tools, portability, and the risks of relying on keys that may be difficult to recover.</p>
+<div class="camp"><p class="camp-label"><strong>Secure Enclave adds meaningful protection</strong> &mdash; Supporters valued keeping private keys non-exportable and saw hardware-backed approval as protection against malware or credential theft beyond passphrase-protected keys on disk.</p><blockquote>Secure Enclave is still more secure in that it should be impossible to access the private key.<cite>Gigachad</cite></blockquote>
+<blockquote>Key on disk plus a passphrase is still only 1FA. Key in the SE + an unseal PIN is 2FA.<cite>tiberious726</cite></blockquote>
+<blockquote>I quite like having to authorize each remote git action with Touch ID.<cite>dsenkus</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Conventional SSH protection can be adequate</strong> &mdash; Some commenters argued that passphrases, an SSH agent, and Keychain can adequately protect keys on disk, and questioned whether file storage alone makes keys vulnerable.</p><blockquote>You use ssh agent to store the keys in memory and for convenience you can store the passphrases in keychain.<cite>LeBit</cite></blockquote>
+<blockquote>Update: I tried it out and stand corrected. ssh-add doesn’t store it in the user-readable keychain. So the passphrase is protected.<cite>Jakob</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Human approval can conflict with automation</strong> &mdash; Commenters working with headless systems or frequent development operations found approval prompts impractical or prone to fatigue, while others considered human presence an intentional security boundary.</p><blockquote>One fundamental problem with agentic development is that accessing the secure enclave key requires human presence.<cite>mavam</cite></blockquote>
+<blockquote>When you see 20 requests a day, your muscle memory just reaches for the sensor.<cite>jen729w</cite></blockquote>
+<blockquote>The Secure Enclave being inaccessible when you&#x27;re not present is a feature, not a bug.<cite>jon-wood</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Secretive and password-manager alternatives</strong> &mdash; Some commenters recommended tools such as Secretive or 1Password as practical ways to manage SSH credentials, while noting that these tools do not necessarily provide the same security model.</p><blockquote>I&#x27;ve been using Secretive (a nice software wrapper for these) for a few days for my Github keys (where 1Password holds the rest of my SSH keys).<cite>petesergeant</cite></blockquote>
+<blockquote>I had a hard time getting the stock stuff going but Secretive made it easy to set up and I love using it.<cite>johng</cite></blockquote>
+<blockquote>1Password + `op` cli is a good alternative choice here.<cite>earthpyy</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Portability and hardware-token tradeoffs</strong> &mdash; Commenters found macOS-specific setups difficult to use across operating systems, containers, and remote hosts. Hardware tokens can travel between machines, but may bring their own setup and day-to-day inconveniences.</p><blockquote>One of the problems I constantly face is that the SSH configuration is not portable when I use these esoteric things.<cite>spacelatte</cite></blockquote>
+<blockquote>This solution feels for me like a slight setback because it’s a macOS only solution.<cite>larusso</cite></blockquote>
+<blockquote>My biggest issue was the chicken and egg issue when using this setup on a new machine or god forbid in a container etc.<cite>larusso</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Reliability, recovery, and implementation concerns</strong> &mdash; Some commenters described keychain failures or poor documentation as sources of lockout and data-loss risk. Others emphasized that non-exportable keys require advance recovery arrangements.</p><blockquote>Developing for macos, I’ve gotten bit by keychain consistency issues far too many times. It’s a mess.<cite>redrove</cite></blockquote>
+<blockquote>It works nicely, but obviously you can&#x27;t back up a key that started life in a secure enclave, so you&#x27;ll need alternative access arrangements for anything you setup that way.<cite>petesergeant</cite></blockquote>
+<blockquote>Secure Enclave, TPM and other such security features are unfortunately so badly documented and need so many hoops to jump through to get them working, with any mistake either causing you to be locked out completely or to not give you the protection you wanted.<cite>gsliepen</cite></blockquote></div>
+          <p class="drawer-footer"><a href="#dossier-2">View in Dossier ↓</a></p>
+        </div>
+      </details>
+    </div>
+    </div>
+  </section>
+  <section id="story-3" class="spread arc-blueprint">
+    <div class="corner tl">+</div><div class="corner tr">+</div>
+    <div class="corner bl">+</div><div class="corner br">+</div>
+    <div class="numeral">03</div>
+    <div class="kicker">Build Log</div>
+    <h2>A Boeing 737 Lands Beneath a Derbyshire Garden</h2>
+    <p class="story-meta">bbc.co.uk &nbsp;·&nbsp; 41 pts &nbsp;·&nbsp; 28 comments</p>
+    <p class="lede">A retired airliner, a crane, and a hole in the ground become an underground retreat. The hard part is no longer the spectacle of placement, but corrosion, structure, drainage, and planning permission.</p>
+    <div class="spread-links"><a class="read-more" href="https://www.bbc.co.uk/news/articles/cqkgjv4pj023o" target="_blank" rel="noopener">Read →</a><a class="read-more share-link" href="#" data-share-title="Plane lifted into back garden as bunker takes shape" data-share-url="https://www.bbc.co.uk/news/articles/cqkgjv4pj023o">Share →</a>
+      <details class="analysis-drawer">
+        <summary class="btn-dossier">[ Analysis + ]</summary>
+        <div class="drawer-content">
+          
+          <h4>Technical Analysis</h4>
+          <div class="drawer-analysis">
+          <p>Dave Billings bought the fuselage of a retired 1993 Bmibaby Boeing 737-500 for £4,000 and used a crane and volunteers to lower it into a large hole in his garden in Hilton, Derbyshire. He is converting the cabin into an underground “man cave” connected to an existing subterranean room, documenting the work on his popular Tornado Dave YouTube channel. The project involves substantial logistical and construction challenges, including transporting and positioning the aircraft, adapting its structure, and obtaining retrospective planning permission. It is notable for turning a decommissioned commercial aircraft into an unconventional private building project and illustrating the practical and regulatory complications of repurposing large industrial equipment.</p>
+          </div>
+          <h4>Reader Reactions</h4>
+<p class="camps-framing">The discussion focuses on whether the project can withstand moisture and structural loads, and whether it can secure planning permission. Some commenters point to possible protective measures and favorable site conditions, while others remain uncertain about the risks. A lighter thread treats the build as entertaining DIY spectacle, alongside scrutiny of its execution and content.</p>
+<div class="camp"><p class="camp-label"><strong>Durability and water-ingress concerns</strong> &mdash; Commenters question how the fuselage will be protected from soil, moisture, and corrosion; replies point to concrete and other possible protective measures, while some details remain uncertain.</p><blockquote>A 737 fuselage is made of aluminum, which will corrode with rain, salts, and sulfates present in most soils.<cite>bajard</cite></blockquote>
+<blockquote>Which is why these installs usually involve all sorts of external waterproofing, concrete encasement, galvanic/cathodic protections &amp; sacrificial anodes, drainage systems, and interior climate control.<cite>cannonpalms</cite></blockquote>
+<blockquote>Ideally, tank your hole with a membrane and pump. Only a noob garden-plane-in-hole owner would crane it in without one!<cite>Fluorescence</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Structural and safety doubts</strong> &mdash; Commenters raise questions about external loads on the fuselage, hazards in an underground space, and pressure during concrete pours; a reply notes that the concrete reinforcement is being poured in stages.</p><blockquote>How long until someone in Reddit points out at asphyxiation hazard, fire hazard, and the fact that the plane used to transport dangerous chemicals?<cite>halflife</cite></blockquote>
+<blockquote>Tbh I&#x27;m not entirely sure I&#x27;d trust a partial plane body to have the mechanical strength for the job.<cite>azornathogron</cite></blockquote>
+<blockquote>Biggest issue is during the pour which he seems to have planned in stages to not put too much pressure on it.<cite>sschueller</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Planning-permission uncertainty</strong> &mdash; Some commenters worry that seeking retrospective permission could lead to regulatory trouble; others think the setting and the project’s low visibility may make approval more likely.</p><blockquote>Isn&#x27;t that a bit risky?<cite>walthamstow</cite></blockquote>
+<blockquote>It&#x27;s often easier to get retroactive planning permission, and I suspect an underground bunker isn&#x27;t as likely to get denied as something more visible.<cite>xnorswap</cite></blockquote>
+<blockquote>Ouch - I hope he&#x27;s got a few channel fans on local council and doesn&#x27;t get bitten on the regs.<cite>defrost</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Enjoyment of the DIY spectacle and creator scene</strong> &mdash; Some commenters respond approvingly to the audacity of the project and connect it to Colin Furze and other creator-led DIY builds.</p><blockquote>He should talk to Colin furze<cite>Nashooo</cite></blockquote>
+<blockquote>Colin furze was there to help lower the plane<cite>Maxion</cite></blockquote>
+<blockquote>dudes rock<cite>katdork</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Skepticism about the project as content, plus hands-on scrutiny</strong> &mdash; A few commenters suggest that the planning aftermath may be more compelling than the construction, while another viewer criticizes details of the concrete work shown in the videos.</p><blockquote>The planning permission situation could end up being more interesting than the actual construction..<cite>Smith-7831</cite></blockquote>
+<blockquote>Too much water in this concrete mix.<cite>hosteur</cite></blockquote>
+<blockquote>This is the best feedback he could get to be sure it will run well you YT.<cite>DerDerDaIst</cite></blockquote></div>
+          <p class="drawer-footer"><a href="#dossier-3">View in Dossier ↓</a></p>
+        </div>
+      </details>
+    </div>
+  </section>
+  <section id="story-4" class="spread arc-notebook">
+    <div class="numeral">04</div>
+    <div class="kicker">Local Living</div>
+    <h2>The Smart Home Should Survive the Cloud</h2>
+    <p class="story-meta">docodethatmatters.com &nbsp;·&nbsp; 1006 pts &nbsp;·&nbsp; 360 comments</p>
+    <p class="lede">A dependable home automation system begins with ordinary switches and keeps working when the internet disappears. Local protocols, logs, and graceful fallbacks make convenience something you can maintain rather than merely subscribe to.</p>
+    <div class="spread-links"><a class="read-more" href="https://docodethatmatters.com/home-automation-overnight-success/" target="_blank" rel="noopener">Read →</a><a class="read-more share-link" href="#" data-share-title="Smart home devices should work without the internet" data-share-url="https://docodethatmatters.com/home-automation-overnight-success/">Share →</a>
+      <details class="analysis-drawer">
+        <summary class="btn-dossier">[ Analysis + ]</summary>
+        <div class="drawer-content">
+          
+          <h4>Technical Analysis</h4>
+          <div class="drawer-analysis">
+          <p>The article argues that smart-home devices should remain functional without internet access, vendor clouds, or proprietary apps, with local control as the foundation and online services as optional conveniences. The author describes a setup built around Tasmota-enabled microcontrollers, MQTT, Node-RED, Grafana, and Raspberry Pis, while preserving ordinary switches, multiple control methods, logging, and maintainable configurations. It highlights failures such as broken APIs, discontinued services, cloud-only appliances, and devices that require accounts for basic functions, reflecting a broader business shift from selling products to subscription-dependent services. Local protocols, offline operation, repairability, and clear degraded modes matter because they improve reliability, privacy, security, accessibility, and the useful lifespan of hardware.</p>
+          </div>
+          <h4>Reader Reactions</h4>
+<p class="camps-framing">The dominant reaction favored keeping essential home functions independent of vendor clouds, with commenters sharing local-control approaches and examples of devices that failed when services disappeared. Disagreement focused on how to achieve that reliably and whether the setup and maintenance are worth the effort. Some emphasized ordinary physical controls and fallbacks, while others favored particular local protocols or described hacking devices into working locally. Others questioned the value of smart-home complexity or cited practical benefits such as energy savings. A side discussion debated AI-assisted writing and repair.</p>
+<div class="camp"><p class="camp-label"><strong>Local-first by default</strong> &mdash; Commenters argued that essential home devices should remain usable without an internet connection or vendor server.</p><blockquote>There&#x27;s no question that home automation should work without the internet.<cite>mountain_peak</cite></blockquote>
+<blockquote>And nobody should ever need an app to use their house.<cite>ocdtrekkie</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Keep ordinary controls and graceful fallbacks</strong> &mdash; Local automation was not enough for these commenters: basic functions should still work when the network or automation controller is unavailable.</p><blockquote>Smart functionality must not remove dumb functionality.<cite>diggernet</cite></blockquote>
+<blockquote>You walk in to the room and see a knob on a switch plate, you turn the knob and the light brightness increases regardless of the state of the internet, my home server, or even my network as a whole.<cite>wolrah</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Choose local protocols and resilient systems</strong> &mdash; Commenters recommended local-first protocols and systems to avoid cloud dependence and improve reliability, while differing on which technologies best deliver those goals.</p><blockquote>I fully stick to ZigBee and ZWave devices wherever possible, the reliability is just much better in my experience + they don&#x27;t clog up my wifi.<cite>connicpu</cite></blockquote>
+<blockquote>KNX is the solution. Look it up. Local first and by default. You own the equipment.<cite>thatonehack</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Hack or automate around cloud lock-in</strong> &mdash; Some commenters described reflashing devices, using local integrations, or employing AI coding tools to make cloud-dependent products work locally.</p><blockquote>upon receipt of devices, ask claude for local-first cfw<cite>reasonabl_human</cite></blockquote>
+<blockquote>So...yes! It&#x27;s finally working without the Internet.<cite>Brendinooo</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Smart homes can be worth the effort</strong> &mdash; Some commenters defended automation for practical benefits, including convenience, security, and reduced energy use.</p><blockquote>This really cut our power bill because people just forget these devices after turning them on.<cite>saidinesh5</cite></blockquote>
+<blockquote>it felt like living in the future.<cite>joshstrange</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Question the value of smart-home complexity</strong> &mdash; Skeptics felt that connected devices can add setup, maintenance, and failure points without enough benefit, and some preferred simple or low-tech alternatives.</p><blockquote>But this stuff just feels like it would over complicate my life for no real gain.<cite>robotburrito</cite></blockquote>
+<blockquote>It turns out that it is convoluted and less reliable to have local servers and stuff....<cite>ergocoder</cite></blockquote></div>
+          <p class="drawer-footer"><a href="#dossier-4">View in Dossier ↓</a></p>
+        </div>
+      </details>
+    </div>
+  </section>
+  <section id="story-5" class="spread arc-stat-hero">
+    <div class="numeral">22,000</div>
+    <div class="kicker">N<sup>o</sup> 05 · Domain Desk</div>
+    <h2>22,000 .name Domains Avoid the Guillotine</h2>
+    <p class="story-meta">neil.fraser.name &nbsp;·&nbsp; 867 pts &nbsp;·&nbsp; 189 comments</p>
+    <p class="lede">A campaign by domain owners and their advocates has preserved existing third-level .name registrations and email redirects. New registrations will close, but long-established online identities will remain in place.</p>
+    <div class="spread-links"><a class="read-more" href="https://neil.fraser.name/news/2026/11/10/" target="_blank" rel="noopener">Read →</a><a class="read-more share-link" href="#" data-share-title=".name Grandfathered" data-share-url="https://neil.fraser.name/news/2026/11/10/">Share →</a>
+      <details class="analysis-drawer">
+        <summary class="btn-dossier">[ Analysis + ]</summary>
+        <div class="drawer-content">
+          
+          <h4>Technical Analysis</h4>
+          <div class="drawer-analysis">
+          <p>Verisign has abandoned its plan to terminate about 22,000 existing third-level .name domains and email redirects after a lengthy campaign involving domain owners, lawyers, and formal appeals to ICANN. Existing registrations, including the author’s website and email services, will remain active indefinitely, although new registrations for third-level .name domains will be closed. The decision preserves users’ websites and email addresses and illustrates how registry policy changes can threaten long-established online identities. It also shows that coordinated advocacy and ICANN’s review processes can influence decisions affecting domain holders.</p>
+          </div>
+          <h4>Reader Reactions</h4>
+<p class="camps-framing">The discussion was led by relief that existing third-level .name registrations could remain active, with commenters crediting advocacy and ICANN’s review process. It also raised questions about the protections domain holders should have, the operational and technical complications of .name’s registration system, and the practical consequences for registrants who had already moved or let domains expire. Several commenters clarified that the dispute concerned third-level registrations rather than ordinary second-level .name domains.</p>
+<div class="camp"><p class="camp-label"><strong>Relief and a win for advocacy</strong> &mdash; Commenters welcomed the reversal and praised the people who challenged the proposed termination, while others were simply glad existing domains could continue.</p><blockquote>Success is possible. Well done to all.<cite>toomuchtodo</cite></blockquote>
+<blockquote>Resistance is not futile.<cite>Tepix</cite></blockquote>
+<blockquote>glad this got resolved, bummer it was thrown into question at all<cite>kinabalu76</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Domain-holder protections and contractual limits</strong> &mdash; Some commenters argued that registrants need stronger protections against losing long-held names; others noted that domain rights are shaped by contracts and renewal arrangements.</p><blockquote>For it to be illegal I think we would have to have much stronger digital ownership laws.<cite>Spivak</cite></blockquote>
+<blockquote>The idea that it&#x27;s perfectly fine for domains to just disappear is ridiculous.<cite>charcircuit</cite></blockquote>
+<blockquote>So I don&#x27;t think a court would think that a modern-day domain name registrant has property rights in a domain name that supersede all of those contractual terms.<cite>schoen</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Centralized control and DNS governance</strong> &mdash; Some saw the episode as a reason to reduce reliance on centralized naming authorities, while others focused on possible remedies through ICANN or registry policy.</p><blockquote>A new decentralized name system is necessary.<cite>andunie</cite></blockquote>
+<blockquote>Here&#x27;s what I don&#x27;t understand: if Verisign is too lame to continue handling .name domains, why wouldn&#x27;t ICANN insist that it auction off that TLD to someone who isn&#x27;t, and just take control of it and do it themselves if they don&#x27;t?<cite>RagnarD</cite></blockquote>
+<blockquote>Certainly nice to know they would&#x27;ve almost certainly proceeded as normal if the concerns didn&#x27;t blow up online<cite>xydone</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Operational and technical complications of .name</strong> &mdash; Commenters described the unusual third-level registration and email-forwarding services as requiring specialized support. They also discussed browser security and Public Suffix List complications, while questioning whether those issues justified ending service for existing users.</p><blockquote>It works differently than pretty much every other TLD, which means it&#x27;s different code paths to support.<cite>lambda</cite></blockquote>
+<blockquote>It has weird interactions with some modern browser features.<cite>swiftcoder</cite></blockquote>
+<blockquote>The real problem is that we&#x27;d have to add a wildcard to the public suffix list.<cite>OkayPhysicist</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Practical cleanup and future reliability</strong> &mdash; Some registrants had already changed email accounts or lost access to domains amid renewal and transfer difficulties. Others said they would move important services despite the reversal, given uncertainty about long-term support.</p><blockquote>This meant a lot of domains expired.<cite>troyrollo</cite></blockquote>
+<blockquote>Great to see a sane outcome but if I relied on one of these domains I&#x27;d still be moving away from it.<cite>padjo</cite></blockquote>
+<blockquote>I let my &quot;first.last.name&quot; registration expire because of the impending shutdown!<cite>nticompass</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Clarifying which .name domains were at risk</strong> &mdash; Commenters distinguished the affected third-level registrations from ordinary second-level .name domains and discussed whether new third-level registrations remained available.</p><blockquote>This is only for &quot;3rd level&quot; .name domains.<cite>codexon</cite></blockquote>
+<blockquote>This is only about 3rd level domain as the paragraph you quoted says.<cite>ksala_</cite></blockquote>
+<blockquote>One can&#x27;t (officially) register such 3rd level domains anywhere anymore.<cite>zamadatix</cite></blockquote></div>
+          <p class="drawer-footer"><a href="#dossier-5">View in Dossier ↓</a></p>
+        </div>
+      </details>
+    </div>
+  </section>
+  <section id="story-6" class="spread arc-product-plate">
+    <div class="product-chip">SPECS</div>
+    <div class="kicker">Vehicle Brief</div>
+    <h2>Scion Returns With a Tiny Utility Truck</h2>
+    <div class="product-rule"></div>
+    <p class="story-meta">theautopian.com &nbsp;·&nbsp; 489 pts &nbsp;·&nbsp; 317 comments</p>
+    <p class="lede">Toyota’s revived Scion label is testing a fleet-only kei truck with a 660cc engine, four-wheel drive, and a 600-pound payload. The KEI-01 is less a mass-market comeback than a measured experiment in compact mobility.</p>
+    <div class="spread-links"><a class="read-more" href="https://www.theautopian.com/scion-is-back-and-its-going-to-sell-a-freaking-kei-truck-in-america/" target="_blank" rel="noopener">Read →</a><a class="read-more share-link" href="#" data-share-title="Scion is back and is going to sell a kei truck in America" data-share-url="https://www.theautopian.com/scion-is-back-and-its-going-to-sell-a-freaking-kei-truck-in-america/">Share →</a>
+      <details class="analysis-drawer">
+        <summary class="btn-dossier">[ Analysis + ]</summary>
+        <div class="drawer-content">
+          
+          <h4>Technical Analysis</h4>
+          <div class="drawer-analysis">
+          <p>Toyota is reviving Scion as “Scion by Toyota,” a mobility-focused brand intended to explore unconventional vehicle designs rather than sell a conventional youth-oriented car lineup. Its first proposed production model, the KEI-01, is a rebadged Daihatsu Hijet/Pixis kei truck with a 660cc engine, CVT, four-wheel drive, a 600-pound payload, and low-speed-vehicle certification limiting it to roads under 35 mph. The truck would initially be offered only to fleets through a small pilot beginning in late 2027, despite being assembled through Toyota’s U.S. manufacturing infrastructure, and may remain right-hand drive. Two additional concepts—a hybrid-capable side-by-side and a compact outdoor mobility vehicle—illustrate the brand’s broader experimental direction, though neither is planned for public sale.</p>
+          </div>
+          <h4>Reader Reactions</h4>
+<p class="camps-framing">Commenters were generally interested in small, practical trucks, but disagreed about whether this 25-mph version could meet everyday needs or was better suited to specialized work. The discussion also weighed its price and specifications, the effects of regulation and market preferences on small trucks, road safety, and Toyota’s fleet-focused pilot.</p>
+<div class="camp"><p class="camp-label"><strong>Useful niche work vehicle</strong> &mdash; Supporters viewed kei trucks as practical tools for farms, groundskeeping, campuses, and other short-distance work, often comparing them with UTVs rather than everyday cars.</p><blockquote>They are incredibly pragmatic little vehicles.<cite>freetime2</cite></blockquote>
+<blockquote>These aren&#x27;t competing with cars, they&#x27;re competing with Gators<cite>ryukoposting</cite></blockquote>
+<blockquote>They seem like the ideal utility vehicle for city centres if you don’t need seating and are just hauling e.g. soil or bins or something.<cite>stackghost</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Too slow for ordinary trips</strong> &mdash; Many commenters said the 25-mph limit and restrictions on where the vehicle can be driven make it impractical for commuting, errands, or trips between rural towns. Others said they would accept slower or longer local journeys.</p><blockquote>25 mph works for golf courses, resort, or island use. In rural areas on the mainland, roads connecting towns often have 45 or 55 mph speed limits so unless you plan on staying on the farm I don&#x27;t think these are practical for trips to go shopping, dumping, hauling, etc.<cite>ilamont</cite></blockquote>
+<blockquote>It’s a huge mistake to limit the speed to 25mph.<cite>__alexander</cite></blockquote>
+<blockquote>My drive would go from 15 minutes to 20.<cite>ourmandave</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Specs and price may undermine its appeal</strong> &mdash; Commenters questioned whether the payload, price, transmission, and other specifications would make the truck competitive with used imports, UTVs, or conventional small pickups.</p><blockquote>They are not fun cars, they should be cheap and disposable.<cite>rootsudo</cite></blockquote>
+<blockquote>With a 600 lb payload (including people), you can&#x27;t even cart a single cubic yard of mulch.<cite>taurusnoises</cite></blockquote>
+<blockquote>All that said, $25k isn&#x27;t cheap when you can get a basic Polaris SXS for $15k.<cite>alistairSH</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Small trucks are constrained by policy and market preferences</strong> &mdash; Some commenters attributed the lack of small, functional trucks in the U.S. to regulation and trade policy, while others emphasized fuel prices and consumer preferences as important factors.</p><blockquote>The confluence of CAFE standards and tax benefits entirely eliminated small vehicles in the United States.<cite>dennyabraham</cite></blockquote>
+<blockquote>In 1963 Lyndon Johnson added &quot;light trucks&quot; to the Chicken Tax as a quid pro quo to prevent the auto workers union from striking before the election.<cite>mike_d</cite></blockquote>
+<blockquote>CARB only nudges manufacturers, but the market’s own purchase preferences are doing the big push.<cite>Grombobulous</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Safety and road-suitability debate</strong> &mdash; Some commenters considered kei trucks poorly suited to American roads because of their size and limited crash protection. Others objected that small vehicles face safety constraints while much larger pickups remain common.</p><blockquote>US roads are built for much, much higher speeds.<cite>Grombobulous</cite></blockquote>
+<blockquote>Kei trucks are coffins on wheels.<cite>nntwozz</cite></blockquote>
+<blockquote>There is clearly no safety issue with getting groceries and picking your kid up from school in something that weighs most of 10K lbs and has such dogshit sight lines that you could run over a whole school bus&#x27;s worth of kids in a crosswalk and hardly notice.<cite>caconym_</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Fleet pilot rather than a consumer pickup</strong> &mdash; Some commenters interpreted Toyota’s fleet-focused pilot as a test of commercial and agricultural uses, rather than an attempt to sell a general-purpose pickup to private buyers. Some hoped a later version might be more broadly usable.</p><blockquote>It&#x27;s meant for farms and work sites not commuting or running errands<cite>TSiege</cite></blockquote>
+<blockquote>I do hope they&#x27;re able to build on this, and maybe offer left-hand-drive and a more reasonable top speed eventually.<cite>lastofthemojito</cite></blockquote>
+<blockquote>I suspect they are testing the waters before they build a proper LHD model targeting the broader US consumer market.<cite>julienb_sea</cite></blockquote></div>
+          <p class="drawer-footer"><a href="#dossier-6">View in Dossier ↓</a></p>
+        </div>
+      </details>
+    </div>
+  </section>
+  <section id="story-7" class="spread arc-terminal">
+    <div class="prompt-row">user@morning-edition:~$ cat story_07.md</div>
+    <div class="numeral">07</div>
+    <h2>Ginux Rebuilds the Kernel in User Space</h2>
+    <p class="story-meta">github.com &nbsp;·&nbsp; 83 pts &nbsp;·&nbsp; 40 comments</p>
+    <p class="lede">Ginux runs as a Linux process while presenting workloads with a narrower, versioned system contract. It is research software, not a finished sandbox: compatibility, performance, and escape boundaries remain under test.<span class="cursor"></span></p>
+    <div class="spread-links"><a class="read-more" href="https://github.com/gmkurtzer/ginux" target="_blank" rel="noopener">Read →</a><a class="read-more share-link" href="#" data-share-title="Greg Kurtzer&#x27;s Ginux is now a userspace kernel" data-share-url="https://github.com/gmkurtzer/ginux">Share →</a>
+      <details class="analysis-drawer">
+        <summary class="btn-dossier">[ Analysis + ]</summary>
+        <div class="drawer-content">
+          
+          <h4>Technical Analysis</h4>
+          <div class="drawer-analysis">
+          <p>Ginux has pivoted from an experimental standalone Rust kernel into a userspace kernel that runs as an ordinary Linux process and provides isolated workloads with explicit, versioned compatibility contracts. It intercepts managed system calls and can emulate them, mediate narrowly validated host operations, or deny them, while virtualizing processes, identities, devices, filesystems, and kernel views around a pinned Rocky Linux userspace. The project aims to offer a more reviewable boundary than unrestricted Linux for workloads such as AI agents, but differs from seccomp and related systems by treating the entire instance interface and lifecycle as one configurable contract. Its current Rocky/systemd baseline is research software—not complete Linux compatibility or production-grade containment—with performance, coverage, and escape boundaries still under testing.</p>
+          </div>
+          <h4>Reader Reactions</h4>
+<p class="camps-framing">The reaction was curious but cautious. Commenters debated whether a userspace kernel’s narrower interface can reduce exposure, or whether it adds another kernel-like component that must itself be trusted. They compared Ginux with namespaces, User-mode Linux, gVisor, and VMs, weighing security, compatibility, performance, and maturity. Others questioned the project’s durability and the role of AI-assisted development, while some argued that AI assistance alone does not settle its value or trustworthiness.</p>
+<div class="camp"><p class="camp-label"><strong>A narrower interface may reduce exposure</strong> &mdash; Supporters saw value in mediating access to a smaller set of interfaces rather than exposing the full host kernel. Some framed this as an additional layer of defense, not a guarantee that Ginux itself is safe.</p><blockquote>The Linux kernel is a gigantic attack surface with a ton of legacy stuff most modern applications will never need. Namespaces do not really help with this, but userspace kernels can.<cite>weinzierl</cite></blockquote>
+<blockquote>Rootless namespaces are getting better, but they don&#x27;t eliminate the host kernel attack surface<cite>Pawenniag</cite></blockquote>
+<blockquote>If it has to go through another layer , hopefully without ring0 privs, which more than likely may filter out a number of exploit vectors, how is this the wrong approach ?<cite>worthless-trash</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Namespaces and a new kernel may not improve security</strong> &mdash; Skeptics argued that namespaces already provide substantial isolation, or that distrust of Linux does not automatically justify trusting a new userspace kernel. Some also asked why not improve User-mode Linux, which offers the full Linux API.</p><blockquote>This is kind of the wrong approach when linux namespaces exist and rootless namespaces are approach full spectrum.<cite>asdfsa32</cite></blockquote>
+<blockquote>If you can&#x27;t trust Linux because it is gigantic, you can&#x27;t trust a whole another new kernel.<cite>asdfsa32</cite></blockquote>
+<blockquote>Why write a new kernel from scratch instead of fixing/improving usermode Linux instead, which has the benefit of providing the entire Linux API already?<cite>qalmakka</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Established userspace-kernel approaches offer a practical comparison</strong> &mdash; Commenters compared Ginux with gVisor and User-mode Linux, focusing on syscall handling, compatibility, performance, and the maturity of existing alternatives. Questions about implementation added a technical dimension to the comparison.</p><blockquote>It seems to be more like gVisor than UML, providing a restricted kernel interface as opposed to the full kernel.<cite>anygivnthursday</cite></blockquote>
+<blockquote>gVisor gives you excellent startup time, resource allocation and density at the expense of some app compat and performance at the extremes<cite>eddythompson80</cite></blockquote>
+<blockquote>From the README &gt; The current implementation includes a security-focused x86-64 interpreter and a balanced native ptrace backend; ptrace allows you to have the kernel redirect syscalls back to userspace, mostly for debugging purposes.<cite>krautsauer</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>VMs and layered isolation remain part of the comparison</strong> &mdash; Some commenters wanted to know whether Ginux could approach VM-style isolation or help in constrained environments without KVM. Others emphasized that VMs are not impenetrable and that different isolation mechanisms can be combined.</p><blockquote>I’d be very interested in it if it started to approach VM style isolation without needing KVM access (or qemu).<cite>mbreese</cite></blockquote>
+<blockquote>I’m still fascinated by the approach, though. It seems to me that it sits somewhere between cgroups and virtual machines.<cite>stingraycharles</cite></blockquote>
+<blockquote>You can combine hypervisors, user space kernels and linux namespaces all into one solution. The attacker will have to escape all of them.<cite>imtringued</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Containment does not decide what an agent is allowed to do</strong> &mdash; A smaller thread distinguished preventing an escape from setting policy for an AI agent. It argued that an agent may perform unwanted actions within a sandbox even when the isolation boundary holds.</p><blockquote>Your sandbox is now a policy that tells the agent what it is allowed to do or not.<cite>imtringued</cite></blockquote>
+<blockquote>For example, I&#x27;d not trust an AI agent even inside a VM in my own system.<cite>bayindirh</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Project durability and AI-assisted development remain contested</strong> &mdash; Some commenters doubted that a recently pivoted project would receive the sustained effort needed for dependable use, and questioned reliance on AI-generated work. Others asked what value was missing or argued that AI assistance is compatible with security work if humans verify the result.</p><blockquote>A project picked up casually, for a short time, is likely to be dropped casually, in a short time.<cite>jmull</cite></blockquote>
+<blockquote>No obvious to me, sorry. What will I get from this?<cite>luckystarr</cite></blockquote>
+<blockquote>It can be written with the help AI, but it needs many humans to verify.<cite>frevib</cite></blockquote></div>
+          <p class="drawer-footer"><a href="#dossier-7">View in Dossier ↓</a></p>
+        </div>
+      </details>
+    </div>
+  </section>
+  <section id="story-8" class="spread arc-mint-pattern">
+    <div class="numeral-block">
+      <div class="numeral">08</div>
+    </div>
+    <div class="kicker">Low-Level Lore</div>
+    <h2>The 6809 Wins by Turning Its Limits Around</h2>
+    <p class="story-meta">blog.moertel.com &nbsp;·&nbsp; 189 pts &nbsp;·&nbsp; 40 comments</p>
+    <p class="lede">With no graphics acceleration and barely enough cycles to redraw a game, two programmers turned stack operations, register pressure, and tile preprocessing into an advantage. Even memory corruption became part of the rendering plan.</p>
+    <div class="spread-links"><a class="read-more" href="https://blog.moertel.com/posts/2013-12-14-great-old-timey-game-programming-hack.html" target="_blank" rel="noopener">Read →</a><a class="read-more share-link" href="#" data-share-title="A great old-timey game-programming hack (2013)" data-share-url="https://blog.moertel.com/posts/2013-12-14-great-old-timey-game-programming-hack.html">Share →</a>
+      <details class="analysis-drawer">
+        <summary class="btn-dossier">[ Analysis + ]</summary>
+        <div class="drawer-content">
+          
+          <h4>Technical Analysis</h4>
+          <div class="drawer-analysis">
+          <p>The story recounts how two developers made an otherwise unplayable 1980s side-scrolling game run smoothly on a slow 6809-based PC with no graphics acceleration. After conventional optimization—including loop unrolling—proved insufficient, they exploited the processor’s stack instructions and every available register to copy tile data much faster, accepting reversed rows and swapped blocks that were corrected through tile preprocessing. They then handled interrupt-related memory corruption by directing it into the redrawable screen buffer and ordering tile updates so corruption was repaired before display. The episode illustrates how severe hardware constraints encouraged inventive, hardware-specific optimization, while highlighting the trade-offs and complexity such techniques introduced.</p>
+          </div>
+          <h4>Reader Reactions</h4>
+<p class="camps-framing">Commenters admired the ingenuity of low-level programming and shared related hardware tricks and personal experiences. They differed on how relevant those techniques remain today, while historical context, technical clarifications, and broader reflections on programming culture added other perspectives.</p>
+<div class="camp"><p class="camp-label"><strong>Appreciation for low-level ingenuity</strong> &mdash; Commenters praised the effort and creativity involved in working closely with limited hardware, and some enjoyed the story even without following every technical detail.</p><blockquote>Wonderful. What an extraordinary effort and great results.<cite>baud9600</cite></blockquote>
+<blockquote>That&#x27;s the kind of thing you&#x27;d never believe if you hadn&#x27;t seen it work.<cite>BrtByte</cite></blockquote>
+<blockquote>I love reading about this stuff, even if I understand very little of it.<cite>abrookewood</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>The spirit survives in modern performance work</strong> &mdash; Some commenters described contemporary equivalents in graphics, cloud functions, and distributed services, or suggested ways to explore hardware-level programming today.</p><blockquote>These kinds of things are still important these days.<cite>gchamonlive</cite></blockquote>
+<blockquote>Not saying that most game programming is like that, but if you specialize in graphics and performance, preferably in large productions, you get to work close to the hardware and solve a lot of really fun problems in interesting ways.<cite>Agentlien</cite></blockquote>
+<blockquote>I guess my equivalent these days is optimizing distributed services - a small change here, a realization there and you can save whole percentages of performance in affected services when effectively DDoSing yourself.<cite>choult</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Debate over whether the specific tricks are obsolete</strong> &mdash; Some argued that modern bottlenecks and compiler optimizations reduce the relevance of the techniques, while others noted that SIMD and hand-written code remain useful.</p><blockquote>On modern CPUs such tricks are irrelevant. They are able to process multiple instructions in the same time, so that the main bottleneck is no longer executing instructions, but accessing memory.<cite>Panzerschrek</cite></blockquote>
+<blockquote>Kind of, but not really? At its core this article is basically a hack to do a bit of SIMD on an instruction set that doesn&#x27;t have SIMD.<cite>Rohansi</cite></blockquote>
+<blockquote>Those specific tricks are irrelevant mostly due to compiler optimisations, even in compute heavy workloads.<cite>4gotunameagain</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Related hardware hacks and programming war stories</strong> &mdash; Commenters shared other examples of exploiting processor instructions, hardware behavior, and constrained environments to improve performance.</p><blockquote>The BRK instruction pushes the PC and status register to the stack in three consecutive cycles, and is pretty much the only non-interrupt instruction that writes more than twice.<cite>sehugg</cite></blockquote>
+<blockquote>Monster Max on Game Boy happens to use unrolled &quot;ld de,NNNN / push de&quot; loops constructed in main memory to write to video ram.<cite>Dwedit</cite></blockquote>
+<blockquote>It took search down to less than 3 seconds if the whole file was loaded in RAM.<cite>mikewarot</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Historical context and technical clarifications</strong> &mdash; Some commenters added context about how the 6809 trick spread and how hardware-specific knowledge was shared, while others clarified the computer and graphics hardware involved.</p><blockquote>The clever 6809 PSHU/PULS memory copy trick was probably independently discovered several times before Tom Moertel discovered it.<cite>mrandish</cite></blockquote>
+<blockquote>Back in the day, people could discover incredibly clever things, but when it came to writing stuff down and distributing the information in an organized way, it seems like you only got the &quot;reference&quot; documentation.<cite>zahlman</cite></blockquote>
+<blockquote>That&#x27;s not entirely correct: the graphics hardware took the video memory and built an image from that (frame buffer graphics).<cite>rob74</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Reflections on programming culture</strong> &mdash; Side discussions connected the story to concerns about AI replacing hands-on problem-solving and to interest in Terry Davis and TempleOS.</p><blockquote>This process is what’s missing in the ai era.<cite>jimbobbam</cite></blockquote>
+<blockquote>it&#x27;s pretty neat actually. it&#x27;s easy to make fun of his clunky demos and mental illness, but he built something incredibly entertaining to work with.<cite>__del__</cite></blockquote>
+<blockquote>idk about that. people will always find a way of working together to solve problems. that &quot;solving&quot; the AI era means &quot;pulling the lever on the claude machine&quot; is sad, I agree<cite>nunez</cite></blockquote></div>
+          <p class="drawer-footer"><a href="#dossier-8">View in Dossier ↓</a></p>
+        </div>
+      </details>
+    </div>
+  </section>
+  <section id="story-9" class="spread arc-pastel-playful">
+    <div class="alpha-grid"><span>A</span><span>B</span><span>C</span><span>D</span><span>E</span><span>F</span><span>G</span><span>H</span><span>I</span><span>J</span><span>K</span><span>L</span><span>M</span></div>
+    <div class="alpha-grid" style="top: auto; bottom: 0;"><span>N</span><span>O</span><span>P</span><span>Q</span><span>R</span><span>S</span><span>T</span><span>U</span><span>V</span><span>W</span><span>X</span><span>Y</span><span>Z</span></div>
+    <div class="numeral">09</div>
+    <div class="kicker">Local Models</div>
+    <h2>Apple’s Harbor Lines Up Macs for Local AI</h2>
+    <p class="story-meta">9to5mac.com &nbsp;·&nbsp; 296 pts &nbsp;·&nbsp; 266 comments</p>
+    <p class="lede">A reportedly private-preview Mac app would make serving open-weight models feel more like arranging a studio than configuring a server. Thunderbolt-connected Apple silicon machines could pool memory while keeping prompts and data close to home.</p>
+    <div class="spread-links"><a class="read-more" href="https://9to5mac.com/2026/11/10/apple-has-new-mac-app-coming-to-make-running-local-ai-models-easy/" target="_blank" rel="noopener">Read →</a><a class="read-more share-link" href="#" data-share-title="Apple has new Mac app coming to make running local AI models easy" data-share-url="https://9to5mac.com/2026/11/10/apple-has-new-mac-app-coming-to-make-running-local-ai-models-easy/">Share →</a>
+      <details class="analysis-drawer">
+        <summary class="btn-dossier">[ Analysis + ]</summary>
+        <div class="drawer-content">
+          
+          <h4>Technical Analysis</h4>
+          <div class="drawer-analysis">
+          <p>Apple is reportedly developing Harbor, a Mac app that simplifies running open-weight AI models locally rather than sending data to cloud services. The app would automatically detect Apple silicon Macs connected over Thunderbolt 5, pool their unified memory, and allow users to download, manage, and serve models without command-line configuration. This could let individuals and organizations run larger models or support more simultaneous requests using multiple Macs, while keeping data on their own hardware. Harbor is currently in private preview under Apple’s Claris brand, so its release timing, supported hardware, and final capabilities remain unconfirmed.</p>
+          </div>
+          <h4>Reader Reactions</h4>
+<p class="camps-framing">Commenters weighed Apple’s hardware and ecosystem strengths against concerns about its AI delays, the economics of local inference, and whether Harbor adds enough value over existing tools. The discussion also turned on whether AI agents could displace apps, and whether local models are most useful as a complement to cloud services or a substitute for them.</p>
+<div class="camp"><p class="camp-label"><strong>Apple can compete through hardware and integration</strong> &mdash; Some commenters argued Apple could benefit from efficient local models, Apple silicon, privacy, and control of the user-facing experience, even without leading in frontier models.</p><blockquote>Apple will be there, as usual, to provide secure, on-device, faster inference that the vast majority of their customers will be fine with.<cite>leftnode</cite></blockquote>
+<blockquote>Apple and Microsoft and other companies will own that front-end experience with the customer, and it’s not going to matter to most customers whose backend gets used for what.<cite>bradknowles</cite></blockquote>
+<blockquote>But the hardware. The hardware is fantastic for local LLM&#x27;s, generative ai, etc.<cite>esskay</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Whether AI agents will displace apps remains disputed</strong> &mdash; Some commenters thought people could shift from apps to AI agents, threatening the iPhone ecosystem; others pointed to the practical and technical difficulties of replacing apps and services with agents.</p><blockquote>I think AI will severely weaken iOS, App Store, and the iPhone in the next few years.<cite>aurareturn</cite></blockquote>
+<blockquote>Essentially every single non-builtin app on my phone fundamentally requires the internet to work, and is backed by some sort of SaaS with a proprietary API.<cite>Sharlin</cite></blockquote>
+<blockquote>The logistical gap between “Agent get me a ride” and an Uber app button that says “get me a ride” is astronomical.<cite>threetonesun</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Cloud often looks like the better deal</strong> &mdash; Many commenters judged cloud models to offer better capability and lower overall costs for most users, especially when local hardware, electricity, and upkeep are included.</p><blockquote>At no point in the foreseeable future will a local model be able to compete with a cloud model in terms of price.<cite>credit_guy</cite></blockquote>
+<blockquote>Also a lot of people work from laptops and running inference on data centres for 10th of the price is a no-brainer.<cite>small_model</cite></blockquote>
+<blockquote>Where I am, it&#x27;s cheaper to purchase multiple claude subscriptions than it is for the power bill from running a local model .<cite>nomel</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Local inference has value for some users</strong> &mdash; Supporters emphasized privacy and avoiding ongoing provider costs, particularly for heavy or business use. Some saw local and cloud inference serving different needs rather than one replacing the other.</p><blockquote>Many users would prefer to use a Sonnet-level (or better) LLM without sharing their data with others.<cite>aurmc</cite></blockquote>
+<blockquote>If/when Anthropic changes to pure API pricing, or for API-heavy projects, that&#x27;s when I&#x27;d switch to more local models.<cite>jph</cite></blockquote>
+<blockquote>I can imagine a future where we look back at these times of relying on big opaque hosted services to run inference and find it quaint.<cite>olowe</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Memory costs could limit local AI</strong> &mdash; Commenters worried that memory prices, availability, and the cost of high-memory Macs could make capable local models inaccessible or difficult for Apple to scale affordably.</p><blockquote>With how expensive memory is, IDK if they can pull this off but I hope they do<cite>n_u</cite></blockquote>
+<blockquote>Great, except with current DRAM prices nobody can afford it.<cite>amelius</cite></blockquote>
+<blockquote>Their customers will pay to outbid Apple, just like how Apple outbid the industry on TSMC&#x27;s 5nm node.<cite>bigyabai</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Harbor may help novices more than experienced users</strong> &mdash; Some commenters welcomed a supported tool that simplifies setup and maintenance for nontechnical users, while others said local models are already easy to run with existing software.</p><blockquote>This is what I&#x27;ve wanted for the last few years. I have played around with local models and had some success, but I don&#x27;t want to deal with the hassle of setting up, updating, etc.<cite>apparent</cite></blockquote>
+<blockquote>Their customer base includes many non-tech people who don’t want open a terminal window or even know of what a “GitHub” is.<cite>Insanity</cite></blockquote>
+<blockquote>Running local models is already extremely easy.<cite>crossroadsguy</cite></blockquote></div>
+          <p class="drawer-footer"><a href="#dossier-9">View in Dossier ↓</a></p>
+        </div>
+      </details>
+    </div>
+  </section>
+  <section id="story-10" class="spread arc-academic-drop-cap">
+    <div class="paper-head">
+      <span>Biosecurity</span>
+      <span class="numeral-roman">X</span>
+      <span>science.org</span>
+    </div>
+    <h2>Synthetic DNA Orders Enter the Screening Era</h2>
+    <p class="story-meta">science.org &nbsp;·&nbsp; 114 pts &nbsp;·&nbsp; 78 comments</p>
+    <div class="cols">
+      <div><p>New U.S.</p></div>
+      <div><p>rules require federally funded researchers to use approved suppliers that verify customers and screen sequences associated with pathogens and toxins. The policy closes part of the gap between voluntary guidance and a more accessible synthesis technology, while leaving enforcement and coverage questions unresolved.</p><div class="spread-links"><a class="read-more" href="https://www.science.org/content/article/deter-bioterrorism-u-s-imposes-new-rules-ordering-synthetic-dna" target="_blank" rel="noopener">Read →</a><a class="read-more share-link" href="#" data-share-title="To deter bioterrorism, U.S. imposes new rules on ordering synthetic DNA" data-share-url="https://www.science.org/content/article/deter-bioterrorism-u-s-imposes-new-rules-ordering-synthetic-dna">Share →</a>
+      <details class="analysis-drawer">
+        <summary class="btn-dossier">[ Analysis + ]</summary>
+        <div class="drawer-content">
+          
+          <h4>Technical Analysis</h4>
+          <div class="drawer-analysis">
+          <p>The U.S. has issued a new policy requiring federally funded researchers to buy synthetic DNA and benchtop synthesis equipment from approved suppliers that verify customers and screen orders for sequences linked to pathogens or toxins. The rules, being phased in over 340 days, replace voluntary industry guidelines as advances in DNA synthesis make it easier to assemble genes and entire genomes. Supporters see mandatory screening as a meaningful biosecurity improvement that could also influence companies to apply it more broadly, while critics note gaps including the 50-base-pair screening threshold, vague identity checks, uncovered existing equipment and international suppliers, and limited enforcement resources. The policy matters because it raises barriers to misuse, but experts stress that synthetic-DNA screening addresses only one route to creating dangerous pathogens and should accompany preparedness measures such as vaccines and hospital capacity.</p>
+          </div>
+          <h4>Reader Reactions</h4>
+<p class="camps-framing">The discussion centered on whether synthetic-DNA screening adds a worthwhile barrier or is easy for determined actors to bypass. Commenters also disagreed about whether AI changes biological risks or merely draws attention to longstanding screening practices, and some questioned whether exotic threats receive more attention than other risks.</p>
+<div class="camp"><p class="camp-label"><strong>Catastrophic-risk rationale</strong> &mdash; Some commenters argued that engineered pathogens could cause harm on a scale that makes even a low-probability threat worth addressing, and that AI could increase the damage a motivated individual can cause.</p><blockquote>If something like that gets out it&#x27;s probably civilization ending.<cite>mrob</cite></blockquote>
+<blockquote>Because it massively raises the amount of damage that a lone-wolf crazy person can do.<cite>aqme28</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>AI may amplify biological risk</strong> &mdash; Some commenters thought AI could make harmful biological work easier for motivated people, even if it cannot produce a dangerous pathogen on demand.</p><blockquote>It doesn&#x27;t have to do all the work for you but people knowledgeable and motivated enough are now 10-100x more of a nuisance.<cite>233mhz</cite></blockquote>
+<blockquote>Are the bleeding edge models finding something scary enough that can be done with synthetic DNA that it needs to be restricted asap?<cite>AnotherGoodName</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>AI is not the explanation</strong> &mdash; Others said the rules formalize existing screening practices rather than respond to a new AI-driven breakthrough, noting that known dangerous sequences are already known and screening would not catch novel designs.</p><blockquote>You don&#x27;t need AI to generate known toxin or pathogen sequences (as these are already known).<cite>epihelix</cite></blockquote>
+<blockquote>The top models are not uncovering anything novel with DNA.<cite>epistasis</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Screening is limited and bypassable</strong> &mdash; Several commenters argued that screening leaves gaps and that determined actors could assemble DNA or obtain it through other means, potentially leaving legitimate researchers with more of the burden.</p><blockquote>If you&#x27;ve got the skills and determination to get the synthetic DNA into a functioning cell, I don&#x27;t think limiting access to synthetic DNA in the first place is going to stop you.<cite>__MatrixMan__</cite></blockquote>
+<blockquote>No one who is inclined to build a biological WMD is going to be more than mildly inconvenienced by supply restrictions.<cite>CamperBob2</cite></blockquote>
+<blockquote>A would-be bioterrorist, he argues, could easily stitch together a dangerous sequence from much smaller fragments ordered from multiple different suppliers.<cite>3eb7988a1663</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Incremental barriers still help</strong> &mdash; In response, others argued that security measures can be worthwhile even if they do not stop highly capable attackers, and that the policy aims to influence supplier screening and customer verification.</p><blockquote>Sounds like a fully general argument against any sort of security measure. &quot;A dedicated thief won&#x27;t be deterred by a lock or burglar alarm.&quot; Sure. I&#x27;m still buying that stuff.<cite>0xDEAFBEAD</cite></blockquote>
+<blockquote>If you read the next two sentences it makes it fairly obvious that this is a plan to indirectly target suppliers.<cite>0xDEAFBEAD</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Focus on more immediate threats and preparedness</strong> &mdash; Some commenters questioned why engineered pathogens draw attention when other routes to harm may be easier, while others emphasized the potentially much wider impact of a pandemic-scale pathogen.</p><blockquote>Like all of our water supplies are much easier to mess with compared to developing a virus or whatever that may or may not work<cite>whatever1</cite></blockquote>
+<blockquote>Not to mention causing a famine or lack of medicine by sabotaging the cold chain.<cite>m4rtink</cite></blockquote>
+<blockquote>Your status as a &quot;defender&quot; is measured by the fanciness of the threats you defend against, not their actual magnitude.<cite>pjc50</cite></blockquote></div>
+          <p class="drawer-footer"><a href="#dossier-10">View in Dossier ↓</a></p>
+        </div>
+      </details>
+    </div></div>
+    </div>
+  </section>
+  <section id="dossier" class="dossier">
+    <div class="dossier-head">
+      <div class="tagline">Appendix</div>
+      <h2>The Dossier</h2>
+      <p class="intro">Full analysis and reactions for today's 10 stories. <a href="#top">↑ Back to the edition</a></p>
+    </div>
+    <article id="dossier-1" class="dossier-entry">
+      <div class="dossier-meta">N<sup>o</sup> 01 &nbsp;·&nbsp; Editorial Op-Ed &nbsp;·&nbsp; Language Politics</div>
+      <h3>The Zig project is going nowhere</h3>
+      <p class="dossier-source">
+        <a href="https://bytecode.news/posts/2026/10/the-zig-project-is-going-nowhere" target="_blank" rel="noopener">bytecode.news</a>
+        &nbsp;·&nbsp; 28 pts &nbsp;·&nbsp; 16 comments
+         &nbsp;·&nbsp; <a href='https://news.ycombinator.com/item?id=50452074' target='_blank' rel='noopener'>discussion</a>
+      </p>
+      <h4>Analysis</h4>
+      <p>The article argues that Zig’s technical progress is being undermined by project-management decisions that make it increasingly difficult to depend on. It criticizes Zig’s ongoing breaking changes without a firm 1.0 timeline, restrictive anti-AI contribution rules, hostile response to Bun’s decision to rewrite its runtime in Rust, and migration from GitHub to the allegedly less reliable Codeberg. These choices reflect, in the author’s view, a preference for enforcing maintainers’ development philosophy over stability, accessibility, and user needs. The issue matters because programming languages are infrastructure, and continued churn or governance friction can discourage contributors, businesses, and donors from investing in the ecosystem even if the language itself improves.</p>
+      <h4>Reader Reactions</h4>
+<p class="camps-framing">The reaction was mixed: some commenters treated Zig’s churn and governance choices as genuine risks to its usefulness and adoption, while others argued that an unfinished language is entitled to prioritize its own design vision over popularity or stability. Disagreement also centered on whether the article’s examples—especially Bun’s move to Rust and Zig’s AI rules—actually show that the project is failing. A smaller thread questioned the article’s quality and apparent authorship.</p>
+<div class="camp"><p class="camp-label"><strong>Vision over adoption</strong> &mdash; Some commenters argued that Zig’s maintainers need not optimize for popularity, rapid shipping, or users’ expectations; pursuing a particular language design is a legitimate choice, and a language need not become indispensable to have value.</p><blockquote>It&#x27;s their choice to make.<cite>rbr94</cite></blockquote>
+<blockquote>Programming languages don’t need to go anywhere, add more features or adopt political causes. It’s fine for them to just be.<cite>callamdelaney</cite></blockquote>
+<blockquote>Meh, Zig doesn&#x27;t owe anyone anything.<cite>ForHackernews</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Pre-1.0 churn is expected</strong> &mdash; Commenters argued that breaking changes are normal during language development and may lead to better abstractions. Some saw the eventual stability commitment after 1.0 as the more important test, with AI assistance potentially easing migrations.</p><blockquote>The important question is when/whether it will hit 1.0 and what its commitment to stability looks like _afterwards_.<cite>lewdwig</cite></blockquote>
+<blockquote>The whole point of not being stable yet is so that you can try things out and see what actually makes sense before committing to it for all time.<cite>andai</cite></blockquote>
+<blockquote>that&#x27;s not inherently a bad thing if it leads to better abstractions, also easier w/ ai assistance now to adapt when there are changes<cite>tosh</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Stability and project conduct are real concerns</strong> &mdash; Some commenters remained concerned about Zig’s trajectory, citing the Bun migration, the tone of project communications, or the move away from LLVM.</p><blockquote>The writing has been on the wall since Bun migrated.<cite>raincole</cite></blockquote>
+<blockquote>it was written like an emotionally charged personal blog post.<cite>cedws</cite></blockquote>
+<blockquote>personally, I&#x27;m more alarmed that they&#x27;re dropping LLVM in favor of their own backend.<cite>oddIdentities</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>The article overstates the case</strong> &mdash; Some commenters rejected the article’s use of Bun’s move as evidence against Zig or argued that its criticism overlooked continued improvement in the language and ecosystem.</p><blockquote>Clearly their &quot;no AI contributions&quot; policy is not preventing the language and ecosystem from improving.<cite>skrebbel</cite></blockquote>
+<blockquote>using Bun moving to Rust as evidence that Zig is doing it wrong is hilariously backward.<cite>gorjusborg</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>AI policy is contested</strong> &mdash; Some commenters viewed restrictions on AI tools as a practical liability for security work or adoption, while another argued that AI-generated contributions should be judged by whether their authors take responsibility for them.</p><blockquote>Good luck with that in the era of using LLMs to find security vulnerabilities.<cite>adwn</cite></blockquote>
+<blockquote>A language without a framework or software product that makes it unavoidable, hardly takes off beyond early adoption curve bump.<cite>pjmlp</cite></blockquote>
+<blockquote>I couldn&#x27;t give less of a shit if you use AI if nobody in the world could possibly tell.<cite>conartist6</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Skepticism about the article itself</strong> &mdash; A smaller group questioned the article’s quality, apparent authorship, or presentation, while one commenter still considered its overall treatment balanced.</p><blockquote>Why is this slop article on the frontpage ?<cite>disiplus</cite></blockquote>
+<blockquote>zig project not going to AI, so &quot;author&quot; (claude) says its going nowhere<cite>NoDodgeQuestion</cite></blockquote>
+<blockquote>A rather balanced take, I admit, though fairly critical of Zig.<cite>N_Lens</cite></blockquote></div>
+    </article>
+    <article id="dossier-2" class="dossier-entry">
+      <div class="dossier-meta">N<sup>o</sup> 02 &nbsp;·&nbsp; Midnight &nbsp;·&nbsp; Key Security</div>
+      <h3>Protecting SSH Keys with macOS Secure Enclave</h3>
+      <p class="dossier-source">
+        <a href="https://gatezh.com/posts/macos-secure-enclave-ssh-keys/" target="_blank" rel="noopener">gatezh.com</a>
+        &nbsp;·&nbsp; 229 pts &nbsp;·&nbsp; 85 comments
+         &nbsp;·&nbsp; <a href='https://news.ycombinator.com/item?id=50449748' target='_blank' rel='noopener'>discussion</a>
+      </p>
+      <h4>Analysis</h4>
+      <p>The article describes how to create hardware-backed SSH keys on macOS using the Secure Enclave, so private keys never appear on disk or in memory and each use can require Touch ID. It explains the setup with `sc_auth`, OpenSSH’s Secure Enclave provider, SSH configuration, and public-key installation, while noting pitfalls such as outdated instructions, key-discovery issues, and conflicts with other SSH agents. The approach improves protection against malware or filesystem theft without requiring third-party software, but its CryptoTokenKit authentication prompt is poorly polished and the keys cannot be exported or backed up. Because losing the Mac also loses the key, users should maintain an additional key on another device or hardware token; the author may instead use Secretive for a better interface.</p>
+      <h4>Reader Reactions</h4>
+<p class="camps-framing">Commenters generally agreed that hardware-backed keys can provide security benefits, but differed on whether those benefits justify the usability and operational costs. They discussed conventional SSH protections, human approval requirements, alternative tools, portability, and the risks of relying on keys that may be difficult to recover.</p>
+<div class="camp"><p class="camp-label"><strong>Secure Enclave adds meaningful protection</strong> &mdash; Supporters valued keeping private keys non-exportable and saw hardware-backed approval as protection against malware or credential theft beyond passphrase-protected keys on disk.</p><blockquote>Secure Enclave is still more secure in that it should be impossible to access the private key.<cite>Gigachad</cite></blockquote>
+<blockquote>Key on disk plus a passphrase is still only 1FA. Key in the SE + an unseal PIN is 2FA.<cite>tiberious726</cite></blockquote>
+<blockquote>I quite like having to authorize each remote git action with Touch ID.<cite>dsenkus</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Conventional SSH protection can be adequate</strong> &mdash; Some commenters argued that passphrases, an SSH agent, and Keychain can adequately protect keys on disk, and questioned whether file storage alone makes keys vulnerable.</p><blockquote>You use ssh agent to store the keys in memory and for convenience you can store the passphrases in keychain.<cite>LeBit</cite></blockquote>
+<blockquote>Update: I tried it out and stand corrected. ssh-add doesn’t store it in the user-readable keychain. So the passphrase is protected.<cite>Jakob</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Human approval can conflict with automation</strong> &mdash; Commenters working with headless systems or frequent development operations found approval prompts impractical or prone to fatigue, while others considered human presence an intentional security boundary.</p><blockquote>One fundamental problem with agentic development is that accessing the secure enclave key requires human presence.<cite>mavam</cite></blockquote>
+<blockquote>When you see 20 requests a day, your muscle memory just reaches for the sensor.<cite>jen729w</cite></blockquote>
+<blockquote>The Secure Enclave being inaccessible when you&#x27;re not present is a feature, not a bug.<cite>jon-wood</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Secretive and password-manager alternatives</strong> &mdash; Some commenters recommended tools such as Secretive or 1Password as practical ways to manage SSH credentials, while noting that these tools do not necessarily provide the same security model.</p><blockquote>I&#x27;ve been using Secretive (a nice software wrapper for these) for a few days for my Github keys (where 1Password holds the rest of my SSH keys).<cite>petesergeant</cite></blockquote>
+<blockquote>I had a hard time getting the stock stuff going but Secretive made it easy to set up and I love using it.<cite>johng</cite></blockquote>
+<blockquote>1Password + `op` cli is a good alternative choice here.<cite>earthpyy</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Portability and hardware-token tradeoffs</strong> &mdash; Commenters found macOS-specific setups difficult to use across operating systems, containers, and remote hosts. Hardware tokens can travel between machines, but may bring their own setup and day-to-day inconveniences.</p><blockquote>One of the problems I constantly face is that the SSH configuration is not portable when I use these esoteric things.<cite>spacelatte</cite></blockquote>
+<blockquote>This solution feels for me like a slight setback because it’s a macOS only solution.<cite>larusso</cite></blockquote>
+<blockquote>My biggest issue was the chicken and egg issue when using this setup on a new machine or god forbid in a container etc.<cite>larusso</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Reliability, recovery, and implementation concerns</strong> &mdash; Some commenters described keychain failures or poor documentation as sources of lockout and data-loss risk. Others emphasized that non-exportable keys require advance recovery arrangements.</p><blockquote>Developing for macos, I’ve gotten bit by keychain consistency issues far too many times. It’s a mess.<cite>redrove</cite></blockquote>
+<blockquote>It works nicely, but obviously you can&#x27;t back up a key that started life in a secure enclave, so you&#x27;ll need alternative access arrangements for anything you setup that way.<cite>petesergeant</cite></blockquote>
+<blockquote>Secure Enclave, TPM and other such security features are unfortunately so badly documented and need so many hoops to jump through to get them working, with any mistake either causing you to be locked out completely or to not give you the protection you wanted.<cite>gsliepen</cite></blockquote></div>
+    </article>
+    <article id="dossier-3" class="dossier-entry">
+      <div class="dossier-meta">N<sup>o</sup> 03 &nbsp;·&nbsp; Blueprint &nbsp;·&nbsp; Build Log</div>
+      <h3>Plane lifted into back garden as bunker takes shape</h3>
+      <p class="dossier-source">
+        <a href="https://www.bbc.co.uk/news/articles/cqkgjv4pj023o" target="_blank" rel="noopener">bbc.co.uk</a>
+        &nbsp;·&nbsp; 41 pts &nbsp;·&nbsp; 28 comments
+         &nbsp;·&nbsp; <a href='https://news.ycombinator.com/item?id=50424188' target='_blank' rel='noopener'>discussion</a>
+      </p>
+      <h4>Analysis</h4>
+      <p>Dave Billings bought the fuselage of a retired 1993 Bmibaby Boeing 737-500 for £4,000 and used a crane and volunteers to lower it into a large hole in his garden in Hilton, Derbyshire. He is converting the cabin into an underground “man cave” connected to an existing subterranean room, documenting the work on his popular Tornado Dave YouTube channel. The project involves substantial logistical and construction challenges, including transporting and positioning the aircraft, adapting its structure, and obtaining retrospective planning permission. It is notable for turning a decommissioned commercial aircraft into an unconventional private building project and illustrating the practical and regulatory complications of repurposing large industrial equipment.</p>
+      <h4>Reader Reactions</h4>
+<p class="camps-framing">The discussion focuses on whether the project can withstand moisture and structural loads, and whether it can secure planning permission. Some commenters point to possible protective measures and favorable site conditions, while others remain uncertain about the risks. A lighter thread treats the build as entertaining DIY spectacle, alongside scrutiny of its execution and content.</p>
+<div class="camp"><p class="camp-label"><strong>Durability and water-ingress concerns</strong> &mdash; Commenters question how the fuselage will be protected from soil, moisture, and corrosion; replies point to concrete and other possible protective measures, while some details remain uncertain.</p><blockquote>A 737 fuselage is made of aluminum, which will corrode with rain, salts, and sulfates present in most soils.<cite>bajard</cite></blockquote>
+<blockquote>Which is why these installs usually involve all sorts of external waterproofing, concrete encasement, galvanic/cathodic protections &amp; sacrificial anodes, drainage systems, and interior climate control.<cite>cannonpalms</cite></blockquote>
+<blockquote>Ideally, tank your hole with a membrane and pump. Only a noob garden-plane-in-hole owner would crane it in without one!<cite>Fluorescence</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Structural and safety doubts</strong> &mdash; Commenters raise questions about external loads on the fuselage, hazards in an underground space, and pressure during concrete pours; a reply notes that the concrete reinforcement is being poured in stages.</p><blockquote>How long until someone in Reddit points out at asphyxiation hazard, fire hazard, and the fact that the plane used to transport dangerous chemicals?<cite>halflife</cite></blockquote>
+<blockquote>Tbh I&#x27;m not entirely sure I&#x27;d trust a partial plane body to have the mechanical strength for the job.<cite>azornathogron</cite></blockquote>
+<blockquote>Biggest issue is during the pour which he seems to have planned in stages to not put too much pressure on it.<cite>sschueller</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Planning-permission uncertainty</strong> &mdash; Some commenters worry that seeking retrospective permission could lead to regulatory trouble; others think the setting and the project’s low visibility may make approval more likely.</p><blockquote>Isn&#x27;t that a bit risky?<cite>walthamstow</cite></blockquote>
+<blockquote>It&#x27;s often easier to get retroactive planning permission, and I suspect an underground bunker isn&#x27;t as likely to get denied as something more visible.<cite>xnorswap</cite></blockquote>
+<blockquote>Ouch - I hope he&#x27;s got a few channel fans on local council and doesn&#x27;t get bitten on the regs.<cite>defrost</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Enjoyment of the DIY spectacle and creator scene</strong> &mdash; Some commenters respond approvingly to the audacity of the project and connect it to Colin Furze and other creator-led DIY builds.</p><blockquote>He should talk to Colin furze<cite>Nashooo</cite></blockquote>
+<blockquote>Colin furze was there to help lower the plane<cite>Maxion</cite></blockquote>
+<blockquote>dudes rock<cite>katdork</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Skepticism about the project as content, plus hands-on scrutiny</strong> &mdash; A few commenters suggest that the planning aftermath may be more compelling than the construction, while another viewer criticizes details of the concrete work shown in the videos.</p><blockquote>The planning permission situation could end up being more interesting than the actual construction..<cite>Smith-7831</cite></blockquote>
+<blockquote>Too much water in this concrete mix.<cite>hosteur</cite></blockquote>
+<blockquote>This is the best feedback he could get to be sure it will run well you YT.<cite>DerDerDaIst</cite></blockquote></div>
+    </article>
+    <article id="dossier-4" class="dossier-entry">
+      <div class="dossier-meta">N<sup>o</sup> 04 &nbsp;·&nbsp; Notebook &nbsp;·&nbsp; Local Living</div>
+      <h3>Smart home devices should work without the internet</h3>
+      <p class="dossier-source">
+        <a href="https://docodethatmatters.com/home-automation-overnight-success/" target="_blank" rel="noopener">docodethatmatters.com</a>
+        &nbsp;·&nbsp; 1006 pts &nbsp;·&nbsp; 360 comments
+         &nbsp;·&nbsp; <a href='https://news.ycombinator.com/item?id=50441707' target='_blank' rel='noopener'>discussion</a>
+      </p>
+      <h4>Analysis</h4>
+      <p>The article argues that smart-home devices should remain functional without internet access, vendor clouds, or proprietary apps, with local control as the foundation and online services as optional conveniences. The author describes a setup built around Tasmota-enabled microcontrollers, MQTT, Node-RED, Grafana, and Raspberry Pis, while preserving ordinary switches, multiple control methods, logging, and maintainable configurations. It highlights failures such as broken APIs, discontinued services, cloud-only appliances, and devices that require accounts for basic functions, reflecting a broader business shift from selling products to subscription-dependent services. Local protocols, offline operation, repairability, and clear degraded modes matter because they improve reliability, privacy, security, accessibility, and the useful lifespan of hardware.</p>
+      <h4>Reader Reactions</h4>
+<p class="camps-framing">The dominant reaction favored keeping essential home functions independent of vendor clouds, with commenters sharing local-control approaches and examples of devices that failed when services disappeared. Disagreement focused on how to achieve that reliably and whether the setup and maintenance are worth the effort. Some emphasized ordinary physical controls and fallbacks, while others favored particular local protocols or described hacking devices into working locally. Others questioned the value of smart-home complexity or cited practical benefits such as energy savings. A side discussion debated AI-assisted writing and repair.</p>
+<div class="camp"><p class="camp-label"><strong>Local-first by default</strong> &mdash; Commenters argued that essential home devices should remain usable without an internet connection or vendor server.</p><blockquote>There&#x27;s no question that home automation should work without the internet.<cite>mountain_peak</cite></blockquote>
+<blockquote>And nobody should ever need an app to use their house.<cite>ocdtrekkie</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Keep ordinary controls and graceful fallbacks</strong> &mdash; Local automation was not enough for these commenters: basic functions should still work when the network or automation controller is unavailable.</p><blockquote>Smart functionality must not remove dumb functionality.<cite>diggernet</cite></blockquote>
+<blockquote>You walk in to the room and see a knob on a switch plate, you turn the knob and the light brightness increases regardless of the state of the internet, my home server, or even my network as a whole.<cite>wolrah</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Choose local protocols and resilient systems</strong> &mdash; Commenters recommended local-first protocols and systems to avoid cloud dependence and improve reliability, while differing on which technologies best deliver those goals.</p><blockquote>I fully stick to ZigBee and ZWave devices wherever possible, the reliability is just much better in my experience + they don&#x27;t clog up my wifi.<cite>connicpu</cite></blockquote>
+<blockquote>KNX is the solution. Look it up. Local first and by default. You own the equipment.<cite>thatonehack</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Hack or automate around cloud lock-in</strong> &mdash; Some commenters described reflashing devices, using local integrations, or employing AI coding tools to make cloud-dependent products work locally.</p><blockquote>upon receipt of devices, ask claude for local-first cfw<cite>reasonabl_human</cite></blockquote>
+<blockquote>So...yes! It&#x27;s finally working without the Internet.<cite>Brendinooo</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Smart homes can be worth the effort</strong> &mdash; Some commenters defended automation for practical benefits, including convenience, security, and reduced energy use.</p><blockquote>This really cut our power bill because people just forget these devices after turning them on.<cite>saidinesh5</cite></blockquote>
+<blockquote>it felt like living in the future.<cite>joshstrange</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Question the value of smart-home complexity</strong> &mdash; Skeptics felt that connected devices can add setup, maintenance, and failure points without enough benefit, and some preferred simple or low-tech alternatives.</p><blockquote>But this stuff just feels like it would over complicate my life for no real gain.<cite>robotburrito</cite></blockquote>
+<blockquote>It turns out that it is convoluted and less reliable to have local servers and stuff....<cite>ergocoder</cite></blockquote></div>
+    </article>
+    <article id="dossier-5" class="dossier-entry">
+      <div class="dossier-meta">N<sup>o</sup> 05 &nbsp;·&nbsp; Stat Hero &nbsp;·&nbsp; Domain Desk</div>
+      <h3>.name Grandfathered</h3>
+      <p class="dossier-source">
+        <a href="https://neil.fraser.name/news/2026/11/10/" target="_blank" rel="noopener">neil.fraser.name</a>
+        &nbsp;·&nbsp; 867 pts &nbsp;·&nbsp; 189 comments
+         &nbsp;·&nbsp; <a href='https://news.ycombinator.com/item?id=50442736' target='_blank' rel='noopener'>discussion</a>
+      </p>
+      <h4>Analysis</h4>
+      <p>Verisign has abandoned its plan to terminate about 22,000 existing third-level .name domains and email redirects after a lengthy campaign involving domain owners, lawyers, and formal appeals to ICANN. Existing registrations, including the author’s website and email services, will remain active indefinitely, although new registrations for third-level .name domains will be closed. The decision preserves users’ websites and email addresses and illustrates how registry policy changes can threaten long-established online identities. It also shows that coordinated advocacy and ICANN’s review processes can influence decisions affecting domain holders.</p>
+      <h4>Reader Reactions</h4>
+<p class="camps-framing">The discussion was led by relief that existing third-level .name registrations could remain active, with commenters crediting advocacy and ICANN’s review process. It also raised questions about the protections domain holders should have, the operational and technical complications of .name’s registration system, and the practical consequences for registrants who had already moved or let domains expire. Several commenters clarified that the dispute concerned third-level registrations rather than ordinary second-level .name domains.</p>
+<div class="camp"><p class="camp-label"><strong>Relief and a win for advocacy</strong> &mdash; Commenters welcomed the reversal and praised the people who challenged the proposed termination, while others were simply glad existing domains could continue.</p><blockquote>Success is possible. Well done to all.<cite>toomuchtodo</cite></blockquote>
+<blockquote>Resistance is not futile.<cite>Tepix</cite></blockquote>
+<blockquote>glad this got resolved, bummer it was thrown into question at all<cite>kinabalu76</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Domain-holder protections and contractual limits</strong> &mdash; Some commenters argued that registrants need stronger protections against losing long-held names; others noted that domain rights are shaped by contracts and renewal arrangements.</p><blockquote>For it to be illegal I think we would have to have much stronger digital ownership laws.<cite>Spivak</cite></blockquote>
+<blockquote>The idea that it&#x27;s perfectly fine for domains to just disappear is ridiculous.<cite>charcircuit</cite></blockquote>
+<blockquote>So I don&#x27;t think a court would think that a modern-day domain name registrant has property rights in a domain name that supersede all of those contractual terms.<cite>schoen</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Centralized control and DNS governance</strong> &mdash; Some saw the episode as a reason to reduce reliance on centralized naming authorities, while others focused on possible remedies through ICANN or registry policy.</p><blockquote>A new decentralized name system is necessary.<cite>andunie</cite></blockquote>
+<blockquote>Here&#x27;s what I don&#x27;t understand: if Verisign is too lame to continue handling .name domains, why wouldn&#x27;t ICANN insist that it auction off that TLD to someone who isn&#x27;t, and just take control of it and do it themselves if they don&#x27;t?<cite>RagnarD</cite></blockquote>
+<blockquote>Certainly nice to know they would&#x27;ve almost certainly proceeded as normal if the concerns didn&#x27;t blow up online<cite>xydone</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Operational and technical complications of .name</strong> &mdash; Commenters described the unusual third-level registration and email-forwarding services as requiring specialized support. They also discussed browser security and Public Suffix List complications, while questioning whether those issues justified ending service for existing users.</p><blockquote>It works differently than pretty much every other TLD, which means it&#x27;s different code paths to support.<cite>lambda</cite></blockquote>
+<blockquote>It has weird interactions with some modern browser features.<cite>swiftcoder</cite></blockquote>
+<blockquote>The real problem is that we&#x27;d have to add a wildcard to the public suffix list.<cite>OkayPhysicist</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Practical cleanup and future reliability</strong> &mdash; Some registrants had already changed email accounts or lost access to domains amid renewal and transfer difficulties. Others said they would move important services despite the reversal, given uncertainty about long-term support.</p><blockquote>This meant a lot of domains expired.<cite>troyrollo</cite></blockquote>
+<blockquote>Great to see a sane outcome but if I relied on one of these domains I&#x27;d still be moving away from it.<cite>padjo</cite></blockquote>
+<blockquote>I let my &quot;first.last.name&quot; registration expire because of the impending shutdown!<cite>nticompass</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Clarifying which .name domains were at risk</strong> &mdash; Commenters distinguished the affected third-level registrations from ordinary second-level .name domains and discussed whether new third-level registrations remained available.</p><blockquote>This is only for &quot;3rd level&quot; .name domains.<cite>codexon</cite></blockquote>
+<blockquote>This is only about 3rd level domain as the paragraph you quoted says.<cite>ksala_</cite></blockquote>
+<blockquote>One can&#x27;t (officially) register such 3rd level domains anywhere anymore.<cite>zamadatix</cite></blockquote></div>
+    </article>
+    <article id="dossier-6" class="dossier-entry">
+      <div class="dossier-meta">N<sup>o</sup> 06 &nbsp;·&nbsp; Product Plate &nbsp;·&nbsp; Vehicle Brief</div>
+      <h3>Scion is back and is going to sell a kei truck in America</h3>
+      <p class="dossier-source">
+        <a href="https://www.theautopian.com/scion-is-back-and-its-going-to-sell-a-freaking-kei-truck-in-america/" target="_blank" rel="noopener">theautopian.com</a>
+        &nbsp;·&nbsp; 489 pts &nbsp;·&nbsp; 317 comments
+         &nbsp;·&nbsp; <a href='https://news.ycombinator.com/item?id=50445401' target='_blank' rel='noopener'>discussion</a>
+      </p>
+      <h4>Analysis</h4>
+      <p>Toyota is reviving Scion as “Scion by Toyota,” a mobility-focused brand intended to explore unconventional vehicle designs rather than sell a conventional youth-oriented car lineup. Its first proposed production model, the KEI-01, is a rebadged Daihatsu Hijet/Pixis kei truck with a 660cc engine, CVT, four-wheel drive, a 600-pound payload, and low-speed-vehicle certification limiting it to roads under 35 mph. The truck would initially be offered only to fleets through a small pilot beginning in late 2027, despite being assembled through Toyota’s U.S. manufacturing infrastructure, and may remain right-hand drive. Two additional concepts—a hybrid-capable side-by-side and a compact outdoor mobility vehicle—illustrate the brand’s broader experimental direction, though neither is planned for public sale.</p>
+      <h4>Reader Reactions</h4>
+<p class="camps-framing">Commenters were generally interested in small, practical trucks, but disagreed about whether this 25-mph version could meet everyday needs or was better suited to specialized work. The discussion also weighed its price and specifications, the effects of regulation and market preferences on small trucks, road safety, and Toyota’s fleet-focused pilot.</p>
+<div class="camp"><p class="camp-label"><strong>Useful niche work vehicle</strong> &mdash; Supporters viewed kei trucks as practical tools for farms, groundskeeping, campuses, and other short-distance work, often comparing them with UTVs rather than everyday cars.</p><blockquote>They are incredibly pragmatic little vehicles.<cite>freetime2</cite></blockquote>
+<blockquote>These aren&#x27;t competing with cars, they&#x27;re competing with Gators<cite>ryukoposting</cite></blockquote>
+<blockquote>They seem like the ideal utility vehicle for city centres if you don’t need seating and are just hauling e.g. soil or bins or something.<cite>stackghost</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Too slow for ordinary trips</strong> &mdash; Many commenters said the 25-mph limit and restrictions on where the vehicle can be driven make it impractical for commuting, errands, or trips between rural towns. Others said they would accept slower or longer local journeys.</p><blockquote>25 mph works for golf courses, resort, or island use. In rural areas on the mainland, roads connecting towns often have 45 or 55 mph speed limits so unless you plan on staying on the farm I don&#x27;t think these are practical for trips to go shopping, dumping, hauling, etc.<cite>ilamont</cite></blockquote>
+<blockquote>It’s a huge mistake to limit the speed to 25mph.<cite>__alexander</cite></blockquote>
+<blockquote>My drive would go from 15 minutes to 20.<cite>ourmandave</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Specs and price may undermine its appeal</strong> &mdash; Commenters questioned whether the payload, price, transmission, and other specifications would make the truck competitive with used imports, UTVs, or conventional small pickups.</p><blockquote>They are not fun cars, they should be cheap and disposable.<cite>rootsudo</cite></blockquote>
+<blockquote>With a 600 lb payload (including people), you can&#x27;t even cart a single cubic yard of mulch.<cite>taurusnoises</cite></blockquote>
+<blockquote>All that said, $25k isn&#x27;t cheap when you can get a basic Polaris SXS for $15k.<cite>alistairSH</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Small trucks are constrained by policy and market preferences</strong> &mdash; Some commenters attributed the lack of small, functional trucks in the U.S. to regulation and trade policy, while others emphasized fuel prices and consumer preferences as important factors.</p><blockquote>The confluence of CAFE standards and tax benefits entirely eliminated small vehicles in the United States.<cite>dennyabraham</cite></blockquote>
+<blockquote>In 1963 Lyndon Johnson added &quot;light trucks&quot; to the Chicken Tax as a quid pro quo to prevent the auto workers union from striking before the election.<cite>mike_d</cite></blockquote>
+<blockquote>CARB only nudges manufacturers, but the market’s own purchase preferences are doing the big push.<cite>Grombobulous</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Safety and road-suitability debate</strong> &mdash; Some commenters considered kei trucks poorly suited to American roads because of their size and limited crash protection. Others objected that small vehicles face safety constraints while much larger pickups remain common.</p><blockquote>US roads are built for much, much higher speeds.<cite>Grombobulous</cite></blockquote>
+<blockquote>Kei trucks are coffins on wheels.<cite>nntwozz</cite></blockquote>
+<blockquote>There is clearly no safety issue with getting groceries and picking your kid up from school in something that weighs most of 10K lbs and has such dogshit sight lines that you could run over a whole school bus&#x27;s worth of kids in a crosswalk and hardly notice.<cite>caconym_</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Fleet pilot rather than a consumer pickup</strong> &mdash; Some commenters interpreted Toyota’s fleet-focused pilot as a test of commercial and agricultural uses, rather than an attempt to sell a general-purpose pickup to private buyers. Some hoped a later version might be more broadly usable.</p><blockquote>It&#x27;s meant for farms and work sites not commuting or running errands<cite>TSiege</cite></blockquote>
+<blockquote>I do hope they&#x27;re able to build on this, and maybe offer left-hand-drive and a more reasonable top speed eventually.<cite>lastofthemojito</cite></blockquote>
+<blockquote>I suspect they are testing the waters before they build a proper LHD model targeting the broader US consumer market.<cite>julienb_sea</cite></blockquote></div>
+    </article>
+    <article id="dossier-7" class="dossier-entry">
+      <div class="dossier-meta">N<sup>o</sup> 07 &nbsp;·&nbsp; Terminal &nbsp;·&nbsp; System Core</div>
+      <h3>Greg Kurtzer&#x27;s Ginux is now a userspace kernel</h3>
+      <p class="dossier-source">
+        <a href="https://github.com/gmkurtzer/ginux" target="_blank" rel="noopener">github.com</a>
+        &nbsp;·&nbsp; 83 pts &nbsp;·&nbsp; 40 comments
+         &nbsp;·&nbsp; <a href='https://news.ycombinator.com/item?id=50450007' target='_blank' rel='noopener'>discussion</a>
+      </p>
+      <h4>Analysis</h4>
+      <p>Ginux has pivoted from an experimental standalone Rust kernel into a userspace kernel that runs as an ordinary Linux process and provides isolated workloads with explicit, versioned compatibility contracts. It intercepts managed system calls and can emulate them, mediate narrowly validated host operations, or deny them, while virtualizing processes, identities, devices, filesystems, and kernel views around a pinned Rocky Linux userspace. The project aims to offer a more reviewable boundary than unrestricted Linux for workloads such as AI agents, but differs from seccomp and related systems by treating the entire instance interface and lifecycle as one configurable contract. Its current Rocky/systemd baseline is research software—not complete Linux compatibility or production-grade containment—with performance, coverage, and escape boundaries still under testing.</p>
+      <h4>Reader Reactions</h4>
+<p class="camps-framing">The reaction was curious but cautious. Commenters debated whether a userspace kernel’s narrower interface can reduce exposure, or whether it adds another kernel-like component that must itself be trusted. They compared Ginux with namespaces, User-mode Linux, gVisor, and VMs, weighing security, compatibility, performance, and maturity. Others questioned the project’s durability and the role of AI-assisted development, while some argued that AI assistance alone does not settle its value or trustworthiness.</p>
+<div class="camp"><p class="camp-label"><strong>A narrower interface may reduce exposure</strong> &mdash; Supporters saw value in mediating access to a smaller set of interfaces rather than exposing the full host kernel. Some framed this as an additional layer of defense, not a guarantee that Ginux itself is safe.</p><blockquote>The Linux kernel is a gigantic attack surface with a ton of legacy stuff most modern applications will never need. Namespaces do not really help with this, but userspace kernels can.<cite>weinzierl</cite></blockquote>
+<blockquote>Rootless namespaces are getting better, but they don&#x27;t eliminate the host kernel attack surface<cite>Pawenniag</cite></blockquote>
+<blockquote>If it has to go through another layer , hopefully without ring0 privs, which more than likely may filter out a number of exploit vectors, how is this the wrong approach ?<cite>worthless-trash</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Namespaces and a new kernel may not improve security</strong> &mdash; Skeptics argued that namespaces already provide substantial isolation, or that distrust of Linux does not automatically justify trusting a new userspace kernel. Some also asked why not improve User-mode Linux, which offers the full Linux API.</p><blockquote>This is kind of the wrong approach when linux namespaces exist and rootless namespaces are approach full spectrum.<cite>asdfsa32</cite></blockquote>
+<blockquote>If you can&#x27;t trust Linux because it is gigantic, you can&#x27;t trust a whole another new kernel.<cite>asdfsa32</cite></blockquote>
+<blockquote>Why write a new kernel from scratch instead of fixing/improving usermode Linux instead, which has the benefit of providing the entire Linux API already?<cite>qalmakka</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Established userspace-kernel approaches offer a practical comparison</strong> &mdash; Commenters compared Ginux with gVisor and User-mode Linux, focusing on syscall handling, compatibility, performance, and the maturity of existing alternatives. Questions about implementation added a technical dimension to the comparison.</p><blockquote>It seems to be more like gVisor than UML, providing a restricted kernel interface as opposed to the full kernel.<cite>anygivnthursday</cite></blockquote>
+<blockquote>gVisor gives you excellent startup time, resource allocation and density at the expense of some app compat and performance at the extremes<cite>eddythompson80</cite></blockquote>
+<blockquote>From the README &gt; The current implementation includes a security-focused x86-64 interpreter and a balanced native ptrace backend; ptrace allows you to have the kernel redirect syscalls back to userspace, mostly for debugging purposes.<cite>krautsauer</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>VMs and layered isolation remain part of the comparison</strong> &mdash; Some commenters wanted to know whether Ginux could approach VM-style isolation or help in constrained environments without KVM. Others emphasized that VMs are not impenetrable and that different isolation mechanisms can be combined.</p><blockquote>I’d be very interested in it if it started to approach VM style isolation without needing KVM access (or qemu).<cite>mbreese</cite></blockquote>
+<blockquote>I’m still fascinated by the approach, though. It seems to me that it sits somewhere between cgroups and virtual machines.<cite>stingraycharles</cite></blockquote>
+<blockquote>You can combine hypervisors, user space kernels and linux namespaces all into one solution. The attacker will have to escape all of them.<cite>imtringued</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Containment does not decide what an agent is allowed to do</strong> &mdash; A smaller thread distinguished preventing an escape from setting policy for an AI agent. It argued that an agent may perform unwanted actions within a sandbox even when the isolation boundary holds.</p><blockquote>Your sandbox is now a policy that tells the agent what it is allowed to do or not.<cite>imtringued</cite></blockquote>
+<blockquote>For example, I&#x27;d not trust an AI agent even inside a VM in my own system.<cite>bayindirh</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Project durability and AI-assisted development remain contested</strong> &mdash; Some commenters doubted that a recently pivoted project would receive the sustained effort needed for dependable use, and questioned reliance on AI-generated work. Others asked what value was missing or argued that AI assistance is compatible with security work if humans verify the result.</p><blockquote>A project picked up casually, for a short time, is likely to be dropped casually, in a short time.<cite>jmull</cite></blockquote>
+<blockquote>No obvious to me, sorry. What will I get from this?<cite>luckystarr</cite></blockquote>
+<blockquote>It can be written with the help AI, but it needs many humans to verify.<cite>frevib</cite></blockquote></div>
+    </article>
+    <article id="dossier-8" class="dossier-entry">
+      <div class="dossier-meta">N<sup>o</sup> 08 &nbsp;·&nbsp; Mint Pattern &nbsp;·&nbsp; Low-Level Lore</div>
+      <h3>A great old-timey game-programming hack (2013)</h3>
+      <p class="dossier-source">
+        <a href="https://blog.moertel.com/posts/2013-12-14-great-old-timey-game-programming-hack.html" target="_blank" rel="noopener">blog.moertel.com</a>
+        &nbsp;·&nbsp; 189 pts &nbsp;·&nbsp; 40 comments
+         &nbsp;·&nbsp; <a href='https://news.ycombinator.com/item?id=50448921' target='_blank' rel='noopener'>discussion</a>
+      </p>
+      <h4>Analysis</h4>
+      <p>The story recounts how two developers made an otherwise unplayable 1980s side-scrolling game run smoothly on a slow 6809-based PC with no graphics acceleration. After conventional optimization—including loop unrolling—proved insufficient, they exploited the processor’s stack instructions and every available register to copy tile data much faster, accepting reversed rows and swapped blocks that were corrected through tile preprocessing. They then handled interrupt-related memory corruption by directing it into the redrawable screen buffer and ordering tile updates so corruption was repaired before display. The episode illustrates how severe hardware constraints encouraged inventive, hardware-specific optimization, while highlighting the trade-offs and complexity such techniques introduced.</p>
+      <h4>Reader Reactions</h4>
+<p class="camps-framing">Commenters admired the ingenuity of low-level programming and shared related hardware tricks and personal experiences. They differed on how relevant those techniques remain today, while historical context, technical clarifications, and broader reflections on programming culture added other perspectives.</p>
+<div class="camp"><p class="camp-label"><strong>Appreciation for low-level ingenuity</strong> &mdash; Commenters praised the effort and creativity involved in working closely with limited hardware, and some enjoyed the story even without following every technical detail.</p><blockquote>Wonderful. What an extraordinary effort and great results.<cite>baud9600</cite></blockquote>
+<blockquote>That&#x27;s the kind of thing you&#x27;d never believe if you hadn&#x27;t seen it work.<cite>BrtByte</cite></blockquote>
+<blockquote>I love reading about this stuff, even if I understand very little of it.<cite>abrookewood</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>The spirit survives in modern performance work</strong> &mdash; Some commenters described contemporary equivalents in graphics, cloud functions, and distributed services, or suggested ways to explore hardware-level programming today.</p><blockquote>These kinds of things are still important these days.<cite>gchamonlive</cite></blockquote>
+<blockquote>Not saying that most game programming is like that, but if you specialize in graphics and performance, preferably in large productions, you get to work close to the hardware and solve a lot of really fun problems in interesting ways.<cite>Agentlien</cite></blockquote>
+<blockquote>I guess my equivalent these days is optimizing distributed services - a small change here, a realization there and you can save whole percentages of performance in affected services when effectively DDoSing yourself.<cite>choult</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Debate over whether the specific tricks are obsolete</strong> &mdash; Some argued that modern bottlenecks and compiler optimizations reduce the relevance of the techniques, while others noted that SIMD and hand-written code remain useful.</p><blockquote>On modern CPUs such tricks are irrelevant. They are able to process multiple instructions in the same time, so that the main bottleneck is no longer executing instructions, but accessing memory.<cite>Panzerschrek</cite></blockquote>
+<blockquote>Kind of, but not really? At its core this article is basically a hack to do a bit of SIMD on an instruction set that doesn&#x27;t have SIMD.<cite>Rohansi</cite></blockquote>
+<blockquote>Those specific tricks are irrelevant mostly due to compiler optimisations, even in compute heavy workloads.<cite>4gotunameagain</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Related hardware hacks and programming war stories</strong> &mdash; Commenters shared other examples of exploiting processor instructions, hardware behavior, and constrained environments to improve performance.</p><blockquote>The BRK instruction pushes the PC and status register to the stack in three consecutive cycles, and is pretty much the only non-interrupt instruction that writes more than twice.<cite>sehugg</cite></blockquote>
+<blockquote>Monster Max on Game Boy happens to use unrolled &quot;ld de,NNNN / push de&quot; loops constructed in main memory to write to video ram.<cite>Dwedit</cite></blockquote>
+<blockquote>It took search down to less than 3 seconds if the whole file was loaded in RAM.<cite>mikewarot</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Historical context and technical clarifications</strong> &mdash; Some commenters added context about how the 6809 trick spread and how hardware-specific knowledge was shared, while others clarified the computer and graphics hardware involved.</p><blockquote>The clever 6809 PSHU/PULS memory copy trick was probably independently discovered several times before Tom Moertel discovered it.<cite>mrandish</cite></blockquote>
+<blockquote>Back in the day, people could discover incredibly clever things, but when it came to writing stuff down and distributing the information in an organized way, it seems like you only got the &quot;reference&quot; documentation.<cite>zahlman</cite></blockquote>
+<blockquote>That&#x27;s not entirely correct: the graphics hardware took the video memory and built an image from that (frame buffer graphics).<cite>rob74</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Reflections on programming culture</strong> &mdash; Side discussions connected the story to concerns about AI replacing hands-on problem-solving and to interest in Terry Davis and TempleOS.</p><blockquote>This process is what’s missing in the ai era.<cite>jimbobbam</cite></blockquote>
+<blockquote>it&#x27;s pretty neat actually. it&#x27;s easy to make fun of his clunky demos and mental illness, but he built something incredibly entertaining to work with.<cite>__del__</cite></blockquote>
+<blockquote>idk about that. people will always find a way of working together to solve problems. that &quot;solving&quot; the AI era means &quot;pulling the lever on the claude machine&quot; is sad, I agree<cite>nunez</cite></blockquote></div>
+    </article>
+    <article id="dossier-9" class="dossier-entry">
+      <div class="dossier-meta">N<sup>o</sup> 09 &nbsp;·&nbsp; Pastel Finale &nbsp;·&nbsp; Local Models</div>
+      <h3>Apple has new Mac app coming to make running local AI models easy</h3>
+      <p class="dossier-source">
+        <a href="https://9to5mac.com/2026/11/10/apple-has-new-mac-app-coming-to-make-running-local-ai-models-easy/" target="_blank" rel="noopener">9to5mac.com</a>
+        &nbsp;·&nbsp; 296 pts &nbsp;·&nbsp; 266 comments
+         &nbsp;·&nbsp; <a href='https://news.ycombinator.com/item?id=50446520' target='_blank' rel='noopener'>discussion</a>
+      </p>
+      <h4>Analysis</h4>
+      <p>Apple is reportedly developing Harbor, a Mac app that simplifies running open-weight AI models locally rather than sending data to cloud services. The app would automatically detect Apple silicon Macs connected over Thunderbolt 5, pool their unified memory, and allow users to download, manage, and serve models without command-line configuration. This could let individuals and organizations run larger models or support more simultaneous requests using multiple Macs, while keeping data on their own hardware. Harbor is currently in private preview under Apple’s Claris brand, so its release timing, supported hardware, and final capabilities remain unconfirmed.</p>
+      <h4>Reader Reactions</h4>
+<p class="camps-framing">Commenters weighed Apple’s hardware and ecosystem strengths against concerns about its AI delays, the economics of local inference, and whether Harbor adds enough value over existing tools. The discussion also turned on whether AI agents could displace apps, and whether local models are most useful as a complement to cloud services or a substitute for them.</p>
+<div class="camp"><p class="camp-label"><strong>Apple can compete through hardware and integration</strong> &mdash; Some commenters argued Apple could benefit from efficient local models, Apple silicon, privacy, and control of the user-facing experience, even without leading in frontier models.</p><blockquote>Apple will be there, as usual, to provide secure, on-device, faster inference that the vast majority of their customers will be fine with.<cite>leftnode</cite></blockquote>
+<blockquote>Apple and Microsoft and other companies will own that front-end experience with the customer, and it’s not going to matter to most customers whose backend gets used for what.<cite>bradknowles</cite></blockquote>
+<blockquote>But the hardware. The hardware is fantastic for local LLM&#x27;s, generative ai, etc.<cite>esskay</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Whether AI agents will displace apps remains disputed</strong> &mdash; Some commenters thought people could shift from apps to AI agents, threatening the iPhone ecosystem; others pointed to the practical and technical difficulties of replacing apps and services with agents.</p><blockquote>I think AI will severely weaken iOS, App Store, and the iPhone in the next few years.<cite>aurareturn</cite></blockquote>
+<blockquote>Essentially every single non-builtin app on my phone fundamentally requires the internet to work, and is backed by some sort of SaaS with a proprietary API.<cite>Sharlin</cite></blockquote>
+<blockquote>The logistical gap between “Agent get me a ride” and an Uber app button that says “get me a ride” is astronomical.<cite>threetonesun</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Cloud often looks like the better deal</strong> &mdash; Many commenters judged cloud models to offer better capability and lower overall costs for most users, especially when local hardware, electricity, and upkeep are included.</p><blockquote>At no point in the foreseeable future will a local model be able to compete with a cloud model in terms of price.<cite>credit_guy</cite></blockquote>
+<blockquote>Also a lot of people work from laptops and running inference on data centres for 10th of the price is a no-brainer.<cite>small_model</cite></blockquote>
+<blockquote>Where I am, it&#x27;s cheaper to purchase multiple claude subscriptions than it is for the power bill from running a local model .<cite>nomel</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Local inference has value for some users</strong> &mdash; Supporters emphasized privacy and avoiding ongoing provider costs, particularly for heavy or business use. Some saw local and cloud inference serving different needs rather than one replacing the other.</p><blockquote>Many users would prefer to use a Sonnet-level (or better) LLM without sharing their data with others.<cite>aurmc</cite></blockquote>
+<blockquote>If/when Anthropic changes to pure API pricing, or for API-heavy projects, that&#x27;s when I&#x27;d switch to more local models.<cite>jph</cite></blockquote>
+<blockquote>I can imagine a future where we look back at these times of relying on big opaque hosted services to run inference and find it quaint.<cite>olowe</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Memory costs could limit local AI</strong> &mdash; Commenters worried that memory prices, availability, and the cost of high-memory Macs could make capable local models inaccessible or difficult for Apple to scale affordably.</p><blockquote>With how expensive memory is, IDK if they can pull this off but I hope they do<cite>n_u</cite></blockquote>
+<blockquote>Great, except with current DRAM prices nobody can afford it.<cite>amelius</cite></blockquote>
+<blockquote>Their customers will pay to outbid Apple, just like how Apple outbid the industry on TSMC&#x27;s 5nm node.<cite>bigyabai</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Harbor may help novices more than experienced users</strong> &mdash; Some commenters welcomed a supported tool that simplifies setup and maintenance for nontechnical users, while others said local models are already easy to run with existing software.</p><blockquote>This is what I&#x27;ve wanted for the last few years. I have played around with local models and had some success, but I don&#x27;t want to deal with the hassle of setting up, updating, etc.<cite>apparent</cite></blockquote>
+<blockquote>Their customer base includes many non-tech people who don’t want open a terminal window or even know of what a “GitHub” is.<cite>Insanity</cite></blockquote>
+<blockquote>Running local models is already extremely easy.<cite>crossroadsguy</cite></blockquote></div>
+    </article>
+    <article id="dossier-10" class="dossier-entry">
+      <div class="dossier-meta">N<sup>o</sup> 10 &nbsp;·&nbsp; Academic &nbsp;·&nbsp; Biosecurity</div>
+      <h3>To deter bioterrorism, U.S. imposes new rules on ordering synthetic DNA</h3>
+      <p class="dossier-source">
+        <a href="https://www.science.org/content/article/deter-bioterrorism-u-s-imposes-new-rules-ordering-synthetic-dna" target="_blank" rel="noopener">science.org</a>
+        &nbsp;·&nbsp; 114 pts &nbsp;·&nbsp; 78 comments
+         &nbsp;·&nbsp; <a href='https://news.ycombinator.com/item?id=50449275' target='_blank' rel='noopener'>discussion</a>
+      </p>
+      <h4>Analysis</h4>
+      <p>The U.S. has issued a new policy requiring federally funded researchers to buy synthetic DNA and benchtop synthesis equipment from approved suppliers that verify customers and screen orders for sequences linked to pathogens or toxins. The rules, being phased in over 340 days, replace voluntary industry guidelines as advances in DNA synthesis make it easier to assemble genes and entire genomes. Supporters see mandatory screening as a meaningful biosecurity improvement that could also influence companies to apply it more broadly, while critics note gaps including the 50-base-pair screening threshold, vague identity checks, uncovered existing equipment and international suppliers, and limited enforcement resources. The policy matters because it raises barriers to misuse, but experts stress that synthetic-DNA screening addresses only one route to creating dangerous pathogens and should accompany preparedness measures such as vaccines and hospital capacity.</p>
+      <h4>Reader Reactions</h4>
+<p class="camps-framing">The discussion centered on whether synthetic-DNA screening adds a worthwhile barrier or is easy for determined actors to bypass. Commenters also disagreed about whether AI changes biological risks or merely draws attention to longstanding screening practices, and some questioned whether exotic threats receive more attention than other risks.</p>
+<div class="camp"><p class="camp-label"><strong>Catastrophic-risk rationale</strong> &mdash; Some commenters argued that engineered pathogens could cause harm on a scale that makes even a low-probability threat worth addressing, and that AI could increase the damage a motivated individual can cause.</p><blockquote>If something like that gets out it&#x27;s probably civilization ending.<cite>mrob</cite></blockquote>
+<blockquote>Because it massively raises the amount of damage that a lone-wolf crazy person can do.<cite>aqme28</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>AI may amplify biological risk</strong> &mdash; Some commenters thought AI could make harmful biological work easier for motivated people, even if it cannot produce a dangerous pathogen on demand.</p><blockquote>It doesn&#x27;t have to do all the work for you but people knowledgeable and motivated enough are now 10-100x more of a nuisance.<cite>233mhz</cite></blockquote>
+<blockquote>Are the bleeding edge models finding something scary enough that can be done with synthetic DNA that it needs to be restricted asap?<cite>AnotherGoodName</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>AI is not the explanation</strong> &mdash; Others said the rules formalize existing screening practices rather than respond to a new AI-driven breakthrough, noting that known dangerous sequences are already known and screening would not catch novel designs.</p><blockquote>You don&#x27;t need AI to generate known toxin or pathogen sequences (as these are already known).<cite>epihelix</cite></blockquote>
+<blockquote>The top models are not uncovering anything novel with DNA.<cite>epistasis</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Screening is limited and bypassable</strong> &mdash; Several commenters argued that screening leaves gaps and that determined actors could assemble DNA or obtain it through other means, potentially leaving legitimate researchers with more of the burden.</p><blockquote>If you&#x27;ve got the skills and determination to get the synthetic DNA into a functioning cell, I don&#x27;t think limiting access to synthetic DNA in the first place is going to stop you.<cite>__MatrixMan__</cite></blockquote>
+<blockquote>No one who is inclined to build a biological WMD is going to be more than mildly inconvenienced by supply restrictions.<cite>CamperBob2</cite></blockquote>
+<blockquote>A would-be bioterrorist, he argues, could easily stitch together a dangerous sequence from much smaller fragments ordered from multiple different suppliers.<cite>3eb7988a1663</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Incremental barriers still help</strong> &mdash; In response, others argued that security measures can be worthwhile even if they do not stop highly capable attackers, and that the policy aims to influence supplier screening and customer verification.</p><blockquote>Sounds like a fully general argument against any sort of security measure. &quot;A dedicated thief won&#x27;t be deterred by a lock or burglar alarm.&quot; Sure. I&#x27;m still buying that stuff.<cite>0xDEAFBEAD</cite></blockquote>
+<blockquote>If you read the next two sentences it makes it fairly obvious that this is a plan to indirectly target suppliers.<cite>0xDEAFBEAD</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Focus on more immediate threats and preparedness</strong> &mdash; Some commenters questioned why engineered pathogens draw attention when other routes to harm may be easier, while others emphasized the potentially much wider impact of a pandemic-scale pathogen.</p><blockquote>Like all of our water supplies are much easier to mess with compared to developing a virus or whatever that may or may not work<cite>whatever1</cite></blockquote>
+<blockquote>Not to mention causing a famine or lack of medicine by sabotaging the cold chain.<cite>m4rtink</cite></blockquote>
+<blockquote>Your status as a &quot;defender&quot; is measured by the fanciness of the threats you defend against, not their actual magnitude.<cite>pjc50</cite></blockquote></div>
+    </article>
+  </section>
+  <footer class="colophon">
+    <p class="sig">— that's the edition.</p>
+    <p class="meta">Set in Fraunces &amp; Inter · Compiled November 11, 2026</p>
+    <p class="classic-link"><a href="classic.html">Prefer the classic card view? →</a></p>
+  </footer>
+<script>
+(() => {
+  const key = "gtd:read_days:hn:v1";
+  const day = "2026-11-11";
+  let stored = [];
+  try {
+    stored = JSON.parse(localStorage.getItem(key) || "[]");
+    if (!Array.isArray(stored)) stored = [];
+  } catch (e) {}
+  if (!stored.includes(day)) {
+    stored.push(day);
+    stored.sort();
+    localStorage.setItem(key, JSON.stringify(stored));
+  }
+})();
+</script>
+<script src="../../preference.js?v=98be1f57e" defer></script>
+<script>
+// Simple script to toggle the [+] and [-] labels on the drawers
+document.querySelectorAll('.analysis-drawer').forEach(drawer => {
+  drawer.addEventListener('toggle', () => {
+    const summary = drawer.querySelector('summary');
+    if (drawer.open) {
+      summary.textContent = '[ Analysis − ]';
+    } else {
+      summary.textContent = '[ Analysis + ]';
+    }
+  });
+});
+
+// Share link — native share or copy markdown to clipboard
+(function () {
+  const links = document.querySelectorAll('.share-link');
+  if (!links.length) return;
+
+  const toast = document.createElement('div');
+  toast.className = 'discuss-toast';
+  document.body.appendChild(toast);
+
+  function showToast(msg) {
+    toast.textContent = msg;
+    toast.classList.add('show');
+    setTimeout(() => toast.classList.remove('show'), 2500);
+  }
+
+  function buildMarkdown(link, spread) {
+    const title = link.dataset.shareTitle || '';
+    const url = link.dataset.shareUrl || '';
+    const meta = spread ? spread.querySelector('.story-meta') : null;
+    const lede = spread ? spread.querySelector('.lede') : null;
+    const analysis = spread ? spread.querySelector('.drawer-analysis') : null;
+    let md = '# ' + title + '\n';
+    md += 'Source: ' + url;
+    if (meta) md += ' | ' + meta.textContent.trim();
+    md += '\n';
+    if (lede) md += '\n' + lede.textContent.trim() + '\n';
+    if (analysis) md += '\n## Analysis\n' + analysis.textContent.trim() + '\n';
+    return md;
+  }
+
+  links.forEach((link) => {
+    link.addEventListener('click', (e) => {
+      e.preventDefault();
+      const spread = link.closest('section.spread');
+      const md = buildMarkdown(link, spread);
+      const text = "I'd like to discuss this with you. Here's a summary:\n\n" + md;
+      const title = 'Discuss: ' + (link.dataset.shareTitle || '');
+      if (navigator.share) {
+        navigator.share({ title: title, text: text }).catch(() => {});
+      } else {
+        navigator.clipboard.writeText(text).then(
+          () => showToast('Copied to clipboard \u2014 paste into your AI chat'),
+          () => showToast('Failed to copy')
+        );
+      }
+    });
+  });
+})();
+</script>
+</body>
+</html>
