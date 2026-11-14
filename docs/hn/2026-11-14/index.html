@@ -1,0 +1,834 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Morning Edition — November 14, 2026</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght,SOFT@0,9..144,300..900,0..100;1,9..144,300..900,0..100&family=Inter:ital,wght@0,100..900;1,100..900&family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../morning.css?v=64d58e5c44">
+</head>
+<body id="top" data-gtd-edition="hn" data-gtd-date="2026-11-14">
+  <header class="masthead">
+    <div class="masthead-nav">
+      <a href="../">Hacker News Calendar</a>
+      <span>&nbsp;·&nbsp;</span>
+      <a href="../../2026-11-14/">GitHub Trending &nbsp;·&nbsp; Nov 14</a>
+      <span>&nbsp;·&nbsp;</span>
+      <a href="classic.html">Classic View</a>
+    </div>
+    <div class="tagline">The Morning Edition</div>
+    <h1 class="frnc">Ten stories, before your coffee.</h1>
+    <div class="issue-line">
+      <span>Vol. I</span>
+      <span>November 14, 2026</span>
+      <span>HN Front Page Digest</span>
+    </div>
+  </header>
+<section class="the-take"><details open><summary>The HN Take</summary><h3 class="take-head">Phone computer</h3><p>Here is a hardware procurement strategy:</p><p>A developer needs &quot;a high resolution camera, GPS, storage, and a microcontroller to control some lights.&quot; The natural approach is to buy a Raspberry Pi 4, an Arducam camera, GPS, storage and eventually various add-on boards for a clock, battery, touchscreen and mobile data. The core setup costs about $222; the more complete one costs roughly $347 plus batteries.</p><p>Or:</p><p>&quot;Phones like these turn up second hand on Taobao for roughly ¥300-500 (£33-56 / €40-67 / $45-75).&quot;</p><p>The phones already have 40- or 50-megapixel cameras, GPS, storage, clocks, batteries, touchscreens and 5G. They also have USB-C ports for connecting the custom light controller. Apparently the cheapest way to assemble a small computer is to buy an extremely mass-produced small computer whose previous owner no longer wants it.</p><p>This is not entirely surprising. A Raspberry Pi is cheap relative to a normal general-purpose computer, but it is a component. A phone is an entire finished consumer product assembled at vast scale, depreciated for a few years and then sold into a used market that mostly values it as an unfashionable phone rather than as a camera-equipped GPS computer with cellular networking. The old phone comes with a free touchscreen because nobody wants that touchscreen anymore.</p><p>There are drawbacks. The Redmi had to be unlocked and rooted. The Huawei is harder to root. A &quot;50MP JPEG file does not, by itself,&quot; prove that its camera beats the Arducam. And while finding two used phones is easy, finding hundreds with matching hardware, healthy batteries and predictable camera behavior is a supply-chain problem.</p><p>Still, the basic economics are compelling. If you need one programmable device with a camera, battery, screen, GPS and modem, you can buy all those parts separately. Or you can buy a phone and spend your engineering budget persuading it that it is not a phone.</p><h3 class="take-head">Ggml 1.0</h3><p>Ggml has reached version 1.0.0, which means, among other things, that it has pruned deprecated APIs, bumped its RPC protocol to reject incompatible peers and added performance work across CUDA, Metal, Vulkan, SYCL, OpenCL, WebGPU, Hexagon, CPU, CANN, ZDNN and OpenVINO.</p><p>This is what local AI infrastructure looks like. The high-level product pitch is &quot;run a model on your device.&quot; The underlying engineering pitch is &quot;support every conceivable definition of device.&quot;</p><p>There are new few-row quantized matrix multiplications on CUDA, fused mixture-of-experts routing on Metal, FlashAttention prefill on Vulkan, a device-side MoE scheduler on SYCL, decomposed Adreno FlashAttention in OpenCL, more operations on Hexagon and assorted CPU kernels. Also the scheduler now avoids uploading inputs that are not read, an optimization with the pleasing general principle that computers are faster when they do not move data they will never use.</p><p>The release is called 1.0, but the interesting milestone is less that ggml is finished than that local inference has become a sufficiently real computing layer to require this much hardware diplomacy. You write one model runtime, and then negotiate separately with every chip ever placed in a laptop, graphics card, browser or phone. The model is universal. The matrix multiplication is extremely local.</p><div class="take-sources"><span>Sources</span><ul><li><a href="https://so.long.thanks.fish/why-pi-when-i-have-an-old-phone/" target="_blank" rel="noopener noreferrer">Why get an expensive Pi when I have an old phone?</a></li><li><a href="https://github.com/ggml-org/ggml/releases/tag/v1.0.0" target="_blank" rel="noopener noreferrer">Ggml v1.0.0</a></li></ul></div></details></section>
+  <section id="story-1" class="spread arc-blueprint">
+    <div class="corner tl">+</div><div class="corner tr">+</div>
+    <div class="corner bl">+</div><div class="corner br">+</div>
+    <div class="numeral">01</div>
+    <div class="kicker">Build Log</div>
+    <h2>The Old Phone Beats the New Pi</h2>
+    <p class="story-meta">so.long.thanks.fish &nbsp;·&nbsp; 116 pts &nbsp;·&nbsp; 71 comments</p>
+    <p class="lede">A used smartphone arrives with camera, GPS, storage, battery, display, and 5G already installed. This build tests whether rooting a $45–75 handset can turn surplus hardware into a capable remote platform.</p>
+    <div class="spread-links"><a class="read-more" href="https://so.long.thanks.fish/why-pi-when-i-have-an-old-phone/" target="_blank" rel="noopener">Read →</a><a class="read-more share-link" href="#" data-share-title="Why get an expensive Pi when I have an old phone?" data-share-url="https://so.long.thanks.fish/why-pi-when-i-have-an-old-phone/">Share →</a>
+      <details class="analysis-drawer">
+        <summary class="btn-dossier">[ Analysis + ]</summary>
+        <div class="drawer-content">
+          
+          <h4>Technical Analysis</h4>
+          <div class="drawer-analysis">
+          <p>The story argues that a used smartphone can be a cheaper, more capable platform than a Raspberry Pi for projects requiring a high-resolution camera, GPS, storage, battery, connectivity, display, and computing power. A Redmi 13C 5G or Huawei Mate 30 5G costs roughly $45–75, compared with more than $200 for a similarly equipped Pi setup before adding batteries and an enclosure, while also offering 5G and integrated components. The author is testing a rooted Redmi for scheduled photography and hardware control over USB-C, while comparing its camera output with an Arducam rather than assuming megapixel counts indicate quality. The main practical challenges are reliable rooting, camera behavior, battery health, and sourcing hundreds of consistent used phones, but the approach could enable inexpensive, remotely manageable installations and extend the life of mass-produced hardware.</p>
+          </div>
+          <h4>Reader Reactions</h4>
+<p class="camps-framing">Commenters weighed the phone’s bundled compute, sensors, and connectivity against the Pi’s accessible hardware and more predictable development experience. The practical choice depended on project needs, including I/O, software support, power and cooling, device sourcing, and the cost of alternatives.</p>
+<div class="camp"><p class="camp-label"><strong>Phones as capable, underused platforms</strong> &mdash; Supporters saw old phones as capable, integrated devices for software-heavy or self-contained projects, with screens, cameras, sensors, and connectivity already included.</p><blockquote>I recently used Termux on a 7 year old low-end android to run a WordPress site with sqlite db and a golang sse pubsub service at a conference, via cloudflare tunnel, with dozens of people connected and doing some realtime collaborative stuff.<cite>nchmy</cite></blockquote>
+<blockquote>These devices could really shine as edge computing devices and I believe they are overlooked.<cite>dava96</cite></blockquote>
+<blockquote>I&#x27;ve always found it a bit absurd that an old phone can have more sensors and connectivity than a fairly expensive hobbyist computer, yet we rarely consider using it as one<cite>interludead</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>The Pi’s accessible hardware and ecosystem</strong> &mdash; Supporters valued the Pi’s native GPIO, documentation, supported software, and add-on ecosystem. USB GPIO adapters and dev boards can extend phones, though timing-sensitive tasks may still call for a microcontroller.</p><blockquote>Reasons to get a Pi: GPIO support, software support, OS updates, free root &amp; bootloader, more flexibility and customizability, extensive documentation and support, consistency, simplicity, more ports, battery optional.<cite>randomblock1</cite></blockquote>
+<blockquote>The pi and esp32s have an ecology of add-ons and a community to support you.<cite>Peteragain</cite></blockquote>
+<blockquote>Note that you won&#x27;t be able to implement anything that has timing requirements - you&#x27;ll need a microcontroller for that.<cite>cowlevel</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Phone software and access can be difficult</strong> &mdash; Some commenters found bootloader unlocking, rooting, and Linux support frustrating, especially for hardware projects. Others described older devices as workable for people willing to tinker.</p><blockquote>They are engineered to keep me out, and that is a pain in the ass I don&#x27;t want to deal with when doing hardware work.<cite>shit_game</cite></blockquote>
+<blockquote>Fun to tinker with. A nightmare to use for real<cite>hafern</cite></blockquote>
+<blockquote>The newer devices are a bit harder, but if you go back nearly a decade, they&#x27;re very easy to get working.<cite>cdetroye</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Batteries and cooling affect continuous use</strong> &mdash; Commenters raised battery aging, heat, and sustained workloads as risks for phones used continuously, while others noted that bypass charging or battery removal may address some concerns.</p><blockquote>Batteries tend to heat up when charged / discharged, old batteries can also bulge or, worst case, even explode.<cite>thisislife2</cite></blockquote>
+<blockquote>I also keep using old android phone but the battery dies every few months if you keep plug-in power cable.<cite>a012</cite></blockquote>
+<blockquote>Some OnePlus devices have a &quot;bypass charging&quot; system.<cite>denysvitali</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Scaling with used phones raises reliability concerns</strong> &mdash; Commenters questioned whether a few hundred used phones could be sourced and maintained consistently, while others argued that most hobbyists need only one device or disputed the reliability of Pi supply.</p><blockquote>Finding two good used phones is easy; finding a few hundred matching ones, with healthy batteries and predictable camera behaviour, would take more work.<cite>Freak_NL</cite></blockquote>
+<blockquote>Hobbyist don&#x27;t usually need to scale beyond one device.<cite>krzyk</cite></blockquote>
+<blockquote>Pies are hard to find, get more expensive each week.<cite>bambax</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Used PCs and price comparisons offer other baselines</strong> &mdash; Some commenters recommended used laptops, mini PCs, or thin clients for general-purpose Linux work. Others cautioned that comparing a Pi’s price with a phone already owned does not establish the phone’s actual cost advantage.</p><blockquote>Anything is expensive compared to something you have lying around for free.<cite>altmanaltman</cite></blockquote>
+<blockquote>Nowadays, I just get old laptops with broken screens and take the mainboard out.<cite>deng</cite></blockquote>
+<blockquote>For me if I don&#x27;t have a need for the GPIO pins, it&#x27;s &quot;why get an expensive pi when I can get a used ex-corporate small form factor quad core, intel core i7-something desktop PC with 16GB of RAM and a real SSD&quot;...<cite>walrus01</cite></blockquote></div>
+          <p class="drawer-footer"><a href="#dossier-1">View in Dossier ↓</a></p>
+        </div>
+      </details>
+    </div>
+  </section>
+  <section id="story-2" class="spread arc-terminal">
+    <div class="prompt-row">user@morning-edition:~$ cat story_02.md</div>
+    <div class="numeral">02</div>
+    <h2>ggml Reaches a Cleaner 1.0</h2>
+    <p class="story-meta">github.com &nbsp;·&nbsp; 293 pts &nbsp;·&nbsp; 46 comments</p>
+    <p class="lede">API cleanup lands alongside faster kernels, broader accelerator support, FP8, YaRN controls, and a new RPC protocol. ggml 1.0 makes local inference infrastructure more portable without pretending the hardware differences disappeared.<span class="cursor"></span></p>
+    <div class="spread-links"><a class="read-more" href="https://github.com/ggml-org/ggml/releases/tag/v1.0.0" target="_blank" rel="noopener">Read →</a><a class="read-more share-link" href="#" data-share-title="Ggml v1.0.0" data-share-url="https://github.com/ggml-org/ggml/releases/tag/v1.0.0">Share →</a>
+      <details class="analysis-drawer">
+        <summary class="btn-dossier">[ Analysis + ]</summary>
+        <div class="drawer-content">
+          
+          <h4>Technical Analysis</h4>
+          <div class="drawer-analysis">
+          <p>ggml v1.0.0 is a major release of the tensor and machine-learning backend used by projects such as llama.cpp, focused on cleaning up its public API while improving portability and performance. It removes deprecated interfaces and legacy diagnostic operations, adds configurable YaRN truncation, FP8 support, better precision handling, and a newer RPC protocol that rejects incompatible peers. Much of the release targets hardware acceleration, including optimized quantized matrix operations, MoE scheduling and fusion, FlashAttention paths, and expanded kernels across CUDA, Metal, Vulkan, SYCL, OpenCL, WebGPU, Hexagon, CPU, and other backends. The release is important because it establishes a cleaner 1.0 API while broadening efficient local inference support across GPUs, mobile and embedded processors, and specialized accelerators.</p>
+          </div>
+          <h4>Reader Reactions</h4>
+<p class="camps-framing">The discussion is largely positive about ggml and llama.cpp, especially their improving performance and broad compatibility across models and hardware. The main technical tradeoff is convenience and reach versus the speed of hardware-specialized engines. Reactions to the landing page differ: some value its simplicity, while others want more polish or context. Smaller side discussions raise concerns about telemetry, naming, and project affiliation.</p>
+<div class="camp"><p class="camp-label"><strong>Broad, dependable foundation</strong> &mdash; Commenters praise ggml and llama.cpp as practical, steadily improving infrastructure that makes local inference work across a wide range of models and systems.</p><blockquote>Every time I upgrade (once a month or so) there is usually a 5 to 10% speed boost.<cite>jacquesm</cite></blockquote>
+<blockquote>Awesome! ggml and llama.cpp are the Linux of the AI world.<cite>evilelectron</cite></blockquote>
+<blockquote>For this project it&#x27;s more about achieving the &#x27;train once, run everywhere&#x27; paradigm that Java had.<cite>thibsrn</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Specialized engines can be faster</strong> &mdash; Some commenters note that hardware-tuned inference engines can offer more speed, while others describe using them alongside llama.cpp or emphasize the value of broad compatibility.</p><blockquote>you get a lot more speed from specialised inference engines with kernels made for your hardware.<cite>dust42</cite></blockquote>
+<blockquote>But across all of them it has been consistently good.<cite>jacquesm</cite></blockquote>
+<blockquote>I run vllm and llama.cpp; llama.cpp is pretty hackable by a local agent and is fast to start up<cite>barrkel</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Practical reach across hardware</strong> &mdash; Commenters highlight useful support for constrained or less common hardware, including Vulkan-only AMD cards, RISC-V, and models that exceed GPU memory limits.</p><blockquote>If you load an MoE model that slightly exceeds your GPU memory budget, llama.cpp and ggml v1.0.0 can cache less-frequently used experts in host memory rather than failing to load.<cite>thisisauserid</cite></blockquote>
+<blockquote>running on my crappy AMD card that only supports vulkan and it&#x27;s usable thanks to GGML and llama.cpp<cite>kodoman</cite></blockquote>
+<blockquote>Not just legacy hardware, but also ready for the immediate future, with RISC-V support.<cite>snvzz</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Landing page needs more polish or context</strong> &mdash; Some commenters find the landing page underdeveloped or want it to explain more clearly what the project does and whom it serves.</p><blockquote>Please put a little more effort in for FFS, you have seed money?<cite>minimaxa</cite></blockquote>
+<blockquote>Most of them somehow expect that you know the domain already.<cite>phkx</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Minimalism is a virtue</strong> &mdash; Other commenters value the page’s speed, readability, and simplicity, seeing its restraint as refreshing compared with elaborate or generic landing pages.</p><blockquote>I&#x27;m glad their philosophy extends to the website as well. Genuinely refreshing.<cite>nvme0n1p1</cite></blockquote>
+<blockquote>This landing page is perfectly simple and minimal.<cite>sureglymop</cite></blockquote>
+<blockquote>the whole thing fits on my phone screen<cite>thejoeosborne</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Trust, naming, and affiliation side discussions</strong> &mdash; A few commenters allege unwanted external contact or downloaded JavaScript, question the project’s naming, or correct a claim about its affiliation. These are commenters’ claims and observations, not findings established in the discussion.</p><blockquote>This is pure telemetry or in plain english Spying on users.<cite>trilogic</cite></blockquote>
+<blockquote>Imagine naming a library after yourself.<cite>om8</cite></blockquote>
+<blockquote>Hugging Face, and Nvidia hasn’t bought that yet.<cite>trvz</cite></blockquote></div>
+          <p class="drawer-footer"><a href="#dossier-2">View in Dossier ↓</a></p>
+        </div>
+      </details>
+    </div>
+  </section>
+  <section id="story-3" class="spread arc-archive">
+    <div class="archive-head">
+      <span>ARCHIVE</span>
+      <span>N<sup>o</sup> 03</span>
+    </div>
+    <div class="kicker">Archival Desk</div>
+    <h2>Thirteen Monkey Islands, Side by Side</h2>
+    <p class="story-meta">monkeyisland.pages.dev &nbsp;·&nbsp; 186 pts &nbsp;·&nbsp; 55 comments</p>
+    <p class="lede">One adventure game, rendered across thirteen historical configurations. The comparison preserves the changing palettes, sound systems, aspect ratios, and display quirks that shaped how players first saw Monkey Island.</p>
+    <div class="spread-links"><a class="read-more" href="https://monkeyisland.pages.dev/" target="_blank" rel="noopener">Read →</a><a class="read-more share-link" href="#" data-share-title="Monkey Island: all 13 versions side by side" data-share-url="https://monkeyisland.pages.dev/">Share →</a>
+      <details class="analysis-drawer">
+        <summary class="btn-dossier">[ Analysis + ]</summary>
+        <div class="drawer-content">
+          
+          <h4>Technical Analysis</h4>
+          <div class="drawer-analysis">
+          <p>The story presents an interactive side-by-side comparison of all 13 versions of *The Secret of Monkey Island*, spanning PC graphics and sound standards, Amiga, Atari ST, Macintosh, FM Towns, PC CD-ROM, and Sega CD editions. It keeps the same 12 game moments and framing across versions, letting users compare differences in color, interfaces, music, aspect ratios, and display characteristics. The screens were captured through ScummVM and Hatari, then rendered with period-appropriate pixel scaling and optional CRT effects to document how the game originally appeared on different hardware. Created by a two-person team with AI assistance, the free, noncommercial site is valuable as a compact preservation and technical reference for a historically significant adventure game.</p>
+          </div>
+          <h4>Reader Reactions</h4>
+<p class="camps-framing">The response is largely appreciative, treating the comparison as both a polished preservation project and a prompt for memories of playing the game. Discussion of the versions focuses on which presentation works best, especially Amiga versus EGA and the mixed reactions to CGA. Other comments add technical context and reflect on how the games’ appeal and gameplay hold up over time.</p>
+<div class="camp"><p class="camp-label"><strong>Appreciation for the comparison and its presentation</strong> &mdash; Commenters praised the site’s design, depth, and historical detail, while others welcomed the chance to revisit a favorite game or discover a version they had not known about.</p><blockquote>This is beautiful, thanks for making it. My fav game of all time<cite>trencedamp</cite></blockquote>
+<blockquote>ux 10/10 I couldn&#x27;t have imagined a better one<cite>mr_tox</cite></blockquote>
+<blockquote>What a nice site that goes in depth with the differences!<cite>damethos</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Amiga as the visual winner</strong> &mdash; Some commenters preferred the Amiga edition outright, including in comparisons with the Atari ST; others were impressed by how closely it compared with VGA.</p><blockquote>As expected, Amiga version looked the best.<cite>devil1432</cite></blockquote>
+<blockquote>I immediately revived an old feud and compared the Amiga and Atari ST versions... Amiga, definitely. Ha!<cite>harel</cite></blockquote>
+<blockquote>I am very impressed how the 32-color Amiga version is close to the 256-color VGA version<cite>karteum</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>EGA’s distinct appeal</strong> &mdash; Some readers valued EGA as a thoughtfully composed version in its own right, rather than merely a reduced version of VGA.</p><blockquote>The EGA one is the true version for me<cite>g-b-r</cite></blockquote>
+<blockquote>The 256 color version added detail, but lost much of the boldness and elegance of the EGA version.<cite>nayroclade</cite></blockquote>
+<blockquote>It really feels like an alternative, equally good looking relase rather than a downgraded version of the VGA one<cite>Kurtz79</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Mixed feelings about CGA</strong> &mdash; Reactions to CGA ranged from dislike of its stark palette to nostalgia for its distinctive look; one reply noted that games designed around its limitations could look striking.</p><blockquote>Every time I see CGA graphics in cyan, magenta, black and white it reminds me of my youth and how &#x27;cold&#x27; it felt at the time to see those graphics, I could never really get used to it.<cite>tjeerdnet</cite></blockquote>
+<blockquote>Ditto. My first ibm compatible was CGA, and those pallets represent a really specific era in my memories.<cite>simonjgreen</cite></blockquote>
+<blockquote>Games which were made especially for CGA did often look really cool.<cite>beefsack</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Technical context and qualifications</strong> &mdash; Commenters clarified that the displayed versions do not represent wholly independent sets of artwork and pointed out platform-specific differences, as well as omissions and possible display effects.</p><blockquote>I think there&#x27;s only really two real sets of artwork - the EGA and VGA releases.<cite>mjg59</cite></blockquote>
+<blockquote>The pirate close-up (pointed out by https://news.ycombinator.com/item?id=50495836 ) confirms: the Atari ST graphics are ported from the EGA version, while Amiga is based off VGA.<cite>networked</cite></blockquote>
+<blockquote>Technically not all. The anniversary re-release is missing.<cite>FabCH</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Nostalgia and how the games hold up</strong> &mdash; Some commenters longed for the feeling of encountering these games for the first time, while others discussed whether their stories and gameplay still work or whether modern games can capture a similar appeal.</p><blockquote>Going back isn&#x27;t enough. What I wanted again was the feeling of seeing and playing those games for the first time.<cite>glimshe</cite></blockquote>
+<blockquote>The story, the writing, the humor, and the characters holds up of course but not the gameplay.<cite>haunter</cite></blockquote>
+<blockquote>I can very much recommend looking at games developed and published by Wadjet Eye Games.<cite>tetha</cite></blockquote></div>
+          <p class="drawer-footer"><a href="#dossier-3">View in Dossier ↓</a></p>
+        </div>
+      </details>
+    </div>
+  </section>
+  <section id="story-4" class="spread arc-alert-stamp">
+    <div class="stamp">ALERT</div>
+    <div class="numeral">04</div>
+    <div class="body">
+      <div class="kicker">Market Watch</div>
+      <h2>Nvidia Faces Allegations of Manufactured Demand</h2>
+      <p class="story-meta">techpowerup.com &nbsp;·&nbsp; 656 pts &nbsp;·&nbsp; 384 comments</p>
+      <p class="lede">A Wall Street Journal account alleges that Nvidia funded startups and cloud providers to help them buy its GPUs. The claims remain unproven, but they sharpen the question of whether AI demand is organic, financed, or both.</p>
+      <div class="spread-links"><a class="read-more" href="https://www.techpowerup.com/354814/nvidia-allegedly-engineered-scarcity-by-funding-ai-startups-to-buy-its-gpus" target="_blank" rel="noopener">Read →</a><a class="read-more share-link" href="#" data-share-title="Nvidia allegedly engineered scarcity by funding AI startups to buy its GPUs" data-share-url="https://www.techpowerup.com/354814/nvidia-allegedly-engineered-scarcity-by-funding-ai-startups-to-buy-its-gpus">Share →</a>
+      <details class="analysis-drawer">
+        <summary class="btn-dossier">[ Analysis + ]</summary>
+        <div class="drawer-content">
+          
+          <h4>Technical Analysis</h4>
+          <div class="drawer-analysis">
+          <p>The story reports allegations, based on a Wall Street Journal account, that Nvidia funded AI startups and smaller cloud providers so they could purchase Nvidia GPUs, helping sustain apparent demand and absorb chips ordered from TSMC. This circular financing reportedly became a concern as major AI companies shifted toward custom hardware and some Nvidia-backed providers struggled to afford or deploy the systems they were expected to buy. Nvidia’s finance leadership allegedly urged reducing such arrangements, while Jensen Huang pushed continued investment, according to the report. If substantiated, the practices could indicate an effort to manage inventory and inflate demand, with implications for GPU pricing, the AI investment bubble, and possible regulatory scrutiny, though the claims remain allegations.</p>
+          </div>
+          <h4>Reader Reactions</h4>
+<p class="camps-framing">Commenters disagreed over whether Nvidia’s customer financing was conventional ecosystem-building or a way of sustaining demand that customers could not otherwise support. They also debated how much the reporting established about the deals, and whether current AI demand and infrastructure investment are likely to endure or unwind.</p>
+<div class="camp"><p class="camp-label"><strong>Strategic customer financing</strong> &mdash; These commenters viewed investments and credit support as ways to attract customers, encourage adoption, and protect Nvidia’s ecosystem. They argued that such arrangements can be ordinary business strategy, even if they involve risk.</p><blockquote>Is this “engineering scarcity” or just seeding demand for their product, which is something every company does?<cite>janalsncm</cite></blockquote>
+<blockquote>Instead of quoting a lower price per GPU to neoclouds and startups, they finance purchases of chips, but the two are roughly equivalent (financing means Nvidia takes on more risk, but has more upside and locks in future demand).<cite>Silfen</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>A warning sign of padded demand</strong> &mdash; These commenters saw vendor financing as potentially unhealthy when it enables customers to buy more than they could otherwise afford. They worried that financing could make demand appear stronger, or arrive sooner, than underlying demand warrants.</p><blockquote>Vendor financing is already a sign of an unhealthy market.<cite>dofm</cite></blockquote>
+<blockquote>Because Nvidia gave money to people who aren&#x27;t you, so those people could give the money back to Nvidia for GPUs.<cite>anonymous908213</cite></blockquote>
+<blockquote>The whole AI “GPU scarcity” thing has been a pretty obvious house of cards for a while now.<cite>cmiles8</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>The activity is real; its significance is unclear</strong> &mdash; These commenters distinguished the existence of financing deals from claims that they manipulated demand or created scarcity. They wanted more evidence about the scale, funding sources, and financial outcomes of the arrangements.</p><blockquote>Does the math check out, though? For reference, Nvidia added $17B of non-marketable securities in 2025, and its total revenue was $215B.<cite>cloudbonsai</cite></blockquote>
+<blockquote>I just am unable to understand whether it&#x27;s a bad thing or not, you could frame it as being circular, but you could also see it as Nvidia simply giving hardware in exchange for startup equity, is that really fundamentally problematic, is it the scale at which it was done, or is it a valid but risky tactic?<cite>dumberquestions</cite></blockquote>
+<blockquote>There are also the questions of the revenue and revenue quality of the companies Nvidia has invested in, how much debt they&#x27;ve taken on, what sort of backstops/guarantees Nvidia has given them, etc.<cite>ElProlactin</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Skepticism about the reporting and framing</strong> &mdash; These commenters questioned whether secondary coverage fairly represented the original reporting, or whether the coverage supported its stronger implications. Some characterized the reporting as misleading or motivated, while others focused on the distinction between facts and framing.</p><blockquote>The article from WSJ that this article is based on tells a completely different story.<cite>locallost</cite></blockquote>
+<blockquote>That is a very negative way to state facts. I doubt the neutrality of the authors.<cite>abhinai</cite></blockquote>
+<blockquote>This looks like a hit job on Jensen and Nvidia.<cite>extraextra</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>AI demand and Nvidia’s position remain strong</strong> &mdash; These commenters resisted treating the financing story as proof that AI demand is illusory or that the boom is over. They pointed to continuing demand and potential applications as reasons the market could keep expanding.</p><blockquote>Lots of comments seem eager to declare everything over, done for, and said, and that doesn&#x27;t seem to be nearly the case.<cite>karahime</cite></blockquote>
+<blockquote>By the way they report demand is 10x supply so I think everyone in here hoping for some cheap GPUs soon is kidding themselves.<cite>mrgordon</cite></blockquote>
+<blockquote>This is not a bubble.<cite>bzbee10</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>The bubble may deflate, with wider consequences</strong> &mdash; These commenters expected that financing risks or a slowdown in AI investment could lead to a prolonged deflation or a wider economic and market impact. They differed on whether a gradual slowdown might be beneficial or whether it would bring substantial fallout.</p><blockquote>When a bubble pops, the pop typically takes years to happen.<cite>beloch</cite></blockquote>
+<blockquote>If Nvidia is chastened enough to slow its banking endeavours and that lets air out of the bubble in a progressive rather than dramatic way, that’s probably better for everyone (except OpenAI, who are probably hosed in that scenario, as they have huge commitments but are struggling to raise what they need; Anthropic might last long enough to reassess)<cite>dofm</cite></blockquote>
+<blockquote>This leads to the DCs getting bought cheaply by hyperscalers and you have a monopolistic AI market with google/fb/amazon and likes are running the show again.<cite>anuptalwalkar</cite></blockquote></div>
+          <p class="drawer-footer"><a href="#dossier-4">View in Dossier ↓</a></p>
+        </div>
+      </details>
+    </div>
+    </div>
+  </section>
+  <section id="story-5" class="spread arc-mint-pattern">
+    <div class="numeral-block">
+      <div class="numeral">05</div>
+    </div>
+    <div class="kicker">Terminal Craft</div>
+    <h2>Borders Without Spending a Cell</h2>
+    <p class="story-meta">joshka.net &nbsp;·&nbsp; 287 pts &nbsp;·&nbsp; 125 comments</p>
+    <p class="lede">A proposed terminal protocol treats borders as cell-edge attributes instead of characters occupying screen space. If terminals and TUI frameworks adopt it, panes, charts, and forms could gain richer geometry without corrupting copied text.</p>
+    <div class="spread-links"><a class="read-more" href="https://www.joshka.net/cell-borders/" target="_blank" rel="noopener">Read →</a><a class="read-more share-link" href="#" data-share-title="Terminal borders that don&#x27;t cost a cell" data-share-url="https://www.joshka.net/cell-borders/">Share →</a>
+      <details class="analysis-drawer">
+        <summary class="btn-dossier">[ Analysis + ]</summary>
+        <div class="drawer-content">
+          
+          <h4>Technical Analysis</h4>
+          <div class="drawer-analysis">
+          <p>The article proposes a draft terminal protocol for drawing borders on cell edges as attributes rather than using box-drawing characters that consume rows and columns. Implemented experimentally in Ghostty and Ratatui, it supports colored, variably wide, styled, rounded, and prioritized lines that scroll, reflow, and interact with text like other cell properties, while allowing TUIs to fall back to conventional borders when unsupported. This could improve panes, popups, forms, buttons, checkboxes, and charts, preserve usable screen space, and prevent borders from contaminating copied text. Adoption remains uncertain because terminals, multiplexers, and TUI frameworks would need protocol support, and rendering complexity, interoperability, and resource costs still require testing.</p>
+          </div>
+          <h4>Reader Reactions</h4>
+<p class="camps-framing">The discussion weighed the practical value of borders that preserve text space against concerns about compatibility and the simplicity of text-oriented terminals. It also considered overstrike as an alternative, more ambitious terminal or remote-UI protocols, and GUI approaches; smaller threads addressed visual preferences and the article’s reception.</p>
+<div class="camp"><p class="camp-label"><strong>Support for cell-edge borders</strong> &mdash; Supporters saw borders that do not consume text cells as a useful improvement for TUI layouts and graphics.</p><blockquote>This is gorgeous and I need it in trunk for both kitty and ghostty<cite>ganelonhb</cite></blockquote>
+<blockquote>I like it. As an analogy, borders are important features of spreadsheet tools as well.<cite>mfld</cite></blockquote>
+<blockquote>Would be cool to get borders and lines out of copy/paste<cite>cobychapple</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Overstrike as an alternative</strong> &mdash; Some commenters favored overstrike as a way to draw borders over existing text, while others noted that it may not provide all the styling and layout options of cell borders.</p><blockquote>A much better alternative to this would be to for more terminal emulators to implement overstrike mode (DECSET 20, as available on the VK100).<cite>joouha</cite></blockquote>
+<blockquote>Because the background colour isn’t bounded by the border colour using overstrike, but it can be when using borders.<cite>hnlmorg</cite></blockquote>
+<blockquote>If you want those things then overstrike is insufficient.<cite>joshka</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Compatibility and protocol concerns</strong> &mdash; Commenters raised concerns about inconsistent terminal support, multiplexer handling, and how per-cell borders would interact with Unicode text.</p><blockquote>Compatibility will always be the hard part with new standards like this.<cite>nixpulvis</cite></blockquote>
+<blockquote>Tmux drops DCS that it doesn&#x27;t know like this.<cite>joshka</cite></blockquote>
+<blockquote>Does the border attach to the cell or to the grapheme cluster?<cite>favori995749721</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Build a richer terminal UI protocol</strong> &mdash; Some commenters viewed cell borders as a small step toward higher-level or semantic interfaces that could address limitations of cell-based terminals.</p><blockquote>if you&#x27;re changing the terminal protocol and the terminal itself to do this, why not do something more ambitious; a full monospaced information-dense UI framework, a terminal designed for user interfaces, rather than one designed to replicate the limitations of dumb terminals?<cite>tptacek</cite></blockquote>
+<blockquote>It&#x27;s needed to solve several things that work really poorly in terminals because their unit of compatibility is cells rather than a higher primitive.<cite>joshka</cite></blockquote>
+<blockquote>A program asks for a view the way vim takes the alternate screen.<cite>kalaomer</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Keep terminals simple and text-oriented</strong> &mdash; These commenters valued the constraints and composability of text-based terminals and worried that adding elaborate interfaces would undermine those strengths.</p><blockquote>If you want a full featured UI and all that comes with it why not just use QT or GTK or modern HTML or etc?<cite>fc417fc802</cite></blockquote>
+<blockquote>Terminals work so well because there&#x27;s a huge frictional cost to adding to the protocol.<cite>octoberfranklin</cite></blockquote>
+<blockquote>I don&#x27;t generally like TUI&#x27;s and think one gets more flexibility with raw text interfaces and being able to glue things together is more important then them looking nice.<cite>kodoman</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Use a GUI or remote-display approach instead</strong> &mdash; Some commenters preferred HTML, X forwarding, or a purpose-built remote UI protocol to adding more capabilities to terminal escape sequences.</p><blockquote>What if, dare I say it, we just served HTML over ssh, and let the browser render a proper UI, instead of layering hacks on top of hacks?<cite>0c3ca83</cite></blockquote>
+<blockquote>That usecase should be revived in a bandwidth efficient manner (eg. RDP does bearable over crappy links, eg. over the ocean) instead.<cite>fodkodrasz</cite></blockquote>
+<blockquote>UI in a browser is a massive hack in itself, a clean design would be better.<cite>orbital-decay</cite></blockquote></div>
+          <p class="drawer-footer"><a href="#dossier-5">View in Dossier ↓</a></p>
+        </div>
+      </details>
+    </div>
+  </section>
+  <section id="story-6" class="spread arc-midnight">
+    <div class="numeral">06</div>
+    <div class="body">
+      <div class="kicker">// Local Inference</div>
+      <h2>A 27B Model Fits the Local Machine</h2>
+      <p class="story-meta">unsloth.ai &nbsp;·&nbsp; 161 pts &nbsp;·&nbsp; 50 comments</p>
+      <p class="lede">Unsloth’s updated Qwen3.8-27B quantizations target practical deployment on roughly 17GB of memory. The release trades precision carefully across coding, agents, vision, and long-context reasoning, keeping capable inference close to the hardware.</p>
+      <div class="spread-links"><a class="read-more" href="https://unsloth.ai/docs/models/qwen3.8" target="_blank" rel="noopener">Read →</a><a class="read-more share-link" href="#" data-share-title="Unsloth Qwen3.8-27B Quantizations – Dynamic v3.1 Update" data-share-url="https://unsloth.ai/docs/models/qwen3.8">Share →</a>
+      <details class="analysis-drawer">
+        <summary class="btn-dossier">[ Analysis + ]</summary>
+        <div class="drawer-content">
+          
+          <h4>Technical Analysis</h4>
+          <div class="drawer-analysis">
+          <p>Unsloth has released updated Dynamic V3.1 quantizations for Qwen3.8-27B, a dense vision-and-reasoning model with a 256K context window that can run locally on roughly 17GB of RAM or VRAM. The update covers most 2- to 6-bit GGUF variants and reportedly improves accuracy by 5–10% at comparable sizes, particularly on coding, agentic, and general benchmarks, while adding tool-calling, developer-role, and multi-token-prediction support. The guide provides usage instructions for llama.cpp, Unsloth Desktop, and APIs, along with recommended sampling and reasoning-effort settings. It also describes NVFP4 versions for Blackwell GPUs, offering about 1.5× BF16 speed with 92–97% accuracy recovery, making practical local deployment more accessible across consumer and data-center hardware.</p>
+          </div>
+          <h4>Reader Reactions</h4>
+<p class="camps-framing">The discussion combined enthusiasm about making capable models usable on modest local hardware with practical questions about cost, privacy, model variants, and deployment. Commenters compared quantization approaches and benchmark evidence, while some focused on memory use and reasoning-token efficiency.</p>
+<div class="camp"><p class="camp-label"><strong>Local models are useful on ordinary hardware</strong> &mdash; Commenters described using local models for slow, unattended work and reported that some releases were practical on ordinary consumer hardware.</p><blockquote>There are so many of us with weak GPUs and these updates are massive wins.<cite>aliljet</cite></blockquote>
+<blockquote>It was dreadfully slow, but you fire that off before bed, and you can get results the next day.<cite>3eb7988a1663</cite></blockquote>
+<blockquote>Totally acceptable.<cite>quaddoggy</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Local-versus-hosted tradeoffs</strong> &mdash; The discussion weighed local inference costs against hosted services, with privacy, availability, and dedicated-server options offered as reasons to run models locally.</p><blockquote>So other than privacy (which doesn&#x27;t matter for my work) there isn&#x27;t any justification for running locally.<cite>Incipient</cite></blockquote>
+<blockquote>Non-local models are sometimes unavailable.<cite>LeBit</cite></blockquote>
+<blockquote>You can rent a dedicated server. It&#x27;s easy and costs 10 times less than a &quot;cloud&quot;.<cite>otabdeveloper4</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Compare the quantizers and model variants</strong> &mdash; Commenters requested comparisons with other quantizers and variants, and expressed differing views about performance on constrained hardware and the quality of smaller versions.</p><blockquote>IMO Byteshape is kind of the winner here if you&#x27;re only looking at 24GB and down targets.<cite>DiabloD3</cite></blockquote>
+<blockquote>ByteShape was what finally made Qwen3.8 27b actually fast and usably intelligent for me after trying a LOT of different options at 16GB VRAM.<cite>zmmmmm</cite></blockquote>
+<blockquote>releasing the Q8 variants anytime soon with the dynamic work ? Q8 stomps Q6 on personal benchmarks here for me wrt Qwen 3.8 27b.<cite>serf</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Benchmarks help, but have limits</strong> &mdash; Some commenters welcomed task-based benchmarks and repeated runs with error bars, while others emphasized failures in their own evaluations and cautioned against relying on benchmark results alone.</p><blockquote>I am happy they are showing charts for actual benchmarks, not just easily measurable proxies like KL-div.<cite>stared</cite></blockquote>
+<blockquote>We also run all benchmarks multiple times, and provide error bars!<cite>danielhanchen</cite></blockquote>
+<blockquote>I am constantly shocked at how often they fail my evals.<cite>sroussey</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Deployment, hardware, and roadmap questions</strong> &mdash; Several commenters sought practical guidance on software stacks and hardware, or asked about the project&#x27;s plans for multi-GPU and multi-node training.</p><blockquote>how to best run your 27G v3.1 quants on recent mac hardware with 32-64gb of ram. mlx etc. ? what would you recommend re: software stack for best pp/tg overall performance?<cite>rdslw</cite></blockquote>
+<blockquote>Is making this aspect as user friendly as other parts of Studio and the docs on your near term roadmap or are your prioritizing other areas for now?<cite>dr_kiszonka</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Memory use and reasoning-token efficiency</strong> &mdash; A smaller technical thread explored reducing memory demands with KV-cache techniques, alongside concerns about verbose reasoning and the token cost of lower-precision models.</p><blockquote>So we can have a 4bit KV cache, but the most recent N tokens can be 8bit - we found accuracy improves 2x!<cite>danielhanchen</cite></blockquote>
+<blockquote>I&#x27;ve used Qwen3.8 quite a bit and it&#x27;s very verbose - its propensity for tool calling is insane and it uses 2x as many tokens as GLM-5.2 (which itself uses huge amount of tokens).<cite>armcat</cite></blockquote>
+<blockquote>we actually cut reasoning by up to 50% esp for the small quants - we found quantizing models naively coincidentally also made them more verbose, as it would &quot;correct&quot; itself during the reasoning process.<cite>danielhanchen</cite></blockquote></div>
+          <p class="drawer-footer"><a href="#dossier-6">View in Dossier ↓</a></p>
+        </div>
+      </details>
+    </div>
+    </div>
+  </section>
+  <section id="story-7" class="spread arc-stat-hero">
+    <div class="numeral">4.5 hours</div>
+    <div class="kicker">N<sup>o</sup> 07 · Infrastructure</div>
+    <h2>The Four-and-a-Half-Hour Ground Stop</h2>
+    <p class="story-meta">nbcnews.com &nbsp;·&nbsp; 1564 pts &nbsp;·&nbsp; 1186 comments</p>
+    <p class="lede">A failure in aging air-traffic-control communications and routing systems halted departures across the United States. The stop lifted after 4.5 hours, but more than 7,000 flights were canceled or disrupted.</p>
+    <div class="spread-links"><a class="read-more" href="https://www.nbcnews.com/news/us-news/faa-orders-nationwide-ground-stop-departing-flights-reasons-safety-rcna609247" target="_blank" rel="noopener">Read →</a><a class="read-more share-link" href="#" data-share-title="FAA issues national ground stop – lifted 4.5 hours later" data-share-url="https://www.nbcnews.com/news/us-news/faa-orders-nationwide-ground-stop-departing-flights-reasons-safety-rcna609247">Share →</a>
+      <details class="analysis-drawer">
+        <summary class="btn-dossier">[ Analysis + ]</summary>
+        <div class="drawer-content">
+          
+          <h4>Technical Analysis</h4>
+          <div class="drawer-analysis">
+          <p>The FAA imposed a nationwide ground stop for departing U.S. flights after an overloaded, decades-old air-traffic-control communications and radar-routing system produced inconsistent data, prompting a precautionary shutdown lasting about 4.5 hours. The stop was lifted at 8:15 p.m. ET, but more than 7,000 flights were canceled and hundreds of thousands of passengers faced delays, crowded airports, and displaced aircraft and crews. Officials said there was no evidence of a cyberattack or public danger, and the FAA’s newer SMART system was not involved. The incident highlights the operational and economic risks of aging aviation infrastructure and renewed calls for major federal investment to modernize air-traffic control.</p>
+          </div>
+          <h4>Reader Reactions</h4>
+<p class="camps-framing">The discussion unfolded amid limited confirmed information, with commenters sharing updates and weighing competing explanations. Some viewed the outage as evidence of underfunded legacy infrastructure, while others focused on a recent upgrade and questioned the timing and testing. The recent AI-tool rollout drew speculation, alongside reminders that it was described as advisory and that no link to the communications failure had been established. Commenters also disputed officials’ explanations and funding requests, debated cyberattack theories, and sought clearer updates about system resilience and the effects on travelers.</p>
+<div class="camp"><p class="camp-label"><strong>Aging infrastructure needs investment</strong> &mdash; Some commenters argued that deferred modernization has made air-traffic infrastructure increasingly costly and risky. Others questioned the scale or timing of the funding pitch.</p><blockquote>There are people in charge who are not funding upgrading these systems, because their constituents don&#x27;t want their taxes raised to pay for it.<cite>0xbadcafebee</cite></blockquote>
+<blockquote>It&#x27;s because air traffic control systems in the US haven&#x27;t been significantly upgraded in like a century. Keep kicking the can it will get more and more expensive<cite>davedx</cite></blockquote>
+<blockquote>Man, having some high speed trains might be useful right about now.<cite>panick21_</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>The new upgrade may have caused the failure</strong> &mdash; Commenters focused on reports that new equipment or patches overwhelmed the existing system. They questioned the rollout timing, production testing, and whether a broader replacement would avoid similar problems.</p><blockquote>Anybody familiar with these systems know why they would do an update like this at 3pm on a Friday?<cite>sweswas2</cite></blockquote>
+<blockquote>I don&#x27;t understand why they did not test this before deploying on production.<cite>dnqthao</cite></blockquote>
+<blockquote>This was a classic upgrade that broke shit. The problem was with the new upgrade , not the old shit that worked.<cite>hn_throwaway_99</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>The AI rollout drew speculation and calls for proportion</strong> &mdash; The nationwide expansion of the FAA’s SMART tool prompted questions about whether its timing was connected to the outage. Other commenters stressed that it was described as advisory and that reports pointed to communications infrastructure, while some raised broader safety concerns about AI.</p><blockquote>Seems related to the rollout of their new AI tool?<cite>jumploops</cite></blockquote>
+<blockquote>The FAA has reassured the public and airlines that SMART only suggests routes and doesn&#x27;t affect air safety.<cite>lxgr</cite></blockquote>
+<blockquote>AI tech is nowhere near reliable enough to be introduced in such important systems. I find this deeply troubling even if it’s not related to the current issue.<cite>s__s</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Distrust of officials and the funding pitch</strong> &mdash; Some commenters questioned whether officials were giving a reliable account, particularly when preliminary explanations were accompanied by requests for substantial funding. They called for independent scrutiny or suspected the outage could be used to shift blame.</p><blockquote>I will not trust what they are saying unless there is an independent investigation about what happened.<cite>sega_sai</cite></blockquote>
+<blockquote>Never let a crisis goto waste. Someone screws up and the first reaction is to say “we need more money”<cite>chasd00</cite></blockquote>
+<blockquote>Maybe just paranoia but it seems slightly suspicious for this to happen while we are in the middle of discussing massive funding and overhauls to the air traffic control systems.<cite>AngryData</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Cyberattack and broader conspiracy theories</strong> &mdash; A minority speculated about foreign attacks, sabotage, or links to other recent outages, often without evidence. Other commenters cautioned that internal glitches or misconfiguration are more common explanations.</p><blockquote>This is it, massive cyberattack on the USA.<cite>deadbabe</cite></blockquote>
+<blockquote>I do not believe in coincidences. First Microsoft, then anthropic, now ATC radio. Something big is going on.<cite>underseacables</cite></blockquote>
+<blockquote>I&#x27;ve worked in IT long enough to know it is 99/100 times an internal glitch or misconfiguration, not hackers, that brings a system down.<cite>soundworlds</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Resilience, live updates, and passenger uncertainty</strong> &mdash; Commenters questioned why a communications failure could affect departures nationwide and whether the system had adequate backup. Others shared flight-tracking observations and described the difficulty of getting useful information while traveling.</p><blockquote>How is there not a second backup network???<cite>MBCook</cite></blockquote>
+<blockquote>I&#x27;m watching it live on ADSBexhange, here&#x27;s a flight I picked at random going approximately past me that&#x27;ll land in Detroit about an hour from now... there&#x27;s not much left over the US over 40,000 feet.<cite>mikewarot</cite></blockquote>
+<blockquote>It’d be nice if they could actually give actionable updates.<cite>hysan</cite></blockquote></div>
+          <p class="drawer-footer"><a href="#dossier-7">View in Dossier ↓</a></p>
+        </div>
+      </details>
+    </div>
+  </section>
+  <section id="story-8" class="spread arc-obituary">
+    <div class="obit-frame">
+      <div class="ornament">†</div>
+      <div class="kicker">Company History</div>
+      <h2>How 3Com Lost the Network</h2>
+      <p class="story-meta">dfarq.homeip.net &nbsp;·&nbsp; 156 pts &nbsp;·&nbsp; 80 comments</p>
+      <p class="lede">3Com’s reliable hardware became a memory after strategic diversions, commoditization, and costly attempts to rebuild its enterprise business. Hewlett-Packard acquired the remains in 2009, closing a long decline from networking leader to footnote.</p>
+      <div class="spread-links"><a class="read-more" href="https://dfarq.homeip.net/what-happened-to-3com/" target="_blank" rel="noopener">Read →</a><a class="read-more share-link" href="#" data-share-title="What happened to 3Com?" data-share-url="https://dfarq.homeip.net/what-happened-to-3com/">Share →</a>
+      <details class="analysis-drawer">
+        <summary class="btn-dossier">[ Analysis + ]</summary>
+        <div class="drawer-content">
+          
+          <h4>Technical Analysis</h4>
+          <div class="drawer-analysis">
+          <p>The article traces 3Com’s decline from a leading maker of reliable network cards and enterprise equipment to its acquisition by Hewlett-Packard in 2009. It argues that 3Com abandoned its profitable networking business, made costly diversifications such as buying US Robotics, and failed to adapt as Intel drove down adapter prices and dial-up modems gave way to broadband. Rebuilding its enterprise networking presence proved too expensive after years of losses, while competitors—especially Cisco—grew rapidly. The story is important as a case study in how strategic missteps, overreliance on a maturing product category, and poorly timed acquisitions can erode a strong technology brand, even when its products remain respected by users.</p>
+          </div>
+          <h4>Reader Reactions</h4>
+<p class="camps-framing">The comments combine fond memories of dependable 3Com hardware and its early engineering culture with accounts of bugs in enterprise products. Commenters differ on whether the company’s decline is best explained by strategic choices, the limits of its product range, or the commoditization of networking hardware; several also correct aspects of the article’s account. A side discussion considers whether Palm could have become a rival to the iPhone.</p>
+<div class="camp"><p class="camp-label"><strong>Reliable hardware and fond memories</strong> &mdash; Commenters recall 3Com cards as dependable and share memories of getting network hardware working, including the excitement of a first connection.</p><blockquote>They were high-quality cards and the lifetime warranty proved to be very popular.<cite>msgilligan</cite></blockquote>
+<blockquote>Back in the pre plug and play days, they were one of the few that would just always work.<cite>K0balt</cite></blockquote>
+<blockquote>The thrill of that first ping!<cite>vertnerd</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>The people and engineering culture</strong> &mdash; Some commenters remember the people behind 3Com and describe a technically rigorous, personal culture; Metcalfe’s public persona and predictions also draw affectionate recollections.</p><blockquote>He was both brilliant and incredibly sweet.<cite>as-j</cite></blockquote>
+<blockquote>He had (overhead projector) slides that showed all his assumptions and calculations.<cite>msgilligan</cite></blockquote>
+<blockquote>Metcalfe has a reputation for being brash and outspoken and it clearly shows in the interview.<cite>EvanAnderson</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Enterprise software and gear had serious flaws</strong> &mdash; First-hand accounts of unstable switches, configuration loss, and software bugs qualify the reputation for dependable hardware.</p><blockquote>They sold a managed switch that couldn&#x27;t save its configuration<cite>abofh</cite></blockquote>
+<blockquote>3Com&#x27;s enterprise networking software sure has some strange bugs.<cite>bishopsmother</cite></blockquote>
+<blockquote>Occasionally these events switch was as factory reset was done, none of configuration made was left.<cite>mesrik</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Commoditization made add-in cards less valuable</strong> &mdash; Commenters say built-in networking and adequate lower-cost hardware reduced demand for premium cards, while noting that cheaper components could still have drawbacks.</p><blockquote>For everybody else, the basic integrated options were enough.<cite>fhn</cite></blockquote>
+<blockquote>There were some “interesting” issues with a lot of the cheap hardware for a long time though.<cite>kstrauser</cite></blockquote>
+<blockquote>Then the cheap stuff got good enough for 90 percent of the use cases, then they bought into another sector where exactly the same thing happened again, except it was also a completely dead end.<cite>K0balt</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Decline narratives are disputed and qualified</strong> &mdash; Commenters point to strategic missteps, but also challenge claims that 3Com never diversified or had a full-scale Cisco-like routing business.</p><blockquote>To get out of the license payments, 3Com gave all its LAN software IP to Microsoft and exited that business.<cite>msgilligan</cite></blockquote>
+<blockquote>3com never had a serious router product line.<cite>walrus01</cite></blockquote>
+<blockquote>&quot;never diversified&quot; is a funny epitaph for a company that at various points owned Palm, US Robotics, half a Huawei JV and an IPS vendor.<cite>cobychapple</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Could Palm have become the iPhone?</strong> &mdash; Commenters debate whether Palm’s hardware and products could have led to an iPhone-like success, with some emphasizing the difficulty of matching the iPhone’s software and ecosystem.</p><blockquote>The iPhone had a whole app and media infrastructure built around it.<cite>ghaff</cite></blockquote>
+<blockquote>I loved my Treo, and in some ways it bettered the iPhone form factor, but the software wasn&#x27;t comparable.<cite>Exoristos</cite></blockquote>
+<blockquote>Fact of the matter is nothing could have been the iPhone, everything sucked in 2007.<cite>nntwozz</cite></blockquote></div>
+          <p class="drawer-footer"><a href="#dossier-8">View in Dossier ↓</a></p>
+        </div>
+      </details>
+    </div>
+    </div>
+  </section>
+  <section id="story-9" class="spread arc-blueprint">
+    <div class="corner tl">+</div><div class="corner tr">+</div>
+    <div class="corner bl">+</div><div class="corner br">+</div>
+    <div class="numeral">09</div>
+    <div class="kicker">Data Build</div>
+    <h2>Mapping the Sky After the Ground Stop</h2>
+    <p class="story-meta">grounds.top &nbsp;·&nbsp; 157 pts &nbsp;·&nbsp; 21 comments</p>
+    <p class="lede">This rapidly assembled dashboard replays the FAA disruption through ADS-B positions and airport-status feeds. The map turns a national outage into a visible curve: airborne traffic collapses, departures stall, and recovery arrives unevenly.</p>
+    <div class="spread-links"><a class="read-more" href="https://grounds.top/" target="_blank" rel="noopener">Read →</a><a class="read-more share-link" href="#" data-share-title="Show HN: Live map of U.S. flights during tonight&#x27;s FAA nationwide ground stop" data-share-url="https://grounds.top/">Share →</a>
+      <details class="analysis-drawer">
+        <summary class="btn-dossier">[ Analysis + ]</summary>
+        <div class="drawer-content">
+          
+          <h4>Technical Analysis</h4>
+          <div class="drawer-analysis">
+          <p>This Show HN project is a live, replayable map tracking the impact of an FAA nationwide ground stop on U.S. commercial aviation. It combines community ADS-B flight-position data with FAA airport-status feeds to compare airborne flights, departures, airport recovery, and carrier activity with the same period a week earlier. The stop followed a reported telecommunications or communications failure affecting air-route traffic-control centers, halting most departures while allowing aircraft already in the air to land. The dashboard showed traffic falling as low as 140 commercial flights airborne, more than 10,000 estimated missed departures by the following morning, and a gradual return to normal, illustrating the operational and passenger-disruption effects of a nationwide air-traffic-control outage.</p>
+          </div>
+          <h4>Reader Reactions</h4>
+<p class="camps-framing">The response was largely positive about the fast, data-rich visualization and its depiction of a nationwide disruption. Discussion also covered the data source, requests for additional context and metrics, concerns about visual tone, and a technical sidebar about DNS terminology.</p>
+<div class="camp"><p class="camp-label"><strong>Enthusiasm for the visualization</strong> &mdash; Commenters praised the visualization, its quick development, and the appeal of visualizing flight data.</p><blockquote>Everyone I shared this with while stuck in transit today loved it. Thanks for inspiring some good vibes in Montreal!<cite>thirtygeo</cite></blockquote>
+<blockquote>Something about planes and data visualisation I love, been focus of so many of my random side projects<cite>joshgermon</cite></blockquote>
+<blockquote>Wow, impressive TTM. Barely enough time for the domain to resolve!<cite>monkeymeister</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Requests for prompts and AI-workflow details</strong> &mdash; Commenters asked to see the prompts or transcript behind the project; a brief exchange asked whether AI referred to the data itself.</p><blockquote>This is awesome! Thanks so much for sharing? Would you be up for sharing your prompt or transcript session? Lol<cite>relyks</cite></blockquote>
+<blockquote>Would love to see the underlying prompt(s) for these kind of project<cite>Angostura</cite></blockquote>
+<blockquote>Are you saying the data is AI generated?<cite>throooooo</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Data provenance and ADS-B’s role</strong> &mdash; Commenters asked about the data source, learned that it was publicly available, and noted that ADS-B broadcasts and hobbyist receivers could preserve a picture of flights during an air-traffic-control communications failure.</p><blockquote>What’s underlying data source for it all?<cite>bmfischer3</cite></blockquote>
+<blockquote>Flight positions: adsb.fi community ADS-B network. Airport delay feed: FAA NAS Status<cite>gvsi</cite></blockquote>
+<blockquote>Fun irony (beyond being Friday the 13th): FAA lost radar and frequencies between centers but ADS-B is broadcast by the planes themselves, so a couple hundred hobbyist receivers probably kept the full picture the whole time.<cite>cobychapple</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Requests for broader coverage or added metrics</strong> &mdash; Commenters suggested adding a carbon-emissions chart or including general-aviation flights, while noting that scheduled routes would not provide a straightforward comparison for those flights.</p><blockquote>Could you please and a carbon emissions chart too? Thanks!<cite>dheerajvs</cite></blockquote>
+<blockquote>Very cool. Is this only commercial aircraft? Would be interesting to see if general aviation VFR craft also decreased even though they were technically still allowed to fly as long as it wasn’t from ATC controlled air strips. Though you wouldn’t be able to show it relative to the “expected” number of flights since they aren’t on scheduled flight routes.<cite>krferriter</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Concern about the visual tone</strong> &mdash; One commenter questioned whether the red exploding circles and the framing of missed departures as losses were appropriate for a real disruption affecting travelers.</p><blockquote>Way cooler but maybe the red exploding circles and &quot;departures lost&quot; are not the best visuals in this instance :)<cite>singhkays</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>DNS terminology sidebar</strong> &mdash; A technical thread discussed whether DNS propagation is a myth, distinguishing cache expiration and authoritative-server replication delays from cases where propagation can be made very fast.</p><blockquote>contrary to popular belief, DNS doesn&#x27;t actually need 24 hours (or whatever) to &quot;propagate&quot;. It only needs enough time for caches to expire, if they exist. For non-existent domains this shouldn&#x27;t be an issue.<cite>gruez</cite></blockquote>
+<blockquote>TLDR: DNS &quot;propagation&quot; is real, not a myth. It&#x27;s just that today it&#x27;s pretty trivial to make the propagation delay so tiny that it&#x27;s negligible.<cite>adrianmonk</cite></blockquote></div>
+          <p class="drawer-footer"><a href="#dossier-9">View in Dossier ↓</a></p>
+        </div>
+      </details>
+    </div>
+  </section>
+  <section id="story-10" class="spread arc-editorial-pullquote">
+    <div class="left">
+      <div class="numeral">10</div>
+      <div class="kicker">Software Critique</div>
+      <h2>AI Cannot Simplify Software by Itself</h2>
+      <p class="story-meta">youtube.com &nbsp;·&nbsp; 320 pts &nbsp;·&nbsp; 418 comments</p>
+      <div class="spread-links"><a class="read-more" href="https://www.youtube.com/watch?v=IRK8h67ol7Q" target="_blank" rel="noopener">Read →</a><a class="read-more share-link" href="#" data-share-title="Jonathan Blow – If AI solved coding, why is my software still the same? [video]" data-share-url="https://www.youtube.com/watch?v=IRK8h67ol7Q">Share →</a>
+      <details class="analysis-drawer">
+        <summary class="btn-dossier">[ Analysis + ]</summary>
+        <div class="drawer-content">
+          
+          <h4>Technical Analysis</h4>
+          <div class="drawer-analysis">
+          <p>In this interview, programmer and game developer Jonathan Blow argues that software engineering has become less reliable despite decades of new methodologies and the rise of AI coding tools. He attributes this to rapidly expanding systems, a workforce with relatively little accumulated experience, and layers of legacy designs—such as Unix and conventional operating-system architectures—that are difficult or impossible to replace. Unlike civil engineering, commercial software generally lacks strong accountability, professional standards, or consequences for failures, so security vulnerabilities, performance problems, and unpredictable behavior are normalized. The discussion is important because it challenges claims that AI has effectively solved programming: if AI were producing dramatically better software, users and developers should see more reliable, simpler, and more capable products rather than continued accumulation of complexity and defects.</p>
+          </div>
+          <h4>Reader Reactions</h4>
+<p class="camps-framing">Commenters disagreed about where software work is constrained and how much AI has changed it. Some saw coding gains as meaningful, especially for personal tools and narrowly scoped projects; others emphasized upstream decisions, code quality, and the difficulty of producing polished software at scale. Blow’s broad claims about software progress and his authority beyond game development were also challenged.</p>
+<div class="camp"><p class="camp-label"><strong>The bottleneck is upstream of coding</strong> &mdash; These commenters argued that faster implementation does not resolve problems with deciding what to build, understanding requirements, or changing organizational goals and practices.</p><blockquote>It&#x27;s because the hard part of making software is not coding, but deciding what&#x27;s worth building (even with LLMs), appropriately modelling the problem and designing the solution (at a conceptual, architectural level).<cite>Overdrivr</cite></blockquote>
+<blockquote>AI gives you more of what you want and gives it faster, that doesn’t on its own change the culture or goals of a company.<cite>_aavaa_</cite></blockquote>
+<blockquote>It merely accelerates the &quot;how&quot;. You still need a customer to determine everything else.<cite>bob1029</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>AI has made coding constraints less binding</strong> &mdash; Some commenters said AI has let them complete work faster or build and ship projects that were previously impractical, while noting that organizational settings can limit those gains.</p><blockquote>AI has been a huge disruption to that status quo though because it enables people like me that were stuck managing these bozos to just do the thing on a timeline that wasn’t feasible before.<cite>phoghed</cite></blockquote>
+<blockquote>I have a personal project where I am merging 100+ PRs a week and at work I would be lucky to merge 8.<cite>empath75</cite></blockquote>
+<blockquote>AI is saving a lot of time in coding and making software as for my experience i have created a lot of software,apps through ai coding<cite>asifnazeer24</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Personal and long-tail software is changing</strong> &mdash; Commenters described making bespoke apps and tools for themselves or niche uses—software that may not be robust enough for broad release but is valuable to its creators and users.</p><blockquote>The thing that is not changing much is provided software by a company, what is important to understand is that everyone can have their own software now and these will not be visible in the same way.<cite>jFriedensreich</cite></blockquote>
+<blockquote>This is one of big changes with useful coding LLMS: each human person can have their own software to scratch their own itches.<cite>superkuh</cite></blockquote>
+<blockquote>It&#x27;s not something I would ever release publicly for others to use because I&#x27;m sure there&#x27;s a million edge cases that wouldn&#x27;t work for a broader audience, but it&#x27;s perfect for me and saves me a ton of money.<cite>clarle</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Faster output can conceal worse code</strong> &mdash; These commenters warned that AI can speed up implementation while producing convoluted, buggy, or difficult-to-review code, making apparent productivity gains hard to assess.</p><blockquote>AI hasn’t solved coding, if anything it’s made code quality worse. But it’s made it the process of coding faster.<cite>pansa2</cite></blockquote>
+<blockquote>Two weeks after and 50k LOC, I’m having a look and I can’t believe my eyes.<cite>elvis10ten</cite></blockquote>
+<blockquote>The changes always come in monster one-shot PRs ofc - too much for a human to read - so I just feed the branch to my Claude (identical to the one they’re working with) and after some thought it will give me 15 to 30 suggestions of what needs fixing.<cite>phony-account</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Public software remains constrained by scale and complexity</strong> &mdash; Commenters argued that AI’s gains are most visible in smaller projects, while complex products face steep late-stage costs and established products benefit from network effects and dominance.</p><blockquote>Since software has near zero marginal cost of distribution, people mostly use software that is the dominant version of that type of software.<cite>Dave_Rosenthal</cite></blockquote>
+<blockquote>With AI, those first 80% are now almost instant, producing flashy demos fooling us into believing that software development has been accelerated exponentially, but actually that speedup is only a very large linear multiplier that eventually gets consumed by the non-linearity.<cite>incrudible</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Blow’s broad claims about software progress are contested</strong> &mdash; Some commenters argued that software development has advanced substantially and questioned whether Blow’s experience in games supports his general claims about software and technology.</p><blockquote>And saying we haven&#x27;t advanced much is wild.<cite>mlinhares</cite></blockquote>
+<blockquote>Blow has experience in that domain, and is colored by working in it, but I don&#x27;t think he knows what&#x27;s happening on the bleeding edge very well.<cite>fuussssip</cite></blockquote>
+<blockquote>But if you take him just _slightly_ outside of his area of expertise - video game design and perhaps philosophy - his takes are extremely strongly held, banal, and don’t really stand up to scrutiny.<cite>sd9</cite></blockquote></div>
+          <p class="drawer-footer"><a href="#dossier-10">View in Dossier ↓</a></p>
+        </div>
+      </details>
+    </div>
+    </div>
+    <blockquote class="pullquote">If AI solved coding, software would be getting simpler and more reliable.</blockquote>
+  </section>
+  <section id="dossier" class="dossier">
+    <div class="dossier-head">
+      <div class="tagline">Appendix</div>
+      <h2>The Dossier</h2>
+      <p class="intro">Full analysis and reactions for today's 10 stories. <a href="#top">↑ Back to the edition</a></p>
+    </div>
+    <article id="dossier-1" class="dossier-entry">
+      <div class="dossier-meta">N<sup>o</sup> 01 &nbsp;·&nbsp; Blueprint &nbsp;·&nbsp; Build Log</div>
+      <h3>Why get an expensive Pi when I have an old phone?</h3>
+      <p class="dossier-source">
+        <a href="https://so.long.thanks.fish/why-pi-when-i-have-an-old-phone/" target="_blank" rel="noopener">so.long.thanks.fish</a>
+        &nbsp;·&nbsp; 116 pts &nbsp;·&nbsp; 71 comments
+         &nbsp;·&nbsp; <a href='https://news.ycombinator.com/item?id=50440709' target='_blank' rel='noopener'>discussion</a>
+      </p>
+      <h4>Analysis</h4>
+      <p>The story argues that a used smartphone can be a cheaper, more capable platform than a Raspberry Pi for projects requiring a high-resolution camera, GPS, storage, battery, connectivity, display, and computing power. A Redmi 13C 5G or Huawei Mate 30 5G costs roughly $45–75, compared with more than $200 for a similarly equipped Pi setup before adding batteries and an enclosure, while also offering 5G and integrated components. The author is testing a rooted Redmi for scheduled photography and hardware control over USB-C, while comparing its camera output with an Arducam rather than assuming megapixel counts indicate quality. The main practical challenges are reliable rooting, camera behavior, battery health, and sourcing hundreds of consistent used phones, but the approach could enable inexpensive, remotely manageable installations and extend the life of mass-produced hardware.</p>
+      <h4>Reader Reactions</h4>
+<p class="camps-framing">Commenters weighed the phone’s bundled compute, sensors, and connectivity against the Pi’s accessible hardware and more predictable development experience. The practical choice depended on project needs, including I/O, software support, power and cooling, device sourcing, and the cost of alternatives.</p>
+<div class="camp"><p class="camp-label"><strong>Phones as capable, underused platforms</strong> &mdash; Supporters saw old phones as capable, integrated devices for software-heavy or self-contained projects, with screens, cameras, sensors, and connectivity already included.</p><blockquote>I recently used Termux on a 7 year old low-end android to run a WordPress site with sqlite db and a golang sse pubsub service at a conference, via cloudflare tunnel, with dozens of people connected and doing some realtime collaborative stuff.<cite>nchmy</cite></blockquote>
+<blockquote>These devices could really shine as edge computing devices and I believe they are overlooked.<cite>dava96</cite></blockquote>
+<blockquote>I&#x27;ve always found it a bit absurd that an old phone can have more sensors and connectivity than a fairly expensive hobbyist computer, yet we rarely consider using it as one<cite>interludead</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>The Pi’s accessible hardware and ecosystem</strong> &mdash; Supporters valued the Pi’s native GPIO, documentation, supported software, and add-on ecosystem. USB GPIO adapters and dev boards can extend phones, though timing-sensitive tasks may still call for a microcontroller.</p><blockquote>Reasons to get a Pi: GPIO support, software support, OS updates, free root &amp; bootloader, more flexibility and customizability, extensive documentation and support, consistency, simplicity, more ports, battery optional.<cite>randomblock1</cite></blockquote>
+<blockquote>The pi and esp32s have an ecology of add-ons and a community to support you.<cite>Peteragain</cite></blockquote>
+<blockquote>Note that you won&#x27;t be able to implement anything that has timing requirements - you&#x27;ll need a microcontroller for that.<cite>cowlevel</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Phone software and access can be difficult</strong> &mdash; Some commenters found bootloader unlocking, rooting, and Linux support frustrating, especially for hardware projects. Others described older devices as workable for people willing to tinker.</p><blockquote>They are engineered to keep me out, and that is a pain in the ass I don&#x27;t want to deal with when doing hardware work.<cite>shit_game</cite></blockquote>
+<blockquote>Fun to tinker with. A nightmare to use for real<cite>hafern</cite></blockquote>
+<blockquote>The newer devices are a bit harder, but if you go back nearly a decade, they&#x27;re very easy to get working.<cite>cdetroye</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Batteries and cooling affect continuous use</strong> &mdash; Commenters raised battery aging, heat, and sustained workloads as risks for phones used continuously, while others noted that bypass charging or battery removal may address some concerns.</p><blockquote>Batteries tend to heat up when charged / discharged, old batteries can also bulge or, worst case, even explode.<cite>thisislife2</cite></blockquote>
+<blockquote>I also keep using old android phone but the battery dies every few months if you keep plug-in power cable.<cite>a012</cite></blockquote>
+<blockquote>Some OnePlus devices have a &quot;bypass charging&quot; system.<cite>denysvitali</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Scaling with used phones raises reliability concerns</strong> &mdash; Commenters questioned whether a few hundred used phones could be sourced and maintained consistently, while others argued that most hobbyists need only one device or disputed the reliability of Pi supply.</p><blockquote>Finding two good used phones is easy; finding a few hundred matching ones, with healthy batteries and predictable camera behaviour, would take more work.<cite>Freak_NL</cite></blockquote>
+<blockquote>Hobbyist don&#x27;t usually need to scale beyond one device.<cite>krzyk</cite></blockquote>
+<blockquote>Pies are hard to find, get more expensive each week.<cite>bambax</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Used PCs and price comparisons offer other baselines</strong> &mdash; Some commenters recommended used laptops, mini PCs, or thin clients for general-purpose Linux work. Others cautioned that comparing a Pi’s price with a phone already owned does not establish the phone’s actual cost advantage.</p><blockquote>Anything is expensive compared to something you have lying around for free.<cite>altmanaltman</cite></blockquote>
+<blockquote>Nowadays, I just get old laptops with broken screens and take the mainboard out.<cite>deng</cite></blockquote>
+<blockquote>For me if I don&#x27;t have a need for the GPIO pins, it&#x27;s &quot;why get an expensive pi when I can get a used ex-corporate small form factor quad core, intel core i7-something desktop PC with 16GB of RAM and a real SSD&quot;...<cite>walrus01</cite></blockquote></div>
+    </article>
+    <article id="dossier-2" class="dossier-entry">
+      <div class="dossier-meta">N<sup>o</sup> 02 &nbsp;·&nbsp; Terminal &nbsp;·&nbsp; System Core</div>
+      <h3>Ggml v1.0.0</h3>
+      <p class="dossier-source">
+        <a href="https://github.com/ggml-org/ggml/releases/tag/v1.0.0" target="_blank" rel="noopener">github.com</a>
+        &nbsp;·&nbsp; 293 pts &nbsp;·&nbsp; 46 comments
+         &nbsp;·&nbsp; <a href='https://news.ycombinator.com/item?id=50493062' target='_blank' rel='noopener'>discussion</a>
+      </p>
+      <h4>Analysis</h4>
+      <p>ggml v1.0.0 is a major release of the tensor and machine-learning backend used by projects such as llama.cpp, focused on cleaning up its public API while improving portability and performance. It removes deprecated interfaces and legacy diagnostic operations, adds configurable YaRN truncation, FP8 support, better precision handling, and a newer RPC protocol that rejects incompatible peers. Much of the release targets hardware acceleration, including optimized quantized matrix operations, MoE scheduling and fusion, FlashAttention paths, and expanded kernels across CUDA, Metal, Vulkan, SYCL, OpenCL, WebGPU, Hexagon, CPU, and other backends. The release is important because it establishes a cleaner 1.0 API while broadening efficient local inference support across GPUs, mobile and embedded processors, and specialized accelerators.</p>
+      <h4>Reader Reactions</h4>
+<p class="camps-framing">The discussion is largely positive about ggml and llama.cpp, especially their improving performance and broad compatibility across models and hardware. The main technical tradeoff is convenience and reach versus the speed of hardware-specialized engines. Reactions to the landing page differ: some value its simplicity, while others want more polish or context. Smaller side discussions raise concerns about telemetry, naming, and project affiliation.</p>
+<div class="camp"><p class="camp-label"><strong>Broad, dependable foundation</strong> &mdash; Commenters praise ggml and llama.cpp as practical, steadily improving infrastructure that makes local inference work across a wide range of models and systems.</p><blockquote>Every time I upgrade (once a month or so) there is usually a 5 to 10% speed boost.<cite>jacquesm</cite></blockquote>
+<blockquote>Awesome! ggml and llama.cpp are the Linux of the AI world.<cite>evilelectron</cite></blockquote>
+<blockquote>For this project it&#x27;s more about achieving the &#x27;train once, run everywhere&#x27; paradigm that Java had.<cite>thibsrn</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Specialized engines can be faster</strong> &mdash; Some commenters note that hardware-tuned inference engines can offer more speed, while others describe using them alongside llama.cpp or emphasize the value of broad compatibility.</p><blockquote>you get a lot more speed from specialised inference engines with kernels made for your hardware.<cite>dust42</cite></blockquote>
+<blockquote>But across all of them it has been consistently good.<cite>jacquesm</cite></blockquote>
+<blockquote>I run vllm and llama.cpp; llama.cpp is pretty hackable by a local agent and is fast to start up<cite>barrkel</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Practical reach across hardware</strong> &mdash; Commenters highlight useful support for constrained or less common hardware, including Vulkan-only AMD cards, RISC-V, and models that exceed GPU memory limits.</p><blockquote>If you load an MoE model that slightly exceeds your GPU memory budget, llama.cpp and ggml v1.0.0 can cache less-frequently used experts in host memory rather than failing to load.<cite>thisisauserid</cite></blockquote>
+<blockquote>running on my crappy AMD card that only supports vulkan and it&#x27;s usable thanks to GGML and llama.cpp<cite>kodoman</cite></blockquote>
+<blockquote>Not just legacy hardware, but also ready for the immediate future, with RISC-V support.<cite>snvzz</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Landing page needs more polish or context</strong> &mdash; Some commenters find the landing page underdeveloped or want it to explain more clearly what the project does and whom it serves.</p><blockquote>Please put a little more effort in for FFS, you have seed money?<cite>minimaxa</cite></blockquote>
+<blockquote>Most of them somehow expect that you know the domain already.<cite>phkx</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Minimalism is a virtue</strong> &mdash; Other commenters value the page’s speed, readability, and simplicity, seeing its restraint as refreshing compared with elaborate or generic landing pages.</p><blockquote>I&#x27;m glad their philosophy extends to the website as well. Genuinely refreshing.<cite>nvme0n1p1</cite></blockquote>
+<blockquote>This landing page is perfectly simple and minimal.<cite>sureglymop</cite></blockquote>
+<blockquote>the whole thing fits on my phone screen<cite>thejoeosborne</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Trust, naming, and affiliation side discussions</strong> &mdash; A few commenters allege unwanted external contact or downloaded JavaScript, question the project’s naming, or correct a claim about its affiliation. These are commenters’ claims and observations, not findings established in the discussion.</p><blockquote>This is pure telemetry or in plain english Spying on users.<cite>trilogic</cite></blockquote>
+<blockquote>Imagine naming a library after yourself.<cite>om8</cite></blockquote>
+<blockquote>Hugging Face, and Nvidia hasn’t bought that yet.<cite>trvz</cite></blockquote></div>
+    </article>
+    <article id="dossier-3" class="dossier-entry">
+      <div class="dossier-meta">N<sup>o</sup> 03 &nbsp;·&nbsp; Archive &nbsp;·&nbsp; Archival Desk</div>
+      <h3>Monkey Island: all 13 versions side by side</h3>
+      <p class="dossier-source">
+        <a href="https://monkeyisland.pages.dev/" target="_blank" rel="noopener">monkeyisland.pages.dev</a>
+        &nbsp;·&nbsp; 186 pts &nbsp;·&nbsp; 55 comments
+         &nbsp;·&nbsp; <a href='https://news.ycombinator.com/item?id=50493904' target='_blank' rel='noopener'>discussion</a>
+      </p>
+      <h4>Analysis</h4>
+      <p>The story presents an interactive side-by-side comparison of all 13 versions of *The Secret of Monkey Island*, spanning PC graphics and sound standards, Amiga, Atari ST, Macintosh, FM Towns, PC CD-ROM, and Sega CD editions. It keeps the same 12 game moments and framing across versions, letting users compare differences in color, interfaces, music, aspect ratios, and display characteristics. The screens were captured through ScummVM and Hatari, then rendered with period-appropriate pixel scaling and optional CRT effects to document how the game originally appeared on different hardware. Created by a two-person team with AI assistance, the free, noncommercial site is valuable as a compact preservation and technical reference for a historically significant adventure game.</p>
+      <h4>Reader Reactions</h4>
+<p class="camps-framing">The response is largely appreciative, treating the comparison as both a polished preservation project and a prompt for memories of playing the game. Discussion of the versions focuses on which presentation works best, especially Amiga versus EGA and the mixed reactions to CGA. Other comments add technical context and reflect on how the games’ appeal and gameplay hold up over time.</p>
+<div class="camp"><p class="camp-label"><strong>Appreciation for the comparison and its presentation</strong> &mdash; Commenters praised the site’s design, depth, and historical detail, while others welcomed the chance to revisit a favorite game or discover a version they had not known about.</p><blockquote>This is beautiful, thanks for making it. My fav game of all time<cite>trencedamp</cite></blockquote>
+<blockquote>ux 10/10 I couldn&#x27;t have imagined a better one<cite>mr_tox</cite></blockquote>
+<blockquote>What a nice site that goes in depth with the differences!<cite>damethos</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Amiga as the visual winner</strong> &mdash; Some commenters preferred the Amiga edition outright, including in comparisons with the Atari ST; others were impressed by how closely it compared with VGA.</p><blockquote>As expected, Amiga version looked the best.<cite>devil1432</cite></blockquote>
+<blockquote>I immediately revived an old feud and compared the Amiga and Atari ST versions... Amiga, definitely. Ha!<cite>harel</cite></blockquote>
+<blockquote>I am very impressed how the 32-color Amiga version is close to the 256-color VGA version<cite>karteum</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>EGA’s distinct appeal</strong> &mdash; Some readers valued EGA as a thoughtfully composed version in its own right, rather than merely a reduced version of VGA.</p><blockquote>The EGA one is the true version for me<cite>g-b-r</cite></blockquote>
+<blockquote>The 256 color version added detail, but lost much of the boldness and elegance of the EGA version.<cite>nayroclade</cite></blockquote>
+<blockquote>It really feels like an alternative, equally good looking relase rather than a downgraded version of the VGA one<cite>Kurtz79</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Mixed feelings about CGA</strong> &mdash; Reactions to CGA ranged from dislike of its stark palette to nostalgia for its distinctive look; one reply noted that games designed around its limitations could look striking.</p><blockquote>Every time I see CGA graphics in cyan, magenta, black and white it reminds me of my youth and how &#x27;cold&#x27; it felt at the time to see those graphics, I could never really get used to it.<cite>tjeerdnet</cite></blockquote>
+<blockquote>Ditto. My first ibm compatible was CGA, and those pallets represent a really specific era in my memories.<cite>simonjgreen</cite></blockquote>
+<blockquote>Games which were made especially for CGA did often look really cool.<cite>beefsack</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Technical context and qualifications</strong> &mdash; Commenters clarified that the displayed versions do not represent wholly independent sets of artwork and pointed out platform-specific differences, as well as omissions and possible display effects.</p><blockquote>I think there&#x27;s only really two real sets of artwork - the EGA and VGA releases.<cite>mjg59</cite></blockquote>
+<blockquote>The pirate close-up (pointed out by https://news.ycombinator.com/item?id=50495836 ) confirms: the Atari ST graphics are ported from the EGA version, while Amiga is based off VGA.<cite>networked</cite></blockquote>
+<blockquote>Technically not all. The anniversary re-release is missing.<cite>FabCH</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Nostalgia and how the games hold up</strong> &mdash; Some commenters longed for the feeling of encountering these games for the first time, while others discussed whether their stories and gameplay still work or whether modern games can capture a similar appeal.</p><blockquote>Going back isn&#x27;t enough. What I wanted again was the feeling of seeing and playing those games for the first time.<cite>glimshe</cite></blockquote>
+<blockquote>The story, the writing, the humor, and the characters holds up of course but not the gameplay.<cite>haunter</cite></blockquote>
+<blockquote>I can very much recommend looking at games developed and published by Wadjet Eye Games.<cite>tetha</cite></blockquote></div>
+    </article>
+    <article id="dossier-4" class="dossier-entry">
+      <div class="dossier-meta">N<sup>o</sup> 04 &nbsp;·&nbsp; Rose Alert &nbsp;·&nbsp; Market Watch</div>
+      <h3>Nvidia allegedly engineered scarcity by funding AI startups to buy its GPUs</h3>
+      <p class="dossier-source">
+        <a href="https://www.techpowerup.com/354814/nvidia-allegedly-engineered-scarcity-by-funding-ai-startups-to-buy-its-gpus" target="_blank" rel="noopener">techpowerup.com</a>
+        &nbsp;·&nbsp; 656 pts &nbsp;·&nbsp; 384 comments
+         &nbsp;·&nbsp; <a href='https://news.ycombinator.com/item?id=50493251' target='_blank' rel='noopener'>discussion</a>
+      </p>
+      <h4>Analysis</h4>
+      <p>The story reports allegations, based on a Wall Street Journal account, that Nvidia funded AI startups and smaller cloud providers so they could purchase Nvidia GPUs, helping sustain apparent demand and absorb chips ordered from TSMC. This circular financing reportedly became a concern as major AI companies shifted toward custom hardware and some Nvidia-backed providers struggled to afford or deploy the systems they were expected to buy. Nvidia’s finance leadership allegedly urged reducing such arrangements, while Jensen Huang pushed continued investment, according to the report. If substantiated, the practices could indicate an effort to manage inventory and inflate demand, with implications for GPU pricing, the AI investment bubble, and possible regulatory scrutiny, though the claims remain allegations.</p>
+      <h4>Reader Reactions</h4>
+<p class="camps-framing">Commenters disagreed over whether Nvidia’s customer financing was conventional ecosystem-building or a way of sustaining demand that customers could not otherwise support. They also debated how much the reporting established about the deals, and whether current AI demand and infrastructure investment are likely to endure or unwind.</p>
+<div class="camp"><p class="camp-label"><strong>Strategic customer financing</strong> &mdash; These commenters viewed investments and credit support as ways to attract customers, encourage adoption, and protect Nvidia’s ecosystem. They argued that such arrangements can be ordinary business strategy, even if they involve risk.</p><blockquote>Is this “engineering scarcity” or just seeding demand for their product, which is something every company does?<cite>janalsncm</cite></blockquote>
+<blockquote>Instead of quoting a lower price per GPU to neoclouds and startups, they finance purchases of chips, but the two are roughly equivalent (financing means Nvidia takes on more risk, but has more upside and locks in future demand).<cite>Silfen</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>A warning sign of padded demand</strong> &mdash; These commenters saw vendor financing as potentially unhealthy when it enables customers to buy more than they could otherwise afford. They worried that financing could make demand appear stronger, or arrive sooner, than underlying demand warrants.</p><blockquote>Vendor financing is already a sign of an unhealthy market.<cite>dofm</cite></blockquote>
+<blockquote>Because Nvidia gave money to people who aren&#x27;t you, so those people could give the money back to Nvidia for GPUs.<cite>anonymous908213</cite></blockquote>
+<blockquote>The whole AI “GPU scarcity” thing has been a pretty obvious house of cards for a while now.<cite>cmiles8</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>The activity is real; its significance is unclear</strong> &mdash; These commenters distinguished the existence of financing deals from claims that they manipulated demand or created scarcity. They wanted more evidence about the scale, funding sources, and financial outcomes of the arrangements.</p><blockquote>Does the math check out, though? For reference, Nvidia added $17B of non-marketable securities in 2025, and its total revenue was $215B.<cite>cloudbonsai</cite></blockquote>
+<blockquote>I just am unable to understand whether it&#x27;s a bad thing or not, you could frame it as being circular, but you could also see it as Nvidia simply giving hardware in exchange for startup equity, is that really fundamentally problematic, is it the scale at which it was done, or is it a valid but risky tactic?<cite>dumberquestions</cite></blockquote>
+<blockquote>There are also the questions of the revenue and revenue quality of the companies Nvidia has invested in, how much debt they&#x27;ve taken on, what sort of backstops/guarantees Nvidia has given them, etc.<cite>ElProlactin</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Skepticism about the reporting and framing</strong> &mdash; These commenters questioned whether secondary coverage fairly represented the original reporting, or whether the coverage supported its stronger implications. Some characterized the reporting as misleading or motivated, while others focused on the distinction between facts and framing.</p><blockquote>The article from WSJ that this article is based on tells a completely different story.<cite>locallost</cite></blockquote>
+<blockquote>That is a very negative way to state facts. I doubt the neutrality of the authors.<cite>abhinai</cite></blockquote>
+<blockquote>This looks like a hit job on Jensen and Nvidia.<cite>extraextra</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>AI demand and Nvidia’s position remain strong</strong> &mdash; These commenters resisted treating the financing story as proof that AI demand is illusory or that the boom is over. They pointed to continuing demand and potential applications as reasons the market could keep expanding.</p><blockquote>Lots of comments seem eager to declare everything over, done for, and said, and that doesn&#x27;t seem to be nearly the case.<cite>karahime</cite></blockquote>
+<blockquote>By the way they report demand is 10x supply so I think everyone in here hoping for some cheap GPUs soon is kidding themselves.<cite>mrgordon</cite></blockquote>
+<blockquote>This is not a bubble.<cite>bzbee10</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>The bubble may deflate, with wider consequences</strong> &mdash; These commenters expected that financing risks or a slowdown in AI investment could lead to a prolonged deflation or a wider economic and market impact. They differed on whether a gradual slowdown might be beneficial or whether it would bring substantial fallout.</p><blockquote>When a bubble pops, the pop typically takes years to happen.<cite>beloch</cite></blockquote>
+<blockquote>If Nvidia is chastened enough to slow its banking endeavours and that lets air out of the bubble in a progressive rather than dramatic way, that’s probably better for everyone (except OpenAI, who are probably hosed in that scenario, as they have huge commitments but are struggling to raise what they need; Anthropic might last long enough to reassess)<cite>dofm</cite></blockquote>
+<blockquote>This leads to the DCs getting bought cheaply by hyperscalers and you have a monopolistic AI market with google/fb/amazon and likes are running the show again.<cite>anuptalwalkar</cite></blockquote></div>
+    </article>
+    <article id="dossier-5" class="dossier-entry">
+      <div class="dossier-meta">N<sup>o</sup> 05 &nbsp;·&nbsp; Mint Pattern &nbsp;·&nbsp; Terminal Craft</div>
+      <h3>Terminal borders that don&#x27;t cost a cell</h3>
+      <p class="dossier-source">
+        <a href="https://www.joshka.net/cell-borders/" target="_blank" rel="noopener">joshka.net</a>
+        &nbsp;·&nbsp; 287 pts &nbsp;·&nbsp; 125 comments
+         &nbsp;·&nbsp; <a href='https://news.ycombinator.com/item?id=50491423' target='_blank' rel='noopener'>discussion</a>
+      </p>
+      <h4>Analysis</h4>
+      <p>The article proposes a draft terminal protocol for drawing borders on cell edges as attributes rather than using box-drawing characters that consume rows and columns. Implemented experimentally in Ghostty and Ratatui, it supports colored, variably wide, styled, rounded, and prioritized lines that scroll, reflow, and interact with text like other cell properties, while allowing TUIs to fall back to conventional borders when unsupported. This could improve panes, popups, forms, buttons, checkboxes, and charts, preserve usable screen space, and prevent borders from contaminating copied text. Adoption remains uncertain because terminals, multiplexers, and TUI frameworks would need protocol support, and rendering complexity, interoperability, and resource costs still require testing.</p>
+      <h4>Reader Reactions</h4>
+<p class="camps-framing">The discussion weighed the practical value of borders that preserve text space against concerns about compatibility and the simplicity of text-oriented terminals. It also considered overstrike as an alternative, more ambitious terminal or remote-UI protocols, and GUI approaches; smaller threads addressed visual preferences and the article’s reception.</p>
+<div class="camp"><p class="camp-label"><strong>Support for cell-edge borders</strong> &mdash; Supporters saw borders that do not consume text cells as a useful improvement for TUI layouts and graphics.</p><blockquote>This is gorgeous and I need it in trunk for both kitty and ghostty<cite>ganelonhb</cite></blockquote>
+<blockquote>I like it. As an analogy, borders are important features of spreadsheet tools as well.<cite>mfld</cite></blockquote>
+<blockquote>Would be cool to get borders and lines out of copy/paste<cite>cobychapple</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Overstrike as an alternative</strong> &mdash; Some commenters favored overstrike as a way to draw borders over existing text, while others noted that it may not provide all the styling and layout options of cell borders.</p><blockquote>A much better alternative to this would be to for more terminal emulators to implement overstrike mode (DECSET 20, as available on the VK100).<cite>joouha</cite></blockquote>
+<blockquote>Because the background colour isn’t bounded by the border colour using overstrike, but it can be when using borders.<cite>hnlmorg</cite></blockquote>
+<blockquote>If you want those things then overstrike is insufficient.<cite>joshka</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Compatibility and protocol concerns</strong> &mdash; Commenters raised concerns about inconsistent terminal support, multiplexer handling, and how per-cell borders would interact with Unicode text.</p><blockquote>Compatibility will always be the hard part with new standards like this.<cite>nixpulvis</cite></blockquote>
+<blockquote>Tmux drops DCS that it doesn&#x27;t know like this.<cite>joshka</cite></blockquote>
+<blockquote>Does the border attach to the cell or to the grapheme cluster?<cite>favori995749721</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Build a richer terminal UI protocol</strong> &mdash; Some commenters viewed cell borders as a small step toward higher-level or semantic interfaces that could address limitations of cell-based terminals.</p><blockquote>if you&#x27;re changing the terminal protocol and the terminal itself to do this, why not do something more ambitious; a full monospaced information-dense UI framework, a terminal designed for user interfaces, rather than one designed to replicate the limitations of dumb terminals?<cite>tptacek</cite></blockquote>
+<blockquote>It&#x27;s needed to solve several things that work really poorly in terminals because their unit of compatibility is cells rather than a higher primitive.<cite>joshka</cite></blockquote>
+<blockquote>A program asks for a view the way vim takes the alternate screen.<cite>kalaomer</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Keep terminals simple and text-oriented</strong> &mdash; These commenters valued the constraints and composability of text-based terminals and worried that adding elaborate interfaces would undermine those strengths.</p><blockquote>If you want a full featured UI and all that comes with it why not just use QT or GTK or modern HTML or etc?<cite>fc417fc802</cite></blockquote>
+<blockquote>Terminals work so well because there&#x27;s a huge frictional cost to adding to the protocol.<cite>octoberfranklin</cite></blockquote>
+<blockquote>I don&#x27;t generally like TUI&#x27;s and think one gets more flexibility with raw text interfaces and being able to glue things together is more important then them looking nice.<cite>kodoman</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Use a GUI or remote-display approach instead</strong> &mdash; Some commenters preferred HTML, X forwarding, or a purpose-built remote UI protocol to adding more capabilities to terminal escape sequences.</p><blockquote>What if, dare I say it, we just served HTML over ssh, and let the browser render a proper UI, instead of layering hacks on top of hacks?<cite>0c3ca83</cite></blockquote>
+<blockquote>That usecase should be revived in a bandwidth efficient manner (eg. RDP does bearable over crappy links, eg. over the ocean) instead.<cite>fodkodrasz</cite></blockquote>
+<blockquote>UI in a browser is a massive hack in itself, a clean design would be better.<cite>orbital-decay</cite></blockquote></div>
+    </article>
+    <article id="dossier-6" class="dossier-entry">
+      <div class="dossier-meta">N<sup>o</sup> 06 &nbsp;·&nbsp; Midnight &nbsp;·&nbsp; Local Inference</div>
+      <h3>Unsloth Qwen3.8-27B Quantizations – Dynamic v3.1 Update</h3>
+      <p class="dossier-source">
+        <a href="https://unsloth.ai/docs/models/qwen3.8" target="_blank" rel="noopener">unsloth.ai</a>
+        &nbsp;·&nbsp; 161 pts &nbsp;·&nbsp; 50 comments
+         &nbsp;·&nbsp; <a href='https://news.ycombinator.com/item?id=50491980' target='_blank' rel='noopener'>discussion</a>
+      </p>
+      <h4>Analysis</h4>
+      <p>Unsloth has released updated Dynamic V3.1 quantizations for Qwen3.8-27B, a dense vision-and-reasoning model with a 256K context window that can run locally on roughly 17GB of RAM or VRAM. The update covers most 2- to 6-bit GGUF variants and reportedly improves accuracy by 5–10% at comparable sizes, particularly on coding, agentic, and general benchmarks, while adding tool-calling, developer-role, and multi-token-prediction support. The guide provides usage instructions for llama.cpp, Unsloth Desktop, and APIs, along with recommended sampling and reasoning-effort settings. It also describes NVFP4 versions for Blackwell GPUs, offering about 1.5× BF16 speed with 92–97% accuracy recovery, making practical local deployment more accessible across consumer and data-center hardware.</p>
+      <h4>Reader Reactions</h4>
+<p class="camps-framing">The discussion combined enthusiasm about making capable models usable on modest local hardware with practical questions about cost, privacy, model variants, and deployment. Commenters compared quantization approaches and benchmark evidence, while some focused on memory use and reasoning-token efficiency.</p>
+<div class="camp"><p class="camp-label"><strong>Local models are useful on ordinary hardware</strong> &mdash; Commenters described using local models for slow, unattended work and reported that some releases were practical on ordinary consumer hardware.</p><blockquote>There are so many of us with weak GPUs and these updates are massive wins.<cite>aliljet</cite></blockquote>
+<blockquote>It was dreadfully slow, but you fire that off before bed, and you can get results the next day.<cite>3eb7988a1663</cite></blockquote>
+<blockquote>Totally acceptable.<cite>quaddoggy</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Local-versus-hosted tradeoffs</strong> &mdash; The discussion weighed local inference costs against hosted services, with privacy, availability, and dedicated-server options offered as reasons to run models locally.</p><blockquote>So other than privacy (which doesn&#x27;t matter for my work) there isn&#x27;t any justification for running locally.<cite>Incipient</cite></blockquote>
+<blockquote>Non-local models are sometimes unavailable.<cite>LeBit</cite></blockquote>
+<blockquote>You can rent a dedicated server. It&#x27;s easy and costs 10 times less than a &quot;cloud&quot;.<cite>otabdeveloper4</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Compare the quantizers and model variants</strong> &mdash; Commenters requested comparisons with other quantizers and variants, and expressed differing views about performance on constrained hardware and the quality of smaller versions.</p><blockquote>IMO Byteshape is kind of the winner here if you&#x27;re only looking at 24GB and down targets.<cite>DiabloD3</cite></blockquote>
+<blockquote>ByteShape was what finally made Qwen3.8 27b actually fast and usably intelligent for me after trying a LOT of different options at 16GB VRAM.<cite>zmmmmm</cite></blockquote>
+<blockquote>releasing the Q8 variants anytime soon with the dynamic work ? Q8 stomps Q6 on personal benchmarks here for me wrt Qwen 3.8 27b.<cite>serf</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Benchmarks help, but have limits</strong> &mdash; Some commenters welcomed task-based benchmarks and repeated runs with error bars, while others emphasized failures in their own evaluations and cautioned against relying on benchmark results alone.</p><blockquote>I am happy they are showing charts for actual benchmarks, not just easily measurable proxies like KL-div.<cite>stared</cite></blockquote>
+<blockquote>We also run all benchmarks multiple times, and provide error bars!<cite>danielhanchen</cite></blockquote>
+<blockquote>I am constantly shocked at how often they fail my evals.<cite>sroussey</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Deployment, hardware, and roadmap questions</strong> &mdash; Several commenters sought practical guidance on software stacks and hardware, or asked about the project&#x27;s plans for multi-GPU and multi-node training.</p><blockquote>how to best run your 27G v3.1 quants on recent mac hardware with 32-64gb of ram. mlx etc. ? what would you recommend re: software stack for best pp/tg overall performance?<cite>rdslw</cite></blockquote>
+<blockquote>Is making this aspect as user friendly as other parts of Studio and the docs on your near term roadmap or are your prioritizing other areas for now?<cite>dr_kiszonka</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Memory use and reasoning-token efficiency</strong> &mdash; A smaller technical thread explored reducing memory demands with KV-cache techniques, alongside concerns about verbose reasoning and the token cost of lower-precision models.</p><blockquote>So we can have a 4bit KV cache, but the most recent N tokens can be 8bit - we found accuracy improves 2x!<cite>danielhanchen</cite></blockquote>
+<blockquote>I&#x27;ve used Qwen3.8 quite a bit and it&#x27;s very verbose - its propensity for tool calling is insane and it uses 2x as many tokens as GLM-5.2 (which itself uses huge amount of tokens).<cite>armcat</cite></blockquote>
+<blockquote>we actually cut reasoning by up to 50% esp for the small quants - we found quantizing models naively coincidentally also made them more verbose, as it would &quot;correct&quot; itself during the reasoning process.<cite>danielhanchen</cite></blockquote></div>
+    </article>
+    <article id="dossier-7" class="dossier-entry">
+      <div class="dossier-meta">N<sup>o</sup> 07 &nbsp;·&nbsp; Stat Hero &nbsp;·&nbsp; Infrastructure</div>
+      <h3>FAA issues national ground stop – lifted 4.5 hours later</h3>
+      <p class="dossier-source">
+        <a href="https://www.nbcnews.com/news/us-news/faa-orders-nationwide-ground-stop-departing-flights-reasons-safety-rcna609247" target="_blank" rel="noopener">nbcnews.com</a>
+        &nbsp;·&nbsp; 1564 pts &nbsp;·&nbsp; 1186 comments
+         &nbsp;·&nbsp; <a href='https://news.ycombinator.com/item?id=50489641' target='_blank' rel='noopener'>discussion</a>
+      </p>
+      <h4>Analysis</h4>
+      <p>The FAA imposed a nationwide ground stop for departing U.S. flights after an overloaded, decades-old air-traffic-control communications and radar-routing system produced inconsistent data, prompting a precautionary shutdown lasting about 4.5 hours. The stop was lifted at 8:15 p.m. ET, but more than 7,000 flights were canceled and hundreds of thousands of passengers faced delays, crowded airports, and displaced aircraft and crews. Officials said there was no evidence of a cyberattack or public danger, and the FAA’s newer SMART system was not involved. The incident highlights the operational and economic risks of aging aviation infrastructure and renewed calls for major federal investment to modernize air-traffic control.</p>
+      <h4>Reader Reactions</h4>
+<p class="camps-framing">The discussion unfolded amid limited confirmed information, with commenters sharing updates and weighing competing explanations. Some viewed the outage as evidence of underfunded legacy infrastructure, while others focused on a recent upgrade and questioned the timing and testing. The recent AI-tool rollout drew speculation, alongside reminders that it was described as advisory and that no link to the communications failure had been established. Commenters also disputed officials’ explanations and funding requests, debated cyberattack theories, and sought clearer updates about system resilience and the effects on travelers.</p>
+<div class="camp"><p class="camp-label"><strong>Aging infrastructure needs investment</strong> &mdash; Some commenters argued that deferred modernization has made air-traffic infrastructure increasingly costly and risky. Others questioned the scale or timing of the funding pitch.</p><blockquote>There are people in charge who are not funding upgrading these systems, because their constituents don&#x27;t want their taxes raised to pay for it.<cite>0xbadcafebee</cite></blockquote>
+<blockquote>It&#x27;s because air traffic control systems in the US haven&#x27;t been significantly upgraded in like a century. Keep kicking the can it will get more and more expensive<cite>davedx</cite></blockquote>
+<blockquote>Man, having some high speed trains might be useful right about now.<cite>panick21_</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>The new upgrade may have caused the failure</strong> &mdash; Commenters focused on reports that new equipment or patches overwhelmed the existing system. They questioned the rollout timing, production testing, and whether a broader replacement would avoid similar problems.</p><blockquote>Anybody familiar with these systems know why they would do an update like this at 3pm on a Friday?<cite>sweswas2</cite></blockquote>
+<blockquote>I don&#x27;t understand why they did not test this before deploying on production.<cite>dnqthao</cite></blockquote>
+<blockquote>This was a classic upgrade that broke shit. The problem was with the new upgrade , not the old shit that worked.<cite>hn_throwaway_99</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>The AI rollout drew speculation and calls for proportion</strong> &mdash; The nationwide expansion of the FAA’s SMART tool prompted questions about whether its timing was connected to the outage. Other commenters stressed that it was described as advisory and that reports pointed to communications infrastructure, while some raised broader safety concerns about AI.</p><blockquote>Seems related to the rollout of their new AI tool?<cite>jumploops</cite></blockquote>
+<blockquote>The FAA has reassured the public and airlines that SMART only suggests routes and doesn&#x27;t affect air safety.<cite>lxgr</cite></blockquote>
+<blockquote>AI tech is nowhere near reliable enough to be introduced in such important systems. I find this deeply troubling even if it’s not related to the current issue.<cite>s__s</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Distrust of officials and the funding pitch</strong> &mdash; Some commenters questioned whether officials were giving a reliable account, particularly when preliminary explanations were accompanied by requests for substantial funding. They called for independent scrutiny or suspected the outage could be used to shift blame.</p><blockquote>I will not trust what they are saying unless there is an independent investigation about what happened.<cite>sega_sai</cite></blockquote>
+<blockquote>Never let a crisis goto waste. Someone screws up and the first reaction is to say “we need more money”<cite>chasd00</cite></blockquote>
+<blockquote>Maybe just paranoia but it seems slightly suspicious for this to happen while we are in the middle of discussing massive funding and overhauls to the air traffic control systems.<cite>AngryData</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Cyberattack and broader conspiracy theories</strong> &mdash; A minority speculated about foreign attacks, sabotage, or links to other recent outages, often without evidence. Other commenters cautioned that internal glitches or misconfiguration are more common explanations.</p><blockquote>This is it, massive cyberattack on the USA.<cite>deadbabe</cite></blockquote>
+<blockquote>I do not believe in coincidences. First Microsoft, then anthropic, now ATC radio. Something big is going on.<cite>underseacables</cite></blockquote>
+<blockquote>I&#x27;ve worked in IT long enough to know it is 99/100 times an internal glitch or misconfiguration, not hackers, that brings a system down.<cite>soundworlds</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Resilience, live updates, and passenger uncertainty</strong> &mdash; Commenters questioned why a communications failure could affect departures nationwide and whether the system had adequate backup. Others shared flight-tracking observations and described the difficulty of getting useful information while traveling.</p><blockquote>How is there not a second backup network???<cite>MBCook</cite></blockquote>
+<blockquote>I&#x27;m watching it live on ADSBexhange, here&#x27;s a flight I picked at random going approximately past me that&#x27;ll land in Detroit about an hour from now... there&#x27;s not much left over the US over 40,000 feet.<cite>mikewarot</cite></blockquote>
+<blockquote>It’d be nice if they could actually give actionable updates.<cite>hysan</cite></blockquote></div>
+    </article>
+    <article id="dossier-8" class="dossier-entry">
+      <div class="dossier-meta">N<sup>o</sup> 08 &nbsp;·&nbsp; Obituary &nbsp;·&nbsp; Company History</div>
+      <h3>What happened to 3Com?</h3>
+      <p class="dossier-source">
+        <a href="https://dfarq.homeip.net/what-happened-to-3com/" target="_blank" rel="noopener">dfarq.homeip.net</a>
+        &nbsp;·&nbsp; 156 pts &nbsp;·&nbsp; 80 comments
+         &nbsp;·&nbsp; <a href='https://news.ycombinator.com/item?id=50491830' target='_blank' rel='noopener'>discussion</a>
+      </p>
+      <h4>Analysis</h4>
+      <p>The article traces 3Com’s decline from a leading maker of reliable network cards and enterprise equipment to its acquisition by Hewlett-Packard in 2009. It argues that 3Com abandoned its profitable networking business, made costly diversifications such as buying US Robotics, and failed to adapt as Intel drove down adapter prices and dial-up modems gave way to broadband. Rebuilding its enterprise networking presence proved too expensive after years of losses, while competitors—especially Cisco—grew rapidly. The story is important as a case study in how strategic missteps, overreliance on a maturing product category, and poorly timed acquisitions can erode a strong technology brand, even when its products remain respected by users.</p>
+      <h4>Reader Reactions</h4>
+<p class="camps-framing">The comments combine fond memories of dependable 3Com hardware and its early engineering culture with accounts of bugs in enterprise products. Commenters differ on whether the company’s decline is best explained by strategic choices, the limits of its product range, or the commoditization of networking hardware; several also correct aspects of the article’s account. A side discussion considers whether Palm could have become a rival to the iPhone.</p>
+<div class="camp"><p class="camp-label"><strong>Reliable hardware and fond memories</strong> &mdash; Commenters recall 3Com cards as dependable and share memories of getting network hardware working, including the excitement of a first connection.</p><blockquote>They were high-quality cards and the lifetime warranty proved to be very popular.<cite>msgilligan</cite></blockquote>
+<blockquote>Back in the pre plug and play days, they were one of the few that would just always work.<cite>K0balt</cite></blockquote>
+<blockquote>The thrill of that first ping!<cite>vertnerd</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>The people and engineering culture</strong> &mdash; Some commenters remember the people behind 3Com and describe a technically rigorous, personal culture; Metcalfe’s public persona and predictions also draw affectionate recollections.</p><blockquote>He was both brilliant and incredibly sweet.<cite>as-j</cite></blockquote>
+<blockquote>He had (overhead projector) slides that showed all his assumptions and calculations.<cite>msgilligan</cite></blockquote>
+<blockquote>Metcalfe has a reputation for being brash and outspoken and it clearly shows in the interview.<cite>EvanAnderson</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Enterprise software and gear had serious flaws</strong> &mdash; First-hand accounts of unstable switches, configuration loss, and software bugs qualify the reputation for dependable hardware.</p><blockquote>They sold a managed switch that couldn&#x27;t save its configuration<cite>abofh</cite></blockquote>
+<blockquote>3Com&#x27;s enterprise networking software sure has some strange bugs.<cite>bishopsmother</cite></blockquote>
+<blockquote>Occasionally these events switch was as factory reset was done, none of configuration made was left.<cite>mesrik</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Commoditization made add-in cards less valuable</strong> &mdash; Commenters say built-in networking and adequate lower-cost hardware reduced demand for premium cards, while noting that cheaper components could still have drawbacks.</p><blockquote>For everybody else, the basic integrated options were enough.<cite>fhn</cite></blockquote>
+<blockquote>There were some “interesting” issues with a lot of the cheap hardware for a long time though.<cite>kstrauser</cite></blockquote>
+<blockquote>Then the cheap stuff got good enough for 90 percent of the use cases, then they bought into another sector where exactly the same thing happened again, except it was also a completely dead end.<cite>K0balt</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Decline narratives are disputed and qualified</strong> &mdash; Commenters point to strategic missteps, but also challenge claims that 3Com never diversified or had a full-scale Cisco-like routing business.</p><blockquote>To get out of the license payments, 3Com gave all its LAN software IP to Microsoft and exited that business.<cite>msgilligan</cite></blockquote>
+<blockquote>3com never had a serious router product line.<cite>walrus01</cite></blockquote>
+<blockquote>&quot;never diversified&quot; is a funny epitaph for a company that at various points owned Palm, US Robotics, half a Huawei JV and an IPS vendor.<cite>cobychapple</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Could Palm have become the iPhone?</strong> &mdash; Commenters debate whether Palm’s hardware and products could have led to an iPhone-like success, with some emphasizing the difficulty of matching the iPhone’s software and ecosystem.</p><blockquote>The iPhone had a whole app and media infrastructure built around it.<cite>ghaff</cite></blockquote>
+<blockquote>I loved my Treo, and in some ways it bettered the iPhone form factor, but the software wasn&#x27;t comparable.<cite>Exoristos</cite></blockquote>
+<blockquote>Fact of the matter is nothing could have been the iPhone, everything sucked in 2007.<cite>nntwozz</cite></blockquote></div>
+    </article>
+    <article id="dossier-9" class="dossier-entry">
+      <div class="dossier-meta">N<sup>o</sup> 09 &nbsp;·&nbsp; Blueprint &nbsp;·&nbsp; Data Build</div>
+      <h3>Show HN: Live map of U.S. flights during tonight&#x27;s FAA nationwide ground stop</h3>
+      <p class="dossier-source">
+        <a href="https://grounds.top/" target="_blank" rel="noopener">grounds.top</a>
+        &nbsp;·&nbsp; 157 pts &nbsp;·&nbsp; 21 comments
+         &nbsp;·&nbsp; <a href='https://news.ycombinator.com/item?id=50491545' target='_blank' rel='noopener'>discussion</a>
+      </p>
+      <h4>Analysis</h4>
+      <p>This Show HN project is a live, replayable map tracking the impact of an FAA nationwide ground stop on U.S. commercial aviation. It combines community ADS-B flight-position data with FAA airport-status feeds to compare airborne flights, departures, airport recovery, and carrier activity with the same period a week earlier. The stop followed a reported telecommunications or communications failure affecting air-route traffic-control centers, halting most departures while allowing aircraft already in the air to land. The dashboard showed traffic falling as low as 140 commercial flights airborne, more than 10,000 estimated missed departures by the following morning, and a gradual return to normal, illustrating the operational and passenger-disruption effects of a nationwide air-traffic-control outage.</p>
+      <h4>Reader Reactions</h4>
+<p class="camps-framing">The response was largely positive about the fast, data-rich visualization and its depiction of a nationwide disruption. Discussion also covered the data source, requests for additional context and metrics, concerns about visual tone, and a technical sidebar about DNS terminology.</p>
+<div class="camp"><p class="camp-label"><strong>Enthusiasm for the visualization</strong> &mdash; Commenters praised the visualization, its quick development, and the appeal of visualizing flight data.</p><blockquote>Everyone I shared this with while stuck in transit today loved it. Thanks for inspiring some good vibes in Montreal!<cite>thirtygeo</cite></blockquote>
+<blockquote>Something about planes and data visualisation I love, been focus of so many of my random side projects<cite>joshgermon</cite></blockquote>
+<blockquote>Wow, impressive TTM. Barely enough time for the domain to resolve!<cite>monkeymeister</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Requests for prompts and AI-workflow details</strong> &mdash; Commenters asked to see the prompts or transcript behind the project; a brief exchange asked whether AI referred to the data itself.</p><blockquote>This is awesome! Thanks so much for sharing? Would you be up for sharing your prompt or transcript session? Lol<cite>relyks</cite></blockquote>
+<blockquote>Would love to see the underlying prompt(s) for these kind of project<cite>Angostura</cite></blockquote>
+<blockquote>Are you saying the data is AI generated?<cite>throooooo</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Data provenance and ADS-B’s role</strong> &mdash; Commenters asked about the data source, learned that it was publicly available, and noted that ADS-B broadcasts and hobbyist receivers could preserve a picture of flights during an air-traffic-control communications failure.</p><blockquote>What’s underlying data source for it all?<cite>bmfischer3</cite></blockquote>
+<blockquote>Flight positions: adsb.fi community ADS-B network. Airport delay feed: FAA NAS Status<cite>gvsi</cite></blockquote>
+<blockquote>Fun irony (beyond being Friday the 13th): FAA lost radar and frequencies between centers but ADS-B is broadcast by the planes themselves, so a couple hundred hobbyist receivers probably kept the full picture the whole time.<cite>cobychapple</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Requests for broader coverage or added metrics</strong> &mdash; Commenters suggested adding a carbon-emissions chart or including general-aviation flights, while noting that scheduled routes would not provide a straightforward comparison for those flights.</p><blockquote>Could you please and a carbon emissions chart too? Thanks!<cite>dheerajvs</cite></blockquote>
+<blockquote>Very cool. Is this only commercial aircraft? Would be interesting to see if general aviation VFR craft also decreased even though they were technically still allowed to fly as long as it wasn’t from ATC controlled air strips. Though you wouldn’t be able to show it relative to the “expected” number of flights since they aren’t on scheduled flight routes.<cite>krferriter</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Concern about the visual tone</strong> &mdash; One commenter questioned whether the red exploding circles and the framing of missed departures as losses were appropriate for a real disruption affecting travelers.</p><blockquote>Way cooler but maybe the red exploding circles and &quot;departures lost&quot; are not the best visuals in this instance :)<cite>singhkays</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>DNS terminology sidebar</strong> &mdash; A technical thread discussed whether DNS propagation is a myth, distinguishing cache expiration and authoritative-server replication delays from cases where propagation can be made very fast.</p><blockquote>contrary to popular belief, DNS doesn&#x27;t actually need 24 hours (or whatever) to &quot;propagate&quot;. It only needs enough time for caches to expire, if they exist. For non-existent domains this shouldn&#x27;t be an issue.<cite>gruez</cite></blockquote>
+<blockquote>TLDR: DNS &quot;propagation&quot; is real, not a myth. It&#x27;s just that today it&#x27;s pretty trivial to make the propagation delay so tiny that it&#x27;s negligible.<cite>adrianmonk</cite></blockquote></div>
+    </article>
+    <article id="dossier-10" class="dossier-entry">
+      <div class="dossier-meta">N<sup>o</sup> 10 &nbsp;·&nbsp; Editorial Op-Ed &nbsp;·&nbsp; Software Critique</div>
+      <h3>Jonathan Blow – If AI solved coding, why is my software still the same? [video]</h3>
+      <p class="dossier-source">
+        <a href="https://www.youtube.com/watch?v=IRK8h67ol7Q" target="_blank" rel="noopener">youtube.com</a>
+        &nbsp;·&nbsp; 320 pts &nbsp;·&nbsp; 418 comments
+         &nbsp;·&nbsp; <a href='https://news.ycombinator.com/item?id=50484658' target='_blank' rel='noopener'>discussion</a>
+      </p>
+      <h4>Analysis</h4>
+      <p>In this interview, programmer and game developer Jonathan Blow argues that software engineering has become less reliable despite decades of new methodologies and the rise of AI coding tools. He attributes this to rapidly expanding systems, a workforce with relatively little accumulated experience, and layers of legacy designs—such as Unix and conventional operating-system architectures—that are difficult or impossible to replace. Unlike civil engineering, commercial software generally lacks strong accountability, professional standards, or consequences for failures, so security vulnerabilities, performance problems, and unpredictable behavior are normalized. The discussion is important because it challenges claims that AI has effectively solved programming: if AI were producing dramatically better software, users and developers should see more reliable, simpler, and more capable products rather than continued accumulation of complexity and defects.</p>
+      <h4>Reader Reactions</h4>
+<p class="camps-framing">Commenters disagreed about where software work is constrained and how much AI has changed it. Some saw coding gains as meaningful, especially for personal tools and narrowly scoped projects; others emphasized upstream decisions, code quality, and the difficulty of producing polished software at scale. Blow’s broad claims about software progress and his authority beyond game development were also challenged.</p>
+<div class="camp"><p class="camp-label"><strong>The bottleneck is upstream of coding</strong> &mdash; These commenters argued that faster implementation does not resolve problems with deciding what to build, understanding requirements, or changing organizational goals and practices.</p><blockquote>It&#x27;s because the hard part of making software is not coding, but deciding what&#x27;s worth building (even with LLMs), appropriately modelling the problem and designing the solution (at a conceptual, architectural level).<cite>Overdrivr</cite></blockquote>
+<blockquote>AI gives you more of what you want and gives it faster, that doesn’t on its own change the culture or goals of a company.<cite>_aavaa_</cite></blockquote>
+<blockquote>It merely accelerates the &quot;how&quot;. You still need a customer to determine everything else.<cite>bob1029</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>AI has made coding constraints less binding</strong> &mdash; Some commenters said AI has let them complete work faster or build and ship projects that were previously impractical, while noting that organizational settings can limit those gains.</p><blockquote>AI has been a huge disruption to that status quo though because it enables people like me that were stuck managing these bozos to just do the thing on a timeline that wasn’t feasible before.<cite>phoghed</cite></blockquote>
+<blockquote>I have a personal project where I am merging 100+ PRs a week and at work I would be lucky to merge 8.<cite>empath75</cite></blockquote>
+<blockquote>AI is saving a lot of time in coding and making software as for my experience i have created a lot of software,apps through ai coding<cite>asifnazeer24</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Personal and long-tail software is changing</strong> &mdash; Commenters described making bespoke apps and tools for themselves or niche uses—software that may not be robust enough for broad release but is valuable to its creators and users.</p><blockquote>The thing that is not changing much is provided software by a company, what is important to understand is that everyone can have their own software now and these will not be visible in the same way.<cite>jFriedensreich</cite></blockquote>
+<blockquote>This is one of big changes with useful coding LLMS: each human person can have their own software to scratch their own itches.<cite>superkuh</cite></blockquote>
+<blockquote>It&#x27;s not something I would ever release publicly for others to use because I&#x27;m sure there&#x27;s a million edge cases that wouldn&#x27;t work for a broader audience, but it&#x27;s perfect for me and saves me a ton of money.<cite>clarle</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Faster output can conceal worse code</strong> &mdash; These commenters warned that AI can speed up implementation while producing convoluted, buggy, or difficult-to-review code, making apparent productivity gains hard to assess.</p><blockquote>AI hasn’t solved coding, if anything it’s made code quality worse. But it’s made it the process of coding faster.<cite>pansa2</cite></blockquote>
+<blockquote>Two weeks after and 50k LOC, I’m having a look and I can’t believe my eyes.<cite>elvis10ten</cite></blockquote>
+<blockquote>The changes always come in monster one-shot PRs ofc - too much for a human to read - so I just feed the branch to my Claude (identical to the one they’re working with) and after some thought it will give me 15 to 30 suggestions of what needs fixing.<cite>phony-account</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Public software remains constrained by scale and complexity</strong> &mdash; Commenters argued that AI’s gains are most visible in smaller projects, while complex products face steep late-stage costs and established products benefit from network effects and dominance.</p><blockquote>Since software has near zero marginal cost of distribution, people mostly use software that is the dominant version of that type of software.<cite>Dave_Rosenthal</cite></blockquote>
+<blockquote>With AI, those first 80% are now almost instant, producing flashy demos fooling us into believing that software development has been accelerated exponentially, but actually that speedup is only a very large linear multiplier that eventually gets consumed by the non-linearity.<cite>incrudible</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Blow’s broad claims about software progress are contested</strong> &mdash; Some commenters argued that software development has advanced substantially and questioned whether Blow’s experience in games supports his general claims about software and technology.</p><blockquote>And saying we haven&#x27;t advanced much is wild.<cite>mlinhares</cite></blockquote>
+<blockquote>Blow has experience in that domain, and is colored by working in it, but I don&#x27;t think he knows what&#x27;s happening on the bleeding edge very well.<cite>fuussssip</cite></blockquote>
+<blockquote>But if you take him just _slightly_ outside of his area of expertise - video game design and perhaps philosophy - his takes are extremely strongly held, banal, and don’t really stand up to scrutiny.<cite>sd9</cite></blockquote></div>
+    </article>
+  </section>
+  <footer class="colophon">
+    <p class="sig">— that's the edition.</p>
+    <p class="meta">Set in Fraunces &amp; Inter · Compiled November 14, 2026</p>
+    <p class="classic-link"><a href="classic.html">Prefer the classic card view? →</a></p>
+  </footer>
+<script>
+(() => {
+  const key = "gtd:read_days:hn:v1";
+  const day = "2026-11-14";
+  let stored = [];
+  try {
+    stored = JSON.parse(localStorage.getItem(key) || "[]");
+    if (!Array.isArray(stored)) stored = [];
+  } catch (e) {}
+  if (!stored.includes(day)) {
+    stored.push(day);
+    stored.sort();
+    localStorage.setItem(key, JSON.stringify(stored));
+  }
+})();
+</script>
+<script src="../../preference.js?v=64d58e5c44" defer></script>
+<script>
+// Simple script to toggle the [+] and [-] labels on the drawers
+document.querySelectorAll('.analysis-drawer').forEach(drawer => {
+  drawer.addEventListener('toggle', () => {
+    const summary = drawer.querySelector('summary');
+    if (drawer.open) {
+      summary.textContent = '[ Analysis − ]';
+    } else {
+      summary.textContent = '[ Analysis + ]';
+    }
+  });
+});
+
+// Share link — native share or copy markdown to clipboard
+(function () {
+  const links = document.querySelectorAll('.share-link');
+  if (!links.length) return;
+
+  const toast = document.createElement('div');
+  toast.className = 'discuss-toast';
+  document.body.appendChild(toast);
+
+  function showToast(msg) {
+    toast.textContent = msg;
+    toast.classList.add('show');
+    setTimeout(() => toast.classList.remove('show'), 2500);
+  }
+
+  function buildMarkdown(link, spread) {
+    const title = link.dataset.shareTitle || '';
+    const url = link.dataset.shareUrl || '';
+    const meta = spread ? spread.querySelector('.story-meta') : null;
+    const lede = spread ? spread.querySelector('.lede') : null;
+    const analysis = spread ? spread.querySelector('.drawer-analysis') : null;
+    let md = '# ' + title + '\n';
+    md += 'Source: ' + url;
+    if (meta) md += ' | ' + meta.textContent.trim();
+    md += '\n';
+    if (lede) md += '\n' + lede.textContent.trim() + '\n';
+    if (analysis) md += '\n## Analysis\n' + analysis.textContent.trim() + '\n';
+    return md;
+  }
+
+  links.forEach((link) => {
+    link.addEventListener('click', (e) => {
+      e.preventDefault();
+      const spread = link.closest('section.spread');
+      const md = buildMarkdown(link, spread);
+      const text = "I'd like to discuss this with you. Here's a summary:\n\n" + md;
+      const title = 'Discuss: ' + (link.dataset.shareTitle || '');
+      if (navigator.share) {
+        navigator.share({ title: title, text: text }).catch(() => {});
+      } else {
+        navigator.clipboard.writeText(text).then(
+          () => showToast('Copied to clipboard \u2014 paste into your AI chat'),
+          () => showToast('Failed to copy')
+        );
+      }
+    });
+  });
+})();
+</script>
+</body>
+</html>
