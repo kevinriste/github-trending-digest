@@ -1,0 +1,637 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hacker News Digest - November 18, 2026</title>
+    <link rel="stylesheet" href="../../style.css?v=7f9b956cf2">
+</head>
+<body data-gtd-edition="hn" data-gtd-date="2026-11-18">
+    <header>
+        <h1>Hacker News Digest - November 18, 2026</h1>
+        <nav>
+            <a href="../">&larr; Hacker News Calendar</a>
+            <a href="../../2026-11-18/">GitHub Trending</a>
+            <a href="../../ai/2026-11-18/">AI News</a>
+        </nav>
+    </header>
+    <main>
+        <section class="the-take"><details open><summary>The HN Take</summary><h3 class="take-head">Reasoning downhill</h3><p>A standard problem with AI reasoning is that the model does not know when it is done. It thinks for a while, gets an answer, thinks some more, perhaps talks itself out of the answer, reads the same thing again, and eventually stops because someone set a token limit. Very human, but expensive.</p><p>Researchers from Duke, UIUC and Harvard propose a more directed approach called Energy-Based Reasoners. The model learns an energy function over its latent reasoning states, then improves its answer by moving downhill:</p><p>&quot;Lower means better compatibility.&quot;</p><p>The score tells the model how good its current state is, the gradient tells it which direction to improve, and a small gradient tells it to stop. Instead of repeatedly asking &quot;am I done yet?&quot; in natural language, it reaches the bottom of a mathematical hill and goes home.</p><p>This apparently works well on algorithmic puzzles. A 1.8 million parameter model achieved 99.9% accuracy on Sudoku-Extreme using 345 times less inference compute than the next-best model. It also found a broad range of valid solutions to N-Queens and graph-coloring problems while maintaining near-perfect single-sample accuracy.</p><p>There is an intuitive lesson here. Existing recurrent reasoners loop without &quot;any explicit assessment&quot; of whether the loop is helping. The energy-based version has a numerical measure of progress and can stop when progress stops. A surprising amount of intelligence might consist of knowing whether your next thought will improve on your last one. A surprising amount of inference spending might consist of not knowing that.</p><h3 class="take-head">Java memory safety</h3><p>Java is memory-safe, except for the parts of Java that are written in hand-rolled assembly to decode Base64 faster. Calif researchers disclosed Java4Shell, a critical OpenJDK vulnerability that they say can be triggered by 64 A characters followed by an equals sign.</p><p>OpenJDK uses specialized AVX-512 instructions to accelerate Base64 decoding. For the malformed 65-character input, it allocates a 50-byte result array, miscalculates a negative output length and performs a 64-byte write, sending 62 bytes beyond the array. Java rejects the malformed input eventually, but only after corrupting neighboring memory. Security is all about the order of operations.</p><p>The researchers say they demonstrated remote code execution in default configurations of Keycloak, Jira, Confluence, Artifactory, Jenkins and PingFederate, among other products. A Java client can also allegedly be compromised merely by opening a TLS connection to a malicious server.</p><p>The nice idea of Java is that application developers do not have to worry much about memory corruption because the runtime handles memory safely. The less nice idea is that the runtime itself wants Base64 decoding to be extremely fast, so it uses unsafe low-level code. Most applications probably do not urgently need hand-optimized assembly to decode a few hundred bytes, but they receive the optimization, and its vulnerability, anyway. Write once, overwrite adjacent memory everywhere.</p><p>Calif says AI helped find the bug in an hour and produce the first working exploit two hours later, at a token cost below $200. Its proposed response is &quot;vibe-uncoding&quot;: use AI not only to generate more software, but to find unnecessary features and delete them. AI makes it dramatically cheaper to discover obscure vulnerabilities. Ideally it will also make it cheaper to remove the obscure code that contains them. First the centaur hacker breaks Java; then the centaur maintenance engineer asks why Java needed that code in the first place.</p><div class="take-sources"><span>Sources</span><ul><li><a href="https://energy-based-reasoners.github.io/" target="_blank" rel="noopener noreferrer">Energy-Based Reasoners: 385x more efficient inference</a></li><li><a href="https://calif.io/java4shell/" target="_blank" rel="noopener noreferrer">Java4Shell: RCE in OpenJDK when processing Base64</a></li></ul></div></details></section>
+        <div class="repo-controls">
+            <button id="collapse-seen-btn" type="button">Collapse Stories Not New Today</button>
+            <button id="expand-all-btn" type="button">Expand All</button>
+        </div>
+        <p class="seen-help">Stories marked "Not new today" appeared on one or more previous daily pages.</p>
+        <article>
+            <div class="repos">
+
+            <section class="repo" data-seen-before="0"
+                     data-share-title="Energy-Based Reasoners: 385x more efficient inference"
+                     data-share-url="https://energy-based-reasoners.github.io/"
+                     data-share-points="52"
+                     data-share-comments="4">
+                <div class="repo-header-row">
+                    <h3>1. <a href="https://energy-based-reasoners.github.io/" target="_blank" rel="noopener noreferrer">Energy-Based Reasoners: 385x more efficient inference</a> </h3>
+                    <div class="header-buttons">
+                        <button type="button" class="discuss-btn" aria-label="Discuss with AI" title="Discuss with AI">&#x1F4AC;</button>
+                        <button type="button" class="repo-toggle" aria-expanded="true">Hide details</button>
+                    </div>
+                </div>
+                <div class="repo-body">
+                    <p class="meta">
+                        <span class="language">energy-based-reasoners.github.io</span> |
+                        <span>frenchmajesty</span> |
+                        <span>52 points</span> |
+                        <span>4 comments</span> |
+                        <a href="https://news.ycombinator.com/item?id=50543989" target="_blank" rel="noopener noreferrer">discussion</a>
+                    </p>
+                    <p class="history">First seen: November 18, 2026 | Consecutive daily streak: 1 day</p>
+                    <div class="ai-summary">
+                        <h4>Analysis</h4>
+                        <p>The paper introduces Energy-Based Reasoners (EBRs), recurrent reasoning models that learn an energy function over latent states and use its gradient to refine solutions, select among candidates, and decide when to stop. This addresses a limitation of existing looped reasoners, which repeatedly update representations without an explicit measure of progress or solution quality. On algorithmic benchmarks, the 1.8-million-parameter EBR reportedly reaches up to 99.9% Sudoku-Extreme accuracy with far less inference compute than comparable models, while also achieving strong single-sample accuracy and multi-solution coverage on N-Queens and graph coloring. The results are important because they suggest energy-based objectives could make iterative reasoning more compute-efficient and controllable, though the evidence currently comes from narrow synthetic tasks rather than broad real-world applications.</p>
+                    </div>
+                    
+                <div class="ai-summary">
+                    <h4>Comment Analysis</h4>
+                    <p class="camps-framing">The comments focus on what the benchmark results do and do not establish: one reader is interested but cautious about the narrow puzzle setting, another questions the comparison and relevance of the term “reasoning,” and a reply points to a shared multi-step process while distinguishing puzzle-solving models from language models. A final comment asks about the timing of related papers.</p>
+<div class="camp"><p class="camp-label"><strong>Interested, but cautious about scope</strong> &mdash; One commenter sees promise but emphasizes that the results concern a specific set of logic puzzles and awaits broader follow-up.</p><blockquote>As far as I could understand, this works very well for a very specific logic puzzle problem set.<cite>igleria</cite></blockquote>
+<blockquote>Interested on future papers tho :)<cite>igleria</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Skeptical of the reasoning comparison</strong> &mdash; One commenter contrasts the reported efficiency with a higher figure from classical energy-based models and argues that puzzle-solving results may differ from what people usually mean by reasoning.</p><blockquote>Classical energies learn to reason 1000x faster than looped models.<cite>saithound</cite></blockquote>
+<blockquote>Of course, all for a very generous definition of reasoning, that has almost nothing in common with the thing most people associate with the term nowadays.<cite>saithound</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Shared process, different domain</strong> &mdash; One commenter points to a shared multi-step process while distinguishing puzzle-solving models from language models.</p><blockquote>The common definition of &quot;reasoning&quot; for all three is &quot;performing a sequence of intermediate steps with multiple passes through the model before outputting an answer.&quot;<cite>yorwba</cite></blockquote>
+<blockquote>The main difference is that the reasoning models in TFA and [1] are puzzle-solving models, not language models.<cite>yorwba</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Publication-timing query</strong> &mdash; One commenter asks whether the two cited papers appeared only days apart, without taking a clear position on their merits.</p><blockquote>Did those two papers get published six days apart?<cite>ricardobeat</cite></blockquote></div>
+                </div>
+
+                </div>
+            </section>
+
+            <section class="repo" data-seen-before="0"
+                     data-share-title="Java4Shell: RCE in OpenJDK when processing Base64"
+                     data-share-url="https://calif.io/java4shell/"
+                     data-share-points="983"
+                     data-share-comments="253">
+                <div class="repo-header-row">
+                    <h3>2. <a href="https://calif.io/java4shell/" target="_blank" rel="noopener noreferrer">Java4Shell: RCE in OpenJDK when processing Base64</a> </h3>
+                    <div class="header-buttons">
+                        <button type="button" class="discuss-btn" aria-label="Discuss with AI" title="Discuss with AI">&#x1F4AC;</button>
+                        <button type="button" class="repo-toggle" aria-expanded="true">Hide details</button>
+                    </div>
+                </div>
+                <div class="repo-body">
+                    <p class="meta">
+                        <span class="language">calif.io</span> |
+                        <span>werrett</span> |
+                        <span>983 points</span> |
+                        <span>253 comments</span> |
+                        <a href="https://news.ycombinator.com/item?id=50538240" target="_blank" rel="noopener noreferrer">discussion</a>
+                    </p>
+                    <p class="history">First seen: November 18, 2026 | Consecutive daily streak: 1 day</p>
+                    <div class="ai-summary">
+                        <h4>Analysis</h4>
+                        <p>The article claims that “Java4Shell” (CVE-2026-114938) is a critical memory-corruption flaw in OpenJDK’s AVX-512-optimized Base64 decoder, where specially crafted input can cause an out-of-bounds write despite Java’s usual memory-safety protections. It says the vulnerability could enable information disclosure or remote code execution in widely used systems such as Keycloak, Jira, Confluence, Jenkins, and other Java applications, depending on how they process Base64 data. The reported issue is significant because Java underpins many enterprise and critical-sector services, while the affected low-level optimization is broadly distributed even when applications do not need high-speed decoding. The authors also use the discovery to argue for reducing unnecessary code and optimizations, aided by AI-assisted security analysis.</p>
+                    </div>
+                    
+                <div class="ai-summary">
+                    <h4>Comment Analysis</h4>
+                    <p class="camps-framing">The discussion weighed a potentially serious but technically constrained vulnerability against the difficulty of exploiting it reliably at scale. Commenters debated whether AI could accelerate exploit development, which Java and hardware configurations were affected, how operators should mitigate and patch, and whether specialized low-level optimizations or unnecessary features create avoidable security risks.</p>
+<div class="camp"><p class="camp-label"><strong>Serious, but constrained, exploitation risk</strong> &mdash; Commenters saw reasons to patch while emphasizing that reliable exploitation may require specific conditions and a tailored approach. Some considered attacks on high-value targets plausible even if broad, drive-by exploitation is unlikely.</p><blockquote>But a long tail of unpatched java applications/services at high-value targets getting exploited, seems plausible to me.<cite>lucasluitjes</cite></blockquote>
+<blockquote>Yes, I guess the TL;DR is the chances of a drive by attack are low, but a sufficiently motivated actor with a specific target in mind might be able to exploit it.<cite>afavour</cite></blockquote>
+<blockquote>It is wild to find a generalizable (if platform-specific) memory corruption vulnerability in Java core Base64 handling; the tornado sirens should clearly be going off.<cite>tptacek</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Skepticism about severity and reach</strong> &mdash; Some commenters cautioned against treating the vulnerability as a Log4Shell-scale emergency. They pointed to its hardware and runtime requirements, as well as the difficulty of turning memory corruption into a reliable exploit.</p><blockquote>Most likely JVM will eventually crash if you corrupt object header.<cite>vbezhenar</cite></blockquote>
+<blockquote>The name makes it sound like Log4J or the PHP thing, but from what I can tell right now, it kinda isn&#x27;t all that relevant?<cite>hypfer</cite></blockquote>
+<blockquote>Just patch it and move on.<cite>TZubiri</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>AI could accelerate exploitation, but cannot remove practical constraints</strong> &mdash; Some argued that AI tools or reusable skills could make bespoke exploit development more scalable. Others noted that AI does not eliminate physical and operational constraints, such as network timing.</p><blockquote>Indeed, it can be a SKILL.md that writes the exploit.<cite>AdrenalinMd</cite></blockquote>
+<blockquote>LLMs aren’t magic, they can’t alter physics.<cite>afavour</cite></blockquote>
+<blockquote>Don&#x27;t see how this is a safe assumption in the modern era of LLMs.<cite>lowbloodsugar</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Applicability, mitigations, and patching</strong> &mdash; Commenters worked to identify affected JVMs, CPUs, and deployment environments, and discussed workarounds such as disabling Base64 intrinsics. Operators also sought clear vendor-specific guidance and patch status.</p><blockquote>Only HotSpot generates the stub. OpenJ9 and GCJ are OK.<cite>ievans</cite></blockquote>
+<blockquote>You can also mitigate Java4Shell by starting OpenJDK with either: -XX:-UseBASE64Intrinsics to disable hardware-accelerated Base64 encoding and decoding, or -XX:UseAVX=2 to disable AVX-512.<cite>mzs</cite></blockquote>
+<blockquote>I see no security advisory from Elasticsearch yet,we operate multiple ES clusters and I am not exactly sure what the mitigation is here.<cite>sabretooth1405</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Debate over low-level optimization and specialized code</strong> &mdash; Some commenters viewed handwritten assembly and hardware-specific intrinsics as risky complexity in widely used software. Others argued that specialized SIMD paths can deliver substantial performance gains and should be implemented and validated safely.</p><blockquote>But at the same time, implementing the entire thing in ASM, by hand, looks ... rough.<cite>12_throw_away</cite></blockquote>
+<blockquote>If I owned an entire language platform with a JIT, it would not contain assembly in its standard library, it would simply be improved until it generated something at least that fast from high-level source code on that target CPU.<cite>jeffbee</cite></blockquote>
+<blockquote>AVX-512 VBMI version reaches 40-55GB/s.<cite>CAP_NET_ADMIN</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Reducing attack surface by removing unused features</strong> &mdash; The article’s call to remove unused code resonated with commenters who saw feature reduction as a way to limit exposure. Others worried that automated removal could introduce new bugs or overlook edge cases.</p><blockquote>They aren’t wrong that we should be deleting more support and removing more features.<cite>drum55</cite></blockquote>
+<blockquote>You have [open] code ? You can clean it by doing very coarse work of not calling unused code or hardcoding return error on calling unused parts.<cite>Woodi</cite></blockquote>
+<blockquote>Instead of suggesting people stop vibe coding and potentially introducing more/new vulns, they suggest vibing the removal of features and hoping the model or the tests it generated or whatever catch the edge cases.<cite>ethagnawl</cite></blockquote></div>
+                </div>
+
+                </div>
+            </section>
+
+            <section class="repo" data-seen-before="0"
+                     data-share-title="Google&#x27;s AI answers reducing search traffic by 40%"
+                     data-share-url="https://revscope.co/blog/search-seo-geo-2026/"
+                     data-share-points="459"
+                     data-share-comments="339">
+                <div class="repo-header-row">
+                    <h3>3. <a href="https://revscope.co/blog/search-seo-geo-2026/" target="_blank" rel="noopener noreferrer">Google&#x27;s AI answers reducing search traffic by 40%</a> </h3>
+                    <div class="header-buttons">
+                        <button type="button" class="discuss-btn" aria-label="Discuss with AI" title="Discuss with AI">&#x1F4AC;</button>
+                        <button type="button" class="repo-toggle" aria-expanded="true">Hide details</button>
+                    </div>
+                </div>
+                <div class="repo-body">
+                    <p class="meta">
+                        <span class="language">revscope.co</span> |
+                        <span>slashdev</span> |
+                        <span>459 points</span> |
+                        <span>339 comments</span> |
+                        <a href="https://news.ycombinator.com/item?id=50540178" target="_blank" rel="noopener noreferrer">discussion</a>
+                    </p>
+                    <p class="history">First seen: November 18, 2026 | Consecutive daily streak: 1 day</p>
+                    <div class="ai-summary">
+                        <h4>Analysis</h4>
+                        <p>The story examines evidence that Google’s AI Overviews are reducing traffic to external websites, with a randomized desktop experiment finding roughly 40% fewer outbound clicks when summaries appear, though the study is not yet peer-reviewed and broader data has limitations. Overviews have expanded rapidly across search intents, making traditional rankings less effective at generating visits while Google disputes claims of an overall decline. Generative engine optimization appears largely similar to conventional SEO—strong content, citations, links, clear structure, and freshness—with no proven shortcut such as `llms.txt`; AI citations may also come from platforms such as Reddit, Wikipedia, and YouTube. The business impact is significant because AI assistants currently send far less traffic than Google, so publishers must measure conversions and revenue rather than rankings or visits alone, even as AI-referred visitors may convert better.</p>
+                    </div>
+                    
+                <div class="ai-summary">
+                    <h4>Comment Analysis</h4>
+                    <p class="camps-framing">Commenters weigh the convenience of direct AI answers against their effects on publishers and the broader web. Many argue that search quality and discovery were already declining before AI, while others welcome AI’s ability to bypass low-quality SEO content. A smaller counterpoint is that communities may continue to thrive through channels other than search.</p>
+<div class="camp"><p class="camp-label"><strong>AI answers are faster and more convenient</strong> &mdash; Some commenters prefer direct answers to browsing search results, particularly for straightforward questions or searches they see as cluttered with low-quality pages. They accept that convenience may come with some tolerance for inaccuracy.</p><blockquote>For MOST use cases, AI is just better.<cite>NichoPaolucci</cite></blockquote>
+<blockquote>Because what I actually want is answers, not searching the internet.<cite>npteljes</cite></blockquote>
+<blockquote>Good. Searchers get the information they are looking for faster.<cite>xnx</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Publishers and creators lose traffic and incentives</strong> &mdash; Commenters worry that AI products use publishers’ work while diverting visitors and revenue, weakening the incentive to create the original information that future answers depend on.</p><blockquote>My traffic is down over 80%.<cite>nicbou</cite></blockquote>
+<blockquote>I just am honest that from a content publisher’s point of view, yup, they are getting screwed hard here - there’s no upside for them.<cite>xp84</cite></blockquote>
+<blockquote>Google needs to find a new way to distribute its revenue to the sites it has crawled, or the entire ecosystem that Google once helped cultivate and thrive will collapse.<cite>vicentwu</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Search was already deteriorating before AI</strong> &mdash; Some commenters trace poor search results to Google’s ads, business incentives, or the broader effects of SEO, arguing that AI did not originate the decline in search quality.</p><blockquote>This is a Google search problem, and they could have defeated SEO sites if it weren&#x27;t more profitable for them.<cite>taurath</cite></blockquote>
+<blockquote>SEOs didn&#x27;t force Google to put 8 ads between the search bar and the first non-ad result, Google did.<cite>taurath</cite></blockquote>
+<blockquote>I never understood the unilateral pre-AI attribution to AI for killing the web when Google search began ignoring search terms and providing irrelevant but thematically similar results years prior to Google force-feeding AI to all users.<cite>rockskon</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Good riddance to low-quality SEO content</strong> &mdash; Some commenters welcome AI summaries as a way to bypass ad-heavy, spammy, or low-value pages, and argue that website owners helped make visits unpleasant.</p><blockquote>Many sites absolutely deserve it, unfortunately.<cite>Sol-</cite></blockquote>
+<blockquote>It&#x27;s website owners that made it a nightmare to visit their sites.<cite>altern8</cite></blockquote>
+<blockquote>As a user, I am happy to see content spam trash to die and burn in hell.<cite>miohtama</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Open-web discovery and smaller sites are at risk</strong> &mdash; Commenters fear that answers and attention will consolidate on a few large platforms, making it harder for people to discover independent sites, new services, and niche content.</p><blockquote>There isn&#x27;t any room for smaller sites to find users anymore.<cite>beefsack</cite></blockquote>
+<blockquote>The beauty of Google is (was?) that it was a way to get traffic if you weren&#x27;t already the incumbent.<cite>onion2k</cite></blockquote>
+<blockquote>The web of late 1990’s early 2000’s is dead. Sadly,<cite>tiew9Vii</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Communities can persist outside search</strong> &mdash; A counterpoint is that people with strong interests can find one another through forums, social platforms, and direct engagement, even if search sends fewer visitors. Others in the thread question whether those communities can endure without broader traffic.</p><blockquote>Those niche special interests will always have hangout spots.<cite>bitmasher9</cite></blockquote>
+<blockquote>The human engagement part AI can&#x27;t get in between, and I don&#x27;t see chat changing.<cite>edg5000</cite></blockquote>
+<blockquote>Won&#x27;t the people who are interested in connecting with like minded individuals click through anyway?<cite>cortesoft</cite></blockquote></div>
+                </div>
+
+                </div>
+            </section>
+
+            <section class="repo" data-seen-before="0"
+                     data-share-title="Codeberg.org Not Reachable"
+                     data-share-url="https://social.anoxinon.de/@codebergstatus/117636437840688845"
+                     data-share-points="213"
+                     data-share-comments="164">
+                <div class="repo-header-row">
+                    <h3>4. <a href="https://social.anoxinon.de/@codebergstatus/117636437840688845" target="_blank" rel="noopener noreferrer">Codeberg.org Not Reachable</a> </h3>
+                    <div class="header-buttons">
+                        <button type="button" class="discuss-btn" aria-label="Discuss with AI" title="Discuss with AI">&#x1F4AC;</button>
+                        <button type="button" class="repo-toggle" aria-expanded="true">Hide details</button>
+                    </div>
+                </div>
+                <div class="repo-body">
+                    <p class="meta">
+                        <span class="language">social.anoxinon.de</span> |
+                        <span>hans_castorp</span> |
+                        <span>213 points</span> |
+                        <span>164 comments</span> |
+                        <a href="https://news.ycombinator.com/item?id=50544261" target="_blank" rel="noopener noreferrer">discussion</a>
+                    </p>
+                    <p class="history">First seen: November 18, 2026 | Consecutive daily streak: 1 day</p>
+                    <div class="ai-summary">
+                        <h4>Analysis</h4>
+                        <p>Codeberg.org became unreachable after its registrar, NameSilo, placed the domain on clientHold and removed it from Codeberg’s account, despite Codeberg saying it had renewed the domain and found no suspicious account activity. NameSilo forwarded the case to its abuse team, but had not provided a final explanation, leaving Codeberg’s Git hosting and related services inaccessible through their normal domain. Users could temporarily connect via the server’s IPv4 or IPv6 address and an `/etc/hosts` entry, though this bypassed normal DNS and created certificate and usability limitations. Codeberg declined to activate codeberg.eu as a short-term workaround because of multi-domain, SEO, authentication, and migration complications, highlighting the operational risks of relying on one registrar and domain.</p>
+                    </div>
+                    
+                <div class="ai-summary">
+                    <h4>Comment Analysis</h4>
+                    <p class="camps-framing">Namesilo suspended Codeberg’s domain without an explanation in the thread, and the service began recovering within hours. Commenters debated how to reduce the risk of a registrar disabling a service, including using multiple domains, choosing a different registrar, or relying on alternatives to conventional DNS. They also disagreed about what the incident showed about Codeberg’s reliability and how practical its temporary workarounds were.</p>
+<div class="camp"><p class="camp-label"><strong>The cause remained unknown</strong> &mdash; Commenters asked whether Namesilo had notified Codeberg and what grounds it had given for the suspension. Invalid contact details and abuse complaints were raised as possibilities, but commenters cautioned that the thread did not establish the cause.</p><blockquote>Can someone dare to explain why this happened ? Why did Namesilo suspend the domain ?<cite>m00dy</cite></blockquote>
+<blockquote>Did Namesilo notify you that the domain was suspended before you asked about it? And did they give a basis/reason at all? Weird situation<cite>q17</cite></blockquote>
+<blockquote>Who says it is without cause? They are required to suspend for example if the contact details are invalid. Not saying it is the case here.<cite>tuwtuwtuwtuw</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Registrar choice and control matter</strong> &mdash; Some commenters saw the suspension as evidence that registrars can abruptly disable a service and recommended a more accessible local provider or a registrar with stronger support. Others noted that more expensive providers may be unrealistic for a nonprofit, and that the thread contained only one side of the incident.</p><blockquote>How are high-availability services supposed to block this failure mode? Become your own registrar?<cite>octoberfranklin</cite></blockquote>
+<blockquote>As a German entity, I&#x27;m surprised that Codeberg e.V. decided to go with an American registrar. From my past experiences, there are certain services where I&#x27;d prefer a local contact. Domain registration is one of them, if possible.<cite>MrGilbert</cite></blockquote>
+<blockquote>Use a registrar whose HTML &lt;title&gt; isn&#x27;t &quot;Cheap domain names&quot;.<cite>clivedup</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Multiple domains could spread the risk</strong> &mdash; A practical proposal was to keep domains across different registrars or TLDs so that one suspension would not disable every service. Commenters also pointed to the maintenance burden and the risk of teaching users to trust lookalike domains.</p><blockquote>Multiple domains with different registrars/TLDs. And real (non-CNAME) DNS records for all of them.<cite>Hackbraten</cite></blockquote>
+<blockquote>This is probably the only practical solution, though it&#x27;s not without its drawbacks. Multiple trusted domains is a great way to teach your users to trust any domain that looks like yours.<cite>duggan</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Alternatives to conventional DNS are contested</strong> &mdash; Some commenters called for decentralized naming systems or suggested options such as Namecoin, GNS, ENS, and Tor onion services. Others questioned whether such alternatives could gain broad adoption or provide DNS’s mechanisms for recovering a domain after a compromise.</p><blockquote>This + the whole quad9 thing sounds like maybe some hackers should go out and come up with DNS but decentralized and federated?<cite>hypfer</cite></blockquote>
+<blockquote>There are many decentralised alternatives where you can actually own your domain: Namecoin[1], Gnunet&#x27;s GNS[2], Ethereum Name Service[3], etc. It&#x27;s not a particularly hard problem to solve, I think it&#x27;s just very unlikely that any of these will gain any traction.<cite>rnhmjoj</cite></blockquote>
+<blockquote>DNS has one advantage that these cryptocurrency alternatives can&#x27;t solve, and that&#x27;s the ability for a human to decide you can have your domain name back after you&#x27;ve been hacked.<cite>jeroenhd</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Temporary workarounds helped, but had limits</strong> &mdash; Commenters shared hosts-file entries and suggested SSH configuration changes to keep using familiar hostnames or Git remotes. Others noted that manual configuration is difficult for many users and advised checking TLS certificates when overriding DNS locally.</p><blockquote>Add the following to /etc/hosts: 217.197.84.140 codeberg.org 2a0a:4580:103f:c0de::1 codeberg.org<cite>YorickPeterse</cite></blockquote>
+<blockquote>Point is still that every user would have to do that. It&#x27;s not exactly an easy fix for the majority of users<cite>adamtulinius</cite></blockquote>
+<blockquote>Thanks, but note to everyone: after adding that to your hosts file, open a new *private* window, then check the certificate. Ensure the certificate was issued (not valid before) well before the takeover. Anyone, once in control of the domain, can get a cert for it.<cite>hafthor</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Reliability expectations and self-hosting</strong> &mdash; Some commenters criticized Codeberg for lacking a ready backup domain and questioned its reliability as a GitHub alternative. Others emphasized its limited resources and community-project character, while some recommended running a personal Git or Forgejo service for greater control.</p><blockquote>i thought this was a serious project. No backup domain for a platform that host repositories.<cite>sreekanth850</cite></blockquote>
+<blockquote>IMO people should not treat codeberg as another GitHub to dump random projects, they should develop at least a passing relationship with the people in the organisation if not joining it themselves, and treat it as what it is - a group of people trying to fight back against big tech.<cite>cowlevel</cite></blockquote>
+<blockquote>If you can host locally, forgejo is a good option.<cite>manarth</cite></blockquote></div>
+                </div>
+
+                </div>
+            </section>
+
+            <section class="repo" data-seen-before="0"
+                     data-share-title="Quad9&#x27;s withdrawal from France: A canary in the coal mine"
+                     data-share-url="https://blog.cloudflare.com/quad9-withdrawal-from-france/"
+                     data-share-points="661"
+                     data-share-comments="239">
+                <div class="repo-header-row">
+                    <h3>5. <a href="https://blog.cloudflare.com/quad9-withdrawal-from-france/" target="_blank" rel="noopener noreferrer">Quad9&#x27;s withdrawal from France: A canary in the coal mine</a> </h3>
+                    <div class="header-buttons">
+                        <button type="button" class="discuss-btn" aria-label="Discuss with AI" title="Discuss with AI">&#x1F4AC;</button>
+                        <button type="button" class="repo-toggle" aria-expanded="true">Hide details</button>
+                    </div>
+                </div>
+                <div class="repo-body">
+                    <p class="meta">
+                        <span class="language">blog.cloudflare.com</span> |
+                        <span>subset</span> |
+                        <span>661 points</span> |
+                        <span>239 comments</span> |
+                        <a href="https://news.ycombinator.com/item?id=50538994" target="_blank" rel="noopener noreferrer">discussion</a>
+                    </p>
+                    <p class="history">First seen: November 18, 2026 | Consecutive daily streak: 1 day</p>
+                    <div class="ai-summary">
+                        <h4>Analysis</h4>
+                        <p>Cloudflare discusses Quad9’s decision to withdraw its free public DNS resolver from France after a court imposed financial penalties for not blocking domains linked to alleged copyright infringement. DNS resolvers translate domain names into IP addresses and are a key privacy, reliability, and security layer, but blocking at this level is easy to bypass, can disable entire domains, and offers users little explanation. The withdrawal may unexpectedly disrupt individuals, hospitals, schools, utilities, and other organizations using Quad9, while pushing users toward ISP or less accountable resolvers. Cloudflare argues that courts and rightsholders should target hosting providers that store infringing material rather than forcing global public infrastructure services to implement ineffective, broad blocks.</p>
+                    </div>
+                    
+                <div class="ai-summary">
+                    <h4>Comment Analysis</h4>
+                    <p class="camps-framing">Commenters largely opposed using public DNS resolvers to enforce copyright, arguing that the measure may be ineffective while weakening privacy, user choice, and the open internet. Others contended that intermediaries have responsibilities when their services help enable infringement, or that bypassable filtering can still steer ordinary users. The discussion also addressed piracy’s underlying causes, political and industry influence, and Cloudflare’s credibility as an advocate for an open internet.</p>
+<div class="camp"><p class="camp-label"><strong>DNS is the wrong place to enforce copyright</strong> &mdash; This camp viewed DNS blocking as an ineffective and overbroad remedy that risks driving out reputable privacy-focused providers and setting a precedent for censorship.</p><blockquote>the DNS is the wrong place to try to attack that problem<cite>johnhtodd</cite></blockquote>
+<blockquote>The public DNS is absolutely the wrong way to go about this.<cite>gerdesj</cite></blockquote>
+<blockquote>This French ruling doesn&#x27;t stop piracy.<cite>whh</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Intermediaries should bear some responsibility</strong> &mdash; These commenters argued that DNS and other providers can play a role in enabling infringement and should take reasonable steps when they are made aware of illegal activity.</p><blockquote>You and the other DNS can&#x27;t legitimately claim innocence when you are part of a chain that facilitates crime (whether you agree that the action should be a crime is irrelevant).<cite>goobatrooba</cite></blockquote>
+<blockquote>clubs are expected to have security and you get no sympathy as you failed to consider basic shit in your business plan.<cite>toofy</cite></blockquote>
+<blockquote>It seems to me that every company involved and profiting off piracy should have a duty to take steps to minimize the further harm they cause to content creators when they are properly made aware of illegal content.<cite>Scaled</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Filtering can be a practical way to steer users</strong> &mdash; This camp challenged the idea that internet infrastructure must always be neutral, arguing that easily bypassed DNS measures can still steer less technically adept users away from harmful or unlawful material.</p><blockquote>Doing this on a DNS level is good, actually, precisely because it is so easy to bypass by people that matter and are more lucid, open to reason, etc.<cite>hypfer</cite></blockquote>
+<blockquote>The average person feels the internet is far too open and permissive.<cite>kypro</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Address piracy’s causes rather than chasing every link</strong> &mdash; These commenters argued that technical blocks are unlikely to eliminate piracy and that enforcement may be counterproductive if lawful content is difficult or expensive to access. Others described sharing as an enduring human behavior in tension with copyright law.</p><blockquote>You can significantly reduce piracy by making your content easy to access for everyone and charging a fair price (see also steam).<cite>dbetteridge</cite></blockquote>
+<blockquote>The source of piracy is the contradiction between copyright law and the human drive to share and retell cultural artifacts that they value.<cite>idle_zealot</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Industry influence and political control shape enforcement</strong> &mdash; Some commenters attributed the ruling and related restrictions to powerful rightsholders and political influence; others saw the case as part of a broader shift toward government control and a fragmented internet. These interpretations were contested.</p><blockquote>like almost everywhere, most of the rightsholders are actually a few billionaires that fund politicians and threaten to leave the country if they don&#x27;t get their way<cite>wiether</cite></blockquote>
+<blockquote>Now, if the government can&#x27;t fully police or at least moderate what people read and do on the internet (as it did the main square, and TV broadcasts) then politicians are at risk of the angry mobs or losing their jobs.<cite>PorciiVorbesc</cite></blockquote>
+<blockquote>we are probably witnessing the beginning of the end of the free global internet, towards a balkanization of nation-internets with their own services.<cite>slopinthebag</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Cloudflare’s open-internet argument is compromised</strong> &mdash; These commenters were sympathetic to objections to DNS blocking but questioned Cloudflare’s credibility, citing its own role in serving or shielding infringing sites, its corporate power, or its lack of a concrete commitment.</p><blockquote>Oh, cut the crap, CloudFlare.<cite>otterley</cite></blockquote>
+<blockquote>I would take this argument a lot more seriously if it didn&#x27;t come from fucking Cloudflare, the entity that puts all sorts of barriers to access this mythical “free and open” internet if you are not using the corporate-approved fingerprinted browser.<cite>surgical_fire</cite></blockquote>
+<blockquote>CF, will you commit to also withdrawing from impacted countries if the ruling goes against you?<cite>driverdan</cite></blockquote></div>
+                </div>
+
+                </div>
+            </section>
+
+            <section class="repo" data-seen-before="0"
+                     data-share-title="ID.me terms required for IRS sign-in"
+                     data-share-url="https://consumerrights.wiki/w/ID.me_terms_required_for_IRS_sign-in"
+                     data-share-points="381"
+                     data-share-comments="172">
+                <div class="repo-header-row">
+                    <h3>6. <a href="https://consumerrights.wiki/w/ID.me_terms_required_for_IRS_sign-in" target="_blank" rel="noopener noreferrer">ID.me terms required for IRS sign-in</a> </h3>
+                    <div class="header-buttons">
+                        <button type="button" class="discuss-btn" aria-label="Discuss with AI" title="Discuss with AI">&#x1F4AC;</button>
+                        <button type="button" class="repo-toggle" aria-expanded="true">Hide details</button>
+                    </div>
+                </div>
+                <div class="repo-body">
+                    <p class="meta">
+                        <span class="language">consumerrights.wiki</span> |
+                        <span>DeepLogin</span> |
+                        <span>381 points</span> |
+                        <span>172 comments</span> |
+                        <a href="https://news.ycombinator.com/item?id=50540437" target="_blank" rel="noopener noreferrer">discussion</a>
+                    </p>
+                    <p class="history">First seen: November 18, 2026 | Consecutive daily streak: 1 day</p>
+                    <div class="ai-summary">
+                        <h4>Analysis</h4>
+                        <p>The story examines the terms taxpayers accept when using private identity provider ID.me to access IRS online services. Those terms require most disputes to go to individual arbitration, waive jury trials and class actions, cap liability at $1,000, and allow certain personal information to be used for marketing, transferred in corporate transactions, or retained for up to three years after account closure, with limited government-verification exceptions. Taxpayers can instead use the government-run Login.gov for IRS access, while Direct Pay permits tax payments without signing in, though TreasuryDirect has moved to requiring ID.me. The arrangement matters because accessing essential government services can require surrendering sensitive identity data to a commercial company despite a government-operated alternative, prompting scrutiny from senators and raising questions about privacy, procurement, and federal identity-platform policy.</p>
+                    </div>
+                    
+                <div class="ai-summary">
+                    <h4>Comment Analysis</h4>
+                    <p class="camps-framing">The discussion was largely critical of requiring a private identity provider to access government services, with concerns about sensitive data, privacy, and barriers for people who cannot readily complete verification. Commenters disagreed about whether identity checks address serious fraud risks and whether ID.me was needed when Login.gov exists; they also described practical alternatives, reported mixed experiences, and questioned the procurement choices behind the arrangement.</p>
+<div class="camp"><p class="camp-label"><strong>Private-company intermediation, privacy, and accountability</strong> &mdash; Commenters objected to making a for-profit company an intermediary for government services involving sensitive personal or biometric information. Some also questioned the contract’s cost and the choice to use a private provider despite the existence of Login.gov.</p><blockquote>I don’t understand why we need id.me when login.gov exists, is less intrusive to sign up for, and is actually managed by the government.<cite>ryandrake</cite></blockquote>
+<blockquote>Totally ridiculous that in order to access your savings bonds, you have to provide a private, for profit company your sensitive personal and biometric information, that they will turn around and monetize through spam and god knows what else.<cite>ryandrake</cite></blockquote>
+<blockquote>According to this, the Treasury has so far paid $93M for ID.me, and is contractually on the hook for up to 1 billion.<cite>0xbadcafebee</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Access barriers and exclusion</strong> &mdash; Commenters described verification requirements that can impede access, including smartphone or video verification requirements, phone-plan screening, and mismatches between identity documents and other records.</p><blockquote>It is impossible to sign up for ID.me if you do not use a smartphone.<cite>bborrez</cite></blockquote>
+<blockquote>I was completely unable to complete ID.me verification.<cite>swiftcoder</cite></blockquote>
+<blockquote>Ex-pat here. Authenticating to ID.ME from Europe was interesting.<cite>euroderf</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Fraud prevention versus false positives and privacy</strong> &mdash; Some commenters argued that certain phone numbers are useful fraud signals, while others questioned whether such screening unfairly excludes legitimate users or relies on intrusive data collection.</p><blockquote>VOIP and portable numbers are a massive fraud correlation.<cite>dalyons</cite></blockquote>
+<blockquote>Certain neighborhoods have drastically higher rates of crime. That doesn&#x27;t make it okay to treat everyone from there as a criminal.<cite>foresto</cite></blockquote>
+<blockquote>No, it’s because it’s a valid and useful fraud signal.<cite>UqWBcuFx6NV4r</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Login.gov as a public alternative</strong> &mdash; Many commenters favored a government-run identity service and pointed to its in-person verification option, while others noted limitations in its availability, documentation, or support.</p><blockquote>You can login to irs.gov using login.gov.<cite>jasonriddle</cite></blockquote>
+<blockquote>You can create an account in your browser and then verify it in person at your local post office.<cite>fc417fc802</cite></blockquote>
+<blockquote>Login.gov has pretty poor documentation though.<cite>BoofMcQueen42</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>ID.me defended on assurance or practical performance</strong> &mdash; A smaller group argued that ID.me met identity-proofing requirements Login.gov could not meet at the time, or reported that ID.me had worked well for them.</p><blockquote>ID.me could meet IRS remote identity proofing requirements Login.gov could not at the time.<cite>toomuchtodo</cite></blockquote>
+<blockquote>As sso providers go, I have to say I always found Id.me quite nice to use.<cite>MobiusHorizons</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Workarounds and alternatives</strong> &mdash; Commenters suggested ways to avoid or limit TreasuryDirect access through ID.me, including paper processes, selling bonds, or purchasing Treasury securities through a brokerage account.</p><blockquote>Might be best to move the bonds out of Treasury Direct in that case.<cite>rootusrootus</cite></blockquote>
+<blockquote>I sold all my bonds (most with a penalty) before the change just to avoid ID.me.<cite>HotGarbage</cite></blockquote>
+<blockquote>I already have a brokerage account; just buy treasury bills and bonds from the brokerage account.<cite>kccqzy</cite></blockquote></div>
+                </div>
+
+                </div>
+            </section>
+
+            <section class="repo" data-seen-before="0"
+                     data-share-title="I had AI read my entire field, Theoretical Astrophysics"
+                     data-share-url="https://science.caseyhandmer.com/physics/"
+                     data-share-points="3"
+                     data-share-comments="0">
+                <div class="repo-header-row">
+                    <h3>7. <a href="https://science.caseyhandmer.com/physics/" target="_blank" rel="noopener noreferrer">I had AI read my entire field, Theoretical Astrophysics</a> </h3>
+                    <div class="header-buttons">
+                        <button type="button" class="discuss-btn" aria-label="Discuss with AI" title="Discuss with AI">&#x1F4AC;</button>
+                        <button type="button" class="repo-toggle" aria-expanded="true">Hide details</button>
+                    </div>
+                </div>
+                <div class="repo-body">
+                    <p class="meta">
+                        <span class="language">science.caseyhandmer.com</span> |
+                        <span>Anon84</span> |
+                        <span>3 points</span> |
+                        <span>0 comments</span> |
+                        <a href="https://news.ycombinator.com/item?id=50545118" target="_blank" rel="noopener noreferrer">discussion</a>
+                    </p>
+                    <p class="history">First seen: November 18, 2026 | Consecutive daily streak: 1 day</p>
+                    <div class="ai-summary">
+                        <h4>Analysis</h4>
+                        <p>The article describes an experiment using AI to audit theoretical astrophysics literature: it mapped 158,059 papers and 554,670 citations, screened 50,269 full texts, and used computational checks on 659 influential papers. The systems verified 872 apparent errors across 433 papers, found that many were copied into later work, and estimated roughly 34,000 undetected errors among highly cited papers, while noting that the analysis is incomplete and some findings may be wrong. It also suggests peer review and subsequent scholarship rarely correct published mistakes, which often persist for years or simply disappear as research moves on. The technical and business significance is that large-scale literature checking may now be affordable—about $2,720 in model costs—potentially making systematic error detection and research auditing far more practical.</p>
+                    </div>
+                    
+                </div>
+            </section>
+
+            <section class="repo" data-seen-before="0"
+                     data-share-title="Talos Linux"
+                     data-share-url="https://www.siderolabs.com/talos-linux"
+                     data-share-points="66"
+                     data-share-comments="32">
+                <div class="repo-header-row">
+                    <h3>8. <a href="https://www.siderolabs.com/talos-linux" target="_blank" rel="noopener noreferrer">Talos Linux</a> </h3>
+                    <div class="header-buttons">
+                        <button type="button" class="discuss-btn" aria-label="Discuss with AI" title="Discuss with AI">&#x1F4AC;</button>
+                        <button type="button" class="repo-toggle" aria-expanded="true">Hide details</button>
+                    </div>
+                </div>
+                <div class="repo-body">
+                    <p class="meta">
+                        <span class="language">siderolabs.com</span> |
+                        <span>SweetSoftPillow</span> |
+                        <span>66 points</span> |
+                        <span>32 comments</span> |
+                        <a href="https://news.ycombinator.com/item?id=50543343" target="_blank" rel="noopener noreferrer">discussion</a>
+                    </p>
+                    <p class="history">First seen: November 18, 2026 | Consecutive daily streak: 1 day</p>
+                    <div class="ai-summary">
+                        <h4>Analysis</h4>
+                        <p>The story presents Talos Linux, an immutable, API-driven operating system designed specifically for Kubernetes, with no SSH, shell, or package manager and a declarative, read-only architecture intended to reduce drift, attack surface, and audit issues. It packages the OS and Kubernetes lifecycle into atomic, rollback-safe images and uses mTLS, CIS hardening, SELinux, and trusted boot by default. Sidero Labs offers the core system as free, MPL-2.0 open-source software, while a new enterprise tier adds Omni fleet management, FIPS 140-3 builds, SBOMs, signed attestations, CVE SLAs, support, compliance assistance, and commercial indemnity at $1,000 per node annually with a 10-node minimum. The announcement matters because it demonstrates a business model that keeps the underlying Kubernetes platform open while charging regulated organizations for operational tooling, assurance, and procurement support.</p>
+                    </div>
+                    
+                <div class="ai-summary">
+                    <h4>Comment Analysis</h4>
+                    <p class="camps-framing">Commenters report positive experiences with Talos while debating whether Kubernetes is worth its operational cost for smaller projects. Other discussions cover infrastructure choices, demand for API-driven operating systems beyond Kubernetes, debugging without shell access, and the practical path from hobby use to enterprise adoption.</p>
+<div class="camp"><p class="camp-label"><strong>Experienced users recommend Talos</strong> &mdash; Several commenters describe favorable experiences running Talos at home or at work, including fewer issues than with Kubernetes on general-purpose Linux and positive support from Sidero. One user also connects hobby use with potential enterprise adoption.</p><blockquote>Can&#x27;t give enough praise to Talos. I run it both at home and at work.<cite>filleokus</cite></blockquote>
+<blockquote>It avoided tons of odd issues I saw when I built k8s clusters on top of Ubuntu that I never quite ironed out.<cite>gwynforthewyn</cite></blockquote>
+<blockquote>Switched to Talos from one k3s on Debian and Ubuntu, haven’t looked back even once.<cite>b3n4kh</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Kubernetes can add too much overhead for small setups</strong> &mdash; Some commenters question whether Kubernetes is worthwhile for limited home-lab workloads, preferring simpler deployments they expect to be easier to maintain and understand.</p><blockquote>Isn&#x27;t k8s overkill for a home lab? I&#x27;m happily running my homelab on docker swarm, and don&#x27;t miss anything from k8s.<cite>raphinou</cite></blockquote>
+<blockquote>Often I find that a load balancer and a couple of docker compose file sis more rugged, because you&#x27;ll be able to leave it for a year and it&#x27;ll still work and easily be understood by just glancing at it.<cite>sgt</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Kubernetes and Talos can be worthwhile when a cluster is needed</strong> &mdash; In reply, a commenter argues that Kubernetes can continue working after long periods without attention and that maintaining Talos nodes can be easier than maintaining full Linux machines.</p><blockquote>Kubernetes will still work after a year too, it just won&#x27;t be supported.<cite>globular-toast</cite></blockquote>
+<blockquote>But if you do need a cluster then maintaining a bunch of Talos nodes is easier than maintaining a bunch of full fat GNU/Linux boxen tbh.<cite>globular-toast</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Bare metal, virtual machines, and hybrid infrastructure have tradeoffs</strong> &mdash; Commenters describe running Talos on both virtualized and physical hardware, while others favor bare metal or hybrid infrastructure for cost, maintenance, storage, networking, or performance reasons.</p><blockquote>I’ve run it both ways, with virtualbox and vmware as a hypervisor, and with micro PCs as hardware.<cite>gwynforthewyn</cite></blockquote>
+<blockquote>I run it on bare metal since i only see downsides from having another VM layer around it.<cite>preisschild</cite></blockquote>
+<blockquote>I do :) alongside cloud of course, hybrid is the way to go in my view.<cite>dada216</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Interest in a Kubernetes-independent API-driven OS</strong> &mdash; A commenter asks about using a minimal API-driven operating system without Kubernetes; a Stagex maintainer says the toolchain can build images with or without it.</p><blockquote>A minimal, API-driven OS is ideal, but requiring k8s is a weird stipulation.<cite>hardwaresofton</cite></blockquote>
+<blockquote>Talos is bootstrapped with the Stagex toolchain which can build any image you want with or without k8s.<cite>lrvick</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Shell-free debugging can be challenging</strong> &mdash; One commenter reports difficulty investigating a failed kubelet through serial-console logs. A reply points to a Talos debug command that can provide a shell in the host namespaces, while noting a possible limitation.</p><blockquote>Talos is nice but debugging a failed kubelet without shell access is rough, spent way too long on serial console logs once<cite>floornext</cite></blockquote>
+<blockquote>talosctl debug docker.io/library/alpine:3.24 gives you a shell in the host namespaces, with root mounted at /host.<cite>5G_activated</cite></blockquote></div>
+                </div>
+
+                </div>
+            </section>
+
+            <section class="repo" data-seen-before="0"
+                     data-share-title="Nvidia stopped disclosing Singapore sales as revenues hit $104B"
+                     data-share-url="https://www.ft.com/content/dbde7a30-548c-4f9d-a4be-7898a0c24dcf"
+                     data-share-points="570"
+                     data-share-comments="261">
+                <div class="repo-header-row">
+                    <h3>9. <a href="https://www.ft.com/content/dbde7a30-548c-4f9d-a4be-7898a0c24dcf" target="_blank" rel="noopener noreferrer">Nvidia stopped disclosing Singapore sales as revenues hit $104B</a> </h3>
+                    <div class="header-buttons">
+                        <button type="button" class="discuss-btn" aria-label="Discuss with AI" title="Discuss with AI">&#x1F4AC;</button>
+                        <button type="button" class="repo-toggle" aria-expanded="true">Hide details</button>
+                    </div>
+                </div>
+                <div class="repo-body">
+                    <p class="meta">
+                        <span class="language">ft.com</span> |
+                        <span>louiereederson</span> |
+                        <span>570 points</span> |
+                        <span>261 comments</span> |
+                        <a href="https://news.ycombinator.com/item?id=50534631" target="_blank" rel="noopener noreferrer">discussion</a>
+                    </p>
+                    <p class="history">First seen: November 18, 2026 | Consecutive daily streak: 1 day</p>
+                    <div class="ai-summary">
+                        <h4>Analysis</h4>
+                        <p>Nvidia’s Singapore subsidiary reported a sharp rise in revenue, reaching $104 billion in 2025 and $117.8 billion in the year to January 2026, even as Nvidia stopped separately disclosing Singapore sales after changing from customer billing locations to headquarters-based reporting. The figures largely reflect Singapore’s role as an invoicing and distribution hub, with most chips shipped elsewhere and only a small share entering the country. The change has drawn scrutiny because US authorities are investigating Singaporean companies, including Megaspeed, over possible diversion of advanced Nvidia chips to China in violation of export controls. Although the subsidiary generated little profit and Nvidia has not linked the reporting change to the investigations, reduced transparency has intensified questions about the identities and locations of its end customers.</p>
+                    </div>
+                    
+                <div class="ai-summary">
+                    <h4>Comment Analysis</h4>
+                    <p class="camps-framing">The main divide was over what the Singapore figures measure: commenters distinguished revenue booked through a Singapore subsidiary or billed there from sales to Singapore-based customers. Some viewed the reporting change and its timing as warranting scrutiny, while others emphasized that Singapore is a normal regional business hub. The discussion also branched into whether chip sales or compute rentals violated export controls, the merits of those controls, and Jensen Huang’s conduct and corporate governance.</p>
+<div class="camp"><p class="camp-label"><strong>Accounting and reporting-method correction</strong> &mdash; Commenters stressed that subsidiary revenue, billing location, and customer headquarters are different measures. They argued that changing the geographic reporting basis can shift revenue out of the Singapore category without establishing where chips were used.</p><blockquote>The 104B number is the external revenue of NVIDIA&#x27;s Singaporean subsidiary in 2025.<cite>tamarind44</cite></blockquote>
+<blockquote>They didn&#x27;t stop reporting Singapore revenue, they made a change to reporting such that revenue that was being reported under Singapore ends up reported under US, China and Taiwan revenue.<cite>corndodge</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Suspicious timing and disclosure concerns</strong> &mdash; Some commenters said that changing the reporting method amid scrutiny raises questions, even if the headline overstates sales to Singapore-based customers. Others noted that companies may legally change what they disclose but argued that dropping a previously reported breakdown can reduce useful information.</p><blockquote>The issue is why they stopped reporting on it though.<cite>bilekas</cite></blockquote>
+<blockquote>Agree the title is sensationalized, but it is a strange move to be making under so much scrutiny<cite>reasonableklout</cite></blockquote>
+<blockquote>We shouldn&#x27;t allow all these public companies to keep not disclosing things they previously disclosed.<cite>diogenescynic</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Singapore as a normal regional business hub</strong> &mdash; Commenters argued that routing or booking business through Singapore is common because of its regional role, laws, and tax arrangements. Some also noted that Singapore hosts substantial data-center capacity, so its role need not be limited to paperwork or shipping.</p><blockquote>Singapore is essentially the Delaware / Ireland of Asia.<cite>areoform</cite></blockquote>
+<blockquote>Singapore is the nexus of trade for much of East and Southeast Asia.<cite>spoaceman7777</cite></blockquote>
+<blockquote>There are a lot of workloads hosted here.<cite>exidy</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Allegations require evidence; distinguish chip sales from compute rentals</strong> &mdash; Commenters cautioned that suspicion alone does not establish export-control evasion. They emphasized that legality depends on which chips were involved and distinguished physical exports from renting compute to Chinese customers.</p><blockquote>One thing that hasn&#x27;t been established is if they were actually evading export restrictions.<cite>theseamusjames</cite></blockquote>
+<blockquote>It wasn&#x27;t illegal to sell GPUs to china. It depends on _which_ GPUs they were selling, and I haven&#x27;t seen any reporting that identifies specifically which models were found in Megaspeed&#x27;s possession.<cite>theseamusjames</cite></blockquote>
+<blockquote>Megaspeed was largely just renting out AI compute resources to China, which wasn&#x27;t restricted at the time (but now it looks like language from Commerce/Treasury dept restricts).<cite>chrisco255</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Export controls: national security versus restricting access</strong> &mdash; Some commenters defended chip restrictions as national-security controls, while others objected to restricting access to computing power or framed denying China technological progress as objectionable.</p><blockquote>There are many controlled technology that are not munitions.<cite>duplessitous</cite></blockquote>
+<blockquote>The gpu export restrictions were put in place because of national security reasons.<cite>duplessitous</cite></blockquote>
+<blockquote>what&#x27;s actually morally condemnable is denying technological progress to china.<cite>slim</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Jensen Huang’s conduct and corporate governance</strong> &mdash; Commenters disagreed over whether relationships involving executives and employees constitute a serious management problem, including where relationships may be consensual or involve senior personnel. Some focused on governance and workplace rules independently of the chip allegations.</p><blockquote>Managers having relations with reports and other employees is an HR nightmare and can&#x27;t be tolerated.<cite>lenerdenator</cite></blockquote>
+<blockquote>Personally, yeah, I think it is fine for a boss to sleep with a subordinate.<cite>spoaceman7777</cite></blockquote>
+<blockquote>I’m a little more concerned with executives breaking the _rules that they themselves made_.<cite>kasey_junk</cite></blockquote></div>
+                </div>
+
+                </div>
+            </section>
+
+            <section class="repo" data-seen-before="0"
+                     data-share-title="Why is Gemini 4 Carbon taking so long?"
+                     data-share-url="https://kernel.dev/blog/why-is-gemini-4-carbon-taking-so-long/"
+                     data-share-points="126"
+                     data-share-comments="62">
+                <div class="repo-header-row">
+                    <h3>10. <a href="https://kernel.dev/blog/why-is-gemini-4-carbon-taking-so-long/" target="_blank" rel="noopener noreferrer">Why is Gemini 4 Carbon taking so long?</a> </h3>
+                    <div class="header-buttons">
+                        <button type="button" class="discuss-btn" aria-label="Discuss with AI" title="Discuss with AI">&#x1F4AC;</button>
+                        <button type="button" class="repo-toggle" aria-expanded="true">Hide details</button>
+                    </div>
+                </div>
+                <div class="repo-body">
+                    <p class="meta">
+                        <span class="language">kernel.dev</span> |
+                        <span>deenadz</span> |
+                        <span>126 points</span> |
+                        <span>62 comments</span> |
+                        <a href="https://news.ycombinator.com/item?id=50541790" target="_blank" rel="noopener noreferrer">discussion</a>
+                    </p>
+                    <p class="history">First seen: November 18, 2026 | Consecutive daily streak: 1 day</p>
+                    <div class="ai-summary">
+                        <h4>Analysis</h4>
+                        <p>The article investigates why Gemini 4 Carbon takes far longer than competing coding agents to diagnose and fix software bugs, sometimes nearly an hour instead of a few minutes. Testing found that slower inference explains only part of the delay; Carbon also takes many more steps, tool actions, and tokens, often continuing to audit unrelated code or address scenarios the bug report had ruled out. It also works inefficiently by making fewer tool calls per step and repeatedly rereading files. The findings suggest the main issue is Carbon’s behavior and stopping discipline rather than a lack of technical knowledge, making it costly and frustrating for real-world development despite its ability to solve difficult tasks.</p>
+                    </div>
+                    
+                <div class="ai-summary">
+                    <h4>Comment Analysis</h4>
+                    <p class="camps-framing">Many commenters found Carbon slow or difficult to use, while others said its results could justify the wait for selected tasks. Explanations included long reasoning, harness behavior, and possible serving or organizational issues, though some causes were speculative and one reported timeout was attributed to the client. The discussion also included disagreement over whether extra code changes are helpful or risky.</p>
+<div class="camp"><p class="camp-label"><strong>Slow and inefficient in practice</strong> &mdash; Commenters described high latency, wasted tokens, repeated work, or limits that made Carbon difficult to fit into ordinary coding workflows.</p><blockquote>i&#x27;m having all sort of problems with the gemini carbon lag. using it through open-router is impossible (at least for me), the request times out after 5mins, and often it take more than 5mins for the first token to arrive.<cite>ahmadyan</cite></blockquote>
+<blockquote>Using it through the prompt box, I kept running into 500 INTERNAL (TURN_STEPS_EXCEEDED). Gemini couldn’t finish this response I’m sorry, this request needed too many steps to finish in time.<cite>timtam</cite></blockquote>
+<blockquote>yeah i tried using it its not efficient at all. just burns up the token and not get the work done.<cite>nandanadileep29</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Google tooling and serving are unreliable</strong> &mdash; Several commenters reported errors, timeouts, or poor user experience across Google’s AI tools. A reply noted that a particular agy timeout was in the client, not the backend.</p><blockquote>Lots of Google tooling is the same for me, simply unusable whenever I try even simple stuff.<cite>embedding-shape</cite></blockquote>
+<blockquote>This has been acknowledged by recent &quot;agy&quot; release notes, it was timing out in client not in backend<cite>p_l</cite></blockquote>
+<blockquote>I never got any google model to work using their infra - 429, billing errors and timeouts.<cite>yard2010</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Worthwhile for selected tasks</strong> &mdash; Some commenters felt Carbon’s careful output could justify its latency for complex work, review, or documentation, while others found it unsuitable for routine coding.</p><blockquote>But the way it solves problems with a light touch while still driving toward sensible architecture is refreshing after claude’s bulldozer attitude.<cite>horacemorace</cite></blockquote>
+<blockquote>I’m now putting Carbon on bigger tasks that I don’t care how long they take.<cite>artdigital</cite></blockquote>
+<blockquote>it depends but IMO Carbon is best at the moment with code reviewing and documentation writing.<cite>antupis</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Extra work versus good engineering</strong> &mdash; Commenters disagreed about whether fixing issues beyond a task’s stated scope shows useful initiative or creates unnecessary risk; some favored separating unrelated fixes into separate changes.</p><blockquote>Good SWEs get a feel for the minimum amount of changes to fix something. Fewer changes usually minimizes the chance for new problems to pop up.<cite>horacemorace</cite></blockquote>
+<blockquote>This. There should be 2 PRs. The core fix, the the unrelated fixes. Because I guarantee sometimes those unrelated fixes will cause regressions so they have to be scrutinized too.<cite>bot403</cite></blockquote>
+<blockquote>I would want my engineers to fix problems that they notice in passing.<cite>ahsillyme</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Long reasoning, tool use, and harness behavior</strong> &mdash; Some commenters connected Carbon’s slowness to extended thinking, tool use, or the agy harness, while others viewed longer reasoning as a deliberate way to improve performance.</p><blockquote>It really looks like something is broken more than just being inefficient.<cite>Lerc</cite></blockquote>
+<blockquote>Google pretty clearly says in their product documentation that carbon is just a version of carbon that thinks way longer.<cite>NoahZuniga</cite></blockquote>
+<blockquote>Then that&#x27;s &quot;test-time scaling&quot; again and Google then showed that they can reach frontier level benchmark results using it.<cite>kzrdude</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Speculation about Google’s incentives and development environment</strong> &mdash; Commenters proposed different explanations for Carbon’s efficiency and release, including Google’s access to compute, incentives, training environment, bureaucracy, and internal dogfooding. These were hypotheses rather than established causes.</p><blockquote>Google has huge amounts of cash and compute. Their goal was to train a model that that has the highest quality &amp; frontier performance, not create a model that&#x27;s efficient to run and serve.<cite>tristanj</cite></blockquote>
+<blockquote>It’s unlikely to be deliberate tbh, it’s more likely the data, algorithms and the training environments aren’t quite as good as Anthropic, Open AI is a lot closer to Google than people want to admit.<cite>andy_ppp</cite></blockquote>
+<blockquote>It&#x27;s 1. Carbon was announced the day of Google&#x27;s earnings call. It&#x27;s a PR stunt.<cite>zarzavat</cite></blockquote></div>
+                </div>
+
+                </div>
+            </section>
+
+            </div>
+        </article>
+    </main>
+    <footer>
+        <p>Generated automatically. Data from <a href="https://news.ycombinator.com/">Hacker News</a>.</p>
+    </footer>
+
+<script>
+(() => {
+    const readKey = "gtd:read_days:hn:v1";
+    const dayStr = "2026-11-18";
+
+    let stored = [];
+    try {
+        stored = JSON.parse(localStorage.getItem(readKey) || "[]");
+        if (!Array.isArray(stored)) {
+            stored = [];
+        }
+    } catch (_err) {
+        stored = [];
+    }
+
+    if (!stored.includes(dayStr)) {
+        stored.push(dayStr);
+        stored.sort();
+        localStorage.setItem(readKey, JSON.stringify(stored));
+    }
+
+    const collapseParam = new URLSearchParams(window.location.search).get("collapse_seen");
+    const collapseSeen = collapseParam === "0" ? false : true;
+
+    function setCollapsed(repoEl, collapsed) {
+        repoEl.classList.toggle("collapsed", collapsed);
+        const button = repoEl.querySelector(".repo-toggle");
+        if (button) {
+            button.textContent = collapsed ? "Show details" : "Hide details";
+            button.setAttribute("aria-expanded", String(!collapsed));
+        }
+    }
+
+    const repos = Array.from(document.querySelectorAll("section.repo[data-seen-before]"));
+
+    repos.forEach((repoEl) => {
+        const toggle = repoEl.querySelector(".repo-toggle");
+        if (!toggle) {
+            return;
+        }
+
+        toggle.addEventListener("click", () => {
+            setCollapsed(repoEl, !repoEl.classList.contains("collapsed"));
+        });
+    });
+
+    const collapseBtn = document.getElementById("collapse-seen-btn");
+    const expandBtn = document.getElementById("expand-all-btn");
+
+    if (collapseBtn) {
+        collapseBtn.addEventListener("click", () => {
+            repos.forEach((repoEl) => {
+                if (repoEl.dataset.seenBefore === "1") {
+                    setCollapsed(repoEl, true);
+                }
+            });
+        });
+    }
+
+    if (expandBtn) {
+        expandBtn.addEventListener("click", () => {
+            repos.forEach((repoEl) => setCollapsed(repoEl, false));
+        });
+    }
+
+    if (collapseSeen) {
+        repos.forEach((repoEl) => {
+            if (repoEl.dataset.seenBefore === "1") {
+                setCollapsed(repoEl, true);
+            }
+        });
+    }
+
+    // Discuss with AI button
+    const toast = document.createElement("div");
+    toast.className = "discuss-toast";
+    document.body.appendChild(toast);
+
+    function showToast(msg) {
+        toast.textContent = msg;
+        toast.classList.add("show");
+        setTimeout(() => toast.classList.remove("show"), 2500);
+    }
+
+    function buildHNMarkdown(card) {
+        const title = card.dataset.shareTitle || "";
+        const url = card.dataset.shareUrl || "";
+        const points = card.dataset.sharePoints || "0";
+        const comments = card.dataset.shareComments || "0";
+        const summaries = card.querySelectorAll(".ai-summary");
+        let md = "# " + title + "\n";
+        md += "Source: " + url + " | " + points + " points | " + comments + " comments\n";
+        summaries.forEach((s) => {
+            const heading = s.querySelector("h4");
+            const label = heading ? heading.textContent.trim() : "Analysis";
+            const content = Array.from(s.querySelectorAll("p"))
+                .map((p) => p.textContent.trim())
+                .join("\n");
+            md += "\n## " + label + "\n" + content + "\n";
+        });
+        return md;
+    }
+
+    document.querySelectorAll(".discuss-btn").forEach((btn) => {
+        btn.addEventListener("click", () => {
+            const card = btn.closest("section.repo");
+            if (!card) return;
+            const md = buildHNMarkdown(card);
+            const text = "I'd like to discuss this article with you. Here's a summary:\n\n" + md;
+            const title = "Discuss: " + (card.dataset.shareTitle || "");
+            if (navigator.share) {
+                navigator.share({ title: title, text: text }).catch(() => {});
+            } else {
+                navigator.clipboard.writeText(text).then(
+                    () => showToast("Copied to clipboard \u2014 paste into your AI chat"),
+                    () => showToast("Failed to copy")
+                );
+            }
+        });
+    });
+})();
+</script>
+
+<script src="../../preference.js?v=7f9b956cf2" defer></script>
+</body>
+</html>
