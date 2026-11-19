@@ -1,0 +1,639 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hacker News Digest - November 19, 2026</title>
+    <link rel="stylesheet" href="../../style.css?v=9dfb660449">
+</head>
+<body data-gtd-edition="hn" data-gtd-date="2026-11-19">
+    <header>
+        <h1>Hacker News Digest - November 19, 2026</h1>
+        <nav>
+            <a href="../">&larr; Hacker News Calendar</a>
+            <a href="../../2026-11-19/">GitHub Trending</a>
+        </nav>
+    </header>
+    <main>
+        <section class="the-take"><details open><summary>The HN Take</summary><h3 class="take-head">Released, eventually.</h3><p>PHP 8.6 has been released, in the expansive sense that it will be released later:</p><p>&quot;PHP 8.6 Released.</p><p>Will be released on November 19, 2026&quot;</p><p>The page then clarifies: &quot;PHP 8.6 has not been released yet.&quot; Good. Software release status is complicated, and PHP 8.6 conveniently adds a clamp() function that ensures a value falls within a specified range. Unfortunately the range here appears to be &quot;released&quot; to &quot;not released.&quot;</p><p>There is also a new Time\Duration class, representing elapsed time &quot;as measured by a stopwatch,&quot; independent of time zones, with nanosecond precision across more than 250 years. This will let developers precisely measure the interval between PHP 8.6 being released and PHP 8.6 actually being released.</p><p>Other improvements include scalable polling, partial function application, structured stream errors and a standard SortDirection enum. Also using return inside a finally block is now deprecated because it can silently discard exceptions. PHP&#x27;s language designers would prefer that control flow not announce one outcome and then quietly substitute another. The release page is apparently grandfathered in.</p><h3 class="take-head">Twenty-one eszetts.</h3><p>Here is a bad capitalization bug:</p><p>&quot;Most of Ruby&#x27;s single-byte encodings have no capital ß. Upcasing it writes two bytes, SS, but the loop only bounds-checks one.&quot;</p><p>Ruby allocates the output buffer with 20 extra bytes. Each ß expands from one byte to two, consuming one extra byte, so a string containing 21 of them writes one byte beyond the buffer. That one byte is enough, researchers say, to get unauthenticated remote code execution through stock Rails and classic-style Sinatra deployments running affected Ruby versions.</p><p>The bug has existed since Ruby 2.4.0. UTF-8 strings use another code path and are unaffected, but several older ISO-8859 and Windows-125x encodings reach the vulnerable loop through upcase, swapcase, downcase(:fold) and casecmp?.</p><p>So the security boundary is straightforward: Twenty German letters are text processing. Twenty-one German letters are server administration.</p><p>Fixed releases are Ruby 3.3.14, 3.4.13 and 4.0.10. Ruby 3.2 and older are affected back to 2.4.0 and are end-of-life, which means their official remediation strategy is aging out of the problem. The researchers plan to publish a proof of concept in a week, after people have had time to upgrade. Capitalization will then become considerably more urgent.</p><div class="take-sources"><span>Sources</span><ul><li><a href="https://www.php.net/releases/8.6/en.php" target="_blank" rel="noopener noreferrer">What&#x27;s New in PHP 8.6</a></li><li><a href="https://verialabs.com/ruby2shell/" target="_blank" rel="noopener noreferrer">Ruby2ßhell: Pre-authentication RCE on stock Rails</a></li></ul></div></details></section>
+        <div class="repo-controls">
+            <button id="collapse-seen-btn" type="button">Collapse Stories Not New Today</button>
+            <button id="expand-all-btn" type="button">Expand All</button>
+        </div>
+        <p class="seen-help">Stories marked "Not new today" appeared on one or more previous daily pages.</p>
+        <article>
+            <div class="repos">
+
+            <section class="repo" data-seen-before="0"
+                     data-share-title="What&#x27;s New in PHP 8.6"
+                     data-share-url="https://www.php.net/releases/8.6/en.php"
+                     data-share-points="90"
+                     data-share-comments="40">
+                <div class="repo-header-row">
+                    <h3>1. <a href="https://www.php.net/releases/8.6/en.php" target="_blank" rel="noopener noreferrer">What&#x27;s New in PHP 8.6</a> </h3>
+                    <div class="header-buttons">
+                        <button type="button" class="discuss-btn" aria-label="Discuss with AI" title="Discuss with AI">&#x1F4AC;</button>
+                        <button type="button" class="repo-toggle" aria-expanded="true">Hide details</button>
+                    </div>
+                </div>
+                <div class="repo-body">
+                    <p class="meta">
+                        <span class="language">php.net</span> |
+                        <span>netol</span> |
+                        <span>90 points</span> |
+                        <span>40 comments</span> |
+                        <a href="https://news.ycombinator.com/item?id=50557870" target="_blank" rel="noopener noreferrer">discussion</a>
+                    </p>
+                    <p class="history">First seen: November 19, 2026 | Consecutive daily streak: 1 day</p>
+                    <div class="ai-summary">
+                        <h4>Analysis</h4>
+                        <p>The story announces PHP 8.6, scheduled for release on November 19, 2026, as a major update focused on more expressive code, stronger typing, and scalable I/O. Its headline features include partial function application, a nanosecond-precise `Time\Duration` class, the `Io\Poll` API using native mechanisms such as epoll and kqueue, a generic `clamp()` function, and the type-safe `SortDirection` enum. The release also adds structured stream errors, readonly property defaults, expanded reflection and URI APIs, cryptographic and TLS improvements, and various performance optimizations. It is important for developers and library authors because it improves concurrency foundations and API consistency while introducing deprecations and behavior changes—including stricter sessions, validation, error handling, and removal of outdated interfaces—that may require migration work.</p>
+                    </div>
+                    
+                <div class="ai-summary">
+                    <h4>Comment Analysis</h4>
+                    <p class="camps-framing">The discussion weighs concrete improvements in PHP 8.6 against broader questions about PHP’s suitability for new projects. Commenters differ on whether its ecosystem and deployment advantages still outweigh concerns about language design, package quality, and alternatives, including AI-assisted development. Security and several specific language or API shortcomings also receive attention.</p>
+<div class="camp"><p class="camp-label"><strong>Practical feature enthusiasm</strong> &mdash; Some commenters welcome reduced ZTS overhead and improved stream error handling, with one seeing lower overhead as a possible step toward native async support. Another is wary that async could bring in patterns or dependencies from outside PHP.</p><blockquote>Most excited about the ZTS overhead reduction.<cite>beberlei</cite></blockquote>
+<blockquote>This greatly improves the old file stream APIs to now allow throwing exceptions instead of returning false on errors:<cite>beberlei</cite></blockquote>
+<blockquote>That&#x27;s certainly a use case but I worry async opens the door for all the non PHP to come on in<cite>calvinmorrison</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>PHP is declining or a poor choice for new projects</strong> &mdash; Some commenters argue that PHP has lost ground, has poor language design, or is adopting features from other languages without a convincing direction. Others cite AI-assisted coding and low-quality Composer packages as reasons to reconsider PHP for new work.</p><blockquote>I don&#x27;t see any reason anymore to start any new project in PHP.<cite>zsoltkacsandi</cite></blockquote>
+<blockquote>The language is simply poorly designed.<cite>shevy-java</cite></blockquote>
+<blockquote>90-95% of composer packages are just horrible, and most would never pass our QA.<cite>phplovesong</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>PHP’s ecosystem and deployment niche still matter</strong> &mdash; Other commenters emphasize established PHP platforms and frameworks, along with the convenience of deploying applications on inexpensive hosting. Some question whether that entry-level server-side niche remains as important as static hosting and managed site builders grow.</p><blockquote>Until another language reproduces the whole WordPress, Drupal, Magento, Moodle etc ecosystems PHP isn&#x27;t going away.<cite>cutler</cite></blockquote>
+<blockquote>Has any other language even attempted to fill that niche yet?<cite>Shish2k</cite></blockquote>
+<blockquote>I think the static site generators with static hosting have become that.<cite>mariusor</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>AI changes the case for bespoke software</strong> &mdash; A minority argues that AI can make bespoke applications simpler to build than adopting a framework, potentially reducing the value of established ecosystems. A reply notes that existing projects and developers’ familiarity will continue to matter.</p><blockquote>So I let it do that and the result was fantastic.<cite>cbeach</cite></blockquote>
+<blockquote>There are a LOT of PHP shops and they aren&#x27;t going to rewrite working sites tomorrow.<cite>speed_spread</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Security first, and not uniquely a PHP problem</strong> &mdash; One thread urges readers to apply an imminent critical fix, while replies clarify that applicable fixes will be included in the stable release and that security and release work are handled separately. Other commenters argue that serious vulnerabilities also affect other servers, languages, and frameworks.</p><blockquote>Before you all get excited about the new version, patch the old version you&#x27;re running now!<cite>kijin</cite></blockquote>
+<blockquote>The PHP 8.6.0 stable release will include the fixes for all applicable vulnerabilities.<cite>TimWolla</cite></blockquote>
+<blockquote>And simply demanding everyone rewrites everything in Rust isn’t reasonable - even in “the agentic era”.<cite>michh</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>API and language gaps</strong> &mdash; Some commenters point to specific shortcomings, including an apparent error in the release notes’ clamping example and the lack of built-in Unicode support. Another quips that a new feature may create future problems.</p><blockquote>Their PHP8.5 examples are written as: var_dump(max($value, min($lower_bound, $upper_bound))); but that should be: var_dump(max($lower_bound, min($value, $upper_bound))); /facepalm<cite>shdon</cite></blockquote>
+<blockquote>Still no builtin unicode support?<cite>phplovesong</cite></blockquote>
+<blockquote>Perhaps it will contain something new that will come back to haunt us in six or so months.<cite>rarisma</cite></blockquote></div>
+                </div>
+
+                </div>
+            </section>
+
+            <section class="repo" data-seen-before="0"
+                     data-share-title="Ruby2ßhell: Pre-authentication RCE on stock Rails"
+                     data-share-url="https://verialabs.com/ruby2shell/"
+                     data-share-points="178"
+                     data-share-comments="68">
+                <div class="repo-header-row">
+                    <h3>2. <a href="https://verialabs.com/ruby2shell/" target="_blank" rel="noopener noreferrer">Ruby2ßhell: Pre-authentication RCE on stock Rails</a> </h3>
+                    <div class="header-buttons">
+                        <button type="button" class="discuss-btn" aria-label="Discuss with AI" title="Discuss with AI">&#x1F4AC;</button>
+                        <button type="button" class="repo-toggle" aria-expanded="true">Hide details</button>
+                    </div>
+                </div>
+                <div class="repo-body">
+                    <p class="meta">
+                        <span class="language">verialabs.com</span> |
+                        <span>jdns</span> |
+                        <span>178 points</span> |
+                        <span>68 comments</span> |
+                        <a href="https://news.ycombinator.com/item?id=50556287" target="_blank" rel="noopener noreferrer">discussion</a>
+                    </p>
+                    <p class="history">First seen: November 19, 2026 | Consecutive daily streak: 1 day</p>
+                    <div class="ai-summary">
+                        <h4>Analysis</h4>
+                        <p>Ruby2Shell (GHSA-34m4-m9fh-gqp5) is a critical, unauthenticated remote-code-execution vulnerability in Ruby’s case-conversion handling for certain legacy single-byte encodings. An off-by-one heap overflow occurs when characters such as “ß” expand during operations like `upcase`, potentially enabling exploitation through applications that process attacker-controlled strings. Rails and classic Sinatra are exposed in their default configurations, and affected Ruby versions are bundled with products including GitLab, GitHub Enterprise Server, and Chatwoot. Organizations should upgrade Ruby to 3.3.14, 3.4.13, or 4.0.10, or install vendor-fixed releases; Ruby 3.2 and older are end-of-life.</p>
+                    </div>
+                    
+                <div class="ai-summary">
+                    <h4>Comment Analysis</h4>
+                    <p class="camps-framing">Reactions focused on how a one-byte heap overflow could be chained into remote code execution and what that suggests about the security of widely used software. Discussion covered systemic memory safety, the limits of memory-safe languages, exploitability, Ruby’s encoding behavior, Rails request handling, and the broader run of RCE disclosures.</p>
+<div class="camp"><p class="camp-label"><strong>Memory safety as a systemic problem</strong> &mdash; Some commenters treated the bug as evidence that small memory errors can have serious consequences when they can be chained into RCEs. Replies emphasized that unsafe components can undermine memory-safety claims and that existing testing tools need wider use.</p><blockquote>If any single byte overflow can be converted into an RCE with minimal human effort then we have no choice but to prove the whole software stack is memory safe.<cite>cowlevel</cite></blockquote>
+<blockquote>The good news is that this was already the case, and we have tools that check for this; like fuzzers and sanitizers. Now to get people to use them it&#x27;s an issue.<cite>lionkor</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Memory-safe languages and their limits</strong> &mdash; Commenters debated whether Rust offers a meaningful answer to memory-safety problems and how unsafe code affects that claim. Replies stressed that containing and auditing unsafe sections matters, while some pushed back on broad comparisons with Java.</p><blockquote>In essence, there is no software stack that is fully memory safe, it is more a matter of restricting the memory unsafe parts in fewer, more scrutinized, better contained sections.<cite>aja12</cite></blockquote>
+<blockquote>I like Rust, but this kind of anti-Java-think is super dated and boring.<cite>dcminter</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>How exploitable is a one-byte overflow?</strong> &mdash; Some commenters asked how a single-byte overwrite could lead to code execution. Replies cited historical single-byte exploits and described possible heap-corruption paths, while noting that exploitability can depend on the target environment.</p><blockquote>More interested to see how you can use just a single byte overflow to trigger RCE. Definitely achievable but sounds tough.<cite>barbegal</cite></blockquote>
+<blockquote>There was an even more restrictive single NUL byte heap overflow in glibc in 2014 that the ProjectZero folks managed to turn into ACE and thus an LPE in setuid binaries[1].<cite>cyphar</cite></blockquote>
+<blockquote>The next byte in the heap might be the size of an allocation, so if you overwrite it and then free that other allocation, the heap code will think that there is a very large free area there instead of a small one, once you allocate that, you now have a very large heap overflow and can do more fun things.<cite>enjoytheview</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Encoding behavior and Rails exposure</strong> &mdash; Technical discussion focused on Ruby’s case conversion, where ß can expand to SS, and on how a request could supply an encoding that reaches the relevant code path. Commenters also raised broader concerns about encoding differentials between clients and servers.</p><blockquote>There was never any guarantee that case conversion is byte length equivalent. Except for pure ASCII, that&#x27;s just been an incorrect assumption from the start.<cite>johnp_</cite></blockquote>
+<blockquote>You can freely specify the encoding when sending multipart/form-data POST since Rails respects the charset attribute in Content-Type, eg Content-Type: text/plain; charset=Windows-1252<cite>CER10TY</cite></blockquote>
+<blockquote>Browsers stopped auto-detecting ISO-2022-JP for this reason.<cite>roer</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>The wider RCE wave</strong> &mdash; Some commenters viewed the disclosure as part of a concerning cluster of recent RCEs and wondered which platform might be next. Replies cautioned that a platform’s security reputation is not immunity, particularly when its runtime or libraries rely on C code.</p><blockquote>It is getting absurd, in span of 48h there is one for nginx, java, php and ruby; with another one for php and ruby in last month.<cite>srgb_vs_cmyk</cite></blockquote>
+<blockquote>The days of people feeling secure because they don&#x27;t make egregious mistakes are unfortunately over. Now the rule is: You are vulnerable, you just don&#x27;t know how.<cite>imtringued</cite></blockquote>
+<blockquote>The bug here is in the C code for Ruby. Python is also written in C and just as likely to have memory bugs.<cite>Gigachad</cite></blockquote></div>
+                </div>
+
+                </div>
+            </section>
+
+            <section class="repo" data-seen-before="0"
+                     data-share-title="How the European Commission rolled out Matrix to more than 40k staff"
+                     data-share-url="https://element.io/blog/how-the-european-commission-rolled-out-matrix-to-more-than-40-000-staff/"
+                     data-share-points="26"
+                     data-share-comments="6">
+                <div class="repo-header-row">
+                    <h3>3. <a href="https://element.io/blog/how-the-european-commission-rolled-out-matrix-to-more-than-40-000-staff/" target="_blank" rel="noopener noreferrer">How the European Commission rolled out Matrix to more than 40k staff</a> </h3>
+                    <div class="header-buttons">
+                        <button type="button" class="discuss-btn" aria-label="Discuss with AI" title="Discuss with AI">&#x1F4AC;</button>
+                        <button type="button" class="repo-toggle" aria-expanded="true">Hide details</button>
+                    </div>
+                </div>
+                <div class="repo-body">
+                    <p class="meta">
+                        <span class="language">element.io</span> |
+                        <span>liotier</span> |
+                        <span>26 points</span> |
+                        <span>6 comments</span> |
+                        <a href="https://news.ycombinator.com/item?id=50558533" target="_blank" rel="noopener noreferrer">discussion</a>
+                    </p>
+                    <p class="history">First seen: November 19, 2026 | Consecutive daily streak: 1 day</p>
+                    <div class="ai-summary">
+                        <h4>Analysis</h4>
+                        <p>The European Commission deployed a self-operated Matrix communication service, based on Element Server Suite Pro and hosted with sovereign cloud providers, to more than 40,000 staff within nine months. The project defines sovereignty broadly, including data control, operational ownership, resilience, vendor diversity, and procurement leverage, while integrating with the existing EU Login system. Scaling across multiple Synapse homeservers exposed practical challenges involving user discovery, account provisioning, presence-related load, and infrastructure elasticity, which the team addressed through engineering changes and phased rollout. The service is intended to complement rather than replace Microsoft Teams or consumer messaging apps, while potential federation with other institutions remains under technical and governance review.</p>
+                    </div>
+                    
+                <div class="ai-summary">
+                    <h4>Comment Analysis</h4>
+                    <p class="camps-framing">The discussion weighs practical usability and support needs against the strategic goal of reducing dependence on US providers. Some commenters see the rollout’s scale as an opportunity to drive improvements, while others point to its operational burden. A couple of comments express broad support for the project’s rationale or outcome.</p>
+<div class="camp"><p class="camp-label"><strong>Practical usability and resourcing concerns</strong> &mdash; One commenter hopes the project receives development resources, while another points to everyday usability friction and the burden of multiplying those issues across 40,000 staff.</p><blockquote>Hopefully they add some dev resources and not just users<cite>tkel</cite></blockquote>
+<blockquote>Given how much time I spend &quot;verifying my device&quot; and other issues with simply making it work, and multiplying that by 40000, I feel very sorry for them.<cite>rwmj</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Scale can spur improvement</strong> &mdash; A commenter argues that problems affecting users at this scale are likely to prompt improvements.</p><blockquote>real problems like that at this scale will probably result in it being improved which seems like a good thing to me<cite>polytely</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Strategic case for European sovereignty</strong> &mdash; A commenter defends paying more to reduce Europe’s dependence on US services and suggests that some HN readers undervalue that goal.</p><blockquote>Somehow it&#x27;s not surprising that the readership here doesn&#x27;t understand why would Europe want to pay the high price of riding itself of US dependencies, but somehow it&#x27;s still surprising.<cite>soco</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Broadly positive assessment</strong> &mdash; A commenter judges the rollout a net positive without elaborating on the trade-offs.</p><blockquote>seems like the rollout was a net positive.<cite>raffael_de</cite></blockquote></div>
+                </div>
+
+                </div>
+            </section>
+
+            <section class="repo" data-seen-before="0"
+                     data-share-title="Distributed, high-performance blob storage on SQLite"
+                     data-share-url="https://zerodha.tech/blog/high-performance-distributed-blob-storage/"
+                     data-share-points="82"
+                     data-share-comments="14">
+                <div class="repo-header-row">
+                    <h3>4. <a href="https://zerodha.tech/blog/high-performance-distributed-blob-storage/" target="_blank" rel="noopener noreferrer">Distributed, high-performance blob storage on SQLite</a> </h3>
+                    <div class="header-buttons">
+                        <button type="button" class="discuss-btn" aria-label="Discuss with AI" title="Discuss with AI">&#x1F4AC;</button>
+                        <button type="button" class="repo-toggle" aria-expanded="true">Hide details</button>
+                    </div>
+                </div>
+                <div class="repo-body">
+                    <p class="meta">
+                        <span class="language">zerodha.tech</span> |
+                        <span>ghostfoxgod</span> |
+                        <span>82 points</span> |
+                        <span>14 comments</span> |
+                        <a href="https://news.ycombinator.com/item?id=50557537" target="_blank" rel="noopener noreferrer">discussion</a>
+                    </p>
+                    <p class="history">First seen: November 19, 2026 | Consecutive daily streak: 1 day</p>
+                    <div class="ai-summary">
+                        <h4>Analysis</h4>
+                        <p>Zerodha built Blobasaur, an open-source Rust server that uses sharded SQLite databases to store high-throughput, variably sized JSON blobs for Kite users’ layouts, preferences, and workspace metadata. It replaces the unmaintained, single-node SSDB, while avoiding the cost, latency, operational complexity, or poor overwrite behavior the team found in alternatives such as cloud object storage, distributed databases, and raw filesystems. Blobasaur maintains Redis and Redis Cluster compatibility, compresses payloads with zstd, supports TTLs and relaxed durability, and scales through per-node SQLite shards and multi-node hash-slot partitioning. Production results on a three-node cluster show roughly 2 ms p99 latency, illustrating how carefully designed SQLite sharding and batching can provide an economical solution for non-critical but demanding blob workloads.</p>
+                    </div>
+                    
+                <div class="ai-summary">
+                    <h4>Comment Analysis</h4>
+                    <p class="camps-framing">The comments raise questions about Blobasaur’s operational guarantees and whether it fits use beyond Zerodha, while also suggesting alternative data models and storage approaches. They do not establish a clear verdict or settle which design is best.</p>
+<div class="camp"><p class="camp-label"><strong>Reliability and production readiness</strong> &mdash; Commenters ask about fault tolerance, replication, backups, consistency, and node failures, with one questioning whether the project is ready for use beyond Zerodha.</p><blockquote>Sounds like it solves their particular problem, but hardly can be used by outsiders in the current state.<cite>murkt</cite></blockquote>
+<blockquote>What is the consistency model? What happens if a node is down unexpectedly?<cite>matja</cite></blockquote>
+<blockquote>I couldn&#x27;t find the word &quot;replication&quot; in the post or on the GitHub page. So, what about fault tolerance?<cite>CyrusGrissom</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>SQL schemas instead of JSON blobs</strong> &mdash; One commenter proposes representing blob schemas in SQL to reduce storage work for incremental updates; a reply questions modifying database schemas with an LLM.</p><blockquote>If most blob updates are incremental you can eliminate a significant amount of storage IO and garbage collection this way.<cite>bob1029</cite></blockquote>
+<blockquote>You want an LLM to be modifying your db schemas on the fly?? Seems slow and error prone.<cite>testtestmetest</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Database per user</strong> &mdash; A commenter suggests isolating data in a database per user, and a reply proposes that SQLite could then be sufficient.</p><blockquote>Sounds like you should use a database-per-user design.<cite>feverzsj</cite></blockquote>
+<blockquote>Right, then even sqlite should be enough?<cite>mkesper</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Use files</strong> &mdash; One commenter suggests ordinary files as an alternative; the reply notes that filesystems can be slower than SQLite for very large numbers of small files.</p><blockquote>What about using, ahem, files?<cite>robinduckett</cite></blockquote>
+<blockquote>Filesystems can be much slower than SQLite for many (think millions of) small files.<cite>ncruces</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>SQLite portability and network access</strong> &mdash; A commenter asks whether the database remains a portable single file and whether it addresses SQLite’s limitations over network filesystems; the questions go unanswered.</p><blockquote>Is the db still a single, portable file?<cite>Kalanos</cite></blockquote>
+<blockquote>A limitation that i ran into with sqlite was not being able to interact with it over the network e.g. NFS.<cite>Kalanos</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Redis protocol choice</strong> &mdash; One commenter expresses uncertainty about retaining Redis protocol compatibility without developing the concern further.</p><blockquote>I am not sure how I feel about their choice of Redis protocol.<cite>murkt</cite></blockquote></div>
+                </div>
+
+                </div>
+            </section>
+
+            <section class="repo" data-seen-before="0"
+                     data-share-title="Gemini 4 Neon"
+                     data-share-url="https://blog.google/innovation-and-ai/models-and-research/gemini-models/introducing-gemini-4-neon/"
+                     data-share-points="866"
+                     data-share-comments="685">
+                <div class="repo-header-row">
+                    <h3>5. <a href="https://blog.google/innovation-and-ai/models-and-research/gemini-models/introducing-gemini-4-neon/" target="_blank" rel="noopener noreferrer">Gemini 4 Neon</a> </h3>
+                    <div class="header-buttons">
+                        <button type="button" class="discuss-btn" aria-label="Discuss with AI" title="Discuss with AI">&#x1F4AC;</button>
+                        <button type="button" class="repo-toggle" aria-expanded="true">Hide details</button>
+                    </div>
+                </div>
+                <div class="repo-body">
+                    <p class="meta">
+                        <span class="language">blog.google</span> |
+                        <span>yigitdemirag</span> |
+                        <span>866 points</span> |
+                        <span>685 comments</span> |
+                        <a href="https://news.ycombinator.com/item?id=50552424" target="_blank" rel="noopener noreferrer">discussion</a>
+                    </p>
+                    <p class="history">First seen: November 19, 2026 | Consecutive daily streak: 1 day</p>
+                    <div class="ai-summary">
+                        <h4>Analysis</h4>
+                        <p>Google has introduced Gemini 4 Neon, a frontier-oriented model aimed at complex software engineering, enterprise analysis, scientific reasoning, and long-running agent workflows. It offers a 1-million-token context window, multiple reasoning levels, claimed strong benchmark results, and production coding and cybersecurity capabilities, while positioning itself between the larger Carbon model and faster Hydrogen model. The API is priced at $3 per million input tokens and $15 per million output tokens, with rollout across Google AI Studio, Gemini for business, Antigravity, and paid Gemini subscriptions. Its importance lies in Google’s effort to make high-end reasoning more affordable and operationally reliable, alongside safeguards intended to reduce fabrication, prompt-injection susceptibility, misuse, and agent overreach.</p>
+                    </div>
+                    
+                <div class="ai-summary">
+                    <h4>Comment Analysis</h4>
+                    <p class="camps-framing">Commenters debated whether Gemini 4 Neon puts Google back at the frontier, while noting that benchmark rankings and real-world results can vary by task. They also compared models for long-running coding work, weighed speed and token costs, and expressed substantial frustration with confusing names, changing availability, and access requirements. Some raised concerns about model behavior and privacy.</p>
+<div class="camp"><p class="camp-label"><strong>Google may be back at the frontier</strong> &mdash; Some commenters saw Neon’s benchmark results and release as evidence that Google is competitive with or ahead of other frontier labs. Others emphasized that rankings differ across benchmarks and that comparisons can be uncertain.</p><blockquote>Overall, it seems like Gemini is back at the frontier with Anthropic and OpenAI, and well ahead of Meta and Grok.<cite>minimumvector</cite></blockquote>
+<blockquote>On Vals&#x27;s Index ( https://www.vals.ai/benchmarks/vals_index ), it&#x27;s Fable &gt; Neon &gt; Sonnet &gt; Opus &gt; ... &gt; Astra.<cite>minimumvector</cite></blockquote>
+<blockquote>This model matches Fable 5.2 for about 40% the cost. Not sure how you can take from this that anthropic has some secret sauce?<cite>irthomasthomas</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Anthropic models feel stronger for extended coding work</strong> &mdash; Several commenters preferred Opus or Fable for long-running projects, describing them as better at maintaining context and coordinating work over time, even when other models appeared competitive on benchmarks.</p><blockquote>Like Opus can run for days on a task and it feels like it understand what it was doing 2 days ago even when it might not be in it context while other models feel like they breakdown and get lost or falter as the task grows.<cite>impulser_</cite></blockquote>
+<blockquote>No such feel with OpenAI nor Google models for me.<cite>aenis</cite></blockquote>
+<blockquote>Anthropic has a proper feedback loop with claude code.<cite>m_ke</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Performance and value depend on the task</strong> &mdash; Commenters reported different results across research, analytics, coding, and specialized engineering tasks. They also noted that speed and per-token prices do not necessarily predict total cost when models use different numbers of tokens.</p><blockquote>On that latter category, I find Gemini superior to Claude for many tasks.<cite>bayindirh</cite></blockquote>
+<blockquote>But for big things on our company&#x27;s C++ code base, Gemini Argon has been amazing.<cite>socalgal2</cite></blockquote>
+<blockquote>But lot&#x27;s of experience I got from these models, for example bigger models like Argon spend significantly less output token so even though unit cost is higher both total cost and the output time can be lower than the lower models.<cite>mertarican</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Model names and tiers are hard to interpret</strong> &mdash; Many commenters struggled to infer model strength, intended use, or price from Google’s element names and from the wider mix of lab-specific naming schemes. Some proposed clearer shared categories or simple size labels.</p><blockquote>I&#x27;m getting fatigued with the constant introduction of names and the impenetrability of mapping these brand new names to use cases.<cite>stillpointlab</cite></blockquote>
+<blockquote>This is some of the most confusing naming I&#x27;ve ever seen.<cite>Jorge1o1</cite></blockquote>
+<blockquote>They really need an industry term for each model.<cite>SamuelAdams</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Availability and access are frustrating</strong> &mdash; Some commenters were unsure which models their subscriptions included or how to access them through Google’s tools. Others objected to changing model availability or to terms governing third-party access and account data.</p><blockquote>They have just removed 3.1 Pro and Argon (and Flash) from my Pro subscription without any warning.<cite>jonathanstrange</cite></blockquote>
+<blockquote>Good lord, this is an insane flow.<cite>ncd</cite></blockquote>
+<blockquote>I&#x27;d like to keep my Gmail account, so Google can keep their model and will not get my business.<cite>user43928</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Concerns about model behavior and reliability</strong> &mdash; Hands-on reports raised concerns about hallucinated tool details, excessive or circular reasoning, and models answering their own questions instead of seeking clarification. Some commenters suggested that long-horizon models may be optimized to continue rather than pause.</p><blockquote>Surprisingly it hallucinates quite a lot - inventing the URLs and variables between different tool calls.<cite>ponyous</cite></blockquote>
+<blockquote>I am shocked at how primitive its reasoning sounds<cite>jorl17</cite></blockquote>
+<blockquote>Has anyone else been having an issue where the models would answer its own question?<cite>dprkh</cite></blockquote></div>
+                </div>
+
+                </div>
+            </section>
+
+            <section class="repo" data-seen-before="0"
+                     data-share-title="SSD prices will start going down the second half of next year"
+                     data-share-url="https://www.drivevault.io/blog/when-will-hard-drive-prices-come-down.html"
+                     data-share-points="106"
+                     data-share-comments="69">
+                <div class="repo-header-row">
+                    <h3>6. <a href="https://www.drivevault.io/blog/when-will-hard-drive-prices-come-down.html" target="_blank" rel="noopener noreferrer">SSD prices will start going down the second half of next year</a> </h3>
+                    <div class="header-buttons">
+                        <button type="button" class="discuss-btn" aria-label="Discuss with AI" title="Discuss with AI">&#x1F4AC;</button>
+                        <button type="button" class="repo-toggle" aria-expanded="true">Hide details</button>
+                    </div>
+                </div>
+                <div class="repo-body">
+                    <p class="meta">
+                        <span class="language">drivevault.io</span> |
+                        <span>illidan1000</span> |
+                        <span>106 points</span> |
+                        <span>69 comments</span> |
+                        <a href="https://news.ycombinator.com/item?id=50557716" target="_blank" rel="noopener noreferrer">discussion</a>
+                    </p>
+                    <p class="history">First seen: November 19, 2026 | Consecutive daily streak: 1 day</p>
+                    <div class="ai-summary">
+                        <h4>Analysis</h4>
+                        <p>The article forecasts that SSD prices may begin declining in the second half of 2027 as NAND flash supply catches up with demand, while hard-drive prices may not ease meaningfully until 2028. SSDs can respond relatively quickly to quarterly chip-market changes, but HDD production is dominated by Seagate and Western Digital, whose data-center capacity and pricing are largely committed through 2027–2028. AI infrastructure demand, limited new factory capacity, and long-term contracts have driven storage prices to roughly double or more from 2025 levels, making a return to 2024 pricing unlikely soon. The practical advice is to buy only necessary storage or complete backups now, avoid speculative stockpiling, and wait on nonessential SSD upgrades if possible.</p>
+                    </div>
+                    
+                <div class="ai-summary">
+                    <h4>Comment Analysis</h4>
+                    <p class="camps-framing">The discussion centered on whether high memory and storage prices are a temporary market cycle or the result of AI-driven demand outpacing constrained supply. Commenters also debated whether demand forecasts and capacity plans are reliable, whether lower costs would reach consumers, and how much confidence to place in the article’s outlook.</p>
+<div class="camp"><p class="camp-label"><strong>A downturn is likely</strong> &mdash; Some commenters saw market valuations and recent NAND spot-price movements as signs that current prices and profits could eventually fall, while treating the timing as uncertain.</p><blockquote>NAND “spot price” already dropped 20% in the last month, so it could already be happening.<cite>gpt5</cite></blockquote>
+<blockquote>So, assuming the market is roughly right in its valuation of Micron or SK Hynix, either demand will collapse or supply will surge or, some combo of the two.<cite>imeanwhatdoikno</cite></blockquote>
+<blockquote>I’m guessing there will be a lot of pent up demand as the prices go lower.<cite>zeristor</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>AI demand will keep supply tight</strong> &mdash; Others argued that AI adoption and data generation are still at an early stage and that demand could outpace the capacity coming online.</p><blockquote>The upcoming capacity isn&#x27;t even close to meeting basic extrapolated demands, but we still have the &quot;economic disbelief&quot; that it will scale like that.<cite>hypendev</cite></blockquote>
+<blockquote>Wishful thinking. Opposition to data centres is nowhere near universal enough to dent demand, nowhere near enough supply is coming online.<cite>jpgvm</cite></blockquote>
+<blockquote>Most companies will either rely on small scale national providers or have some compute in-house sufficient to run coding and other agents.<cite>novaRom</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>The AI buildout could disappoint</strong> &mdash; Skeptics questioned whether AI businesses and data-center projects will meet expectations, and whether current growth assumptions can be extrapolated reliably.</p><blockquote>Demand could still drop dramatically if they run out of investors / can&#x27;t build all the datacenters they are planning.<cite>ROOFLES</cite></blockquote>
+<blockquote>AI companies significantly overestimated the size of the market<cite>Someone</cite></blockquote>
+<blockquote>Basic extrapolation used to say human population will approach infinity this November...<cite>ShinyLeftPad</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Supply is changing, but not quickly or simply</strong> &mdash; Commenters noted that capacity investment is underway but may be modest or focused on process improvements and higher-value products. They also pointed to supply-chain complexity and the role of purchase commitments.</p><blockquote>But capacity is being built out, albeit modestly.<cite>JumpCrisscross</cite></blockquote>
+<blockquote>Investment seems to be emphasizing &quot;advancements such as process technology upgrades, higher-layer stacking, hybrid bonding, and high-value products such as HBM&quot; over capacity expansion [1].<cite>JumpCrisscross</cite></blockquote>
+<blockquote>Some are legitimate efforts but everyone (other than SSD manufacturers) forgets how complex the supply chain is for modern chips.<cite>sandworm101</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Price declines may not reach buyers</strong> &mdash; Some commenters doubted that lower manufacturing costs would translate into lower retail prices, while others attributed high prices to demand rather than monopoly power.</p><blockquote>I doubt it. Maybe costs will get lower, but end-user prices? Hardly ever<cite>on_the_train</cite></blockquote>
+<blockquote>In this case, the high prices are not due to monopolies but due to high demand.<cite>vanviegen</cite></blockquote>
+<blockquote>We have capitalism, what we don&#x27;t have are free markets.<cite>sitkack</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>The article and its forecast deserve skepticism</strong> &mdash; Some commenters questioned the article’s evidence, wording, or promotional quality; others warned against relying on confident technology predictions.</p><blockquote>This is an ad.<cite>szmarczak</cite></blockquote>
+<blockquote>The analysis part is missing from this analysis article.<cite>xpct</cite></blockquote>
+<blockquote>Oh right, never trust tech predictions<cite>233mhz</cite></blockquote></div>
+                </div>
+
+                </div>
+            </section>
+
+            <section class="repo" data-seen-before="0"
+                     data-share-title="Garage Door Spam"
+                     data-share-url="https://blog.harrison.page/garage-door-spam/"
+                     data-share-points="32"
+                     data-share-comments="7">
+                <div class="repo-header-row">
+                    <h3>7. <a href="https://blog.harrison.page/garage-door-spam/" target="_blank" rel="noopener noreferrer">Garage Door Spam</a> </h3>
+                    <div class="header-buttons">
+                        <button type="button" class="discuss-btn" aria-label="Discuss with AI" title="Discuss with AI">&#x1F4AC;</button>
+                        <button type="button" class="repo-toggle" aria-expanded="true">Hide details</button>
+                    </div>
+                </div>
+                <div class="repo-body">
+                    <p class="meta">
+                        <span class="language">blog.harrison.page</span> |
+                        <span>harrisonpage</span> |
+                        <span>32 points</span> |
+                        <span>7 comments</span> |
+                        <a href="https://news.ycombinator.com/item?id=50519231" target="_blank" rel="noopener noreferrer">discussion</a>
+                    </p>
+                    <p class="history">First seen: November 19, 2026 | Consecutive daily streak: 1 day</p>
+                    <div class="ai-summary">
+                        <h4>Analysis</h4>
+                        <p>The article describes replacing Chamberlain’s ad-filled myQ garage-door service after the company ended third-party API access in 2023. The author installs inexpensive, open-source ratgdo32 Wi-Fi control boards that communicate locally with the opener’s Security+ 2.0 protocol and integrate with HomeKit, Tailscale, and custom monitoring. A small script checks the doors overnight and sends Slack alerts, while local health checks confirm that the hardware is reachable. The story highlights how vendor lock-in and cloud-dependent features can undermine trust in safety notifications, and how local, open systems can restore control, privacy, and more useful automation.</p>
+                    </div>
+                    
+                <div class="ai-summary">
+                    <h4>Comment Analysis</h4>
+                    <p class="camps-framing">Commenters largely object to ad-heavy, cloud-dependent garage-door services and discuss alternatives ranging from open, locally controlled DIY systems to ready-made products. Other comments raise cost, certification, and hands-free access considerations.</p>
+<div class="camp"><p class="camp-label"><strong>Objection to ads and vendor lock-in</strong> &mdash; Commenters object to ads in paid-device ecosystems, especially when they appear in notifications or can be introduced after purchase.</p><blockquote>Apps for devices that I purchased that show ads is probably one of my biggeset tech pet peeves.<cite>wallst07</cite></blockquote>
+<blockquote>It&#x27;s the hijacking of notifications that gets me the most.<cite>avaer</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Open, locally controlled automation</strong> &mdash; Commenters welcome bypassing myQ and using open-source or home-automation integrations to control garage doors.</p><blockquote>In which I bypass myQ for an open source solution<cite>harrisonpage</cite></blockquote>
+<blockquote>Great post, right to the point. Love it.<cite>phrotoma</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Lower-cost DIY hardware</strong> &mdash; One commenter suggests building a controller with free software and inexpensive components as a lower-cost alternative to official hardware.</p><blockquote>Pro Tip: you don’t need to buy one of the very expensive official ratgdo devices, if you are adventurous and can solder.<cite>ryandrake</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Off-the-shelf alternatives</strong> &mdash; Commenters recommend ready-made garage-door products, including options with no subscription or HomeKit support.</p><blockquote>Ekyro smart garage door opener on Amazon. $30 and no subscription. 15 minutes to install.<cite>newguytony</cite></blockquote>
+<blockquote>I went with a Meross MSG100hk garage door interface.<cite>wingspar</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>FCC compliance question</strong> &mdash; A commenter asks whether the device is properly FCC certified, noting that a pre-certified module may not resolve the certification question.</p><blockquote>Using a pre-certified module doesn&#x27;t let you bypass certification.<cite>Scene_Cast2</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Hands-free access while riding</strong> &mdash; Commenters discuss ways to open a garage without removing motorcycle gloves, including voice control and a high-beam-flash controller.</p><blockquote>I&#x27;m totally adding the garage door to Apple Home so that I can operate it with my voice while inside my helmet on my motorcycle, and not have to take my gloves off and get the remote control out.<cite>yakshaving_jgt</cite></blockquote>
+<blockquote>I have it on my bikes and it makes for a really seamless entry; I don&#x27;t have to take my hands off the controls, and the range is long enough that the door is open by the time I ride up.<cite>afn</cite></blockquote></div>
+                </div>
+
+                </div>
+            </section>
+
+            <section class="repo" data-seen-before="0"
+                     data-share-title="Unauthenticated remote code execution in Nginx"
+                     data-share-url="https://www.wiz.io/blog/nginx-http2-rce-vulnerabilities"
+                     data-share-points="1412"
+                     data-share-comments="606">
+                <div class="repo-header-row">
+                    <h3>8. <a href="https://www.wiz.io/blog/nginx-http2-rce-vulnerabilities" target="_blank" rel="noopener noreferrer">Unauthenticated remote code execution in Nginx</a> </h3>
+                    <div class="header-buttons">
+                        <button type="button" class="discuss-btn" aria-label="Discuss with AI" title="Discuss with AI">&#x1F4AC;</button>
+                        <button type="button" class="repo-toggle" aria-expanded="true">Hide details</button>
+                    </div>
+                </div>
+                <div class="repo-body">
+                    <p class="meta">
+                        <span class="language">wiz.io</span> |
+                        <span>speedping</span> |
+                        <span>1412 points</span> |
+                        <span>606 comments</span> |
+                        <a href="https://news.ycombinator.com/item?id=50547374" target="_blank" rel="noopener noreferrer">discussion</a>
+                    </p>
+                    <p class="history">First seen: November 19, 2026 | Consecutive daily streak: 1 day</p>
+                    <div class="ai-summary">
+                        <h4>Analysis</h4>
+                        <p>The story covers two critical, unauthenticated remote-code-execution vulnerabilities in NGINX’s HTTP/2 handling: a connection use-after-free (CVE-2026-123633) and a flow-control integer-underflow memory-corruption flaw (CVE-2026-123007). Because NGINX commonly serves as a shared web gateway, reverse proxy, load balancer, or static-file server, exploiting either issue could compromise multiple websites and APIs even when their application code is secure. Both require HTTP/2 to be enabled, with the older flaw affecting versions back to 1.9.5, and researchers demonstrated code execution against standard configurations. Administrators should upgrade to fixed releases—NGINX OSS 1.30.7 or 1.31.9, as applicable—or temporarily disable HTTP/2 while prioritizing internet-facing systems.</p>
+                    </div>
+                    
+                <div class="ai-summary">
+                    <h4>Comment Analysis</h4>
+                    <p class="camps-framing">Commenters debated how quickly operators should mitigate the NGINX exposure and whether public disclosure came before patches were ready. They also differed on how much AI is changing vulnerability discovery, how practical the exploit is for typical deployments, and whether reducing protocol complexity or moving away from C would lower security risks.</p>
+<div class="camp"><p class="camp-label"><strong>Treat it as an urgent exposure</strong> &mdash; Some commenters viewed the remote code execution risk as serious enough to act immediately, while noting that disabling HTTP/2 may not be practical for every service and that some packages were still unpatched.</p><blockquote>RCE is about at the top of the stack for severity.<cite>ryanisnan</cite></blockquote>
+<blockquote>Nginx Proxy Manager isn&#x27;t updated yet, I know a lot of people use this for their home server so just a reminder to disable http/2 here as well.<cite>Juvination</cite></blockquote>
+<blockquote>Quite the opposite, it looks like there has been no responsible disclosure here. No update available for anyone running something based on Debian (Ubuntu etc.), only if you go and fetch binaries from the source and do the system integration yourself<cite>Aachen</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Disclosure timing divided commenters</strong> &mdash; Some argued that users needed an advance warning or patches before exploit details became public; others said disclosure can spur fixes and that the vulnerability or workaround may already have been discoverable.</p><blockquote>Given that in this case the workaround is as simple as disabling http2, there is honestly no reason why F5/Nginx or any of the reporting teams couldn&#x27;t at least put out a PSA to disable http2 for the time being before basically telling the whole wide world this exists and how to exploit it.<cite>black3r</cite></blockquote>
+<blockquote>The reason people want shorter disclosure windows is because the shorter the window is the faster things get fixed for the average users and smaller companies.<cite>goodmythical</cite></blockquote>
+<blockquote>Given how common it&#x27;s become to constantly scan popular repos for n-days, I expect someone will have already picked it up and started work on an exploit.<cite>CER10TY</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>AI is accelerating attacks and discovery</strong> &mdash; Some commenters saw AI-assisted tools as making it faster to monitor repositories, find vulnerabilities, and develop attacks, while warning that defenders face a harder and potentially exhausting patching task.</p><blockquote>They don&#x27;t need to be super smart anymore. They don&#x27;t need to be super smart anymore.<cite>brunoborges</cite></blockquote>
+<blockquote>Both are true. The problem is security is a much harder job than attacking.<cite>pixl97</cite></blockquote>
+<blockquote>It&#x27;s possible that AI is going to be better at finding and exploiting systems than at securing them.<cite>tripleee</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Don’t make AI the whole explanation</strong> &mdash; Others argued that vulnerable software and capable attackers predate LLMs, and that the thread did not establish AI as the cause of this vulnerability. Some also questioned whether access to a model alone makes someone an effective vulnerability researcher.</p><blockquote>This vulnerability exists already . Even if there were no LLM, this would still exist and might even be actively exploited right now.<cite>raincole</cite></blockquote>
+<blockquote>AI is securing the internet. This is great. You should assume professional hacking gangs and state actors discovered (at least some of) these vulnerabilities months and years ago.<cite>jacobgold</cite></blockquote>
+<blockquote>No you still need to study and become an expert.<cite>testtestmetest</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>How exploitable is it in practice?</strong> &mdash; Some commenters emphasized that HTTP/2 is not enabled on every NGINX deployment or cited conditions they believed limited exploitation. Others replied that an exposed valuable target could still warrant concern.</p><blockquote>Small consolation but HTTP/2 is not enabled by default in Nginx and &quot;only&quot; 12% of servers run it (still huge at Internet scale)<cite>fduran</cite></blockquote>
+<blockquote>I&#x27;d hate to interrupt all the Rust fans sucking each other off again, but no one has yet mentioned the RCE relies on ASLR being disabled, which is basically non-existent nowadays.<cite>sippingabonedry</cite></blockquote>
+<blockquote>Surely no one is going to take the trouble to take down my toy website, but if there&#x27;s something valuable enough, a motivated actor can/will try to exploit<cite>zackwu</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Reduce protocol complexity and memory-safety risk</strong> &mdash; Some commenters treated HTTP/2 complexity and memory-unsafe C as recurring sources of risk, advocating simpler protocol surfaces or safer approaches to network-facing software.</p><blockquote>The curse of complexity strikes again.<cite>userbinator</cite></blockquote>
+<blockquote>AI is just showing how foolish using such a unsafe language like C to write code that connects to every other computer on the internet was.<cite>UltraSane</cite></blockquote>
+<blockquote>Integer underflow again. Programming languages should trap on integer overflows and not ignore them.<cite>codedokode</cite></blockquote></div>
+                </div>
+
+                </div>
+            </section>
+
+            <section class="repo" data-seen-before="0"
+                     data-share-title="15M web servers on one VM – smoltcp, DPDK, AF_XDP"
+                     data-share-url="https://kapteko.com/15-million-webservers/"
+                     data-share-points="190"
+                     data-share-comments="26">
+                <div class="repo-header-row">
+                    <h3>9. <a href="https://kapteko.com/15-million-webservers/" target="_blank" rel="noopener noreferrer">15M web servers on one VM – smoltcp, DPDK, AF_XDP</a> </h3>
+                    <div class="header-buttons">
+                        <button type="button" class="discuss-btn" aria-label="Discuss with AI" title="Discuss with AI">&#x1F4AC;</button>
+                        <button type="button" class="repo-toggle" aria-expanded="true">Hide details</button>
+                    </div>
+                </div>
+                <div class="repo-body">
+                    <p class="meta">
+                        <span class="language">kapteko.com</span> |
+                        <span>fessguid</span> |
+                        <span>190 points</span> |
+                        <span>26 comments</span> |
+                        <a href="https://news.ycombinator.com/item?id=50556533" target="_blank" rel="noopener noreferrer">discussion</a>
+                    </p>
+                    <p class="history">First seen: November 19, 2026 | Consecutive daily streak: 1 day</p>
+                    <div class="ai-summary">
+                        <h4>Analysis</h4>
+                        <p>The article explores whether 15 million minimal web servers can run on one VM with 10 GB of RAM and a single CPU core, exposing the resource costs of ordinary processes and Linux’s kernel networking stack. After finding that ports, process memory, and roughly 3.3 KB of kernel state per socket make the conventional approach impractical, it proposes a custom user-space runtime with lightweight scheduling and sandboxing. The runtime uses the Rust smoltcp TCP/IP stack with DPDK or AF_XDP to bypass most kernel networking overhead, reducing idle-server memory to about 620 bytes and demonstrating more than 16 million servers in a proof of concept. The broader significance is that specialized runtimes and user-space networking can drastically improve connection density and control, though achieving full POSIX compatibility and production reliability would require substantial additional engineering.</p>
+                    </div>
+                    
+                <div class="ai-summary">
+                    <h4>Comment Analysis</h4>
+                    <p class="camps-framing">The reaction was overwhelmingly enthusiastic, with readers praising the article’s technical depth, clarity, and humor. Smaller discussions qualified what the 15-million-server figure means, considered lower-level networking and kernel boundaries, and commented on the title’s framing.</p>
+<div class="camp"><p class="camp-label"><strong>Praise for the article’s craft</strong> &mdash; Readers described the article as unusually readable and technically substantial, with some appreciating that it felt human-written rather than AI-generated.</p><blockquote>That was really nice read, finally an article that is easy to read, simple but super technical, and most importantly not written by AI.<cite>LetMeLogin</cite></blockquote>
+<blockquote>It&#x27;s a breath of fresh air to read an article this well written. I learned, I laughed, I even relearned.<cite>kvirani</cite></blockquote>
+<blockquote>This was not what I was expecting - in a good way. Well written, funny, and devoid of AI slop.<cite>publlus_enigma</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Humor and nostalgia for older web writing</strong> &mdash; Some readers singled out the jokes as part of the article’s appeal, with one connecting its playful style to an earlier era of blogs.</p><blockquote>Great article from the technical aspect, but I also enjoyed the humour a lot.<cite>101008</cite></blockquote>
+<blockquote>Really interesting and love the humor. Made me chuckle over morning coffee multiple times.<cite>pi-rat</cite></blockquote>
+<blockquote>I audibly exhaled from my nose, thank you.<cite>tempfile</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Resource optimization as an engineering exercise</strong> &mdash; Readers saw the article as an example of questioning assumed constraints to achieve more with limited resources, and some connected it to cost optimization or earlier high-connection-count work.</p><blockquote>It&#x27;s an excellent thought and engineering exercise...<cite>peter_d_sherman</cite></blockquote>
+<blockquote>I was thinking for the last couple of days to have 10M+ app connections on one laptop as an extreme cost optimization excercise.<cite>elendilm</cite></blockquote>
+<blockquote>It’s so easy to forget how much power we have in our systems and how it’s possible to strip abstractions away to get at that power.<cite>com</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Interest in lower-level networking and kernel boundaries</strong> &mdash; A smaller technical discussion explored performance gains from removing abstractions and whether user-space networking resembles microkernel or exokernel designs.</p><blockquote>With the trend of moving everything to userland, maybe Linux finally become a microkernel.<cite>mrheosuper</cite></blockquote>
+<blockquote>with ebpf, I&#x27;d argue it&#x27;s getting closer to an exokernel<cite>bewo001</cite></blockquote>
+<blockquote>Cutting through abstraction and getting to the heart of what you actually want the computer to do is evidently the key to high performance programming.<cite>cowlevel</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Qualifying what “15 million servers” means</strong> &mdash; A minority questioned whether responding on many IP/port combinations requires distinct server instances. A brief exchange noted that virtual hosting had already been considered.</p><blockquote>From the client perspective it actually means 15 million IP/port combinations that respond to HTTP - which you can do all in one go with an appropriate wildcard selector (such as with iptables transparent proxy)<cite>cowlevel</cite></blockquote>
+<blockquote>Wait till he hears about the HOST header.<cite>ZiiS</cite></blockquote>
+<blockquote>They mentioned it. Referred to it as “virtual hosting.”<cite>ozozozd</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Title and reader expectations</strong> &mdash; A few readers felt the title obscured the scale of the constraints or initially suggested a different technical problem; these were framing reactions rather than objections to the results.</p><blockquote>I suggest removing the &#x27;web&#x27; and just title it 15M servers on one VM.<cite>athrowaway3z</cite></blockquote>
+<blockquote>The title is underselling the story.<cite>3abiton</cite></blockquote></div>
+                </div>
+
+                </div>
+            </section>
+
+            <section class="repo" data-seen-before="0"
+                     data-share-title="Do not buy RAM, compress"
+                     data-share-url="https://curiousbits.nl/blog/do-not-buy-ram-compress/"
+                     data-share-points="51"
+                     data-share-comments="38">
+                <div class="repo-header-row">
+                    <h3>10. <a href="https://curiousbits.nl/blog/do-not-buy-ram-compress/" target="_blank" rel="noopener noreferrer">Do not buy RAM, compress</a> </h3>
+                    <div class="header-buttons">
+                        <button type="button" class="discuss-btn" aria-label="Discuss with AI" title="Discuss with AI">&#x1F4AC;</button>
+                        <button type="button" class="repo-toggle" aria-expanded="true">Hide details</button>
+                    </div>
+                </div>
+                <div class="repo-body">
+                    <p class="meta">
+                        <span class="language">curiousbits.nl</span> |
+                        <span>Ecno92</span> |
+                        <span>51 points</span> |
+                        <span>38 comments</span> |
+                        <a href="https://news.ycombinator.com/item?id=50557661" target="_blank" rel="noopener noreferrer">discussion</a>
+                    </p>
+                    <p class="history">First seen: November 19, 2026 | Consecutive daily streak: 1 day</p>
+                    <div class="ai-summary">
+                        <h4>Analysis</h4>
+                        <p>The article argues that Linux users should consider enabling zram, which compresses memory and uses it as a form of swap, before buying additional RAM. Compression adds modest CPU overhead and latency, but can substantially increase effective memory capacity, with the author measuring 5.7 GB of data stored in 1.7 GB of RAM—a 3.35:1 ratio—while opening many browser tabs. Although Windows, macOS, Android, and some Linux distributions enable memory compression by default, Ubuntu and many other environments do not. The technique could extend the useful life of fixed-memory workstations and reduce cloud costs by delaying or avoiding larger machine upgrades.</p>
+                    </div>
+                    
+                <div class="ai-summary">
+                    <h4>Comment Analysis</h4>
+                    <p class="camps-framing">Commenters generally treated memory compression as a practical option for extending constrained hardware, while disputing how broadly it should be used. Discussion focused on Linux defaults, zram versus zswap, workload-specific latency and CPU costs, and cases where compression may offer little benefit or users would prefer to avoid swapping.</p>
+<div class="camp"><p class="camp-label"><strong>A useful way to extend existing hardware</strong> &mdash; Some commenters described using zram to keep systems usable under memory pressure or avoid upgrading, with potential applications beyond personal computers.</p><blockquote>I was hitting full system memory(16GB) during normal use, and after increasing my zram to 16GB, I was blown away.<cite>certyfreak</cite></blockquote>
+<blockquote>Now I can do more with the same hardware.<cite>Ecno92</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Familiar technology, uneven Linux defaults</strong> &mdash; Commenters noted that memory compression is established on other operating systems and enabled by default in some Linux distributions, while others still require manual setup.</p><blockquote>I’m surprised some desktop Linux distributions still require manual configuration to enable it.<cite>jakozaur</cite></blockquote>
+<blockquote>Fedora has had zram on by default for at least five years now.<cite>kachnuv_ocasek</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Prefer zswap when there is disk swap</strong> &mdash; A technical counterpoint favored zswap when a backing swap device is available, citing its ability to compress pages in memory and tier colder data to disk.</p><blockquote>If in doubt, prefer to use zswap.<cite>mzhaase</cite></blockquote>
+<blockquote>zswap sits in front of your disk swap, compresses pages in RAM, and automatically tiers cold data to disk.<cite>mzhaase</cite></blockquote>
+<blockquote>Use zswap not zram if you have a backing device:<cite>messe</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Compression should depend on the workload</strong> &mdash; Commenters warned that CPU overhead and added latency can make compression inappropriate for real-time or other latency-sensitive use, and argued for a user-facing choice.</p><blockquote>Its a user choice and should be a user-facing knob because there are times it is inappropriate for use, such as in safety-critical circumstances, certain realtime realities, and so on.<cite>aa-jv</cite></blockquote>
+<blockquote>Perhaps it can apply to certain setups where compression (and decompression) shows decent results, in lots of applications it&#x27;d be a massive downgrade.<cite>xxs</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Avoid swap slowdowns rather than mask memory pressure</strong> &mdash; Some commenters preferred closing applications or adding memory over risking a system that slows substantially when swapping under pressure.</p><blockquote>I would rather have the system tell me there&#x27;s not enough memory than try to pretend there&#x27;s an infinite amount of it and then slow to a crawl without apparent reason.<cite>speed_spread</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Little benefit for already-compressed workloads</strong> &mdash; For local inference, commenters questioned whether compressing model weights would save much memory and raised decompression speed as a possible throughput limit.</p><blockquote>Since the models are effectively highly compressed data already my assumption is that RAM compression won&#x27;t help improve that much (I&#x27;m assuming unified memory here as per the Framework Desktop).<cite>Lio</cite></blockquote>
+<blockquote>I would also worry about decompression speed, that gives you a hard bound on the throughput.<cite>rft</cite></blockquote></div>
+                </div>
+
+                </div>
+            </section>
+
+            </div>
+        </article>
+    </main>
+    <footer>
+        <p>Generated automatically. Data from <a href="https://news.ycombinator.com/">Hacker News</a>.</p>
+    </footer>
+
+<script>
+(() => {
+    const readKey = "gtd:read_days:hn:v1";
+    const dayStr = "2026-11-19";
+
+    let stored = [];
+    try {
+        stored = JSON.parse(localStorage.getItem(readKey) || "[]");
+        if (!Array.isArray(stored)) {
+            stored = [];
+        }
+    } catch (_err) {
+        stored = [];
+    }
+
+    if (!stored.includes(dayStr)) {
+        stored.push(dayStr);
+        stored.sort();
+        localStorage.setItem(readKey, JSON.stringify(stored));
+    }
+
+    const collapseParam = new URLSearchParams(window.location.search).get("collapse_seen");
+    const collapseSeen = collapseParam === "0" ? false : true;
+
+    function setCollapsed(repoEl, collapsed) {
+        repoEl.classList.toggle("collapsed", collapsed);
+        const button = repoEl.querySelector(".repo-toggle");
+        if (button) {
+            button.textContent = collapsed ? "Show details" : "Hide details";
+            button.setAttribute("aria-expanded", String(!collapsed));
+        }
+    }
+
+    const repos = Array.from(document.querySelectorAll("section.repo[data-seen-before]"));
+
+    repos.forEach((repoEl) => {
+        const toggle = repoEl.querySelector(".repo-toggle");
+        if (!toggle) {
+            return;
+        }
+
+        toggle.addEventListener("click", () => {
+            setCollapsed(repoEl, !repoEl.classList.contains("collapsed"));
+        });
+    });
+
+    const collapseBtn = document.getElementById("collapse-seen-btn");
+    const expandBtn = document.getElementById("expand-all-btn");
+
+    if (collapseBtn) {
+        collapseBtn.addEventListener("click", () => {
+            repos.forEach((repoEl) => {
+                if (repoEl.dataset.seenBefore === "1") {
+                    setCollapsed(repoEl, true);
+                }
+            });
+        });
+    }
+
+    if (expandBtn) {
+        expandBtn.addEventListener("click", () => {
+            repos.forEach((repoEl) => setCollapsed(repoEl, false));
+        });
+    }
+
+    if (collapseSeen) {
+        repos.forEach((repoEl) => {
+            if (repoEl.dataset.seenBefore === "1") {
+                setCollapsed(repoEl, true);
+            }
+        });
+    }
+
+    // Discuss with AI button
+    const toast = document.createElement("div");
+    toast.className = "discuss-toast";
+    document.body.appendChild(toast);
+
+    function showToast(msg) {
+        toast.textContent = msg;
+        toast.classList.add("show");
+        setTimeout(() => toast.classList.remove("show"), 2500);
+    }
+
+    function buildHNMarkdown(card) {
+        const title = card.dataset.shareTitle || "";
+        const url = card.dataset.shareUrl || "";
+        const points = card.dataset.sharePoints || "0";
+        const comments = card.dataset.shareComments || "0";
+        const summaries = card.querySelectorAll(".ai-summary");
+        let md = "# " + title + "\n";
+        md += "Source: " + url + " | " + points + " points | " + comments + " comments\n";
+        summaries.forEach((s) => {
+            const heading = s.querySelector("h4");
+            const label = heading ? heading.textContent.trim() : "Analysis";
+            const content = Array.from(s.querySelectorAll("p"))
+                .map((p) => p.textContent.trim())
+                .join("\n");
+            md += "\n## " + label + "\n" + content + "\n";
+        });
+        return md;
+    }
+
+    document.querySelectorAll(".discuss-btn").forEach((btn) => {
+        btn.addEventListener("click", () => {
+            const card = btn.closest("section.repo");
+            if (!card) return;
+            const md = buildHNMarkdown(card);
+            const text = "I'd like to discuss this article with you. Here's a summary:\n\n" + md;
+            const title = "Discuss: " + (card.dataset.shareTitle || "");
+            if (navigator.share) {
+                navigator.share({ title: title, text: text }).catch(() => {});
+            } else {
+                navigator.clipboard.writeText(text).then(
+                    () => showToast("Copied to clipboard \u2014 paste into your AI chat"),
+                    () => showToast("Failed to copy")
+                );
+            }
+        });
+    });
+})();
+</script>
+
+<script src="../../preference.js?v=9dfb660449" defer></script>
+</body>
+</html>
