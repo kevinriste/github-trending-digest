@@ -1,0 +1,785 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Morning Edition — November 23, 2026</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght,SOFT@0,9..144,300..900,0..100;1,9..144,300..900,0..100&family=Inter:ital,wght@0,100..900;1,100..900&family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../morning.css?v=8b6b0b53b1">
+</head>
+<body id="top" data-gtd-edition="hn" data-gtd-date="2026-11-23">
+  <header class="masthead">
+    <div class="masthead-nav">
+      <a href="../">Hacker News Calendar</a>
+      <span>&nbsp;·&nbsp;</span>
+      <a href="../../2026-11-23/">GitHub Trending &nbsp;·&nbsp; Nov 23</a>
+      <span>&nbsp;·&nbsp;</span>
+      <a href="classic.html">Classic View</a>
+    </div>
+    <div class="tagline">The Morning Edition</div>
+    <h1 class="frnc">Ten stories, before your coffee.</h1>
+    <div class="issue-line">
+      <span>Vol. I</span>
+      <span>November 23, 2026</span>
+      <span>HN Front Page Digest</span>
+    </div>
+  </header>
+<section class="the-take"><details open><summary>The HN Take</summary><h3 class="take-head">Looping</h3><p>Here is one way to make an artificial intelligence model bigger without making it bigger:</p><p>GLM-5.4 is our first flagship model built on the Loop Transformer architecture, reaching intelligence levels comparable to 2T-3T parameter models.</p><p>GLM-5.4 is a 750 billion parameter model. Instead of giving it trillions of parameters, Z.ai takes 28 of its layers and runs them twice. &quot;This gives us a deeper network without increasing the parameter count.&quot;</p><p>Sure. Normally a Transformer passes a thought through each layer once and moves on. GLM-5.4 sends the thought back through a shared block of layers for another look. The model does not have more brain, exactly; it just asks the same part of the brain to reconsider. This is computational rumination.</p><p>There are some practical problems. Repeatedly overwriting the hidden state can make activation norms &quot;blow up across iterations,&quot; so GLM-5.4 uses gates to control how much each pass writes back. The first pass gathers context and writes cautiously; the second pass opens the gates and makes fuller updates. On harder tokens, the first pass writes more aggressively. Even the model knows that some emails can be skimmed while others require a strongly worded draft followed by a calmer revision.</p><p>Z.ai says the looping approach worked in a controlled test on a 30 billion parameter model. With the same number of parameters and about 10% more training compute, the looped model improved most on math, scientific reasoning and long-context tasks. It also used 10% to 14% fewer output tokens on several benchmarks, because &quot;part of the reasoning shifts from explicit output tokens into the implicit depth of the loop.&quot;</p><p>That is appealing economics. The model thinks more while saying less. Previously the chain of thought sprawled across the page; now it conducts part of the meeting internally.</p><p>There is, however, a limitation:</p><p>Most notably, it tends to get caught in overly long &quot;marathon thinking&quot; loops, though this prolonged reflection and self-correction does consistently improve accuracy beyond its parameter count.</p><p>Right. You save parameters by making the existing parameters think again, and then sometimes they cannot stop thinking. This is better than being confidently wrong, perhaps, but less useful if you asked it to rename a variable and it retreats for a three-day silent meditation.</p><p>The broader ambition is &quot;Generalized Coding,&quot; in which coding becomes the basis for video generation, games, 3D modeling, mechanical design and physical control. The model can use code as an intermediate language for doing other things. If everything can be represented as a program, then a coding model can do everything. If it cannot do something, it can loop over the problem until either it can or everyone goes home.</p><h3 class="take-head">Mac inside Linux inside Mac</h3><p>Here is a normal computer setup:</p><p>XNU Linux builds Apple&#x27;s open-source XNU kernel and loads it as a Linux kernel module. The hosted XNU kernel then runs macOS processes natively alongside Linux processes on the same CPUs, while Linux supplies memory, timers, files, networking and GPU access.</p><p>With a stock Ubuntu kernel, &quot;insmod xnu.ko&quot; boots a macOS 27 system disk to a desktop with loginwindow, WindowServer, Dock, Finder, Safari and Chrome.</p><p>Fine. The requirements include an arm64 Linux host running on Apple Silicon &quot;in a VM,&quot; plus a Mac with Xcode to prepare the system disk and GPU components. So the practical arrangement is approximately: Start with a Mac, run Linux in a virtual machine, load the macOS kernel into Linux, boot macOS, and then, from that macOS, SSH into the Linux that contains it.</p><p>The project&#x27;s screenshot caption describes exactly this:</p><p>One system, two userspaces. Left: a Terminal in the hosted macOS 27.2.1. Right: from that macOS, an SSH session into the Linux it runs inside.</p><p>There is &quot;no hypervisor between&quot; the hosted macOS processes and Linux processes. There is, in the demonstrated setup, a hypervisor outside both of them, because Linux is running in a VM on the Mac. This is not contradictory. It is just computing&#x27;s version of putting a small box inside a larger box and emphasizing that the two objects inside the small box are not separated by another box.</p><p>The system boots macOS to the desktop in 31 to 48 seconds, compared with 49 seconds for an Apple Virtualization macOS VM on the same Mac. Apps work, a 30-minute stress test finishes without a panic, and Metal reaches the host GPU through a sequence involving metal2vulkan, Vulkan, a DRM bridge, a Linux daemon and Mesa&#x27;s Venus driver. If that is unavailable, it renders on the CPU. Finder does not need to know how many conceptual borders its pixels crossed.</p><p>There are compromises. The macOS system disk must come from the user&#x27;s own installation; no Apple binaries are distributed. The OS cryptex is merged into the system volume, AMFI is patched, SIP is relaxed, and memory access is slower than in a native VM because Linux uses 4K pages while macOS normally uses 16K pages.</p><p>But the central result stands: You can boot Linux on a Mac so that Linux can boot macOS, and then use macOS to log back into Linux. At last, the operating systems have achieved vertical integration.</p><div class="take-sources"><span>Sources</span><ul><li><a href="https://z.ai/blog/glm-5.4" target="_blank" rel="noopener noreferrer">GLM-5.4: Toward Generalized Coding with Our First Loop Transformer</a></li><li><a href="https://github.com/AFK-surf/xnulinux" target="_blank" rel="noopener noreferrer">XNU Linux: Full OS X GUI Userspace on Linux</a></li></ul></div></details></section>
+  <section id="story-1" class="spread arc-midnight">
+    <div class="numeral">01</div>
+    <div class="body">
+      <div class="kicker">// Model Systems</div>
+      <h2>GLM-5.4 Loops Deeper Into Generalized Coding</h2>
+      <p class="story-meta">z.ai &nbsp;·&nbsp; 157 pts &nbsp;·&nbsp; 76 comments</p>
+      <p class="lede">Z.ai’s new 750-billion-parameter model repeatedly applies shared layers to extend reasoning without scaling parameters in lockstep. The architecture reaches beyond software tasks toward video, games, 3D modeling, and robotics—while its marathon thinking remains costly and its open-weight future unresolved.</p>
+      <div class="spread-links"><a class="read-more" href="https://z.ai/blog/glm-5.4" target="_blank" rel="noopener">Read →</a><a class="read-more share-link" href="#" data-share-title="GLM-5.4: Toward Generalized Coding with Our First Loop Transformer" data-share-url="https://z.ai/blog/glm-5.4">Share →</a>
+      <details class="analysis-drawer">
+        <summary class="btn-dossier">[ Analysis + ]</summary>
+        <div class="drawer-content">
+          
+          <h4>Technical Analysis</h4>
+          <div class="drawer-analysis">
+          <p>Z.ai introduces GLM-5.4, its first model using a Loop Transformer that repeatedly applies shared layers to increase effective reasoning depth without proportionally increasing parameters. Adapted from a pretrained GLM-5 base, the 750B-scale system uses gated updates, shared sparse-attention indices, and memory-saving KV-cache techniques to control stability and inference costs. The company reports stronger results on reasoning, long-context, coding, and multimodal engineering tasks, often with shorter explicit chains of thought, while acknowledging a tendency toward inefficient “marathon thinking.” The release is positioned as a move from software-focused coding toward “Generalized Coding,” including video, games, 3D modeling, and robotics, with paid products available, an API planned, and open weights promised after safety work.</p>
+          </div>
+          <h4>Reader Reactions</h4>
+<p class="camps-framing">The discussion centers on the time cost of long reasoning traces and whether that reflects a genuine disadvantage or differences in trace visibility, inference speed, and serving setup. Commenters also debate the significance of GLM-5.4’s looped architecture, the limited evidence available about its capabilities, and the safety implications of hidden-state computation and open weights.</p>
+<div class="camp"><p class="camp-label"><strong>Long reasoning can make routine coding frustrating</strong> &mdash; Some users report that Chinese models spend many minutes revisiting simple tasks, making them less suitable for interactive work even when they remain useful for more complex or background tasks.</p><blockquote>Even on medium GLM or Deepseek can spend 10+ minutes in a single thinking block.<cite>Starlevel004</cite></blockquote>
+<blockquote>I can confirm the same annoying behaviour with MiniMax. It&#x27;s exactly how you describe it: marathon thinking even for simple tasks that with, say, Sonnet or Opus would yield an answer almost immediately.<cite>seertaak</cite></blockquote>
+<blockquote>I mean is it fair to say that it shouldn&#x27;t take 10 minutes for simple things even on max reasoning when it takes frontier 30 seconds?<cite>lnenad</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Trace visibility, speed, and serving setup may affect the comparison</strong> &mdash; Others suggest that closed models may also reason internally but conceal the trace or generate it faster. They also point to adjustable reasoning levels and serving configurations as possible influences on the length and coherence of visible reasoning.</p><blockquote>With US models you just don&#x27;t see the CoT. They may very well do the same thing and just have higher tok/s<cite>lesspassiveobse</cite></blockquote>
+<blockquote>Thinking levels are adjustable, just don&#x27;t use the max level unless you&#x27;re willing to wait.<cite>zozbot234</cite></blockquote>
+<blockquote>So it makes me wonder how much of these problems come down to issues with how the models are served.<cite>anon373839</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Looped hidden-state computation is not the same as visible chain-of-thought</strong> &mdash; A technical exchange distinguishes looping over hidden states from repeating visible reasoning tokens. Commenters describe looping as a way to increase effective network depth without proportionally increasing parameters, while questioning what the reported benchmarks establish.</p><blockquote>No its looping on hidden states. Basically RNNs<cite>samrus</cite></blockquote>
+<blockquote>no. it&#x27;s a more efficient way to increase network depth without adding more parameters. if you think this is embedding &quot;thinking&quot; then transformers are already embedding thinking.<cite>nialv7</cite></blockquote>
+<blockquote>The benchmarks are from an unspecified 30B model based on the same architecture.<cite>grim_io</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>The release has not yet established how competitive the model is</strong> &mdash; Some commenters are cautious about judging GLM-5.4 without full-model results, while others note that missing benchmarks do not settle the question and that practical improvement over GLM-5.3 may matter more to users than rankings.</p><blockquote>Hard to say how good this is without benchmarks, I&#x27;m guessing they&#x27;re not impressive or else they would have included the scores?<cite>saretup</cite></blockquote>
+<blockquote>This really doesn&#x27;t provide answers one way or another.<cite>viraptor</cite></blockquote>
+<blockquote>As long as GLM5.4 is better than 5.3, I&#x27;m happy, and it doesn&#x27;t matter how many points above or below it is compared to other models.<cite>Systemerror7A69</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Looping and reduced CoT visibility raise safety questions</strong> &mdash; Commenters disagree about whether looped computation meaningfully reduces interpretability or increases danger. Some emphasize the monitoring value of visible CoT; others argue that looping is not inherently more dangerous than deeper models or that models are already risky without it.</p><blockquote>Because looping allows more reasoning to happen in hidden states rather than in visible CoT, which is useful (with limits) for monitoring LLMs.<cite>pizza234</cite></blockquote>
+<blockquote>I think the idea is that reducing reliance on an interpretable chain of thought is &quot;dangerous&quot;, no matter the means.<cite>joefourier</cite></blockquote>
+<blockquote>thinking looping is somehow &quot;more dangerous&quot; is IMO nonsensical. LLMs are already dangerous, with or without looping, there is little difference.<cite>nialv7</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Open-weight safety and cyber capability remain contested</strong> &mdash; Some users welcome permissive models for cyber experimentation, while others focus on promised safety hardening and whether open weights will differ from the API model. The thread also includes disagreement about how much safeguards can or should constrain access.</p><blockquote>Personally can&#x27;t get enough of my cyber experiments regarding these somewhat more lax models. Good on you GLM.<cite>w2seraph</cite></blockquote>
+<blockquote>They said in the release notes that they will only release weights after nerfing cyber.<cite>lesspassiveobse</cite></blockquote>
+<blockquote>I&#x27;m still waiting for someone to release an unaligned unconstrained model. We&#x27;re adults, we can handle them.<cite>rfgplk</cite></blockquote></div>
+          <p class="drawer-footer"><a href="#dossier-1">View in Dossier ↓</a></p>
+        </div>
+      </details>
+    </div>
+    </div>
+  </section>
+  <section id="story-2" class="spread arc-blueprint">
+    <div class="corner tl">+</div><div class="corner tr">+</div>
+    <div class="corner bl">+</div><div class="corner br">+</div>
+    <div class="numeral">02</div>
+    <div class="kicker">Build Log</div>
+    <h2>Linux Hosts a Mac Desktop Without a Hypervisor</h2>
+    <p class="story-meta">github.com &nbsp;·&nbsp; 380 pts &nbsp;·&nbsp; 172 comments</p>
+    <p class="lede">XNU Linux loads Apple’s kernel and macOS userspace inside an unmodified arm64 Linux kernel. The research-grade experiment boots to a working desktop on Apple Silicon, bridging devices and optional graphics through Vulkan while leaving licensing and production readiness on the workbench.</p>
+    <div class="spread-links"><a class="read-more" href="https://github.com/AFK-surf/xnulinux" target="_blank" rel="noopener">Read →</a><a class="read-more share-link" href="#" data-share-title="XNU Linux: Full OS X GUI Userspace on Linux" data-share-url="https://github.com/AFK-surf/xnulinux">Share →</a>
+      <details class="analysis-drawer">
+        <summary class="btn-dossier">[ Analysis + ]</summary>
+        <div class="drawer-content">
+          
+          <h4>Technical Analysis</h4>
+          <div class="drawer-analysis">
+          <p>XNU Linux is an experimental project that runs Apple’s open-source XNU kernel and a full macOS GUI userspace as a loadable module inside an unmodified arm64 Linux kernel, allowing macOS and Linux processes to run natively on the same hardware without a hypervisor. Linux supplies resources and device access through a Foreign Kernel Interface, while hosted macOS can boot to the desktop and run applications such as Safari, with optional GPU support bridged through Vulkan. It currently targets Apple Silicon Linux environments, requires users to provide their own macOS installation, and remains a research-grade system with relaxed security protections, performance tradeoffs, and other production limitations. Its importance lies in demonstrating an unusual form of kernel co-hosting that could broaden virtualization and compatibility research, while also raising practical licensing, Apple platform, and maintenance constraints.</p>
+          </div>
+          <h4>Reader Reactions</h4>
+<p class="camps-framing">Commenters were impressed by the technical achievement, while differing over its practical uses and reach. The discussion also covered alternative compatibility approaches, the project’s Apple-hardware requirements, and possible licensing boundaries.</p>
+<div class="camp"><p class="camp-label"><strong>A striking technical achievement</strong> &mdash; Commenters described the project as an unusually ambitious demonstration of what current engineering and tooling can make possible.</p><blockquote>The fact that these kinds of projects have been normalised is frankly insane.<cite>zakisaad</cite></blockquote>
+<blockquote>This is beyond irony and mind blowing, I&#x27;m literally shocked and speachless.<cite>pmkary</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Potential for Asahi and cross-platform development</strong> &mdash; Some commenters saw promise in accessing macOS software from Linux or eventually testing Mac and iOS applications in a Linux-based workflow.</p><blockquote>Cross platform development would be one of the best reasons I can think of.<cite>asveikau</cite></blockquote>
+<blockquote>so I can run X GUI inside my Asahi on my macbook air? nice.<cite>pluto_modadic</cite></blockquote>
+<blockquote>For now; I think with a few drivers it could be a viable way to run an Arm Hackintosh.<cite>notpushkin</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Cool experiment, limited practical payoff</strong> &mdash; Other commenters questioned the point of the project, or argued that users seeking macOS should use Apple hardware or choose open-source alternatives.</p><blockquote>Cool, but why?<cite>probablyStimmed</cite></blockquote>
+<blockquote>If that&#x27;s that reason, then buy a Mac.<cite>II2II</cite></blockquote>
+<blockquote>EDIT: it looks like you need Apple hardware to use this anyhow.<cite>II2II</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>GNUstep or a higher-level compatibility layer</strong> &mdash; A minority preferred improving open implementations of macOS-like APIs rather than running Apple’s kernel and binaries.</p><blockquote>I think I would prefer if someone was to improve GNUstep instead.<cite>gen2brain</cite></blockquote>
+<blockquote>The very minimal tool I&#x27;d love to have would be an Xcode plugin that highlights the parts of the code that would not be covered by GNUStep.<cite>rbanffy</cite></blockquote>
+<blockquote>I think that would be a more interesting effort to pursue.<cite>miki123211</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Clarifying the project’s scope and hardware requirements</strong> &mdash; Commenters clarified that the approach uses the actual macOS kernel and depends on an Apple Silicon environment, rather than providing a general macOS port for arbitrary hardware.</p><blockquote>This project loads the (lightly modified) actual macOS kernel into memory (as a sort of co-kernel with Linux), so it would almost certainly not work on any hardware the original kernel doesn&#x27;t run on.<cite>valleyer</cite></blockquote>
+<blockquote>This is running inside a VM on a Mac computer (and it can only run in a VM on a Mac computer).<cite>steve1977</cite></blockquote>
+<blockquote>This was only possible with macOS because the XNU kernel is open source.<cite>relistan</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Apple’s licensing and enforcement boundaries</strong> &mdash; Commenters differed over whether Apple would object, noting both the current Apple-hardware requirement and the potential legal risks of running Apple userspace elsewhere or using it for build services.</p><blockquote>Historically Apple has been pretty uninterested in anything people do with the Apple hardware they purchased, just so long as they buy Apple hardware.<cite>sneak</cite></blockquote>
+<blockquote>This project definitely requires an apple silicon host to work so that seems to align with previous Apple stances towards projects like this<cite>matthewfcarlson</cite></blockquote>
+<blockquote>Probably not interested in the kernel part, but the userspace apps from MacOS explicitly say you can&#x27;t run them on non-apple hardware.<cite>viraptor</cite></blockquote></div>
+          <p class="drawer-footer"><a href="#dossier-2">View in Dossier ↓</a></p>
+        </div>
+      </details>
+    </div>
+  </section>
+  <section id="story-3" class="spread arc-archive">
+    <div class="archive-head">
+      <span>ARCHIVE</span>
+      <span>N<sup>o</sup> 03</span>
+    </div>
+    <div class="kicker">Archival Desk</div>
+    <h2>The Internet Archive Gets a Television Dial</h2>
+    <p class="story-meta">spelunkr.tv &nbsp;·&nbsp; 577 pts &nbsp;·&nbsp; 101 comments</p>
+    <p class="lede">Spelunkr turns forgotten Internet Archive videos into scheduled channels, complete with the serendipity of a cable guide. Cartoons, local broadcasts, educational films, and commercials become a browsable stream of cultural leftovers, arranged for discovery rather than search.</p>
+    <div class="spread-links"><a class="read-more" href="https://spelunkr.tv" target="_blank" rel="noopener">Read →</a><a class="read-more share-link" href="#" data-share-title="Free alternative TV network built from the Internet Archive&#x27;s forgotten videos" data-share-url="https://spelunkr.tv">Share →</a>
+      <details class="analysis-drawer">
+        <summary class="btn-dossier">[ Analysis + ]</summary>
+        <div class="drawer-content">
+          
+          <h4>Technical Analysis</h4>
+          <div class="drawer-analysis">
+          <p>Spelunkr is a free, browser-based alternative TV network that organizes obscure and forgotten Internet Archive videos into themed channels and scheduled, cable-like programming. Its lineup spans archival cartoons, classic television, local productions, educational material, and other niche recordings, presented through a channel guide rather than a conventional on-demand catalog. The project demonstrates how publicly accessible archival media can be repackaged into a lean, Internet-native viewing experience without relying on traditional broadcast infrastructure or commercial programming. It is important because it improves discoverability for overlooked cultural material while offering a more serendipitous alternative to algorithmic streaming services.</p>
+          </div>
+          <h4>Reader Reactions</h4>
+<p class="camps-framing">The discussion was largely appreciative of the project’s retro presentation and archival discoveries. Commenters also discussed the appeal of shared, scheduled viewing, the value of seeing media with historical distance, and practical questions about Archive resources and access on televisions. A smaller counterpoint favored current programming.</p>
+<div class="camp"><p class="camp-label"><strong>Nostalgic discovery and delight</strong> &mdash; Commenters praised the cable-like presentation and the pleasure of stumbling across archival programs, music videos, and commercials.</p><blockquote>This is so good it defies words.<cite>goatherders</cite></blockquote>
+<blockquote>Feels like watching TV in the 80s and 90s again. Even the commercials are a joy.<cite>dbg31415</cite></blockquote>
+<blockquote>I stumbled into The Lone Gunmen Pilot episode. So much fun.<cite>iJohnDoe</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Shared viewing and relief from choice</strong> &mdash; Some commenters valued the sense of being part of a simultaneous audience, while others appreciated taking a break from choosing what to watch.</p><blockquote>Nobody else in the world is watching what you are at that exact moment.<cite>gabriel666smith</cite></blockquote>
+<blockquote>There&#x27;s a small boost against loneliness and anxiety to be listening to one of the major BBC stations for example, or even a community station you know to have an audience, as like you say it&#x27;s a simultaneous experience.<cite>BoxOfRain</cite></blockquote>
+<blockquote>But sometimes I like giving it up, taking a break from it.<cite>mihaaly</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>The value of old media</strong> &mdash; Commenters found older broadcasts interesting for the perspective they offer on past events, and some valued older media as art less bound up in current trends.</p><blockquote>It was quite interesting to actually experience this and realizing how little people knew about an accident like this.<cite>origini</cite></blockquote>
+<blockquote>Actually I would find it fascinating to watch old news, with captions/footnotes answering questions like: did this event turn out to matter? Was this report the whole story?<cite>jl6</cite></blockquote>
+<blockquote>I feel a lot less vulnerable to out-of-date/passe propaganda/cultural-trends, so it lets me enjoy the thing as art rather being hyper-critical and analyzing the movie as a sociopolitical messaging delivery system.<cite>serf</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Preference for topical, current programming</strong> &mdash; A smaller counterpoint argued that television is most appealing when it helps viewers learn about what is happening now.</p><blockquote>For me the allure of TV is its topicality.<cite>galaxyLogic</cite></blockquote>
+<blockquote>Who wants yesterdays papers?<cite>galaxyLogic</cite></blockquote>
+<blockquote>Quite the contrary, if yesterday&#x27;s news is already superseded by today&#x27;s events there was little value in it to begin with.<cite>DarkNova6</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Archive stewardship and resource use</strong> &mdash; Commenters asked about the effects of third-party streaming on the Internet Archive’s resources, with replies emphasizing responsible, noncommercial use.</p><blockquote>How does this work in relation to the cost of hosting and streaming all the content?<cite>marapuru</cite></blockquote>
+<blockquote>Archive in general is very friendly to this sort of thing.<cite>switz</cite></blockquote>
+<blockquote>Of course, please be respectful of the media and the network so that we may all continue to build wonderful experiences on top of Archive.<cite>switz</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Make it work on TVs and existing players</strong> &mdash; Commenters asked for playlist support, playback options, and ways to use the project on televisions and existing media devices.</p><blockquote>M3U and XMLTV URLs would be amazing to have for an IPTV client<cite>wildzzz</cite></blockquote>
+<blockquote>How are we supposed to consume this on an actual TV without an M3U or similar?<cite>drnick1</cite></blockquote>
+<blockquote>Delightful, wish I could just put it on Apple TV in the living room.<cite>floren</cite></blockquote></div>
+          <p class="drawer-footer"><a href="#dossier-3">View in Dossier ↓</a></p>
+        </div>
+      </details>
+    </div>
+  </section>
+  <section id="story-4" class="spread arc-stat-hero">
+    <div class="numeral">17M</div>
+    <div class="kicker">N<sup>o</sup> 04 · Formal Methods</div>
+    <h2>17 Million Lines Meet the Riemann Hypothesis</h2>
+    <p class="story-meta">micjm.com &nbsp;·&nbsp; 119 pts &nbsp;·&nbsp; 130 comments</p>
+    <p class="lede">A recent Lean formalization reaches a startling scale, but raw line count is an imperfect measure of mathematical labor. Dependencies, generated verification code, and repeated infrastructure can inflate the number far beyond the human-readable core of a proof.</p>
+    <div class="spread-links"><a class="read-more" href="https://micjm.com/blog/yes-17m-lines-of-lean-is-a-lot/" target="_blank" rel="noopener">Read →</a><a class="read-more share-link" href="#" data-share-title="Yes, 17M lines of Lean is a lot" data-share-url="https://micjm.com/blog/yes-17m-lines-of-lean-is-a-lot/">Share →</a>
+      <details class="analysis-drawer">
+        <summary class="btn-dossier">[ Analysis + ]</summary>
+        <div class="drawer-content">
+          
+          <h4>Technical Analysis</h4>
+          <div class="drawer-analysis">
+          <p>The article examines whether the reported 17 million lines of Lean used in a recent formal proof of the Riemann hypothesis is unusually large. Comparing it with 259 human-written Mathlib formalizations of famous theorems and 938 Lean packages indexed by Reservoir, the author finds that typical mathematical proofs are far smaller. Some AI-assisted or generated projects exceed 17 million lines, but their size can reflect unfinished work, database-generated verification code, or highly verbose automated development rather than core mathematics. The comparison matters because line counts are a useful but imperfect measure of formalization effort, distinguishing human-readable proofs from machine-generated infrastructure and redundant code.</p>
+          </div>
+          <h4>Reader Reactions</h4>
+<p class="camps-framing">The discussion weighs what a machine-checked proof establishes against what it may not provide: human understanding, mathematical insight, or an elegant explanation. Commenters also debated whether the proof’s size is meaningful, why AI-generated technical work can be hard to read, and whether better workflows can improve it. Some broadened the question to how AI might change research and the role of human expertise.</p>
+<div class="camp"><p class="camp-label"><strong>Line count is a poor measure</strong> &mdash; Commenters noted that formal proof size can reflect expanded dependencies, repeated material, or implementation choices, and that raw line counts alone offer limited perspective on difficulty or impressiveness.</p><blockquote>You can increase the line count of any Lean proof almost at will by expanding axioms it builds on by their Lean proofs.<cite>Someone</cite></blockquote>
+<blockquote>Isn’t the big difference that the Lean proof contains the detailed theory of dozens of intricate and hyper specific branches of established maths that Masullo doesn’t need to restate?<cite>siddboots</cite></blockquote>
+<blockquote>This assumes 17m isn&#x27;t already elegant. An equivalent human proof in Lean may be 50m lines.<cite>nomilk</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Lean checks validity, not readability</strong> &mdash; Commenters explained that Lean checks whether a proof follows from its encoded statements, axioms, and inference rules, while acknowledging that confidence also depends on the theorem statement and the checker.</p><blockquote>To accept the proof you don&#x27;t need to look at all the millions of lines of proof, because Lean checks that they all follow correctly from earlier statements.<cite>quietbritishjim</cite></blockquote>
+<blockquote>The kernel checks every step so if it accepts the proof, then this proof is valid (short of a kernel bug, unlikely here as tested on multiple kernels).<cite>williamdclt</cite></blockquote>
+<blockquote>I think that if you believe that the statement is written correctly there, then there is no question about the proof’s validity.<cite>kyykky</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Understanding versus accepting opaque results</strong> &mdash; Commenters disagreed about whether a result can be useful without human understanding. Some argued that accepting machine-produced results may be necessary, while others emphasized understanding as a central purpose of mathematics and science.</p><blockquote>This is a very unpopular opinion but I think we need to let go of understanding and accept that proof of something is good enough<cite>s08148692</cite></blockquote>
+<blockquote>the whole goal of mathematics is to understand the &quot;why&quot;.<cite>dgan</cite></blockquote>
+<blockquote>Their purpose is understanding, first and foremost.<cite>teiferer</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Verbosity signals weak compression or refinement</strong> &mdash; Some commenters saw the proof’s length as evidence that AI-generated work can be repetitive or poorly compressed compared with human-refined work. They also debated whether succinctness is part of mathematical elegance or only one aspect of it.</p><blockquote>They can get the job done but have yet to fully understand elegance.<cite>laser</cite></blockquote>
+<blockquote>the models are just really bad at information compression.<cite>GrollingGrakbor</cite></blockquote>
+<blockquote>Even today machine generated code is almost always more verbose than code written by a competent developer.<cite>skeledrew</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Why LLMs miss the human reader</strong> &mdash; Commenters offered competing explanations for poor technical readability, including failure to account for audience knowledge, training and reward incentives, and models’ treatment of long context as equally available.</p><blockquote>It may understand which things are more and less important in a structural, objective sense, but it can&#x27;t read your mind to correct for what you already know, what areas you&#x27;re an expert with, and what parts are new / unfamiliar to you.<cite>TeMPOraL</cite></blockquote>
+<blockquote>Part of the issue will be the training and the reward function.<cite>rhdunn</cite></blockquote>
+<blockquote>They aren&#x27;t taught an intuitive grasp of what a human &quot;context window&quot; looks like, or the importance of clear writing for human comprehension<cite>RugnirViking</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Readability can improve with better workflows</strong> &mdash; Several commenters saw technical readability as at least partly improvable through targeted prompts, custom checks, or review by an agent that lacks the writer’s project context.</p><blockquote>The trick is to use a blind agent (without access to anything) for reviewing the article.<cite>ozgung</cite></blockquote>
+<blockquote>Surprisingly, getting an LLM to write a custom linter that checks for a lot of common pitfalls based on string pattern search, paragraph length, sentence length, etc etc is actually quite effective as a way to force your LLM to behave.<cite>stingraycharles</cite></blockquote>
+<blockquote>but if you ask &quot;characterize human vs LLM writing, and fix it up&quot; they are often able to substantially correct.<cite>jadyoyster</cite></blockquote></div>
+          <p class="drawer-footer"><a href="#dossier-4">View in Dossier ↓</a></p>
+        </div>
+      </details>
+    </div>
+  </section>
+  <section id="story-5" class="spread arc-product-plate">
+    <div class="product-chip">SPECS</div>
+    <div class="kicker">Local Models</div>
+    <h2>A Desktop Guide to Running AI at Home</h2>
+    <div class="product-rule"></div>
+    <p class="story-meta">gpupartner.com &nbsp;·&nbsp; 555 pts &nbsp;·&nbsp; 232 comments</p>
+    <p class="lede">Unsloth Desktop, quantized Qwen and Inkling models, and a capable GPU can turn a home machine into a private AI workstation. The practical limits are familiar specifications: VRAM, context length, model size, and the trade between local control and cloud strength.</p>
+    <div class="spread-links"><a class="read-more" href="https://www.gpupartner.com/blog/beginners-guide-local-ai-inkling-qwen-unsloth" target="_blank" rel="noopener">Read →</a><a class="read-more share-link" href="#" data-share-title="A Beginner&#x27;s Guide to Local AI with Inkling, Qwen, and Unsloth" data-share-url="https://www.gpupartner.com/blog/beginners-guide-local-ai-inkling-qwen-unsloth">Share →</a>
+      <details class="analysis-drawer">
+        <summary class="btn-dossier">[ Analysis + ]</summary>
+        <div class="drawer-content">
+          
+          <h4>Technical Analysis</h4>
+          <div class="drawer-analysis">
+          <p>The story is a beginner-focused guide to running a private, subscription-free ChatGPT alternative on home hardware using Unsloth Desktop and quantized open-weight models such as Qwen or Inkling. It explains how GPU VRAM, model size, quantization, mixture-of-experts architectures, and context length determine which models can run, with a 32GB RTX 5090 used as the main example. The setup requires installing the desktop app, downloading a compatible model, choosing a context size, and optionally enabling password-protected LAN access for household users, without command-line configuration. It also notes that Macs and other unified-memory systems can run larger models, while internet access, advanced agents, and bigger models require additional infrastructure.</p>
+          </div>
+          <h4>Reader Reactions</h4>
+<p class="camps-framing">Commenters compared the practical value of local models with the stronger results many still get from cloud services. They also debated hardware costs, privacy and control, whether local and cloud use can complement each other, and how the capability gap may change over time.</p>
+<div class="camp"><p class="camp-label"><strong>Local models are already useful</strong> &mdash; Some commenters reported that local models handle meaningful coding and other everyday work on their own hardware, even if they do not match the strongest cloud systems on every task.</p><blockquote>I’ve been using Inkling 2 on my M5 Max this afternoon and it’s fi ding things in a project codebase that Claude didn’t find in previous audits, and I validated its findings with both GLM and Claude they were all correct, and it’s faster than GLM or Claude to boot<cite>realityloop</cite></blockquote>
+<blockquote>I&#x27;m running Qwen 3.8 Flash Next at very decent speeds (pp=1000, tg=40) on a gaming gpu that cost me 200 bucks last week, at the height of the AI craze.<cite>papyrus9244</cite></blockquote>
+<blockquote>I&#x27;ve been building on a project for 3 weeks and haven&#x27;t hit a wall, still pumping out semi complex audio and visual editing features.<cite>mortalapeman</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Cloud models still outperform local systems on demanding work</strong> &mdash; Other commenters argued that cloud subscriptions can offer substantially better quality, speed, or reliability for difficult tasks, making local hardware a poor value for some workloads.</p><blockquote>Then I have Opus 5.5 or even Sol 6.2 have a go at the same task and it’s done in 1/10th the tokens in 1/20th the time at a better quality.<cite>Aurornis</cite></blockquote>
+<blockquote>Unless you have a very specific application or privacy is a serious concern, you are better off with a $20 Claude subscription.<cite>icedchai</cite></blockquote>
+<blockquote>Local AI is still slop central as far as I know.<cite>IshKebab</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Local and cloud models can be used together</strong> &mdash; Some commenters favored using local models for routine tasks and turning to cloud services for more complex work, treating the two approaches as complementary.</p><blockquote>How about using a competent local model for 99% of menial tasks that work just fine there and an off-premises model for very heavy, complex tasks?<cite>simias</cite></blockquote>
+<blockquote>I think cloud inference for the ultra-large models will still be a viable path for the cloud providers, but as the training and models get more efficient, smaller models are going to be more than good enough for the vast majority of people.<cite>thraway3837</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Hardware cost limits accessibility</strong> &mdash; Commenters questioned whether guides built around high-end GPUs are accessible to beginners, while others suggested cheaper used hardware or renting a machine to try local inference before buying.</p><blockquote>Starts with <cite>underlines</cite></blockquote>
+<blockquote>$10K GPU. Yeah, sure, not much at all.<cite>0xnNe</cite></blockquote>
+<blockquote>You can often find a 3090, or even a 5090 with 32gb, for between 0.30 and 1.00 per hour.<cite>calebkaiser</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Privacy and independence motivate local use</strong> &mdash; For some commenters, keeping sensitive data or intellectual property off third-party services—or declining to support companies they distrust—was a reason to use local models regardless of cost or capability trade-offs.</p><blockquote>Local AI seems to me to be the only acceptable route forwards.<cite>robrain</cite></blockquote>
+<blockquote>I&#x27;m not in it for the money but for data- and content privacy.<cite>galaxyLogic</cite></blockquote>
+<blockquote>Some people live under more oppressive governments than you.<cite>teaearlgraycold</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Commenters disagree about the future capability gap</strong> &mdash; Some expected more efficient models to make local inference good enough for many common tasks, while others argued that cloud models may continue to advance and take on harder work.</p><blockquote>Model progress is towards more efficient models, and mainly better compression, while the overall volume of data relevant to models&#x27; use-cases isn&#x27;t increasing.<cite>random3</cite></blockquote>
+<blockquote>Hopefully the point is that local models will be good enough for most day-to-day needs.<cite>mycall</cite></blockquote>
+<blockquote>Who&#x27;s to say, by the time we have a local equivalent to Neon/Opus 5.5, that we have a whole bunch of new tasks that the massive models are capable of that we now need to be replicated in local versions before we make the switch?<cite>hatefulmoron</cite></blockquote></div>
+          <p class="drawer-footer"><a href="#dossier-5">View in Dossier ↓</a></p>
+        </div>
+      </details>
+    </div>
+  </section>
+  <section id="story-6" class="spread arc-terminal">
+    <div class="prompt-row">user@morning-edition:~$ cat story_06.md</div>
+    <div class="numeral">06</div>
+    <h2>Elixir Functions Compile Down to FPGA Circuits</h2>
+    <p class="story-meta">github.com &nbsp;·&nbsp; 24 pts &nbsp;·&nbsp; 0 comments</p>
+    <p class="lede">Elixir HLS translates constrained functional code into SystemVerilog and deployable FPGA hardware. Define with `defhls`, test on the CPU, then target a board; floating point, recursion, and general collections remain outside the current instruction set.<span class="cursor"></span></p>
+    <div class="spread-links"><a class="read-more" href="https://github.com/elixir-hls/elixir-hls" target="_blank" rel="noopener">Read →</a><a class="read-more share-link" href="#" data-share-title="Elixir HLS makes FPGA circuits from functions written in Elixir" data-share-url="https://github.com/elixir-hls/elixir-hls">Share →</a>
+      <details class="analysis-drawer">
+        <summary class="btn-dossier">[ Analysis + ]</summary>
+        <div class="drawer-content">
+          
+          <h4>Technical Analysis</h4>
+          <div class="drawer-analysis">
+          <p>Elixir HLS is an early-stage open-source tool that compiles constrained Elixir functions into SystemVerilog and FPGA circuits through high-level synthesis, while retaining ordinary CPU execution for testing and fallback. Developers use `defhls` to define integer-based computations and `definstance` to place them in hardware, with support for state, memories, fixed loops, streams, events, and device interfaces. The project currently targets boards such as the Sipeed Tang Primer 25K and has demonstrated an FPGA-based FM-radio demodulator, though it lacks features including floating point, division, recursion, and general collection processing. Its significance is the potential to let Elixir developers describe, simulate, and deploy hardware accelerators using a single functional-language specification, with automated comparison between software and generated circuits.</p>
+          </div>
+          
+          <p class="drawer-footer"><a href="#dossier-6">View in Dossier ↓</a></p>
+        </div>
+      </details>
+    </div>
+  </section>
+  <section id="story-7" class="spread arc-academic-drop-cap">
+    <div class="paper-head">
+      <span>Mathematical Record</span>
+      <span class="numeral-roman">VII</span>
+      <span>johncarlosbaez.wordpress.com</span>
+    </div>
+    <h2>A 940-Page Trace Formula Faces Scrutiny</h2>
+    <p class="story-meta">johncarlosbaez.wordpress.com &nbsp;·&nbsp; 245 pts &nbsp;·&nbsp; 221 comments</p>
+    <div class="cols">
+      <div><p>Alessandro Masullo’s draft attacks the generalized Riemann Hypothesis by linking zeros of L-functions to prime-indexed spectral data.</p></div>
+      <div><p>The proposal is ambitious and technically detailed, but reported issues at the prime 2 and in its functional analysis leave its central claims provisional.</p><div class="spread-links"><a class="read-more" href="https://johncarlosbaez.wordpress.com/2026/11/22/masullo-on-the-riemann-hypothesis/" target="_blank" rel="noopener">Read →</a><a class="read-more share-link" href="#" data-share-title="Masullo on the Riemann Hypothesis" data-share-url="https://johncarlosbaez.wordpress.com/2026/11/22/masullo-on-the-riemann-hypothesis/">Share →</a>
+      <details class="analysis-drawer">
+        <summary class="btn-dossier">[ Analysis + ]</summary>
+        <div class="drawer-content">
+          
+          <h4>Technical Analysis</h4>
+          <div class="drawer-analysis">
+          <p>The article explains Alessandro Masullo’s 940-page draft attempt to prove the generalized Riemann Hypothesis for zeta and Hecke \(L\)-functions using a new trace formula linking zeros to primes, building on ideas from Weil and Connes. The proposed strategy constructs an operator whose spectral side encodes \(L\)-function zeros and whose geometric side, decomposed prime by prime, is claimed to remain holomorphic in a region that would exclude zeros off the critical line. Its most delicate steps involve extending the trace formula to nonsmooth limiting test functions and controlling the resulting expressions uniformly. Early reviewers have reported possible errors, including a problem at the prime 2 and questionable functional-analysis claims, while the manuscript remains an unfinished draft. Even if it fails, the work is important as a detailed test of a major operator-and-trace-formula approach to one of mathematics’ central unsolved problems.</p>
+          </div>
+          <h4>Reader Reactions</h4>
+<p class="camps-framing">The discussion widens from Masullo’s unfinished draft to what AI-assisted discovery means for mathematicians and for the value of long intellectual pursuits. Commenters differ over whether AI’s speed and concentrated resources make this an unfair or less human achievement, and whether a result matters chiefly for being established or for the understanding its proof creates. They also debate how much credit either effort deserves while both proofs’ status and accessibility remain under discussion.</p>
+<div class="camp"><p class="camp-label"><strong>The human cost of being scooped</strong> &mdash; Some commenters worry that a major result arriving through AI could make years of dedicated work feel diminished, or make it harder for people to find meaning in pursuing difficult problems.</p><blockquote>Regardless of whether or not his proof ends up being sound, it feels like 12 years of this man&#x27;s life have been cheapened by this whole ordeal.<cite>davesque</cite></blockquote>
+<blockquote>If I were in Masullo&#x27;s shoes, I&#x27;d feel like life had sucker punched me, and that I had wasted 12 years to be cheated out of an accomplishment that should have be mine alone instead of being an after thought.<cite>computerdork</cite></blockquote>
+<blockquote>What worries me is that the era of people like that may be coming to an end.<cite>nazgob</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>The journey still has value</strong> &mdash; Others argue that working on a problem can build skill and insight even if someone else reaches the answer first, or that recreation and play can be meaningful in their own right.</p><blockquote>If the journey does not engage or enrich you, it is already a fool’s errand right at the first step.<cite>musebox35</cite></blockquote>
+<blockquote>Far from being wasted time, it was one of the best learning experiences of my life.<cite>dhoe</cite></blockquote>
+<blockquote>Someone gets there first, but that doesn&#x27;t mean the other attempts were in vain.<cite>fasterik</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>AI access and corporate power are unfair</strong> &mdash; Some commenters object to advantages created by private frontier models, substantial compute, and resources unavailable to most researchers; some frame the issue as a broader ethical concern about AI companies.</p><blockquote>Alpoge is using billions of dollars worth of resources that others don&#x27;t have.<cite>joshuastuden</cite></blockquote>
+<blockquote>Very few have access to these resources.<cite>Murfalo</cite></blockquote>
+<blockquote>They&#x27;re anti human, no other way about it.<cite>DangIsATyrant</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>AI is a tool; recognize both efforts</strong> &mdash; Some see AI assistance as a legitimate tool in research and argue that both researchers could deserve credit, while others distinguish AI-assisted results from human-only achievement.</p><blockquote>Someone using a new tool to beat the old guards is a sign of progress - even if the old guards feel bad about it.<cite>chii</cite></blockquote>
+<blockquote>Give them both credit and the Fields medal.<cite>ComplexSystems</cite></blockquote>
+<blockquote>It&#x27;s clearly more of an accomplishment to prove it without.<cite>onetimeusename</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Verification and what counts as a proof</strong> &mdash; Commenters caution that a formal proof must encode the intended mathematical claim and that the status of both announcements depends on further scrutiny; they differ over the role of human review and formal verification.</p><blockquote>Just because the Lean is correct doesn&#x27;t equal GRH is proven, because it&#x27;s possible the Lean is describing the wrong thing.<cite>hasyimibhar</cite></blockquote>
+<blockquote>If they haven&#x27;t been confirmed by humans, they haven&#x27;t been confirmed.<cite>freeopinion</cite></blockquote>
+<blockquote>The proof he released was already accepted by multiple Lean kernels.<cite>throw1230</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>A theorem is not the same as mathematical insight</strong> &mdash; Some emphasize the concepts and techniques developed in the course of a proof, while others expect AI-assisted work to produce new ways of thinking and note that understanding major results takes time.</p><blockquote>Brute force is highly unlikely to have any of this, and I&#x27;d say this is more important than the proof because they themselves are never quite &quot;finished&quot; due to these discoveries.<cite>dead_hn_theory</cite></blockquote>
+<blockquote>Instead, AI absolutely &quot;invents new ways of looking at problems&quot; on the way to a solution.<cite>slibhb</cite></blockquote>
+<blockquote>Understanding of major results has never been anything close to instantaneous.<cite>nilkn</cite></blockquote></div>
+          <p class="drawer-footer"><a href="#dossier-7">View in Dossier ↓</a></p>
+        </div>
+      </details>
+    </div></div>
+    </div>
+  </section>
+  <section id="story-8" class="spread arc-pastel-playful">
+    <div class="alpha-grid"><span>A</span><span>B</span><span>C</span><span>D</span><span>E</span><span>F</span><span>G</span><span>H</span><span>I</span><span>J</span><span>K</span><span>L</span><span>M</span></div>
+    <div class="alpha-grid" style="top: auto; bottom: 0;"><span>N</span><span>O</span><span>P</span><span>Q</span><span>R</span><span>S</span><span>T</span><span>U</span><span>V</span><span>W</span><span>X</span><span>Y</span><span>Z</span></div>
+    <div class="numeral">08</div>
+    <div class="kicker">Field Guide</div>
+    <h2>GTA 6 Turns Vice City Into a Birding Trip</h2>
+    <p class="story-meta">audubon.org &nbsp;·&nbsp; 525 pts &nbsp;·&nbsp; 269 comments</p>
+    <p class="lede">A birder completes the game’s catalog of 60 species across swamps, coasts, farms, forests, and a zoo. The wildlife is geographically thoughtful, occasionally impossible, and proof that a blockbuster crime sandbox can hide a surprisingly absorbing nature walk.</p>
+    <div class="spread-links"><a class="read-more" href="https://www.audubon.org/magazine/birds-of-gta-6-field-guide-vice-city-wildlife" target="_blank" rel="noopener">Read →</a><a class="read-more share-link" href="#" data-share-title="The Birds of GTA 6: A Field Guide to Vice City and Leonida&#x27;s Wildlife" data-share-url="https://www.audubon.org/magazine/birds-of-gta-6-field-guide-vice-city-wildlife">Share →</a>
+      <details class="analysis-drawer">
+        <summary class="btn-dossier">[ Analysis + ]</summary>
+        <div class="drawer-content">
+          
+          <h4>Technical Analysis</h4>
+          <div class="drawer-analysis">
+          <p>The article chronicles a birder’s effort to find all 60 bird species cataloged in *Grand Theft Auto VI*, whose open-world Vice City and Leonida recreate South Florida habitats alongside the game’s criminal gameplay. Using the binocular “study” mechanic and the Progress menu, the author explores swamps, coasts, forests, farms, and a zoo, ultimately completing the collection. The game’s ecology is geographically thoughtful but includes deliberate or practical inaccuracies, such as abundant endangered species and implausible wildlife distributions. The story highlights how detailed environmental design can create an engaging secondary activity and offer an accessible, if noisy and imperfect, depiction of modern birding in a blockbuster game that generated $1.8 billion on release.</p>
+          </div>
+          <h4>Reader Reactions</h4>
+<p class="camps-framing">The discussion used the birding article to explore what players expect from GTA VI: a detailed world to explore, a story-led crime drama, or a sandbox centered on player freedom. Commenters also debated the role and pacing of the relationship story, anticipated online play, and wished for local co-op.</p>
+<div class="camp"><p class="camp-label"><strong>Wildlife and detailed-world appreciation</strong> &mdash; Some commenters welcomed birding and wildlife as meaningful parts of the game, while others praised the care shown in its environmental details and everyday interactions.</p><blockquote>Looked it up and the game has (Florida) scrub jays — the only avian species endemic to the state.<cite>semolino</cite></blockquote>
+<blockquote>Even something super simple like when your character eats an apple they rotate it after each bite<cite>ex-aws-dude</cite></blockquote>
+<blockquote>There&#x27;s an incredible amount of fine detail to the game.<cite>Jach</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Sandbox defenders</strong> &mdash; These commenters argued that the game offers substantial activity beyond its main missions, and that focusing on the story can obscure the freedom to explore and encounter unscripted events.</p><blockquote>because LITERALLY all you have to do is: something other than a story mission.<cite>mpalmer</cite></blockquote>
+<blockquote>The whole point of GTA is that between missions and such you explore however your heart takes you.<cite>EA-3167</cite></blockquote>
+<blockquote>people choose to just engage in the story and not fuck things up and then complain you can&#x27;t fuck things up, while you definitely can.<cite>elar_verole</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Story-heavy and not GTA enough</strong> &mdash; Some commenters felt the authored story and character focus outweighed the criminal sandbox they expected, making the game feel like a departure from earlier GTA titles.</p><blockquote>In a lot of ways it feels like two disjoint teams worked to create the final product and the story/character team won out.<cite>aliasxneo</cite></blockquote>
+<blockquote>it&#x27;s a disappointing departure from what made GTA GTA<cite>etcetcetcetceta</cite></blockquote>
+<blockquote>But it’s simply not GTA anymore, just your generic sandbox game with crime sprincle.<cite>pojzon</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Relationship story: pacing, agency, and context</strong> &mdash; Some players objected to relationship and household tasks appearing early or feeling compulsory, while others argued that these activities are optional and fit Rockstar&#x27;s focus on criminal relationships.</p><blockquote>Luckily the sandbox elements open up later but the dating sim stuff was front loaded into the first several hours.<cite>0xBA5ED</cite></blockquote>
+<blockquote>The relationship quests people are mentioning are all labeled as optional.<cite>fabian2k</cite></blockquote>
+<blockquote>Not once did I hear anyone kvetch about the inability to abandon the no-good, lying cousin Roman in GTA IV.<cite>overfeed</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Single-player now, online later</strong> &mdash; Several commenters expected online play to bring a more sandbox-focused experience, with some anticipating years of updates and others viewing the online mode as a long-term business strategy.</p><blockquote>GTA VI: Online will come later and will be a pure sandbox like GTA V: Online is today<cite>accrual</cite></blockquote>
+<blockquote>The point of the game is to obtain a million paying customers for GTA online for the next 10-15 years.<cite>fooker</cite></blockquote>
+<blockquote>The sandbox is really meant for GTA6 Online<cite>UltraSane</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Wanting local co-op</strong> &mdash; Some commenters wished they could play together locally, particularly with family or friends. Replies discussed the technical trade-offs of split-screen and possible alternatives such as two consoles or modding.</p><blockquote>I really wish games like this had some kind of co-play available.<cite>drewg123</cite></blockquote>
+<blockquote>Indeed though, I too really wish it had local 2 player.<cite>refibrillator</cite></blockquote>
+<blockquote>GTA San Andreas on PS2 used to have this coop feature where you can connect another joystick and play together... I have some good memories with my brother doing that<cite>minetest2048</cite></blockquote></div>
+          <p class="drawer-footer"><a href="#dossier-8">View in Dossier ↓</a></p>
+        </div>
+      </details>
+    </div>
+  </section>
+  <section id="story-9" class="spread arc-editorial-pullquote">
+    <div class="left">
+      <div class="numeral">09</div>
+      <div class="kicker">AI Metrics</div>
+      <h2>Can Perplexity Become AI’s Common Ruler?</h2>
+      <p class="story-meta">openai.com &nbsp;·&nbsp; 605 pts &nbsp;·&nbsp; 405 comments</p>
+      <div class="spread-links"><a class="read-more" href="https://openai.com/index/perplexity-and-intelligence/" target="_blank" rel="noopener">Read →</a><a class="read-more share-link" href="#" data-share-title="Perplexity and Intelligence" data-share-url="https://openai.com/index/perplexity-and-intelligence/">Share →</a>
+      <details class="analysis-drawer">
+        <summary class="btn-dossier">[ Analysis + ]</summary>
+        <div class="drawer-content">
+          
+          <h4>Technical Analysis</h4>
+          <div class="drawer-analysis">
+          <p>The article argues that advances in AI largely stem from training increasingly effective compressors or predictors, making perplexity—a measure of next-token prediction accuracy—a useful common indicator of progress across labs. It connects declining loss levels in OpenAI’s models with the emergence of capabilities such as fluent dialogue, in-context learning, reasoning, mathematics, and cybersecurity, while noting that these abilities cannot be predicted precisely from perplexity alone. The author warns that AI-assisted algorithmic research could accelerate pretraining improvements and produce new capabilities faster than current safety methods can track. OpenAI therefore proposes greater transparency, shared perplexity evaluations, and industry development limits tied to measurable improvements in monitoring and alignment, while acknowledging problems including dataset differences, reasoning gains outside pretraining, and uncertainty about the metric’s ultimate floor.</p>
+          </div>
+          <h4>Reader Reactions</h4>
+<p class="camps-framing">The discussion centered on whether falling perplexity indicates broad capability or reflects a particular evaluation corpus and training mix. Commenters also debated the contributions of pretraining versus reinforcement learning and other post-training methods, alongside whether shared measurements could meaningfully support development limits.</p>
+<div class="camp"><p class="camp-label"><strong>Compression as a broad signal of intelligence</strong> &mdash; Some commenters argued that predicting and compressing data can require learning reusable representations of the world, making perplexity a potentially informative signal of broader capability.</p><blockquote>The prediction (=compression) rate on the raw data stream is exactly the metric that captures this progress.<cite>d_burfoot</cite></blockquote>
+<blockquote>More and more evidence is piling behind their theory that data compression and intelligence are one and the same problem.<cite>londons_explore</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Perplexity depends on the dataset and training mix</strong> &mdash; Commenters questioned whether scores on a narrow held-out corpus generalize to other tasks, and noted that changes in training data—especially the amount of code—could affect the trend without establishing a broad capability relationship.</p><blockquote>Why would OpenAI expect any meaningful relationship between their models’ ability to predict the next token of supposedly held-out chunks of their internal codebase and the overall capabilities of the models?<cite>amluto</cite></blockquote>
+<blockquote>The thing is, you can get the exact same shape of a chart just by varying the amount of code in your pretraining corpus.<cite>seizethecheese</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Pretraining is only part of the story</strong> &mdash; Some commenters argued that reinforcement learning, post-training, tools, or the harness around a model contribute substantially to capabilities, so pretraining perplexity may not explain improvements on its own.</p><blockquote>A lot of advances in frontier models come from training with RL, which is fundamentally different from next-token prediction and doesn&#x27;t have a notion of perplexity.<cite>gregdeon</cite></blockquote>
+<blockquote>That GPT 4.5 result indicates to me that such a number does not, in fact, give a useful, portable benchmark for capability.<cite>rcr-anti</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Measurement and comparability problems</strong> &mdash; Commenters raised questions about whether perplexity scores can be compared across models with different tokenizers and architectures, and whether the evaluation set and its properties are sufficiently specified.</p><blockquote>I don&#x27;t know how possible it&#x27;d be to do an apples-to-apple comparison of perplexity across models if their vocabulary size, embedding dimensions or even number of MTP heads are different.<cite>charm137</cite></blockquote>
+<blockquote>This is a weird proposal. perplexity is a measure like accuracy, where the next question has to be “accuracy at doing what” or “perplexity on what?”<cite>6gvONxR4sf7o</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Skepticism about enforceable development limits</strong> &mdash; Some commenters doubted that voluntary reporting or a narrow evaluation could support practical limits, particularly if labs could shift progress to post-training methods or use evaluations that outsiders cannot independently verify.</p><blockquote>Setting a hard cutoff on a curve when you don&#x27;t know where the asymptote is doesn&#x27;t really work.<cite>thevilish</cite></blockquote>
+<blockquote>Very naïve to think there is any weight behind those words.<cite>WhrRTheBaboons</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Support for shared measures and cautious limits</strong> &mdash; Some commenters welcomed common pretraining evaluations and limits as useful steps, while recognizing that limits focused only on pretraining could leave other routes to capability gains open.</p><blockquote>Very positive to see this proposed from OpenAI. I hope Anthropic and GDM follow suit. I suspect it’s not sufficient, but definitely necessary.<cite>theptip</cite></blockquote></div>
+          <p class="drawer-footer"><a href="#dossier-9">View in Dossier ↓</a></p>
+        </div>
+      </details>
+    </div>
+    </div>
+    <blockquote class="pullquote">Compression can signal capability, but it cannot by itself explain intelligence or govern its consequences.</blockquote>
+  </section>
+  <section id="story-10" class="spread arc-mint-pattern">
+    <div class="numeral-block">
+      <div class="numeral">10</div>
+    </div>
+    <div class="kicker">Compiler Lore</div>
+    <h2>Tempo Specializes C Before Runtime</h2>
+    <p class="story-meta">phoenix.labri.fr &nbsp;·&nbsp; 71 pts &nbsp;·&nbsp; 20 comments</p>
+    <p class="lede">Tempo analyzes known inputs, aliases, dependencies, and side effects, then emits specialized C or binaries for the case at hand. Its partial-evaluation machinery can make a general routine behave like a hand-tuned one—provided the assumptions, edge cases, and input contracts hold.</p>
+    <div class="spread-links"><a class="read-more" href="https://phoenix.labri.fr/software/tempo/" target="_blank" rel="noopener">Read →</a><a class="read-more share-link" href="#" data-share-title="A Partial Evaluator for C" data-share-url="https://phoenix.labri.fr/software/tempo/">Share →</a>
+      <details class="analysis-drawer">
+        <summary class="btn-dossier">[ Analysis + ]</summary>
+        <div class="drawer-content">
+          
+          <h4>Technical Analysis</h4>
+          <div class="drawer-analysis">
+          <p>Tempo is an off-line partial evaluator for C that analyzes which inputs are known ahead of time, tracks dependencies, aliases, and side effects across procedures and data structures, then generates specialized source code or runtime binaries. The example shows how a general mini-printf can be transformed into a faster function tailored to a fixed format string. Its intended applications span operating systems, networking, graphics, scientific computing, interpreters, domain-specific languages, and even Java specialization through Harissa, with Cyclone using its analysis front end for safe, fast mobile code. The project was notable for making sophisticated C specialization publicly available without a license agreement and for emphasizing visualization and practical tooling to help users assess specialization.</p>
+          </div>
+          <h4>Reader Reactions</h4>
+<p class="camps-framing">The discussion centers on whether the mini-printf example has an edge-case bug and how Tempo-style partial evaluation relates to familiar compiler optimizations. Commenters also consider the assumptions made about valid inputs, the availability of current tooling, and whether specialization can work across languages. Disagreements often turn on definitions and on what inputs the function is expected to handle.</p>
+<div class="camp"><p class="camp-label"><strong>The example has an unsafe edge case</strong> &mdash; Several commenters argue that a format string ending in `%` can lead to reading beyond the null terminator if the error handler returns. One also criticizes the terse, non-idiomatic C style as making mistakes easier to introduce.</p><blockquote>If the static string was &quot;%&quot;, the else branch would move past the end of the string.<cite>looperhacks</cite></blockquote>
+<blockquote>As long as that out-of-bounds byte is not also the nul value the loop continues into out-of-bounds territory.<cite>dcuthbertson</cite></blockquote>
+<blockquote>Yeah, but that only prints an error and keeps going, so next loop it will read past the null terminator.<cite>ginko</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Valid-input contracts matter</strong> &mdash; Some commenters caution that the function may assume well-formed format strings and a sufficiently long value array, so the snippet alone may not establish a bug in its intended use. Replies distinguish a defect in the design from one that actually occurs at runtime.</p><blockquote>Format strings in C are generally assumed to be valid, so it&#x27;s a precondition to use the function.<cite>reillyrider</cite></blockquote>
+<blockquote>Can&#x27;t say it&#x27;s a bug without seeing the rest of the code though; if the function is used correctly everywhere, there&#x27;s no bug.<cite>oguz-ismail2</cite></blockquote>
+<blockquote>So I see a bug as something wrong with the design.<cite>tgv</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Compiler optimization can count as partial evaluation</strong> &mdash; One view is that ordinary optimizations such as inlining followed by constant propagation already perform partial evaluation in a broad sense. This is a counterpoint to the idea that a distinct specialization tool is necessary.</p><blockquote>GCC does quite a bit of this nowadays.<cite>dmitrygr</cite></blockquote>
+<blockquote>Isn&#x27;t inlining followed by constant propagation an example of applying a partial evaluator?<cite>1718627440</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Partial evaluation is a distinct specialization process</strong> &mdash; A corrective explanation describes partial evaluation as generating a residual program with known inputs bound ahead of runtime, rather than interactively evaluating code in a debugger. It also notes that coding techniques and compiler optimizations can approximate specialization without providing a separate partial evaluator.</p><blockquote>For Partial Evaluation, you must generate a &quot;residual&quot; version of the original program by specialization where all static data is already bound and evaluated.<cite>rramadass</cite></blockquote>
+<blockquote>Checking with Google, it seems GCC does not have a separate partial evaluator but one can use coding techniques+aggressive optimization switches to approximate it.<cite>rramadass</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Interest in newer, broader, or more accessible tooling</strong> &mdash; Some commenters look for a modern build or source, point to LLVM-bitcode tooling, or want LLVM support to reach more languages. Another comment provides release-history context about Tempo&#x27;s move toward unrestricted availability.</p><blockquote>While unsuccessfully searching for the Tempo source code I found LLPE, a partial evaluator for LLVM bitcode: https://www.llpe.org/<cite>RossBencina</cite></blockquote>
+<blockquote>Does anyone know if there&#x27;s a modern build of it? the download on the page is an i386 Linux binary tested on RedHat 6.1<cite>hizlikovboy27</cite></blockquote>
+<blockquote>We need a partial evaluator for llvm bytecode imo so it works with all languages<cite>alex7o</cite></blockquote></div>
+          <p class="drawer-footer"><a href="#dossier-10">View in Dossier ↓</a></p>
+        </div>
+      </details>
+    </div>
+  </section>
+  <section id="dossier" class="dossier">
+    <div class="dossier-head">
+      <div class="tagline">Appendix</div>
+      <h2>The Dossier</h2>
+      <p class="intro">Full analysis and reactions for today's 10 stories. <a href="#top">↑ Back to the edition</a></p>
+    </div>
+    <article id="dossier-1" class="dossier-entry">
+      <div class="dossier-meta">N<sup>o</sup> 01 &nbsp;·&nbsp; Midnight &nbsp;·&nbsp; Model Systems</div>
+      <h3>GLM-5.4: Toward Generalized Coding with Our First Loop Transformer</h3>
+      <p class="dossier-source">
+        <a href="https://z.ai/blog/glm-5.4" target="_blank" rel="noopener">z.ai</a>
+        &nbsp;·&nbsp; 157 pts &nbsp;·&nbsp; 76 comments
+         &nbsp;·&nbsp; <a href='https://news.ycombinator.com/item?id=50609685' target='_blank' rel='noopener'>discussion</a>
+      </p>
+      <h4>Analysis</h4>
+      <p>Z.ai introduces GLM-5.4, its first model using a Loop Transformer that repeatedly applies shared layers to increase effective reasoning depth without proportionally increasing parameters. Adapted from a pretrained GLM-5 base, the 750B-scale system uses gated updates, shared sparse-attention indices, and memory-saving KV-cache techniques to control stability and inference costs. The company reports stronger results on reasoning, long-context, coding, and multimodal engineering tasks, often with shorter explicit chains of thought, while acknowledging a tendency toward inefficient “marathon thinking.” The release is positioned as a move from software-focused coding toward “Generalized Coding,” including video, games, 3D modeling, and robotics, with paid products available, an API planned, and open weights promised after safety work.</p>
+      <h4>Reader Reactions</h4>
+<p class="camps-framing">The discussion centers on the time cost of long reasoning traces and whether that reflects a genuine disadvantage or differences in trace visibility, inference speed, and serving setup. Commenters also debate the significance of GLM-5.4’s looped architecture, the limited evidence available about its capabilities, and the safety implications of hidden-state computation and open weights.</p>
+<div class="camp"><p class="camp-label"><strong>Long reasoning can make routine coding frustrating</strong> &mdash; Some users report that Chinese models spend many minutes revisiting simple tasks, making them less suitable for interactive work even when they remain useful for more complex or background tasks.</p><blockquote>Even on medium GLM or Deepseek can spend 10+ minutes in a single thinking block.<cite>Starlevel004</cite></blockquote>
+<blockquote>I can confirm the same annoying behaviour with MiniMax. It&#x27;s exactly how you describe it: marathon thinking even for simple tasks that with, say, Sonnet or Opus would yield an answer almost immediately.<cite>seertaak</cite></blockquote>
+<blockquote>I mean is it fair to say that it shouldn&#x27;t take 10 minutes for simple things even on max reasoning when it takes frontier 30 seconds?<cite>lnenad</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Trace visibility, speed, and serving setup may affect the comparison</strong> &mdash; Others suggest that closed models may also reason internally but conceal the trace or generate it faster. They also point to adjustable reasoning levels and serving configurations as possible influences on the length and coherence of visible reasoning.</p><blockquote>With US models you just don&#x27;t see the CoT. They may very well do the same thing and just have higher tok/s<cite>lesspassiveobse</cite></blockquote>
+<blockquote>Thinking levels are adjustable, just don&#x27;t use the max level unless you&#x27;re willing to wait.<cite>zozbot234</cite></blockquote>
+<blockquote>So it makes me wonder how much of these problems come down to issues with how the models are served.<cite>anon373839</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Looped hidden-state computation is not the same as visible chain-of-thought</strong> &mdash; A technical exchange distinguishes looping over hidden states from repeating visible reasoning tokens. Commenters describe looping as a way to increase effective network depth without proportionally increasing parameters, while questioning what the reported benchmarks establish.</p><blockquote>No its looping on hidden states. Basically RNNs<cite>samrus</cite></blockquote>
+<blockquote>no. it&#x27;s a more efficient way to increase network depth without adding more parameters. if you think this is embedding &quot;thinking&quot; then transformers are already embedding thinking.<cite>nialv7</cite></blockquote>
+<blockquote>The benchmarks are from an unspecified 30B model based on the same architecture.<cite>grim_io</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>The release has not yet established how competitive the model is</strong> &mdash; Some commenters are cautious about judging GLM-5.4 without full-model results, while others note that missing benchmarks do not settle the question and that practical improvement over GLM-5.3 may matter more to users than rankings.</p><blockquote>Hard to say how good this is without benchmarks, I&#x27;m guessing they&#x27;re not impressive or else they would have included the scores?<cite>saretup</cite></blockquote>
+<blockquote>This really doesn&#x27;t provide answers one way or another.<cite>viraptor</cite></blockquote>
+<blockquote>As long as GLM5.4 is better than 5.3, I&#x27;m happy, and it doesn&#x27;t matter how many points above or below it is compared to other models.<cite>Systemerror7A69</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Looping and reduced CoT visibility raise safety questions</strong> &mdash; Commenters disagree about whether looped computation meaningfully reduces interpretability or increases danger. Some emphasize the monitoring value of visible CoT; others argue that looping is not inherently more dangerous than deeper models or that models are already risky without it.</p><blockquote>Because looping allows more reasoning to happen in hidden states rather than in visible CoT, which is useful (with limits) for monitoring LLMs.<cite>pizza234</cite></blockquote>
+<blockquote>I think the idea is that reducing reliance on an interpretable chain of thought is &quot;dangerous&quot;, no matter the means.<cite>joefourier</cite></blockquote>
+<blockquote>thinking looping is somehow &quot;more dangerous&quot; is IMO nonsensical. LLMs are already dangerous, with or without looping, there is little difference.<cite>nialv7</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Open-weight safety and cyber capability remain contested</strong> &mdash; Some users welcome permissive models for cyber experimentation, while others focus on promised safety hardening and whether open weights will differ from the API model. The thread also includes disagreement about how much safeguards can or should constrain access.</p><blockquote>Personally can&#x27;t get enough of my cyber experiments regarding these somewhat more lax models. Good on you GLM.<cite>w2seraph</cite></blockquote>
+<blockquote>They said in the release notes that they will only release weights after nerfing cyber.<cite>lesspassiveobse</cite></blockquote>
+<blockquote>I&#x27;m still waiting for someone to release an unaligned unconstrained model. We&#x27;re adults, we can handle them.<cite>rfgplk</cite></blockquote></div>
+    </article>
+    <article id="dossier-2" class="dossier-entry">
+      <div class="dossier-meta">N<sup>o</sup> 02 &nbsp;·&nbsp; Blueprint &nbsp;·&nbsp; Build Log</div>
+      <h3>XNU Linux: Full OS X GUI Userspace on Linux</h3>
+      <p class="dossier-source">
+        <a href="https://github.com/AFK-surf/xnulinux" target="_blank" rel="noopener">github.com</a>
+        &nbsp;·&nbsp; 380 pts &nbsp;·&nbsp; 172 comments
+         &nbsp;·&nbsp; <a href='https://news.ycombinator.com/item?id=50607261' target='_blank' rel='noopener'>discussion</a>
+      </p>
+      <h4>Analysis</h4>
+      <p>XNU Linux is an experimental project that runs Apple’s open-source XNU kernel and a full macOS GUI userspace as a loadable module inside an unmodified arm64 Linux kernel, allowing macOS and Linux processes to run natively on the same hardware without a hypervisor. Linux supplies resources and device access through a Foreign Kernel Interface, while hosted macOS can boot to the desktop and run applications such as Safari, with optional GPU support bridged through Vulkan. It currently targets Apple Silicon Linux environments, requires users to provide their own macOS installation, and remains a research-grade system with relaxed security protections, performance tradeoffs, and other production limitations. Its importance lies in demonstrating an unusual form of kernel co-hosting that could broaden virtualization and compatibility research, while also raising practical licensing, Apple platform, and maintenance constraints.</p>
+      <h4>Reader Reactions</h4>
+<p class="camps-framing">Commenters were impressed by the technical achievement, while differing over its practical uses and reach. The discussion also covered alternative compatibility approaches, the project’s Apple-hardware requirements, and possible licensing boundaries.</p>
+<div class="camp"><p class="camp-label"><strong>A striking technical achievement</strong> &mdash; Commenters described the project as an unusually ambitious demonstration of what current engineering and tooling can make possible.</p><blockquote>The fact that these kinds of projects have been normalised is frankly insane.<cite>zakisaad</cite></blockquote>
+<blockquote>This is beyond irony and mind blowing, I&#x27;m literally shocked and speachless.<cite>pmkary</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Potential for Asahi and cross-platform development</strong> &mdash; Some commenters saw promise in accessing macOS software from Linux or eventually testing Mac and iOS applications in a Linux-based workflow.</p><blockquote>Cross platform development would be one of the best reasons I can think of.<cite>asveikau</cite></blockquote>
+<blockquote>so I can run X GUI inside my Asahi on my macbook air? nice.<cite>pluto_modadic</cite></blockquote>
+<blockquote>For now; I think with a few drivers it could be a viable way to run an Arm Hackintosh.<cite>notpushkin</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Cool experiment, limited practical payoff</strong> &mdash; Other commenters questioned the point of the project, or argued that users seeking macOS should use Apple hardware or choose open-source alternatives.</p><blockquote>Cool, but why?<cite>probablyStimmed</cite></blockquote>
+<blockquote>If that&#x27;s that reason, then buy a Mac.<cite>II2II</cite></blockquote>
+<blockquote>EDIT: it looks like you need Apple hardware to use this anyhow.<cite>II2II</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>GNUstep or a higher-level compatibility layer</strong> &mdash; A minority preferred improving open implementations of macOS-like APIs rather than running Apple’s kernel and binaries.</p><blockquote>I think I would prefer if someone was to improve GNUstep instead.<cite>gen2brain</cite></blockquote>
+<blockquote>The very minimal tool I&#x27;d love to have would be an Xcode plugin that highlights the parts of the code that would not be covered by GNUStep.<cite>rbanffy</cite></blockquote>
+<blockquote>I think that would be a more interesting effort to pursue.<cite>miki123211</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Clarifying the project’s scope and hardware requirements</strong> &mdash; Commenters clarified that the approach uses the actual macOS kernel and depends on an Apple Silicon environment, rather than providing a general macOS port for arbitrary hardware.</p><blockquote>This project loads the (lightly modified) actual macOS kernel into memory (as a sort of co-kernel with Linux), so it would almost certainly not work on any hardware the original kernel doesn&#x27;t run on.<cite>valleyer</cite></blockquote>
+<blockquote>This is running inside a VM on a Mac computer (and it can only run in a VM on a Mac computer).<cite>steve1977</cite></blockquote>
+<blockquote>This was only possible with macOS because the XNU kernel is open source.<cite>relistan</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Apple’s licensing and enforcement boundaries</strong> &mdash; Commenters differed over whether Apple would object, noting both the current Apple-hardware requirement and the potential legal risks of running Apple userspace elsewhere or using it for build services.</p><blockquote>Historically Apple has been pretty uninterested in anything people do with the Apple hardware they purchased, just so long as they buy Apple hardware.<cite>sneak</cite></blockquote>
+<blockquote>This project definitely requires an apple silicon host to work so that seems to align with previous Apple stances towards projects like this<cite>matthewfcarlson</cite></blockquote>
+<blockquote>Probably not interested in the kernel part, but the userspace apps from MacOS explicitly say you can&#x27;t run them on non-apple hardware.<cite>viraptor</cite></blockquote></div>
+    </article>
+    <article id="dossier-3" class="dossier-entry">
+      <div class="dossier-meta">N<sup>o</sup> 03 &nbsp;·&nbsp; Archive &nbsp;·&nbsp; Archival Desk</div>
+      <h3>Free alternative TV network built from the Internet Archive&#x27;s forgotten videos</h3>
+      <p class="dossier-source">
+        <a href="https://spelunkr.tv" target="_blank" rel="noopener">spelunkr.tv</a>
+        &nbsp;·&nbsp; 577 pts &nbsp;·&nbsp; 101 comments
+         &nbsp;·&nbsp; <a href='https://news.ycombinator.com/item?id=50606192' target='_blank' rel='noopener'>discussion</a>
+      </p>
+      <h4>Analysis</h4>
+      <p>Spelunkr is a free, browser-based alternative TV network that organizes obscure and forgotten Internet Archive videos into themed channels and scheduled, cable-like programming. Its lineup spans archival cartoons, classic television, local productions, educational material, and other niche recordings, presented through a channel guide rather than a conventional on-demand catalog. The project demonstrates how publicly accessible archival media can be repackaged into a lean, Internet-native viewing experience without relying on traditional broadcast infrastructure or commercial programming. It is important because it improves discoverability for overlooked cultural material while offering a more serendipitous alternative to algorithmic streaming services.</p>
+      <h4>Reader Reactions</h4>
+<p class="camps-framing">The discussion was largely appreciative of the project’s retro presentation and archival discoveries. Commenters also discussed the appeal of shared, scheduled viewing, the value of seeing media with historical distance, and practical questions about Archive resources and access on televisions. A smaller counterpoint favored current programming.</p>
+<div class="camp"><p class="camp-label"><strong>Nostalgic discovery and delight</strong> &mdash; Commenters praised the cable-like presentation and the pleasure of stumbling across archival programs, music videos, and commercials.</p><blockquote>This is so good it defies words.<cite>goatherders</cite></blockquote>
+<blockquote>Feels like watching TV in the 80s and 90s again. Even the commercials are a joy.<cite>dbg31415</cite></blockquote>
+<blockquote>I stumbled into The Lone Gunmen Pilot episode. So much fun.<cite>iJohnDoe</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Shared viewing and relief from choice</strong> &mdash; Some commenters valued the sense of being part of a simultaneous audience, while others appreciated taking a break from choosing what to watch.</p><blockquote>Nobody else in the world is watching what you are at that exact moment.<cite>gabriel666smith</cite></blockquote>
+<blockquote>There&#x27;s a small boost against loneliness and anxiety to be listening to one of the major BBC stations for example, or even a community station you know to have an audience, as like you say it&#x27;s a simultaneous experience.<cite>BoxOfRain</cite></blockquote>
+<blockquote>But sometimes I like giving it up, taking a break from it.<cite>mihaaly</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>The value of old media</strong> &mdash; Commenters found older broadcasts interesting for the perspective they offer on past events, and some valued older media as art less bound up in current trends.</p><blockquote>It was quite interesting to actually experience this and realizing how little people knew about an accident like this.<cite>origini</cite></blockquote>
+<blockquote>Actually I would find it fascinating to watch old news, with captions/footnotes answering questions like: did this event turn out to matter? Was this report the whole story?<cite>jl6</cite></blockquote>
+<blockquote>I feel a lot less vulnerable to out-of-date/passe propaganda/cultural-trends, so it lets me enjoy the thing as art rather being hyper-critical and analyzing the movie as a sociopolitical messaging delivery system.<cite>serf</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Preference for topical, current programming</strong> &mdash; A smaller counterpoint argued that television is most appealing when it helps viewers learn about what is happening now.</p><blockquote>For me the allure of TV is its topicality.<cite>galaxyLogic</cite></blockquote>
+<blockquote>Who wants yesterdays papers?<cite>galaxyLogic</cite></blockquote>
+<blockquote>Quite the contrary, if yesterday&#x27;s news is already superseded by today&#x27;s events there was little value in it to begin with.<cite>DarkNova6</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Archive stewardship and resource use</strong> &mdash; Commenters asked about the effects of third-party streaming on the Internet Archive’s resources, with replies emphasizing responsible, noncommercial use.</p><blockquote>How does this work in relation to the cost of hosting and streaming all the content?<cite>marapuru</cite></blockquote>
+<blockquote>Archive in general is very friendly to this sort of thing.<cite>switz</cite></blockquote>
+<blockquote>Of course, please be respectful of the media and the network so that we may all continue to build wonderful experiences on top of Archive.<cite>switz</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Make it work on TVs and existing players</strong> &mdash; Commenters asked for playlist support, playback options, and ways to use the project on televisions and existing media devices.</p><blockquote>M3U and XMLTV URLs would be amazing to have for an IPTV client<cite>wildzzz</cite></blockquote>
+<blockquote>How are we supposed to consume this on an actual TV without an M3U or similar?<cite>drnick1</cite></blockquote>
+<blockquote>Delightful, wish I could just put it on Apple TV in the living room.<cite>floren</cite></blockquote></div>
+    </article>
+    <article id="dossier-4" class="dossier-entry">
+      <div class="dossier-meta">N<sup>o</sup> 04 &nbsp;·&nbsp; Stat Hero &nbsp;·&nbsp; Formal Methods</div>
+      <h3>Yes, 17M lines of Lean is a lot</h3>
+      <p class="dossier-source">
+        <a href="https://micjm.com/blog/yes-17m-lines-of-lean-is-a-lot/" target="_blank" rel="noopener">micjm.com</a>
+        &nbsp;·&nbsp; 119 pts &nbsp;·&nbsp; 130 comments
+         &nbsp;·&nbsp; <a href='https://news.ycombinator.com/item?id=50607668' target='_blank' rel='noopener'>discussion</a>
+      </p>
+      <h4>Analysis</h4>
+      <p>The article examines whether the reported 17 million lines of Lean used in a recent formal proof of the Riemann hypothesis is unusually large. Comparing it with 259 human-written Mathlib formalizations of famous theorems and 938 Lean packages indexed by Reservoir, the author finds that typical mathematical proofs are far smaller. Some AI-assisted or generated projects exceed 17 million lines, but their size can reflect unfinished work, database-generated verification code, or highly verbose automated development rather than core mathematics. The comparison matters because line counts are a useful but imperfect measure of formalization effort, distinguishing human-readable proofs from machine-generated infrastructure and redundant code.</p>
+      <h4>Reader Reactions</h4>
+<p class="camps-framing">The discussion weighs what a machine-checked proof establishes against what it may not provide: human understanding, mathematical insight, or an elegant explanation. Commenters also debated whether the proof’s size is meaningful, why AI-generated technical work can be hard to read, and whether better workflows can improve it. Some broadened the question to how AI might change research and the role of human expertise.</p>
+<div class="camp"><p class="camp-label"><strong>Line count is a poor measure</strong> &mdash; Commenters noted that formal proof size can reflect expanded dependencies, repeated material, or implementation choices, and that raw line counts alone offer limited perspective on difficulty or impressiveness.</p><blockquote>You can increase the line count of any Lean proof almost at will by expanding axioms it builds on by their Lean proofs.<cite>Someone</cite></blockquote>
+<blockquote>Isn’t the big difference that the Lean proof contains the detailed theory of dozens of intricate and hyper specific branches of established maths that Masullo doesn’t need to restate?<cite>siddboots</cite></blockquote>
+<blockquote>This assumes 17m isn&#x27;t already elegant. An equivalent human proof in Lean may be 50m lines.<cite>nomilk</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Lean checks validity, not readability</strong> &mdash; Commenters explained that Lean checks whether a proof follows from its encoded statements, axioms, and inference rules, while acknowledging that confidence also depends on the theorem statement and the checker.</p><blockquote>To accept the proof you don&#x27;t need to look at all the millions of lines of proof, because Lean checks that they all follow correctly from earlier statements.<cite>quietbritishjim</cite></blockquote>
+<blockquote>The kernel checks every step so if it accepts the proof, then this proof is valid (short of a kernel bug, unlikely here as tested on multiple kernels).<cite>williamdclt</cite></blockquote>
+<blockquote>I think that if you believe that the statement is written correctly there, then there is no question about the proof’s validity.<cite>kyykky</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Understanding versus accepting opaque results</strong> &mdash; Commenters disagreed about whether a result can be useful without human understanding. Some argued that accepting machine-produced results may be necessary, while others emphasized understanding as a central purpose of mathematics and science.</p><blockquote>This is a very unpopular opinion but I think we need to let go of understanding and accept that proof of something is good enough<cite>s08148692</cite></blockquote>
+<blockquote>the whole goal of mathematics is to understand the &quot;why&quot;.<cite>dgan</cite></blockquote>
+<blockquote>Their purpose is understanding, first and foremost.<cite>teiferer</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Verbosity signals weak compression or refinement</strong> &mdash; Some commenters saw the proof’s length as evidence that AI-generated work can be repetitive or poorly compressed compared with human-refined work. They also debated whether succinctness is part of mathematical elegance or only one aspect of it.</p><blockquote>They can get the job done but have yet to fully understand elegance.<cite>laser</cite></blockquote>
+<blockquote>the models are just really bad at information compression.<cite>GrollingGrakbor</cite></blockquote>
+<blockquote>Even today machine generated code is almost always more verbose than code written by a competent developer.<cite>skeledrew</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Why LLMs miss the human reader</strong> &mdash; Commenters offered competing explanations for poor technical readability, including failure to account for audience knowledge, training and reward incentives, and models’ treatment of long context as equally available.</p><blockquote>It may understand which things are more and less important in a structural, objective sense, but it can&#x27;t read your mind to correct for what you already know, what areas you&#x27;re an expert with, and what parts are new / unfamiliar to you.<cite>TeMPOraL</cite></blockquote>
+<blockquote>Part of the issue will be the training and the reward function.<cite>rhdunn</cite></blockquote>
+<blockquote>They aren&#x27;t taught an intuitive grasp of what a human &quot;context window&quot; looks like, or the importance of clear writing for human comprehension<cite>RugnirViking</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Readability can improve with better workflows</strong> &mdash; Several commenters saw technical readability as at least partly improvable through targeted prompts, custom checks, or review by an agent that lacks the writer’s project context.</p><blockquote>The trick is to use a blind agent (without access to anything) for reviewing the article.<cite>ozgung</cite></blockquote>
+<blockquote>Surprisingly, getting an LLM to write a custom linter that checks for a lot of common pitfalls based on string pattern search, paragraph length, sentence length, etc etc is actually quite effective as a way to force your LLM to behave.<cite>stingraycharles</cite></blockquote>
+<blockquote>but if you ask &quot;characterize human vs LLM writing, and fix it up&quot; they are often able to substantially correct.<cite>jadyoyster</cite></blockquote></div>
+    </article>
+    <article id="dossier-5" class="dossier-entry">
+      <div class="dossier-meta">N<sup>o</sup> 05 &nbsp;·&nbsp; Product Plate &nbsp;·&nbsp; Local Models</div>
+      <h3>A Beginner&#x27;s Guide to Local AI with Inkling, Qwen, and Unsloth</h3>
+      <p class="dossier-source">
+        <a href="https://www.gpupartner.com/blog/beginners-guide-local-ai-inkling-qwen-unsloth" target="_blank" rel="noopener">gpupartner.com</a>
+        &nbsp;·&nbsp; 555 pts &nbsp;·&nbsp; 232 comments
+         &nbsp;·&nbsp; <a href='https://news.ycombinator.com/item?id=50603845' target='_blank' rel='noopener'>discussion</a>
+      </p>
+      <h4>Analysis</h4>
+      <p>The story is a beginner-focused guide to running a private, subscription-free ChatGPT alternative on home hardware using Unsloth Desktop and quantized open-weight models such as Qwen or Inkling. It explains how GPU VRAM, model size, quantization, mixture-of-experts architectures, and context length determine which models can run, with a 32GB RTX 5090 used as the main example. The setup requires installing the desktop app, downloading a compatible model, choosing a context size, and optionally enabling password-protected LAN access for household users, without command-line configuration. It also notes that Macs and other unified-memory systems can run larger models, while internet access, advanced agents, and bigger models require additional infrastructure.</p>
+      <h4>Reader Reactions</h4>
+<p class="camps-framing">Commenters compared the practical value of local models with the stronger results many still get from cloud services. They also debated hardware costs, privacy and control, whether local and cloud use can complement each other, and how the capability gap may change over time.</p>
+<div class="camp"><p class="camp-label"><strong>Local models are already useful</strong> &mdash; Some commenters reported that local models handle meaningful coding and other everyday work on their own hardware, even if they do not match the strongest cloud systems on every task.</p><blockquote>I’ve been using Inkling 2 on my M5 Max this afternoon and it’s fi ding things in a project codebase that Claude didn’t find in previous audits, and I validated its findings with both GLM and Claude they were all correct, and it’s faster than GLM or Claude to boot<cite>realityloop</cite></blockquote>
+<blockquote>I&#x27;m running Qwen 3.8 Flash Next at very decent speeds (pp=1000, tg=40) on a gaming gpu that cost me 200 bucks last week, at the height of the AI craze.<cite>papyrus9244</cite></blockquote>
+<blockquote>I&#x27;ve been building on a project for 3 weeks and haven&#x27;t hit a wall, still pumping out semi complex audio and visual editing features.<cite>mortalapeman</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Cloud models still outperform local systems on demanding work</strong> &mdash; Other commenters argued that cloud subscriptions can offer substantially better quality, speed, or reliability for difficult tasks, making local hardware a poor value for some workloads.</p><blockquote>Then I have Opus 5.5 or even Sol 6.2 have a go at the same task and it’s done in 1/10th the tokens in 1/20th the time at a better quality.<cite>Aurornis</cite></blockquote>
+<blockquote>Unless you have a very specific application or privacy is a serious concern, you are better off with a $20 Claude subscription.<cite>icedchai</cite></blockquote>
+<blockquote>Local AI is still slop central as far as I know.<cite>IshKebab</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Local and cloud models can be used together</strong> &mdash; Some commenters favored using local models for routine tasks and turning to cloud services for more complex work, treating the two approaches as complementary.</p><blockquote>How about using a competent local model for 99% of menial tasks that work just fine there and an off-premises model for very heavy, complex tasks?<cite>simias</cite></blockquote>
+<blockquote>I think cloud inference for the ultra-large models will still be a viable path for the cloud providers, but as the training and models get more efficient, smaller models are going to be more than good enough for the vast majority of people.<cite>thraway3837</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Hardware cost limits accessibility</strong> &mdash; Commenters questioned whether guides built around high-end GPUs are accessible to beginners, while others suggested cheaper used hardware or renting a machine to try local inference before buying.</p><blockquote>Starts with <cite>underlines</cite></blockquote>
+<blockquote>$10K GPU. Yeah, sure, not much at all.<cite>0xnNe</cite></blockquote>
+<blockquote>You can often find a 3090, or even a 5090 with 32gb, for between 0.30 and 1.00 per hour.<cite>calebkaiser</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Privacy and independence motivate local use</strong> &mdash; For some commenters, keeping sensitive data or intellectual property off third-party services—or declining to support companies they distrust—was a reason to use local models regardless of cost or capability trade-offs.</p><blockquote>Local AI seems to me to be the only acceptable route forwards.<cite>robrain</cite></blockquote>
+<blockquote>I&#x27;m not in it for the money but for data- and content privacy.<cite>galaxyLogic</cite></blockquote>
+<blockquote>Some people live under more oppressive governments than you.<cite>teaearlgraycold</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Commenters disagree about the future capability gap</strong> &mdash; Some expected more efficient models to make local inference good enough for many common tasks, while others argued that cloud models may continue to advance and take on harder work.</p><blockquote>Model progress is towards more efficient models, and mainly better compression, while the overall volume of data relevant to models&#x27; use-cases isn&#x27;t increasing.<cite>random3</cite></blockquote>
+<blockquote>Hopefully the point is that local models will be good enough for most day-to-day needs.<cite>mycall</cite></blockquote>
+<blockquote>Who&#x27;s to say, by the time we have a local equivalent to Neon/Opus 5.5, that we have a whole bunch of new tasks that the massive models are capable of that we now need to be replicated in local versions before we make the switch?<cite>hatefulmoron</cite></blockquote></div>
+    </article>
+    <article id="dossier-6" class="dossier-entry">
+      <div class="dossier-meta">N<sup>o</sup> 06 &nbsp;·&nbsp; Terminal &nbsp;·&nbsp; Hardware Toolchain</div>
+      <h3>Elixir HLS makes FPGA circuits from functions written in Elixir</h3>
+      <p class="dossier-source">
+        <a href="https://github.com/elixir-hls/elixir-hls" target="_blank" rel="noopener">github.com</a>
+        &nbsp;·&nbsp; 24 pts &nbsp;·&nbsp; 0 comments
+         &nbsp;·&nbsp; <a href='https://news.ycombinator.com/item?id=50584526' target='_blank' rel='noopener'>discussion</a>
+      </p>
+      <h4>Analysis</h4>
+      <p>Elixir HLS is an early-stage open-source tool that compiles constrained Elixir functions into SystemVerilog and FPGA circuits through high-level synthesis, while retaining ordinary CPU execution for testing and fallback. Developers use `defhls` to define integer-based computations and `definstance` to place them in hardware, with support for state, memories, fixed loops, streams, events, and device interfaces. The project currently targets boards such as the Sipeed Tang Primer 25K and has demonstrated an FPGA-based FM-radio demodulator, though it lacks features including floating point, division, recursion, and general collection processing. Its significance is the potential to let Elixir developers describe, simulate, and deploy hardware accelerators using a single functional-language specification, with automated comparison between software and generated circuits.</p>
+      
+    </article>
+    <article id="dossier-7" class="dossier-entry">
+      <div class="dossier-meta">N<sup>o</sup> 07 &nbsp;·&nbsp; Academic &nbsp;·&nbsp; Mathematical Record</div>
+      <h3>Masullo on the Riemann Hypothesis</h3>
+      <p class="dossier-source">
+        <a href="https://johncarlosbaez.wordpress.com/2026/11/22/masullo-on-the-riemann-hypothesis/" target="_blank" rel="noopener">johncarlosbaez.wordpress.com</a>
+        &nbsp;·&nbsp; 245 pts &nbsp;·&nbsp; 221 comments
+         &nbsp;·&nbsp; <a href='https://news.ycombinator.com/item?id=50598441' target='_blank' rel='noopener'>discussion</a>
+      </p>
+      <h4>Analysis</h4>
+      <p>The article explains Alessandro Masullo’s 940-page draft attempt to prove the generalized Riemann Hypothesis for zeta and Hecke \(L\)-functions using a new trace formula linking zeros to primes, building on ideas from Weil and Connes. The proposed strategy constructs an operator whose spectral side encodes \(L\)-function zeros and whose geometric side, decomposed prime by prime, is claimed to remain holomorphic in a region that would exclude zeros off the critical line. Its most delicate steps involve extending the trace formula to nonsmooth limiting test functions and controlling the resulting expressions uniformly. Early reviewers have reported possible errors, including a problem at the prime 2 and questionable functional-analysis claims, while the manuscript remains an unfinished draft. Even if it fails, the work is important as a detailed test of a major operator-and-trace-formula approach to one of mathematics’ central unsolved problems.</p>
+      <h4>Reader Reactions</h4>
+<p class="camps-framing">The discussion widens from Masullo’s unfinished draft to what AI-assisted discovery means for mathematicians and for the value of long intellectual pursuits. Commenters differ over whether AI’s speed and concentrated resources make this an unfair or less human achievement, and whether a result matters chiefly for being established or for the understanding its proof creates. They also debate how much credit either effort deserves while both proofs’ status and accessibility remain under discussion.</p>
+<div class="camp"><p class="camp-label"><strong>The human cost of being scooped</strong> &mdash; Some commenters worry that a major result arriving through AI could make years of dedicated work feel diminished, or make it harder for people to find meaning in pursuing difficult problems.</p><blockquote>Regardless of whether or not his proof ends up being sound, it feels like 12 years of this man&#x27;s life have been cheapened by this whole ordeal.<cite>davesque</cite></blockquote>
+<blockquote>If I were in Masullo&#x27;s shoes, I&#x27;d feel like life had sucker punched me, and that I had wasted 12 years to be cheated out of an accomplishment that should have be mine alone instead of being an after thought.<cite>computerdork</cite></blockquote>
+<blockquote>What worries me is that the era of people like that may be coming to an end.<cite>nazgob</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>The journey still has value</strong> &mdash; Others argue that working on a problem can build skill and insight even if someone else reaches the answer first, or that recreation and play can be meaningful in their own right.</p><blockquote>If the journey does not engage or enrich you, it is already a fool’s errand right at the first step.<cite>musebox35</cite></blockquote>
+<blockquote>Far from being wasted time, it was one of the best learning experiences of my life.<cite>dhoe</cite></blockquote>
+<blockquote>Someone gets there first, but that doesn&#x27;t mean the other attempts were in vain.<cite>fasterik</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>AI access and corporate power are unfair</strong> &mdash; Some commenters object to advantages created by private frontier models, substantial compute, and resources unavailable to most researchers; some frame the issue as a broader ethical concern about AI companies.</p><blockquote>Alpoge is using billions of dollars worth of resources that others don&#x27;t have.<cite>joshuastuden</cite></blockquote>
+<blockquote>Very few have access to these resources.<cite>Murfalo</cite></blockquote>
+<blockquote>They&#x27;re anti human, no other way about it.<cite>DangIsATyrant</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>AI is a tool; recognize both efforts</strong> &mdash; Some see AI assistance as a legitimate tool in research and argue that both researchers could deserve credit, while others distinguish AI-assisted results from human-only achievement.</p><blockquote>Someone using a new tool to beat the old guards is a sign of progress - even if the old guards feel bad about it.<cite>chii</cite></blockquote>
+<blockquote>Give them both credit and the Fields medal.<cite>ComplexSystems</cite></blockquote>
+<blockquote>It&#x27;s clearly more of an accomplishment to prove it without.<cite>onetimeusename</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Verification and what counts as a proof</strong> &mdash; Commenters caution that a formal proof must encode the intended mathematical claim and that the status of both announcements depends on further scrutiny; they differ over the role of human review and formal verification.</p><blockquote>Just because the Lean is correct doesn&#x27;t equal GRH is proven, because it&#x27;s possible the Lean is describing the wrong thing.<cite>hasyimibhar</cite></blockquote>
+<blockquote>If they haven&#x27;t been confirmed by humans, they haven&#x27;t been confirmed.<cite>freeopinion</cite></blockquote>
+<blockquote>The proof he released was already accepted by multiple Lean kernels.<cite>throw1230</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>A theorem is not the same as mathematical insight</strong> &mdash; Some emphasize the concepts and techniques developed in the course of a proof, while others expect AI-assisted work to produce new ways of thinking and note that understanding major results takes time.</p><blockquote>Brute force is highly unlikely to have any of this, and I&#x27;d say this is more important than the proof because they themselves are never quite &quot;finished&quot; due to these discoveries.<cite>dead_hn_theory</cite></blockquote>
+<blockquote>Instead, AI absolutely &quot;invents new ways of looking at problems&quot; on the way to a solution.<cite>slibhb</cite></blockquote>
+<blockquote>Understanding of major results has never been anything close to instantaneous.<cite>nilkn</cite></blockquote></div>
+    </article>
+    <article id="dossier-8" class="dossier-entry">
+      <div class="dossier-meta">N<sup>o</sup> 08 &nbsp;·&nbsp; Pastel Finale &nbsp;·&nbsp; Field Guide</div>
+      <h3>The Birds of GTA 6: A Field Guide to Vice City and Leonida&#x27;s Wildlife</h3>
+      <p class="dossier-source">
+        <a href="https://www.audubon.org/magazine/birds-of-gta-6-field-guide-vice-city-wildlife" target="_blank" rel="noopener">audubon.org</a>
+        &nbsp;·&nbsp; 525 pts &nbsp;·&nbsp; 269 comments
+         &nbsp;·&nbsp; <a href='https://news.ycombinator.com/item?id=50602843' target='_blank' rel='noopener'>discussion</a>
+      </p>
+      <h4>Analysis</h4>
+      <p>The article chronicles a birder’s effort to find all 60 bird species cataloged in *Grand Theft Auto VI*, whose open-world Vice City and Leonida recreate South Florida habitats alongside the game’s criminal gameplay. Using the binocular “study” mechanic and the Progress menu, the author explores swamps, coasts, forests, farms, and a zoo, ultimately completing the collection. The game’s ecology is geographically thoughtful but includes deliberate or practical inaccuracies, such as abundant endangered species and implausible wildlife distributions. The story highlights how detailed environmental design can create an engaging secondary activity and offer an accessible, if noisy and imperfect, depiction of modern birding in a blockbuster game that generated $1.8 billion on release.</p>
+      <h4>Reader Reactions</h4>
+<p class="camps-framing">The discussion used the birding article to explore what players expect from GTA VI: a detailed world to explore, a story-led crime drama, or a sandbox centered on player freedom. Commenters also debated the role and pacing of the relationship story, anticipated online play, and wished for local co-op.</p>
+<div class="camp"><p class="camp-label"><strong>Wildlife and detailed-world appreciation</strong> &mdash; Some commenters welcomed birding and wildlife as meaningful parts of the game, while others praised the care shown in its environmental details and everyday interactions.</p><blockquote>Looked it up and the game has (Florida) scrub jays — the only avian species endemic to the state.<cite>semolino</cite></blockquote>
+<blockquote>Even something super simple like when your character eats an apple they rotate it after each bite<cite>ex-aws-dude</cite></blockquote>
+<blockquote>There&#x27;s an incredible amount of fine detail to the game.<cite>Jach</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Sandbox defenders</strong> &mdash; These commenters argued that the game offers substantial activity beyond its main missions, and that focusing on the story can obscure the freedom to explore and encounter unscripted events.</p><blockquote>because LITERALLY all you have to do is: something other than a story mission.<cite>mpalmer</cite></blockquote>
+<blockquote>The whole point of GTA is that between missions and such you explore however your heart takes you.<cite>EA-3167</cite></blockquote>
+<blockquote>people choose to just engage in the story and not fuck things up and then complain you can&#x27;t fuck things up, while you definitely can.<cite>elar_verole</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Story-heavy and not GTA enough</strong> &mdash; Some commenters felt the authored story and character focus outweighed the criminal sandbox they expected, making the game feel like a departure from earlier GTA titles.</p><blockquote>In a lot of ways it feels like two disjoint teams worked to create the final product and the story/character team won out.<cite>aliasxneo</cite></blockquote>
+<blockquote>it&#x27;s a disappointing departure from what made GTA GTA<cite>etcetcetcetceta</cite></blockquote>
+<blockquote>But it’s simply not GTA anymore, just your generic sandbox game with crime sprincle.<cite>pojzon</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Relationship story: pacing, agency, and context</strong> &mdash; Some players objected to relationship and household tasks appearing early or feeling compulsory, while others argued that these activities are optional and fit Rockstar&#x27;s focus on criminal relationships.</p><blockquote>Luckily the sandbox elements open up later but the dating sim stuff was front loaded into the first several hours.<cite>0xBA5ED</cite></blockquote>
+<blockquote>The relationship quests people are mentioning are all labeled as optional.<cite>fabian2k</cite></blockquote>
+<blockquote>Not once did I hear anyone kvetch about the inability to abandon the no-good, lying cousin Roman in GTA IV.<cite>overfeed</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Single-player now, online later</strong> &mdash; Several commenters expected online play to bring a more sandbox-focused experience, with some anticipating years of updates and others viewing the online mode as a long-term business strategy.</p><blockquote>GTA VI: Online will come later and will be a pure sandbox like GTA V: Online is today<cite>accrual</cite></blockquote>
+<blockquote>The point of the game is to obtain a million paying customers for GTA online for the next 10-15 years.<cite>fooker</cite></blockquote>
+<blockquote>The sandbox is really meant for GTA6 Online<cite>UltraSane</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Wanting local co-op</strong> &mdash; Some commenters wished they could play together locally, particularly with family or friends. Replies discussed the technical trade-offs of split-screen and possible alternatives such as two consoles or modding.</p><blockquote>I really wish games like this had some kind of co-play available.<cite>drewg123</cite></blockquote>
+<blockquote>Indeed though, I too really wish it had local 2 player.<cite>refibrillator</cite></blockquote>
+<blockquote>GTA San Andreas on PS2 used to have this coop feature where you can connect another joystick and play together... I have some good memories with my brother doing that<cite>minetest2048</cite></blockquote></div>
+    </article>
+    <article id="dossier-9" class="dossier-entry">
+      <div class="dossier-meta">N<sup>o</sup> 09 &nbsp;·&nbsp; Editorial Op-Ed &nbsp;·&nbsp; AI Metrics</div>
+      <h3>Perplexity and Intelligence</h3>
+      <p class="dossier-source">
+        <a href="https://openai.com/index/perplexity-and-intelligence/" target="_blank" rel="noopener">openai.com</a>
+        &nbsp;·&nbsp; 605 pts &nbsp;·&nbsp; 405 comments
+         &nbsp;·&nbsp; <a href='https://news.ycombinator.com/item?id=50601525' target='_blank' rel='noopener'>discussion</a>
+      </p>
+      <h4>Analysis</h4>
+      <p>The article argues that advances in AI largely stem from training increasingly effective compressors or predictors, making perplexity—a measure of next-token prediction accuracy—a useful common indicator of progress across labs. It connects declining loss levels in OpenAI’s models with the emergence of capabilities such as fluent dialogue, in-context learning, reasoning, mathematics, and cybersecurity, while noting that these abilities cannot be predicted precisely from perplexity alone. The author warns that AI-assisted algorithmic research could accelerate pretraining improvements and produce new capabilities faster than current safety methods can track. OpenAI therefore proposes greater transparency, shared perplexity evaluations, and industry development limits tied to measurable improvements in monitoring and alignment, while acknowledging problems including dataset differences, reasoning gains outside pretraining, and uncertainty about the metric’s ultimate floor.</p>
+      <h4>Reader Reactions</h4>
+<p class="camps-framing">The discussion centered on whether falling perplexity indicates broad capability or reflects a particular evaluation corpus and training mix. Commenters also debated the contributions of pretraining versus reinforcement learning and other post-training methods, alongside whether shared measurements could meaningfully support development limits.</p>
+<div class="camp"><p class="camp-label"><strong>Compression as a broad signal of intelligence</strong> &mdash; Some commenters argued that predicting and compressing data can require learning reusable representations of the world, making perplexity a potentially informative signal of broader capability.</p><blockquote>The prediction (=compression) rate on the raw data stream is exactly the metric that captures this progress.<cite>d_burfoot</cite></blockquote>
+<blockquote>More and more evidence is piling behind their theory that data compression and intelligence are one and the same problem.<cite>londons_explore</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Perplexity depends on the dataset and training mix</strong> &mdash; Commenters questioned whether scores on a narrow held-out corpus generalize to other tasks, and noted that changes in training data—especially the amount of code—could affect the trend without establishing a broad capability relationship.</p><blockquote>Why would OpenAI expect any meaningful relationship between their models’ ability to predict the next token of supposedly held-out chunks of their internal codebase and the overall capabilities of the models?<cite>amluto</cite></blockquote>
+<blockquote>The thing is, you can get the exact same shape of a chart just by varying the amount of code in your pretraining corpus.<cite>seizethecheese</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Pretraining is only part of the story</strong> &mdash; Some commenters argued that reinforcement learning, post-training, tools, or the harness around a model contribute substantially to capabilities, so pretraining perplexity may not explain improvements on its own.</p><blockquote>A lot of advances in frontier models come from training with RL, which is fundamentally different from next-token prediction and doesn&#x27;t have a notion of perplexity.<cite>gregdeon</cite></blockquote>
+<blockquote>That GPT 4.5 result indicates to me that such a number does not, in fact, give a useful, portable benchmark for capability.<cite>rcr-anti</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Measurement and comparability problems</strong> &mdash; Commenters raised questions about whether perplexity scores can be compared across models with different tokenizers and architectures, and whether the evaluation set and its properties are sufficiently specified.</p><blockquote>I don&#x27;t know how possible it&#x27;d be to do an apples-to-apple comparison of perplexity across models if their vocabulary size, embedding dimensions or even number of MTP heads are different.<cite>charm137</cite></blockquote>
+<blockquote>This is a weird proposal. perplexity is a measure like accuracy, where the next question has to be “accuracy at doing what” or “perplexity on what?”<cite>6gvONxR4sf7o</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Skepticism about enforceable development limits</strong> &mdash; Some commenters doubted that voluntary reporting or a narrow evaluation could support practical limits, particularly if labs could shift progress to post-training methods or use evaluations that outsiders cannot independently verify.</p><blockquote>Setting a hard cutoff on a curve when you don&#x27;t know where the asymptote is doesn&#x27;t really work.<cite>thevilish</cite></blockquote>
+<blockquote>Very naïve to think there is any weight behind those words.<cite>WhrRTheBaboons</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Support for shared measures and cautious limits</strong> &mdash; Some commenters welcomed common pretraining evaluations and limits as useful steps, while recognizing that limits focused only on pretraining could leave other routes to capability gains open.</p><blockquote>Very positive to see this proposed from OpenAI. I hope Anthropic and GDM follow suit. I suspect it’s not sufficient, but definitely necessary.<cite>theptip</cite></blockquote></div>
+    </article>
+    <article id="dossier-10" class="dossier-entry">
+      <div class="dossier-meta">N<sup>o</sup> 10 &nbsp;·&nbsp; Mint Pattern &nbsp;·&nbsp; Compiler Lore</div>
+      <h3>A Partial Evaluator for C</h3>
+      <p class="dossier-source">
+        <a href="https://phoenix.labri.fr/software/tempo/" target="_blank" rel="noopener">phoenix.labri.fr</a>
+        &nbsp;·&nbsp; 71 pts &nbsp;·&nbsp; 20 comments
+         &nbsp;·&nbsp; <a href='https://news.ycombinator.com/item?id=50607627' target='_blank' rel='noopener'>discussion</a>
+      </p>
+      <h4>Analysis</h4>
+      <p>Tempo is an off-line partial evaluator for C that analyzes which inputs are known ahead of time, tracks dependencies, aliases, and side effects across procedures and data structures, then generates specialized source code or runtime binaries. The example shows how a general mini-printf can be transformed into a faster function tailored to a fixed format string. Its intended applications span operating systems, networking, graphics, scientific computing, interpreters, domain-specific languages, and even Java specialization through Harissa, with Cyclone using its analysis front end for safe, fast mobile code. The project was notable for making sophisticated C specialization publicly available without a license agreement and for emphasizing visualization and practical tooling to help users assess specialization.</p>
+      <h4>Reader Reactions</h4>
+<p class="camps-framing">The discussion centers on whether the mini-printf example has an edge-case bug and how Tempo-style partial evaluation relates to familiar compiler optimizations. Commenters also consider the assumptions made about valid inputs, the availability of current tooling, and whether specialization can work across languages. Disagreements often turn on definitions and on what inputs the function is expected to handle.</p>
+<div class="camp"><p class="camp-label"><strong>The example has an unsafe edge case</strong> &mdash; Several commenters argue that a format string ending in `%` can lead to reading beyond the null terminator if the error handler returns. One also criticizes the terse, non-idiomatic C style as making mistakes easier to introduce.</p><blockquote>If the static string was &quot;%&quot;, the else branch would move past the end of the string.<cite>looperhacks</cite></blockquote>
+<blockquote>As long as that out-of-bounds byte is not also the nul value the loop continues into out-of-bounds territory.<cite>dcuthbertson</cite></blockquote>
+<blockquote>Yeah, but that only prints an error and keeps going, so next loop it will read past the null terminator.<cite>ginko</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Valid-input contracts matter</strong> &mdash; Some commenters caution that the function may assume well-formed format strings and a sufficiently long value array, so the snippet alone may not establish a bug in its intended use. Replies distinguish a defect in the design from one that actually occurs at runtime.</p><blockquote>Format strings in C are generally assumed to be valid, so it&#x27;s a precondition to use the function.<cite>reillyrider</cite></blockquote>
+<blockquote>Can&#x27;t say it&#x27;s a bug without seeing the rest of the code though; if the function is used correctly everywhere, there&#x27;s no bug.<cite>oguz-ismail2</cite></blockquote>
+<blockquote>So I see a bug as something wrong with the design.<cite>tgv</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Compiler optimization can count as partial evaluation</strong> &mdash; One view is that ordinary optimizations such as inlining followed by constant propagation already perform partial evaluation in a broad sense. This is a counterpoint to the idea that a distinct specialization tool is necessary.</p><blockquote>GCC does quite a bit of this nowadays.<cite>dmitrygr</cite></blockquote>
+<blockquote>Isn&#x27;t inlining followed by constant propagation an example of applying a partial evaluator?<cite>1718627440</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Partial evaluation is a distinct specialization process</strong> &mdash; A corrective explanation describes partial evaluation as generating a residual program with known inputs bound ahead of runtime, rather than interactively evaluating code in a debugger. It also notes that coding techniques and compiler optimizations can approximate specialization without providing a separate partial evaluator.</p><blockquote>For Partial Evaluation, you must generate a &quot;residual&quot; version of the original program by specialization where all static data is already bound and evaluated.<cite>rramadass</cite></blockquote>
+<blockquote>Checking with Google, it seems GCC does not have a separate partial evaluator but one can use coding techniques+aggressive optimization switches to approximate it.<cite>rramadass</cite></blockquote></div>
+<div class="camp"><p class="camp-label"><strong>Interest in newer, broader, or more accessible tooling</strong> &mdash; Some commenters look for a modern build or source, point to LLVM-bitcode tooling, or want LLVM support to reach more languages. Another comment provides release-history context about Tempo&#x27;s move toward unrestricted availability.</p><blockquote>While unsuccessfully searching for the Tempo source code I found LLPE, a partial evaluator for LLVM bitcode: https://www.llpe.org/<cite>RossBencina</cite></blockquote>
+<blockquote>Does anyone know if there&#x27;s a modern build of it? the download on the page is an i386 Linux binary tested on RedHat 6.1<cite>hizlikovboy27</cite></blockquote>
+<blockquote>We need a partial evaluator for llvm bytecode imo so it works with all languages<cite>alex7o</cite></blockquote></div>
+    </article>
+  </section>
+  <footer class="colophon">
+    <p class="sig">— that's the edition.</p>
+    <p class="meta">Set in Fraunces &amp; Inter · Compiled November 23, 2026</p>
+    <p class="classic-link"><a href="classic.html">Prefer the classic card view? →</a></p>
+  </footer>
+<script>
+(() => {
+  const key = "gtd:read_days:hn:v1";
+  const day = "2026-11-23";
+  let stored = [];
+  try {
+    stored = JSON.parse(localStorage.getItem(key) || "[]");
+    if (!Array.isArray(stored)) stored = [];
+  } catch (e) {}
+  if (!stored.includes(day)) {
+    stored.push(day);
+    stored.sort();
+    localStorage.setItem(key, JSON.stringify(stored));
+  }
+})();
+</script>
+<script src="../../preference.js?v=8b6b0b53b1" defer></script>
+<script>
+// Simple script to toggle the [+] and [-] labels on the drawers
+document.querySelectorAll('.analysis-drawer').forEach(drawer => {
+  drawer.addEventListener('toggle', () => {
+    const summary = drawer.querySelector('summary');
+    if (drawer.open) {
+      summary.textContent = '[ Analysis − ]';
+    } else {
+      summary.textContent = '[ Analysis + ]';
+    }
+  });
+});
+
+// Share link — native share or copy markdown to clipboard
+(function () {
+  const links = document.querySelectorAll('.share-link');
+  if (!links.length) return;
+
+  const toast = document.createElement('div');
+  toast.className = 'discuss-toast';
+  document.body.appendChild(toast);
+
+  function showToast(msg) {
+    toast.textContent = msg;
+    toast.classList.add('show');
+    setTimeout(() => toast.classList.remove('show'), 2500);
+  }
+
+  function buildMarkdown(link, spread) {
+    const title = link.dataset.shareTitle || '';
+    const url = link.dataset.shareUrl || '';
+    const meta = spread ? spread.querySelector('.story-meta') : null;
+    const lede = spread ? spread.querySelector('.lede') : null;
+    const analysis = spread ? spread.querySelector('.drawer-analysis') : null;
+    let md = '# ' + title + '\n';
+    md += 'Source: ' + url;
+    if (meta) md += ' | ' + meta.textContent.trim();
+    md += '\n';
+    if (lede) md += '\n' + lede.textContent.trim() + '\n';
+    if (analysis) md += '\n## Analysis\n' + analysis.textContent.trim() + '\n';
+    return md;
+  }
+
+  links.forEach((link) => {
+    link.addEventListener('click', (e) => {
+      e.preventDefault();
+      const spread = link.closest('section.spread');
+      const md = buildMarkdown(link, spread);
+      const text = "I'd like to discuss this with you. Here's a summary:\n\n" + md;
+      const title = 'Discuss: ' + (link.dataset.shareTitle || '');
+      if (navigator.share) {
+        navigator.share({ title: title, text: text }).catch(() => {});
+      } else {
+        navigator.clipboard.writeText(text).then(
+          () => showToast('Copied to clipboard \u2014 paste into your AI chat'),
+          () => showToast('Failed to copy')
+        );
+      }
+    });
+  });
+})();
+</script>
+</body>
+</html>
